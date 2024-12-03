@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-b3z1ks+&tjb740$cqbuxv$&49x06!)v#*d@ae+!m@5#rjtyesc'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['LITTLE-TALK.ORG', '116.203.197.92']
 
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'littleTalkApp'
 ]
 
 MIDDLEWARE = [
