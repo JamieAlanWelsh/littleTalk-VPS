@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}Learning Exercises{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@700&family=Roboto:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header Panel -->
+    <div class="header-panel">
+        <!-- left links -->
+        <nav class="header-nav">
+            <ul>
+                <li><a href="{% url 'home' %}">About</a></li>
+                <li><a href="#">Our Team</a></li>
+            </ul>
+        </nav>
+
+        <!-- logo - to be between links -->
+        <div class="logo">
+            <h1>🗣 LittleTalk</h1> <!-- Company name displayed here -->
+        </div>
+
+        <!-- right links -->
+        <nav class="header-nav">
+            <ul>
+                <li><a href="#">Login</a></li>
+                <li><a href="#">Get Started</a></li>
+            </ul>
+        </nav>
+    </div>
+
+     <!-- Side panel -->
+     <div class="sidebar">
+        <div class="exercise-box">
+            <a href="{% url 'home' %}">
+                <img src="{% static 'images/home_icon.png' %}" alt="Colourful Semantics">
+                <span class="exercise-title">Home</span>
+            </a>
+        </div>
+        <div class="exercise-box">
+            <a href="{% url 'game_description' 'colourful_semantics' %}">
+                <img src="{% static 'images/colour_semantics_icon.png' %}" alt="Colourful Semantics">
+                <span class="exercise-title">Colourful Semantics</span>
+            </a>
+        </div>
+        <div class="exercise-box">
+            <a href="{% url 'game_description' 'exercise2' %}">
+                <img src="{% static 'images/base_icon.png' %}" alt="Exercise 2">
+                <span class="exercise-title">Another Exercise</span>
+            </a>
+        </div>
+    </div>
+    <div class="main-content">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>
