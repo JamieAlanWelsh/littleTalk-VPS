@@ -1,10 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 
 
 def home(request):
     return render(request, 'home.html')
 
-
+@login_required
 def game_description(request, game_name):
     game_descriptions = {
         'colourful_semantics': {
@@ -28,6 +30,9 @@ def game_description(request, game_name):
     
     return render(request, 'game_description.html', {'game': game})
 
-
-# def colour_semantics(request):
-#     return render(request, 'colour_semantics.html')
+@login_required
+def custom_logout_view(request):
+    if request.method == 'POST':
+        logout(request)
+        return redirect('home')  # Redirect to the home page after logging out
+    return render(request, 'logout_confirm.html')  # Show confirmation page
