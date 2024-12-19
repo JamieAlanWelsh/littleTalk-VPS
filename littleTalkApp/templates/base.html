@@ -13,8 +13,8 @@
         <!-- left links -->
         <nav class="header-nav">
             <ul>
-                <li><a href="{% url 'home' %}">About</a></li>
-                <li><a href="#">Our Team</a></li>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="#">About</a></li>
             </ul>
         </nav>
 
@@ -26,7 +26,7 @@
         <!-- right links -->
         <nav class="header-nav">
             <ul>
-                <li><a href="#">Get Started</a></li>
+                <li><a href="{% url 'register' %}">Get Started</a></li>
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'logout' %}">Logout</a></li>
                 {% else %}
