@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
 from django.contrib.auth import logout
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from .forms import UserRegistrationForm
 from .models import Profile
 
@@ -40,19 +40,28 @@ def register(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
-            user = form.save(commit=False)  # Create the user instance without saving to the database yet
-            user.set_password(form.cleaned_data['password1'])  # Hash the password
-            user.save()  # Save the user to the database
+            # Create and save the user
+            username = form.cleaned_data.get('username')
+            email = form.cleaned_data.get('email')
+            password = form.cleaned_data.get('password1')
+            user = User.objects.create_user(username=username, email=email, password=password)
 
-            # save additional fields to a related profile
+            # Extract additional fields from the form
             firstName = form.cleaned_data.get('firstName')
             lastName = form.cleaned_data.get('lastName')
-            Profile.objects.filter(user=user).update(firstName=firstName, lastName=lastName)
 
-            login(request, user)  # Log the user in
-            return redirect('home')  # Redirect to the homepage
+            # Ensure the profile is created or updated
+            profile, created = Profile.objects.get_or_create(user=user)
+            profile.firstName = firstName
+            profile.lastName = lastName
+            profile.save()  # Save the updated profile
+
+            # Log the user in and redirect to home
+            login(request, user)
+            return redirect('home')
     else:
         form = UserRegistrationForm()
+
     return render(request, 'registration/register.html', {'form': form})
 
 
