@@ -42,6 +42,14 @@ def register(request):
             user = form.save(commit=False)  # Create the user instance without saving to the database yet
             user.set_password(form.cleaned_data['password1'])  # Hash the password
             user.save()  # Save the user to the database
+
+            # save additional fields to a related profile
+            firstName = form.cleaned_data.get('firstName')
+            lastName = form.cleaned_data.get('lastName')
+
+            # For now, we just log this information (extend for profile handling if needed)
+            print(f"{firstName} {lastName} signed up")
+
             login(request, user)  # Log the user in
             return redirect('home')  # Redirect to the homepage
     else:
