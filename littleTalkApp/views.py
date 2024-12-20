@@ -4,6 +4,7 @@ from django.contrib.auth import login
 from django.contrib.auth import logout
 from django.contrib.auth.forms import UserCreationForm
 from .forms import UserRegistrationForm
+from .models import Profile
 
 
 def home(request):
@@ -46,9 +47,7 @@ def register(request):
             # save additional fields to a related profile
             firstName = form.cleaned_data.get('firstName')
             lastName = form.cleaned_data.get('lastName')
-
-            # For now, we just log this information (extend for profile handling if needed)
-            print(f"{firstName} {lastName} signed up")
+            Profile.objects.filter(user=user).update(firstName=firstName, lastName=lastName)
 
             login(request, user)  # Log the user in
             return redirect('home')  # Redirect to the homepage
