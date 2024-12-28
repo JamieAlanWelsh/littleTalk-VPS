@@ -7,10 +7,16 @@ from .forms import UserRegistrationForm
 from .models import Profile
 from .forms import LearnerForm
 from .models import Learner
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 
 def home(request):
     return render(request, 'home.html')
+
+
+def about(request):
+    return render(request, 'about.html')
 
 
 @login_required
@@ -75,8 +81,19 @@ def custom_logout_view(request):
 
 
 def profile(request):
+    # Fetch learners associated with the logged-in user
     learners = Learner.objects.filter(user=request.user)
-    return render(request, 'profile.html', {'learners': learners})
+
+    # Get the selected learner from the session (if any)
+    selected_learner_id = request.session.get('selected_learner_id', None)
+    selected_learner = None
+    if selected_learner_id:
+        selected_learner = Learner.objects.get(id=selected_learner_id)
+
+    return render(request, 'profile.html', {
+        'learners': learners,
+        'selected_learner': selected_learner
+    })
 
 
 def add_learner(request):
@@ -91,3 +108,11 @@ def add_learner(request):
         form = LearnerForm()
 
     return render(request, 'add_learner.html', {'form': form})
+
+
+def select_learner(request):
+    if request.method == 'POST':
+        learner_id = request.POST.get('learner_id')
+        if learner_id:
+            request.session['selected_learner_id'] = learner_id  # Store selected learner in session
+    return HttpResponseRedirect(reverse('profile'))  # Redirect back to the profile page

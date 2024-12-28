@@ -4,8 +4,9 @@
 
 {% block content %}
 <div class="profile-container">
-    <h2>Welcome back {{ request.user.first_name }}!<br>Who's learning today?</h2>
-    
+    <!-- Greet the user with their first name -->
+    <h2>Hi {{ request.user.first_name|default:"there" }}! who's learning today?</h2>
+
     <!-- Display learners if there are any -->
     <div class="learners-list">
         {% if learners %}
@@ -14,6 +15,18 @@
                     <li class="learner-item">
                         <div class="learner-details">
                             <p>{{ learner.name }}</p>
+                            <!-- Toggle button for selecting the learner -->
+                            <form method="POST" action="{% url 'select_learner' %}">
+                                {% csrf_token %}
+                                <button type="submit" name="learner_id" value="{{ learner.id }}" 
+                                        class="button {% if learner.id == selected_learner.id %}selected{% endif %}">
+                                    {% if learner.id == selected_learner.id %}
+                                        Selected
+                                    {% else %}
+                                        Select
+                                    {% endif %}
+                                </button>
+                            </form>
                         </div>
                     </li>
                 {% endfor %}
