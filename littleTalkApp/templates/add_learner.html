@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Add Learner{% endblock %}
+
+{% block content %}
+    <div class="add-learner-container">
+        <h2>Add a Learner</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="button">Add Learner</button>
+        </form>
+
+        <a href="{% url 'profile' %}">Back to Profile</a>
+    </div>
+{% endblock %}

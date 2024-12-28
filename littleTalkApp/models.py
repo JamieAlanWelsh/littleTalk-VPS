@@ -11,3 +11,18 @@ class Profile(models.Model):
 
     def __str__(self):
         return f"{self.user.username}'s Profile"
+
+
+class Learner(models.Model):
+    DIAGNOSIS_CHOICES = [
+        ('autism', 'Autism'),
+        ('down_syndrome', 'Down Syndrome'),
+    ]
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='learners')
+    name = models.CharField(max_length=100)
+    age = models.IntegerField()
+    diagnosis = models.CharField(max_length=50, choices=DIAGNOSIS_CHOICES, blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.name}, Age: {self.age}"

@@ -13,4 +13,5 @@ urlpatterns = [
 
     # Profile and adding learners
     path('profile/', views.profile, name='profile'),
+    path('add-learner/', views.add_learner, name='add_learner'),
 ]

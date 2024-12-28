@@ -4,17 +4,16 @@
 
 {% block content %}
 <div class="profile-container">
-    <h2>Who's learning today?</h2>
+    <h2>Welcome back {{ request.user.first_name }}!<br>Who's learning today?</h2>
+    
+    <!-- Display learners if there are any -->
     <div class="learners-list">
-        <!-- Placeholder for learners -->
-        <!-- Iterate through a list of learners passed to the template -->
         {% if learners %}
             <ul>
                 {% for learner in learners %}
                     <li class="learner-item">
                         <div class="learner-details">
-                            <h3>{{ learner.name }}</h3>
-                            <p>Age: {{ learner.age }}</p>
+                            <p>{{ learner.name }}</p>
                         </div>
                     </li>
                 {% endfor %}
@@ -24,8 +23,9 @@
         {% endif %}
     </div>
 
+    <!-- Add Learner Button -->
     <div class="add-learner-btn">
-        <a href="#" class="button">+ Add Learner</a>
+        <a href="{% url 'add_learner' %}" class="button">+ Add Learner</a>
     </div>
 </div>
 {% endblock %}

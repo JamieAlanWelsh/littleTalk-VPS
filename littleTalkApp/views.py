@@ -5,6 +5,8 @@ from django.contrib.auth import logout
 from django.contrib.auth.models import User
 from .forms import UserRegistrationForm
 from .models import Profile
+from .forms import LearnerForm
+from .models import Learner
 
 
 def home(request):
@@ -73,4 +75,19 @@ def custom_logout_view(request):
 
 
 def profile(request):
-    return render(request, 'profile.html')
+    learners = Learner.objects.filter(user=request.user)
+    return render(request, 'profile.html', {'learners': learners})
+
+
+def add_learner(request):
+    if request.method == 'POST':
+        form = LearnerForm(request.POST)
+        if form.is_valid():
+            learner = form.save(commit=False)
+            learner.user = request.user  # Associate the learner with the logged-in user
+            learner.save()
+            return redirect('profile')  # Redirect back to the profile page
+    else:
+        form = LearnerForm()
+
+    return render(request, 'add_learner.html', {'form': form})
