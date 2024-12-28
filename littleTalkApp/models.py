@@ -25,6 +25,7 @@ class Learner(models.Model):
     date_of_birth = models.DateField() 
     diagnosis = models.CharField(max_length=50, choices=DIAGNOSIS_CHOICES, blank=True, null=True)
     learner_uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    deleted = models.BooleanField(default=False) 
 
     def __str__(self):
         return f"{self.name}, Age: {self.age}"

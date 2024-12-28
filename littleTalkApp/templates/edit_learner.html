@@ -9,6 +9,8 @@
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="button">Save Changes</button>
+        <!-- Remove Learner button -->
+        <button type="submit" name="remove" class="button" style="background-color: red;">Remove Learner</button>
     </form>
     <a href="{% url 'profile' %}" class="button">Cancel</a>
 </div>

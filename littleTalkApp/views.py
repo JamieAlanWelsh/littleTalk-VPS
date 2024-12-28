@@ -81,8 +81,8 @@ def custom_logout_view(request):
 
 
 def profile(request):
-    # Fetch learners associated with the logged-in user
-    learners = Learner.objects.filter(user=request.user)
+    # Fetch learners for the logged-in user, excluding the ones marked as deleted
+    learners = Learner.objects.filter(user=request.user, deleted=False)
 
     # Get the selected learner from the session (if any)
     selected_learner_id = request.session.get('selected_learner_id', None)
@@ -122,10 +122,15 @@ def edit_learner(request, learner_uuid):
     learner = get_object_or_404(Learner, learner_uuid=learner_uuid, user=request.user)
 
     if request.method == 'POST':
+        if 'remove' in request.POST:  # Check if the remove button was clicked
+            learner.deleted = True
+            learner.save()
+            return redirect('profile')
+        
         form = LearnerForm(request.POST, instance=learner)
         if form.is_valid():
             form.save()
-            return redirect('profile')  # Redirect back to the profile page
+            return redirect('profile') 
     else:
         form = LearnerForm(instance=learner)
 
