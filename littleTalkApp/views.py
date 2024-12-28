@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
 from django.contrib.auth import logout
@@ -116,3 +116,21 @@ def select_learner(request):
         if learner_id:
             request.session['selected_learner_id'] = learner_id  # Store selected learner in session
     return HttpResponseRedirect(reverse('profile'))  # Redirect back to the profile page
+
+
+def edit_learner(request, learner_uuid):
+    learner = get_object_or_404(Learner, learner_uuid=learner_uuid, user=request.user)
+
+    if request.method == 'POST':
+        form = LearnerForm(request.POST, instance=learner)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')  # Redirect back to the profile page
+    else:
+        form = LearnerForm(instance=learner)
+
+    context = {
+        'form': form,
+        'learner': learner,
+    }
+    return render(request, 'edit_learner.html', context)

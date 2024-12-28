@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Learner{% endblock %}
+
+{% block content %}
+<div class="edit-learner">
+    <h2>Edit {{ learner.name }}</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="button">Save Changes</button>
+    </form>
+    <a href="{% url 'profile' %}" class="button">Cancel</a>
+</div>
+{% endblock %}

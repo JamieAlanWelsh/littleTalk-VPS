@@ -29,6 +29,9 @@
                             </form>
                         </div>
                     </li>
+                    {% if learner == selected_learner %}
+                        <a href="{% url 'edit_learner' learner.learner_uuid %}" class="button">Edit</a>
+                    {% endif %}
                 {% endfor %}
             </ul>
         {% else %}
