@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Profile - LittleTalk{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <h2>Who's learning today?</h2>
+    <div class="learners-list">
+        <!-- Placeholder for learners -->
+        <!-- Iterate through a list of learners passed to the template -->
+        {% if learners %}
+            <ul>
+                {% for learner in learners %}
+                    <li class="learner-item">
+                        <div class="learner-details">
+                            <h3>{{ learner.name }}</h3>
+                            <p>Age: {{ learner.age }}</p>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No learners added yet. Click "Add Learner" to start!</p>
+        {% endif %}
+    </div>
+
+    <div class="add-learner-btn">
+        <a href="#" class="button">+ Add Learner</a>
+    </div>
+</div>
+{% endblock %}

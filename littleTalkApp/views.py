@@ -70,3 +70,7 @@ def custom_logout_view(request):
         logout(request)
         return redirect('home')  # Redirect to the home page after logging out
     return render(request, 'logout_confirm.html')  # Show confirmation page
+
+
+def profile(request):
+    return render(request, 'profile.html')
