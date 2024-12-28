@@ -47,14 +47,12 @@ def register(request):
             user = User.objects.create_user(username=username, email=email, password=password)
 
             # Extract additional fields from the form
-            firstName = form.cleaned_data.get('firstName')
-            lastName = form.cleaned_data.get('lastName')
+            first_name = form.cleaned_data.get('first_name')
+            last_name = form.cleaned_data.get('last_name')
+            print(first_name, last_name)
 
-            # Ensure the profile is created or updated
-            profile, created = Profile.objects.get_or_create(user=user)
-            profile.firstName = firstName
-            profile.lastName = lastName
-            profile.save()  # Save the updated profile
+            # Explicitly create or update the Profile
+            Profile.objects.create(user=user, first_name=first_name, last_name=last_name)
 
             # Log the user in and redirect to home
             login(request, user)
