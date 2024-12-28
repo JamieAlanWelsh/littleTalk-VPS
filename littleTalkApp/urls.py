@@ -17,4 +17,5 @@ urlpatterns = [
     path('add-learner/', views.add_learner, name='add_learner'),
     path('select-learner/', views.select_learner, name='select_learner'),
     path('profile/edit_learner/<uuid:learner_uuid>/', views.edit_learner, name='edit_learner'),
+    path('profile/edit_learner/confirm_delete_learner/<uuid:learner_uuid>/', views.confirm_delete_learner, name='confirm_delete_learner'),
 ]

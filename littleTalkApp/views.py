@@ -9,6 +9,7 @@ from .forms import LearnerForm
 from .models import Learner
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.contrib.auth import authenticate
 
 
 def home(request):
@@ -80,6 +81,7 @@ def custom_logout_view(request):
     return render(request, 'logout_confirm.html')  # Show confirmation page
 
 
+@login_required
 def profile(request):
     # Fetch learners for the logged-in user, excluding the ones marked as deleted
     learners = Learner.objects.filter(user=request.user, deleted=False)
@@ -96,6 +98,7 @@ def profile(request):
     })
 
 
+@login_required
 def add_learner(request):
     if request.method == 'POST':
         form = LearnerForm(request.POST)
@@ -110,6 +113,7 @@ def add_learner(request):
     return render(request, 'add_learner.html', {'form': form})
 
 
+@login_required
 def select_learner(request):
     if request.method == 'POST':
         learner_id = request.POST.get('learner_id')
@@ -118,14 +122,13 @@ def select_learner(request):
     return HttpResponseRedirect(reverse('profile'))  # Redirect back to the profile page
 
 
+@login_required
 def edit_learner(request, learner_uuid):
     learner = get_object_or_404(Learner, learner_uuid=learner_uuid, user=request.user)
 
     if request.method == 'POST':
         if 'remove' in request.POST:  # Check if the remove button was clicked
-            learner.deleted = True
-            learner.save()
-            return redirect('profile')
+            return redirect('confirm_delete_learner', learner_uuid=learner.learner_uuid)
         
         form = LearnerForm(request.POST, instance=learner)
         if form.is_valid():
@@ -139,3 +142,24 @@ def edit_learner(request, learner_uuid):
         'learner': learner,
     }
     return render(request, 'edit_learner.html', context)
+
+
+@login_required
+def confirm_delete_learner(request, learner_uuid):
+    learner = get_object_or_404(Learner, learner_uuid=learner_uuid, user=request.user)
+
+    if request.method == 'POST':
+        password = request.POST.get('password')
+        user = authenticate(request, username=request.user.username, password=password)
+
+        if user is not None:
+            # User authenticated, mark the learner as deleted
+            learner.deleted = True
+            learner.save()
+            return redirect('profile')  # Redirect to the profile page after deletion
+        else:
+            # If authentication fails, show an error
+            error_message = "Incorrect password. Please try again."
+            return render(request, 'confirm_delete_learner.html', {'learner': learner, 'error_message': error_message})
+
+    return render(request, 'confirm_delete_learner.html', {'learner': learner})
