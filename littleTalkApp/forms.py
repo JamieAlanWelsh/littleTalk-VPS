@@ -22,7 +22,8 @@ class UserRegistrationForm(forms.ModelForm):
 class LearnerForm(forms.ModelForm):
     class Meta:
         model = Learner
-        fields = ['name', 'age', 'diagnosis']
+        fields = ['name', 'date_of_birth', 'diagnosis']
         widgets = {
             'diagnosis': forms.Select(choices=Learner.DIAGNOSIS_CHOICES),
+            'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
         }

@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
-from django.dispatch import receiver
+from datetime import date
 
 
 class Profile(models.Model):
@@ -21,7 +21,7 @@ class Learner(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='learners')
     name = models.CharField(max_length=100)
-    age = models.IntegerField()
+    date_of_birth = models.DateField() 
     diagnosis = models.CharField(max_length=50, choices=DIAGNOSIS_CHOICES, blank=True, null=True)
 
     def __str__(self):
