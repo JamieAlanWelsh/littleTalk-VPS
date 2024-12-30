@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}
 {{ game.title }}
@@ -23,6 +24,6 @@
 
     <!-- Start button -->
     <div class="start-button-wrapper">
-        <a href="{{ game.link }}" target="_blank" class="start-button">Start</a>
+        <a href="{% static 'exercises/'|add:game.static_name|add:'/index.html' %}" target="_blank" class="start-button">Start</a>
     </div>
 {% endblock %}

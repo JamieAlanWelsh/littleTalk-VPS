@@ -29,6 +29,7 @@ def game_description(request, game_name):
             'description2': 'The structure of a sentence (syntax) is colour coded and then these are linked to their meaning (semantics)',
             'link': 'https://jamiealanwelsh.github.io/colour-semantics-webgl/',
             'video_id': 'FcdA00Tj5N0',
+            'static_name': 'colourful_semantics',
         },
         'exercise2': {
             'title': 'Exercise 2',
@@ -36,6 +37,7 @@ def game_description(request, game_name):
             'description2': '',
             'link': 'https://jamiealanwelsh.github.io/exercise2/',
             'video_id': '',
+            'static_name': '',
         },
     }
     game = game_descriptions.get(game_name, None)
