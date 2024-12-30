@@ -1,6 +1,7 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from . import views
+from .views import UpdateLearnerExpAPIView
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -18,4 +19,7 @@ urlpatterns = [
     path('select-learner/', views.select_learner, name='select_learner'),
     path('profile/edit_learner/<uuid:learner_uuid>/', views.edit_learner, name='edit_learner'),
     path('profile/edit_learner/confirm_delete_learner/<uuid:learner_uuid>/', views.confirm_delete_learner, name='confirm_delete_learner'),
+
+    # API endpoint
+    path('api/learners/<int:learner_id>/update-exp/', UpdateLearnerExpAPIView.as_view(), name='update_learner_exp'),
 ]

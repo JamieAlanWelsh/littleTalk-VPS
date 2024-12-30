@@ -22,9 +22,10 @@ class Learner(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='learners')
     name = models.CharField(max_length=100)
-    date_of_birth = models.DateField() 
+    date_of_birth = models.DateField()
     diagnosis = models.CharField(max_length=50, choices=DIAGNOSIS_CHOICES, blank=True, null=True)
     learner_uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    exp = models.IntegerField(default=0)
     deleted = models.BooleanField(default=False) 
 
     def __str__(self):

@@ -10,6 +10,10 @@ from .models import Learner
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth import authenticate
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .serializers import LearnerExpUpdateSerializer
 
 
 def home(request):
@@ -165,3 +169,25 @@ def confirm_delete_learner(request, learner_uuid):
             return render(request, 'confirm_delete_learner.html', {'learner': learner, 'error_message': error_message})
 
     return render(request, 'confirm_delete_learner.html', {'learner': learner})
+
+
+class UpdateLearnerExpAPIView(APIView):
+    def post(self, request, learner_id):
+        try:
+            learner = Learner.objects.get(id=learner_id)
+        except Learner.DoesNotExist:
+            return Response({"detail": "Learner not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        new_exp = request.data.get("exp")
+        if new_exp is None:
+            return Response({"detail": "Experience points are required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            new_exp = int(new_exp)
+            learner.exp += new_exp  # Add the new exp to the existing value
+            learner.save()
+
+            serializer = LearnerExpUpdateSerializer(learner)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except ValueError:
+            return Response({"detail": "Invalid experience points value."}, status=status.HTTP_400_BAD_REQUEST)
