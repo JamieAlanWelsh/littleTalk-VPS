@@ -14,6 +14,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import LearnerExpUpdateSerializer
+from django.http import JsonResponse
 
 
 def home(request):
@@ -191,3 +192,14 @@ class UpdateLearnerExpAPIView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         except ValueError:
             return Response({"detail": "Invalid experience points value."}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@login_required
+def get_selected_learner(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({'error': 'Authentication required'}, status=401)
+    
+    learner_id = request.session.get('selected_learner_id')  # Retrieve the selected learner from the session
+    if learner_id:
+        return JsonResponse({'learner_id': learner_id})
+    return JsonResponse({'error': 'No learner selected'}, status=400)
