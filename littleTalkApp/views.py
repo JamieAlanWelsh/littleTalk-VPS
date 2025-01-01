@@ -207,7 +207,9 @@ def get_selected_learner(request):
     if not request.user.is_authenticated:
         return JsonResponse({'error': 'Authentication required'}, status=401)
     
+    csrf_token = get_token(request)  # Get CSRF token
+
     learner_id = request.session.get('selected_learner_id')  # Retrieve the selected learner from the session
     if learner_id:
-        return JsonResponse({'learner_id': learner_id})
+        return JsonResponse({'learner_id': learner_id, 'csrf_token': csrf_token})
     return JsonResponse({'error': 'No learner selected'}, status=400)
