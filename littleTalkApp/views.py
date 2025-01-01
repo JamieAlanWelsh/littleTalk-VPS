@@ -15,6 +15,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializers import LearnerExpUpdateSerializer
 from django.http import JsonResponse
+from django.middleware.csrf import get_token
 
 
 def home(request):
@@ -172,6 +173,14 @@ def confirm_delete_learner(request, learner_uuid):
     return render(request, 'confirm_delete_learner.html', {'learner': learner})
 
 
+# def colourful_semantics_view(request):
+#     # Get the CSRF token
+#     csrf_token = get_token(request)
+
+#     # Pass the CSRF token to the template context
+#     return render(request, 'exercises/index.html', {'csrf_token': csrf_token})
+
+
 class UpdateLearnerExpAPIView(APIView):
     def post(self, request, learner_id):
         try:
@@ -185,7 +194,7 @@ class UpdateLearnerExpAPIView(APIView):
 
         try:
             new_exp = int(new_exp)
-            learner.exp += new_exp  # Add the new exp to the existing value
+            learner.exp += new_exp
             learner.save()
 
             serializer = LearnerExpUpdateSerializer(learner)
@@ -194,7 +203,6 @@ class UpdateLearnerExpAPIView(APIView):
             return Response({"detail": "Invalid experience points value."}, status=status.HTTP_400_BAD_REQUEST)
 
 
-@login_required
 def get_selected_learner(request):
     if not request.user.is_authenticated:
         return JsonResponse({'error': 'Authentication required'}, status=401)

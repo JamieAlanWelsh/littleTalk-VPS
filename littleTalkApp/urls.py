@@ -20,6 +20,9 @@ urlpatterns = [
     path('profile/edit_learner/<uuid:learner_uuid>/', views.edit_learner, name='edit_learner'),
     path('profile/edit_learner/confirm_delete_learner/<uuid:learner_uuid>/', views.confirm_delete_learner, name='confirm_delete_learner'),
 
+    # Exercises
+    # path('colourful_semantics_view/', views.colourful_semantics_view, name='colourful_semantics_view'),
+
     # API endpoints
     path('api/learners/<int:learner_id>/update-exp/', UpdateLearnerExpAPIView.as_view(), name='update_learner_exp'),
     path('api/selected-learner/', views.get_selected_learner, name='get_selected_learner'),
