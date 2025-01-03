@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Learn Page
+{% endblock %}
+
+{% block content %}
+    <h1>Welcome to the Learn Page!</h1>
+    <p>This is where you can learn more </p>
+    {% if learner_selected != True %}
+        <p>Please select a learner in the profile section to get started.</p>
+        <a href="{% url 'profile' %}" class="button">Go to Profile</a>
+    {% else %}
+        <p>Okay bitches, let's get to work.</p>
+    {% endif %} 
+{% endblock %}

@@ -19,7 +19,22 @@ from django.middleware.csrf import get_token
 
 
 def home(request):
+    if request.user.is_authenticated:
+        return redirect('/learn/')
     return render(request, 'home.html')
+
+
+@login_required
+def learn(request):
+    selected_learner = request.session.get('selected_learner_id')
+    
+    if selected_learner:
+        message = "Let's learn!"  # If a learner is selected, show this message
+        learner_selected = True
+    else:
+        message = "Please select a learner in the profile section to get started."  # If no learner, show this message
+        learner_selected = False
+    return render(request, 'learn.html', {'learner_selected': learner_selected})
 
 
 def about(request):
@@ -74,7 +89,7 @@ def register(request):
             Profile.objects.create(user=user, first_name=first_name, last_name=last_name)
             # Log the user in and redirect to home
             login(request, user)
-            return redirect('home')
+            return redirect('profile')
     else:
         form = UserRegistrationForm()
 
