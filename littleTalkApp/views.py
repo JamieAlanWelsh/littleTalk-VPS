@@ -16,9 +16,11 @@ from rest_framework import status
 from .serializers import LearnerExpUpdateSerializer
 from django.http import JsonResponse
 from django.middleware.csrf import get_token
+from django.contrib.auth.views import LoginView
 
 
 def home(request):
+    request.hide_sidebar = True
     if request.user.is_authenticated:
         return redirect('/learn/')
     return render(request, 'home.html')
@@ -29,10 +31,8 @@ def learn(request):
     selected_learner = request.session.get('selected_learner_id')
     
     if selected_learner:
-        message = "Let's learn!"  # If a learner is selected, show this message
         learner_selected = True
     else:
-        message = "Please select a learner in the profile section to get started."  # If no learner, show this message
         learner_selected = False
     return render(request, 'learn.html', {'learner_selected': learner_selected})
 
@@ -68,7 +68,18 @@ def game_description(request, game_name):
     return render(request, 'game_description.html', {'game': game})
 
 
+class CustomLoginView(LoginView):
+    template_name = 'registration/login.html'  # Use your custom template
+    redirect_authenticated_user = True  # Redirect logged-in users to a specific page
+
+    def dispatch(self, request, *args, **kwargs):
+        # Set request.hide_panels to True before processing the request
+        request.hide_sidebar = True
+        return super().dispatch(request, *args, **kwargs)
+
+
 def register(request):
+    request.hide_sidebar = True
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
         if form.is_valid():

@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<h2>Login</h2>
+<h1>Welcome Back</h1>
 {% if form.errors %}
     <p style="color: red;">Invalid username or password</p>
 {% endif %}
@@ -11,5 +11,10 @@
     {{ form.as_p }}
     <button type="submit">Login</button>
 </form>
+<!-- Add "Don't have an account?" button that redirects to the register page -->
+<div class="register-link-container">
+    <p>Don't have an account? <a href="{% url 'register' %}">Go to Register</a></p>
+</div>
+
 
 {% endblock %}
