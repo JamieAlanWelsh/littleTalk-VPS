@@ -2,10 +2,10 @@
     --background-color: #C1D6ED;
     --font-color: #2B3345;
     --accent-color: #D9EBFE;
-    --sidebar-color: #FFEF77;
+    --sidebar-color: #FFE477;
     --button-green: #33DA73;
     --button-hover: #28a659;
-    --box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    --box-shadow: 0px 5px 0px rgba(0, 0, 0, 0.2);
     --border-radius: 15px;
     --font-roboto: 'Roboto', sans-serif;
     --font-outfit: 'Outfit', sans-serif;
@@ -69,7 +69,7 @@ p {
 
 /* Header Panel Styles */
 .header-panel {
-    margin-left: 75px;
+    margin-left: 0px;
     display: flex; /* Use Flexbox for layout */
     justify-content: center;
     align-items: center; /* Vertically align the items */
@@ -120,7 +120,6 @@ p {
 /* Main Content */
 .main-content {
     margin: 20px auto; /* auto controls horizontal margins to be centered */
-    transform: translateX(75px); /* Shift content 150px to the right */
     padding: 10px;
     width: 80%;
     max-width: 800px;
@@ -207,10 +206,6 @@ p {
     transform: scale(1.05);
 }
 
-.exercise-box:hover {
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}
-
 /* Add styles for the title */
 .exercise-title {
     position: absolute;
@@ -285,16 +280,18 @@ p {
     line-height: 1.5;
 }
 
-/* Buttons */
+/* Button container styling */
 .button-container {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin: 30px 0;
+    display: flex; /* Create a vertical layout */
+    flex-direction: column; /* Stack buttons vertically */
+    gap: 20px; /* Space between buttons */
+    align-items: center; /* Center buttons horizontally */
 }
 
 .btn {
     text-decoration: none;
+    width: 200px;
+    text-align: center; /* Center text within buttons */
     font-size: 1.2rem;
     padding: 10px 20px;
     border-radius: var(--border-radius);
@@ -305,33 +302,53 @@ p {
 }
 
 .btn-primary {
-    background-color: var(--button-green);
-    color: white;
+    background-color: var(--sidebar-color);
+    color: var(--font-color);
 }
 
 .btn-primary:hover {
-    background-color: var(--button-hover);
+    background-color: #c2b449;
     transform: scale(1.05);
 }
 
 .btn-secondary {
-    background-color: var(--accent-color);
+    background-color: #ffffff;
     color: var(--font-color);
 }
 
 .btn-secondary:hover {
-    background-color: var(--button-hover);
+    background-color: #aeaeaeff;
     transform: scale(1.05);
 }
 
 /* Image */
 .image-container {
+    max-width: 300px; /* Limit the image's maximum width */
+    height: auto; /* Maintain aspect ratio */
     text-align: center;
     margin: 20px 0;
 }
 
+/* Image styling */
 .image-container img {
-    max-width: 40%;
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
+    max-width: 100%; /* Ensure the image scales within its container */
+    height: auto;
+    border-radius: var(--border-radius); /* Optional: rounded corners */
+}
+
+/* Styles for the selected learner button */
+.selected {
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+}
+
+/* Layout for content */
+.content-layout {
+    display: flex; /* Create a horizontal layout */
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
+    gap: 30px; /* Space between image and buttons */
+    margin: 0px auto; /* Add some vertical margin */
+    max-width: 1000px; /* Restrict the width for a cleaner layout */
 }
