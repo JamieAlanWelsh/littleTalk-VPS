@@ -110,7 +110,6 @@ button, a.button {
 
 .edit-learner-btn a {
     display: block;
-    width: 100px; /* Same width as the other buttons */
     padding: 10px 20px;
     border-radius: var(--border-radius);
     background-color: white;
@@ -118,7 +117,7 @@ button, a.button {
     box-shadow: var(--box-shadow);
     text-decoration: none;
     font-family: var(--font-outfit);
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
     letter-spacing: 0.5px;
     text-align: left;
