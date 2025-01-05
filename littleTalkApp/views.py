@@ -75,11 +75,13 @@ class CustomLoginView(LoginView):
 
     def dispatch(self, request, *args, **kwargs):
         # Set request.hide_panels to True before processing the request
+        request.hide_header = True
         request.hide_sidebar = True
         return super().dispatch(request, *args, **kwargs)
 
 
 def register(request):
+    request.hide_header = True
     request.hide_sidebar = True
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
