@@ -143,6 +143,8 @@ def add_learner(request):
             learner = form.save(commit=False)
             learner.user = request.user  # Associate the learner with the logged-in user
             learner.save()
+            # Automatically select the newly added learner by storing their ID in the session
+            request.session['selected_learner_id'] = learner.id
             return redirect('profile')  # Redirect back to the profile page
     else:
         form = LearnerForm()

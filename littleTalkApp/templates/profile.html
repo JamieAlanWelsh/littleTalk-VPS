@@ -1,47 +1,71 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Profile - LittleTalk{% endblock %}
 
 {% block content %}
+<h2>Hi {{ request.user.first_name|default:"there" }}! who's learning today?</h2>
 <div class="profile-container">
-    <!-- Greet the user with their first name -->
-    <h2>Hi {{ request.user.first_name|default:"there" }}! who's learning today?</h2>
-
-    <!-- Display learners if there are any -->
-    <div class="learners-list">
-        {% if learners %}
-            <ul>
-                {% for learner in learners %}
-                    <li class="learner-item">
-                        <div class="learner-details">
-                            <p>{{ learner.name }}</p>
-                            <!-- Toggle button for selecting the learner -->
+    <!-- Left Column -->
+    <div class="left-column">
+        <div class="learners-list">
+            {% if learners %}
+                <ul>
+                    {% for learner in learners %}
+                        <li class="learner-item">
                             <form method="POST" action="{% url 'select_learner' %}">
                                 {% csrf_token %}
                                 <button type="submit" name="learner_id" value="{{ learner.id }}" 
                                         class="button {% if learner.id == selected_learner.id %}selected{% endif %}">
-                                    {% if learner.id == selected_learner.id %}
-                                        Selected
-                                    {% else %}
-                                        Select
-                                    {% endif %}
+                                    {{ learner.name }}
                                 </button>
                             </form>
-                        </div>
-                    </li>
-                    {% if learner == selected_learner %}
-                        <a href="{% url 'edit_learner' learner.learner_uuid %}" class="button">Edit</a>
-                    {% endif %}
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>No learners added yet. Click "Add Learner" to start!</p>
-        {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No learners added yet. Click "Add Learner" to start!</p>
+            {% endif %}
+        </div>
+
+        <!-- Add Learner Button -->
+        <div class="add-learner-btn">
+            <a href="{% url 'add_learner' %}" class="button">+ Add Learner</a>
+        </div>
     </div>
 
-    <!-- Add Learner Button -->
-    <div class="add-learner-btn">
-        <a href="{% url 'add_learner' %}" class="button">+ Add Learner</a>
+    <!-- Right Column -->
+    <div class="right-column">
+        <!-- Learning Level Section -->
+        {% if selected_learner %}
+            <div class="learning-level-section">
+                <h3>Learning Level</h3>
+                <p>
+                    {% if selected_learner.assessment1 %}
+                        {{ selected_learner.assessment1 }}
+                    {% else %}
+                        No learning level assigned.
+                    {% endif %}
+                </p>
+            </div>
+
+            <!-- Edit Learner Button -->
+            <div class="edit-learner-btn">
+                <a href="{% url 'edit_learner' selected_learner.learner_uuid %}" class="button">Edit Learner</a>
+            </div>
+
+            <!-- Total Experience Section -->
+            <div class="total-exp-section">
+                <h3>Total Experience</h3>
+                <p>
+                    {% if selected_learner.exp %}
+                        {{ selected_learner.exp }} XP
+                    {% else %}
+                        No experience recorded.
+                    {% endif %}
+                </p>
+            </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
