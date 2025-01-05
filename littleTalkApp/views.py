@@ -21,6 +21,7 @@ from django.contrib.auth.views import LoginView
 
 def home(request):
     request.hide_sidebar = True
+    request.hide_header = True
     if request.user.is_authenticated:
         return redirect('/learn/')
     return render(request, 'home.html')

@@ -2,19 +2,89 @@
 {% load static %}
 
 {% block content %}
-<header class="hero-section">
-    <h1>The new way to practise<br>speech therapy at home!</h1>
+<!-- Hero Section: Takes up the full viewport -->
+<header class="hero-section" style="height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+    <!-- Logo at the Top -->
+    <div class="logo-container" style="position: absolute; top: 20px; left: 20px;">
+        <img src="{% static 'images/littletalk_logo.png' %}" alt="LittleTalk Logo" style="max-width: 150px; height: auto;">
+    </div>
+    <!-- Main Header Content -->
+    <h1 style="font-size: 3rem; margin-bottom: 20px;">A new way for children to practise language building at home</h1>
+    <div class="content-layout">
+        <div class="image-container">
+            <img src="{% static 'images/arlo.png' %}" alt="Arlo the armadillo" style="max-width: 250px; height: auto; border-radius: var(--border-radius);">
+        </div>
+        <div class="button-container" style="display: flex; flex-direction: column; gap: 15px; align-items: center;">
+            <a href="/register/" class="btn btn-primary" style="width: 200px;">Get Started</a>
+            <a href="/login/" class="btn btn-secondary" style="width: 200px;">Login</a>
+        </div>
+    </div>
+    <!-- Scroll-down arrow -->
+    <a href="#about-section" class="scroll-down-arrow">
+        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <polyline points="19 12 12 19 5 12"></polyline>
+        </svg>
+    </a>
 </header>
-<div class="content-layout">
+
+<!-- About Content Section -->
+<section class="about-section" style="padding: 50px 0;" id="about-section">
+    <div class="home-page">
+        <!-- Content from the 'about' template -->
+        <div class="info-box">
+            <h1>Welcome to LittleTalk! 👋</h1>
+            <p>LittleTalk is a supplementary tool for speech and language development that offers a variety of high-quality, research-backed exercises, with built-in progress tracking and adjustable learning levels.</p>
+            <p>We will recommend exercises, we only ask that you show up for 10-15 minutes daily to see results.
+        </div>
+
+        <div class="info-image">
+            <img src="{% static 'images/speech_therapy.png' %}" style="max-width: 100%; border-radius: var(--border-radius);">
+        </div>
+
+        <div class="info-image">
+            <img src="{% static 'images/game_screenshot.png' %}" style="max-width: 100%; border-radius: var(--border-radius);">
+        </div>
+
+        <div class="info-box">
+            <h1>Access 🚀</h1>
+            <p>We believe high-quality speech development exercises should be easily accessible to anyone who needs them.</p>
+            <p>Our mission is to empower parents and their children to conveniently practice speech development in multiple settings.</p>
+            <p>Increased accessibility encourages consistent carryover, allowing children to develop and apply their functional language in a variety of daily environments.</p>
+        </div>
+
+        <div class="info-box">
+            <h1>Supported Learning 👩‍🏫</h1>
+            <p>LittleTalk is adaptable to your child's unique learning journey, with customisable difficulty levels and diverse settings, providing the perfect scaffold to support their language development.</p>
+            <p>We aim to make learning more engaging and effective by including a wide variety of activities tailored to different skill levels, ensuring your child stays motivated while building their speech and language skills at their own pace.</p>
+        </div>
+
+        <div class="info-image">
+            <img src="{% static 'images/learning_level.png' %}" style="max-width: 100%; border-radius: var(--border-radius);">
+        </div>
+
+        <div class="info-image">
+            <img src="{% static 'images/stock_graphs.jpg' %}" style="max-width: 100%; border-radius: var(--border-radius);">
+        </div>
+
+        <div class="info-box">
+            <h1>Data 📊</h1>
+            <p>Utilize user performance data to assist with targeted learning, adaptive progression, and help researchers discover valuable insights that might further our understanding of language disorders.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Final Get Started Section -->
+<section class="final-button-container" style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 40px 0;">
+    <!-- Header text above the button -->
+    <h1>Ready to start learning?</h1>
+
+    <!-- Get Started Button -->
+    <a href="/register/" class="btn btn-primary" style="width: 250px;">Get Started</a>
+
+    <!-- Image below the Get Started button -->
     <div class="image-container">
-        <img src="{% static 'images/arlo.png' %}" alt="Arlo the armadillo">
+        <img src="{% static 'images/arlo.png' %}" alt="Arlo the armadillo" style="max-width: 100%; margin-top: 20px;">
     </div>
-    <div class="button-container">
-        <a href="/register/" class="btn btn-primary">Get Started</a>
-        <a href="/login/" class="btn btn-secondary">Login</a>
-    </div>
-</div>
-{% comment %} <footer>
-    <p>&copy; 2025 littleTalk. All rights reserved.</p>
-</footer> {% endcomment %}
+</section>
 {% endblock %}

@@ -19,6 +19,7 @@ body {
     font-family: var(--font-roboto);
     color: var(--font-color);
     line-height: var(--line-height);
+    scroll-behavior: smooth; /* Add this for smooth scrolling */
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -269,6 +270,7 @@ p {
 
 
 /* HOME PAGE STYLE */
+
 /* Hero Section */
 .hero-section h1 {
     font-family: var(--font-outfit);
@@ -299,6 +301,7 @@ p {
     font-family: var(--font-roboto);
     font-weight: bold;
     transition: background-color 0.3s ease, transform 0.2s ease;
+    letter-spacing: 1px; /* Adjust the value for desired spacing */
 }
 
 .btn-primary {
@@ -307,8 +310,7 @@ p {
 }
 
 .btn-primary:hover {
-    background-color: #c2b449;
-    transform: scale(1.05);
+    background-color: #fcc912;
 }
 
 .btn-secondary {
@@ -318,7 +320,6 @@ p {
 
 .btn-secondary:hover {
     background-color: #aeaeaeff;
-    transform: scale(1.05);
 }
 
 /* Image */
@@ -349,6 +350,29 @@ p {
     justify-content: center; /* Center content horizontally */
     align-items: center; /* Center content vertically */
     gap: 30px; /* Space between image and buttons */
-    margin: 0px auto; /* Add some vertical margin */
+    /* margin: 0px auto; Add some vertical margin */
     max-width: 1000px; /* Restrict the width for a cleaner layout */
+}
+
+.scroll-down-arrow {
+    display: block;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: bounce 1.5s infinite;
+    text-decoration: none;
+}
+
+.scroll-down-arrow svg {
+    width: 40px;
+    height: 40px;
+    stroke: #2B3345; /* Match your theme color */
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+.scroll-down-arrow:hover svg {
+    opacity: 1;
+    stroke: #000; /* Darker color on hover */
 }
