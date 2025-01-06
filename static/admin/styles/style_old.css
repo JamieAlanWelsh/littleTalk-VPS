@@ -1,8 +1,8 @@
 :root {
-    --background-color: #C1D6ED;
+    --background-color: #377d52; 
     --font-color: #2B3345;
     --accent-color: #D9EBFE;
-    --sidebar-color: #FFEF77;
+    --sidebar-color: #e0e0e0;
     --button-green: #33DA73;
     --button-hover: #28a659;
     --box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
@@ -270,15 +270,35 @@ p {
     font-weight: bold;
 }
 
-.button {
-    padding: 10px 20px;
-    font-size: 14px;
-    cursor: pointer;
+/* Custom button styles */
+.btn-primary {
+    background-color: var(--sidebar-color); /* Light yellow for Get Started */
+    color: black; /* Text color for contrast */
     border: none;
+    padding: 10px 20px;
+    text-decoration: none;
     border-radius: 5px;
-    background-color: #f4f4f4;
+    font-size: 16px;
+    display: inline-block;
+    transition: background-color 0.3s ease;
 }
 
-.button:hover {
-    background-color: #ddd;
+.btn-primary:hover {
+    background-color: #FFD700; /* Slightly darker shade for hover effect */
+}
+
+.btn-secondary {
+    background-color: #FFFFFF; /* White for Login */
+    color: black; /* Text color for contrast */
+    border: 1px solid black; /* Optional: add a border for definition */
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background-color: #F0F0F0; /* Light gray for hover effect */
 }

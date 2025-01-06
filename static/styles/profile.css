@@ -1,0 +1,129 @@
+/* Profile Container Styling */
+.profile-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    gap: 20px;
+}
+
+/* Header Styling */
+.profile-container h2 {
+    text-align: center;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+/* Left Column Styling */
+.left-column {
+    width: 40%; /* 40% width for the left column */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Ensure "Add Learner" button is at the bottom */
+    max-height: 80vh; /* Constrain the height of the list */
+}
+
+.learners-list {
+    flex-grow: 1; /* Push the add learner button to the bottom */
+}
+
+.learners-list ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.learner-item {
+    margin-bottom: 15px;
+}
+
+/* General Button Styling */
+button, a.button {
+    width: 300px; /* Match the width of "Select Learner" buttons */
+    border-radius: 10px; /* Match the border radius */
+    font-family: var(--font-outfit); /* Consistent font */
+    font-size: 18px; /* Uniform font size */
+    font-weight: 600; /* Consistent weight */
+    box-shadow: var(--box-shadow);
+    letter-spacing: 0.5px; /* Consistent spacing */
+    padding: 25px 25px;
+    text-align: left;
+    display: block;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s, transform 0.2s;
+}
+
+/* Add Learner Button */
+.add-learner-btn a {
+    width: 250px;
+    background-color: white;
+    color: var(--font-color);
+    text-decoration: none;
+    /* margin-top: -10px; */
+}
+
+.add-learner-btn a:hover {
+    background-color: var(--yellow-button-color);
+}
+
+/* Learner Button Styling */
+.learners-list .button {
+    background-color: var(--accent-color);
+    color: var(--font-color); /* Text color */
+    border: 1px solid #ffe47700; /* Border matching add-learner button */
+}
+
+.learners-list .button.selected {
+    background-color: var(--yellow-button-color); /* Yellow background when toggled */
+    color: var(--font-color); /* Text color remains consistent */
+    border-color: #ffffff00; /* Slightly darker yellow border */
+}
+
+/* Right Column Styling */
+.right-column {
+    width: 55%; /* 55% width for the right column */
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Add space between sections */
+}
+
+.learning-level-section,
+.total-exp-section {
+    background-color: var(--accent-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 20px;
+}
+
+.learning-level-section h3,
+.total-exp-section h3 {
+    color: var(--font-color);
+    margin-bottom: 10px;
+}
+
+.learning-level-section p,
+.total-exp-section p {
+    color: var(--font-color);
+}
+
+.edit-learner-btn {
+    margin-top: 0px; /* Add spacing from the section above */
+}
+
+.edit-learner-btn a {
+    display: block;
+    padding: 10px 20px;
+    border-radius: var(--border-radius);
+    background-color: white;
+    color: var(--font-color);
+    box-shadow: var(--box-shadow);
+    text-decoration: none;
+    font-family: var(--font-outfit);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-align: left;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.edit-learner-btn a:hover {
+    background-color: var(--yellow-button-color);
+}

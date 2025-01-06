@@ -1,13 +1,77 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
+<div class="login-container">
+    <!-- logo top left -->
+    <div class="logo-container">
+        <a href="/">
+            <img src="{% static 'images/littletalk_logo.png' %}" alt="LittleTalk Logo" style="max-width: 150px; height: auto;">
+        </a>
+    </div>
 
-<h2>Register</h2>
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}  <!-- This will render the form fields -->
-    <button type="submit">Register</button>
-</form>
-<p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+    <!-- Register Button at the Top Right -->
+    <div class="register-button-container">
+        <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
+    </div>
 
+    <!-- Header Section -->
+    <h1 style="text-align: center; font-size: 2rem; margin-bottom: 20px;">Create an Account</h1>
+
+    <!-- Register Form -->
+    <form method="post" class="login-form">
+        {% csrf_token %}
+
+        <!-- Username Input -->
+        <div>
+            <input 
+                type="Email"
+                name="email"  
+                placeholder="Email" 
+                required>
+        </div>
+
+        <!-- Name -->
+        <div>
+            <input 
+                type="Text"
+                name="first_name"  
+                placeholder="First Name" 
+                required>
+        </div>
+        <input 
+                type="Text"
+                name="last_name"
+                placeholder="Last Name"
+                required>
+
+        <!-- Password Input -->
+        <div>
+            <input 
+                type="password" 
+                name="password1" 
+                placeholder="Password" 
+                required>
+        </div>
+
+        <!-- Confirm Password Input -->
+        <div>
+            <input 
+                type="password" 
+                name="password2" 
+                placeholder="Confirm Password" 
+                required>
+        </div>
+
+        <!-- Submit Button -->
+        <div>
+            <button type="submit">Register</button>
+        </div>
+
+        <!-- Error Message for Invalid Registration -->
+    </form>
+    {% if form.errors %}
+        <p class="error-message">Please fix the errors above</p>
+    {% endif %}
+</div>
 {% endblock %}

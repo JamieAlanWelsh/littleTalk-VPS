@@ -1,20 +1,54 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
+<div class="login-container">
+    <!-- logo top left -->
+    <div class="logo-container">
+        <a href="/">
+            <img src="{% static 'images/littletalk_logo.png' %}" alt="LittleTalk Logo" style="max-width: 150px; height: auto;">
+        </a>
+    </div>
 
-<h1>Welcome Back</h1>
-{% if form.errors %}
-    <p style="color: red;">Invalid username or password</p>
-{% endif %}
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Login</button>
-</form>
-<!-- Add "Don't have an account?" button that redirects to the register page -->
-<div class="register-link-container">
-    <p>Don't have an account? <a href="{% url 'register' %}">Go to Register</a></p>
+    <!-- Register Button at the Top Right -->
+    <div class="register-button-container">
+        <a href="{% url 'register' %}" class="btn btn-primary">Register</a>
+    </div>
+
+    <!-- Header Section -->
+    <h1 style="text-align: center; font-size: 2rem; margin-bottom: 20px;">Log In</h1>
+
+    <!-- Login Form -->
+    <form method="post" class="login-form">
+        {% csrf_token %}
+
+        <!-- Email Input -->
+        <div>
+            <input 
+                type="text"
+                name="username"  
+                placeholder="Email or Username" 
+                required>
+        </div>
+
+        <!-- Password Input -->
+        <div>
+            <input 
+                type="password" 
+                name="password" 
+                placeholder="Password" 
+                required>
+        </div>
+
+        <!-- Submit Button -->
+        <div>
+            <button type="submit">Log In</button>
+        </div>
+
+        <!-- Error Message for Invalid Login -->
+    </form>
+    {% if form.errors %}
+        <p class="error-message">Invalid username or password</p>
+    {% endif %}
 </div>
-
-
 {% endblock %}

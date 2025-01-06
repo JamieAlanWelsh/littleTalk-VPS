@@ -21,6 +21,7 @@ from django.contrib.auth.views import LoginView
 
 def home(request):
     request.hide_sidebar = True
+    request.hide_header = True
     if request.user.is_authenticated:
         return redirect('/learn/')
     return render(request, 'home.html')
@@ -74,11 +75,13 @@ class CustomLoginView(LoginView):
 
     def dispatch(self, request, *args, **kwargs):
         # Set request.hide_panels to True before processing the request
+        request.hide_header = True
         request.hide_sidebar = True
         return super().dispatch(request, *args, **kwargs)
 
 
 def register(request):
+    request.hide_header = True
     request.hide_sidebar = True
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
@@ -140,6 +143,8 @@ def add_learner(request):
             learner = form.save(commit=False)
             learner.user = request.user  # Associate the learner with the logged-in user
             learner.save()
+            # Automatically select the newly added learner by storing their ID in the session
+            request.session['selected_learner_id'] = learner.id
             return redirect('profile')  # Redirect back to the profile page
     else:
         form = LearnerForm()
