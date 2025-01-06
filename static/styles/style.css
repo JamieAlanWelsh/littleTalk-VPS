@@ -48,7 +48,7 @@ p {
     position: fixed;
     top: 0;
     left: 0;
-    width: 150px;
+    width: 125px;
     height: 100vh;
     padding: 30px 10px 10px;
     background-color: var(--sidebar-color);
@@ -358,7 +358,7 @@ p {
     display: flex; /* Create a horizontal layout */
     justify-content: center; /* Center content horizontally */
     align-items: center; /* Center content vertically */
-    gap: 30px; /* Space between image and buttons */
+    gap: 20px; /* Space between image and buttons */
     /* margin: 0px auto; Add some vertical margin */
     max-width: 1000px; /* Restrict the width for a cleaner layout */
 }
