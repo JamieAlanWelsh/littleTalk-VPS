@@ -23,19 +23,19 @@ def home(request):
     request.hide_sidebar = True
     request.hide_header = True
     if request.user.is_authenticated:
-        return redirect('/learn/')
+        return redirect('/practice/')
     return render(request, 'home.html')
 
 
 @login_required
-def learn(request):
+def practice(request):
     selected_learner = request.session.get('selected_learner_id')
     
     if selected_learner:
         learner_selected = True
     else:
         learner_selected = False
-    return render(request, 'learn.html', {'learner_selected': learner_selected})
+    return render(request, 'practice.html', {'learner_selected': learner_selected})
 
 
 def about(request):

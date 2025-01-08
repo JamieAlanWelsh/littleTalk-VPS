@@ -7,7 +7,7 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('exercise/<str:game_name>/', views.game_description, name='game_description'),
     path('about/', views.about, name='about'),
-    path('learn/', views.learn, name='learn'),
+    path('practice/', views.practice, name='practice'),
 
 
     # Login and logout URLs
