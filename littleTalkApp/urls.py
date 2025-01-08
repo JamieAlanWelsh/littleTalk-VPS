@@ -6,7 +6,7 @@ from .views import UpdateLearnerExpAPIView
 urlpatterns = [
     path('', views.home, name='home'),
     path('exercise/<str:game_name>/', views.game_description, name='game_description'),
-    path('about/', views.about, name='about'),
+    # path('about/', views.about, name='about'),
     path('practice/', views.practice, name='practice'),
 
 

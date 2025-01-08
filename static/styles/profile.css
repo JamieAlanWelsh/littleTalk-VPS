@@ -127,3 +127,26 @@ button, a.button {
 .edit-learner-btn a:hover {
     background-color: var(--yellow-button-color);
 }
+
+.practice-button-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.practice-button {
+    display: inline-block;
+    background-color: var(--yellow-button-color);
+    color: var(--font-color);
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.practice-button:hover {
+    background-color: var(--yellow-button-hover); /* Hover color for the button */
+    transform: scale(1.05); /* Slight zoom effect */
+}

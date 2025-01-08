@@ -29,17 +29,23 @@ def home(request):
 
 @login_required
 def practice(request):
-    selected_learner = request.session.get('selected_learner_id')
-    
-    if selected_learner:
-        learner_selected = True
-    else:
-        learner_selected = False
-    return render(request, 'practice.html', {'learner_selected': learner_selected})
+    selected_learner_id = request.session.get('selected_learner_id')
+    learner_selected = False
+    selected_learner = None
+
+    if selected_learner_id:
+        # Fetch the learner object from the database
+        selected_learner = Learner.objects.filter(id=selected_learner_id).first()
+        learner_selected = selected_learner is not None
+
+    return render(request, 'practice.html', {
+        'learner_selected': learner_selected,
+        'selected_learner': selected_learner,
+    })
 
 
-def about(request):
-    return render(request, 'about.html')
+# def about(request):
+#     return render(request, 'about.html')
 
 
 @login_required
@@ -114,7 +120,7 @@ def register(request):
 def custom_logout_view(request):
     if request.method == 'POST':
         logout(request)
-        return redirect('home')  # Redirect to the home page after logging out
+        return redirect('login')  # Redirect to the login page after logging out
     return render(request, 'logout_confirm.html')  # Show confirmation page
 
 

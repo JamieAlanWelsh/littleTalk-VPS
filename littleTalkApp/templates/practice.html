@@ -6,12 +6,24 @@ Practice Page
 {% endblock %}
 
 {% block content %}
-    <h1>Welcome to the Learn Page!</h1>
-    <p>This is where you can learn more </p>
-    {% if learner_selected != True %}
-        <p>Please select a learner in the profile section to get started.</p>
-        <a href="{% url 'profile' %}" class="button">Go to Profile</a>
-    {% else %}
-        <p>Okay bitches, let's get to work.</p>
-    {% endif %} 
+<!-- Learner not Selected -->
+{% if learner_selected != True %}
+    <p>Please select a learner in the profile section to get started.</p>
+    <a href="{% url 'profile' %}" class="button">Go to Profile</a>
+<!-- Learner Selected -->
+{% else %}
+    <h2>Welcome back {{ selected_learner.name }}!<br>Here are your recommended exercises for today:</h2>
+    
+    <div class="exercise-widget">
+        <div class="exercise-image">
+            <img src="{% static 'images/colour_semantics_icon_bg.png' %}" alt="Sentence Building">
+        </div>
+        <div class="exercise-details">
+            <h3>Sentence Building - Colourful Semantics</h3>
+            <p>Repetitions: 15 (Approx. 10 minutes)</p>
+            <p>Difficulty: {{ selected_learner.assessment2 }}/6</p>
+            <a href="{% url 'game_description' 'colourful_semantics' %}" class="button exercise-btn">Get Started</a>
+        </div>
+    </div>
+{% endif %}
 {% endblock %}
