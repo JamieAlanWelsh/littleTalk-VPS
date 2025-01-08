@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant&display=swap" rel="stylesheet">
 </head>
 <body>
-    {% if not hide_header %}
+    {% comment %} {% if not hide_header %}
         <!-- Header Panel -->
         <div class="header-panel">
             <!-- left links -->
@@ -39,7 +39,7 @@
                 </ul>
             </nav>
         </div>
-    {% endif %}
+    {% endif %} {% endcomment %}
     {% if not hide_sidebar %}
         <!-- Side panel -->
         <div class="sidebar">
@@ -47,6 +47,12 @@
                 <a href="{% url 'home' %}">
                     <img src="{% static 'images/home_icon.png' %}" alt="Colourful Semantics">
                     <span class="exercise-title">Home</span>
+                </a>
+            </div>
+            <div class="exercise-box">
+                <a href="{% url 'profile' %}">
+                    <img src="{% static 'images/profile_icon.png' %}" alt="Profile">
+                    <span class="exercise-title">Profile</span>
                 </a>
             </div>
             <div class="exercise-box">
@@ -59,6 +65,12 @@
                 <a href="{% url 'game_description' 'exercise2' %}">
                     <img src="{% static 'images/base_icon.png' %}" alt="Exercise 2">
                     <span class="exercise-title">Another Exercise</span>
+                </a>
+            </div>
+            <div class="exercise-box">
+                <a href="{% url 'logout' %}">
+                    <img src="{% static 'images/more_icon.png' %}" alt="Logout">
+                    <span class="exercise-title">Logout</span>
                 </a>
             </div>
         </div>
