@@ -23,7 +23,7 @@
 }
 
 .learners-list {
-    flex-grow: 1; /* Push the add learner button to the bottom */
+    flex-grow: 0; /* Push the add learner button to the bottom */
 }
 
 .learners-list ul {
@@ -143,4 +143,106 @@
 .practice-button:hover {
     background-color: var(--yellow-button-hover); /* Hover color for the button */
     transform: scale(1.05); /* Slight zoom effect */
+}
+
+
+/* Add Learner Container */
+.add-learner-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: var(--accent-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    text-align: center;
+    position: relative; /* Ensures the back-arrow is positioned relative to the container */
+}
+
+.add-learner-container select {
+    width: 100%; /* Ensures it fits the width of the container */
+    max-width: 100%; /* Prevents it from exceeding container size */
+    overflow-wrap: break-word; /* Allows text wrapping */
+    white-space: pre-wrap; /* Ensures long text wraps to a new line */
+}
+
+.add-learner-container h2 {
+    font-size: 2rem;
+    color: var(--font-color);
+    margin-bottom: 20px;
+}
+
+/* Form Styling */
+.add-learner-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.add-learner-form label {
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--font-color);
+}
+
+.add-learner-form input,
+.add-learner-form select,
+.add-learner-form textarea {
+    padding: 10px 15px;
+    font-size: 1rem;
+    color: var(--font-color);
+    background-color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.add-learner-form input:focus,
+.add-learner-form select:focus,
+.add-learner-form textarea:focus {
+    outline: none;
+}
+
+/* Submit Button */
+.submit-btn {
+    background-color: var(--yellow-button-color);
+    color: var(--font-color);
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: none;
+    box-shadow: var(--box-shadow);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.submit-btn:hover {
+    background-color: var(--yellow-button-hover);
+}
+
+/* Back Arrow Styling */
+.back-arrow {
+    position: absolute;
+    top: 15px; /* Adjusted to align with the top of the form */
+    left: 15px; /* Adjusted to align with the left of the form */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    border-radius: 50%;
+    text-decoration: none;
+    color: var(--font-color);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.back-arrow:hover {
+    background-color: var(--yellow-button-color);
+}
+
+.arrow-icon {
+    width: 20px;
+    height: 20px;
+    color: var(--font-color);
 }
