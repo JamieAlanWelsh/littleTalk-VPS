@@ -16,7 +16,7 @@
                             <form method="POST" action="{% url 'select_learner' %}">
                                 {% csrf_token %}
                                 <button type="submit" name="learner_id" value="{{ learner.id }}" 
-                                        class="button {% if learner.id == selected_learner.id %}selected{% endif %}">
+                                        class="learner-button {% if learner.id == selected_learner.id %}selected{% endif %}">
                                     {{ learner.name }}
                                 </button>
                             </form>

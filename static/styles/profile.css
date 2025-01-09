@@ -35,46 +35,39 @@
     margin-bottom: 15px;
 }
 
-/* General Button Styling */
-button, a.button {
-    width: 300px; /* Match the width of "Select Learner" buttons */
-    border-radius: 10px; /* Match the border radius */
-    font-family: var(--font-outfit); /* Consistent font */
-    font-size: 18px; /* Uniform font size */
-    font-weight: 600; /* Consistent weight */
+/* Learner Button Styling */
+.learner-button, .add-learner-btn a {
+    width: 300px;
+    border-radius: 10px;
+    font-family: var(--font-outfit);
+    font-size: 18px;
+    font-weight: 600;
     box-shadow: var(--box-shadow);
-    letter-spacing: 0.5px; /* Consistent spacing */
+    letter-spacing: 0.5px;
     padding: 25px 25px;
     text-align: left;
     display: block;
     cursor: pointer;
+    background-color: var(--accent-color);
+    color: var(--font-color); /* Text color */
+    border: 1px solid transparent;
     transition: background-color 0.3s, color 0.3s, transform 0.2s;
+}
+
+.learner-button.selected {
+    background-color: var(--yellow-button-color); /* Yellow background when selected */
+    color: var(--font-color);
 }
 
 /* Add Learner Button */
 .add-learner-btn a {
     width: 250px;
     background-color: white;
-    color: var(--font-color);
     text-decoration: none;
-    /* margin-top: -10px; */
 }
 
 .add-learner-btn a:hover {
     background-color: var(--yellow-button-color);
-}
-
-/* Learner Button Styling */
-.learners-list .button {
-    background-color: var(--accent-color);
-    color: var(--font-color); /* Text color */
-    border: 1px solid #ffe47700; /* Border matching add-learner button */
-}
-
-.learners-list .button.selected {
-    background-color: var(--yellow-button-color); /* Yellow background when toggled */
-    color: var(--font-color); /* Text color remains consistent */
-    border-color: #ffffff00; /* Slightly darker yellow border */
 }
 
 /* Right Column Styling */
@@ -128,6 +121,7 @@ button, a.button {
     background-color: var(--yellow-button-color);
 }
 
+/* Practice Button Styling */
 .practice-button-container {
     text-align: center;
     margin-top: 20px;

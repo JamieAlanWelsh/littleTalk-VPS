@@ -250,3 +250,8 @@ def get_selected_learner(request):
     if learner_id:
         return JsonResponse({'learner_id': learner_id, 'csrf_token': csrf_token})
     return JsonResponse({'error': 'No learner selected'}, status=400)
+
+
+@login_required
+def support(request):
+    return render(request, 'support.html', {})
