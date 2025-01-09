@@ -21,7 +21,6 @@ from django.contrib.auth.views import LoginView
 
 def home(request):
     request.hide_sidebar = True
-    request.hide_header = True
     if request.user.is_authenticated:
         return redirect('/practice/')
     return render(request, 'home.html')
@@ -81,13 +80,11 @@ class CustomLoginView(LoginView):
 
     def dispatch(self, request, *args, **kwargs):
         # Set request.hide_panels to True before processing the request
-        request.hide_header = True
         request.hide_sidebar = True
         return super().dispatch(request, *args, **kwargs)
 
 
 def register(request):
-    request.hide_header = True
     request.hide_sidebar = True
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
@@ -96,17 +93,15 @@ def register(request):
             email = form.cleaned_data.get('email')
             password = form.cleaned_data.get('password1')
             first_name = form.cleaned_data.get('first_name')
-            last_name = form.cleaned_data.get('last_name')
             # Create user
             user = User.objects.create_user(
                 username=email,
                 email=email,
                 password=password,
                 first_name=first_name,
-                last_name=last_name
             )
             # Explicitly create or update the Profile
-            Profile.objects.create(user=user, first_name=first_name, last_name=last_name)
+            Profile.objects.create(user=user, first_name=first_name)
             # Log the user in and redirect to home
             login(request, user)
             return redirect('profile')

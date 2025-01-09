@@ -42,6 +42,7 @@
     text-decoration: none;
     padding: 10px 20px;
     border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
     font-weight: bold;
     transition: background-color 0.3s ease, transform 0.2s ease;
 }

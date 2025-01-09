@@ -8,7 +8,8 @@ Practice Page
 {% block content %}
 <!-- Learner not Selected -->
 {% if learner_selected != True %}
-    <p>Please select a learner in the profile section to get started.</p>
+    <h2>No Learner Selected</h2>
+    <p>Please add or select a learner in the profile section to get started.</p>
     <a href="{% url 'profile' %}" class="button">Go to Profile</a>
 <!-- Learner Selected -->
 {% else %}
