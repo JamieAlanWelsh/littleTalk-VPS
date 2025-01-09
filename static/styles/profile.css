@@ -246,3 +246,13 @@
     height: 20px;
     color: var(--font-color);
 }
+
+/* Remove Learner Button Styling */
+.add-learner-container .remove-btn {
+    background-color: white; /* Red background */
+}
+
+.add-learner-container .remove-btn:hover {
+    background-color: #ff4d4d; /* Darker red for hover */
+    color: white; /* White text */
+}

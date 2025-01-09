@@ -3,15 +3,23 @@
 {% block title %}Edit Learner{% endblock %}
 
 {% block content %}
-<div class="edit-learner">
-    <h2>Edit {{ learner.name }}</h2>
-    <form method="POST">
+<h1>Edit {{ learner.name }}</h1>
+<div class="add-learner-container">
+    <!-- Back arrow button -->
+    <a href="{% url 'profile' %}" class="back-arrow">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+    </a>
+
+    <form method="POST" class="add-learner-form">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" class="button">Save Changes</button>
-        <!-- Remove Learner button -->
-        <button type="submit" name="remove" class="button" style="background-color: red;">Remove Learner</button>
+        <button type="submit" class="submit-btn">Save Changes</button>
+        
+        <!-- Remove Learner Button -->
+        <button type="submit" name="remove" class="submit-btn remove-btn">Remove Learner</button>
     </form>
-    <a href="{% url 'profile' %}" class="button">Cancel</a>
 </div>
 {% endblock %}
