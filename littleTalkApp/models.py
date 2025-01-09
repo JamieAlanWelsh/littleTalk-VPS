@@ -15,10 +15,6 @@ class Profile(models.Model):
 
 
 class Learner(models.Model):
-    # DIAGNOSIS_CHOICES = [
-    #     ('autism', 'Autism'),
-    #     ('down_syndrome', 'Down Syndrome'),
-    # ]
 
     ASSESSMENT_CHOICES_1 = [
         (1, 'Limited vocabulary with some understanding and use of subject and verb eg. the dog is running'),

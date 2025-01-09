@@ -11,36 +11,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant&display=swap" rel="stylesheet">
 </head>
 <body>
-    {% comment %} {% if not hide_header %}
-        <!-- Header Panel -->
-        <div class="header-panel">
-            <!-- left links -->
-            <nav class="header-nav">
-                <ul>
-                    <li><a href="{% url 'home' %}">Home</a></li>
-                    <li><a href="{% url 'about' %}">About</a></li>
-                </ul>
-            </nav>
-
-            <!-- logo - to be between links -->
-            <div class="logo">
-                <h1>🗣 LittleTalk</h1> <!-- Company name displayed here -->
-            </div>
-
-            <!-- right links -->
-            <nav class="header-nav">
-                <ul>
-                    {% if user.is_authenticated %}
-                        <li><a href="{% url 'profile' %}">Profile</a></li>
-                        <li><a href="{% url 'logout' %}">Logout</a></li>
-                    {% else %}
-                        <li><a href="{% url 'register' %}">Get Started</a></li>
-                        <li><a href="{% url 'login' %}">Login</a></li>
-                    {% endif %}
-                </ul>
-            </nav>
-        </div>
-    {% endif %} {% endcomment %}
     {% if not hide_sidebar %}
         <!-- Side panel -->
         <div class="sidebar">
@@ -56,18 +26,6 @@
                     <span class="exercise-title">Profile</span>
                 </a>
             </div>
-            {% comment %} <div class="exercise-box">
-                <a href="{% url 'game_description' 'colourful_semantics' %}">
-                    <img src="{% static 'images/colour_semantics_icon.png' %}" alt="Colourful Semantics">
-                    <span class="exercise-title">Colourful Semantics</span>
-                </a>
-            </div>
-            <div class="exercise-box">
-                <a href="{% url 'game_description' 'exercise2' %}">
-                    <img src="{% static 'images/base_icon.png' %}" alt="Exercise 2">
-                    <span class="exercise-title">Another Exercise</span>
-                </a>
-            </div> {% endcomment %}
             <div class="exercise-box">
                 <a href="{% url 'support' %}">
                     <img src="{% static 'images/help_icon.png' %}" alt="Support">
