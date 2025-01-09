@@ -201,6 +201,7 @@ def confirm_delete_learner(request, learner_uuid):
             # User authenticated, mark the learner as deleted
             learner.deleted = True
             learner.save()
+            del request.session['selected_learner_id']
             return redirect('profile')  # Redirect to the profile page after deletion
         else:
             # If authentication fails, show an error
