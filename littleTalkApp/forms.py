@@ -29,8 +29,8 @@ class LearnerForm(forms.ModelForm):
             'assessment2': forms.Select(choices=Learner.ASSESSMENT_CHOICES_2),
         }
         labels = {
-            'name': "learner name",
-            'date_of_birth': "Learner dob",
+            'name': "Learner name",
+            'date_of_birth': "Learner DOB",
             'assessment1': "What best describes your learner's current language level?",
             'assessment2': "What best describes your learner's sentence building ability?",
         }
