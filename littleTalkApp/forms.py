@@ -30,7 +30,7 @@ class LearnerForm(forms.ModelForm):
         }
         labels = {
             'name': "Learner name",
-            'date_of_birth': "Learner DOB",
+            'date_of_birth': "Learner DOB   ",
             'assessment1': "What best describes your learner's current language level?",
             'assessment2': "What best describes your learner's sentence building ability?",
         }

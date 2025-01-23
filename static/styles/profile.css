@@ -18,7 +18,6 @@
     width: 40%; /* 40% width for the left column */
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Ensure "Add Learner" button is at the bottom */
     max-height: 80vh; /* Constrain the height of the list */
 }
 
