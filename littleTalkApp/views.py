@@ -242,9 +242,13 @@ def get_selected_learner(request):
     
     csrf_token = get_token(request)  # Get CSRF token
 
-    learner_id = request.session.get('selected_learner_id')  # Retrieve the selected learner from the session
-    if learner_id:
-        return JsonResponse({'learner_id': learner_id, 'csrf_token': csrf_token})
+    selected_learner_id = request.session.get('selected_learner_id')  # Retrieve the selected learner from the session
+
+    selected_learner = None
+
+    if selected_learner_id:
+        selected_learner = Learner.objects.get(id=selected_learner_id)
+        return JsonResponse({'learner_id': selected_learner_id, 'csrf_token': csrf_token, 'cs_level': selected_learner.assessment2})
     return JsonResponse({'error': 'No learner selected'}, status=400)
 
 

@@ -22,7 +22,7 @@ Practice Page
         <div class="exercise-details">
             <h3>Sentence Building - Colourful Semantics</h3>
             <p>Repetitions: 15 (Approx. 10 minutes)</p>
-            <p>Difficulty: {{ selected_learner.assessment2 }}/6</p>
+            {% comment %} <p>Difficulty: {{ selected_learner.assessment2 }}/6</p> {% endcomment %}
             <a href="{% url 'game_description' 'colourful_semantics' %}" class="button exercise-btn">Get Started</a>
         </div>
     </div>
