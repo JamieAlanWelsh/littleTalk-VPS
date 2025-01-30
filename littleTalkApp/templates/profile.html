@@ -42,7 +42,9 @@
                 <h3>Learning Level</h3>
                 <p>
                     {% if selected_learner.assessment1 %}
-                        {{ selected_learner.assessment1 }}
+                        {% for _ in " "|center:selected_learner.assessment1 %}
+                            ⭐
+                        {% endfor %}
                     {% else %}
                         No learning level assigned.
                     {% endif %}
