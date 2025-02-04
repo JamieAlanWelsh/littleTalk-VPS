@@ -49,6 +49,7 @@
     </form>
     {% if form.errors %}
         <p class="error-message">Invalid username or password</p>
+        <p>If you need support, please <a href="{% url 'support' %}">contact us</a>.</p>
     {% endif %}
 </div>
 {% endblock %}

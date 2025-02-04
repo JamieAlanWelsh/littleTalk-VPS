@@ -252,6 +252,5 @@ def get_selected_learner(request):
     return JsonResponse({'error': 'No learner selected'}, status=400)
 
 
-@login_required
 def support(request):
     return render(request, 'support.html', {})
