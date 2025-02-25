@@ -42,3 +42,11 @@ class Learner(models.Model):
 
     def __str__(self):
         return f"{self.name}, Age: {self.age}"
+
+
+class WaitingList(models.Model):
+    email = models.EmailField(unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.email

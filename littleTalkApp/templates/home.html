@@ -11,23 +11,27 @@
         </a>
     </div>
     <!-- Main Header Content -->
-    <h1 style="font-size: 3rem; margin-bottom: 20px;">A new way for children to practise language building at home</h1>
-    <div class="content-layout">
+    <h1 style="font-size: 3rem">A new way for children to practise language development at home</h1>
+    <div class="content-layout" style="margin-bottom: 100px;">
         <div class="image-container">
             <img src="{% static 'images/arlo.png' %}" alt="Arlo the armadillo" style="max-width: 250px; height: auto; border-radius: var(--border-radius);">
         </div>
         <div class="button-container" style="display: flex; flex-direction: column; gap: 15px; align-items: center;">
-            <a href="/register/" class="btn btn-primary" style="width: 200px;">Get Started</a>
-            <a href="/login/" class="btn btn-secondary" style="width: 200px;">Login</a>
+            {% comment %} <a href="/register/" class="btn btn-secondary" style="width: 240px;">Join our Waiting List</a> {% endcomment %}
+            <a href="/login/" class="btn btn-primary" style="width: 280px;">Try our Beta (Login)</a>
+            <a href="/comingsoon/" class="btn btn-secondary" style="width: 280px;">Join our Waiting List</a>
         </div>
     </div>
-    <!-- Scroll-down arrow -->
-    <a href="#about-section" class="scroll-down-arrow">
-        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="12" y1="5" x2="12" y2="19"></line>
-            <polyline points="19 12 12 19 5 12"></polyline>
-        </svg>
-    </a>
+    <!-- Wrapper to properly position text and arrow -->
+    <div style="position: absolute; bottom: 20px; text-align: center; display: flex; flex-direction: column; align-items: center;">
+        <p style="font-size: 1.2rem; margin-bottom: 100px;">Learn more about us!</p>
+        <a href="#about-section" class="scroll-down-arrow">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <polyline points="19 12 12 19 5 12"></polyline>
+            </svg>
+        </a>
+    </div>
 </header>
 
 <!-- About Content Section -->
@@ -36,8 +40,8 @@
         <!-- Content from the 'about' template -->
         <div class="info-box">
             <h1>Welcome to LittleTalk! 👋</h1>
-            <p>LittleTalk is a supplementary tool for speech and language development that offers a variety of high-quality, research-backed exercises, with built-in progress tracking and adjustable learning levels.</p>
-            <p>We will recommend exercises, we only ask that you show up for 10-15 minutes daily to see results.
+            <p>LittleTalk is a supplementary speech and language development programme for children that offers a variety of high-quality, research-based exercises, with built-in progress tracking and adjustable learning levels.</p>
+            <p>We will recommend the exercises and the programme, we only ask that you practise 10-15 minutes consistently to see results.</p>
         </div>
 
         <div class="info-image">
@@ -50,16 +54,16 @@
 
         <div class="info-box">
             <h1>Access 🚀</h1>
-            <p>We believe high-quality speech development exercises should be easily accessible to anyone who needs them.</p>
-            <p>Our mission is to empower parents to conveniently practice speech development with their learner in multiple settings.</p>
-            <p>Increased accessibility encourages consistent carryover, allowing learners to develop and apply their functional language in a variety of daily environments.</p>
+            <p>Ever tried to learn an instrument by practising once a week?</p>
+            <p>Research shows that frequent practise in speech and language development can increase rate of learning by up to 3 times!</p>
+            <p>Our mission is to empower parents with the resources to conveniently practice speech development with their learner whenever it is convenient.</p>
         </div>
 
         <div class="info-box">
             <h1>Supported, Engaging Learning 👩‍🏫</h1>
             <p>LittleTalk is adaptable to your learner's unique learning journey, providing the perfect scaffold to support their language development. 
             <p>Take advantage of a range of learning levels and a wide variety of activities tailored to different skill levels.</p>
-            <p>Get excited about practice by earning exp and rewards, ensuring your learner stays motivated while building their speech and language skills at their own pace.</p>
+            <p>Get your learner excited about practice by setting goals, earning exp and rewards, ensuring your learner stays motivated while building their speech and language skills at their own pace.</p>
         </div>
 
         <div class="info-image">
@@ -74,7 +78,7 @@
     <h1>Ready to start learning?</h1>
 
     <!-- Get Started Button -->
-    <a href="/register/" class="btn btn-primary" style="width: 250px;">Get Started</a>
+    <a href="/comingsoon/" class="btn btn-primary" style="width: 250px;">Join our Waiting List</a>
 
     <!-- Image below the Get Started button -->
     <div class="image-container">

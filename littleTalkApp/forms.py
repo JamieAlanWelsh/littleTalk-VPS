@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from .models import Learner
+from .models import WaitingList
 
 
 class UserRegistrationForm(forms.ModelForm):
@@ -34,3 +35,9 @@ class LearnerForm(forms.ModelForm):
             'assessment1': "What best describes your learner's current language level?",
             'assessment2': "What best describes your learner's sentence building ability?",
         }
+
+
+class WaitingListForm(forms.ModelForm):
+    class Meta:
+        model = WaitingList
+        fields = ['email']

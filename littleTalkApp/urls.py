@@ -9,6 +9,7 @@ urlpatterns = [
     # path('about/', views.about, name='about'),
     path('practice/', views.practice, name='practice'),
     path('support/', views.support, name='support'),
+    path('comingsoon/', views.comingsoon, name='comingsoon'),
 
 
     # Login and logout URLs

@@ -17,6 +17,8 @@ from .serializers import LearnerExpUpdateSerializer
 from django.http import JsonResponse
 from django.middleware.csrf import get_token
 from django.contrib.auth.views import LoginView
+from .forms import WaitingListForm
+from django.contrib import messages
 
 
 def home(request):
@@ -109,6 +111,22 @@ def register(request):
         form = UserRegistrationForm()
 
     return render(request, 'registration/register.html', {'form': form})
+
+
+def comingsoon(request):
+    request.hide_sidebar = True
+    if request.method == "POST":
+        form = WaitingListForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "You've been added to the waiting list!")
+            return redirect("comingsoon")
+        else:
+            messages.error(request, "Invalid email or already registered.")
+    else:
+        form = WaitingListForm()
+
+    return render(request, "comingsoon.html", {"form": form})
 
 
 @login_required

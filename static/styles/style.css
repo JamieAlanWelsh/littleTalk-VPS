@@ -328,7 +328,7 @@ p {
 }
 
 .btn-secondary:hover {
-    background-color: #aeaeaeff;
+    background-color: rgb(207, 207, 207);
 }
 
 /* Image */
@@ -369,7 +369,7 @@ p {
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    animation: bounce 1.5s infinite;
+    /* animation: bounce 1.5s infinite; */
     text-decoration: none;
 }
 
@@ -385,3 +385,12 @@ p {
     opacity: 1;
     stroke: #000; /* Darker color on hover */
 }
+
+/* @keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+} */
