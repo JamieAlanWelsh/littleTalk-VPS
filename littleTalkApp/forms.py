@@ -2,6 +2,12 @@ from django import forms
 from django.contrib.auth.models import User
 from .models import Learner
 from .models import WaitingList
+from django.contrib.auth.forms import AuthenticationForm
+
+
+class CustomAuthenticationForm(AuthenticationForm):
+    def clean_username(self):
+        return self.cleaned_data['username'].lower()
 
 
 class UserRegistrationForm(forms.ModelForm):

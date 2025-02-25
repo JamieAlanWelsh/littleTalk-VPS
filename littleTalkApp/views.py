@@ -18,6 +18,7 @@ from django.http import JsonResponse
 from django.middleware.csrf import get_token
 from django.contrib.auth.views import LoginView
 from .forms import WaitingListForm
+from .forms import CustomAuthenticationForm
 from django.contrib import messages
 
 
@@ -79,6 +80,7 @@ def game_description(request, game_name):
 class CustomLoginView(LoginView):
     template_name = 'registration/login.html'  # Use your custom template
     redirect_authenticated_user = True  # Redirect logged-in users to a specific page
+    authentication_form = CustomAuthenticationForm  # Use custom form to lowercase username
 
     def dispatch(self, request, *args, **kwargs):
         # Set request.hide_panels to True before processing the request
@@ -92,7 +94,7 @@ def register(request):
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
             # Create and save the user
-            email = form.cleaned_data.get('email')
+            email = form.cleaned_data.get('email').lower()
             password = form.cleaned_data.get('password1')
             first_name = form.cleaned_data.get('first_name')
             # Create user
