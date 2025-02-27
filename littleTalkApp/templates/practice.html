@@ -26,5 +26,15 @@ Practice Page
             <a href="{% url 'game_description' 'colourful_semantics' %}" class="button exercise-btn">Get Started</a>
         </div>
     </div>
+    <div class="exercise-widget">
+        <div class="exercise-image">
+            <img src="{% static 'images/arlo.png' %}" alt="Sentence Building">
+        </div>
+        <div class="exercise-details">
+            <h3>Categorisation</h3>
+            <p>Repetitions: 10 (Approx. 10 minutes)</p>
+            <a href="{% url 'game_description' 'categorisation' %}" class="button exercise-btn">Get Started</a>
+        </div>
+    </div>
 {% endif %}
 {% endblock %}

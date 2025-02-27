@@ -61,13 +61,13 @@ def game_description(request, game_name):
             'video_id': 'FcdA00Tj5N0',
             'static_name': 'colourful_semantics',
         },
-        'exercise2': {
+        'categorisation': {
             'title': 'Exercise 2',
             'description': 'Another fun learning activity.',
             'description2': '',
             'link': 'https://jamiealanwelsh.github.io/exercise2/',
             'video_id': '',
-            'static_name': '',
+            'static_name': 'categorisation',
         },
     }
     game = game_descriptions.get(game_name, None)
