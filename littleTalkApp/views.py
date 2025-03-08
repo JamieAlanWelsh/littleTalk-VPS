@@ -57,7 +57,6 @@ def game_description(request, game_name):
             'title': 'Colourful Semantics',
             'description': 'Colourful semantics is an approach designed to support children developing their understanding of sentence structure and expand the length of their sentences.',
             'description2': 'The structure of a sentence (syntax) is colour coded and then these are linked to their meaning (semantics)',
-            'link': 'https://jamiealanwelsh.github.io/colour-semantics-webgl/',
             'video_id': 'FcdA00Tj5N0',
             'static_name': 'colourful_semantics',
         },
@@ -65,9 +64,15 @@ def game_description(request, game_name):
             'title': 'Exercise 2',
             'description': 'Another fun learning activity.',
             'description2': '',
-            'link': 'https://jamiealanwelsh.github.io/exercise2/',
             'video_id': '',
             'static_name': 'categorisation',
+        },
+        'think_and_find': {
+            'title': 'Think & Find',
+            'description': 'Another fun learning activity.',
+            'description2': '',
+            'video_id': '',
+            'static_name': 'think_and_find',
         },
     }
     game = game_descriptions.get(game_name, None)

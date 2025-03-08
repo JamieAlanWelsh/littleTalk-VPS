@@ -1,4 +1,5 @@
 .exercise-widget {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: start;
@@ -39,6 +40,8 @@
     display: inline-block;
     background-color: var(--button-green);
     color: var(--font-color);
+    width: 100px;
+    text-align: center;
     text-decoration: none;
     padding: 10px 20px;
     border-radius: var(--border-radius);
@@ -49,4 +52,26 @@
 
 .exercise-btn:hover {
     background-color: var(--button-hover);
+}
+
+.exercise-icon {
+    position: absolute;
+    top: 25px;  /* Moves icon to the top */
+    right: 25px; /* Positions icon to the right */
+    width: 25px;
+    height: 25px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.exercise-icon:hover {
+    transform: scale(1.1); /* Slightly increases size on hover */
+}
+
+.locked-btn {
+    pointer-events: none; /* Prevents clicking */
+    background-color: #FF9292;
+}
+
+.locked-btn:hover {
+    background-color: #FF9292;
 }
