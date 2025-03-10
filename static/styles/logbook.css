@@ -1,0 +1,160 @@
+/* Logbook Container Styling */
+.logbook-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: var(--accent-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    text-align: left;
+    position: relative;
+}
+
+/* Logbook Title */
+.logbook-container h1 {
+    font-size: 2rem;
+    color: var(--font-color);
+    margin-bottom: 20px;
+}
+
+/* Back Arrow Styling */
+.back-arrow {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    border-radius: 50%;
+    text-decoration: none;
+    color: var(--font-color);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.back-arrow:hover {
+    background-color: var(--yellow-button-color);
+}
+
+.arrow-icon {
+    width: 20px;
+    height: 20px;
+    color: var(--font-color);
+}
+
+/* New Entry Button */
+.new-entry-btn {
+    display: inline-block;
+    background-color: var(--yellow-button-color);
+    color: var(--font-color);
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.new-entry-btn:hover {
+    background-color: var(--yellow-button-hover);
+    transform: scale(1.05);
+}
+
+/* Log Entries List */
+.log-entries {
+    margin-top: 20px;
+}
+
+.log-entry {
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 20px;
+    margin-bottom: 15px;
+    text-align: left;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.log-entry:hover {
+    background-color: var(--yellow-button-color);
+}
+
+.log-entry h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: var(--font-color);
+}
+
+.log-entry p {
+    color: var(--font-color);
+    font-size: 1rem;
+}
+
+.log-entry small {
+    display: block;
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: gray;
+}
+
+/* New Log Entry Form */
+.new-log-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: var(--accent-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    text-align: center;
+    position: relative;
+}
+
+/* Form Styling */
+.log-entry-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.log-entry-form label {
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--font-color);
+}
+
+.log-entry-form input,
+.log-entry-form textarea {
+    padding: 10px 15px;
+    font-size: 1rem;
+    color: var(--font-color);
+    background-color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.log-entry-form input:focus,
+.log-entry-form textarea:focus {
+    outline: none;
+}
+
+/* Submit Button */
+.submit-btn {
+    background-color: var(--yellow-button-color);
+    color: var(--font-color);
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: none;
+    box-shadow: var(--box-shadow);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.submit-btn:hover {
+    background-color: var(--yellow-button-hover);
+}
