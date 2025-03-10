@@ -51,7 +51,7 @@ def practice(request):
 @login_required
 def logbook(request):
     log_entries = LogEntry.objects.filter(user=request.user).order_by('-timestamp')
-    return render(request, 'logbook.html', {'log_entries': log_entries})
+    return render(request, 'logbook/logbook.html', {'log_entries': log_entries})
 
 @login_required
 def new_log_entry(request):
@@ -65,7 +65,12 @@ def new_log_entry(request):
     else:
         form = LogEntryForm()
 
-    return render(request, 'new_log_entry.html', {'form': form})
+    return render(request, 'logbook/new_log_entry.html', {'form': form})
+
+@login_required
+def log_entry_detail(request, entry_id):
+    log_entry = get_object_or_404(LogEntry, id=entry_id, user=request.user)
+    return render(request, 'logbook/log_entry_detail.html', {'log_entry': log_entry})
 
 
 @login_required
@@ -151,7 +156,7 @@ def comingsoon(request):
     else:
         form = WaitingListForm()
 
-    return render(request, "comingsoon.html", {"form": form})
+    return render(request, "registration/comingsoon.html", {"form": form})
 
 
 @login_required
@@ -173,7 +178,7 @@ def profile(request):
     if selected_learner_id:
         selected_learner = Learner.objects.get(id=selected_learner_id)
 
-    return render(request, 'profile.html', {
+    return render(request, 'profile/profile.html', {
         'learners': learners,
         'selected_learner': selected_learner
     })
@@ -193,7 +198,7 @@ def add_learner(request):
     else:
         form = LearnerForm()
 
-    return render(request, 'add_learner.html', {'form': form})
+    return render(request, 'profile/add_learner.html', {'form': form})
 
 
 @login_required
@@ -224,7 +229,7 @@ def edit_learner(request, learner_uuid):
         'form': form,
         'learner': learner,
     }
-    return render(request, 'edit_learner.html', context)
+    return render(request, 'profile/edit_learner.html', context)
 
 
 @login_required
@@ -246,7 +251,7 @@ def confirm_delete_learner(request, learner_uuid):
             error_message = "Incorrect password. Please try again."
             return render(request, 'confirm_delete_learner.html', {'learner': learner, 'error_message': error_message})
 
-    return render(request, 'confirm_delete_learner.html', {'learner': learner})
+    return render(request, 'profile/confirm_delete_learner.html', {'learner': learner})
 
 
 # def colourful_semantics_view(request):

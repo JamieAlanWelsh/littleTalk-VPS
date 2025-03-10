@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Logbook{% endblock %}
+{% block title %}Logbook - LittleTalk{% endblock %}
 
 {% block content %}
 <h1>Logbook</h1>
@@ -12,9 +12,10 @@
     <div class="log-entries">
         {% for entry in log_entries %}
             <div class="log-entry">
-                <h2>{{ entry.title }}</h2>
-                <p>{{ entry.content }}</p>
-                <small>{{ entry.timestamp }}</small>
+                <a href="{% url 'log_entry_detail' entry.id %}" class="log-entry-link">
+                    <p>{{ entry.title }}</p>
+                    <small>{{ entry.timestamp }}</small>
+                </a>
             </div>
         {% empty %}
             <p>No log entries yet.</p>

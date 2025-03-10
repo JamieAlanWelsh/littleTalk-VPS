@@ -6,7 +6,6 @@ from .views import UpdateLearnerExpAPIView
 urlpatterns = [
     path('', views.home, name='home'),
     path('exercise/<str:game_name>/', views.game_description, name='game_description'),
-    # path('about/', views.about, name='about'),
     path('practice/', views.practice, name='practice'),
     path('support/', views.support, name='support'),
     path('comingsoon/', views.comingsoon, name='comingsoon'),
@@ -27,8 +26,7 @@ urlpatterns = [
     # Logbook
     path('logbook/', views.logbook, name='logbook'),
     path('logbook/new/', views.new_log_entry, name='new_log_entry'),
-    # Exercises
-    # path('colourful_semantics_view/', views.colourful_semantics_view, name='colourful_semantics_view'),
+    path('logbook/<int:entry_id>/', views.log_entry_detail, name='log_entry_detail'),
 
     # API endpoints
     path('api/learners/<int:learner_id>/update-exp/', UpdateLearnerExpAPIView.as_view(), name='update_learner_exp'),

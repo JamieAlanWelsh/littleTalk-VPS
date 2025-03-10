@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Logbook - LittleTalk{% endblock %}
+
+{% block content %}
+<h1>{{ log_entry.title }}</h1>
+<div class="new-log-container">
+    <a href="{% url 'logbook' %}" class="back-arrow" aria-label="Go back">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+    </a>
+
+    <div class="log-entry-details">
+        <p><strong>Exercises Done:</strong></p>
+        <p>{{ log_entry.exercises_done }}</p>
+
+        <p><strong>Notes:</strong></p>
+        <p>{{ log_entry.notes }}</p>
+
+        <small>Logged on: {{ log_entry.timestamp }}</small>
+    </div>
+</div>
+{% endblock %}

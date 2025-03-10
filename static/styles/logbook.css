@@ -55,12 +55,11 @@
     text-decoration: none;
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    transition: background-color 0.3s ease;
 }
 
 .new-entry-btn:hover {
     background-color: var(--yellow-button-hover);
-    transform: scale(1.05);
 }
 
 /* Log Entries List */
@@ -105,10 +104,11 @@
     max-width: 600px;
     margin: 50px auto;
     padding: 30px;
+    padding-top: 70px;
     background-color: var(--accent-color);
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
-    text-align: center;
+    text-align: left;
     position: relative;
 }
 

@@ -1,21 +1,23 @@
 {% extends "base.html" %}
 
-{% block title %}New Log Entry{% endblock %}
+{% block title %}Profile - LittleTalk{% endblock %}
 
 {% block content %}
-<h1>New Log Entry</h1>
-<div class="new-log-container">
-    <a href="{% url 'logbook' %}" class="back-arrow" aria-label="Go back">
+<h1>Add a Learner</h1>
+<div class="add-learner-container">
+    <!-- Back Arrow -->
+    <a href="{% url 'profile' %}" class="back-arrow" aria-label="Go back">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon">
             <line x1="19" y1="12" x2="5" y2="12"></line>
             <polyline points="12 19 5 12 12 5"></polyline>
         </svg>
     </a>
 
-    <form method="post" class="log-entry-form">
+
+    <form method="post" class="add-learner-form">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" class="submit-btn">Save Entry</button>
+        <button type="submit" class="submit-btn">Submit</button>
     </form>
 </div>
 {% endblock %}
