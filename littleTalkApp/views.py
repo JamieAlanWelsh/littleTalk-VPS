@@ -56,14 +56,14 @@ def logbook(request):
 @login_required
 def new_log_entry(request):
     if request.method == "POST":
-        form = LogEntryForm(request.POST)
+        form = LogEntryForm(request.POST, user=request.user)
         if form.is_valid():
             log_entry = form.save(commit=False)
             log_entry.user = request.user  # Assign the logged-in user
             log_entry.save()
             return redirect('logbook')  # Redirect to logbook page after saving
     else:
-        form = LogEntryForm()
+        form = LogEntryForm(user=request.user)  # Pass user to filter learners
 
     return render(request, 'logbook/new_log_entry.html', {'form': form})
 

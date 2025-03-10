@@ -51,11 +51,21 @@ class WaitingListForm(forms.ModelForm):
 
 
 class LogEntryForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)  # Extract 'user' before calling super()
+        super(LogEntryForm, self).__init__(*args, **kwargs)  # Call parent constructor
+
+        # Filter learners dropdown based on the logged-in user
+        if user:
+            self.fields['learner'].queryset = Learner.objects.filter(user=user)
+
     class Meta:
         model = LogEntry
-        fields = ['title', 'exercises_done', 'notes']
+        fields = ['learner', 'title', 'exercises_practised', 'goals', 'notes']
         widgets = {
+            'learner': forms.Select(attrs={'class': 'form-control'}),  # Dropdown
             'title': forms.TextInput(attrs={'class': 'form-control'}),
-            'exercises_done': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'exercises_practised': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'goals': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
             'notes': forms.Textarea(attrs={'class': 'form-control', 'rows': 5}),
         }
