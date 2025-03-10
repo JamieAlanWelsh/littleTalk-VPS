@@ -20,6 +20,8 @@ from django.contrib.auth.views import LoginView
 from .forms import WaitingListForm
 from .forms import CustomAuthenticationForm
 from django.contrib import messages
+from .models import LogEntry
+from .forms import LogEntryForm
 
 
 def home(request):
@@ -46,8 +48,24 @@ def practice(request):
     })
 
 
-# def about(request):
-#     return render(request, 'about.html')
+@login_required
+def logbook(request):
+    log_entries = LogEntry.objects.filter(user=request.user).order_by('-timestamp')
+    return render(request, 'logbook.html', {'log_entries': log_entries})
+
+@login_required
+def new_log_entry(request):
+    if request.method == "POST":
+        form = LogEntryForm(request.POST)
+        if form.is_valid():
+            log_entry = form.save(commit=False)
+            log_entry.user = request.user  # Assign the logged-in user
+            log_entry.save()
+            return redirect('logbook')  # Redirect to logbook page after saving
+    else:
+        form = LogEntryForm()
+
+    return render(request, 'new_log_entry.html', {'form': form})
 
 
 @login_required

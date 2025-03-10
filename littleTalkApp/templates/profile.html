@@ -38,7 +38,7 @@
     <div class="right-column">
         <!-- Learning Level Section -->
         {% if selected_learner %}
-            <div class="learning-level-section">
+            <div class="total-exp-section">
                 <h3>Learning Level</h3>
                 <p>
                     {% if selected_learner.assessment1 %}
@@ -51,21 +51,25 @@
                 </p>
             </div>
 
+            <!-- Total Experience Section -->
+            <div class="total-exp-section">
+                <h3>Total Experience</h3>
+                <h3>
+                    {% if selected_learner.exp %}
+                        {{ selected_learner.exp }}
+                    {% else %}
+                        No experience recorded.
+                    {% endif %}
+                </h3>
+            </div>
             <!-- Edit Learner Button -->
             <div class="edit-learner-btn">
                 <a href="{% url 'edit_learner' selected_learner.learner_uuid %}" class="button">Edit Learner / Retake Assessment</a>
             </div>
-
-            <!-- Total Experience Section -->
+            <!-- Keep on track -->
             <div class="total-exp-section">
-                <h3>Total Experience</h3>
-                <p>
-                    {% if selected_learner.exp %}
-                        {{ selected_learner.exp }} XP
-                    {% else %}
-                        No experience recorded.
-                    {% endif %}
-                </p>
+                <h3>Keep on track! ✍️</h3>
+                <p>Remember to re-take your assessment every now and then as you make progress.<br>This will allow us to update your learning level.</p>
             </div>
         {% endif %}
     </div>

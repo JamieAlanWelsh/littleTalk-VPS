@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from .models import Learner
 from .models import WaitingList
 from django.contrib.auth.forms import AuthenticationForm
+from .models import LogEntry
 
 
 class CustomAuthenticationForm(AuthenticationForm):
@@ -47,3 +48,14 @@ class WaitingListForm(forms.ModelForm):
     class Meta:
         model = WaitingList
         fields = ['email']
+
+
+class LogEntryForm(forms.ModelForm):
+    class Meta:
+        model = LogEntry
+        fields = ['title', 'exercises_done', 'notes']
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'exercises_done': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'notes': forms.Textarea(attrs={'class': 'form-control', 'rows': 5}),
+        }

@@ -15,7 +15,7 @@
 
 /* Left Column Styling */
 .left-column {
-    width: 40%; /* 40% width for the left column */
+    width: 40%; /* 40f% width for the left column */
     display: flex;
     flex-direction: column;
     max-height: 80vh; /* Constrain the height of the list */
@@ -82,13 +82,14 @@
     background-color: var(--accent-color);
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
-    padding: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
 .learning-level-section h3,
 .total-exp-section h3 {
     color: var(--font-color);
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
 }
 
 .learning-level-section p,

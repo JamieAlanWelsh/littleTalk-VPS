@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Logbook{% endblock %}
+
+{% block content %}
+<h1>Logbook</h1>
+<div class="logbook-container">
+    <!-- New Entry Button -->
+    <a href="{% url 'new_log_entry' %}" class="new-entry-btn">New Entry</a>
+
+    <!-- Log Entries -->
+    <div class="log-entries">
+        {% for entry in log_entries %}
+            <div class="log-entry">
+                <h2>{{ entry.title }}</h2>
+                <p>{{ entry.content }}</p>
+                <small>{{ entry.timestamp }}</small>
+            </div>
+        {% empty %}
+            <p>No log entries yet.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -50,3 +50,14 @@ class WaitingList(models.Model):
 
     def __str__(self):
         return self.email
+
+
+class LogEntry(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="log_entries")  # Link log entry to a user
+    title = models.CharField(max_length=255)
+    exercises_done = models.TextField()
+    notes = models.TextField(blank=True, null=True)
+    timestamp = models.DateTimeField(auto_now_add=True)  # Automatically set on creation
+
+    def __str__(self):
+        return f"{self.title} - {self.user.username}"

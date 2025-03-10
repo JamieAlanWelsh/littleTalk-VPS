@@ -24,6 +24,9 @@ urlpatterns = [
     path('profile/edit_learner/<uuid:learner_uuid>/', views.edit_learner, name='edit_learner'),
     path('profile/edit_learner/confirm_delete_learner/<uuid:learner_uuid>/', views.confirm_delete_learner, name='confirm_delete_learner'),
 
+    # Logbook
+    path('logbook/', views.logbook, name='logbook'),
+    path('logbook/new/', views.new_log_entry, name='new_log_entry'),
     # Exercises
     # path('colourful_semantics_view/', views.colourful_semantics_view, name='colourful_semantics_view'),
 
