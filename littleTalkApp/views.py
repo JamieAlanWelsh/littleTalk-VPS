@@ -27,12 +27,12 @@ from .forms import LogEntryForm
 def home(request):
     request.hide_sidebar = True
     if request.user.is_authenticated:
-        return redirect('/practice/')
+        return redirect('/practise/')
     return render(request, 'home.html')
 
 
 @login_required
-def practice(request):
+def practise(request):
     selected_learner_id = request.session.get('selected_learner_id')
     learner_selected = False
     selected_learner = None
@@ -42,7 +42,7 @@ def practice(request):
         selected_learner = Learner.objects.filter(id=selected_learner_id).first()
         learner_selected = selected_learner is not None
 
-    return render(request, 'practice.html', {
+    return render(request, 'practise.html', {
         'learner_selected': learner_selected,
         'selected_learner': selected_learner,
     })

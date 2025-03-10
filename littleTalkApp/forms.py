@@ -57,7 +57,7 @@ class LogEntryForm(forms.ModelForm):
 
         # Filter learners dropdown based on the logged-in user
         if user:
-            self.fields['learner'].queryset = Learner.objects.filter(user=user)
+            self.fields['learner'].queryset = Learner.objects.filter(user=user, deleted=False)
 
     class Meta:
         model = LogEntry

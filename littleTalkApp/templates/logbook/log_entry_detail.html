@@ -13,11 +13,11 @@
     </a>
 
     <div class="log-entry-details">
-        {% if log_entry.learner %}
-            <p><strong>{{ log_entry.learner }}</strong></p>
-        {% endif %}
-
         <p><strong>{{ log_entry.title }}</strong></p>
+
+        {% if log_entry.learner %}
+            <p>{{ log_entry.learner }}</p>
+        {% endif %}
 
         <p><strong>Exercises Practised:</strong></p>
         <p>{{ log_entry.exercises_practised }}</p>
