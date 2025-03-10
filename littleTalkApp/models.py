@@ -55,7 +55,7 @@ class WaitingList(models.Model):
 class LogEntry(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="log_entries")  # Link log entry to a user
     learner = models.ForeignKey(Learner, on_delete=models.CASCADE, related_name="log_entries", null=True, blank=255)  # New field
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=70)
     exercises_practised = models.TextField(blank=True, null=True, max_length=255)
     goals = models.TextField(blank=True, null=True, max_length=255)
     notes = models.TextField(blank=True, null=True, max_length=1000)

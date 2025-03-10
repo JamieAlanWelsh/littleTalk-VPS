@@ -13,12 +13,24 @@
     </a>
 
     <div class="log-entry-details">
-        <p><strong>{{ log_entry.title }}</strong></p>
-        <p><strong>Exercises Done:</strong></p>
-        <p>{{ log_entry.exercises_done }}</p>
+        {% if log_entry.learner %}
+            <p><strong>{{ log_entry.learner }}</strong></p>
+        {% endif %}
 
-        <p><strong>Notes:</strong></p>
-        <p>{{ log_entry.notes }}</p>
+        <p><strong>{{ log_entry.title }}</strong></p>
+
+        <p><strong>Exercises Practised:</strong></p>
+        <p>{{ log_entry.exercises_practised }}</p>
+
+        {% if log_entry.goals %}
+            <p><strong>Goals:</strong></p>
+            <p>{{ log_entry.goals }}</p>
+        {% endif %}
+
+        {% if log_entry.notes %}
+            <p><strong>Notes:</strong></p>
+            <p>{{ log_entry.notes }}</p>
+        {% endif %}
 
         <small>Logged on: {{ log_entry.timestamp }}</small>
     </div>

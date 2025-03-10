@@ -13,7 +13,7 @@
         {% for entry in log_entries %}
             <div class="log-entry">
                 <a href="{% url 'log_entry_detail' entry.id %}" class="log-entry-link">
-                    <p>{{ entry.title }}</p>
+                    <p>{{ entry.learner.name|add:" - "|add:entry.title }}</p>
                     <small>{{ entry.timestamp }}</small>
                 </a>
             </div>
