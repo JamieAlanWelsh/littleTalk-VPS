@@ -60,11 +60,12 @@
     right: 25px; /* Positions icon to the right */
     width: 25px;
     height: 25px;
-    transition: transform 0.2s ease-in-out;
+    opacity: 0.7;
+    transition: opacity 0.2s ease
 }
 
 .exercise-icon:hover {
-    transform: scale(1.1); /* Slightly increases size on hover */
+    opacity: 1;
 }
 
 .locked-btn {
