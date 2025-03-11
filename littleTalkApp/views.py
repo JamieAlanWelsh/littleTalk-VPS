@@ -50,7 +50,7 @@ def practise(request):
 
 @login_required
 def logbook(request):
-    log_entries = LogEntry.objects.filter(user=request.user).order_by('-timestamp')
+    log_entries = LogEntry.objects.filter(user=request.user, deleted=False).order_by('-timestamp')
     return render(request, 'logbook/logbook.html', {'log_entries': log_entries})
 
 @login_required
@@ -71,6 +71,13 @@ def new_log_entry(request):
 def log_entry_detail(request, entry_id):
     log_entry = get_object_or_404(LogEntry, id=entry_id, user=request.user)
     return render(request, 'logbook/log_entry_detail.html', {'log_entry': log_entry})
+
+@login_required
+def delete_log_entry(request, entry_id):
+    log_entry = get_object_or_404(LogEntry, id=entry_id, user=request.user)
+    log_entry.deleted = True  # Soft delete the entry
+    log_entry.save()
+    return JsonResponse({"success": True})
 
 
 @login_required

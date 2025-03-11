@@ -60,6 +60,7 @@ class LogEntry(models.Model):
     goals = models.TextField(blank=True, null=True, max_length=255)
     notes = models.TextField(blank=True, null=True, max_length=1000)
     timestamp = models.DateTimeField(auto_now_add=True)  # Automatically set on creation
+    deleted = models.BooleanField(default=False) 
 
     def __str__(self):
         return f"{self.title} - {self.user.username}"

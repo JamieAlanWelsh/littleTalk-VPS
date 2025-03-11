@@ -12,6 +12,11 @@
     <div class="log-entries">
         {% for entry in log_entries %}
             <div class="log-entry">
+                <!-- Delete Button -->
+                <a href="#" class="delete-entry-btn" aria-label="Delete Entry" onclick="confirmDelete({{ entry.id }})">
+                    <img src="/static/icons/info.png" alt="Delete" class="delete-icon">
+                </a>
+
                 <a href="{% url 'log_entry_detail' entry.id %}" class="log-entry-link">
                     <p>{{ entry.title }}</p>
                     <small>{{ entry.learner.name }}</small>
@@ -19,8 +24,33 @@
                 </a>
             </div>
         {% empty %}
-            <p>Nothing logged so far... 🔍</p>
+            <p><strong>Welcome to your personal logbook! ✍️</strong></p>
+            <p>Use the logbook to keep a running record of your learner's journey and set goals to look back on.</p>
+            <p>If your learner is working with a speech therapist or a teaching assistant at school, be sure to share the information you've gathered to ensure the best outcomes.</p>
         {% endfor %}
     </div>
 </div>
+
+<!-- JavaScript to Handle Delete Confirmation -->
+<script>
+    function confirmDelete(entryId) {
+        if (confirm("Are you sure you want to delete the log entry?")) {
+            fetch(`/logbook/delete/${entryId}/`, {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}",
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();  // Refresh page after deletion
+                } else {
+                    alert("Error deleting entry.");
+                }
+            });
+        }
+    }
+</script>
 {% endblock %}

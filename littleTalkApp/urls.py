@@ -27,6 +27,7 @@ urlpatterns = [
     path('logbook/', views.logbook, name='logbook'),
     path('logbook/new/', views.new_log_entry, name='new_log_entry'),
     path('logbook/<int:entry_id>/', views.log_entry_detail, name='log_entry_detail'),
+    path('logbook/delete/<int:entry_id>/', views.delete_log_entry, name='delete_log_entry'),  # New delete URL
 
     # API endpoints
     path('api/learners/<int:learner_id>/update-exp/', UpdateLearnerExpAPIView.as_view(), name='update_learner_exp'),
