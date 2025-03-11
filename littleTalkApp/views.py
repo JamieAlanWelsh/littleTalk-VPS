@@ -22,6 +22,9 @@ from .forms import CustomAuthenticationForm
 from django.contrib import messages
 from .models import LogEntry
 from .forms import LogEntryForm
+from .forms import EmailChangeForm
+from .forms import PasswordUpdateForm
+from django.contrib.auth import update_session_auth_hash
 
 
 def home(request):
@@ -265,12 +268,55 @@ def confirm_delete_learner(request, learner_uuid):
     return render(request, 'profile/confirm_delete_learner.html', {'learner': learner})
 
 
+# SETTINGS
 
 @login_required
 def settings_view(request):
-    # form = EmailChangeForm(instance=request.user)
-    # return render(request, 'settings.html', {'form': form})
-    return render(request, 'settings.html')
+    email_form = EmailChangeForm(instance=request.user)
+    password_form = PasswordUpdateForm(user=request.user)
+
+    return render(request, 'settings.html', {
+        'email_form': email_form,
+        'password_form': password_form
+    })
+
+
+@login_required
+def change_email(request):
+    if request.method == 'POST':
+        form = EmailChangeForm(request.POST, instance=request.user)
+        if form.is_valid():
+            user = form.save(commit=False)  # Don't save yet, modify first
+            user.username = user.email  # Update username to match email
+            user.save()  # Now save the changes
+            messages.success(request, "Your email has been updated successfully!")
+            return redirect('settings')
+        else:
+            messages.error(request, "Error updating email. Please try again.")
+    else:
+        form = EmailChangeForm(instance=request.user)
+
+    return render(request, 'settings.html', {'form': form})
+
+
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordUpdateForm(request.user, request.POST)
+        if form.is_valid():
+            new_password = form.cleaned_data.get("new_password")
+            request.user.set_password(new_password)  # Securely update password
+            request.user.save()
+
+            # Keep user logged in after password change
+            update_session_auth_hash(request, request.user)
+
+            messages.success(request, "Your password has been updated successfully!")
+            return redirect('settings')
+        else:
+            messages.error(request, "Error updating password. Please try again.")
+
+    return redirect('settings')
 
 
 # API VIEWS

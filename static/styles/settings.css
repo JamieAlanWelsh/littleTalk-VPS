@@ -30,8 +30,8 @@
 
 .save-btn, .logout-btn {
     display: block;
-    width: 95%;
-    background-color: var(--yellow-button-color);
+    width: 580px; /* right width */
+    background-color: white;
     color: var(--font-color);
     padding: 10px;
     font-size: 1.2rem;
@@ -41,13 +41,14 @@
     text-decoration: none;
     box-shadow: var(--box-shadow);
     transition: background-color 0.3s ease;
+    border: none;
 }
-
+/* 
 .logout-btn {
     background-color: white;
     
-}
+} */
 
 .save-btn:hover, .logout-btn:hover {
-    background-color: var(--yellow-button-hover);
+    background-color: var(--yellow-button-color);
 }

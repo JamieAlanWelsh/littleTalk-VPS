@@ -6,23 +6,30 @@
 <h1>Settings</h1>
 <div class="settings-container">
 
+    <!-- Change Email Form -->
+    <h2>Email</h2>
+    <form method="post" action="{% url 'change_email' %}" class="settings-form">
+        {% csrf_token %}
+        {{ email_form.as_p }}
+        <button type="submit" class="save-btn">Save</button>
+    </form>
+
+    <h2>Change Password</h2>
+    <form method="post" action="{% url 'change_password' %}" class="settings-form">
+        {% csrf_token %}
+        {{ password_form.as_p }}
+        <button type="submit" class="save-btn">Save</button>
+    </form>
+
     <!-- Display Messages -->
-    {% comment %} {% if messages %}
+    {% if messages %}
         {% for message in messages %}
             <p class="message">{{ message }}</p>
         {% endfor %}
-    {% endif %} {% endcomment %}
-    <p>hi</p>
-
-    <!-- Change Email Form -->
-    {% comment %} <h2>Change Email</h2>
-    <form method="post" action="{% url 'change_email' %}" class="settings-form">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="save-btn">Save</button>
-    </form> {% endcomment %}
+    {% endif %}
 
     <!-- Logout Button -->
+    <h2>Logout</h2>
     <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
 </div>
 {% endblock %}

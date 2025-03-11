@@ -69,3 +69,34 @@ class LogEntryForm(forms.ModelForm):
             'goals': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
             'notes': forms.Textarea(attrs={'class': 'form-control', 'rows': 5}),
         }
+
+
+# SETTINGS FORMS
+
+class EmailChangeForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['email']
+        widgets = {
+            'email': forms.EmailInput(attrs={'class': 'form-control'})
+        }
+
+class PasswordUpdateForm(forms.Form):
+    current_password = forms.CharField(
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Current Password'}),
+        label="Current Password"
+    )
+    new_password = forms.CharField(
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'New Password'}),
+        label="New Password"
+    )
+
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.user = user
+
+    def clean_current_password(self):
+        current_password = self.cleaned_data.get("current_password")
+        if not self.user.check_password(current_password):
+            raise forms.ValidationError("Incorrect current password.")
+        return current_password
