@@ -6,9 +6,10 @@
 {% block content %}
 <!-- Learner not Selected -->
 {% if learner_selected != True %}
-    <h2>No Learner Selected</h2>
-    <p>Please add or select a learner in the profile section to get started.</p>
-    <a href="{% url 'profile' %}" class="button">Go to Profile</a>
+    <h2>Welcome to the practise section! 👩‍🏫</h2>
+    <p>Here, you will be able to access exercises and information to use on your learning journey.</p>
+    <p>To get started, add or select a learner in the profile section and come back!</p>
+    <a href="{% url 'profile' %}" class="btn btn-primary" style="width: 250px; text-align: center;">Go to Profile</a>
 <!-- Learner Selected -->
 {% else %}
     <h2>Welcome back {{ selected_learner.name }}!</h2>
