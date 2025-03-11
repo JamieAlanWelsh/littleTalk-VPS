@@ -8,17 +8,17 @@
 
     <!-- Change Email Form -->
     {% comment %} <h2>Email</h2> {% endcomment %}
-    <form method="post" action="{% url 'change_email' %}" class="settings-form">
+    <form method="post" action="{% url 'change_email' %}" class="settings-form" id="email-form">
         {% csrf_token %}
         {{ email_form.as_p }}
-        <button type="submit" class="save-btn">Save Changes</button>
+        <button type="submit" class="save-btn" id="email-save-btn" disabled>Save Changes</button>
     </form>
 
     {% comment %} <h2>Change Password</h2> {% endcomment %}
-    <form method="post" action="{% url 'change_password' %}" class="settings-form">
+    <form method="post" action="{% url 'change_password' %}" class="settings-form" id="password-form">
         {% csrf_token %}
         {{ password_form.as_p }}
-        <button type="submit" class="save-btn">Save Changes</button>
+        <button type="submit" class="save-btn" id="password-save-btn" disabled>Save Changes</button>
     </form>
 
     <!-- Display Messages -->
@@ -32,4 +32,38 @@
     {% comment %} <h2>Logout</h2> {% endcomment %}
     <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
 </div>
+
+<!-- JavaScript to Enable Save Button Only When Changes Are Made -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        function trackChanges(formId, buttonId) {
+            const form = document.getElementById(formId);
+            const saveButton = document.getElementById(buttonId);
+            const inputs = form.querySelectorAll("input");
+
+            let originalValues = {};
+
+            // Store initial values
+            inputs.forEach(input => {
+                originalValues[input.name] = input.value;
+                input.addEventListener("input", checkChanges);
+            });
+
+            function checkChanges() {
+                let changed = false;
+                inputs.forEach(input => {
+                    if (input.value !== originalValues[input.name]) {
+                        changed = true;
+                    }
+                });
+
+                saveButton.disabled = !changed; // Enable button if any change detected
+            }
+        }
+
+        // Apply the tracking function to both forms
+        trackChanges("email-form", "email-save-btn");
+        trackChanges("password-form", "password-save-btn");
+    });
+</script>
 {% endblock %}

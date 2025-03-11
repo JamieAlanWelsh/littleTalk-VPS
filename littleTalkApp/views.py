@@ -284,31 +284,39 @@ def settings_view(request):
 @login_required
 def change_email(request):
     if request.method == 'POST':
-        form = EmailChangeForm(request.POST, instance=request.user)
-        if form.is_valid():
-            user = form.save(commit=False)  # Don't save yet, modify first
-            user.username = user.email  # Update username to match email
-            user.save()  # Now save the changes
+        email_form = EmailChangeForm(request.POST, instance=request.user)
+        password_form = PasswordUpdateForm(user=request.user)  # Ensure password form is included
+
+        if email_form.is_valid():
+            user = email_form.save(commit=False)
+            user.username = user.email  # Keep username in sync with email
+            user.save()
             messages.success(request, "Your email has been updated successfully!")
             return redirect('settings')
         else:
             messages.error(request, "Error updating email. Please try again.")
-    else:
-        form = EmailChangeForm(instance=request.user)
 
-    return render(request, 'settings.html', {'form': form})
+    else:
+        email_form = EmailChangeForm(instance=request.user)
+        password_form = PasswordUpdateForm(user=request.user)
+
+    return render(request, 'settings.html', {
+        'email_form': email_form,
+        'password_form': password_form
+    })
+
 
 
 @login_required
 def change_password(request):
     if request.method == 'POST':
-        form = PasswordUpdateForm(request.user, request.POST)
-        if form.is_valid():
-            new_password = form.cleaned_data.get("new_password")
-            request.user.set_password(new_password)  # Securely update password
-            request.user.save()
+        email_form = EmailChangeForm(instance=request.user)  # Ensure email form is included
+        password_form = PasswordUpdateForm(request.user, request.POST)
 
-            # Keep user logged in after password change
+        if password_form.is_valid():
+            new_password = password_form.cleaned_data.get("new_password")
+            request.user.set_password(new_password)
+            request.user.save()
             update_session_auth_hash(request, request.user)
 
             messages.success(request, "Your password has been updated successfully!")
@@ -316,7 +324,10 @@ def change_password(request):
         else:
             messages.error(request, "Error updating password. Please try again.")
 
-    return redirect('settings')
+    return render(request, 'settings.html', {
+        'email_form': email_form,
+        'password_form': password_form
+    })
 
 
 # API VIEWS

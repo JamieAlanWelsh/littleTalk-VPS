@@ -29,11 +29,12 @@
     border: 1px solid #ccc;
 }
 
-.save-btn, .logout-btn {
+/* Default (Disabled) Save Button */
+.save-btn {
     display: block;
-    width: 180px; /* right width */
-    background-color: var(--yellow-button-color);
-    color: var(--font-color);
+    width: 180px; /* Right width */
+    background-color: #d3d3d3; /* Light grey for disabled state */
+    color: #a0a0a0; /* Dimmed text */
     padding: 10px;
     font-size: 1.0rem;
     font-weight: bold;
@@ -41,20 +42,43 @@
     text-align: center;
     text-decoration: none;
     box-shadow: var(--box-shadow);
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease;
     border: none;
-    cursor: pointer;
+    cursor: not-allowed; /* Disabled cursor */
     margin-top: -10px;
     margin-bottom: 30px;
 }
 
+/* Active (Enabled) Save Button */
+.save-btn:enabled {
+    background-color: var(--yellow-button-color); /* Active color */
+    color: var(--font-color);
+    cursor: pointer; /* Change cursor to pointer */
+}
+
+/* Hover Effect for Enabled Button */
+.save-btn:enabled:hover {
+    background-color: var(--yellow-button-hover);
+}
+
+/* Logout Button */
 .logout-btn {
+    display: block;
     margin-top: 30px;
     background-color: white;
     width: 580px;
     font-size: 1.2rem;
+    padding: 10px;
+    color: var(--font-color);
+    border-radius: var(--border-radius);
+    text-align: center;
+    text-decoration: none;
+    box-shadow: var(--box-shadow);
+    font-weight: bold;
+    transition: background-color 0.3s ease;
 }
 
-.save-btn:hover, .logout-btn:hover {
+/* Hover Effect for Logout Button */
+.logout-btn:hover {
     background-color: var(--yellow-button-color);
 }
