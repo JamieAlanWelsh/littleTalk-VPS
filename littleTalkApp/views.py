@@ -90,19 +90,23 @@ def game_description(request, game_name):
             'video_id': 'FcdA00Tj5N0',
             'static_name': 'colourful_semantics',
         },
-        'categorisation': {
-            'title': 'Exercise 2',
-            'description': 'Another fun learning activity.',
-            'description2': '',
-            'video_id': '',
-            'static_name': 'categorisation',
-        },
         'think_and_find': {
-            'title': 'Think & Find',
-            'description': 'Another fun learning activity.',
-            'description2': '',
+            'title': 'Think and Find',
+            'description': "Think and Find is an activity designed to enhance children's language skills and cognitive development. This exercise helps children connect tangible items with abstract concepts, facilitating deeper understanding of language. By associating specific items with broader concepts, children learn to identify items based on similarities and differences, aiding in information processing and decision-making.",
+            'description2': '"Linking items to concepts helps children structure their thoughts and enhances memory and retrieval capabilities" (Anderson & Freebody, 1981).',
+            'description3': "This learning method not only supports the integration of new information but also significantly boosts vocabulary development and comprehension. For children experiencing language difficulties, this activity can be particularly beneficial in improving their ability to organise and recall words.",
+            'description4': "The Think and Find exercise will ask your child to find the correct item out of a number of options. For example, your child might be asked to find the ‘bear with the yellow hat’ out of a choice of four bears. Your child will then have to click on the correct option.",
             'video_id': '',
             'static_name': 'think_and_find',
+        },
+        'categorisation': {
+            'title': 'Categorisation',
+            'description': 'Categorisation is an exercise designed to help children process information by grouping similar information together. This makes it easier for children to retrieve information and describe items.',
+            'description2': '“Arranging thoughts, concepts and words into categories facilitate meaning, memory and retrieval” (Roth & Troia, 2005)',
+            'description3': "Working on categorisation is a great way to build and expand vocabulary. Expanding vocabulary through categorisation allows for better comprehension and helps to store information. Some children with language difficulties can have a hard time organising and remembering words, but categorisation is a great way to develop this skill!",
+            'description4': "The categorisation exercise will ask your child to sort different items into groups. For example, your child will be asked to find zoo animals, clothes and fruit. Your child then needs to select the correct items and drag them into the corresponding box.",
+            'video_id': '',
+            'static_name': 'categorisation',
         },
     }
     game = game_descriptions.get(game_name, None)
