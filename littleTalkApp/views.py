@@ -170,12 +170,12 @@ def comingsoon(request):
     return render(request, "registration/comingsoon.html", {"form": form})
 
 
-@login_required
-def custom_logout_view(request):
-    if request.method == 'POST':
-        logout(request)
-        return redirect('login')  # Redirect to the login page after logging out
-    return render(request, 'logout_confirm.html')  # Show confirmation page
+# @login_required
+# def custom_logout_view(request):
+#     if request.method == 'POST':
+#         logout(request)
+#         return redirect('login')  # Redirect to the login page after logging out
+#     return render(request, 'logout_confirm.html')  # Show confirmation page
 
 
 @login_required
@@ -265,13 +265,15 @@ def confirm_delete_learner(request, learner_uuid):
     return render(request, 'profile/confirm_delete_learner.html', {'learner': learner})
 
 
-# def colourful_semantics_view(request):
-#     # Get the CSRF token
-#     csrf_token = get_token(request)
 
-#     # Pass the CSRF token to the template context
-#     return render(request, 'exercises/index.html', {'csrf_token': csrf_token})
+@login_required
+def settings_view(request):
+    # form = EmailChangeForm(instance=request.user)
+    # return render(request, 'settings.html', {'form': form})
+    return render(request, 'settings.html')
 
+
+# API VIEWS
 
 class UpdateLearnerExpAPIView(APIView):
     def post(self, request, learner_id):

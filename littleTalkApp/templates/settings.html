@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Settings - LittleTalk{% endblock %}
+
+{% block content %}
+<h1>Settings</h1>
+<div class="settings-container">
+
+    <!-- Display Messages -->
+    {% comment %} {% if messages %}
+        {% for message in messages %}
+            <p class="message">{{ message }}</p>
+        {% endfor %}
+    {% endif %} {% endcomment %}
+    <p>hi</p>
+
+    <!-- Change Email Form -->
+    {% comment %} <h2>Change Email</h2>
+    <form method="post" action="{% url 'change_email' %}" class="settings-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="save-btn">Save</button>
+    </form> {% endcomment %}
+
+    <!-- Logout Button -->
+    <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+</div>
+{% endblock %}

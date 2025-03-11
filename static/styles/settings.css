@@ -1,0 +1,53 @@
+.settings-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: var(--accent-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    text-align: center;
+    position: relative;
+}
+
+.settings-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    text-align: left;
+}
+
+.settings-form label {
+    font-weight: bold;
+    color: var(--font-color);
+}
+
+.settings-form input {
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: var(--border-radius);
+    border: 1px solid #ccc;
+}
+
+.save-btn, .logout-btn {
+    display: block;
+    width: 95%;
+    background-color: var(--yellow-button-color);
+    color: var(--font-color);
+    padding: 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: var(--border-radius);
+    text-align: center;
+    text-decoration: none;
+    box-shadow: var(--box-shadow);
+    transition: background-color 0.3s ease;
+}
+
+.logout-btn {
+    background-color: white;
+    
+}
+
+.save-btn:hover, .logout-btn:hover {
+    background-color: var(--yellow-button-hover);
+}

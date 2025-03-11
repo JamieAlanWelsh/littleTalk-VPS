@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'styles/profile.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'styles/practice.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'styles/logbook.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/settings.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant&display=swap" rel="stylesheet">
 
     <!-- Google tag (gtag.js) -->
@@ -60,8 +61,8 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{% url 'logout' %}">
-                        <img src="{% static 'icons/service.png' %}" alt="Logout" class="sidebar-icon">
+                    <a href="{% url 'settings' %}">
+                        <img src="{% static 'icons/service.png' %}" alt="Settings" class="sidebar-icon">
                         <span>Settings</span>
                     </a>
                 </li>
