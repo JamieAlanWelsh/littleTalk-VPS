@@ -11,14 +11,14 @@
     <form method="post" action="{% url 'change_email' %}" class="settings-form">
         {% csrf_token %}
         {{ email_form.as_p }}
-        <button type="submit" class="save-btn">Save</button>
+        <button type="submit" class="save-btn">Save Changes</button>
     </form>
 
     <h2>Change Password</h2>
     <form method="post" action="{% url 'change_password' %}" class="settings-form">
         {% csrf_token %}
         {{ password_form.as_p }}
-        <button type="submit" class="save-btn">Save</button>
+        <button type="submit" class="save-btn">Save Changes</button>
     </form>
 
     <!-- Display Messages -->

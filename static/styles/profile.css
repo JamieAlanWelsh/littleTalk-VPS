@@ -191,15 +191,9 @@
     font-size: 1rem;
     color: var(--font-color);
     background-color: white;
-    border: none;
+    border: 1px solid #ccc;
     border-radius: var(--border-radius);
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.add-learner-form input:focus,
-.add-learner-form select:focus,
-.add-learner-form textarea:focus {
-    outline: none;
 }
 
 /* Submit Button */

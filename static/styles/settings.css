@@ -30,11 +30,11 @@
 
 .save-btn, .logout-btn {
     display: block;
-    width: 580px; /* right width */
+    width: 180px; /* right width */
     background-color: white;
     color: var(--font-color);
     padding: 10px;
-    font-size: 1.2rem;
+    font-size: 1.0rem;
     font-weight: bold;
     border-radius: var(--border-radius);
     text-align: center;
@@ -42,12 +42,14 @@
     box-shadow: var(--box-shadow);
     transition: background-color 0.3s ease;
     border: none;
+    cursor: pointer;
 }
-/* 
+
 .logout-btn {
-    background-color: white;
-    
-} */
+    /* background-color: white; */
+    width: 580px;
+    font-size: 1.2rem;
+}
 
 .save-btn:hover, .logout-btn:hover {
     background-color: var(--yellow-button-color);
