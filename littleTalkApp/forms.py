@@ -81,6 +81,12 @@ class EmailChangeForm(forms.ModelForm):
             'email': forms.EmailInput(attrs={'class': 'form-control'})
         }
 
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+        if not email.strip():  # Prevent empty or whitespace-only input
+            raise forms.ValidationError("Email cannot be empty.")
+        return email
+
 class PasswordUpdateForm(forms.Form):
     current_password = forms.CharField(
         widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Current Password'}),

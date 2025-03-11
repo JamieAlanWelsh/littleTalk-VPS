@@ -7,14 +7,14 @@
 <div class="settings-container">
 
     <!-- Change Email Form -->
-    <h2>Email</h2>
+    {% comment %} <h2>Email</h2> {% endcomment %}
     <form method="post" action="{% url 'change_email' %}" class="settings-form">
         {% csrf_token %}
         {{ email_form.as_p }}
         <button type="submit" class="save-btn">Save Changes</button>
     </form>
 
-    <h2>Change Password</h2>
+    {% comment %} <h2>Change Password</h2> {% endcomment %}
     <form method="post" action="{% url 'change_password' %}" class="settings-form">
         {% csrf_token %}
         {{ password_form.as_p }}
@@ -29,7 +29,7 @@
     {% endif %}
 
     <!-- Logout Button -->
-    <h2>Logout</h2>
+    {% comment %} <h2>Logout</h2> {% endcomment %}
     <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
 </div>
 {% endblock %}
