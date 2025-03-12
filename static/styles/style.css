@@ -166,36 +166,6 @@ p {
     text-align: left;
 }
 
-.start-button-wrapper {
-    display: flex; /* Use flexbox for centering */
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    margin-top: 25px; /* Full height of the viewport */
-}
-
-.start-button {
-    background-color: var(--button-green);
-    color: var(--font-color);
-    text-transform: uppercase;
-    font-weight: bold;
-    font-size: 40px;
-    letter-spacing: 0.05em;
-    width: 300px;
-    height: 100px;
-    border-radius: 30px;
-    border: none;
-    box-shadow: var(--box-shadow);
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    line-height: 100px; /* Vertically center text inside button */
-    text-align: center; /* Horizontally align text inside button */
-    text-decoration: none; /* Remove underline */
-}
-
-.start-button:hover {
-    background-color: var(--button-hover);
-}
-
 .video-wrapper {
     max-width: 750px; /* Sets the maximum width of the video */
     margin: 20px auto; /* Centers the video and adds vertical spacing */
@@ -338,6 +308,7 @@ p {
     box-shadow: var(--box-shadow);
     font-family: var(--font-roboto);
     font-weight: bold;
+    /* letter-spacing: 1px; */
     transition: background-color 0.3s ease, transform 0.2s ease;
     letter-spacing: 1px; /* Adjust the value for desired spacing */
 }

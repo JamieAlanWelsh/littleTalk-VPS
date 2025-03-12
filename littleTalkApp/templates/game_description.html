@@ -1,18 +1,33 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}
-{{ game.title }}
-{% endblock %}
+{% block title %}{{ game.title }}{% endblock %}
 
 {% block content %}
-    <h1>{{ game.title }}</h1>
-    <p>{{ game.description }}</p>
-    <p>{{ game.description2 }}</p>
-    <p>{{ game.description3 }}</p>
-    <p>{{ game.description4 }}</p>
-    <h1>Video Example</h1>
+<div class="game-description-container">
 
+    <!-- Back Arrow -->
+    <a href="{% url 'practise' %}" class="back-arrow" aria-label="Go back">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" 
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+    </a>
+
+    <h1>{{ game.title }}</h1>
+    
+    <p class="game-description">{{ game.description }}</p>
+    <p class="game-quote">{{ game.quote }}</p>
+    
+    <p class="game-description">{{ game.description2 }}</p>
+    <p class="game-description">{{ game.description3 }}</p>
+    <p class="game-description">{{ game.description4 }}</p>
+
+    <h2>Learning Level Guide</h2>
+    <p class="learning-level">{{ game.learninglevel }}</p>
+
+    {% comment %}
     <!-- YouTube video embed -->
     <div class="video-wrapper">
         <iframe 
@@ -23,9 +38,13 @@
             allowfullscreen>
         </iframe>
     </div>
+    {% endcomment %}
 
     <!-- Start button -->
     <div class="start-button-wrapper">
-        <a href="{% static 'exercises/'|add:game.static_name|add:'/index.html' %}" target="_blank" class="start-button">Start</a>
+        <a href="{% static 'exercises/'|add:game.static_name|add:'/index.html' %}" target="_blank" class="start-button">
+            START
+        </a>
     </div>
+</div>
 {% endblock %}

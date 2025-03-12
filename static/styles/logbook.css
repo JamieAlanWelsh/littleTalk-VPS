@@ -202,7 +202,7 @@
     box-shadow: var(--box-shadow);
     border-radius: var(--border-radius);
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    transition: background-color 0.3s ease;
 }
 
 .submit-btn:hover {

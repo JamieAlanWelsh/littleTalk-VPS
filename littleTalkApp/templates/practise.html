@@ -22,14 +22,16 @@
         </div>
         <div class="exercise-details">
             <h3>Sentence Building - Colourful Semantics</h3>
-            <p>Repetitions: 15 (Approx. 10 minutes)</p>
+            <p><strong>Recommendation:</strong> 5-10 minutes per day</p>
             {% comment %} <p>Difficulty: {{ selected_learner.assessment2 }}/6</p> {% endcomment %}
-            <a href="{% static 'exercises/colourful_semantics/index.html' %}" target="_blank" class="button exercise-btn">Get Started</a>
+            <!-- Buttons Wrapper -->
+            <div class="exercise-buttons">
+                <a href="{% static 'exercises/colourful_semantics/index.html' %}" target="_blank" class="button exercise-btn">START</a>
+                <a href="{% url 'game_description' 'colourful_semantics' %}" class="button info-btn">More Info</a>
+            </div>
         </div>
-        <a href="{% url 'game_description' 'colourful_semantics' %}">
-            <img src="{% static 'icons/info.png' %}" alt="Info" class="exercise-icon">
-        </a>
     </div>
+
     {% comment %} THINK & FIND {% endcomment %}
     <div class="exercise-widget">
         <div class="exercise-image">
@@ -41,13 +43,13 @@
                 <p>This exercise will be unlocked as you progress.</p>
                 <a class="button exercise-btn locked-btn">Locked</a>
             {% else %}
-                <p>Repetitions: 10 (Approx. 10 minutes)</p>
-                <a href="{% static 'exercises/think_and_find/index.html' %}" target="_blank" class="button exercise-btn">Get Started</a>
+                <p><strong>Recommendation:</strong> 5-10 minutes per day</p>
+                <div class="exercise-buttons">
+                    <a href="{% static 'exercises/think_and_find/index.html' %}" target="_blank" class="button exercise-btn">START</a>
+                    <a href="{% url 'game_description' 'think_and_find' %}" class="button info-btn">More Info</a>
+                </div>
             {% endif %}
         </div>
-        <a href="{% url 'game_description' 'think_and_find' %}">
-            <img src="{% static 'icons/info.png' %}" alt="Info" class="exercise-icon">
-        </a>
     </div>
     {% comment %} CATEGORISATAION {% endcomment %}
     <div class="exercise-widget">
@@ -55,18 +57,18 @@
             <img src="{% static 'icons/categorisation_icon.png' %}" alt="Sentence Building">
         </div>
         <div class="exercise-details">
-            <h3>Pairing into Groups - Categorisation</h3>
+            <h3>Sorting into Groups - Categorisation</h3>
             {% if selected_learner.assessment1 < 3 %}
                 <p>This exercise will be unlocked as you progress.</p>
                 <a class="button exercise-btn locked-btn">Locked</a>
             {% else %}
-                <p>Repetitions: 3 (Approx. 5 minutes)</p>
-                <a href="{% url 'game_description' 'categorisation' %}" class="button exercise-btn">Get Started</a>
+                <p><strong>Recommendation:</strong> 5-10 minutes per day</p>
+                <div class="exercise-buttons">
+                    <a href="{% static 'exercises/categorisation/index.html' %}" class="button exercise-btn">START</a>
+                    <a href="{% url 'game_description' 'categorisation' %}" class="button info-btn">More Info</a>
+                </div>
             {% endif %}
         </div>
-        <a href="{% url 'game_description' 'categorisation' %}">
-            <img src="{% static 'icons/info.png' %}" alt="Info" class="exercise-icon">
-        </a>
     </div>
 {% endif %}
 {% endblock %}

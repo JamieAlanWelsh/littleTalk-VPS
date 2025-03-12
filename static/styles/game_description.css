@@ -1,0 +1,85 @@
+/* Game Description Container */
+.game-description-container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: var(--accent-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    text-align: left;
+    position: relative;
+}
+
+/* Back Arrow Styling */
+.back-arrow {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    border-radius: 50%;
+    text-decoration: none;
+    color: var(--font-color);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.back-arrow:hover {
+    background-color: var(--yellow-button-color);
+}
+
+.arrow-icon {
+    width: 20px;
+    height: 20px;
+    color: var(--font-color);
+}
+
+/* Game Description Text */
+.game-description {
+    font-size: 1.1rem;
+    color: var(--font-color);
+    margin-bottom: 15px;
+}
+
+/* Quote Styling */
+.game-quote {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--secondary-color);
+    margin: 20px 0;
+}
+
+/* Learning Level Section */
+.learning-level {
+    font-size: 1.1rem;
+    color: var(--font-color);
+    /* padding: 10px; */
+    margin-top: 20px;
+}
+
+/* Start Button */
+.start-button-wrapper {
+    margin-top: 30px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.start-button {
+    background-color: var(--button-green);
+    color: var(--font-color);
+    padding: 15px 30px;
+    font-size: 1.4rem;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    transition: background-color 0.3s ease;
+}
+
+.start-button:hover {
+    background-color: var(--button-hover);
+    /* transform: scale(1.05); */
+}
