@@ -28,9 +28,12 @@
         {% endfor %}
     {% endif %}
 
-    <!-- Logout Button -->
-    {% comment %} <h2>Logout</h2> {% endcomment %}
-    <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+    <!-- Logout Form (POST request) -->
+    <form method="post" action="{% url 'logout' %}" class="logout-form">
+        {% csrf_token %}
+        <button type="submit" class="logout-btn">Logout</button>
+    </form>
+    
 </div>
 
 <!-- JavaScript to Enable Save Button Only When Changes Are Made -->

@@ -64,15 +64,17 @@
     display: block;
     margin-top: 30px;
     background-color: white;
-    width: 580px;
+    width: 600px;
     font-size: 1.2rem;
-    padding: 10px;
+    padding: 15px;
     color: var(--font-color);
     border-radius: var(--border-radius);
+    border: none;
     text-align: center;
     text-decoration: none;
     box-shadow: var(--box-shadow);
     font-weight: bold;
+    cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
