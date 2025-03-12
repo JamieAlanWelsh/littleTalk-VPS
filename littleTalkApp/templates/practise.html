@@ -6,13 +6,13 @@
 {% block content %}
 <!-- Learner not Selected -->
 {% if learner_selected != True %}
-    <h2>Welcome to the practise section! 👩‍🏫</h2>
+    <h1>Welcome to the practise section! 👩‍🏫</h1>
     <p>Here, you will be able to access exercises and information to use on your learning journey.</p>
     <p>To get started, add or select a learner in the profile section and come back!</p>
     <a href="{% url 'profile' %}" class="btn btn-primary" style="width: 250px; text-align: center;">Go to Profile</a>
 <!-- Learner Selected -->
 {% else %}
-    <h2>Welcome back {{ selected_learner.name }}!</h2>
+    <h1>Welcome back {{ selected_learner.name }}!</h1>
     <h2>Here are your recommended exercises:</h2>
     
     {% comment %} COLOURFUL SEMANTICS {% endcomment %}
@@ -21,7 +21,7 @@
             <img src="{% static 'icons/colour_semantics_icon_bg.png' %}" alt="Sentence Building">
         </div>
         <div class="exercise-details">
-            <h3>Sentence Building - Colourful Semantics</h3>
+            <h3>Colourful Semantics - Sentence Building</h3>
             <p><strong>Recommendation:</strong> 5-10 minutes per day</p>
             {% comment %} <p>Difficulty: {{ selected_learner.assessment2 }}/6</p> {% endcomment %}
             <!-- Buttons Wrapper -->
@@ -38,7 +38,7 @@
             <img src="{% static 'icons/think_and_find_icon.png' %}" alt="Sentence Building">
         </div>
         <div class="exercise-details">
-            <h3>Distinguishing - Think and Find</h3>
+            <h3>Think and Find - Identifying Concepts</h3>
             {% if selected_learner.assessment1 < 2 %}
                 <p>This exercise will be unlocked as you progress.</p>
                 <a class="button exercise-btn locked-btn">Locked</a>
@@ -57,7 +57,7 @@
             <img src="{% static 'icons/categorisation_icon.png' %}" alt="Sentence Building">
         </div>
         <div class="exercise-details">
-            <h3>Sorting into Groups - Categorisation</h3>
+            <h3>Categorisation - Sorting into Groups</h3>
             {% if selected_learner.assessment1 < 3 %}
                 <p>This exercise will be unlocked as you progress.</p>
                 <a class="button exercise-btn locked-btn">Locked</a>

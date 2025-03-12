@@ -39,7 +39,7 @@
 
 /* Game Description Text */
 .game-description {
-    font-size: 1.1rem;
+    /* font-size: 1.1rem; */
     color: var(--font-color);
     margin-bottom: 15px;
 }
@@ -62,15 +62,15 @@
 
 /* Start Button */
 .start-button-wrapper {
-    margin-top: 30px;
-    margin-bottom: 20px;
+    margin-top: 50px;
+    margin-bottom: 30px;
     text-align: center;
 }
 
 .start-button {
     background-color: var(--button-green);
     color: var(--font-color);
-    padding: 15px 30px;
+    padding: 15px 60px;
     font-size: 1.4rem;
     font-weight: bold;
     text-decoration: none;

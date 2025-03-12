@@ -4,7 +4,7 @@
 {% block title %}Profile - LittleTalk{% endblock %}
 
 {% block content %}
-<h2>Hi {{ request.user.first_name|default:"there" }}! who's learning today?</h2>
+<h1>Hi {{ request.user.first_name|default:"there" }}! who's learning today?</h1>
 <div class="profile-container">
     <!-- Left Column -->
     <div class="left-column">
