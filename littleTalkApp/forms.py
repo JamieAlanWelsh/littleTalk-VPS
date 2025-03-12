@@ -73,12 +73,13 @@ class LogEntryForm(forms.ModelForm):
 
 # SETTINGS FORMS
 
-class EmailChangeForm(forms.ModelForm):
+class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['email']
+        fields = ['first_name', 'email']
         widgets = {
-            'email': forms.EmailInput(attrs={'class': 'form-control'})
+            'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Your Name'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Your Email'})
         }
 
     def clean_email(self):
@@ -86,6 +87,13 @@ class EmailChangeForm(forms.ModelForm):
         if not email.strip():  # Prevent empty or whitespace-only input
             raise forms.ValidationError("Email cannot be empty.")
         return email
+
+    def clean_first_name(self):
+        first_name = self.cleaned_data.get("first_name")
+        if not first_name.strip():  # Prevent empty or whitespace-only input
+            raise forms.ValidationError("Name cannot be empty.")
+        return first_name
+
 
 class PasswordUpdateForm(forms.Form):
     current_password = forms.CharField(

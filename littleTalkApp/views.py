@@ -22,7 +22,7 @@ from .forms import CustomAuthenticationForm
 from django.contrib import messages
 from .models import LogEntry
 from .forms import LogEntryForm
-from .forms import EmailChangeForm
+from .forms import UserUpdateForm
 from .forms import PasswordUpdateForm
 from django.contrib.auth import update_session_auth_hash
 
@@ -272,11 +272,11 @@ def confirm_delete_learner(request, learner_uuid):
 
 @login_required
 def settings_view(request):
-    email_form = EmailChangeForm(instance=request.user)
+    user_form = UserUpdateForm(instance=request.user)
     password_form = PasswordUpdateForm(user=request.user)
 
     return render(request, 'settings.html', {
-        'email_form': email_form,
+        'user_form': user_form,
         'password_form': password_form
     })
 
@@ -284,24 +284,25 @@ def settings_view(request):
 @login_required
 def change_email(request):
     if request.method == 'POST':
-        email_form = EmailChangeForm(request.POST, instance=request.user)
+        user_form = UserUpdateForm(request.POST, instance=request.user)
         password_form = PasswordUpdateForm(user=request.user)  # Ensure password form is included
 
-        if email_form.is_valid():
-            user = email_form.save(commit=False)
+        if user_form.is_valid():
+            user = user_form.save(commit=False)
             user.username = user.email  # Keep username in sync with email
+            user.first_name = user.first_name
             user.save()
-            messages.success(request, "Your email has been updated successfully!")
+            messages.success(request, "Your details have been updated successfully!")
             return redirect('settings')
         else:
-            messages.error(request, "Error updating email. Please try again.")
+            messages.error(request, "Error updating details. Please try again.")
 
     else:
-        email_form = EmailChangeForm(instance=request.user)
+        user_form = UserUpdateForm(instance=request.user)
         password_form = PasswordUpdateForm(user=request.user)
 
     return render(request, 'settings.html', {
-        'email_form': email_form,
+        'user_form': user_form,
         'password_form': password_form
     })
 
@@ -310,7 +311,7 @@ def change_email(request):
 @login_required
 def change_password(request):
     if request.method == 'POST':
-        email_form = EmailChangeForm(instance=request.user)  # Ensure email form is included
+        user_form = UserUpdateForm(instance=request.user)  # Ensure email form is included
         password_form = PasswordUpdateForm(request.user, request.POST)
 
         if password_form.is_valid():
@@ -325,7 +326,7 @@ def change_password(request):
             messages.error(request, "Error updating password. Please try again.")
 
     return render(request, 'settings.html', {
-        'email_form': email_form,
+        'user_form': user_form,
         'password_form': password_form
     })
 

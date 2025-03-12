@@ -8,9 +8,9 @@
 
     <!-- Change Email Form -->
     {% comment %} <h2>Email</h2> {% endcomment %}
-    <form method="post" action="{% url 'change_email' %}" class="settings-form" id="email-form">
+    <form method="post" action="{% url 'change_email' %}" class="settings-form" id="user-form">
         {% csrf_token %}
-        {{ email_form.as_p }}
+        {{ user_form.as_p }}
         <button type="submit" class="save-btn" id="email-save-btn" disabled>Save Changes</button>
     </form>
 
@@ -62,7 +62,7 @@
         }
 
         // Apply the tracking function to both forms
-        trackChanges("email-form", "email-save-btn");
+        trackChanges("user-form", "email-save-btn");
         trackChanges("password-form", "password-save-btn");
     });
 </script>
