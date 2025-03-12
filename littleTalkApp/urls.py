@@ -31,7 +31,7 @@ urlpatterns = [
 
     # Settings
     path('settings/', views.settings_view, name='settings'),
-    path('settings/change-email/', views.change_email, name='change_email'),
+    path('settings/change-user-details/', views.change_user_details, name='change_user_details'),
     path('settings/change-password/', views.change_password, name='change_password'),
     path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
 

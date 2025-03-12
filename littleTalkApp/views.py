@@ -282,7 +282,7 @@ def settings_view(request):
 
 
 @login_required
-def change_email(request):
+def change_user_details(request):
     if request.method == 'POST':
         user_form = UserUpdateForm(request.POST, instance=request.user)
         password_form = PasswordUpdateForm(user=request.user)  # Ensure password form is included

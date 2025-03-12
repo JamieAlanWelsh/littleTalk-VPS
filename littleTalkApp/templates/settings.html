@@ -8,7 +8,7 @@
 
     <!-- Change Email Form -->
     {% comment %} <h2>Email</h2> {% endcomment %}
-    <form method="post" action="{% url 'change_email' %}" class="settings-form" id="user-form">
+    <form method="post" action="{% url 'change_user_details' %}" class="settings-form" id="user-form">
         {% csrf_token %}
         {{ user_form.as_p }}
         <button type="submit" class="save-btn" id="email-save-btn" disabled>Save Changes</button>
