@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+
     <title>{% block title %}LittleTalk{% endblock %}</title>
     <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@700&family=Roboto:wght@400&display=swap" rel="stylesheet">
@@ -24,13 +25,16 @@
 
         gtag('config', 'G-ZGXMZKE8JF');
     </script>
+
+    <!-- response control e.g. mobile view -->
+    {% comment %} <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"> <!-- Responsive Meta Tag --> {% endcomment %}
+
 </head>
 <body>
     {% if not hide_sidebar %}
-        <!-- Side panel -->
-        <!-- Side panel -->
+        <!-- Sidebar / Bottom Navigation -->
         <div class="sidebar">
-            <!-- Logo at the top -->
+            <!-- Sidebar Logo (Only visible on larger screens) -->
             <div class="sidebar-logo">
                 <a href="{% url 'home' %}">
                     <img src="{% static 'images/littletalk_logo.png' %}" alt="LittleTalk Logo">

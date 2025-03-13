@@ -54,11 +54,10 @@ p {
     padding: 20px;
     background-color: var(--sidebar-color);
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    /* box-sizing: border-box; */
     display: flex;
     flex-direction: column;
-    /* align-items: center; */
     justify-content: flex-start;
+    z-index: 1000; /* Ensures sidebar is on top of other content */
 }
 
 .sidebar-logo {
@@ -158,13 +157,76 @@ p {
 
 /* Main Content */
 .main-content {
-    margin: 20px auto; /* auto controls horizontal margins to be centered */
+    margin: 20px auto; /* Auto centers horizontally */
     padding: 10px;
-    width: 80%;
+    width: 90vw;
     max-width: 800px;
-    /* box-sizing: border-box; */
     text-align: left;
 }
+
+/* MOBILE DEVICES REPSONSE */
+
+/* Adjust main content when sidebar is visible */
+
+/* Responsive Sidebar - Mobile View */
+@media (max-width: 1160px) {
+    .sidebar {
+        width: 100%;
+        height: 100px;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        top: auto;
+        background-color: var(--sidebar-color);
+        box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        padding: 0;
+        padding-top: 20px;
+    }
+
+    .sidebar-logo {
+        display: none; /* Hide logo on mobile */
+    }
+
+    .sidebar-menu {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+    .sidebar-menu li {
+        flex-grow: 1;
+        text-align: center;
+        margin-bottom: 0;
+    }
+
+    .sidebar-menu a {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 0;
+        font-size: 14px; /* Smaller text for mobile */
+        margin-bottom: 10px;
+    }
+
+    .sidebar-icon {
+        width: 60px;
+        height: 60px;
+        margin-right: 0; /* Remove extra spacing */
+        margin-bottom: 5px; /* Add space between icon and text */
+    }
+
+
+}
+
+/* MOBILE DEVICES REPSONSE */
 
 .video-wrapper {
     max-width: 750px; /* Sets the maximum width of the video */
