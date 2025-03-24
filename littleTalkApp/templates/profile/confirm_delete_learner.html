@@ -3,7 +3,7 @@
 {% block title %}Profile - LittleTalk{% endblock %}
 
 {% block content %}
-<h1>Are you sure you want to delete {{ learner.name }}?<br>All progress will be lost permanently</h1>
+<h1>Edit {{ learner.name }}</h1>
 <div class="add-learner-container">
     <!-- Back arrow button -->
     <a href="{% url 'profile' %}" class="back-arrow">
@@ -13,9 +13,11 @@
       </svg>
     </a>
 
+    <p>You are about to delete {{ learner.name }}<br>All progress will be lost permanently</p>
+
     <form method="POST" class="add-learner-form">
         {% csrf_token %}
-        <label for="password">Enter your password to confirm deletion:</label><br>
+        <label for="password">Enter your password to confirm delete learner:</label><br>
         <input type="password" name="password" required class="form-input"><br>
         
         {% if error_message %}
