@@ -3,6 +3,7 @@
 {% load static %}
 
 {% block content %}
+{% comment %} initial view {% endcomment %}
 <div class="landing-container">
     <div class="landing-left">
         <div class="text-widget">
@@ -16,6 +17,21 @@
         <div class="image-wrapper">
             <img src="{% static 'images/landing/exercise_shots.png' %}" class="hero-img" alt="Hero Image">
         </div>
+    </div>
+</div>
+{% comment %} first content bar {% endcomment %}
+<div class="content-bar">
+    <div class="content-item">
+        <h3 class="content-title">Evidence-Based Activities</h3>
+        <p class="content-text">Created by speech and language therapists using proven methods to support development.</p>
+    </div>
+    <div class="content-item">
+        <h3 class="content-title">Fits Into Your Routine</h3>
+        <p class="content-text">Just 10 minutes a day – perfect for busy parents and caregivers.</p>
+    </div>
+    <div class="content-item">
+        <h3 class="content-title">Track Progress Easily</h3>
+        <p class="content-text">See how your child is growing with regular check-ins and feedback.</p>
     </div>
 </div>
 {% endblock %}
