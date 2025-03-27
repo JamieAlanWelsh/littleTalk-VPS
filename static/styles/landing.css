@@ -140,7 +140,7 @@ body {
     font-size: 2rem;
     font-weight: 700;
     color: var(--font-color);
-    margin-bottom: 2rem;
+    margin-bottom: 4rem;
 }
 
 .content-icon {
@@ -149,4 +149,45 @@ body {
     object-fit: cover;
     margin-bottom: 1rem;
     border-radius: 0.5rem;
+}
+
+.content-split {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 1.25rem;
+    gap: 6rem;
+    background-color: var(--yellow-button-color); /* subtle contrast from white */
+}
+
+.content-split-image {
+    display: flex;
+    justify-content: center;
+}
+
+.content-split-image img {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    border-radius: 1rem;
+    object-fit: cover;
+}
+
+.content-split-text {
+    text-align: left;
+    max-width: 600px;
+}
+
+.split-heading {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--font-color);
+}
+
+.split-body {
+    font-size: 1.125rem;
+    color: var(--font-color);
+    line-height: 1.6;
 }
