@@ -1,0 +1,19 @@
+<!-- templates/landing.html -->
+{% extends "landing_base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="landing-container">
+    <div class="landing-left">
+        <div class="text-widget">
+            <h1 class="header">Help Your Child's Speech & Language Grow - From Home</h1>
+            <p class="body-text">Simple, evidence-based speech and language exercises that fit easily into your day - just 10 minutes a day, right from home.</p>
+            <p class="small-text">Starting at £8.25/month</p>
+            <button class="cta-button">Begin your free assessment</button>
+        </div>
+    </div>
+    <div class="landing-right">
+        <img src="{% static 'images/landing/exercise_shots.png' %}" class="hero-img" alt="Hero Image">
+    </div>
+</div>
+{% endblock %}

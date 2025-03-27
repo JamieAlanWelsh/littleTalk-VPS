@@ -31,7 +31,7 @@ def home(request):
     request.hide_sidebar = True
     if request.user.is_authenticated:
         return redirect('/practise/')
-    return render(request, 'home.html')
+    return render(request, 'landing.html')
 
 
 @login_required

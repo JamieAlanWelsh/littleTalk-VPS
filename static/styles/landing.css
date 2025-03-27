@@ -1,0 +1,103 @@
+:root {
+    --background-color: #9DC1E9;
+    --font-color: #2B3345;
+    --accent-color: #D9EBFE;
+    --accent-color-dark: #9DC1E9;
+    --sidebar-color: #FFE477;
+    --yellow-button-color: #FFE477;
+    --yellow-button-hover: #ffd737;
+    --button-green: #33DA73;
+    --button-hover: #28a659;
+    --box-shadow: 0px 5px 0px rgba(0, 0, 0, 0.2);
+    --border-radius: 30px;
+    --font-roboto: 'Roboto', sans-serif;
+    --font-outfit: 'Outfit', sans-serif;
+    --line-height: 1.8;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-outfit);
+    background-color: var(--background-color);
+    color: var(--font-color);
+}
+
+.landing-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 90vw;
+    margin: 0 auto;
+    height: 100vh;
+    padding: 0 2rem;
+    box-sizing: border-box;
+    gap: 2rem;
+    flex-wrap: nowrap;
+}
+
+
+.landing-left {
+    flex: 0 0 50%;
+    max-width: 50%;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: flex-end; /* 👈 Pushes .text-widget to the right */
+    align-items: center;       /* Optional: vertical centering */
+}
+
+.landing-right {
+    flex: 0 0 50%;
+    max-width: 50%;
+    box-sizing: border-box;
+}
+
+.text-widget {
+    padding: 2rem;
+    border-radius: 60px;
+    max-width: 70vh;
+}
+
+.text-widget .header {
+    font-size: 3.8rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.text-widget .body-text {
+    font-size: 1.0rem;
+    line-height: var(--line-height);
+    margin-bottom: 0.75rem;
+}
+
+.text-widget .small-text {
+    font-size: 0.875rem;
+    color: #555;
+    margin-bottom: 1.5rem;
+}
+
+.cta-button {
+    background-color: var(--yellow-button-color);
+    color: var(--font-color);
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: var(--box-shadow);
+    transition: background-color 0.3s ease;
+}
+
+.cta-button:hover {
+    background-color: var(--yellow-button-hover);
+}
+
+.hero-img {
+    width: 100%;
+    height: auto;
+    max-height: 60vh; /* 👈 keeps it from towering too tall */
+    max-width: 70vh;
+    min-height: 300px; /* 👈 keeps it from shrinking too small */
+    /* object-fit: cover; */
+    display: block;
+}

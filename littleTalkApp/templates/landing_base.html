@@ -1,0 +1,14 @@
+{% load static %}
+<!-- templates/landing_base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'styles/landing.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Roboto&display=swap" rel="stylesheet">
+</head>
+<body>
+    {% block content %}{% endblock %}
+</body>
+</html>
