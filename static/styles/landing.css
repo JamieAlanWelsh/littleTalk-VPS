@@ -41,7 +41,6 @@ body {
     max-width: 50%;
     box-sizing: border-box;
     display: flex;
-    justify-content: flex-end; /* 👈 Pushes .text-widget to the right */
     align-items: center;       /* Optional: vertical centering */
 }
 
@@ -49,6 +48,10 @@ body {
     flex: 0 0 50%;
     max-width: 50%;
     box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
 }
 
 .text-widget {
@@ -92,12 +95,15 @@ body {
     background-color: var(--yellow-button-hover);
 }
 
+
+.image-wrapper {
+    width: 100%;
+}
+
+
 .hero-img {
     width: 100%;
     height: auto;
-    max-height: 60vh; /* 👈 keeps it from towering too tall */
-    max-width: 70vh;
-    min-height: 300px; /* 👈 keeps it from shrinking too small */
-    /* object-fit: cover; */
     display: block;
+    max-width: 100%;
 }
