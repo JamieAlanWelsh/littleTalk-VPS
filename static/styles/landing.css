@@ -152,13 +152,22 @@ body {
 }
 
 .content-split {
+    padding: 4rem 1.25rem;
+    background-color: var(--yellow-button-color); /* or white via modifier */
+}
+
+/* background modifier */
+.content-split.white {
+    background-color: #fff;
+}
+
+/* new main content layout */
+.content-split-main {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    padding: 4rem 1.25rem;
-    gap: 6rem;
-    background-color: var(--yellow-button-color); /* subtle contrast from white */
+    gap: 6rem; /* gap only applies between image + text now */
 }
 
 .content-split-image {
@@ -190,4 +199,31 @@ body {
     font-size: 1.125rem;
     color: var(--font-color);
     line-height: 1.6;
+}
+
+
+.split-small-heading {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--font-color);
+}
+
+.content-split-header {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.split-subtitle {
+    font-size: 1rem;
+    color: var(--font-color);
+    margin-bottom: 0.5rem;
+}
+
+.split-heading {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--font-color);
+    line-height: 1.4;
 }

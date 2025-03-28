@@ -26,7 +26,7 @@
         <div class="content-item">
             <img src="{% static 'images/landing/arlo_butterfly.png' %}" alt="Evidence-based" class="content-icon">
             <h3 class="content-title">Quality of Life</h3>
-            <p class="content-text">Empowers children to communicate clearly, enriching their relationships and enhancing overall happiness.</p>
+            <p class="content-text">Empowers children to communicate clearly, enriching their relationships and improving overall happiness.</p>
         </div>
         <div class="content-item">
             <img src="{% static 'images/landing/arlo_book.png' %}" alt="Evidence-based" class="content-icon">
@@ -42,23 +42,79 @@
 </div>
 {% comment %} Amy intro section {% endcomment %}
 <div class="content-split">
-    <div class="content-split-image">
-        <img src="{% static 'images/landing/amy_flying.jpg' %}" alt="amy" />
+    <div class="content-split-main">
+        <div class="content-split-image">
+            <img src="{% static 'images/landing/amy_flying.jpg' %}" alt="amy" />
+        </div>
+        <div class="content-split-text">
+            <h2 class="split-heading">Hi, I’m Amy</h2>
+            <p class="split-body">
+                I’m a licensed Speech and Language Therapist and co-founder of LittleTalk.
+            </p>
+            <p class="split-body">           
+                It can be really frustrating when your child is struggling to communicate, but you’re not sure where to begin, how to get support, or feel stuck waiting for help.
+            </p>
+            <p class="split-body">
+                I first experienced this while working as a one-to-one assistant, supporting a child with Down’s Syndrome. I was handed a pack of speech and language exercises, but with no guidance or support on how to implement them. Even as a professional, I felt unsure and panicked because I cared deeply about getting it right. That experience made me realise how overwhelming it must be for parents facing the same thing.
+            </p>
+            <p class="split-body">
+                This is why we created LittleTalk - to empower parents with the tools and confidence to build their child’s speech and language from home, at their own pace.
+            </p>
+        </div>
     </div>
-    <div class="content-split-text">
-        <h2 class="split-heading">Hi, I’m Amy 👋</h2>
-        <p class="split-body">
-            I’m a licensed Speech and Language Therapist and co-founder of LittleTalk SLT.
+</div>
+{% comment %} Benefits Section {% endcomment %}
+<div class="content-split white">
+    <div class="content-split-header">
+        <p class="split-subtitle">
+            Guided activities help your child to develop language and encourage communication.
         </p>
-        <p class="split-body">           
-            It can be really frustrating when your child is struggling to communicate, but you’re not sure where to begin, how to get support, or feel stuck waiting for help.
-        </p>
-        <p class="split-body">
-            I first experienced this while working as a one-to-one assistant, supporting a child with Down’s Syndrome. I was handed a pack of speech and language exercises, but with no guidance or support on how to implement them. Even as a professional, I felt unsure and panicked because I cared deeply about getting it right. That experience made me realise how overwhelming it must be for parents facing the same thing.
-        </p>
-        <p class="split-body">
-            This is why we created LittleTalk - to empower parents with the tools and confidence to build their child’s speech and language from home, at their own pace.
-        </p>
+        <h2 class="split-heading">
+            Support Your Child in Finding Their Words,<br>One Day at a Time
+        </h2>
+    </div>
+    <div class="content-split-main">
+        <div class="content-split-image">
+            <img src="{% static 'images/landing/arlo_building.png' %}" alt="Flexible routines" />
+        </div>
+        <div class="content-split-text">
+            <h3 class="split-small-heading">Just 10 Minutes a Day, Anytime</h3>
+            <p class="split-body">
+                Busy schedule? We get it. LittleTalk fits into your day - whether it’s before school, after dinner, or whenever works for you.
+            </p>
+            <h3 class="split-small-heading">Easy for You, Fun for Them</h3>
+            <p class="split-body">
+                No training, no prep. Just log in and follow our simple, therapist-designed activities proven to help your child build their language and confidence.
+            </p>
+            <h3 class="split-small-heading">Learning Through Play</h3>
+            <p class="split-body">
+                Your child earns XP points as they practise - turning speech therapy into a game they want to play. It’s motivating, rewarding, and totally child-friendly.
+            </p>
+        </div>
+    </div>
+</div>
+{% comment %} Benefits Section 2 {% endcomment %}
+<div class="content-split white">
+    <div class="content-split-main">
+        <div class="content-split-image">
+            <img src="{% static 'images/landing/arlo_running.png' %}" alt="Flexible routines" />
+        </div>
+        <div class="content-split-text">
+            <h3 class="split-small-heading">3x Faster Progress with Daily Speech Practise</h3>
+            <p class="split-body">
+                Research shows that frequent, consistent practise can increase rate of learning from speech therapy by up to three times.
+            </p>
+            <p class="split-body">
+                With just 10 minutes a day, you can support your child’s development at home - no waitlists, no pressure, and no training required.
+            </p>
+            <h3 class="split-small-heading">Made by Speech Therapists</h3>
+            <p class="split-body">
+                Our activities are designed by licensed speech therapists - so you know that they are effective, trustworthy, and made with your child’s success in mind.
+            </p>
+            <p class="split-body">
+                Whether you are waiting for therapy, supplementing sessions, or just getting started, our tools are designed to help your child take steps forward - one word at a time.
+            </p>
+        </div>
     </div>
 </div>
 {% endblock %}
