@@ -22,6 +22,68 @@ body {
     color: var(--font-color);
 }
 
+.main-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: var(--background-color);
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.3s ease;
+}
+
+/* Hide header on scroll down */
+.main-header.hide {
+    transform: translateY(-100%);
+    box-shadow: none;
+}
+
+/* Show header on scroll up */
+.main-header.show {
+    transform: translateY(0);
+}
+
+.header-left,
+.header-center,
+.header-right {
+    display: flex;
+    align-items: center;
+}
+
+.menu-button {
+    font-size: 2rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--font-color);
+}
+
+.header-logo {
+    height: 3rem;
+    max-width: 10rem;
+    object-fit: contain;
+}
+
+.login-button {
+    background-color: var(--yellow-button-color);
+    color: var(--font-color);
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: var(--box-shadow);
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+}
+
+.login-button:hover {
+    background-color: var(--yellow-button-hover);
+}
+
 .landing-container {
     display: flex;
     justify-content: space-between;
@@ -183,6 +245,10 @@ body {
     object-fit: cover;
 }
 
+.content-split-image .small-img {
+    max-width: 400px; /* Or adjust to whatever feels right */
+}
+
 .content-split-text {
     text-align: left;
     max-width: 600px;
@@ -212,7 +278,7 @@ body {
 .content-split-header {
     width: 100%;
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: 4rem;
 }
 
 .split-subtitle {
@@ -226,4 +292,46 @@ body {
     font-weight: 700;
     color: var(--font-color);
     line-height: 1.4;
+}
+
+.footer-cta {
+    text-align: center;
+    padding: 130px 20px;
+    /* background-color: #f9f9f9; */
+}
+
+.footer-heading {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.footer-cta-button {
+    background-color: var(--yellow-button-color);
+    color: var(--font-color);
+    padding: 1.3rem 1.8rem;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 1.3rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: var(--box-shadow);
+    transition: background-color 0.3s ease;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.footer-cta-button:hover {
+    background-color: var(--yellow-button-hover);
+}
+
+.footer-icon-wrapper {
+    margin-top: 30px;
+}
+
+.footer-icon {
+    width: 18rem;
+    height: 18rem;
+    object-fit: cover;
+    border-radius: 12px;
 }
