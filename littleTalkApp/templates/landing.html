@@ -11,10 +11,13 @@
         </button>
     </div>
     <div class="header-center">
-        <img src="{% static 'images/littletalk_logo.png' %}" alt="LittleTalk Logo" class="header-logo">
+        <a href="/" class="logo-link">
+            <img src="{% static 'images/littletalk_logo.png' %}" alt="LittleTalk Logo" class="header-logo">
+        </a>
     </div>
     <div class="header-right">
         <a href="/login/" class="login-button">Login</a>
+        <a href="/get-started/" class="get-started-button">Get Started</a>
     </div>
 </header>
 {% comment %} initial view {% endcomment %}

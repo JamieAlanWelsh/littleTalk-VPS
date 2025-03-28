@@ -46,10 +46,20 @@ body {
 }
 
 .header-left,
-.header-center,
 .header-right {
     display: flex;
     align-items: center;
+    /* gap: 1rem; */
+}
+
+.header-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none; /* Prevent accidental blocking of clicks */
 }
 
 .menu-button {
@@ -64,9 +74,29 @@ body {
     height: 3rem;
     max-width: 10rem;
     object-fit: contain;
+    pointer-events: auto;
+}
+
+.logo-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
 }
 
 .login-button {
+    color: var(--font-color);
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+}
+
+.get-started-button {
     background-color: var(--yellow-button-color);
     color: var(--font-color);
     padding: 0.75rem 1.5rem;
@@ -80,7 +110,7 @@ body {
     text-decoration: none;
 }
 
-.login-button:hover {
+.get-started-button:hover {
     background-color: var(--yellow-button-hover);
 }
 
