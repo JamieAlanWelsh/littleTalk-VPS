@@ -165,7 +165,7 @@ body {
 
 .text-widget .small-text {
     font-size: 0.875rem;
-    color: #555;
+    color: #45454b;
     margin-bottom: 1.5rem;
 }
 
@@ -180,6 +180,8 @@ body {
     cursor: pointer;
     box-shadow: var(--box-shadow);
     transition: background-color 0.3s ease;
+    text-decoration: none;
+    display: inline-block; /* ✅ This fixes the margin issue */
 }
 
 .cta-button:hover {
@@ -339,16 +341,18 @@ body {
 .footer-cta-button {
     background-color: var(--yellow-button-color);
     color: var(--font-color);
-    padding: 1.3rem 1.8rem;
+    padding: 0.75rem 1.5rem;
     border: none;
     border-radius: var(--border-radius);
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     font-weight: 600;
     cursor: pointer;
     box-shadow: var(--box-shadow);
     transition: background-color 0.3s ease;
     margin-top: 1em;
     margin-bottom: 1em;
+    text-decoration: none;
+    display: inline-block; /* ✅ This fixes the margin issue */
 }
 
 .footer-cta-button:hover {
