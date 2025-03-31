@@ -7,8 +7,52 @@
     <title>{% block title %}Welcome{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'styles/landing.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Roboto&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
+    {% comment %} Header Section {% endcomment %}
+    <header class="main-header">
+        <div class="header-left">
+            <button class="menu-button" aria-label="Open menu">
+                &#9776;
+            </button>
+        </div>
+        <div class="header-center">
+            <a href="/" class="logo-link">
+                <img src="{% static 'images/littletalk_logo.png' %}" alt="LittleTalk Logo" class="header-logo">
+            </a>
+        </div>
+        <div class="header-right">
+            <a href="/login/" class="login-button">Login</a>
+            <a href="/get-started/" class="get-started-button">Get Started</a>
+        </div>
+    </header>
+
+    <script>
+        let lastScrollY = window.scrollY;
+        const header = document.querySelector('.main-header');
+    
+        window.addEventListener('scroll', () => {
+            const currentScrollY = window.scrollY;
+    
+            if (currentScrollY > lastScrollY && currentScrollY > 50) {
+                // Scrolling down
+                header.classList.remove('show');
+                header.classList.add('hide');
+            } else {
+                // Scrolling up
+                header.classList.remove('hide');
+                header.classList.add('show');
+            }
+    
+            lastScrollY = currentScrollY;
+        });
+    
+        // Ensure header is shown on first load
+        window.addEventListener('load', () => {
+            header.classList.add('show');
+        });
+    </script>
     {% block content %}{% endblock %}
 </body>
 </html>

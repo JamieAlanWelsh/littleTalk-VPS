@@ -152,7 +152,7 @@ body {
 }
 
 .text-widget .header {
-    font-size: 3.8rem;
+    font-size: 3.5rem;
     font-weight: 700;
     margin-bottom: 1rem;
 }
@@ -331,7 +331,7 @@ body {
 }
 
 .footer-heading {
-    font-size: 3rem;
+    font-size: 2.5rem;
     font-weight: bold;
     color: #333;
 }
@@ -342,7 +342,7 @@ body {
     padding: 1.3rem 1.8rem;
     border: none;
     border-radius: var(--border-radius);
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     font-weight: 600;
     cursor: pointer;
     box-shadow: var(--box-shadow);
@@ -364,4 +364,95 @@ body {
     height: 18rem;
     object-fit: cover;
     border-radius: 12px;
+}
+
+/* MOBILE CSS */
+
+@media (max-width: 768px) {
+    .main-header {
+        padding: 1rem;
+    }
+
+    .header-logo {
+        height: 2.5rem;
+        max-width: 8rem;
+    }
+
+    .get-started-button,
+    .login-button {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .landing-container {
+        flex-direction: column;
+        gap: 2rem;
+        margin: 1.2rem auto;
+    }
+
+    .landing-left,
+    .landing-right {
+        max-width: 100%;
+        flex: 0 0 100%;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .text-widget {
+        padding: 1.5rem;
+        max-width: 90vw;
+    }
+
+    .text-widget .header {
+        font-size: 2.2rem;
+    }
+
+    .content-items {
+        gap: 2rem;
+    }
+
+    .content-icon {
+        width: 8rem;
+        height: 8rem;
+    }
+
+    .content-split {
+        padding: 2rem 2rem;
+        background-color: var(--yellow-button-color); /* or white via modifier */
+    }
+
+    .content-split-main {
+        flex-direction: column;
+        gap: 0rem;
+    }
+
+    .content-split-text {
+        text-align: center;
+    }
+
+    .content-split-image .small-img {
+        max-width: 200px; /* Or adjust to whatever feels right */
+    }
+
+    .split-heading {
+        font-size: 1.7rem;
+    }
+    
+    .split-body {
+        font-size: 0.9rem;
+    }
+
+    .footer-heading {
+        font-size: 2rem;
+    }
+
+    .footer-cta-button {
+        font-size: 1rem;
+        padding: 1rem 1.5rem;
+    }
+
+    .footer-icon {
+        width: 12rem;
+        height: 12rem;
+    }
 }

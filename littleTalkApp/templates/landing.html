@@ -3,23 +3,7 @@
 {% load static %}
 
 {% block content %}
-{% comment %} Header Section {% endcomment %}
-<header class="main-header">
-    <div class="header-left">
-        <button class="menu-button" aria-label="Open menu">
-            &#9776;
-        </button>
-    </div>
-    <div class="header-center">
-        <a href="/" class="logo-link">
-            <img src="{% static 'images/littletalk_logo.png' %}" alt="LittleTalk Logo" class="header-logo">
-        </a>
-    </div>
-    <div class="header-right">
-        <a href="/login/" class="login-button">Login</a>
-        <a href="/get-started/" class="get-started-button">Get Started</a>
-    </div>
-</header>
+
 {% comment %} initial view {% endcomment %}
 <div class="landing-container">
     <div class="landing-left">
@@ -64,7 +48,7 @@
             <img src="{% static 'images/landing/amy_flying.jpg' %}" alt="amy" />
         </div>
         <div class="content-split-text">
-            <h2 class="split-heading">Hi, I’m Amy!</h2>
+            <h2 class="split-heading">Hi, I’m Amy.</h2>
             <p class="split-body">
                 I’m a licensed Speech and Language Therapist and co-founder of LittleTalk.
             </p>
@@ -146,7 +130,7 @@
                 Since using the app around 10 mins every day, my son has taken a huge interest in trying to say the words and even though they may not be clear he has definitely made an effort and really does try his best. We have had a couple of successes in a couple of words but his interest in wanting to talk and engage is huge. He finds using the app on my phone fun dragging the words to the boxes. He also finds the lady’s voice funny and tries his best to repeat what she says.
             </strong></p>
             <p class="split-body">
-                Danni,<br>Mother of two awesome boys!
+                Danni,<br>Mother of two
             </p>
         </div>
     </div>
@@ -180,30 +164,4 @@
         <img src="{% static 'images/landing/arlo_waving.png' %}" alt="LittleTalk icon" class="footer-icon">
     </div>
 </div>
-
-<script>
-    let lastScrollY = window.scrollY;
-    const header = document.querySelector('.main-header');
-
-    window.addEventListener('scroll', () => {
-        const currentScrollY = window.scrollY;
-
-        if (currentScrollY > lastScrollY && currentScrollY > 50) {
-            // Scrolling down
-            header.classList.remove('show');
-            header.classList.add('hide');
-        } else {
-            // Scrolling up
-            header.classList.remove('hide');
-            header.classList.add('show');
-        }
-
-        lastScrollY = currentScrollY;
-    });
-
-    // Ensure header is shown on first load
-    window.addEventListener('load', () => {
-        header.classList.add('show');
-    });
-</script>
 {% endblock %}
