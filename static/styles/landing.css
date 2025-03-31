@@ -276,7 +276,7 @@ body {
 }
 
 .content-split-image .small-img {
-    max-width: 400px; /* Or adjust to whatever feels right */
+    max-width: 300px; /* Or adjust to whatever feels right */
 }
 
 .content-split-text {
