@@ -25,6 +25,8 @@ from .forms import LogEntryForm
 from .forms import UserUpdateForm
 from .forms import PasswordUpdateForm
 from django.contrib.auth import update_session_auth_hash
+from django.core.mail import send_mail
+from django.conf import settings
 
 
 def home(request):
@@ -380,4 +382,25 @@ def get_selected_learner(request):
 
 
 def support(request):
+    request.hide_sidebar = True
     return render(request, 'support.html', {})
+
+
+def send_support_email(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        message = request.POST.get('message')
+
+        full_message = f"Message from {name} <{email}>:\n\n{message}"
+
+        send_mail(
+            subject='Support Request - LittleTalk',
+            message=full_message,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=['jw.jamiewelsh@gmail.com'],  # Change to your support email
+            fail_silently=False,
+        )
+        return render(request, 'support.html', {'message_sent': True})
+    
+    return redirect('support')
