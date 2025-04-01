@@ -14,7 +14,7 @@
     {% comment %} Header Section {% endcomment %}
     <header class="main-header">
         <div class="header-left">
-            <button class="menu-button" aria-label="Open menu">
+            <button class="menu-button" aria-label="Open menu" id="menu-toggle">
                 &#9776;
             </button>
         </div>
@@ -28,7 +28,27 @@
             <a href="/register/" class="get-started-button">Get Started</a>
         </div>
     </header>
+    {% comment %} Mobile Menu {% endcomment %}
+    <div id="menu-overlay" class="menu-overlay">
+        <nav id="mobile-menu" class="mobile-menu">
+            <button id="menu-close" class="menu-close" aria-label="Close menu">✖</button>
+            <ul class="menu-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about/">About</a></li>
+                <li><a href="/support/">Contact</a></li>
+                <li><a href="/support/">FAQ's</a></li>
+                <li><a href="/exercises/">Our Exercises</a></li>
+                <li><a href="/tips/">Free Tips</a></li>
+            </ul>
 
+            <div class="menu-actions">
+                <a href="/login/" class="menu-login-button">Login</a>
+                <a href="/register/" class="menu-cta-button">Begin Free Assessment</a>
+            </div>
+        </nav>
+    </div>
+
+    {% comment %} hide header when scrolling {% endcomment %}
     <script>
         let lastScrollY = window.scrollY;
         const header = document.querySelector('.main-header');
@@ -52,6 +72,33 @@
         // Ensure header is shown on first load
         window.addEventListener('load', () => {
             header.classList.add('show');
+        });
+    </script>
+    {% comment %} menu nav {% endcomment %}
+    <script>
+        const toggleBtn = document.getElementById('menu-toggle');
+        const menu = document.getElementById('mobile-menu');
+        const overlay = document.getElementById('menu-overlay');
+        const closeBtn = document.getElementById('menu-close');
+    
+        function closeMenu() {
+            menu.classList.remove('open');
+            overlay.classList.remove('open');
+        }
+    
+        toggleBtn.addEventListener('click', () => {
+            menu.classList.toggle('open');
+            overlay.classList.toggle('open');
+        });
+    
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                closeMenu();
+            }
+        });
+    
+        closeBtn.addEventListener('click', () => {
+            closeMenu();
         });
     </script>
     {% block content %}{% endblock %}
