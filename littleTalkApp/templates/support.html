@@ -39,27 +39,41 @@
     <h1>Frequently Asked Questions</h1>
     <div class="faq-item">
         <h3 class="question">Q: Who is this tool for?</h3>
-        <p class="answer">A: This tool is primarily for parents of children with speech and language needs. The tool is designed to make it easy for parents to practise speech and language development at home through routine exercises. Use our tool to make a start while on the waiting list, or to ensure consistent carry carryover between therapy sessions.</p>
+        <div class="answer" style="display: none;">
+            A: This tool is primarily for parents of children with speech and language needs. The tool is designed to make it easy for parents to practise speech and language development at home through routine exercises. Use our tool to make a start while on the waiting list, or to ensure consistent carry carryover between therapy sessions.</p>
+        </div>
     </div>
     <div class="faq-item">
         <h3 class="question">Q: How should the app be used?</h3>
-        <p class="answer">A: The app should be used in collaboration with your child. Click <strong>Add Learner</strong> in the profile section to get started. We will suggest exercises for your child based on your initial assessment. We recommend practising for 10-15 minutes a day.</p>
+        <div class="answer" style="display: none;">
+            A: The app should be used in collaboration with your child. Click <strong>Add Learner</strong> in the profile section to get started. We will suggest exercises for your child based on your initial assessment. We recommend practising for 10-15 minutes a day.</p>
+        </div>
     </div>
     <div class="faq-item">
         <h3 class="question">Q: Do I need to practise daily to see results?</h3>
-        <p class="answer">A: Research shows that frequent learning is three times more likely to lead to improvement in results. For this reason, we encourage users to practise daily, however, we understand that life can get in the way, so please feel free to practise whenever it suits you and your child - it all counts!</p>
-    </div>
-    <div class="faq-item">
-        <h3 class="question">Q: Is this a replacement for speech therapy?</h3>
-        <p class="answer">A: This tool is intended to be a supplementary/complementary tool to accelerate speech and language development and ensure consistent carryover. The team at LittleTalk encourages anyone with speech and language needs to continue seeking traditional speech therapy services in addition to using our programme.</p>
-    </div>
-    <div class="faq-item">
-        <h3 class="question">Q: What exercise learning level is right for my learner?</h3>
-        <p class="answer">A: Colourful Semantics features an <strong>Auto</strong> button which automatically chooses a learning level to get started. Please adjust manually to match your child's needs as you see fit. For our other exercises, start your learner at the lowest learning level and gradually increase the number of choices to match your child's ability. If you would like to have a personal opinion, please contact our <strong>Speech Therapist Team</strong>.</p>
-    </div>
-    <div class="faq-item">
-        <h3 class="question">Q: I need help/guidance.</h3>
-        <p class="answer">A: If you would like guidance, please get in contact with our <strong>Speech Therapist Team</strong>. Our team is here to help you get the most out of our programme and we love hearing from you!</p>
+        <div class="answer" style="display: none;">
+            A: Research shows that frequent learning is three times more likely to lead to improvement in results. For this reason, we encourage users to practise daily, however, we understand that life can get in the way, so please feel free to practise whenever it suits you and your child - it all counts!</p>
+        </div>
     </div>
 </section>
+
+{% comment %} interactive FAQ {% endcomment %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const questions = document.querySelectorAll('.question');
+
+        questions.forEach(question => {
+            question.style.cursor = 'pointer';
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+
+                if (answer.style.display === 'none' || !answer.style.display) {
+                    answer.style.display = 'block';
+                } else {
+                    answer.style.display = 'none';
+                }
+            });
+        });
+    });
+</script>
 {% endblock %}

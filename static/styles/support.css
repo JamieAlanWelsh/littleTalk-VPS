@@ -40,7 +40,7 @@
 .faq-section {
     text-align: left;
     background: var(--accent-color);
-    padding: 20px;
+    padding: 30px;
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
 }
