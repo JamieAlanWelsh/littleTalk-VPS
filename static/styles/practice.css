@@ -14,7 +14,7 @@
 .exercise-image img {
     width: 80px; /* Adjust as needed */
     height: 80px; /* Keep square aspect ratio */
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius-light);
     margin-right: 20px;
     box-shadow: var(--box-shadow);
 }

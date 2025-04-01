@@ -100,8 +100,8 @@
 .contact-form input,
 .contact-form textarea {
     padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 15px;
+    border: none;
+    border-radius: var(--border-radius-light);
     font-size: 1rem;
 }
 

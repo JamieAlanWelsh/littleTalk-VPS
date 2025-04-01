@@ -1,7 +1,7 @@
 :root {
-    --background-color: #C1D6ED;
+    --background-color: #9DC1E9;
     --font-color: #2B3345;
-    --accent-color: #D9EBFE;
+    --accent-color: #C3DFFF;
     --accent-color-dark: #9DC1E9;
     --sidebar-color: #FFE477;
     --yellow-button-color: #FFE477;
@@ -9,7 +9,8 @@
     --button-green: #33DA73;
     --button-hover: #28a659;
     --box-shadow: 0px 5px 0px rgba(0, 0, 0, 0.2);
-    --border-radius: 15px;
+    --border-radius: 30px;
+    --border-radius-light: 15px;
     --font-roboto: 'Roboto', sans-serif;
     --font-outfit: 'Outfit', sans-serif;
     --line-height: 1.8;

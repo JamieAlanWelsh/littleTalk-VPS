@@ -19,7 +19,7 @@
     max-width: 400px;  /* Adjust the form width */
     width: 100%;  /* Ensure the form takes full width */
     padding: 20px;
-    background-color: var(--accent-color-dark);
+    background-color: var(--accent-color);
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
 }

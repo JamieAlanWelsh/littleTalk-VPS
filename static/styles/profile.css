@@ -80,7 +80,7 @@
 .learning-level-section,
 .total-exp-section {
     background-color: var(--accent-color);
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius-light);
     box-shadow: var(--box-shadow);
     padding-left: 20px;
     padding-right: 20px;
@@ -191,8 +191,8 @@
     font-size: 1rem;
     color: var(--font-color);
     background-color: white;
-    border: 1px solid #ccc;
-    border-radius: var(--border-radius);
+    border: none;
+    border-radius: var(--border-radius-light);
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 

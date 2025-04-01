@@ -70,8 +70,8 @@
 .log-entry {
     position: relative;
     background-color: white;
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
+    border-radius: var(--border-radius-light);
+    /* box-shadow: var(--box-shadow); */
     padding: 5px 20px 5px 20px;
     margin-bottom: 15px;
     text-align: left;
@@ -142,7 +142,7 @@
     padding: 30px;
     padding-top: 60px;
     background-color: var(--accent-color);
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius-light);
     box-shadow: var(--box-shadow);
     text-align: left;
     position: relative;
@@ -170,7 +170,7 @@
     color: var(--font-color);
     background-color: white;
     border: none;
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius-light);
     margin-left: 10px;
 }
 
@@ -180,8 +180,8 @@
     font-size: 1rem;
     color: var(--font-color);
     background-color: white;
-    border: 1px solid #ccc;
-    border-radius: var(--border-radius);
+    border: none;
+    border-radius: var(--border-radius-light);
     width: 570px; /* Ensures input takes full width */
     resize: none; /* Disables resizing */
 }
