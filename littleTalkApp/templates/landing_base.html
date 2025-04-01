@@ -9,6 +9,17 @@
     <link rel="stylesheet" href="{% static 'styles/landing.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Roboto&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZGXMZKE8JF"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-ZGXMZKE8JF');
+    </script>
+
 </head>
 <body>
     {% comment %} Header Section {% endcomment %}
@@ -35,10 +46,10 @@
             <ul class="menu-links">
                 <li><a href="/">Home</a></li>
                 {% comment %} <li><a href="/about/">About</a></li> {% endcomment %}
-                <li><a href="/exercises/">The LittleTalk Method</a></li>
+                <li><a href="/">The LittleTalk Method</a></li>
                 <li><a href="/support/">Contact</a></li>
                 <li><a href="/support/">FAQ's</a></li>
-                <li><a href="/tips/">Free Tips</a></li>
+                <li><a href="/">Free Tips</a></li>
             </ul>
 
             <div class="menu-actions">
