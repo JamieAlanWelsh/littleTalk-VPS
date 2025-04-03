@@ -334,6 +334,17 @@ body {
     text-align: left;
 }
 
+.inline-full-image {
+    margin: 2rem 0;
+}
+
+.inline-full-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 1rem;
+}
+
 .footer-cta {
     text-align: center;
     padding: 130px 20px;
@@ -471,10 +482,6 @@ body {
         width: 12rem;
         height: 12rem;
     }
-
-    /* .content-split.text-only .content-split-text {
-        padding: 0 1rem;
-    } */
 }
 
 .menu-overlay {
