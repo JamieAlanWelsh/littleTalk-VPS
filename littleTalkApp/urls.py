@@ -11,6 +11,7 @@ urlpatterns = [
     path('support/send-email/', views.send_support_email, name='send_support_email'),
     path('comingsoon/', views.comingsoon, name='comingsoon'),
     path('tips/', views.tips, name='tips'),
+    path('method/', views.method, name='method'),
 
 
     # Login and logout URLs

@@ -407,3 +407,6 @@ def send_support_email(request):
 
 def tips(request):
     return render(request, 'tips.html', {})
+
+def method(request):
+    return render(request, 'method.html', {})

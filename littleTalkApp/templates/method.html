@@ -1,0 +1,108 @@
+<!-- templates/landing.html -->
+{% extends "landing_base.html" %}
+{% load static %}
+
+{% block content %}
+{% comment %} What is Blank level Questions {% endcomment %}
+<div class="content-split">
+    <div class="content-split-main">
+        <div class="content-split-image">
+            <img src="{% static 'images/landing/learning_at_home.png' %}" alt="amy" />
+        </div>
+        <div class="content-split-text">
+            <h2 class="split-heading">Helping Your Child Talk - Made Simple</h2>
+            <p class="split-body">
+                Speech and Language Therapy is no-doubt a complicated practise, but you don't need a degree or training to support your child's communication at home. 
+                With the right approach, consistency and a bit of patience, real progress can happen through everyday play and connection!
+            </p>
+            <p class="split-body">           
+                At LittleTalk, we believe in using simple, proven methods that have stood the test of time. Our exercises are designed around Blank Levels 
+                of Questioning, also known as the Language of Learning model - developed by Blank, Rose and Berlin all the way back in 1978! Over the years, 
+                this model has been used and refined by Speech and Language Therapists to consistently develop children's verbal reasoning and abstract language capabilities.
+            </p>
+            <p class="split-body">
+                Our exercises are designed and tailored to support children developing their answers to Blank questions. Each exercise will introduce your child to a new level 
+                of the model. You will see them develop their abilities step-by-step, all the way from answering basic questions like “What is this?” to more complex questions that 
+                require abstract answers like “Why do we need an umbrella?”
+            </p>
+        </div>
+    </div>
+</div>
+<div class="content-split text-only white">
+    <div class="content-split-text">
+        <div class="content-split-header">
+            <h2 class="split-heading">
+                Our Exercises
+            </h2>
+            <p class="split-subtitle">
+                Activities designed by licensed speech and language therapists - so you know that they are effective, trustworthy, and made with your child’s success in mind.
+            </p>
+        </div>
+        {% comment %} COLOURFUL SEMANTICS {% endcomment %}
+        <h3 class="split-heading">Colourful Semantics - Sentence Building</h3>
+        <p class="split-body">
+            Colourful Semantics aims to enhance children's understanding of word meanings, helps children understand word order, and helps children build meaningful sentences. By using Colourful Semantics, children not only expand their vocabulary but also improve their ability to answer questions and develop narrative skills.
+        </p>
+        <p class="split-body">
+            <strong>Skills you can expect to build:</strong>
+        </p>
+
+        <ul class="split-list">
+            <li>Increasing vocabulary - nouns and verbs</li>
+            <li>Repeating a simple sentence - Let's say it: “The dog is sitting”</li>
+            <li>Naming objects, people, actions - “What is this?”</li>
+            <li>Describing a simple scene - “What's happening in this picture?”</li>
+        </ul>
+        <div class="inline-full-image">
+            <img src="{% static 'images/landing/colourful_semantics_screenshot.png' %}" alt="LittleTalk Demo">
+        </div>
+        {% comment %} THINK AND FND {% endcomment %}
+        <h3 class="split-heading">Think and Find - Identifying Concepts</h3>
+        <p class="split-body">
+            Think and Find is an activity designed to enhance children's language skills and cognitive development. This exercise helps children connect tangible items with abstract concepts, facilitating deeper understanding and language use. By associating specific items with broader concepts, children learn to identify items based on similarities and differences, aiding in information processing and decision-making.
+        </p>
+        <p class="split-body">
+            <strong>Skills you can expect to build:</strong>
+        </p>
+
+        <ul class="split-list">
+            <li>Pointing to / Finding an object - “Point to the lorry”</li>
+            <li>Matching (Pictures and objects) - “Find a car like this.”</li>
+            <li>Identifying and describing characteristics: “What shape is this?”</li>
+        </ul>
+        <div class="inline-full-image">
+            <img src="{% static 'images/landing/think_and_find_screenshot.png' %}" alt="LittleTalk Demo">
+        </div>
+        {% comment %} CATEGORISATION {% endcomment %}
+        <h3 class="split-heading">Categorisation - Sorting into Groups</h3>
+        <p class="split-body">
+            Categorisation is an exercise designed to help children process and store information. The exercise allows children to make a connection between words based upon similarities and differences. Categorisation is important for language development as it teaches children to group ideas, process information, store and retrieve ideas and describe items.
+        </p>
+        <p class="split-body">
+            <strong>Skills you can expect to build:</strong>
+        </p>
+
+        <ul class="split-list">
+            <li>Categorising - “Sort the animals into zoo animals and farm animals.”</li>
+        </ul>
+        <div class="inline-full-image">
+            <img src="{% static 'images/landing/categoristaion_screenshot.png' %}" alt="LittleTalk Demo">
+        </div>
+        {% comment %} COMING SOON {% endcomment %}
+        <h3 class="split-heading">Story Train - Sequencing & Predicting</h3>
+        <p class="split-body">
+            Coming soon!
+        </p>
+    </div>
+    </p>
+</div>
+{% comment %} final call to action footer {% endcomment %}
+<div class="footer-cta">
+    <h1 class="footer-heading">Ready to start supporting your child?<br>Get Started with our Free Exercises</h1>
+    {% comment %} <button class="footer-cta-button">Begin Your Free Assessment</button> {% endcomment %}
+    <a href="/register/" class="footer-cta-button">Get Started</a>
+    <div class="footer-icon-wrapper">
+        <img src="{% static 'images/landing/arlo_waving.png' %}" alt="LittleTalk icon" class="footer-icon">
+    </div>
+</div>
+{% endblock %}
