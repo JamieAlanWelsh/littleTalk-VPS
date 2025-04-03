@@ -291,6 +291,7 @@ body {
     font-weight: 700;
     margin-bottom: 1rem;
     color: var(--font-color);
+    line-height: 1.4;
 }
 
 .split-body {
@@ -319,11 +320,18 @@ body {
     margin-bottom: 0.5rem;
 }
 
-.split-heading {
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--font-color);
-    line-height: 1.4;
+.content-split.text-only .content-split-text {
+    margin: 0 auto;
+    text-align: left;
+    max-width: 800px;
+}
+
+.content-split.text-only .split-heading {
+    text-align: left;
+}
+
+.content-split.text-only .split-subtitle {
+    text-align: left;
 }
 
 .footer-cta {
@@ -381,11 +389,9 @@ body {
         height: 2.5rem;
         max-width: 8rem;
     }
-
-    @media (max-width: 768px) {
-        .header-right {
-            display: none;
-        }
+  
+    .header-right {
+        display: none;
     }
 
     .get-started-button,
@@ -465,6 +471,10 @@ body {
         width: 12rem;
         height: 12rem;
     }
+
+    /* .content-split.text-only .content-split-text {
+        padding: 0 1rem;
+    } */
 }
 
 .menu-overlay {

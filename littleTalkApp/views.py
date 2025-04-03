@@ -404,3 +404,6 @@ def send_support_email(request):
         return render(request, 'support.html', {'message_sent': True})
     
     return redirect('support')
+
+def tips(request):
+    return render(request, 'tips.html', {})

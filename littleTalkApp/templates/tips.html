@@ -1,0 +1,83 @@
+<!-- templates/landing.html -->
+{% extends "landing_base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="content-split text-only white">
+    <div class="content-split-text">
+        <div class="content-split-header">
+            <p class="split-subtitle">
+                Ever wondered how you can best support your little one's speech and language development at home?
+            </p>
+            <h2 class="split-heading">
+                10 easy ways to help your baby, toddler and child build their speech and language at home
+            </h2>
+        </div>
+        <h3 class="split-heading">1. Narrate your day</h3>
+        <p class="split-body">
+            Everyday routines are full of language opportunities. When you talk while carrying out daily tasks, "Let's put your coat on. One arm, then the other!", “I am thirsty, I'm going to have a drink of water."
+            you're helping your child hear how words fit into real life. This kind of narration will increase your child's exposure to language and over time it will boost their understanding, vocabulary, and ability to sequence events.
+
+        </p>
+        <h2 class="split-heading">2. Expand your child's sentences</h2>
+        <p class="split-body">
+            When your child says something like "car," you might respond with, "Yes! A big red car!". This is called expanding, and it's a great way to help your child learn how to build longer sentences. You're modeling the next step 
+            in their language, without correcting or pressuring them. Over time, this helps develop sentence structure, vocabulary, and expressive language.
+
+        </p>
+        <h2 class="split-heading">3. Make language learning fun</h2>
+        <p class="split-body">
+            Language grows best when children don't even realise they're learning. Try pretending to be animals, using silly voices while reading, or singing made-up songs. Fun interactions help children feel relaxed and motivated to 
+            use language. This builds confidence, creativity, and makes communication fun.
+
+        </p>
+        <h2 class="split-heading">4. Try to comment more, and question less</h2>
+        <p class="split-body">
+            Questions such as "what's that?" or "what colour is it?" can be helpful, but sometimes too many questions can make your child feel like they're taking a quiz! Instead, try and talk about what you both see. For example, 
+            "Look! There is a big red bus. It's driving on the road". Commenting will help your child build language without the pressure to respond. 
+        </p>
+        <h2 class="split-heading">5. Follow your child's lead</h2>
+        <p class="split-body">
+            Is your child obsessed with dinosaurs, space, or princesses? Use their passions as conversation starters! When kids are engaged in something they love, they're naturally more excited to listen, learn, and join the conversation. 
+            This builds motivation, attention, and confidence, and gives you a perfect way to introduce new words, ask open-ended questions, and model language. For example: "Your dinosaur has lots of sharp teeth! He's going to look for something to eat".  
+        </p>
+        <h2 class="split-heading">6. Remodel your child's sentences</h2>
+        <p class="split-body">
+            If your child is trying to communicate and doesn't quite get something right, try and remodel their sentence to model the correct language. For example, if your child says "cat black and white", you can reply "Yes that's right! 
+            The cat is black and white!". This trick is called remodelling. Remodelling allows your child to hear their intended sentence without being discouraged for getting it wrong. 
+        </p>
+        <h2 class="split-heading">7. Introduce new vocabulary naturally</h2>
+        <p class="split-body">
+            Instead of turning vocabulary into a lesson, let it come up in conversation. For example: "That cloud is fluffy - it looks soft and light." Hearing new words in different contexts helps your child understand and remember them 
+            better. It may not be obvious, but over time, this will help to build rich vocabulary and a strong foundation for reading, writing, and clear communication.
+        </p>
+        <h2 class="split-heading">8. Offer choices to your child</h2>
+        <p class="split-body">
+            Instead of asking your child yes/no questions like "do you want something to drink?", try offering options: "Do you want water or juice?". Giving your child choices encourages them to develop their decision making skills and 
+            also encourages them to express themselves.  
+        </p>
+        <h2 class="split-heading">9. Allow your child plenty of time to respond</h2>
+        <p class="split-body">
+            It can be tempting to jump in when children pause before responding, but try waiting a few seconds. Brain research actually shows that it can take a preschool-aged child up to 20 seconds to follow through with a question or 
+            command. Give your child time and space to think, process, and find their words.
+        </p>
+        <h2 class="split-heading">10. You're your child's best teacher</h2>
+        <p class="split-body">
+            You don't need perfect grammar, or speech therapy training to support your child's language. Just being present, talking, listening, and responding is enough.
+        </p>
+        <p class="split-body">
+            You know your child better than anyone else. Your voice and your words all matter. Every time you share a moment you're helping them grow in ways you can't always see right away. Trust in yourself, stay consistent and allow time 
+            for the small things you do every day to make a big difference over time. You're doing great!
+        </p>
+    </div>
+</div>
+{% comment %} final call to action footer {% endcomment %}
+<div class="footer-cta">
+    <h1 class="footer-heading">Why not take your learning at home to the next level?<br>Get Started with our Free Exercises</h1>
+    {% comment %} <button class="footer-cta-button">Begin Your Free Assessment</button> {% endcomment %}
+    <a href="/register/" class="footer-cta-button">Get Started</a>
+    <div class="footer-icon-wrapper">
+        <img src="{% static 'images/landing/arlo_waving.png' %}" alt="LittleTalk icon" class="footer-icon">
+    </div>
+</div>
+{% endblock %}
