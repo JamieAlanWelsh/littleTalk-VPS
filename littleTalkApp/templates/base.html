@@ -39,52 +39,56 @@
 
 </head>
 <body>
-    {% if not hide_sidebar %}
-        <!-- Sidebar / Bottom Navigation -->
-        <div class="sidebar">
-            <!-- Sidebar Logo (Only visible on larger screens) -->
-            <div class="sidebar-logo">
-                <a href="{% url 'home' %}">
-                    <img src="{% static 'images/littletalk_logo.png' %}" alt="LittleTalk Logo">
-                </a>
-            </div>
-
-            <ul class="sidebar-menu">
-                <li>
+    <div class="layout {% if not hide_sidebar %}with-sidebar{% endif %}">
+        {% if not hide_sidebar %}
+            <!-- Sidebar / Bottom Navigation -->
+            <div class="sidebar">
+                <!-- Sidebar Logo (Only visible on larger screens) -->
+                <div class="sidebar-logo">
                     <a href="{% url 'home' %}">
-                        <img src="{% static 'icons/house.png' %}" alt="Home" class="sidebar-icon">
-                        <span>Practise</span>
+                        <img src="{% static 'images/littletalk_logo.png' %}" alt="LittleTalk Logo">
                     </a>
-                </li>
-                <li>
-                    <a href="{% url 'profile' %}">
-                        <img src="{% static 'icons/children.png' %}" alt="Profile" class="sidebar-icon">
-                        <span>Profile</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'logbook' %}">
-                        <img src="{% static 'icons/diary.png' %}" alt="Logbook" class="sidebar-icon">
-                        <span>Logbook</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'support' %}">
-                        <img src="{% static 'icons/help.png' %}" alt="Support" class="sidebar-icon">
-                        <span>Support</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'settings' %}">
-                        <img src="{% static 'icons/service.png' %}" alt="Settings" class="sidebar-icon">
-                        <span>Settings</span>
-                    </a>
-                </li>
-            </ul>
+                </div>
+
+                <ul class="sidebar-menu">
+                    <li>
+                        <a href="{% url 'home' %}">
+                            <img src="{% static 'icons/house.png' %}" alt="Home" class="sidebar-icon">
+                            <span>Practise</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'profile' %}">
+                            <img src="{% static 'icons/children.png' %}" alt="Profile" class="sidebar-icon">
+                            <span>Profile</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'logbook' %}">
+                            <img src="{% static 'icons/diary.png' %}" alt="Logbook" class="sidebar-icon">
+                            <span>Logbook</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'support' %}">
+                            <img src="{% static 'icons/help.png' %}" alt="Support" class="sidebar-icon">
+                            <span>Support</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'settings' %}">
+                            <img src="{% static 'icons/service.png' %}" alt="Settings" class="sidebar-icon">
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        {% endif %}
+        <div class="main-content">
+            <div class="main-content-inner">
+                {% block content %}{% endblock %}
+            </div>
         </div>
-    {% endif %}
-    <div class="main-content">
-        {% block content %}{% endblock %}
     </div>
 </body>
 </html>
