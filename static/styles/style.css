@@ -416,7 +416,7 @@ p {
 
 
 /* Responsive Sidebar - Mobile View */
-@media (max-width: 1160px) {
+@media (max-width: 1080px) {
     .layout {
         flex-direction: column;
     }
