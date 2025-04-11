@@ -22,7 +22,14 @@
         </div>
         <div class="exercise-details">
             <h3>Colourful Semantics - Sentence Building</h3>
-            <p><strong>Recommendation:</strong> 5-10 minutes per day</p>
+            <p><strong>Your child will learn how to:</strong></p>
+            <div class="skills-list">
+                <ul>
+                    <li>Name objects, people, actions - “What is this?”</li>
+                    <li>Repeat a sentence - "Let's say, the dog is sitting.”</li>
+                    <li>Describe a scene - “What's happening in this picture?”</li>
+                </ul>
+            </div>
             {% comment %} <p>Difficulty: {{ selected_learner.assessment2 }}/6</p> {% endcomment %}
             <!-- Buttons Wrapper -->
             <div class="exercise-buttons">
@@ -43,7 +50,14 @@
                 <p>This exercise will be unlocked as you progress.</p>
                 <a class="button exercise-btn locked-btn">Locked</a>
             {% else %}
-                <p><strong>Recommendation:</strong> 5-10 minutes per day</p>
+                <p><strong>Your child will learn how to:</strong></p>
+                <div class="skills-list">
+                    <ul>
+                        <li>Point to / find an object - “Can you point to the lorry?”</li>
+                        <li>Match pictures and objects - “Can you find a car like this?”</li>
+                        <li>Identify & describe characteristics: “What shape is this?”</li>
+                    </ul>
+                </div>
                 <div class="exercise-buttons">
                     <a href="{% static 'exercises/think_and_find/index.html' %}" target="_blank" class="button exercise-btn">START</a>
                     <a href="{% url 'game_description' 'think_and_find' %}" class="button info-btn">More Info</a>
@@ -62,7 +76,14 @@
                 <p>This exercise will be unlocked as you progress.</p>
                 <a class="button exercise-btn locked-btn">Locked</a>
             {% else %}
-                <p><strong>Recommendation:</strong> 5-10 minutes per day</p>
+                <p><strong>Your child will learn how to:</strong></p>
+                <div class="skills-list">
+                    <ul>
+                        <li>Group items - “Which of these go together?”</li>
+                        <li>Identify categories - “What kind of thing is this?”</li>
+                        <li>Compare and contrast: - “How are these similar?”</li>
+                    </ul>
+                </div>
                 <div class="exercise-buttons">
                     <a href="{% static 'exercises/categorisation/index.html' %}" target="_blank" class="button exercise-btn">START</a>
                     <a href="{% url 'game_description' 'categorisation' %}" class="button info-btn">More Info</a>

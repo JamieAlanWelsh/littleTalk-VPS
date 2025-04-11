@@ -36,11 +36,30 @@
     font-size: 1rem;
 }
 
+.skills-list {
+    margin: 10px 0;
+    padding-left: 1.2rem;
+}
+
+.skills-list ul {
+    list-style-type: disc; /* You can change this to 'circle' or 'square' */
+    padding-left: 1rem;
+    margin: 0;
+}
+
+.skills-list li {
+    margin-bottom: 0.4rem;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    color: #333; /* Adjust to match your site's color palette */
+}
+
 /* Buttons Container - Ensures buttons stay aligned */
 .exercise-buttons {
     display: flex;
     gap: 10px; /* Space between buttons */
-    margin-top: 10px;
+    margin-top: 15px;
+    margin-bottom: 10px;
 }
 
 /* Get Started Button */

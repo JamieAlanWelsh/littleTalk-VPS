@@ -3,6 +3,7 @@
     max-width: 800px;
     margin: 50px auto;
     padding: 30px;
+    padding-top: 70px;
     background-color: var(--accent-color);
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
@@ -37,6 +38,10 @@
     color: var(--font-color);
 }
 
+.learning-header {
+    text-align: left;
+}
+
 /* Game Description Text */
 .game-description {
     /* font-size: 1.1rem; */
@@ -46,7 +51,7 @@
 
 /* Quote Styling */
 .game-quote {
-    font-size: 1.2rem;
+    font-size: 1.0rem;
     font-weight: bold;
     color: var(--secondary-color);
     margin: 20px 0;
@@ -54,7 +59,7 @@
 
 /* Learning Level Section */
 .learning-level {
-    font-size: 1.1rem;
+    font-size: 1.0rem;
     color: var(--font-color);
     /* padding: 10px; */
     margin-top: 20px;
@@ -82,4 +87,17 @@
 .start-button:hover {
     background-color: var(--button-hover);
     /* transform: scale(1.05); */
+}
+
+.learning-bullets {
+    padding-left: 1.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.learning-bullets li {
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    line-height: 1.4;
+    color: var(--font-color);
 }

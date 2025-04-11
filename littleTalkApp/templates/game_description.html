@@ -4,6 +4,9 @@
 {% block title %}{{ game.title }}{% endblock %}
 
 {% block content %}
+
+<h1>More Info</h1>
+
 <div class="game-description-container">
 
     <!-- Back Arrow -->
@@ -15,17 +18,20 @@
         </svg>
     </a>
 
-    <h1>{{ game.title }}</h1>
+    <h2 class="learning-header">{{ game.title }}</h2>
     
     <p class="game-description">{{ game.description }}</p>
-    <p class="game-quote">{{ game.quote }}</p>
-    
-    <p class="game-description">{{ game.description2 }}</p>
-    <p class="game-description">{{ game.description3 }}</p>
-    <p class="game-description">{{ game.description4 }}</p>
 
-    <h2>Learning Level Guide</h2>
-    <p class="learning-level">{{ game.learninglevel }}</p>
+    <h2 class="learning-header">Your child will learn how to:</h2>
+    <ul class="learning-bullets">
+        <li>{{ game.bullet1 }}</li>
+        <li>{{ game.bullet2 }}</li>
+        <li>{{ game.bullet3 }}</li>
+    </ul>
+
+    <h2 class="learning-header">How to Choose the Right Level for Your Child:</h2>
+    <p class="learning-level">{{ game.learninglevel1 }}</p>
+    <p class="learning-level">{{ game.learninglevel2 }}</p>
 
     {% comment %}
     <!-- YouTube video embed -->
