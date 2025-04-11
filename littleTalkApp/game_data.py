@@ -1,6 +1,7 @@
 GAME_DESCRIPTIONS = {
         'colourful_semantics': {
             'title': 'Colourful Semantics',
+            'target': 'Sentence Building',
             'description': "Colourful Semantics helps your child understand what words mean, how words fit together, and how to create simple, meaningful sentences. It uses colors to group words, making it easier for your child to remember words, learn new vocabulary, and express themselves clearly. Research shows that visual grouping of words into colors helps children better understand language and remember words more effectively.",
             'bullet1': """Name objects, people, actions - “What is this?”""",
             'bullet2': """Repeat a sentence - "Let's say, the dog is sitting.”""",
@@ -11,8 +12,9 @@ GAME_DESCRIPTIONS = {
         },
         'think_and_find': {
             'title': 'Think and Find',
+            'target': 'Identifying Concepts',
             'quote': '"Linking items to concepts helps children structure their thoughts and enhances memory and retrieval capabilities" (Anderson & Freebody, 1981).',
-            'description': "Think and Find is a fun matching activity that helps your child learn new words and practice important thinking skills. It encourages your child to recognize and match similar pictures or items, improving their ability to notice details and make connections. This supports language growth, memory, and decision-making.",
+            'description': "Think and Find is a fun matching activity that helps your child learn new words and practice important thinking skills. It encourages your child to recognise and match similar pictures or items, improving their ability to notice details and make connections. This supports language growth, memory, and decision-making.",
             'bullet1': """Point to / find an object - “Can you point to the lorry?”""",
             'bullet2': """Match pictures and objects - “Can you find a car like this?”""",
             'bullet3': """Identify & describe characteristics: “What shape is this?”""",
@@ -22,6 +24,7 @@ GAME_DESCRIPTIONS = {
         },
         'categorisation': {
             'title': 'Categorisation',
+            'target': 'Sorting into Groups',
             'quote': '“Arranging thoughts, concepts and words into categories facilitate meaning, memory and retrieval” (Roth & Troia, 2005)',
             'description': "Categorisation is an activity that helps your child group things together based on similarities. Learning to group things helps your child understand and remember new words more easily, build their vocabulary, and clearly express ideas.",
             'bullet1': """Group items - “Which of these go together?”""",

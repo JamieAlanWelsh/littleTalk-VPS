@@ -378,4 +378,7 @@ def tips(request):
     return render(request, 'tips.html', {})
 
 def method(request):
-    return render(request, 'method.html', {})
+    context = {
+        'game_descriptions': GAME_DESCRIPTIONS,
+    }
+    return render(request, 'method.html', context)

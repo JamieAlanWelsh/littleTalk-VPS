@@ -36,56 +36,55 @@
                 Activities designed by licensed speech and language therapists - so you know that they are effective, trustworthy, and made with your child's success in mind.
             </p>
         </div>
+
         {% comment %} COLOURFUL SEMANTICS {% endcomment %}
-        <h3 class="split-heading">Colourful Semantics - Sentence Building</h3>
-        <p class="split-body">
-            Colourful Semantics aims to enhance children's understanding of word meanings, helps children understand word order, and helps children build meaningful sentences. By using Colourful Semantics, children not only expand their vocabulary but also improve their ability to answer questions and develop narrative skills.
-        </p>
-        <p class="split-body">
-            <strong>Skills you can expect to build:</strong>
-        </p>
+        {% with game=game_descriptions.colourful_semantics %}
+        <h3 class="split-heading">{{ game.title }} - {{ game.target }}</h3>
+        <p class="split-body">{{ game.description }}</p>
+        <p class="split-body"><strong>Your child will learn how to:</strong></p>
 
         <ul class="split-list">
-            <li>Increasing vocabulary - nouns and verbs</li>
-            <li>Repeating a simple sentence - Let's say it: “The dog is sitting”</li>
-            <li>Naming objects, people, actions - “What is this?”</li>
-            <li>Describing a simple scene - “What's happening in this picture?”</li>
+            <li>{{ game.bullet1 }}</li>
+            <li>{{ game.bullet2 }}</li>
+            <li>{{ game.bullet3 }}</li>
         </ul>
         <div class="inline-full-image">
             <img src="{% static 'images/landing/colourful_semantics_screenshot.png' %}" alt="LittleTalk Demo">
         </div>
+        {% endwith %}
+
         {% comment %} THINK AND FND {% endcomment %}
-        <h3 class="split-heading">Think and Find - Identifying Concepts</h3>
-        <p class="split-body">
-            Think and Find is an activity designed to enhance children's language skills and cognitive development. This exercise helps children connect tangible items with abstract concepts, facilitating deeper understanding and language use. By associating specific items with broader concepts, children learn to identify items based on similarities and differences, aiding in information processing and decision-making.
-        </p>
-        <p class="split-body">
-            <strong>Skills you can expect to build:</strong>
-        </p>
+        {% with game=game_descriptions.think_and_find %}
+        <h3 class="split-heading">{{ game.title }} - {{ game.target }}</h3>
+        <p class="split-body">{{ game.description }}</p>
+        <p class="split-body"><strong>Your child will learn how to:</strong></p>
 
         <ul class="split-list">
-            <li>Pointing to / Finding an object - “Point to the lorry”</li>
-            <li>Matching (Pictures and objects) - “Find a car like this.”</li>
-            <li>Identifying and describing characteristics: “What shape is this?”</li>
+            <li>{{ game.bullet1 }}</li>
+            <li>{{ game.bullet2 }}</li>
+            <li>{{ game.bullet3 }}</li>
         </ul>
         <div class="inline-full-image">
             <img src="{% static 'images/landing/think_and_find_screenshot.png' %}" alt="LittleTalk Demo">
         </div>
+        {% endwith %}
+
         {% comment %} CATEGORISATION {% endcomment %}
-        <h3 class="split-heading">Categorisation - Sorting into Groups</h3>
-        <p class="split-body">
-            Categorisation is an exercise designed to help children process and store information. The exercise allows children to make a connection between words based upon similarities and differences. Categorisation is important for language development as it teaches children to group ideas, process information, store and retrieve ideas and describe items.
-        </p>
-        <p class="split-body">
-            <strong>Skills you can expect to build:</strong>
-        </p>
+        {% with game=game_descriptions.categorisation %}
+        <h3 class="split-heading">{{ game.title }} - {{ game.target }}</h3>
+        <p class="split-body">{{ game.description }}</p>
+        <p class="split-body"><strong>Your child will learn how to:</strong></p>
 
         <ul class="split-list">
-            <li>Categorising - “Sort the animals into zoo animals and farm animals.”</li>
+            <li>{{ game.bullet1 }}</li>
+            <li>{{ game.bullet2 }}</li>
+            <li>{{ game.bullet3 }}</li>
         </ul>
         <div class="inline-full-image">
             <img src="{% static 'images/landing/categoristaion_screenshot.png' %}" alt="LittleTalk Demo">
         </div>
+        {% endwith %}
+
         {% comment %} COMING SOON {% endcomment %}
         <h3 class="split-heading">Story Train - Sequencing & Predicting</h3>
         <p class="split-body">
