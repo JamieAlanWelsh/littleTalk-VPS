@@ -16,18 +16,19 @@
     <h2>Here are your recommended exercises:</h2>
     
     {% comment %} COLOURFUL SEMANTICS {% endcomment %}
+    {% with game=game_descriptions.colourful_semantics %}
     <div class="exercise-widget">
         <div class="exercise-image">
             <img src="{% static 'icons/colour_semantics_icon_bg.png' %}" alt="Sentence Building">
         </div>
         <div class="exercise-details">
-            <h3>Colourful Semantics - Sentence Building</h3>
+            <h3>{{ game.title }} - Sentence Building</h3>
             <p><strong>Your child will learn how to:</strong></p>
             <div class="skills-list">
                 <ul>
-                    <li>Name objects, people, actions - “What is this?”</li>
-                    <li>Repeat a sentence - "Let's say, the dog is sitting.”</li>
-                    <li>Describe a scene - “What's happening in this picture?”</li>
+                    <li>{{ game.bullet1 }}</li>
+                    <li>{{ game.bullet2 }}</li>
+                    <li>{{ game.bullet3 }}</li>
                 </ul>
             </div>
             {% comment %} <p>Difficulty: {{ selected_learner.assessment2 }}/6</p> {% endcomment %}
@@ -38,14 +39,16 @@
             </div>
         </div>
     </div>
+    {% endwith %}
 
     {% comment %} THINK & FIND {% endcomment %}
+    {% with game=game_descriptions.think_and_find %}
     <div class="exercise-widget">
         <div class="exercise-image">
             <img src="{% static 'icons/think_and_find_icon.png' %}" alt="Sentence Building">
         </div>
         <div class="exercise-details">
-            <h3>Think and Find - Identifying Concepts</h3>
+            <h3>{{ game.title }} - Identifying Concepts</h3>
             {% if selected_learner.assessment1 < 2 %}
                 <p>This exercise will be unlocked as you progress.</p>
                 <a class="button exercise-btn locked-btn">Locked</a>
@@ -53,9 +56,9 @@
                 <p><strong>Your child will learn how to:</strong></p>
                 <div class="skills-list">
                     <ul>
-                        <li>Point to / find an object - “Can you point to the lorry?”</li>
-                        <li>Match pictures and objects - “Can you find a car like this?”</li>
-                        <li>Identify & describe characteristics: “What shape is this?”</li>
+                        <li>{{ game.bullet1 }}</li>
+                        <li>{{ game.bullet2 }}</li>
+                        <li>{{ game.bullet3 }}</li>
                     </ul>
                 </div>
                 <div class="exercise-buttons">
@@ -65,13 +68,16 @@
             {% endif %}
         </div>
     </div>
+    {% endwith %}
+
     {% comment %} CATEGORISATAION {% endcomment %}
+    {% with game=game_descriptions.categorisation %}
     <div class="exercise-widget">
         <div class="exercise-image">
             <img src="{% static 'icons/categorisation_icon.png' %}" alt="Sentence Building">
         </div>
         <div class="exercise-details">
-            <h3>Categorisation - Sorting into Groups</h3>
+            <h3>{{ game.title }} - Sorting into Groups</h3>
             {% if selected_learner.assessment1 < 3 %}
                 <p>This exercise will be unlocked as you progress.</p>
                 <a class="button exercise-btn locked-btn">Locked</a>
@@ -79,9 +85,9 @@
                 <p><strong>Your child will learn how to:</strong></p>
                 <div class="skills-list">
                     <ul>
-                        <li>Group items - “Which of these go together?”</li>
-                        <li>Identify categories - “What kind of thing is this?”</li>
-                        <li>Compare and contrast: - “How are these similar?”</li>
+                        <li>{{ game.bullet1 }}</li>
+                        <li>{{ game.bullet2 }}</li>
+                        <li>{{ game.bullet3 }}</li>
                     </ul>
                 </div>
                 <div class="exercise-buttons">
@@ -91,5 +97,7 @@
             {% endif %}
         </div>
     </div>
+    {% endwith %}
+
 {% endif %}
 {% endblock %}

@@ -27,6 +27,7 @@ from .forms import PasswordUpdateForm
 from django.contrib.auth import update_session_auth_hash
 from django.core.mail import send_mail
 from django.conf import settings
+from .game_data import GAME_DESCRIPTIONS  
 
 
 def home(request):
@@ -46,11 +47,14 @@ def practise(request):
         # Fetch the learner object from the database
         selected_learner = Learner.objects.filter(id=selected_learner_id).first()
         learner_selected = selected_learner is not None
-
-    return render(request, 'practise.html', {
+    
+    context = {
         'learner_selected': learner_selected,
         'selected_learner': selected_learner,
-    })
+        'game_descriptions': GAME_DESCRIPTIONS,
+    }
+
+    return render(request, 'practise.html', context)
 
 
 @login_required
@@ -87,41 +91,7 @@ def delete_log_entry(request, entry_id):
 
 @login_required
 def game_description(request, game_name):
-    game_descriptions = {
-        'colourful_semantics': {
-            'title': 'Colourful Semantics',
-            'description': "Colourful Semantics helps your child understand what words mean, how words fit together, and how to create simple, meaningful sentences. It uses colors to group words, making it easier for your child to remember words, learn new vocabulary, and express themselves clearly. Research shows that visual grouping of words into colors helps children better understand language and remember words more effectively.",
-            'bullet1': """Name objects, people, actions - “What is this?”""",
-            'bullet2': """Repeat a sentence - "Let's say, the dog is sitting.”""",
-            'bullet3': """Describe a scene - “What's happening in this picture?”""",
-            'learninglevel1': "If your child is still learning their first few words (around 5 words or less), try the first two easier levels. These will focus on learning nouns (names of things and people) and verbs (action words). Many children find verbs tricky at first, so these levels will help.",
-            'learninglevel2': 'If your child already knows some words and you want to help them start building sentences, pick higher difficulty levels to encourage them to put words together into simple sentences.',
-            'static_name': 'colourful_semantics',
-        },
-        'think_and_find': {
-            'title': 'Think and Find',
-            'quote': '"Linking items to concepts helps children structure their thoughts and enhances memory and retrieval capabilities" (Anderson & Freebody, 1981).',
-            'description': "Think and Find is a fun matching activity that helps your child learn new words and practice important thinking skills. It encourages your child to recognize and match similar pictures or items, improving their ability to notice details and make connections. This supports language growth, memory, and decision-making.",
-            'bullet1': """Point to / find an object - “Can you point to the lorry?”""",
-            'bullet2': """Match pictures and objects - “Can you find a car like this?”""",
-            'bullet3': """Identify & describe characteristics: “What shape is this?”""",
-            'learninglevel1': "We recommend starting with the easiest level first. Once your child feels confident, you can gradually move up to levels with more choices.",
-            'learninglevel2': "",
-            'static_name': 'think_and_find',
-        },
-        'categorisation': {
-            'title': 'Categorisation',
-            'quote': '“Arranging thoughts, concepts and words into categories facilitate meaning, memory and retrieval” (Roth & Troia, 2005)',
-            'description': "Categorisation is an activity that helps your child group things together based on similarities. Learning to group things helps your child understand and remember new words more easily, build their vocabulary, and clearly express ideas.",
-            'bullet1': """Group items - “Which of these go together?””""",
-            'bullet2': """Identify categories - “What kind of thing is this?””""",
-            'bullet3': """Compare and contrast: - “How are these similar?”""",
-            'learninglevel1': "Start with the easiest level first. As your child gets better at grouping and identifying items, you can increase the difficulty step-by-step.",
-            'learninglevel2': "",
-            'static_name': 'categorisation',
-        },
-    }
-    game = game_descriptions.get(game_name, None)
+    game = GAME_DESCRIPTIONS.get(game_name, None)
     if not game:
         return render(request, '404.html', status=404)  # Return a 404 if the game name is invalid
     
