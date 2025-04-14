@@ -5,7 +5,7 @@ import uuid
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-    first_name = models.CharField(max_length=100, blank=True, null=True)
+    first_name = models.CharField(max_length=50, blank=True, null=True)
 
     def __str__(self):
         return f"{self.user.username}'s Profile"
@@ -32,7 +32,7 @@ class Learner(models.Model):
     ]
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='learners')
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=50)
     date_of_birth = models.DateField()
     assessment1 = models.IntegerField(choices=ASSESSMENT_CHOICES_1, blank=True, null=True)
     assessment2 = models.IntegerField(choices=ASSESSMENT_CHOICES_2, blank=True, null=True)
@@ -54,7 +54,7 @@ class WaitingList(models.Model):
 
 class LogEntry(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="log_entries")  # Link log entry to a user
-    learner = models.ForeignKey(Learner, on_delete=models.CASCADE, related_name="log_entries", null=True, blank=255)  # New field
+    learner = models.ForeignKey(Learner, on_delete=models.CASCADE, related_name="log_entries", null=True, blank=True)
     title = models.CharField(max_length=70)
     exercises_practised = models.TextField(blank=True, null=True, max_length=255)
     goals = models.TextField(blank=True, null=True, max_length=255)

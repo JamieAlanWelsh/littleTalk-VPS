@@ -4,6 +4,30 @@ from .models import Learner
 from .models import WaitingList
 from django.contrib.auth.forms import AuthenticationForm
 from .models import LogEntry
+import re
+from django.core.exceptions import ValidationError
+
+
+def no_emoji_validator(value):
+    emoji_pattern = re.compile(
+        r"["
+        r"\U0001F600-\U0001F64F"  # emoticons
+        r"\U0001F300-\U0001F5FF"  # symbols & pictographs
+        r"\U0001F680-\U0001F6FF"  # transport & map symbols
+        r"\U0001F1E0-\U0001F1FF"  # flags
+        r"\u2600-\u26FF"          # misc symbols
+        r"\u2700-\u27BF"          # dingbats
+        r"]+", flags=re.UNICODE
+    )
+    if emoji_pattern.search(value):
+        raise ValidationError("Please avoid using emojis or special symbols in your name.")
+
+
+def sanity_check_name(value):
+    if len(value) > 50:
+        raise ValidationError("Name cannot exceed 50 characters.")
+    if len(set(value.lower())) <= 2:
+        raise ValidationError("That doesn’t look like a real name.")
 
 
 class CustomAuthenticationForm(AuthenticationForm):
@@ -25,6 +49,15 @@ class UserRegistrationForm(forms.ModelForm):
         if password1 and password2 and password1 != password2:
             raise forms.ValidationError("Passwords do not match")
         return password2
+
+    def clean_first_name(self):
+        first_name = self.cleaned_data.get("first_name", "")
+        first_name = first_name.strip()
+        if not first_name:
+            raise forms.ValidationError("Name cannot be empty.")
+        no_emoji_validator(first_name)
+        sanity_check_name(first_name)
+        return first_name
 
 
 class LearnerForm(forms.ModelForm):
@@ -89,9 +122,12 @@ class UserUpdateForm(forms.ModelForm):
         return email
 
     def clean_first_name(self):
-        first_name = self.cleaned_data.get("first_name")
-        if not first_name.strip():  # Prevent empty or whitespace-only input
+        first_name = self.cleaned_data.get("first_name", "")
+        first_name = first_name.strip()
+        if not first_name:
             raise forms.ValidationError("Name cannot be empty.")
+        no_emoji_validator(first_name)
+        sanity_check_name(first_name)
         return first_name
 
 
