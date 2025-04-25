@@ -33,5 +33,17 @@ GAME_DESCRIPTIONS = {
             'learninglevel1': "Start with the easiest level first. As your child gets better at grouping and identifying items, you can increase the difficulty step-by-step.",
             'learninglevel2': "",
             'static_name': 'categorisation',
+        },
+        'story_train': {
+            'title': 'Story Train',
+            'target': 'Sequencing and Ordering',
+            'quote': '',
+            'description': "Story Train is a fun sequencing activity where your child arranges pictures in the correct order to tell a story or show a process. It helps develop your child’s understanding of time, order, and how events are connected. Sequencing also supports language development, comprehension, and logical thinking.",
+            'bullet1': """Arrange events in order - “What happened first?”""",
+            'bullet2': """Describe actions and stories - “What is happening here?”""",
+            'bullet3': """Use time words like "first", "next" and "then" """,
+            'learninglevel1': "No need to select a learning level for this exercise, just click start and go for it!",
+            'learninglevel2': "",
+            'static_name': 'categorisation',
         }
     }

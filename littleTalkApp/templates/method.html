@@ -85,11 +85,21 @@
         </div>
         {% endwith %}
 
-        {% comment %} COMING SOON {% endcomment %}
-        <h3 class="split-heading">Story Train - Sequencing & Predicting</h3>
-        <p class="split-body">
-            Coming soon!
-        </p>
+        {% comment %} STORY TRAIN {% endcomment %}
+        {% with game=game_descriptions.story_train %}
+        <h3 class="split-heading">{{ game.title }} - {{ game.target }}</h3>
+        <p class="split-body">{{ game.description }}</p>
+        <p class="split-body"><strong>Your child will learn how to:</strong></p>
+
+        <ul class="split-list">
+            <li>{{ game.bullet1 }}</li>
+            <li>{{ game.bullet2 }}</li>
+            <li>{{ game.bullet3 }}</li>
+        </ul>
+        <div class="inline-full-image">
+            <img src="{% static 'images/landing/story_train_screenshot.png' %}" alt="LittleTalk Demo">
+        </div>
+        {% endwith %}
     </div>
     </p>
 </div>

@@ -49,6 +49,35 @@
         </div>
         <div class="exercise-details">
             <h3>{{ game.title }} - {{ game.target }}</h3>
+            {% if selected_learner.assessment1 < 1 %}
+                <p>This exercise will be unlocked as you progress.</p>
+                <a class="button exercise-btn locked-btn">Locked</a>
+            {% else %}
+                <p><strong>Your child will learn how to:</strong></p>
+                <div class="skills-list">
+                    <ul>
+                        <li>{{ game.bullet1 }}</li>
+                        <li>{{ game.bullet2 }}</li>
+                        <li>{{ game.bullet3 }}</li>
+                    </ul>
+                </div>
+                <div class="exercise-buttons">
+                    <a href="{% static 'exercises/think_and_find/index.html' %}" class="button exercise-btn">START</a>
+                    <a href="{% url 'game_description' 'think_and_find' %}" class="button info-btn">More Info</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endwith %}
+
+    {% comment %} CATEGORISATAION {% endcomment %}
+    {% with game=game_descriptions.categorisation %}
+    <div class="exercise-widget">
+        <div class="exercise-image">
+            <img src="{% static 'icons/categorisation_icon.png' %}" alt="Sentence Building">
+        </div>
+        <div class="exercise-details">
+            <h3>{{ game.title }} - {{ game.target }}</h3>
             {% if selected_learner.assessment1 < 2 %}
                 <p>This exercise will be unlocked as you progress.</p>
                 <a class="button exercise-btn locked-btn">Locked</a>
@@ -62,19 +91,19 @@
                     </ul>
                 </div>
                 <div class="exercise-buttons">
-                    <a href="{% static 'exercises/think_and_find/index.html' %}" target="_blank" class="button exercise-btn">START</a>
-                    <a href="{% url 'game_description' 'think_and_find' %}" class="button info-btn">More Info</a>
+                    <a href="{% static 'exercises/categorisation/index.html' %}" class="button exercise-btn">START</a>
+                    <a href="{% url 'game_description' 'categorisation' %}" class="button info-btn">More Info</a>
                 </div>
             {% endif %}
         </div>
     </div>
     {% endwith %}
 
-    {% comment %} CATEGORISATAION {% endcomment %}
-    {% with game=game_descriptions.categorisation %}
+    {% comment %} STORY TRAIN {% endcomment %}
+    {% with game=game_descriptions.story_train %}
     <div class="exercise-widget">
         <div class="exercise-image">
-            <img src="{% static 'icons/categorisation_icon.png' %}" alt="Sentence Building">
+            <img src="{% static 'icons/story_train_icon.png' %}" alt="Sentence Building">
         </div>
         <div class="exercise-details">
             <h3>{{ game.title }} - {{ game.target }}</h3>
@@ -91,8 +120,8 @@
                     </ul>
                 </div>
                 <div class="exercise-buttons">
-                    <a href="{% static 'exercises/categorisation/index.html' %}" target="_blank" class="button exercise-btn">START</a>
-                    <a href="{% url 'game_description' 'categorisation' %}" class="button info-btn">More Info</a>
+                    <a href="{% static 'exercises/story_train/index.html' %}" class="button exercise-btn">START</a>
+                    <a href="{% url 'game_description' 'story_train' %}" class="button info-btn">More Info</a>
                 </div>
             {% endif %}
         </div>
