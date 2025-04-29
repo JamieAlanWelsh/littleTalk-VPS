@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
-from django.contrib.auth import logout
 from django.contrib.auth.models import User
 from .forms import UserRegistrationForm
 from .models import Profile
@@ -27,7 +26,9 @@ from .forms import PasswordUpdateForm
 from django.contrib.auth import update_session_auth_hash
 from django.core.mail import send_mail
 from django.conf import settings
-from .game_data import GAME_DESCRIPTIONS  
+from .game_data import GAME_DESCRIPTIONS
+from .assessment_qs import QUESTIONS
+from django.http import Http404
 
 
 def home(request):
@@ -35,6 +36,48 @@ def home(request):
     if request.user.is_authenticated:
         return redirect('/practise/')
     return render(request, 'landing.html')
+
+
+def start_assessment(request):
+    if request.method == 'POST':
+        # Get the current question ID and answer from the POST data
+        current_question_id = int(request.POST['question_id'])
+
+        # Find the current question based on the order
+        current_question = next((q for q in QUESTIONS if q["order"] == current_question_id), None)
+
+        if not current_question:
+            raise Http404("Question not found.")
+
+        # Find the next question based on the order
+        next_question = next((q for q in QUESTIONS if q["order"] > current_question_id), None)
+
+        if next_question:
+            # Redirect to the next question
+            return redirect('question', question_id=next_question["order"])
+        else:
+            # If no more questions, redirect to the summary page
+            return redirect('summary')
+
+    # If it's a GET request, show the first question
+    first_question = QUESTIONS[0]
+    print(f"Redirecting to first question: {first_question['order']}")
+    return redirect('question', question_id=first_question["order"])
+
+
+def question_view(request, question_id):
+    # Find the question by order (since we hard-coded them)
+    question = next((q for q in QUESTIONS if q["order"] == question_id), None)
+    
+    if not question:
+        raise Http404("Question not found.")
+    
+    return render(request, 'assessment/question.html', {'question': question})
+
+
+def assessment_summary(request):
+    # Just render a summary of all questions (we don't have answers to display right now)
+    return render(request, 'assessment/summary.html', {'questions': QUESTIONS})
 
 
 @login_required

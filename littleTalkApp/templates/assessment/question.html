@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Support - LittleTalk{% endblock %}
+
+{% block content %}
+
+<h2>{{ question.text }}</h2>
+
+<form method="POST" action="{% url 'start' %}">
+    {% csrf_token %}
+    <input type="radio" name="answer" value="Yes"> Yes
+    <input type="radio" name="answer" value="No"> No
+    <input type="hidden" name="question_id" value="{{ question.order }}">
+    <button type="submit">Next</button>
+</form>
+
+{% endblock %}

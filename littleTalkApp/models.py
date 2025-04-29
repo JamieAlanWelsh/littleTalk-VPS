@@ -3,6 +3,24 @@ from django.contrib.auth.models import User
 import uuid
 
 
+class Assessment(models.Model):
+    user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    learner_name = models.CharField(max_length=100)
+    learner_dob = models.DateField()
+    source = models.CharField(max_length=200, blank=True, null=True)
+    # Other fields you may need to track assessment progress
+
+class AssessmentQuestion(models.Model):
+    question_text = models.CharField(max_length=500)
+    is_optional = models.BooleanField(default=False)
+    order = models.IntegerField()
+
+class AssessmentAnswer(models.Model):
+    assessment = models.ForeignKey(Assessment, on_delete=models.CASCADE)
+    question = models.ForeignKey(AssessmentQuestion, on_delete=models.CASCADE)
+    answer = models.BooleanField()  # True for Yes, False for No
+
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     first_name = models.CharField(max_length=50, blank=True, null=True)

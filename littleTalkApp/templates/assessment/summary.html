@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Support - LittleTalk{% endblock %}
+
+{% block content %}
+
+<!-- summary.html -->
+<h2>Assessment Summary</h2>
+<ul>
+    {% for question in questions %}
+        <li>{{ question.text }}</li>
+    {% endfor %}
+</ul>
+
+{% endblock %}
