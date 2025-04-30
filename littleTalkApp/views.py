@@ -55,25 +55,28 @@ def start_assessment(request):
 
         # Find the next question based on the order
         next_question = next((q for q in QUESTIONS if q["order"] > current_question_id), None)
+    
+        # Find the previous question based on the order, return None if first question
+        previous_question = next((q for q in QUESTIONS if q["order"] == current_question_id), None)
         
-        if next_question:
-            # Return the next question's data in JSON format for the AJAX request
-            return JsonResponse({
-                'next_question_id': next_question["order"],
-                'next_question_text': next_question["text"]
-            })
-        else:
-            # If no more questions, return the summary
-            return JsonResponse({
-                'next_question_id': None,
-                'next_question_text': 'End of Assessment. Redirecting to Summary...'
-            })
+        # Prepare response data
+        response_data = {
+            'next_question_id': next_question["order"] if next_question else None,
+            'next_question_text': next_question["text"] if next_question else 'End of Assessment. Redirecting to Summary...',
+            'previous_question_id': previous_question["order"] if previous_question else None,
+            'previous_question_text': previous_question["text"] if previous_question else None,
+        }
+
+        return JsonResponse(response_data)
 
     # If it's a GET request, show the first question
     first_question = QUESTIONS[0]
+    print('showing first question')
     return JsonResponse({
         'next_question_id': first_question["order"],
-        'next_question_text': first_question["text"]
+        'next_question_text': first_question["text"],
+        'previous_question_id': None,
+        'previous_question_text': None
     })
 
 

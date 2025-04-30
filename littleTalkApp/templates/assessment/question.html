@@ -35,6 +35,8 @@
     const progressBar = document.getElementById('progress-bar');
     const totalQuestions = {{ total_questions }};
     let currentQuestionIndex = {{ current_question_index }};
+    let currentQuestionId = {{ question.order }};
+    let previousQuestionId = null;
     
     function updateProgressBar() {
         let percentage = (currentQuestionIndex / totalQuestions) * 100;
@@ -73,12 +75,17 @@
                     currentQuestionIndex++;
                     updateProgressBar();
 
+                    // Set the previous question info
+                    previousQuestionId = data.previous_question_id;
+
                     // Reset radio buttons (uncheck both)
                     const radioButtons = document.querySelectorAll('.answer-option');
                     radioButtons.forEach(button => button.checked = false);
 
-                    // Show the Back button
-                    document.getElementById('back-btn').style.display = 'inline-block';
+                    // Show the Back button if there is a previous question
+                    if (previousQuestionId !== null) {
+                        document.getElementById('back-btn').style.display = 'inline-block';
+                    }
 
                 } else {
                     // End of the assessment, redirect to summary
@@ -91,9 +98,41 @@
 
     // Back button logic
     document.getElementById('back-btn').addEventListener('click', function() {
-        // This logic could go back to the previous question. You may want to store the user's previous answers
-        // and handle the previous question request. For now, let's simulate going back:
-        history.back();
+        if (previousQuestionId !== null) {
+            // Send a request to load the previous question
+            const formData = new FormData();
+            formData.append('question_id', previousQuestionId);
+            formData.append('csrfmiddlewaretoken', document.querySelector('[name="csrfmiddlewaretoken"]').value);
+
+            // Send the form via AJAX to get the previous question
+            fetch('/assessment/start/', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Update the question and progress bar with the previous question
+                document.getElementById('question-text').textContent = data.previous_question_text;
+                document.querySelector('[name="question_id"]').value = data.previous_question_id;
+                
+                // Update the progress bar
+                currentQuestionIndex--;
+                updateProgressBar();
+
+                // Reset radio buttons (uncheck both)
+                const radioButtons = document.querySelectorAll('.answer-option');
+                radioButtons.forEach(button => button.checked = false);
+
+                // Update the previous question ID
+                previousQuestionId = data.previous_question_id;
+
+                // If there's no previous question, hide the Back button
+                if (previousQuestionId === null) {
+                    document.getElementById('back-btn').style.display = 'none';
+                }
+            })
+            .catch(error => console.log('Error:', error));
+        }
     });
 </script>
 
