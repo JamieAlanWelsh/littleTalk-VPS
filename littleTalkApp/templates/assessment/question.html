@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Support - LittleTalk{% endblock %}
+{% block title %}Assessment - LittleTalk{% endblock %}
 
 {% block content %}
 
@@ -72,6 +72,10 @@
                     // Update progress bar
                     currentQuestionIndex++;
                     updateProgressBar();
+
+                    // Reset radio buttons (uncheck both)
+                    const radioButtons = document.querySelectorAll('.answer-option');
+                    radioButtons.forEach(button => button.checked = false);
 
                     // Show the Back button
                     document.getElementById('back-btn').style.display = 'inline-block';
