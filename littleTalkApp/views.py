@@ -40,6 +40,7 @@ def home(request):
 
 # This view will serve the first question when the assessment starts
 def start_assessment(request):
+    request.hide_sidebar = True
     # Get the first question
     first_question = QUESTIONS[0]
     total_questions = len(QUESTIONS)
@@ -55,6 +56,7 @@ def start_assessment(request):
     })
 
 def handle_question(request):
+    # request.hide_sidebar = True
     if request.method == 'POST':
         # Get data from the form submission
         question_id = int(request.POST.get('question_id'))
@@ -86,6 +88,7 @@ def handle_question(request):
 
 # This view will handle the end of the assessment
 def assessment_summary(request):
+    request.hide_sidebar = True
     # Since we don't have a database, you can show the summary of answers from the session (if needed)
     return render(request, 'assessment/summary.html')
 
