@@ -5,14 +5,92 @@
 
 {% block content %}
 
-<h2>{{ question.text }}</h2>
+<h2 id="question-text">{{ question.text }}</h2>
 
-<form method="POST" action="{% url 'start' %}">
+<form id="assessment-form" method="POST">
     {% csrf_token %}
-    <input type="radio" name="answer" value="Yes"> Yes
-    <input type="radio" name="answer" value="No"> No
+    
+    <div class="radio-button-container">
+        <label class="radio-option">
+            <input type="radio" name="answer" value="Yes" class="answer-option" id="yes-button">
+            <span class="radio-button">Yes</span>
+        </label>
+        <label class="radio-option">
+            <input type="radio" name="answer" value="No" class="answer-option" id="no-button">
+            <span class="radio-button">No</span>
+        </label>
+    </div>
+
     <input type="hidden" name="question_id" value="{{ question.order }}">
-    <button type="submit">Next</button>
+    
+    <!-- Back Button -->
+    <button type="button" id="back-btn" class="back-button" style="display:none;">Back</button>
 </form>
+
+<div id="progress-bar-container">
+    <progress id="progress-bar" max="100" value="{{ current_question_index|default_if_none:1 }}"></progress>
+</div>
+
+<script>
+    const progressBar = document.getElementById('progress-bar');
+    const totalQuestions = {{ total_questions }};
+    let currentQuestionIndex = {{ current_question_index }};
+    
+    function updateProgressBar() {
+        let percentage = (currentQuestionIndex / totalQuestions) * 100;
+        progressBar.value = percentage;
+    }
+
+    // Initialize progress bar
+    updateProgressBar();
+
+    document.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('change', function(event) {
+            const answer = event.target.value;
+            const questionId = document.querySelector('[name="question_id"]').value;
+
+            // Send the answer immediately using AJAX
+            const formData = new FormData();
+            formData.append('question_id', questionId);
+            formData.append('answer', answer);
+            formData.append('csrfmiddlewaretoken', document.querySelector('[name="csrfmiddlewaretoken"]').value);
+
+            // Send the form via AJAX
+            fetch('/assessment/start/', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.next_question_id) {
+                    // Update the question text
+                    document.getElementById('question-text').textContent = data.next_question_text;
+
+                    // Update hidden input for the next question
+                    document.querySelector('[name="question_id"]').value = data.next_question_id;
+
+                    // Update progress bar
+                    currentQuestionIndex++;
+                    updateProgressBar();
+
+                    // Show the Back button
+                    document.getElementById('back-btn').style.display = 'inline-block';
+
+                } else {
+                    // End of the assessment, redirect to summary
+                    window.location.href = "/assessment/summary/";
+                }
+            })
+            .catch(error => console.log('Error:', error));
+        });
+    });
+
+    // Back button logic
+    document.getElementById('back-btn').addEventListener('click', function() {
+        // This logic could go back to the previous question. You may want to store the user's previous answers
+        // and handle the previous question request. For now, let's simulate going back:
+        history.back();
+    });
+</script>
 
 {% endblock %}

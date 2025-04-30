@@ -42,6 +42,7 @@ def start_assessment(request):
     if request.method == 'POST':
         # Get the current question ID and answer from the POST data
         current_question_id = int(request.POST['question_id'])
+        current_answer = request.POST.get('answer')
 
         # Find the current question based on the order
         current_question = next((q for q in QUESTIONS if q["order"] == current_question_id), None)
@@ -49,30 +50,50 @@ def start_assessment(request):
         if not current_question:
             raise Http404("Question not found.")
 
+        # Save the answer (printing for now, could later be saved to a model)
+        print(f"Question ID: {current_question_id}, Answer: {current_answer}")
+
         # Find the next question based on the order
         next_question = next((q for q in QUESTIONS if q["order"] > current_question_id), None)
-
+        
         if next_question:
-            # Redirect to the next question
-            return redirect('question', question_id=next_question["order"])
+            # Return the next question's data in JSON format for the AJAX request
+            return JsonResponse({
+                'next_question_id': next_question["order"],
+                'next_question_text': next_question["text"]
+            })
         else:
-            # If no more questions, redirect to the summary page
-            return redirect('summary')
+            # If no more questions, return the summary
+            return JsonResponse({
+                'next_question_id': None,
+                'next_question_text': 'End of Assessment. Redirecting to Summary...'
+            })
 
     # If it's a GET request, show the first question
     first_question = QUESTIONS[0]
-    print(f"Redirecting to first question: {first_question['order']}")
-    return redirect('question', question_id=first_question["order"])
+    return JsonResponse({
+        'next_question_id': first_question["order"],
+        'next_question_text': first_question["text"]
+    })
 
 
 def question_view(request, question_id):
+    request.hide_sidebar = True
     # Find the question by order (since we hard-coded them)
     question = next((q for q in QUESTIONS if q["order"] == question_id), None)
     
     if not question:
         raise Http404("Question not found.")
     
-    return render(request, 'assessment/question.html', {'question': question})
+    # Pass the total number of questions and the current question index
+    total_questions = len(QUESTIONS)
+    current_question_index = question["order"]  # assuming order is a sequential index
+    
+    return render(request, 'assessment/question.html', {
+        'question': question,
+        'total_questions': total_questions,
+        'current_question_index': current_question_index
+    })
 
 
 def assessment_summary(request):

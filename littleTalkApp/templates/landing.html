@@ -11,7 +11,7 @@
             <h1 class="header">Help Your Child's Speech & Language Grow - From Home</h1>
             <p class="body-text">Simple, evidence-based speech and language exercises that fit easily into your day - just 10 minutes a day, right from your devices.</p>
             <p class="small-text">Currently Free for the month of April</p>
-            <a href="{% url 'start' %}" class="cta-button">Get Started with Free Assessment</a>
+            <button id="start-assessment-btn" class="cta-button">Get Started with Free Assessment</button>
         </div>
     </div>
     <div class="landing-right">
@@ -165,4 +165,22 @@
         <img src="{% static 'images/landing/arlo_waving.png' %}" alt="LittleTalk icon" class="footer-icon">
     </div>
 </div>
+
+<script>
+    document.getElementById('start-assessment-btn').addEventListener('click', function(event) {
+        event.preventDefault();  // Prevent default behavior of a link
+        
+        // Send AJAX request to get the first question
+        fetch('/assessment/start/')
+            .then(response => response.json())
+            .then(data => {
+                // Dynamically load the first question on the page
+                if (data.next_question_id) {
+                    // Redirect to the question page
+                    window.location.href = "/assessment/question/" + data.next_question_id;
+                }
+            })
+            .catch(error => console.log('Error fetching first question:', error));
+    });
+</script>
 {% endblock %}
