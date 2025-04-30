@@ -167,20 +167,10 @@
 </div>
 
 <script>
-    document.getElementById('start-assessment-btn').addEventListener('click', function(event) {
-        event.preventDefault();  // Prevent default behavior of a link
-        
-        // Send AJAX request to get the first question
-        fetch('/assessment/start/')
-            .then(response => response.json())
-            .then(data => {
-                // Dynamically load the first question on the page
-                if (data.next_question_id) {
-                    // Redirect to the question page
-                    window.location.href = "/assessment/question/" + data.next_question_id;
-                }
-            })
-            .catch(error => console.log('Error fetching first question:', error));
+    document.getElementById('start-assessment-btn').addEventListener('click', function() {
+        // Redirect to the assessment start page
+        window.location.href = '/assessment/start/';
     });
 </script>
+
 {% endblock %}

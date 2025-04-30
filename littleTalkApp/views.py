@@ -38,70 +38,56 @@ def home(request):
     return render(request, 'landing.html')
 
 
+# This view will serve the first question when the assessment starts
 def start_assessment(request):
-    if request.method == 'POST':
-        # Get the current question ID and answer from the POST data
-        current_question_id = int(request.POST['question_id'])
-        current_answer = request.POST.get('answer')
-
-        # Find the current question based on the order
-        current_question = next((q for q in QUESTIONS if q["order"] == current_question_id), None)
-
-        if not current_question:
-            raise Http404("Question not found.")
-
-        # Save the answer (printing for now, could later be saved to a model)
-        print(f"Question ID: {current_question_id}, Answer: {current_answer}")
-
-        # Find the next question based on the order
-        next_question = next((q for q in QUESTIONS if q["order"] > current_question_id), None)
-    
-        # Find the previous question based on the order, return None if first question
-        previous_question = next((q for q in QUESTIONS if q["order"] == current_question_id), None)
-        
-        # Prepare response data
-        response_data = {
-            'next_question_id': next_question["order"] if next_question else None,
-            'next_question_text': next_question["text"] if next_question else 'End of Assessment. Redirecting to Summary...',
-            'previous_question_id': previous_question["order"] if previous_question else None,
-            'previous_question_text': previous_question["text"] if previous_question else None,
-        }
-
-        return JsonResponse(response_data)
-
-    # If it's a GET request, show the first question
+    # Get the first question
     first_question = QUESTIONS[0]
-    print('showing first question')
-    return JsonResponse({
-        'next_question_id': first_question["order"],
-        'next_question_text': first_question["text"],
-        'previous_question_id': None,
-        'previous_question_text': None
-    })
-
-
-def question_view(request, question_id):
-    request.hide_sidebar = True
-    # Find the question by order (since we hard-coded them)
-    question = next((q for q in QUESTIONS if q["order"] == question_id), None)
-    
-    if not question:
-        raise Http404("Question not found.")
-    
-    # Pass the total number of questions and the current question index
     total_questions = len(QUESTIONS)
-    current_question_index = question["order"]  # assuming order is a sequential index
-    
-    return render(request, 'assessment/question.html', {
-        'question': question,
+
+    # Store the current question index and other relevant info in the session
+    request.session['current_question_index'] = 1
+    request.session['previous_question_id'] = None
+
+    return render(request, 'assessment/assessment_form.html', {
+        'question': first_question,
         'total_questions': total_questions,
-        'current_question_index': current_question_index
+        'current_question_index': 1
     })
 
+def handle_question(request):
+    if request.method == 'POST':
+        # Get data from the form submission
+        question_id = int(request.POST.get('question_id'))
+        answer_value = request.POST.get('answer')
 
+        # Process the answer (you can save it to the database if needed)
+        print(f"Answer for question {question_id}: {answer_value}")
+
+        # Get the current question index based on the question ID
+        current_question_index = next((i for i, q in enumerate(QUESTIONS) if q["order"] == question_id), None)
+
+        if current_question_index is not None:
+            # Determine the next question
+            next_question = QUESTIONS[current_question_index + 1] if current_question_index + 1 < len(QUESTIONS) else None
+            previous_question = QUESTIONS[current_question_index] if current_question_index >= 0 else None
+
+            # Prepare data to send back
+            response_data = {
+                "next_question_text": next_question["text"] if next_question else None,
+                "next_question_id": next_question["order"] if next_question else None,
+                "previous_question_text": previous_question["text"] if previous_question else None,
+                "previous_question_id": previous_question["order"] if previous_question else None,
+            }
+
+            return JsonResponse(response_data)
+        else:
+            return JsonResponse({"error": "Invalid question ID"})
+
+
+# This view will handle the end of the assessment
 def assessment_summary(request):
-    # Just render a summary of all questions (we don't have answers to display right now)
-    return render(request, 'assessment/summary.html', {'questions': QUESTIONS})
+    # Since we don't have a database, you can show the summary of answers from the session (if needed)
+    return render(request, 'assessment/summary.html')
 
 
 @login_required

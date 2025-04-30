@@ -46,6 +46,7 @@
     // Initialize progress bar
     updateProgressBar();
 
+    // Event listener for radio button changes
     document.querySelectorAll('.answer-option').forEach(option => {
         option.addEventListener('change', function(event) {
             const answer = event.target.value;
@@ -57,8 +58,8 @@
             formData.append('answer', answer);
             formData.append('csrfmiddlewaretoken', document.querySelector('[name="csrfmiddlewaretoken"]').value);
 
-            // Send the form via AJAX
-            fetch('/assessment/start/', {
+            // Send the form via AJAX to get the next question
+            fetch('/assessment/handle/', {
                 method: 'POST',
                 body: formData
             })
@@ -101,37 +102,46 @@
         if (previousQuestionId !== null) {
             // Send a request to load the previous question
             const formData = new FormData();
-            formData.append('question_id', previousQuestionId);
-            formData.append('csrfmiddlewaretoken', document.querySelector('[name="csrfmiddlewaretoken"]').value);
 
-            // Send the form via AJAX to get the previous question
-            fetch('/assessment/start/', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Update the question and progress bar with the previous question
-                document.getElementById('question-text').textContent = data.previous_question_text;
-                document.querySelector('[name="question_id"]').value = data.previous_question_id;
-                
-                // Update the progress bar
-                currentQuestionIndex--;
-                updateProgressBar();
+            // If the user is at the first question (previousQuestionId == 1), restart the form
+            if (previousQuestionId - 1 === 0) {
+                // Restart the form (go back to the first question)
+                window.location.href = '/assessment/start/';  // Redirect to the start of the assessment
+            
+            } else {
 
-                // Reset radio buttons (uncheck both)
-                const radioButtons = document.querySelectorAll('.answer-option');
-                radioButtons.forEach(button => button.checked = false);
+                formData.append('question_id', previousQuestionId - 1);
+                formData.append('csrfmiddlewaretoken', document.querySelector('[name="csrfmiddlewaretoken"]').value);
 
-                // Update the previous question ID
-                previousQuestionId = data.previous_question_id;
+                // Send the form via AJAX to get the previous question
+                fetch('/assessment/handle/', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Update the question and progress bar with the previous question
+                    document.getElementById('question-text').textContent = data.next_question_text;
+                    document.querySelector('[name="question_id"]').value = data.next_question_id;
+                    
+                    // Update the progress bar
+                    currentQuestionIndex--;
+                    updateProgressBar();
 
-                // If there's no previous question, hide the Back button
-                if (previousQuestionId === null) {
-                    document.getElementById('back-btn').style.display = 'none';
-                }
-            })
-            .catch(error => console.log('Error:', error));
+                    // Reset radio buttons (uncheck both)
+                    const radioButtons = document.querySelectorAll('.answer-option');
+                    radioButtons.forEach(button => button.checked = false);
+
+                    // Update the previous question ID
+                    previousQuestionId = data.previous_question_id;
+
+                    // If there's no previous question, hide the Back button
+                    if (previousQuestionId === null) {
+                        document.getElementById('back-btn').style.display = 'none';
+                    }
+                })
+                .catch(error => console.log('Error:', error));
+            }
         }
     });
 </script>

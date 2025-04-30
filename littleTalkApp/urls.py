@@ -14,9 +14,9 @@ urlpatterns = [
     path('method/', views.method, name='method'),
 
     # Assessment
-    path('assessment/start/', views.start_assessment, name='start'),
-    path('assessment/question/<int:question_id>/', views.question_view, name='question'),
-    path('assessment/summary/', views.assessment_summary, name='summary'),
+    path('assessment/start/', views.start_assessment, name='start_assessment'),
+    path('assessment/handle/', views.handle_question, name='handle_question'),
+    path('assessment/summary/', views.assessment_summary, name='assessment_summary'),
 
     # Login and logout URLs
     path('login/', views.CustomLoginView.as_view(), name='login'),
