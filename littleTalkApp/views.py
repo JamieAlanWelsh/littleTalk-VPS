@@ -56,36 +56,30 @@ def start_assessment(request):
     })
 
 def handle_question(request):
-    # request.hide_sidebar = True
     if request.method == 'POST':
-        # Get data from the form submission
         question_id = int(request.POST.get('question_id'))
         answer_value = request.POST.get('answer')
 
-        # Process the answer (you can save it to the database if needed)
         print(f"Answer for question {question_id}: {answer_value}")
 
-        # Get the current question index based on the question ID
         current_question_index = next((i for i, q in enumerate(QUESTIONS) if q["order"] == question_id), None)
 
         if current_question_index is not None:
-            # Determine the next question
             next_question = QUESTIONS[current_question_index + 1] if current_question_index + 1 < len(QUESTIONS) else None
             previous_question = QUESTIONS[current_question_index] if current_question_index >= 0 else None
 
-            # Prepare data to send back
             response_data = {
                 "next_question_text": next_question["text"] if next_question else None,
                 "next_question_id": next_question["order"] if next_question else None,
                 "next_question_topic": next_question["topic"] if next_question else None,
                 "previous_question_text": previous_question["text"] if previous_question else None,
                 "previous_question_id": previous_question["order"] if previous_question else None,
-                "previous_question_topic": next_question["topic"] if previous_question else None,
+                "previous_question_topic": previous_question["topic"] if previous_question else None,
             }
 
             return JsonResponse(response_data)
-        else:
-            return JsonResponse({"error": "Invalid question ID"})
+
+        return JsonResponse({"error": "Invalid question ID"}, status=400)
 
 
 # This view will handle the end of the assessment

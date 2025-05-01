@@ -17,5 +17,5 @@ QUESTIONS = [
     {"topic": "Expressive Language", "text": "Does your child ever struggle to find the right word?", "order": 16},
     {"topic": "Expressive Language", "text": "Do they get frustrated when they can't think of what to say?", "order": 17},
     {"topic": "Expressive Language", "text": "Can your child retell something that happened at school or in a story?", "order": 18},
-    {"topic": "Expressive Language", "text": "Does your child describe events in a logical order, or do they often shift topics or skip around?", "order": 19},
+    {"topic": "Expressive Language", "text": "Does your child describe events in a logical order, or do they often shift topics or skip around?", "order": 19}
 ]
