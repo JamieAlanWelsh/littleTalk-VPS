@@ -5,27 +5,30 @@
 
 {% block content %}
 
-<h1>{{ question.topic }}</h1>
-
-<form id="assessment-form" method="POST">
-    {% csrf_token %}
-
-    <div class="button-container">
-        <h2 id="question-text">{{ question.text }}</h2>
-        
-        <button type="button" class="answer-button" data-value="Yes">Yes</button>
-        <button type="button" class="answer-button" data-value="No">No</button>
-    </div>
-
-    <input type="hidden" name="answer" id="answer-input">
-    <input type="hidden" name="question_id" value="{{ question.order }}">
-    
-    <!-- Back Button -->
-    <button type="button" id="back-btn" class="back-button" style="display:none;">Back</button>
-</form>
+<h1 id="question-topic">{{ question.topic }}</h1>
 
 <div id="progress-bar-container">
     <progress id="progress-bar" max="100" value="{{ current_question_index|default_if_none:1 }}"></progress>
+</div>
+
+<div id="assessment-form-container">
+    <form id="assessment-form" method="POST">
+        {% csrf_token %}
+
+        <h2 id="question-text">{{ question.text }}</h2>
+
+        <div class="answer-button-group">
+            <button type="button" class="answer-button" data-value="Yes">Yes</button>
+            <button type="button" class="answer-button" data-value="No">No</button>
+        </div>
+
+        <input type="hidden" name="answer" id="answer-input">
+        <input type="hidden" name="question_id" value="{{ question.order }}">
+
+        <div class="nav-button-group">
+            <button type="button" id="back-btn" class="back-button" style="display:none;">Back</button>
+        </div>
+    </form>
 </div>
 
 <script>
@@ -62,6 +65,7 @@
             .then(data => {
                 if (data.next_question_id) {
                     document.getElementById('question-text').textContent = data.next_question_text;
+                    document.getElementById('question-topic').textContent = data.next_question_topic;
                     document.querySelector('[name="question_id"]').value = data.next_question_id;
 
                     currentQuestionIndex++;
@@ -98,6 +102,7 @@
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('question-text').textContent = data.next_question_text;
+                    document.getElementById('question-topic').textContent = data.next_question_topic;
                     document.querySelector('[name="question_id"]').value = data.next_question_id;
 
                     currentQuestionIndex--;

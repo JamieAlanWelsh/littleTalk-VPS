@@ -1,24 +1,12 @@
-/* Body and Form */
-/* body {
-    background-color: var(--background-color);
-    font-family: var(--font-roboto);
-    color: var(--font-color);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    padding: 0;
-} */
-
-/* Form Container */
-#assessment-form {
+/* Container for the entire form section */
+#assessment-form-container {
     background-color: var(--accent-color);
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
     padding: 20px;
     width: 100%;
-    max-width: 450px;
+    max-width: 500px;
+    margin: 0 auto;
     text-align: center;
 }
 
@@ -30,55 +18,42 @@
     font-weight: 500;
 }
 
-/* Radio Buttons */
-.radio-button-container {
+/* Answer Buttons (Yes/No) */
+.answer-button-group {
     display: flex;
-    justify-content: space-around;
-    margin: 20px 0;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 30px;
 }
 
-.radio-option {
-    position: relative;
+.answer-button {
+    padding: 12px 28px;
     font-size: 18px;
-    color: var(--font-color);
-    cursor: pointer;
-    padding: 10px 20px;
-    transition: all 0.3s ease;
-}
-
-.radio-button {
-    padding: 10px 20px;
     background-color: white;
-    /* border: 2px solid var(--accent-color-dark); */
-    border-radius: 30px;
+    color: var(--font-color);
+    border: none;
+    box-shadow: var(--box-shadow);
+    border-radius: var(--border-radius);
+    cursor: pointer;
     transition: all 0.3s ease;
 }
 
-.radio-button:hover {
-    background-color: var(--yellow-button-color);   
-}
-
-input[type="radio"]:checked + .radio-button {
-    background-color: var(--button-green);
-    border-color: var(--button-green);
-    color: white;
-}
-
-input[type="radio"] {
-    display: none;
+.answer-button:hover {
+    background-color: var(--yellow-button-color);
 }
 
 /* Progress Bar */
 #progress-bar-container {
-    margin-top: 30px;
-    text-align: center;
+    margin: 20px auto;
+    max-width: 500px;
 }
 
 progress {
     width: 100%;
     height: 12px;
     border-radius: 10px;
-    background-color: var(--accent-color);
+    background-color: white;
+    box-shadow: var(--box-shadow);
     appearance: none;
 }
 
@@ -88,37 +63,49 @@ progress::-webkit-progress-bar {
 
 progress::-webkit-progress-value {
     background-color: var(--button-green);
+    border-radius: 10px;
 }
 
 /* Back Button */
-#back-btn {
+.nav-button-group {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.back-button {
     background-color: var(--yellow-button-color);
     color: var(--font-color);
     border: none;
-    border-radius: var(--border-radius-light);
+    border-radius: var(--border-radius);
     padding: 12px 24px;
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s;
-    margin-top: 20px;
+    box-shadow: var(--box-shadow);
 }
 
-#back-btn:hover {
+.back-button:hover {
     background-color: var(--yellow-button-hover);
 }
 
 /* Responsive Design */
 @media (max-width: 480px) {
-    #assessment-form {
+    #assessment-form-container {
         width: 90%;
     }
 
-    button {
-        font-size: 14px;
+    .answer-button {
+        font-size: 16px;
         padding: 10px 20px;
     }
 
     h2 {
         font-size: 20px;
+    }
+
+    .answer-button-group {
+        flex-direction: column;
+        gap: 15px;
     }
 }

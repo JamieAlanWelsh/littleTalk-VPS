@@ -77,8 +77,10 @@ def handle_question(request):
             response_data = {
                 "next_question_text": next_question["text"] if next_question else None,
                 "next_question_id": next_question["order"] if next_question else None,
+                "next_question_topic": next_question["topic"] if next_question else None,
                 "previous_question_text": previous_question["text"] if previous_question else None,
                 "previous_question_id": previous_question["order"] if previous_question else None,
+                "previous_question_topic": next_question["topic"] if previous_question else None,
             }
 
             return JsonResponse(response_data)
