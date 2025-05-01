@@ -26,7 +26,7 @@
         <input type="hidden" name="question_id" value="{{ question.order }}">
 
         <div class="nav-button-group">
-            <button type="button" id="back-btn" class="back-button" style="display:none;">Back</button>
+            <button type="button" id="back-btn" class="back-button" disabled>Previous Question</button>
         </div>
     </form>
 </div>
@@ -37,6 +37,8 @@
     let currentQuestionIndex = {{ current_question_index }};
     let currentQuestionId = {{ question.order }};
     let previousQuestionId = null;
+
+    const backBtn = document.getElementById('back-btn');
 
     function updateProgressBar() {
         let percentage = (currentQuestionIndex / totalQuestions) * 100;
@@ -73,9 +75,8 @@
 
                     previousQuestionId = data.previous_question_id;
 
-                    if (previousQuestionId !== null) {
-                        document.getElementById('back-btn').style.display = 'inline-block';
-                    }
+                    // Enable or disable the back button
+                    backBtn.disabled = previousQuestionId === null;
 
                 } else {
                     window.location.href = "/assessment/summary/";
@@ -86,7 +87,9 @@
     });
 
     // Back button logic
-    document.getElementById('back-btn').addEventListener('click', function () {
+    backBtn.addEventListener('click', function () {
+        if (backBtn.disabled) return;
+
         if (previousQuestionId !== null) {
             if (previousQuestionId - 1 === 0) {
                 window.location.href = '/assessment/start/';
@@ -110,9 +113,8 @@
 
                     previousQuestionId = data.previous_question_id;
 
-                    if (previousQuestionId === null) {
-                        document.getElementById('back-btn').style.display = 'none';
-                    }
+                    // Enable or disable the back button
+                    backBtn.disabled = previousQuestionId === null;
                 })
                 .catch(error => console.log('Error:', error));
             }

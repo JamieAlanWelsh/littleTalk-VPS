@@ -5,13 +5,20 @@
     box-shadow: var(--box-shadow);
     padding: 20px;
     width: 100%;
-    max-width: 500px;
+    max-width: 600px;
     margin: 0 auto;
     text-align: center;
 }
 
 /* Question Text */
 #question-text {
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    padding: 10px;
     font-size: 24px;
     color: var(--font-color);
     margin-bottom: 20px;
@@ -22,7 +29,7 @@
 .answer-button-group {
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 30px;
     margin-bottom: 30px;
 }
 
@@ -36,16 +43,18 @@
     border-radius: var(--border-radius);
     cursor: pointer;
     transition: all 0.3s ease;
+    font-weight: bold;
+    width: 200px;
 }
 
 .answer-button:hover {
-    background-color: var(--yellow-button-color);
+    background-color: var(--yellow-button-hover);
 }
 
 /* Progress Bar */
 #progress-bar-container {
     margin: 20px auto;
-    max-width: 500px;
+    max-width: 550px;
 }
 
 progress {
@@ -74,19 +83,29 @@ progress::-webkit-progress-value {
 }
 
 .back-button {
-    background-color: var(--yellow-button-color);
+    padding: 12px 28px;
+    font-size: 16px;
+    background-color: white;
     color: var(--font-color);
     border: none;
-    border-radius: var(--border-radius);
-    padding: 12px 24px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
     box-shadow: var(--box-shadow);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 200px;
+    margin-top: 10px;
+    margin-bottom: 20px;
 }
 
 .back-button:hover {
     background-color: var(--yellow-button-hover);
+}
+
+.back-button:disabled {
+    background-color: #d3d3d3; /* Light grey for disabled state */
+    color: #a0a0a0; /* Dimmed text */
+    cursor: not-allowed;
+    opacity: 0.6;
 }
 
 /* Responsive Design */
