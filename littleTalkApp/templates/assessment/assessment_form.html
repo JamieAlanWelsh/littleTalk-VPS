@@ -5,22 +5,19 @@
 
 {% block content %}
 
-<h2 id="question-text">{{ question.text }}</h2>
+<h1>{{ question.topic }}</h1>
 
 <form id="assessment-form" method="POST">
     {% csrf_token %}
-    
-    <div class="radio-button-container">
-        <label class="radio-option">
-            <input type="radio" name="answer" value="Yes" class="answer-option" id="yes-button">
-            <span class="radio-button">Yes</span>
-        </label>
-        <label class="radio-option">
-            <input type="radio" name="answer" value="No" class="answer-option" id="no-button">
-            <span class="radio-button">No</span>
-        </label>
+
+    <div class="button-container">
+        <h2 id="question-text">{{ question.text }}</h2>
+        
+        <button type="button" class="answer-button" data-value="Yes">Yes</button>
+        <button type="button" class="answer-button" data-value="No">No</button>
     </div>
 
+    <input type="hidden" name="answer" id="answer-input">
     <input type="hidden" name="question_id" value="{{ question.order }}">
     
     <!-- Back Button -->
@@ -37,7 +34,7 @@
     let currentQuestionIndex = {{ current_question_index }};
     let currentQuestionId = {{ question.order }};
     let previousQuestionId = null;
-    
+
     function updateProgressBar() {
         let percentage = (currentQuestionIndex / totalQuestions) * 100;
         progressBar.value = percentage;
@@ -46,19 +43,17 @@
     // Initialize progress bar
     updateProgressBar();
 
-    // Event listener for radio button changes
-    document.querySelectorAll('.answer-option').forEach(option => {
-        option.addEventListener('change', function(event) {
-            const answer = event.target.value;
+    // Event listener for answer buttons
+    document.querySelectorAll('.answer-button').forEach(button => {
+        button.addEventListener('click', function () {
+            const answer = this.getAttribute('data-value');
             const questionId = document.querySelector('[name="question_id"]').value;
 
-            // Send the answer immediately using AJAX
             const formData = new FormData();
             formData.append('question_id', questionId);
             formData.append('answer', answer);
             formData.append('csrfmiddlewaretoken', document.querySelector('[name="csrfmiddlewaretoken"]').value);
 
-            // Send the form via AJAX to get the next question
             fetch('/assessment/handle/', {
                 method: 'POST',
                 body: formData
@@ -66,30 +61,19 @@
             .then(response => response.json())
             .then(data => {
                 if (data.next_question_id) {
-                    // Update the question text
                     document.getElementById('question-text').textContent = data.next_question_text;
-
-                    // Update hidden input for the next question
                     document.querySelector('[name="question_id"]').value = data.next_question_id;
 
-                    // Update progress bar
                     currentQuestionIndex++;
                     updateProgressBar();
 
-                    // Set the previous question info
                     previousQuestionId = data.previous_question_id;
 
-                    // Reset radio buttons (uncheck both)
-                    const radioButtons = document.querySelectorAll('.answer-option');
-                    radioButtons.forEach(button => button.checked = false);
-
-                    // Show the Back button if there is a previous question
                     if (previousQuestionId !== null) {
                         document.getElementById('back-btn').style.display = 'inline-block';
                     }
 
                 } else {
-                    // End of the assessment, redirect to summary
                     window.location.href = "/assessment/summary/";
                 }
             })
@@ -98,44 +82,29 @@
     });
 
     // Back button logic
-    document.getElementById('back-btn').addEventListener('click', function() {
+    document.getElementById('back-btn').addEventListener('click', function () {
         if (previousQuestionId !== null) {
-            // Send a request to load the previous question
-            const formData = new FormData();
-
-            // If the user is at the first question (previousQuestionId == 1), restart the form
             if (previousQuestionId - 1 === 0) {
-                // Restart the form (go back to the first question)
-                window.location.href = '/assessment/start/';  // Redirect to the start of the assessment
-            
+                window.location.href = '/assessment/start/';
             } else {
-
+                const formData = new FormData();
                 formData.append('question_id', previousQuestionId - 1);
                 formData.append('csrfmiddlewaretoken', document.querySelector('[name="csrfmiddlewaretoken"]').value);
 
-                // Send the form via AJAX to get the previous question
                 fetch('/assessment/handle/', {
                     method: 'POST',
                     body: formData
                 })
                 .then(response => response.json())
                 .then(data => {
-                    // Update the question and progress bar with the previous question
                     document.getElementById('question-text').textContent = data.next_question_text;
                     document.querySelector('[name="question_id"]').value = data.next_question_id;
-                    
-                    // Update the progress bar
+
                     currentQuestionIndex--;
                     updateProgressBar();
 
-                    // Reset radio buttons (uncheck both)
-                    const radioButtons = document.querySelectorAll('.answer-option');
-                    radioButtons.forEach(button => button.checked = false);
-
-                    // Update the previous question ID
                     previousQuestionId = data.previous_question_id;
 
-                    // If there's no previous question, hide the Back button
                     if (previousQuestionId === null) {
                         document.getElementById('back-btn').style.display = 'none';
                     }

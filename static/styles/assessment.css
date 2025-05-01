@@ -55,7 +55,7 @@
 }
 
 .radio-button:hover {
-    background-color: var(--yellow-button-color);
+    background-color: var(--yellow-button-color);   
 }
 
 input[type="radio"]:checked + .radio-button {
