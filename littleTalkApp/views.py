@@ -28,7 +28,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from .game_data import GAME_DESCRIPTIONS
 from .assessment_qs import QUESTIONS
-from django.http import Http404
+from collections import defaultdict
 
 
 def home(request):
@@ -70,7 +70,7 @@ def handle_question(request):
             next_question = QUESTIONS[current_question_index + 1] if current_question_index + 1 < len(QUESTIONS) else None
             previous_question = QUESTIONS[current_question_index] if current_question_index >= 0 else None
 
-            # === ✅ Save answer to session ===
+            # === Save answer to session ===
             answers = request.session.get("assessment_answers", [])
 
             # Remove any existing answer for this question (in case user goes back)
@@ -88,7 +88,7 @@ def handle_question(request):
             # Save updated answers back into session
             request.session["assessment_answers"] = answers
             request.session.modified = True
-            # === ✅ End session save ===
+            # === End session save ===
 
             response_data = {
                 "next_question_text": next_question["text"] if next_question else None,
@@ -104,19 +104,30 @@ def handle_question(request):
         return JsonResponse({"error": "Invalid question ID"}, status=400)
 
 
-# This view will handle the end of the assessment
 def assessment_summary(request):
     request.hide_sidebar = True
-
-    # Get stored answers from session
     answers = request.session.get("assessment_answers", [])
 
-    # Optional: sort by question order (just in case)
-    answers.sort(key=lambda a: a["question_id"])
+    # Build a map: skill -> list of yes/no
+    skill_answers = defaultdict(list)
+    for answer in answers:
+        skill_answers[answer["skill"]].append(answer["answer"])
+
+    strong_skills = []
+    needs_support_skills = []
+
+    for skill, responses in skill_answers.items():
+        if "No" in responses:
+            needs_support_skills.append(skill)
+        else:
+            strong_skills.append(skill)
 
     return render(request, 'assessment/summary.html', {
-        "answers": answers
+        "answers": answers,
+        "strong_skills": strong_skills,
+        "needs_support_skills": needs_support_skills,
     })
+
 
 
 @login_required

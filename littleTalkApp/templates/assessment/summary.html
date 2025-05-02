@@ -7,15 +7,22 @@
 
 <h2>Assessment Summary</h2>
 
-<ul class="summary-list">
-    {% for answer in answers %}
-        <li>
-            <strong>{{ answer.topic }}:</strong> "{{ answer.text }}" — 
-            <span class="{% if answer.answer == 'Yes' %}answer-yes{% else %}answer-no{% endif %}">
-                {{ answer.answer }}
-            </span>
-        </li>
-    {% endfor %}
-</ul>
+{% if strong_skills %}
+    <h3>Your child has strong skills in:</h3>
+    <ul>
+        {% for skill in strong_skills %}
+            <li>{{ skill }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+{% if needs_support_skills %}
+    <h3>Your child may need support with:</h3>
+    <ul>
+        {% for skill in needs_support_skills %}
+            <li>{{ skill }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
 
 {% endblock %}
