@@ -55,6 +55,7 @@ def start_assessment(request):
         'current_question_index': 1
     })
 
+
 def handle_question(request):
     if request.method == 'POST':
         question_id = int(request.POST.get('question_id'))
@@ -65,8 +66,29 @@ def handle_question(request):
         current_question_index = next((i for i, q in enumerate(QUESTIONS) if q["order"] == question_id), None)
 
         if current_question_index is not None:
+            current_question = QUESTIONS[current_question_index]
             next_question = QUESTIONS[current_question_index + 1] if current_question_index + 1 < len(QUESTIONS) else None
             previous_question = QUESTIONS[current_question_index] if current_question_index >= 0 else None
+
+            # === ✅ Save answer to session ===
+            answers = request.session.get("assessment_answers", [])
+
+            # Remove any existing answer for this question (in case user goes back)
+            answers = [a for a in answers if a["question_id"] != question_id]
+
+            # Append the new answer
+            answers.append({
+                "question_id": question_id,
+                "answer": answer_value,
+                "topic": current_question["topic"],
+                "text": current_question["text"],
+                "skill": current_question["skill"]
+            })
+
+            # Save updated answers back into session
+            request.session["assessment_answers"] = answers
+            request.session.modified = True
+            # === ✅ End session save ===
 
             response_data = {
                 "next_question_text": next_question["text"] if next_question else None,
@@ -85,8 +107,16 @@ def handle_question(request):
 # This view will handle the end of the assessment
 def assessment_summary(request):
     request.hide_sidebar = True
-    # Since we don't have a database, you can show the summary of answers from the session (if needed)
-    return render(request, 'assessment/summary.html')
+
+    # Get stored answers from session
+    answers = request.session.get("assessment_answers", [])
+
+    # Optional: sort by question order (just in case)
+    answers.sort(key=lambda a: a["question_id"])
+
+    return render(request, 'assessment/summary.html', {
+        "answers": answers
+    })
 
 
 @login_required
