@@ -5,24 +5,65 @@
 
 {% block content %}
 
-<h2>Assessment Summary</h2>
+{% comment %} Simplified Header for Assessment Page {% endcomment %}
+<!-- logo top left -->
+<div class="logo-container">
+    <img src="{% static 'images/littletalk_logo.png' %}" alt="LittleTalk Logo" style="max-width: 150px; height: auto;">
+</div>
 
-{% if strong_skills %}
-    <h3>Your child has strong skills in:</h3>
-    <ul>
-        {% for skill in strong_skills %}
-            <li>{{ skill }}</li>
-        {% endfor %}
-    </ul>
-{% endif %}
 
-{% if needs_support_skills %}
-    <h3>Your child may need support with:</h3>
-    <ul>
-        {% for skill in needs_support_skills %}
-            <li>{{ skill }}</li>
-        {% endfor %}
-    </ul>
-{% endif %}
+<div class="summary-wrapper">
+    <section class="summary-section">
+
+        {% if readiness_status == "not_ready" %}
+            <div class="readiness-message warning">
+                <p><strong>LitteTalk may not be suitable for your child at this time.</strong></p>
+                <p>It looks like your child may be struggling with attention and listening skills. Our exercises will be most effective once your child has developed this skill. In the meantime, we encourage you to check out our <a href="/tips/">free tips</a>.</p>
+            </div>
+        {% elif readiness_status == "ready" %}
+            <div class="readiness-message success">
+                <p><strong>We think LittleTalk is likely a good fit for your child!</strong></p>
+                <p>Your child appears to have strong attention and listening skills. Our exercises are well-equipped to support their language development.</p>
+            </div>
+        {% endif %}
+
+        <div class="summary-cta">
+            <a href="/register/" class="cta-button">Start Using LittleTalk</a>
+        </div>
+
+        <div class="skill-section-container">
+
+            <p class="summary-intro">
+                <strong>Assessment Summary</strong>
+            </p>
+
+            {% if strong_skills %}
+                <p><strong>Your child has strong skills in:</strong></p>
+                <ul class="skill-list">
+                    {% for skill in strong_skills %}
+                        <li>{{ skill }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            {% if needs_support_skills %}
+                <p><strong>Your child may need support with:</strong></p>
+                <ul class="skill-list">
+                    {% for skill in needs_support_skills %}
+                        <li>{{ skill }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            <p class="reassurance-text">
+                Don’t worry - our exercises are tailored to build these skills, and we'll support you each step of the way.
+            </p>
+        </div>
+
+        <div class="summary-cta">
+            <a href="/register/" class="cta-button">Start Using LittleTalk</a>
+        </div>
+
+    </section>
+</div>
 
 {% endblock %}

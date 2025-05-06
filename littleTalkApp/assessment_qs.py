@@ -1,6 +1,6 @@
 QUESTIONS = [
-    {"skill": "base", "topic": "Receptive Language", "text": "Can your child attend to an activity for 5 minutes?", "order": 1},
-    {"skill": "base", "topic": "Receptive Language", "text": "Does your child seem to understand what you're saying most of the time?", "order": 2},
+    {"skill": "Attention and listening", "topic": "Receptive Language", "text": "Can your child attend to an activity for 5 minutes?", "order": 1},
+    {"skill": "Attention and listening", "topic": "Receptive Language", "text": "Does your child seem to understand what you're saying most of the time?", "order": 2},
     {"skill": "Answering 'yes/no' and 'what' questions", "topic": "Receptive Language", "text": "Can your child respond to simple 'yes/no' or 'what' questions through speech or gesture?", "order": 3},
     {"skill": "Answering abstract questions such as 'where', 'who' and 'why'", "topic": "Receptive Language", "text": "Can your child answer 'where' or 'who' questions?", "order": 4},
     {"skill": "Following simple instructions", "topic": "Receptive Language", "text": "Can your child follow simple directions like 'get your shoes' or 'sit down'?", "order": 5},

@@ -11,7 +11,7 @@
 }
 
 #question-topic {
-    margin-top: 150px;
+    margin-top: 50px;
 }
 
 /* Question Text */
@@ -124,6 +124,128 @@ progress::-webkit-progress-value {
     padding-top: 20px;
     padding-bottom: 30px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.212); /* Subtle separator line */
+}
+
+.summary-intro {
+    text-align: left;
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--font-color);
+    /* margin-bottom: 20px; */
+    /* padding-bottom: 20px; */
+    /* padding-top: 10px; */
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.212); /* Subtle separator line */
+}
+
+/* SUMMARY SECTION */
+
+/* ===== Summary Section ===== */
+.summary-section {
+    /* padding: 2rem; */
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: left;
+    font-size: 1rem;
+}
+
+.summary-section h2 {
+    font-size: 2rem;
+}
+
+/* .summary-section h3 {
+    font-size: 1.5rem;
+    margin-top: 0rem;
+    margin-bottom: 1.5rem;
+} */
+
+/* Skill Lists */
+.skill-list,
+.summary-list {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 1rem;
+}
+
+.skill-list li,
+.summary-list li {
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+}
+
+/* Readiness Message Box */
+.readiness-message {
+    margin-top: 3rem;
+    padding: 1.5rem;
+    border-radius: var(--border-radius-light);
+    font-size: 1rem;
+    line-height: 1.6;
+    background-color: #ffffff;
+    box-shadow: var(--box-shadow);
+}
+
+/* Positive Feedback */
+.readiness-message.success {
+    border-left: 6px solid var(--yellow-button-hover);
+}
+
+/* Cautionary Feedback */
+.readiness-message.warning {
+    border-left: 6px solid var(--button-red);
+}
+
+/* Links inside summary */
+.readiness-message a {
+    color: inherit;
+    text-decoration: underline;
+    font-weight: 500;
+}
+
+.readiness-message a:hover {
+    text-decoration: none;
+}
+
+/* Optional: Container for the entire results page */
+.summary-wrapper {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.skill-section-container {
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: var(--box-shadow);
+  }
+
+  .reassurance-text {
+    color: #666; /* Soft grey */
+    font-size: 0.95rem;
+    margin-top: 2.0rem;
+    line-height: 1.5;
+}
+
+.cta-button {
+    display: inline-block;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--yellow-button-color);
+    color: var(--font-color);
+    font-weight: 600;
+    border: none;
+    border-radius: var(--border-radius);
+    text-decoration: none;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+    box-shadow: var(--box-shadow);
+    text-align: center;
+}
+
+.cta-button:hover {
+    background-color: var(--yellow-button-hover);
 }
 
 /* Responsive Design */

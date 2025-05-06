@@ -108,7 +108,9 @@ def assessment_summary(request):
     request.hide_sidebar = True
     answers = request.session.get("assessment_answers", [])
 
-    # Build a map: skill -> list of yes/no
+    from collections import defaultdict
+
+    # Group by skill
     skill_answers = defaultdict(list)
     for answer in answers:
         skill_answers[answer["skill"]].append(answer["answer"])
@@ -122,10 +124,24 @@ def assessment_summary(request):
         else:
             strong_skills.append(skill)
 
+    # Special logic for attention/listening readiness
+    readiness_answers = [
+        a for a in answers if a["skill"] == "Sustained attention / listening readiness"
+    ]
+    readiness_yes = [a for a in readiness_answers if a["answer"] == "Yes"]
+    readiness_no = [a for a in readiness_answers if a["answer"] == "No"]
+
+    readiness_status = "mixed"
+    if len(readiness_no) > 0:
+        readiness_status = "not_ready"
+    elif len(readiness_yes) == len(readiness_answers):
+        readiness_status = "ready"
+
     return render(request, 'assessment/summary.html', {
         "answers": answers,
         "strong_skills": strong_skills,
         "needs_support_skills": needs_support_skills,
+        "readiness_status": readiness_status,
     })
 
 
