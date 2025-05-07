@@ -223,42 +223,52 @@ def register(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
-            # Create and save the user
             email = form.cleaned_data.get('email').lower()
             password = form.cleaned_data.get('password1')
             first_name = form.cleaned_data.get('first_name')
-            # Create user
+            learner_name = form.cleaned_data.get('learner_name')
+            hear_about = form.cleaned_data.get('hear_about')
+            agree_updates = form.cleaned_data.get('agree_updates')
+
             user = User.objects.create_user(
                 username=email,
                 email=email,
                 password=password,
                 first_name=first_name,
             )
-            # Explicitly create or update the Profile
-            Profile.objects.create(user=user, first_name=first_name)
-            # Log the user in and redirect to home
+
+            # Save to user profile (adjust this to match your Profile model)
+            Profile.objects.create(
+                user=user,
+                first_name=first_name,
+                learner_name=learner_name,
+                hear_about=hear_about,
+                opted_in=agree_updates,
+            )
+
             login(request, user)
-            return redirect('profile')
+
+            return redirect('profile')  # or 'dashboard' or wherever next
     else:
         form = UserRegistrationForm()
 
     return render(request, 'registration/register.html', {'form': form})
 
 
-def comingsoon(request):
-    request.hide_sidebar = True
-    if request.method == "POST":
-        form = WaitingListForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "You've been added to the waiting list!")
-            return redirect("comingsoon")
-        else:
-            messages.error(request, "Invalid email or already registered.")
-    else:
-        form = WaitingListForm()
+# def comingsoon(request):
+#     request.hide_sidebar = True
+#     if request.method == "POST":
+#         form = WaitingListForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             messages.success(request, "You've been added to the waiting list!")
+#             return redirect("comingsoon")
+#         else:
+#             messages.error(request, "Invalid email or already registered.")
+#     else:
+#         form = WaitingListForm()
 
-    return render(request, "registration/comingsoon.html", {"form": form})
+#     return render(request, "registration/comingsoon.html", {"form": form})
 
 
 # @login_required

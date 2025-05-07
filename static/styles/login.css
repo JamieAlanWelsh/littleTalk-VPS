@@ -4,10 +4,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;  /* Full height of the viewport */
-    margin: 0;  /* Remove default margin */
-    flex-direction: column;  /* Stack the logo, header, and form vertically */
-    margin-top: -100px;
+    min-height: 100vh; /* Allow it to grow beyond viewport */
+    flex-direction: column;
+    padding: 2rem 1rem;
+    box-sizing: border-box;
 }
 
 .login-container h1 {
@@ -18,9 +18,9 @@
 .login-form {
     max-width: 400px;  /* Adjust the form width */
     width: 100%;  /* Ensure the form takes full width */
-    padding: 20px;
+    padding: 30px;
     background-color: var(--accent-color);
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius-light);
     box-shadow: var(--box-shadow);
 }
 
@@ -92,11 +92,57 @@
     font-weight: bold;
     padding: 10px 20px;
     text-decoration: none;
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius-light);
     transition: background-color 0.3s ease;
 }
 
 /* Hover effect for Register Button */
 .register-button-container .btn:hover {
     background-color: #FFD737;
+}
+
+/* Dropdown styling */
+.login-form select {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: var(--border-radius-light);
+    border: 1px solid #dddddd00;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    background-color: white;
+    color: var(--font-color);
+}
+
+.checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.checkbox-wrapper input[type="checkbox"] {
+    flex-shrink: 0;
+    margin: 0;
+    width: 16px;
+    height: 16px;
+}
+
+.checkbox-wrapper label {
+    font-size: 0.95rem;
+    color: var(--font-color);
+    line-height: 1.4;
+}
+
+.register-intro {
+    text-align: left;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--font-color);
+    /* margin-bottom: 20px; */
+    /* padding-bottom: 20px; */
+    /* padding-top: 10px; */
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.212); /* Subtle separator line */
 }

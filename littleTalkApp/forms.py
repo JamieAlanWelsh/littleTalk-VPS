@@ -38,10 +38,24 @@ class CustomAuthenticationForm(AuthenticationForm):
 class UserRegistrationForm(forms.ModelForm):
     password1 = forms.CharField(widget=forms.PasswordInput, label="Password")
     password2 = forms.CharField(widget=forms.PasswordInput, label="Confirm Password")
+    learner_name = forms.CharField(label="Learner's Name", required=True)
+    hear_about = forms.ChoiceField(
+        choices=[
+            ("", "How did you hear about us?"),
+            ("instagram", "Instagram"),
+            ("facebook", "Facebook"),
+            ("google", "Google Search"),
+            ("direct", "Direct Link"),
+            ("wom", "Word of Mouth"),
+            ("other", "Other"),
+        ],
+        required=False
+    )
+    agree_updates = forms.BooleanField(label="I agree to receive updates via Email", required=False)
 
     class Meta:
         model = User
-        fields = ['email', 'first_name']  # add more fields if needed
+        fields = ['email', 'first_name']
 
     def clean_password2(self):
         password1 = self.cleaned_data.get('password1')

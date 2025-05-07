@@ -3,6 +3,7 @@
 
 {% block content %}
 <div class="login-container">
+
     <!-- logo top left -->
     <div class="logo-container">
         <a href="/">
@@ -16,52 +17,56 @@
     </div>
 
     <!-- Header Section -->
-    <h1 style="text-align: center; font-size: 2rem; margin-bottom: 20px;">Create an Account</h1>
+    <h1 style="text-align: center; font-size: 2rem; margin-bottom: 20px;">Assessment Complete</h1>
 
     <!-- Register Form -->
     <form method="post" class="login-form">
+        
+        <!-- intro -->
+        <p class="register-intro">
+            <strong>Create your account to save your results.<br>We respect your privacy and will never share your info.</strong>
+        </p>
         {% csrf_token %}
-
-        <!-- Username Input -->
+    
         <div>
-            <input 
-                type="Email"
-                name="email"  
-                placeholder="Email" 
-                required>
+            <input type="email" name="email" placeholder="Email" required>
+        </div>
+    
+        <div>
+            <input type="text" name="first_name" placeholder="Your name (or nickname)" required>
+        </div>
+    
+        <div>
+            <input type="text" name="learner_name" placeholder="Learner's name (or nickname)" required>
+        </div>
+    
+        <div>
+            <input type="password" name="password1" placeholder="Password" required>
+        </div>
+    
+        <div>
+            <input type="password" name="password2" placeholder="Confirm Password" required>
         </div>
 
-        <!-- Name -->
+        <!-- Dropdown -->
         <div>
-            <input 
-                type="Text"
-                name="first_name"  
-                placeholder="Name" 
-                required>
-        </div>
-        <div>
-            <input 
-                type="password" 
-                name="password1" 
-                placeholder="Password" 
-                required>
+            <select name="hear_about" required>
+                {% for val, label in form.fields.hear_about.choices %}
+                    <option value="{{ val }}" {% if form.hear_about.value == val %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
         </div>
 
-        <!-- Confirm Password Input -->
-        <div>
-            <input 
-                type="password" 
-                name="password2" 
-                placeholder="Confirm Password" 
-                required>
+        <div class="checkbox-wrapper">
+            <input type="checkbox" name="agree_updates" id="agree_updates">
+            <label for="agree_updates">
+                I am happy to be contacted with updates
+            </label>
         </div>
-
-        <!-- Submit Button -->
+    
         <div>
             <button type="submit">Register</button>
         </div>
-
-        <!-- Error Message for Invalid Registration -->
     </form>
     {% if form.errors %}
         <p class="error-message">Please fix the errors above</p>
