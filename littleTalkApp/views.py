@@ -126,7 +126,7 @@ def assessment_summary(request):
 
     # Special logic for attention/listening readiness
     readiness_answers = [
-        a for a in answers if a["skill"] == "Sustained attention / listening readiness"
+        a for a in answers if a["skill"] == "Attention and listening"
     ]
     readiness_yes = [a for a in readiness_answers if a["answer"] == "Yes"]
     readiness_no = [a for a in readiness_answers if a["answer"] == "No"]

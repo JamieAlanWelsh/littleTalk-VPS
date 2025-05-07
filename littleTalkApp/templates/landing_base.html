@@ -44,7 +44,7 @@
         </div>
         <div class="header-right">
             <a href="/login/" class="login-button">Login</a>
-            <a href="/register/" class="get-started-button">Get Started</a>
+            <button class="cta-button start-assessment-btn">Try Our Free Assessment</button>
         </div>
     </header>
     {% comment %} Mobile Menu {% endcomment %}
@@ -62,7 +62,7 @@
 
             <div class="menu-actions">
                 <a href="/login/" class="menu-login-button">Login</a>
-                <a href="/register/" class="menu-cta-button">Register</a>
+                <button class="cta-button start-assessment-btn">Try Our Free Assessment</button>
             </div>
         </nav>
     </div>
@@ -118,6 +118,17 @@
     
         closeBtn.addEventListener('click', () => {
             closeMenu();
+        });
+    </script>
+
+    {% comment %} assessment btn {% endcomment %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.start-assessment-btn').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    window.location.href = '/assessment/start/';
+                });
+            });
         });
     </script>
     {% block content %}{% endblock %}
