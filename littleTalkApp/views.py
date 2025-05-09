@@ -20,6 +20,7 @@ from .forms import WaitingListForm
 from .forms import CustomAuthenticationForm
 from django.contrib import messages
 from .models import LogEntry
+from .models import LearnerAssessmentAnswer
 from .forms import LogEntryForm
 from .forms import UserUpdateForm
 from .forms import PasswordUpdateForm
@@ -241,14 +242,36 @@ def register(request):
             Profile.objects.create(
                 user=user,
                 first_name=first_name,
-                learner_name=learner_name,
                 hear_about=hear_about,
                 opted_in=agree_updates,
             )
 
+            # Create learner
+            learner = Learner.objects.create(
+                user=user,
+                name=learner_name,
+                # date_of_birth = ...,  # optional
+            )
+
+            # Get assessment answers from session
+            answers = request.session.get("assessment_answers", [])
+
+            for ans in answers:
+                LearnerAssessmentAnswer.objects.create(
+                    learner=learner,
+                    question_id=ans["question_id"],
+                    topic=ans["topic"],
+                    skill=ans["skill"],
+                    text=ans["text"],
+                    answer=ans["answer"],
+                )
+
+            # Optionally clear session after saving
+            request.session.pop("assessment_answers", None)
+
             login(request, user)
 
-            return redirect('profile')  # or 'dashboard' or wherever next
+            return redirect('/assessment/summary/')  # or 'dashboard' or wherever next
     else:
         form = UserRegistrationForm()
 

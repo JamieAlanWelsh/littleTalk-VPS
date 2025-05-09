@@ -24,12 +24,32 @@ class AssessmentAnswer(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     first_name = models.CharField(max_length=50, blank=True, null=True)
+    hear_about = models.CharField(max_length=50, blank=True, null=True)
+    opted_in = models.BooleanField(default=False) 
 
     def __str__(self):
         return f"{self.user.username}'s Profile"
 
 
+class LearnerAssessmentAnswer(models.Model):
+    learner = models.ForeignKey('Learner', on_delete=models.CASCADE, related_name='answers')
+    question_id = models.IntegerField()
+    topic = models.CharField(max_length=100)
+    skill = models.CharField(max_length=100)
+    text = models.TextField()
+    answer = models.CharField(max_length=10)  # 'Yes' or 'No'
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.learner.name} - Q{self.question_id}: {self.answer}"
+
+
 class Learner(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='learners')
+    name = models.CharField(max_length=50)
+    learner_uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    exp = models.IntegerField(default=0)
+    deleted = models.BooleanField(default=False)
 
     ASSESSMENT_CHOICES_1 = [
         (1, 'Limited vocabulary with some understanding and use of subject and verb eg. the dog is running'),
@@ -49,14 +69,9 @@ class Learner(models.Model):
         (6, 'Often uses when in a sentence eg. In the morning, I’m going to the park'),
     ]
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='learners')
-    name = models.CharField(max_length=50)
     date_of_birth = models.DateField()
     assessment1 = models.IntegerField(choices=ASSESSMENT_CHOICES_1, blank=True, null=True)
     assessment2 = models.IntegerField(choices=ASSESSMENT_CHOICES_2, blank=True, null=True)
-    learner_uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
-    exp = models.IntegerField(default=0)
-    deleted = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name

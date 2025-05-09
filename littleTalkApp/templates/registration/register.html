@@ -16,55 +16,72 @@
 
     <!-- Register Form -->
     <form method="post" class="login-form">
-        
-        <!-- intro -->
+
         <p class="register-intro">
             <strong>Create your account to save your results.<br>We respect your privacy and will never share your info.</strong>
         </p>
         {% csrf_token %}
-    
+
         <div>
-            <input type="email" name="email" placeholder="Email" required>
-        </div>
-    
-        <div>
-            <input type="text" name="first_name" placeholder="Your name (or nickname)" required>
-        </div>
-    
-        <div>
-            <input type="text" name="learner_name" placeholder="Learner's name (or nickname)" required>
-        </div>
-    
-        <div>
-            <input type="password" name="password1" placeholder="Password" required>
-        </div>
-    
-        <div>
-            <input type="password" name="password2" placeholder="Confirm Password" required>
+            <input type="email" name="email" placeholder="Email" value="{{ form.email.value|default_if_none:'' }}" required>
+            {% if form.email.errors %}
+                <div class="error-message">{{ form.email.errors.0 }}</div>
+            {% endif %}
         </div>
 
-        <!-- Dropdown -->
         <div>
-            <select name="hear_about" required>
+            <input type="text" name="first_name" placeholder="Your name (or nickname)" value="{{ form.first_name.value|default_if_none:'' }}" required>
+            {% if form.first_name.errors %}
+                <div class="error-message">{{ form.first_name.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <div>
+            <input type="text" name="learner_name" placeholder="Learner's name (or nickname)" value="{{ form.learner_name.value|default_if_none:'' }}" required>
+            {% if form.learner_name.errors %}
+                <div class="error-message">{{ form.learner_name.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <div>
+            <input type="password" name="password1" placeholder="Password" required>
+            {% if form.password1.errors %}
+                <div class="error-message">{{ form.password1.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <div>
+            <input type="password" name="password2" placeholder="Confirm Password" required>
+            {% if form.password2.errors %}
+                <div class="error-message">{{ form.password2.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <div>
+            <select name="hear_about">
                 {% for val, label in form.fields.hear_about.choices %}
                     <option value="{{ val }}" {% if form.hear_about.value == val %}selected{% endif %}>{{ label }}</option>
                 {% endfor %}
             </select>
+            {% if form.hear_about.errors %}
+                <div class="error-message">{{ form.hear_about.errors.0 }}</div>
+            {% endif %}
         </div>
 
         <div class="checkbox-wrapper">
-            <input type="checkbox" name="agree_updates" id="agree_updates">
+            <input type="checkbox" name="agree_updates" id="agree_updates" {% if form.agree_updates.value %}checked{% endif %}>
             <label for="agree_updates">
                 I am happy to be contacted with updates
             </label>
         </div>
-    
+
         <div>
-            <button type="submit">Register</button>
+            <button type="submit">Continue</button>
         </div>
+
+        {% if form.non_field_errors %}
+            <div class="error-message">{{ form.non_field_errors.0 }}</div>
+        {% endif %}
     </form>
-    {% if form.errors %}
-        <p class="error-message">Please fix the errors above</p>
-    {% endif %}
 </div>
 {% endblock %}
