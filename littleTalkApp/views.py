@@ -105,6 +105,7 @@ def handle_question(request):
         return JsonResponse({"error": "Invalid question ID"}, status=400)
 
 
+@login_required
 def assessment_summary(request):
     request.hide_sidebar = True
 
@@ -231,6 +232,7 @@ def register(request):
             password = form.cleaned_data.get('password1')
             first_name = form.cleaned_data.get('first_name')
             learner_name = form.cleaned_data.get('learner_name')
+            learner_dob = form.cleaned_data.get('learner_dob')
             hear_about = form.cleaned_data.get('hear_about')
             agree_updates = form.cleaned_data.get('agree_updates')
 
@@ -253,7 +255,7 @@ def register(request):
             learner = Learner.objects.create(
                 user=user,
                 name=learner_name,
-                # date_of_birth = ...,  # optional
+                date_of_birth=learner_dob,
             )
 
             # Select this learner by default

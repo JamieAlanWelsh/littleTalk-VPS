@@ -16,7 +16,7 @@
     <form method="post" class="login-form">
 
         <p class="register-intro">
-            <strong>Create your account to save your results.<br>We respect your privacy and will never share your info.</strong>
+            <strong>Create your account to save your results.<br>We will use your assessment to give tailored advice.</strong><br>We respect your privacy and will never share personal information, you may use nicknames for added privacy.
         </p>
         {% csrf_token %}
 
@@ -38,6 +38,14 @@
             <input type="text" name="learner_name" placeholder="Learner's name (or nickname)" value="{{ form.learner_name.value|default_if_none:'' }}" required>
             {% if form.learner_name.errors %}
                 <div class="error-message">{{ form.learner_name.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <div>
+            <label for="id_learner_dob">Learner's Date of Birth</label>
+            <input type="date" name="learner_dob" value="{{ form.learner_dob.value|default_if_none:'' }}" required>
+            {% if form.learner_dob.errors %}
+                <div class="error-message">{{ form.learner_dob.errors.0 }}</div>
             {% endif %}
         </div>
 

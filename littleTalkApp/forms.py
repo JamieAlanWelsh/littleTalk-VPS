@@ -6,6 +6,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from .models import LogEntry
 import re
 from django.core.exceptions import ValidationError
+from datetime import date
 
 
 def no_emoji_validator(value):
@@ -39,9 +40,17 @@ class UserRegistrationForm(forms.ModelForm):
     password1 = forms.CharField(widget=forms.PasswordInput, label="Password")
     password2 = forms.CharField(widget=forms.PasswordInput, label="Confirm Password")
     learner_name = forms.CharField(label="Learner's Name", required=True)
+    learner_dob = forms.DateField(
+        label="Learner DOB",
+        required=True,
+        widget=forms.DateInput(attrs={
+        'type': 'date',
+        'placeholder': 'Learner date of birth'
+    })
+    )
     hear_about = forms.ChoiceField(
         choices=[
-            ("", "How did you hear about us?"),
+            ("", "How did you hear about us? (optional)"),
             ("instagram", "Instagram"),
             ("facebook", "Facebook"),
             ("google", "Google Search"),
@@ -78,6 +87,12 @@ class UserRegistrationForm(forms.ModelForm):
         no_emoji_validator(first_name)
         sanity_check_name(first_name)
         return first_name
+
+    def clean_learner_dob(self):
+            dob = self.cleaned_data.get('learner_dob')
+            if dob and dob > date.today():
+                raise ValidationError("Learner's date of birth cannot be in the future.")
+            return dob
 
 
 class LearnerForm(forms.ModelForm):
