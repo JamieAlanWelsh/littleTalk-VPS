@@ -107,14 +107,18 @@ def handle_question(request):
 
 def assessment_summary(request):
     request.hide_sidebar = True
-    answers = request.session.get("assessment_answers", [])
 
-    from collections import defaultdict
+    answers = []
+    if request.user.is_authenticated:
+        learner = request.user.learners.first()  # If you support only one learner
+        if learner:
+            answers = learner.answers.all()  # Related name on LearnerAssessmentAnswer
 
-    # Group by skill
+    # Group answers by skill
     skill_answers = defaultdict(list)
     for answer in answers:
-        skill_answers[answer["skill"]].append(answer["answer"])
+        skill = answer.skill
+        skill_answers[skill].append(answer.answer)
 
     strong_skills = []
     needs_support_skills = []
@@ -125,18 +129,17 @@ def assessment_summary(request):
         else:
             strong_skills.append(skill)
 
-    # Special logic for attention/listening readiness
-    readiness_answers = [
-        a for a in answers if a["skill"] == "Attention and listening"
-    ]
-    readiness_yes = [a for a in readiness_answers if a["answer"] == "Yes"]
-    readiness_no = [a for a in readiness_answers if a["answer"] == "No"]
+    # Attention/listening readiness logic (skill = 'base')
+    readiness_answers = [a for a in answers if a.skill == "base"]
+    readiness_yes = [a for a in readiness_answers if a.answer == "Yes"]
+    readiness_no = [a for a in readiness_answers if a.answer == "No"]
 
-    readiness_status = "mixed"
     if len(readiness_no) > 0:
         readiness_status = "not_ready"
     elif len(readiness_yes) == len(readiness_answers):
         readiness_status = "ready"
+    else:
+        readiness_status = "mixed"
 
     return render(request, 'assessment/summary.html', {
         "answers": answers,
@@ -253,6 +256,9 @@ def register(request):
                 # date_of_birth = ...,  # optional
             )
 
+            # Select this learner by default
+            request.session['selected_learner_id'] = learner.id
+
             # Get assessment answers from session
             answers = request.session.get("assessment_answers", [])
 
@@ -266,10 +272,10 @@ def register(request):
                     answer=ans["answer"],
                 )
 
-            # Optionally clear session after saving
-            request.session.pop("assessment_answers", None)
-
             login(request, user)
+
+            # select the newly created learner
+            request.session['selected_learner_id'] = learner.id
 
             return redirect('/assessment/summary/')  # or 'dashboard' or wherever next
     else:

@@ -3,22 +3,21 @@ from django.contrib.auth.models import User
 import uuid
 
 
-class Assessment(models.Model):
-    user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
-    learner_name = models.CharField(max_length=100)
-    learner_dob = models.DateField()
-    source = models.CharField(max_length=200, blank=True, null=True)
-    # Other fields you may need to track assessment progress
+# class Assessment(models.Model):
+#     user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+#     learner_name = models.CharField(max_length=100)
+#     learner_dob = models.DateField()
+#     source = models.CharField(max_length=200, blank=True, null=True)
 
-class AssessmentQuestion(models.Model):
-    question_text = models.CharField(max_length=500)
-    is_optional = models.BooleanField(default=False)
-    order = models.IntegerField()
+# class AssessmentQuestion(models.Model):
+#     question_text = models.CharField(max_length=500)
+#     is_optional = models.BooleanField(default=False)
+#     order = models.IntegerField()
 
-class AssessmentAnswer(models.Model):
-    assessment = models.ForeignKey(Assessment, on_delete=models.CASCADE)
-    question = models.ForeignKey(AssessmentQuestion, on_delete=models.CASCADE)
-    answer = models.BooleanField()  # True for Yes, False for No
+# class AssessmentAnswer(models.Model):
+#     assessment = models.ForeignKey(Assessment, on_delete=models.CASCADE)
+#     question = models.ForeignKey(AssessmentQuestion, on_delete=models.CASCADE)
+#     answer = models.BooleanField()
 
 
 class Profile(models.Model):
@@ -69,7 +68,7 @@ class Learner(models.Model):
         (6, 'Often uses when in a sentence eg. In the morning, I’m going to the park'),
     ]
 
-    date_of_birth = models.DateField()
+    date_of_birth = models.DateField(null=True, blank=True)
     assessment1 = models.IntegerField(choices=ASSESSMENT_CHOICES_1, blank=True, null=True)
     assessment2 = models.IntegerField(choices=ASSESSMENT_CHOICES_2, blank=True, null=True)
 
