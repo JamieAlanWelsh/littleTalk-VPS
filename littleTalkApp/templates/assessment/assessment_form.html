@@ -12,9 +12,11 @@
 </div>
 
 <!-- Register Button at the Top Right -->
-<div class="register-button-container">
-    <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
-</div>
+{% if not request.user.is_authenticated %}
+    <div class="register-button-container">
+        <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
+    </div>
+{% endif %}
 
 <h1 id="question-topic">{{ question.topic }}</h1>
 
@@ -93,7 +95,12 @@
                     backBtn.disabled = previousQuestionId === null;
 
                 } else {
-                    window.location.href = "/register/";
+                    const isLoggedIn = {{ user_logged_in|yesno:"true,false" }};
+                    if (isLoggedIn === true) {
+                        window.location.href = "/add-learner/";
+                    } else {
+                        window.location.href = "/register/";
+                    }
                 }
             })
             .catch(error => console.log('Error:', error));

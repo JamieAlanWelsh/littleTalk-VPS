@@ -193,13 +193,8 @@
     background-color: white;
     border: none;
     border-radius: var(--border-radius-light);
+    border: 1px solid #ccc;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.add-learner-form input:focus,
-.add-learner-form select:focus,
-.add-learner-form textarea:focus {
-    outline: none;
 }
 
 /* Submit Button */

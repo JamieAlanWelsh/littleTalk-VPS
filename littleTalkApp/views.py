@@ -53,7 +53,8 @@ def start_assessment(request):
     return render(request, 'assessment/assessment_form.html', {
         'question': first_question,
         'total_questions': total_questions,
-        'current_question_index': 1
+        'current_question_index': 1,
+        'user_logged_in': request.user.is_authenticated,
     })
 
 
@@ -89,6 +90,10 @@ def handle_question(request):
             request.session.modified = True
             # === End session save ===
 
+            # If there is no next question, mark assessment as complete
+            if next_question is None:
+                request.session['assessment_complete'] = True
+
             response_data = {
                 "next_question_text": next_question["text"] if next_question else None,
                 "next_question_id": next_question["order"] if next_question else None,
@@ -108,10 +113,13 @@ def assessment_summary(request):
     request.hide_sidebar = True
 
     answers = []
-    if request.user.is_authenticated:
-        learner = request.user.learners.first()  # If you support only one learner
+    learner = None
+
+    selected_id = request.session.get('selected_learner_id')
+    if selected_id:
+        learner = Learner.objects.filter(id=selected_id, user=request.user).first()
         if learner:
-            answers = learner.answers.all()  # Related name on LearnerAssessmentAnswer
+            answers = learner.answers.all()
 
     # Group answers by skill
     skill_answers = defaultdict(list)
@@ -146,7 +154,6 @@ def assessment_summary(request):
         "needs_support_skills": needs_support_skills,
         "readiness_status": readiness_status,
     })
-
 
 
 @login_required
@@ -228,6 +235,11 @@ class CustomLoginView(LoginView):
 
 def register(request):
     request.hide_sidebar = True
+
+    # Prevent access unless assessment is complete
+    if not request.session.get('assessment_complete'):
+        return redirect('start_assessment')
+    
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
@@ -267,18 +279,6 @@ def register(request):
             # Save answers from session
             answers = request.session.get("assessment_answers", [])
 
-            # Compute highest complexity of "Yes" answers
-            max_complexity = 0
-
-            for ans in answers:
-                if ans["answer"].lower() == "yes":
-                    question = next((q for q in QUESTIONS if q["order"] == ans["question_id"]), None)
-                    if question and question.get("complexity") is not None:
-                        max_complexity = max(max_complexity, question["complexity"])
-            
-            # Store it on the learner
-            learner.recommendation_level = max_complexity
-
             # Save answers to db
             for ans in answers:
                 LearnerAssessmentAnswer.objects.create(
@@ -299,8 +299,20 @@ def register(request):
                 skill for skill, responses in skill_answers.items()
                 if all(answer.lower() == "yes" for answer in responses)
             ]
-
             learner.assessment1 = min(len(strong_skills), 10)  # Cap to scale (if needed)
+
+            # Compute highest complexity of "Yes" answers
+            max_complexity = 0
+
+            for ans in answers:
+                if ans["answer"].lower() == "yes":
+                    question = next((q for q in QUESTIONS if q["order"] == ans["question_id"]), None)
+                    if question and question.get("complexity") is not None:
+                        max_complexity = max(max_complexity, question["complexity"])
+            
+            # Store it on the learner
+            learner.recommendation_level = max_complexity
+
             learner.save()
 
             # Clear session answers and log in
@@ -311,6 +323,8 @@ def register(request):
             # select the newly created learner
             request.session['selected_learner_id'] = learner.id
 
+            # clear assessment complete flag once used
+            request.session.pop('assessment_complete', None)
             return redirect('/assessment/summary/')  # or 'dashboard' or wherever next
     else:
         form = UserRegistrationForm()
@@ -361,15 +375,62 @@ def profile(request):
 
 @login_required
 def add_learner(request):
+    # Prevent access unless assessment is complete
+    if not request.session.get('assessment_complete'):
+        return redirect('start_assessment')
+
     if request.method == 'POST':
         form = LearnerForm(request.POST)
         if form.is_valid():
             learner = form.save(commit=False)
-            learner.user = request.user  # Associate the learner with the logged-in user
+            learner.user = request.user
             learner.save()
-            # Automatically select the newly added learner by storing their ID in the session
+
+            # Store as selected learner
             request.session['selected_learner_id'] = learner.id
-            return redirect('profile')  # Redirect back to the profile page
+
+            # Get assessment answers from session
+            answers = request.session.get("assessment_answers", [])
+
+            # Save each answer to DB
+            for ans in answers:
+                LearnerAssessmentAnswer.objects.create(
+                    learner=learner,
+                    question_id=ans["question_id"],
+                    topic=ans["topic"],
+                    skill=ans["skill"],
+                    text=ans["text"],
+                    answer=ans["answer"],
+                )
+
+            # Optional: Compute assessment1 score
+            skill_answers = defaultdict(list)
+            for answer in answers:
+                skill_answers[answer["skill"]].append(answer["answer"])
+
+            strong_skills = [skill for skill, responses in skill_answers.items() if "No" not in responses]
+            learner.assessment1 = len(strong_skills)
+
+            # Compute highest complexity of "Yes" answers
+            max_complexity = 0
+
+            for ans in answers:
+                if ans["answer"].lower() == "yes":
+                    question = next((q for q in QUESTIONS if q["order"] == ans["question_id"]), None)
+                    if question and question.get("complexity") is not None:
+                        max_complexity = max(max_complexity, question["complexity"])
+            
+            # Store it on the learner
+            learner.recommendation_level = max_complexity
+
+            learner.save()
+
+            # Clear answers from session
+            request.session.pop("assessment_answers", None)
+            request.session.pop('assessment_complete', None)  # clear assessment flag if used
+
+            # Redirect to summary
+            return redirect('/assessment/summary/')
     else:
         form = LearnerForm()
 

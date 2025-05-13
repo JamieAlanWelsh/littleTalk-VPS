@@ -21,14 +21,12 @@ def no_emoji_validator(value):
         r"]+", flags=re.UNICODE
     )
     if emoji_pattern.search(value):
-        raise ValidationError("Please avoid using emojis or special symbols in your name.")
+        raise ValidationError("Please avoid using emojis or special symbols when inputting names.")
 
 
 def sanity_check_name(value):
     if len(value) > 50:
         raise ValidationError("Name cannot exceed 50 characters.")
-    if len(set(value.lower())) <= 2:
-        raise ValidationError("That doesn’t look like a real name.")
 
 
 class CustomAuthenticationForm(AuthenticationForm):
@@ -93,23 +91,41 @@ class UserRegistrationForm(forms.ModelForm):
             if dob and dob > date.today():
                 raise ValidationError("Learner's date of birth cannot be in the future.")
             return dob
+    
+    def clean_learner_name(self):
+        learner_name = self.cleaned_data.get("learner_name", "").strip()
+        if not learner_name:
+            raise forms.ValidationError("Learner name cannot be empty.")
+        no_emoji_validator(learner_name)
+        sanity_check_name(learner_name)
+        return learner_name
 
 
 class LearnerForm(forms.ModelForm):
     class Meta:
         model = Learner
-        fields = ['name', 'date_of_birth', 'assessment1', 'assessment2']
+        fields = ['name', 'date_of_birth']
         widgets = {
             'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
-            'assessment1': forms.Select(choices=Learner.ASSESSMENT_CHOICES_1),
-            'assessment2': forms.Select(choices=Learner.ASSESSMENT_CHOICES_2),
         }
         labels = {
-            'name': "Learner name",
-            'date_of_birth': "Learner DOB   ",
-            'assessment1': "What best describes your learner's current language level?",
-            'assessment2': "What best describes your learner's sentence building ability?",
+            'name': "Learner's name (or nickname)",
+            'date_of_birth': "Learner DOB",
         }
+
+    def clean_name(self):
+        name = self.cleaned_data.get("name", "").strip()
+        if not name:
+            raise forms.ValidationError("Name cannot be empty.")
+        no_emoji_validator(name)
+        sanity_check_name(name)
+        return name
+
+    def clean_date_of_birth(self):
+        dob = self.cleaned_data.get("date_of_birth")
+        if dob and dob > date.today():
+            raise forms.ValidationError("Learner's date of birth cannot be in the future.")
+        return dob
 
 
 class WaitingListForm(forms.ModelForm):

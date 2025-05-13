@@ -171,6 +171,7 @@
     background-color: white;
     border: none;
     border-radius: var(--border-radius-light);
+    border: 1px solid #ccc;
     margin-left: 10px;
 }
 
@@ -182,13 +183,9 @@
     background-color: white;
     border: none;
     border-radius: var(--border-radius-light);
+    border: 1px solid #ccc;
     width: 570px; /* Ensures input takes full width */
     resize: none; /* Disables resizing */
-}
-
-.log-entry-form input:focus,
-.log-entry-form textarea:focus {
-    outline: none;
 }
 
 /* Submit Button */
