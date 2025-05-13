@@ -75,10 +75,10 @@
                 <a href="{% url 'edit_learner' selected_learner.learner_uuid %}" class="button">Edit Learner / Re-take Assessment</a>
             </div>
             <!-- Keep on track -->
-            <div class="total-exp-section">
+            {% comment %} <div class="total-exp-section">
                 <h3>Keep on track! ✍️</h3>
                 <p>Remember to re-take your assessment every now and then as you make progress.<br>This will allow us to update your learning level.</p>
-            </div>
+            </div> {% endcomment %}
         {% endif %}
     </div>
 </div>

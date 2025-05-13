@@ -13,8 +13,25 @@
 <!-- Learner Selected -->
 {% else %}
     <h1>Welcome back {{ selected_learner.name }}!</h1>
-    <h2>Here are your recommended exercises:</h2>
-    
+    <h2>Which exercise would you like to work on today?</h2>
+    {% if recommendation %}
+        <div class="recommendation-box">
+        <p>Our recommended exercises:</p>
+        <ul>
+            {% for ex in recommendation.exercises %}
+            <li>{{ ex }}</li>
+            {% endfor %}
+        </ul>
+        <p>
+            With a focus on <strong>{{ recommendation.focus }}</strong>
+            {% if recommendation.nextlevel %}
+            and when that feels solid, try <strong>{{ recommendation.nextlevel }}</strong>.
+            {% endif %}
+        </p>
+        <p><strong>User Note:</strong> Exercises become increasingly abstract as you progress down the list. If an exercise feels too difficult, don't worry, just keep working on the earlier ones to strengthen your foundation.
+        </div>
+    {% endif %}
+      
     {% comment %} COLOURFUL SEMANTICS {% endcomment %}
     {% with game=game_descriptions.colourful_semantics %}
     <div class="exercise-widget">
@@ -78,7 +95,7 @@
         </div>
         <div class="exercise-details">
             <h3>{{ game.title }} - {{ game.target }}</h3>
-            {% if selected_learner.assessment1 < 2 %}
+            {% if selected_learner.assessment1 < 1 %}
                 <p>This exercise will be unlocked as you progress.</p>
                 <a class="button exercise-btn locked-btn">Locked</a>
             {% else %}
@@ -107,7 +124,7 @@
         </div>
         <div class="exercise-details">
             <h3>{{ game.title }} - {{ game.target }}</h3>
-            {% if selected_learner.assessment1 < 3 %}
+            {% if selected_learner.assessment1 < 1 %}
                 <p>This exercise will be unlocked as you progress.</p>
                 <a class="button exercise-btn locked-btn">Locked</a>
             {% else %}

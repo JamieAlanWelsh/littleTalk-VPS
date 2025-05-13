@@ -28,7 +28,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.core.mail import send_mail
 from django.conf import settings
 from .game_data import GAME_DESCRIPTIONS
-from .assessment_qs import QUESTIONS
+from .assessment_qs import QUESTIONS, RECOMMENDATIONS
 from collections import defaultdict
 
 
@@ -61,8 +61,6 @@ def handle_question(request):
     if request.method == 'POST':
         question_id = int(request.POST.get('question_id'))
         answer_value = request.POST.get('answer')
-
-        print(f"Answer for question {question_id}: {answer_value}")
 
         current_question_index = next((i for i, q in enumerate(QUESTIONS) if q["order"] == question_id), None)
 
@@ -156,15 +154,20 @@ def practise(request):
     selected_learner_id = request.session.get('selected_learner_id')
     learner_selected = False
     selected_learner = None
+    recommendation = None
 
     if selected_learner_id:
-        # Fetch the learner object from the database
         selected_learner = Learner.objects.filter(id=selected_learner_id).first()
         learner_selected = selected_learner is not None
-    
+
+        if learner_selected and selected_learner.recommendation_level is not None:
+            level = selected_learner.recommendation_level
+            recommendation = RECOMMENDATIONS[level] if level < len(RECOMMENDATIONS) else None
+
     context = {
         'learner_selected': learner_selected,
         'selected_learner': selected_learner,
+        'recommendation': recommendation,
         'game_descriptions': GAME_DESCRIPTIONS,
     }
 
@@ -261,9 +264,22 @@ def register(request):
             # Select this learner by default
             request.session['selected_learner_id'] = learner.id
 
-            # Get assessment answers from session
+            # Save answers from session
             answers = request.session.get("assessment_answers", [])
 
+            # Compute highest complexity of "Yes" answers
+            max_complexity = 0
+
+            for ans in answers:
+                if ans["answer"].lower() == "yes":
+                    question = next((q for q in QUESTIONS if q["order"] == ans["question_id"]), None)
+                    if question and question.get("complexity") is not None:
+                        max_complexity = max(max_complexity, question["complexity"])
+            
+            # Store it on the learner
+            learner.recommendation_level = max_complexity
+
+            # Save answers to db
             for ans in answers:
                 LearnerAssessmentAnswer.objects.create(
                     learner=learner,
@@ -273,6 +289,22 @@ def register(request):
                     text=ans["text"],
                     answer=ans["answer"],
                 )
+
+            # Calculate assessment1 = number of strong skills
+            skill_answers = defaultdict(list)
+            for ans in answers:
+                skill_answers[ans["skill"]].append(ans["answer"])
+
+            strong_skills = [
+                skill for skill, responses in skill_answers.items()
+                if all(answer.lower() == "yes" for answer in responses)
+            ]
+
+            learner.assessment1 = min(len(strong_skills), 10)  # Cap to scale (if needed)
+            learner.save()
+
+            # Clear session answers and log in
+            request.session.pop("assessment_answers", None)
 
             login(request, user)
 

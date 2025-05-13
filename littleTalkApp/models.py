@@ -48,6 +48,7 @@ class Learner(models.Model):
     name = models.CharField(max_length=50)
     learner_uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     exp = models.IntegerField(default=0)
+    recommendation_level = models.IntegerField(blank=True, null=True)
     deleted = models.BooleanField(default=False)
 
     ASSESSMENT_CHOICES_1 = [

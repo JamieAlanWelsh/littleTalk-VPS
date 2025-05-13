@@ -1,5 +1,6 @@
 GAME_DESCRIPTIONS = {
         'colourful_semantics': {
+            'exercise_complexity': 0,
             'title': 'Colourful Semantics',
             'target': 'Sentence Building',
             'description': "Colourful Semantics helps your child understand what words mean, how words fit together, and how to create simple, meaningful sentences. It uses colors to group words, making it easier for your child to remember words, learn new vocabulary, and express themselves clearly. Research shows that visual grouping of words into colors helps children better understand language and remember words more effectively.",
@@ -11,6 +12,7 @@ GAME_DESCRIPTIONS = {
             'static_name': 'colourful_semantics',
         },
         'think_and_find': {
+            'exercise_complexity': 1,
             'title': 'Think and Find',
             'target': 'Identifying Concepts',
             'quote': '"Linking items to concepts helps children structure their thoughts and enhances memory and retrieval capabilities" (Anderson & Freebody, 1981).',
@@ -23,6 +25,7 @@ GAME_DESCRIPTIONS = {
             'static_name': 'think_and_find',
         },
         'categorisation': {
+            'exercise_complexity': 2,
             'title': 'Categorisation',
             'target': 'Sorting into Groups',
             'quote': '“Arranging thoughts, concepts and words into categories facilitate meaning, memory and retrieval” (Roth & Troia, 2005)',
@@ -35,6 +38,7 @@ GAME_DESCRIPTIONS = {
             'static_name': 'categorisation',
         },
         'story_train': {
+            'exercise_complexity': 3,
             'title': 'Story Train',
             'target': 'Sequencing and Ordering',
             'quote': '',
