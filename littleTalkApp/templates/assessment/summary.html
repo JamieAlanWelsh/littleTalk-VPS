@@ -17,13 +17,13 @@
 
         {% if readiness_status == "not_ready" %}
             <div class="readiness-message warning">
-                <p><strong>LitteTalk may not be suitable for your child at this time.</strong></p>
-                <p>It looks like your child may be struggling with attention and listening skills. We can still support you but our exercises will be most effective once your child has developed this skill. In the meantime, we encourage you to check out our <a href="/tips/">free tips</a>.</p>
+                <p><strong>LitteTalk may not be suitable for {{ learner.name }} at this time.</strong></p>
+                <p>It seems like {{ learner.name }} may be struggling with attention and listening skills. We can still support you but our exercises will be most effective once your child has developed this skill. In the meantime, we encourage you to check out our <a href="/tips/" class="text-link" target="_blank">free tips</a>.</p>
             </div>
         {% elif readiness_status == "ready" %}
             <div class="readiness-message success">
-                <p><strong>Great news! We think LittleTalk is likely a good fit for your child!</strong></p>
-                <p>Your child appears to have strong attention and listening skills. Our exercises are well-equipped to support their language development.</p>
+                <p><strong>Great news! We think LittleTalk is likely a good fit for {{ learner.name }}!</strong></p>
+                <p>{{ learner.name }} appears to have strong attention and listening skills. Our exercises are well-equipped to support their language development.</p>
             </div>
         {% endif %}
 

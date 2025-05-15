@@ -72,8 +72,11 @@
             </div>
             <!-- Edit Learner Button -->
             <div class="edit-learner-btn">
-                <a href="{% url 'edit_learner' selected_learner.learner_uuid %}" class="button">Edit Learner / Re-take Assessment</a>
+                <a href="{% url 'edit_learner' selected_learner.learner_uuid %}" class="button">Learner Settings</a>
             </div>
+            {% comment %} <div class="edit-learner-btn">
+                <a href="{% url 'assessment_summary' %}" class="button">Assessment Summary</a>
+            </div> {% endcomment %}
             <!-- Keep on track -->
             {% comment %} <div class="total-exp-section">
                 <h3>Keep on track! ✍️</h3>

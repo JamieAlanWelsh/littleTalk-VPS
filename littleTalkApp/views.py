@@ -137,7 +137,7 @@ def assessment_summary(request):
             strong_skills.append(skill)
 
     # Attention/listening readiness logic (skill = 'base')
-    readiness_answers = [a for a in answers if a.skill == "base"]
+    readiness_answers = [a for a in answers if a.skill == "Attention and listening"]
     readiness_yes = [a for a in readiness_answers if a.answer == "Yes"]
     readiness_no = [a for a in readiness_answers if a.answer == "No"]
 
@@ -153,6 +153,7 @@ def assessment_summary(request):
         "strong_skills": strong_skills,
         "needs_support_skills": needs_support_skills,
         "readiness_status": readiness_status,
+        "learner": learner,
     })
 
 
