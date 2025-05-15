@@ -16,10 +16,13 @@
     <form method="POST" class="add-learner-form">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" class="submit-btn">Save Changes</button>
-        
-        <!-- Remove Learner Button -->
+
+        <a href="{% url 'start_assessment' %}?retake={{ learner.id }}" class="retake-btn">
+        Re-take Assessment
+        </a>
         <button type="submit" name="remove" class="submit-btn remove-btn">Remove Learner</button>
+        <button type="submit" class="submit-btn">Save Changes</button>
     </form>
+
 </div>
 {% endblock %}

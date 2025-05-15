@@ -151,10 +151,10 @@
     max-width: 600px;
     margin: 50px auto;
     padding: 30px;
+    padding-top: 70px;
     background-color: var(--accent-color);
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
-    text-align: center;
     position: relative; /* Ensures the back-arrow is positioned relative to the container */
 }
 
@@ -175,6 +175,7 @@
 .add-learner-form {
     display: flex;
     flex-direction: column;
+    text-align: left;
     gap: 20px;
 }
 
@@ -187,13 +188,14 @@
 .add-learner-form input,
 .add-learner-form select,
 .add-learner-form textarea {
-    padding: 10px 15px;
+    width: 100%;
+    padding: 10px;
     font-size: 1rem;
     color: var(--font-color);
     background-color: white;
-    border: none;
     border-radius: var(--border-radius-light);
     border: 1px solid #ccc;
+    box-sizing: border-box;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -250,4 +252,28 @@
 .add-learner-container .remove-btn:hover {
     background-color: #ff4d4d; /* Darker red for hover */
     color: white; /* White text */
+}
+
+/* Ensure retake-btn matches other buttons */
+.retake-btn {
+    background-color: white;
+    color: var(--font-color);
+    padding: 5px 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: none;
+    box-shadow: var(--box-shadow);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    text-align: center;
+    align-content: center;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: block;
+    text-decoration: none;
+    margin-top: 20px;
+}
+
+/* Optional hover effect */
+.retake-btn:hover {
+    background-color: var(--yellow-button-hover);
 }

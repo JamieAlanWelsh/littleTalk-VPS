@@ -32,7 +32,7 @@
                     </p>
                 </div>
                 <div class="recommendation-mascot">
-                    <img src="{% static 'images/landing/arlo_book.png' %}" alt="Arlo reading a book">
+                    <img src="{% static 'images/landing/arlo_butterfly.png' %}" alt="Arlo playing with a butterfly">
                 </div>
             </div>
             <div class="recommendation-info">
@@ -40,6 +40,24 @@
                 <p>
                     If an exercise feels too difficult, don't panic, just keep working on the earlier ones to strengthen your foundation.
                 </p>
+            </div>
+        </div>
+        {% else %}
+        <div class="recommendation-box">
+            <div class="recommendation-content">
+                <div class="recommendation-text">
+                    <h3>Let's personalise your journey</h3>
+                    <p>
+                        We couldn't find any recommendations for this learner.
+                        Please complete our assessment to receive tailored suggestions.
+                    </p>
+                    <a href="{% url 'start_assessment' %}?retake={{ selected_learner.id }}" class="recommendation-retake">
+                        Take Assessment
+                    </a>
+                </div>
+                <div class="recommendation-mascot">
+                    <img src="{% static 'images/landing/arlo_butterfly.png' %}" alt="Arlo playing with a butterfly">
+                </div>
             </div>
         </div>
     {% endif %}

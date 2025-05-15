@@ -96,8 +96,14 @@
 
                 } else {
                     const isLoggedIn = {{ user_logged_in|yesno:"true,false" }};
+                    const retakeLearnerId = "{{ request.session.retake_learner_id|default:'' }}";
                     if (isLoggedIn === true) {
-                        window.location.href = "/add-learner/";
+                        if (retakeLearnerId) {
+                            // Send directly to summary to save new answers to existing learner
+                            window.location.href = "/assessment/save-retake/";
+                        } else {
+                            window.location.href = "/add-learner/";
+                        }
                     } else {
                         window.location.href = "/register/";
                     }

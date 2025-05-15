@@ -17,6 +17,7 @@ urlpatterns = [
     path('assessment/start/', views.start_assessment, name='start_assessment'),
     path('assessment/handle/', views.handle_question, name='handle_question'),
     path('assessment/summary/', views.assessment_summary, name='assessment_summary'),
+    path('assessment/save-retake/', views.save_retake_assessment, name='save_retake_assessment'),
 
     # Login and logout URLs
     path('login/', views.CustomLoginView.as_view(), name='login'),

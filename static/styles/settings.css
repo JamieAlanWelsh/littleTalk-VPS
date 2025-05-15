@@ -24,7 +24,7 @@
     width: 580px;
     padding: 10px;
     font-size: 1rem;
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius-light);
     border: 1px solid #ccc;
 }
 
@@ -80,5 +80,6 @@
 
 /* Hover Effect for Logout Button */
 .logout-btn:hover {
-    background-color: var(--yellow-button-color);
+    background-color: #ff4d4d; /* Darker red for hover */
+    color: white; /* White text */
 }

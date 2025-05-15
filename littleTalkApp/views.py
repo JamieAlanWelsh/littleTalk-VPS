@@ -42,6 +42,18 @@ def home(request):
 # This view will serve the first question when the assessment starts
 def start_assessment(request):
     request.hide_sidebar = True
+
+    # Check for retake
+    retake_id = request.GET.get("retake")
+    if retake_id:
+        request.session["retake_learner_id"] = int(retake_id)
+
+    # Reset assessment session state
+    request.session["assessment_answers"] = []
+    request.session["assessment_complete"] = False
+    request.session["current_question_index"] = 1
+    request.session["previous_question_id"] = None
+
     # Get the first question
     first_question = QUESTIONS[0]
     total_questions = len(QUESTIONS)
@@ -155,6 +167,57 @@ def assessment_summary(request):
         "readiness_status": readiness_status,
         "learner": learner,
     })
+
+
+@login_required
+def save_retake_assessment(request):
+    learner_id = request.session.get("retake_learner_id")
+    answers = request.session.get("assessment_answers", [])
+
+    learner = Learner.objects.filter(id=learner_id, user=request.user).first()
+    if not learner:
+        return redirect("profile")
+
+    # Delete old answers
+    learner.answers.all().delete()
+
+    # Save new answers
+    for ans in answers:
+        LearnerAssessmentAnswer.objects.create(
+            learner=learner,
+            question_id=ans["question_id"],
+            topic=ans["topic"],
+            skill=ans["skill"],
+            text=ans["text"],
+            answer=ans["answer"],
+        )
+
+    # Update assessment1 score
+    skill_answers = defaultdict(list)
+    for answer in answers:
+        skill_answers[answer["skill"]].append(answer["answer"])
+    strong_skills = [skill for skill, responses in skill_answers.items() if "No" not in responses]
+    learner.assessment1 = len(strong_skills)
+
+    # Update recommendation level
+    max_complexity = 0
+    for ans in answers:
+        if ans["answer"].lower() == "yes":
+            question = next((q for q in QUESTIONS if q["order"] == ans["question_id"]), None)
+            if question and question.get("complexity") is not None:
+                max_complexity = max(max_complexity, question["complexity"])
+    learner.recommendation_level = max_complexity
+    learner.save()
+
+    # Set as selected learner
+    request.session["selected_learner_id"] = learner.id
+
+    # Cleanup session
+    request.session.pop("retake_learner_id", None)
+    request.session.pop("assessment_answers", None)
+    request.session.pop("assessment_complete", None)
+
+    return redirect("assessment_summary")
 
 
 @login_required
