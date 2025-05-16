@@ -33,7 +33,7 @@ QUESTIONS = [
 ]
 
 RECOMMENDATIONS = [
-    {"exercises": [colourful_semantics_title], "focus": None, "nextlevel": think_and_find_title}, # complexity 0
+    {"exercises": [colourful_semantics_title], "focus": colourful_semantics_title, "nextlevel": think_and_find_title}, # complexity 0
     {"exercises": [colourful_semantics_title, think_and_find_title], "focus": think_and_find_title, "nextlevel": categorisation_title}, # complexity 1
     {"exercises": [colourful_semantics_title, think_and_find_title, categorisation_title], "focus": categorisation_title, "nextlevel": story_train_title},
     {"exercises": [colourful_semantics_title,think_and_find_title, categorisation_title, story_train_title], "focus": story_train_title, "nextlevel": None}
