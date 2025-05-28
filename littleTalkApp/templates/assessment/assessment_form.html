@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Assessment - LittleTalk{% endblock %}
+{% block title %}LittleTalk | Assessment{% endblock %}
 
 {% block content %}
 
@@ -26,7 +26,7 @@
 
 <div id="assessment-form-container">
     <p class="assessment-intro">
-        Help us assess whether LittleTalk will be a good fit for your child.
+        Tell us more about your child that will be using this app.<br>We respect your privacy and will never share personal information or data.
     </p>
     <form id="assessment-form" method="POST">
         {% csrf_token %}

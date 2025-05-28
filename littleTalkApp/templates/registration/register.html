@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+
+{% block title %}LittleTalk | Register{% endblock %}
 {% load static %}
 
 {% block content %}
@@ -16,7 +18,7 @@
     <form method="post" class="login-form">
 
         <p class="register-intro">
-            <strong>Create your account to save your results.<br>We will use your assessment to give tailored advice.</strong><br>We respect your privacy and will never share personal information. You may use nicknames for added privacy.
+            <strong>Please create an account to view your results.</strong><br>An account is required to create your learner's profile and recommend exercises.<br>We respect your privacy and will never share personal information. You may use nicknames for added privacy.
         </p>
         {% csrf_token %}
 
