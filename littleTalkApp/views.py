@@ -389,7 +389,7 @@ def register(request):
 
             # clear assessment complete flag once used
             request.session.pop('assessment_complete', None)
-            return redirect('/assessment/summary/')  # or 'dashboard' or wherever next
+            return redirect("assessment_summary")
     else:
         form = UserRegistrationForm()
 
@@ -549,7 +549,7 @@ def confirm_delete_learner(request, learner_uuid):
         else:
             # If authentication fails, show an error
             error_message = "Incorrect password. Please try again."
-            return render(request, 'confirm_delete_learner.html', {'learner': learner, 'error_message': error_message})
+            return render(request, 'profile/confirm_delete_learner.html', {'learner': learner, 'error_message': error_message})
 
     return render(request, 'profile/confirm_delete_learner.html', {'learner': learner})
 
