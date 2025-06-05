@@ -40,7 +40,7 @@ GAME_DESCRIPTIONS = {
         'story_train': {
             'exercise_complexity': 3,
             'title': 'Story Train',
-            'target': 'Sequencing and Ordering',
+            'target': 'Ordering Pictures',
             'quote': '',
             'description': "Story Train is a fun sequencing activity where your child arranges pictures in the correct order to tell a story or show a process. It helps develop your child’s understanding of time, order, and how events are connected. Sequencing also supports language development, comprehension, and logical thinking.",
             'bullet1': """Arrange events in order - “What happened first?”""",
