@@ -7,11 +7,6 @@
     box-sizing: border-box;
 }
 
-.login-container h1 {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
 .login-form {
     max-width: 400px;
     width: 100%;
@@ -23,13 +18,11 @@
 
 .register-link-container {
     text-align: center;
-    margin-top: 20px;
 }
 
 .error-message {
-    color: rgb(255, 108, 108);
+    color: var(--button-red);
     text-align: center;
-    margin-bottom: 20px;
 }
 
 .logo-container {
@@ -47,10 +40,4 @@
     position: absolute;
     top: 20px;
     right: 20px;
-}
-
-.register-button-container .btn {
-    padding: 10px 20px;
-    font-weight: bold;
-    border-radius: var(--border-radius-light);
 }

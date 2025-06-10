@@ -19,7 +19,16 @@
     font-family: var(--font-roboto);
     font-weight: bold;
     transition: background-color 0.3s ease;
-    letter-spacing: 1px; /* Adjust the value for desired spacing */
+    letter-spacing: 1px;
+    cursor: pointer;
+}
+
+.btn--white { 
+    background-color: white; 
+}
+
+.btn--white:hover { 
+    background-color: var(--yellow-button-hover); 
 }
 
 .btn--yellow {
@@ -30,11 +39,35 @@
     background-color: var(--yellow-button-hover);
 }
 
-/* Width modifiers */
-.btn--full {
+.btn--green { 
+    background-color: var(--button-green);
+}
+
+.btn--green:hover { 
+    background-color: var(--button-hover);
+}
+
+.btn--red { 
+    background-color: white; 
+    color: var(--font-color)
+}
+
+.btn--red:hover { 
+    background-color: var(--button-red);
+    color: white;
+}
+
+/* modifiers */
+.btn--full,
+.btn--block {
     width: 100%;
+    display: block;
 }
 
 .btn--auto {
     width: auto;
+}
+
+.btn--small { 
+    font-size: 1rem; padding: 5px 15px;
 }

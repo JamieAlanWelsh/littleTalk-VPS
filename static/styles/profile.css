@@ -1,4 +1,7 @@
-/* Profile Container Styling */
+/* -----------------------------
+   Layout
+------------------------------ */
+
 .profile-container {
     display: flex;
     justify-content: space-between;
@@ -6,23 +9,32 @@
     gap: 20px;
 }
 
-/* Header Styling */
 .profile-container h2 {
     text-align: center;
     width: 100%;
     margin-bottom: 20px;
 }
 
-/* Left Column Styling */
 .left-column {
-    width: 40%; /* 40f% width for the left column */
+    width: 40%;
     display: flex;
     flex-direction: column;
-    max-height: 80vh; /* Constrain the height of the list */
+    max-height: 80vh;
 }
 
+.right-column {
+    width: 55%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* -----------------------------
+   Learner List & Buttons
+------------------------------ */
+
 .learners-list {
-    flex-grow: 0; /* Push the add learner button to the bottom */
+    flex-grow: 0;
 }
 
 .learners-list ul {
@@ -34,8 +46,8 @@
     margin-bottom: 15px;
 }
 
-/* Learner Button Styling */
-.learner-button, .add-learner-btn a {
+.learner-button,
+.add-learner-btn a {
     width: 300px;
     border-radius: 10px;
     font-family: var(--font-outfit);
@@ -43,22 +55,20 @@
     font-weight: 600;
     box-shadow: var(--box-shadow);
     letter-spacing: 0.5px;
-    padding: 25px 25px;
+    padding: 25px;
     text-align: left;
     display: block;
     cursor: pointer;
     background-color: var(--accent-color);
-    color: var(--font-color); /* Text color */
+    color: var(--font-color);
     border: 1px solid transparent;
     transition: background-color 0.3s, color 0.3s, transform 0.2s;
 }
 
 .learner-button.selected {
-    background-color: var(--yellow-button-color); /* Yellow background when selected */
-    color: var(--font-color);
+    background-color: var(--yellow-button-color);
 }
 
-/* Add Learner Button */
 .add-learner-btn a {
     width: 250px;
     background-color: white;
@@ -69,51 +79,76 @@
     background-color: var(--yellow-button-color);
 }
 
-/* Right Column Styling */
-.right-column {
-    width: 55%; /* 55% width for the right column */
-    display: flex;
-    flex-direction: column;
-    gap: 20px; /* Add space between sections */
-}
+/* -----------------------------
+   Right Column Content Blocks
+------------------------------ */
 
 .learning-level-section,
 .total-exp-section {
     background-color: var(--accent-color);
     border-radius: var(--border-radius-light);
     box-shadow: var(--box-shadow);
-    padding-left: 20px;
-    padding-right: 20px;
+    padding: 0 20px;
 }
 
 .learning-level-section h3,
-.total-exp-section h3 {
-    color: var(--font-color);
-    /* margin-bottom: 10px; */
-}
-
+.total-exp-section h3,
 .learning-level-section p,
 .total-exp-section p {
     color: var(--font-color);
 }
 
+/* -----------------------------
+   Add Learner Form Container
+------------------------------ */
+
+/* .add-learner-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 70px 30px 30px;
+    background-color: var(--accent-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    position: relative;
+} */
+
+/* -----------------------------
+   Custom Button Contexts
+------------------------------ */
+
+.retake-btn {
+    background-color: white;
+    color: var(--font-color);
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 5px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.retake-btn:hover {
+    background-color: var(--button-green);
+}
+
 .edit-learner-btn {
-    margin-top: 0px; /* Add spacing from the section above */
+    margin-top: 0;
 }
 
 .edit-learner-btn a {
     display: block;
-    padding: 10px 20px;
-    border-radius: var(--border-radius);
-    background-color: white;
-    color: var(--font-color);
-    box-shadow: var(--box-shadow);
-    text-decoration: none;
-    font-family: var(--font-outfit);
     font-size: 14px;
     font-weight: 600;
-    letter-spacing: 0.5px;
-    text-align: left;
+    font-family: var(--font-outfit);
+    padding: 10px 20px;
+    text-decoration: none;
+    background-color: white;
+    color: var(--font-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
     transition: background-color 0.3s, color 0.3s;
 }
 
@@ -121,7 +156,10 @@
     background-color: var(--yellow-button-color);
 }
 
-/* Practice Button Styling */
+/* -----------------------------
+   Practice Button
+------------------------------ */
+
 .practice-button-container {
     text-align: center;
     margin-top: 40px;
@@ -142,137 +180,5 @@
 }
 
 .practice-button:hover {
-    background-color: var(--button-hover); /* Hover color for the button */
-}
-
-
-/* Add Learner Container */
-.add-learner-container {
-    max-width: 600px;
-    margin: 50px auto;
-    padding: 30px;
-    padding-top: 70px;
-    background-color: var(--accent-color);
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    position: relative; /* Ensures the back-arrow is positioned relative to the container */
-}
-
-.add-learner-container select {
-    width: 100%; /* Ensures it fits the width of the container */
-    max-width: 100%; /* Prevents it from exceeding container size */
-    overflow-wrap: break-word; /* Allows text wrapping */
-    white-space: pre-wrap; /* Ensures long text wraps to a new line */
-}
-
-.add-learner-container h2 {
-    font-size: 2rem;
-    color: var(--font-color);
-    margin-bottom: 20px;
-}
-
-/* Form Styling */
-.add-learner-form {
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-    gap: 20px;
-}
-
-.add-learner-form label {
-    font-size: 1rem;
-    font-weight: bold;
-    color: var(--font-color);
-}
-
-.add-learner-form input,
-.add-learner-form select,
-.add-learner-form textarea {
-    width: 100%;
-    padding: 10px;
-    font-size: 1rem;
-    color: var(--font-color);
-    background-color: white;
-    border-radius: var(--border-radius-light);
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-/* Submit Button */
-.submit-btn {
-    background-color: var(--yellow-button-color);
-    color: var(--font-color);
-    padding: 10px 20px;
-    font-size: 1.2rem;
-    font-weight: bold;
-    border: none;
-    box-shadow: var(--box-shadow);
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.submit-btn:hover {
-    background-color: var(--yellow-button-hover);
-}
-
-/* Back Arrow Styling */
-.back-arrow {
-    position: absolute;
-    top: 15px; /* Adjusted to align with the top of the form */
-    left: 15px; /* Adjusted to align with the left of the form */
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    background-color: white;
-    border-radius: 50%;
-    text-decoration: none;
-    color: var(--font-color);
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.back-arrow:hover {
-    background-color: var(--yellow-button-color);
-}
-
-.arrow-icon {
-    width: 20px;
-    height: 20px;
-    color: var(--font-color);
-}
-
-/* Remove Learner Button Styling */
-.add-learner-container .remove-btn {
-    background-color: white; /* Red background */
-}
-
-.add-learner-container .remove-btn:hover {
-    background-color: #ff4d4d; /* Darker red for hover */
-    color: white; /* White text */
-}
-
-/* Ensure retake-btn matches other buttons */
-.retake-btn {
-    background-color: white;
-    color: var(--font-color);
-    padding: 5px 20px;
-    font-size: 1.2rem;
-    font-weight: bold;
-    border: none;
-    box-shadow: var(--box-shadow);
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    text-align: center;
-    align-content: center;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    display: block;
-    text-decoration: none;
-}
-
-/* Optional hover effect */
-.retake-btn:hover {
-    background-color: var(--yellow-button-hover);
+    background-color: var(--button-hover);
 }

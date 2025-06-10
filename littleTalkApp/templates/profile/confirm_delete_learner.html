@@ -3,8 +3,8 @@
 {% block title %}LittleTalk | Edit Learner{% endblock %}
 
 {% block content %}
-<h1>Edit {{ learner.name }}</h1>
-<div class="add-learner-container">
+<h1>Learner Settings</h1>
+<div class="container-box pt-70">
     <!-- Back arrow button -->
     <a href="{% url 'profile' %}" class="back-arrow">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon">
@@ -13,18 +13,19 @@
       </svg>
     </a>
 
-    <p>You are about to delete {{ learner.name }}<br>All progress will be lost permanently</p>
+    <p>You are about to delete the learner: <strong>{{ learner.name }}</strong><br>All progress and exp will be lost permanently.</p>
 
-    <form method="POST" class="add-learner-form">
+    <form method="POST" class="form-stack">
         {% csrf_token %}
-        <label for="password">Enter your password to confirm delete learner:</label><br>
-        <input type="password" name="password" required class="form-input"><br>
         
+        <label for="password" class="label">Enter your password to confirm deletion:</label>
+        <input type="password" name="password" id="password" required class="input">
+
         {% if error_message %}
             <p class="error-message">{{ error_message }}</p>
         {% endif %}
 
-        <button type="submit" class="submit-btn remove-btn">Confirm Deletion</button>
+        <button type="submit" class="btn btn--red btn--full">Confirm Deletion</button>
     </form>
 </div>
 {% endblock %}

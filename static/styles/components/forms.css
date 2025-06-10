@@ -1,19 +1,45 @@
-.input, .select {
+/* -----------------------------
+   Form Elements
+------------------------------ */
+.input,
+.select,
+.textarea {
     width: 100%;
     padding: 10px;
     font-size: 1rem;
     border-radius: var(--border-radius-light);
-    border: 1px solid transparent;
+    border: 1px solid #ccc;
     box-sizing: border-box;
     margin-bottom: 20px;
     background-color: white;
     color: var(--font-color);
+    font-family: var(--font-roboto);
+    transition: border-color 0.3s ease;
 }
 
+/* Visual cue for invalid date fields (e.g., placeholder text) */
 .input:invalid {
     color: #999999;
 }
 
+/* Focus styles for all form fields */
+.input:focus,
+.select:focus,
+.textarea:focus {
+    border-color: var(--accent-color-dark);
+}
+
+/* Optional field type-specific styles */
+.input[type="date"] + label {
+    font-size: 0.9rem;
+    color: var(--font-color);
+    margin-bottom: 20px;
+    display: block;
+}
+
+/* -----------------------------
+   Checkbox Groups
+------------------------------ */
 .checkbox-wrapper {
     display: flex;
     align-items: center;
@@ -26,9 +52,43 @@
     flex-shrink: 0;
     width: 16px;
     height: 16px;
+    margin: 0;
 }
 
 .checkbox-wrapper label {
     font-size: 0.95rem;
     color: var(--font-color);
+    line-height: 1.4;
+}
+
+/* -----------------------------
+   Form Layout Helpers
+------------------------------ */
+
+.form-stack {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    gap: 20px;
+}
+
+/* Only apply margin if not handled elsewhere */
+.form-stack label {
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--font-color);
+}
+
+.form-stack input,
+.form-stack select,
+.form-stack textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    color: var(--font-color);
+    background-color: white;
+    border-radius: var(--border-radius-light);
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
 }

@@ -22,3 +22,19 @@
     margin-left: 240px;
     flex: 1;
 }
+
+.container-box {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: var(--accent-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    position: relative;
+    text-align: left;
+}
+
+/* adds extra padding to top */
+.pt-70 {
+    padding-top: 80px;
+}
