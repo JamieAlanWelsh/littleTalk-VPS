@@ -1,73 +1,37 @@
-/* login.css */
-
 .login-container {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh; /* Allow it to grow beyond viewport */
     flex-direction: column;
-    padding: 2rem 1rem;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
     box-sizing: border-box;
 }
 
 .login-container h1 {
-    text-align: center;  /* Ensure the header text is centered */
-    margin-bottom: 20px;  /* Space between header and form */
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 .login-form {
-    max-width: 400px;  /* Adjust the form width */
-    width: 100%;  /* Ensure the form takes full width */
+    max-width: 400px;
+    width: 100%;
     padding: 30px;
     background-color: var(--accent-color);
     border-radius: var(--border-radius-light);
     box-shadow: var(--box-shadow);
 }
 
-/* Input fields styling */
-.login-form input {
-    width: 100%;
-    padding: 10px;
-    font-size: 1rem;
-    border-radius: var(--border-radius-light);
-    border: 1px solid #dddddd00;
-    box-sizing: border-box;
-    margin-bottom: 20px;
-}
-
-/* Button styling */
-.login-form button {
-    width: 100%;
-    padding: 10px;
-    font-size: 1.2rem;
-    border: none;
-    border-radius: var(--border-radius);
-    background-color: var(--yellow-button-color);
-    color: var(--font-color);
-    font-weight: bold;cursor: pointer;  /* Show a hand cursor on hover */
-    transition: background-color 0.3s ease;  /* Smooth transition for the background color change */
-    box-shadow: var(--box-shadow);
-}
-
-/* Button hover effect */
-.login-form button:hover {
-    background-color: var(--yellow-button-hover);  /* Change to the desired color on hover */
-}
-
-/* Register link container styling */
 .register-link-container {
     text-align: center;
     margin-top: 20px;
 }
 
-/* Error message styling */
 .error-message {
     color: rgb(255, 108, 108);
     text-align: center;
     margin-bottom: 20px;
 }
 
-/* Logo Container */
 .logo-container {
     position: absolute;
     top: 20px;
@@ -79,7 +43,6 @@
     height: auto;
 }
 
-/* Register Button at the Top Right */
 .register-button-container {
     position: absolute;
     top: 20px;
@@ -87,72 +50,7 @@
 }
 
 .register-button-container .btn {
-    background-color: var(--yellow-button-color);
-    color: var(--font-color);
-    font-weight: bold;
     padding: 10px 20px;
-    text-decoration: none;
+    font-weight: bold;
     border-radius: var(--border-radius-light);
-    transition: background-color 0.3s ease;
-}
-
-/* Hover effect for Register Button */
-.register-button-container .btn:hover {
-    background-color: #FFD737;
-}
-
-/* Dropdown styling */
-.login-form select {
-    width: 100%;
-    padding: 10px;
-    font-size: 1rem;
-    border-radius: var(--border-radius-light);
-    border: 1px solid #dddddd00;
-    box-sizing: border-box;
-    margin-bottom: 20px;
-    background-color: white;
-    color: var(--font-color);
-}
-
-.checkbox-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 20px;
-    width: 100%;
-}
-
-.checkbox-wrapper input[type="checkbox"] {
-    flex-shrink: 0;
-    margin: 0;
-    width: 16px;
-    height: 16px;
-}
-
-.checkbox-wrapper label {
-    font-size: 0.95rem;
-    color: var(--font-color);
-    line-height: 1.4;
-}
-
-.register-intro {
-    text-align: left;
-    font-size: 16px;
-    font-weight: 500;
-    color: var(--font-color);
-    margin-bottom: 30px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.212); /* Subtle separator line */
-}
-
-input[type="date"] + label {
-    font-size: 0.9rem;
-    color: var(--font-color);
-    margin-bottom: 20px;
-    display: block;
-}
-
-/* Make the placeholder-style text appear grey when no value is selected */
-.login-form input[type="date"]:not(:valid) {
-    color: #999999; /* grey placeholder color */
 }

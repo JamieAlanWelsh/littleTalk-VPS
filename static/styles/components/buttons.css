@@ -1,0 +1,40 @@
+/* Button container styling */
+.button-container {
+    display: flex; /* Create a vertical layout */
+    flex-direction: column; /* Stack buttons vertically */
+    gap: 20px; /* Space between buttons */
+    align-items: center; /* Center buttons horizontally */
+}
+
+.btn {
+    text-decoration: none;
+    width: 200px;
+    text-align: center; /* Center text within buttons */
+    font-size: 1.2rem;
+    padding: 10px 20px;
+    border: none;
+    color: var(--font-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    font-family: var(--font-roboto);
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    letter-spacing: 1px; /* Adjust the value for desired spacing */
+}
+
+.btn--yellow {
+    background-color: var(--yellow-button-color);
+}
+
+.btn--yellow:hover {
+    background-color: var(--yellow-button-hover);
+}
+
+/* Width modifiers */
+.btn--full {
+    width: 100%;
+}
+
+.btn--auto {
+    width: auto;
+}

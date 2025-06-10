@@ -1,0 +1,26 @@
+/* General */
+body {
+    background-color: var(--background-color);
+    margin: 0;
+    font-family: var(--font-roboto);
+    color: var(--font-color);
+    line-height: var(--line-height);
+}
+
+h1, h2 {
+    font-family: var(--font-outfit);
+    font-weight: 700;
+    line-height: 1.4;
+    text-align: center;
+}
+
+h3, h4, h5, h6 {
+    font-family: var(--font-outfit);
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+p {
+    color: var(--font-color);
+    margin: 10px 0 15px;
+}

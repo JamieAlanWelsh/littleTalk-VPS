@@ -1,0 +1,82 @@
+/* Responsive Sidebar - Mobile View */
+@media (max-width: 1080px) {
+    .layout {
+        flex-direction: column;
+    }
+
+    .layout.with-sidebar .main-content {
+        margin-left: 0;
+    }
+
+    .main-content {
+        justify-content: center;
+        padding: 10px;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: 100px;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        top: auto;
+        background-color: var(--sidebar-color);
+        box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        padding: 0;
+        padding-top: 20px;
+    }
+
+    .sidebar-logo {
+        display: none; /* Hide logo on mobile */
+    }
+
+    .sidebar-menu {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+    .sidebar-menu li {
+        flex-grow: 1;
+        text-align: center;
+        margin-bottom: 0;
+    }
+
+    .sidebar-menu a {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 0;
+        font-size: 14px; /* Smaller text for mobile */
+        margin-bottom: 10px;
+    }
+
+    .sidebar-icon {
+        width: 60px;
+        height: 60px;
+        margin-right: 0; /* Remove extra spacing */
+        margin-bottom: 5px; /* Add space between icon and text */
+    }
+
+    .home-page {
+        grid-template-columns: 1fr;
+        margin-left: 0px;
+    }
+
+    /* Reorder elements for proper text-image flow */
+    .order-1 { order: 1; }
+    .order-2 { order: 2; }
+    .order-3 { order: 4; } /* Ensures the second image doesn't appear too early */
+    .order-4 { order: 3; }
+    .order-5 { order: 5; }
+    .order-6 { order: 6; }
+
+}

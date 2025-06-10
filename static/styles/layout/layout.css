@@ -1,0 +1,24 @@
+.main-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Inner content gets centered within the main-content area */
+.main-content-inner {
+    width: 100%;
+    max-width: 800px;
+}
+
+.layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Only apply sidebar offset when the sidebar exists */
+.layout.with-sidebar .main-content {
+    margin-left: 240px;
+    flex: 1;
+}

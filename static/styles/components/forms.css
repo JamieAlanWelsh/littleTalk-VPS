@@ -1,0 +1,34 @@
+.input, .select {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: var(--border-radius-light);
+    border: 1px solid transparent;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    background-color: white;
+    color: var(--font-color);
+}
+
+.input:invalid {
+    color: #999999;
+}
+
+.checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.checkbox-wrapper input[type="checkbox"] {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+}
+
+.checkbox-wrapper label {
+    font-size: 0.95rem;
+    color: var(--font-color);
+}

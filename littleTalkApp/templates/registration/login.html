@@ -1,52 +1,58 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}LittleTalk | Login{% endblock %}
-{% load static %}
 
 {% block content %}
 <div class="login-container">
-    <!-- logo top left -->
+
+    <!-- Logo Top Left -->
     <div class="logo-container">
         <a href="/">
-            <img src="{% static 'images/littletalk_logo.png' %}" alt="LittleTalk Logo" style="max-width: 150px; height: auto;">
+            <img src="{% static 'images/littletalk_logo.png' %}" alt="LittleTalk Logo" class="logo">
         </a>
     </div>
 
-    <!-- Header Section -->
-    <h1 style="text-align: center; font-size: 2rem; margin-bottom: 20px;">Log In</h1>
+    <!-- Register Button Top Right -->
+    <div class="register-button-container">
+        <a href="{% url 'register' %}" class="btn btn--yellow">Register</a>
+    </div>
+
+    <!-- Page Title -->
+    <h1>Login</h1>
 
     <!-- Login Form -->
     <form method="post" class="login-form">
         {% csrf_token %}
 
-        <!-- Email Input -->
-        <div>
-            <input 
-                type="text"
-                name="username"  
-                placeholder="Email or Username" 
-                required>
-        </div>
+        <!-- Email/Username -->
+        <input 
+            type="text" 
+            name="username"  
+            placeholder="Email or Username" 
+            required 
+            class="input"
+        >
 
-        <!-- Password Input -->
-        <div>
-            <input 
-                type="password" 
-                name="password" 
-                placeholder="Password" 
-                required>
-        </div>
+        <!-- Password -->
+        <input 
+            type="password" 
+            name="password" 
+            placeholder="Password" 
+            required 
+            class="input"
+        >
 
-        <!-- Submit Button -->
-        <div>
-            <button type="submit">Log In</button>
-        </div>
-
-        <!-- Error Message for Invalid Login -->
+        <!-- Login Button -->
+        <button type="submit" class="btn btn--yellow btn--full">Login</button>
     </form>
+
+    <!-- Error Message -->
     {% if form.errors %}
         <p class="error-message">Invalid username or password</p>
-        <p>If you need support, please <a href="{% url 'support' %}">contact us</a>.</p>
+        <p class="register-link-container">
+            If you need support, please <a href="{% url 'support' %}">contact us</a>.
+        </p>
     {% endif %}
 </div>
 {% endblock %}
