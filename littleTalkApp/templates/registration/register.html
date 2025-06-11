@@ -23,21 +23,24 @@
         {% csrf_token %}
 
         <div>
-            <input type="email" name="email" placeholder="Email" value="{{ form.email.value|default_if_none:'' }}" required>
+            <input type="email" name="email" class="input" placeholder="Email"
+                value="{{ form.email.value|default_if_none:'' }}" required>
             {% if form.email.errors %}
                 <div class="error-message">{{ form.email.errors.0 }}</div>
             {% endif %}
         </div>
 
         <div>
-            <input type="text" name="first_name" placeholder="Your name (or nickname)" value="{{ form.first_name.value|default_if_none:'' }}" required>
+            <input type="text" name="first_name" class="input" placeholder="Your name (or nickname)"
+                value="{{ form.first_name.value|default_if_none:'' }}" required>
             {% if form.first_name.errors %}
                 <div class="error-message">{{ form.first_name.errors.0 }}</div>
             {% endif %}
         </div>
 
         <div>
-            <input type="text" name="learner_name" placeholder="Learner's name (or nickname)" value="{{ form.learner_name.value|default_if_none:'' }}" required>
+            <input type="text" name="learner_name" class="input" placeholder="Learner's name (or nickname)"
+                value="{{ form.learner_name.value|default_if_none:'' }}" required>
             {% if form.learner_name.errors %}
                 <div class="error-message">{{ form.learner_name.errors.0 }}</div>
             {% endif %}
@@ -45,28 +48,28 @@
 
         <div>
             <label for="id_learner_dob">Learner's Date of Birth</label>
-            <input type="date" name="learner_dob" value="{{ form.learner_dob.value|default_if_none:'' }}" required>
+            <input type="date" name="learner_dob" class="input"value="{{ form.learner_dob.value|default_if_none:'' }}" required>
             {% if form.learner_dob.errors %}
                 <div class="error-message">{{ form.learner_dob.errors.0 }}</div>
             {% endif %}
         </div>
 
         <div>
-            <input type="password" name="password1" placeholder="Password" required>
+            <input type="password" name="password1" class="input" placeholder="Password" required>
             {% if form.password1.errors %}
                 <div class="error-message">{{ form.password1.errors.0 }}</div>
             {% endif %}
         </div>
 
         <div>
-            <input type="password" name="password2" placeholder="Confirm Password" required>
+            <input type="password" name="password2" class="input" placeholder="Confirm Password" required>
             {% if form.password2.errors %}
                 <div class="error-message">{{ form.password2.errors.0 }}</div>
             {% endif %}
         </div>
 
         <div>
-            <select name="hear_about">
+            <select name="hear_about" class="select">
                 {% for val, label in form.fields.hear_about.choices %}
                     <option value="{{ val }}" {% if form.hear_about.value == val %}selected{% endif %}>{{ label }}</option>
                 {% endfor %}

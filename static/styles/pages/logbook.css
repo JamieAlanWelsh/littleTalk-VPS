@@ -1,0 +1,60 @@
+.log-entries {
+    margin-top: 25px;
+}
+
+.log-entry {
+    position: relative;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: var(--border-radius-light);
+    padding: 5px 20px 5px 20px;
+    margin-top: 15px;
+    text-align: left;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.log-entry a {
+    text-decoration: none; 
+    color: inherit; 
+    display: block; 
+}
+
+.log-entry:hover {
+    border: 1px solid #5f5f5f;
+    box-shadow: var(--box-shadow);
+}
+
+.log-entry.no-hover:hover {
+    border: 1px solid #ccc;
+    box-shadow: none;
+}
+
+.log-entry small {
+    display: block;
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: gray;
+}
+
+.delete-entry-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+}
+
+.delete-icon {
+    width: 22px;
+    height: 22px;
+    opacity: 0.7;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.delete-icon:hover {
+    opacity: 1;
+}

@@ -29,6 +29,14 @@
     border-color: var(--accent-color-dark);
 }
 
+.label {
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--font-color);
+    margin-bottom: 5px;
+    display: block;
+}
+
 /* Optional field type-specific styles */
 .input[type="date"] + label {
     font-size: 0.9rem;
@@ -70,13 +78,6 @@
     flex-direction: column;
     text-align: left;
     gap: 20px;
-}
-
-/* Only apply margin if not handled elsewhere */
-.form-stack label {
-    font-size: 1rem;
-    font-weight: bold;
-    color: var(--font-color);
 }
 
 .form-stack input,

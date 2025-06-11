@@ -4,7 +4,7 @@
 
 {% block content %}
 <h1>Logbook</h1>
-<div class="new-log-container">
+<div class="container-box pt-70">
     <a href="{% url 'logbook' %}" class="back-arrow" aria-label="Go back">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon">
             <line x1="19" y1="12" x2="5" y2="12"></line>
@@ -12,10 +12,20 @@
         </svg>
     </a>
 
-    <form method="post" class="log-entry-form">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="submit-btn">Save Entry</button>
-    </form>
+    <form method="post" class="form-stack">
+    {% csrf_token %}
+
+    {% for field in form %}
+        <div>
+            <label for="{{ field.id_for_label }}" class="label">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+                <div class="error-message">{{ field.errors.0 }}</div>
+            {% endif %}
+        </div>
+    {% endfor %}
+
+    <button type="submit" class="btn btn--yellow btn--full">Save Entry</button>
+</form>
 </div>
 {% endblock %}

@@ -6,3 +6,6 @@
 @import './components/buttons.css';
 @import './components/back-arrow.css';
 @import './responsive.css';
+@import './pages/login_register.css';
+@import './pages/profile.css';
+@import './pages/logbook.css';
