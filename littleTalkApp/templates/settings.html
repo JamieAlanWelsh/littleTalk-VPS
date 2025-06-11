@@ -4,20 +4,36 @@
 
 {% block content %}
 <h1>Settings</h1>
-<div class="settings-container">
+<div class="container-box">
 
     <!-- Change Email Form -->
     {% comment %} <h2>Email</h2> {% endcomment %}
-    <form method="post" action="{% url 'change_user_details' %}" class="settings-form" id="user-form">
+    <form method="post" action="{% url 'change_user_details' %}" class="form-stack" id="user-form">
         {% csrf_token %}
-        {{ user_form.as_p }}
+        {% for field in user_form %}
+            <div>
+                <label for="{{ field.id_for_label }}" class="label">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                    <div class="error-message">{{ field.errors.0 }}</div>
+                {% endif %}
+            </div>
+        {% endfor %}
         <button type="submit" class="save-btn" id="email-save-btn" disabled>Save Changes</button>
     </form>
 
     {% comment %} <h2>Change Password</h2> {% endcomment %}
-    <form method="post" action="{% url 'change_password' %}" class="settings-form" id="password-form">
+    <form method="post" action="{% url 'change_password' %}" class="form-stack" id="password-form">
         {% csrf_token %}
-        {{ password_form.as_p }}
+        {% for field in password_form %}
+            <div>
+                <label for="{{ field.id_for_label }}" class="label">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                    <div class="error-message">{{ field.errors.0 }}</div>
+                {% endif %}
+            </div>
+        {% endfor %}
         <button type="submit" class="save-btn" id="password-save-btn" disabled>Save Changes</button>
     </form>
 
@@ -31,7 +47,7 @@
     <!-- Logout Form (POST request) -->
     <form method="post" action="{% url 'logout' %}" class="logout-form">
         {% csrf_token %}
-        <button type="submit" class="logout-btn">Logout</button>
+        <button type="submit" class="btn btn--red btn--full">Logout</button>
     </form>
     
 </div>
