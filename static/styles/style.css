@@ -8,5 +8,6 @@
 @import './responsive.css';
 @import './pages/login_register.css';
 @import './pages/profile.css';
+@import './pages/practice.css';
 @import './pages/logbook.css';
 @import './pages/support.css';

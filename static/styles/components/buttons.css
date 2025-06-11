@@ -39,6 +39,11 @@
     background-color: var(--yellow-button-hover);
 }
 
+.btn--invisible {
+    background-color: rgba(255, 255, 255, 0);
+    box-shadow: none;
+}
+
 .btn--green { 
     background-color: var(--button-green);
 }

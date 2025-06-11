@@ -143,18 +143,6 @@
    Game Description
 ------------------------------ */
 
-.game-description-container {
-    max-width: 800px;
-    margin: 50px auto;
-    padding: 30px;
-    padding-top: 70px;
-    background-color: var(--accent-color);
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    text-align: left;
-    position: relative;
-}
-
 .description-button-wrapper {
     margin-top: 40px;
     margin-bottom: 30px;

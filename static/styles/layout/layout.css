@@ -38,3 +38,12 @@
 .pt-70 {
     padding-top: 80px;
 }
+
+.container--wide {
+    max-width: 800px;
+}
+
+.container--short {
+    max-width: 500px;
+    text-align: center;
+}

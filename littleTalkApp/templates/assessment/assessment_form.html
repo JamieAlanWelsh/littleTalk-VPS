@@ -12,11 +12,11 @@
 </div>
 
 <!-- Register Button at the Top Right -->
-{% if not request.user.is_authenticated %}
+{% comment %} {% if not request.user.is_authenticated %}
     <div class="register-button-container">
-        <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
+        <a href="{% url 'login' %}" class="btn btn--invisible btn--small">Login</a>
     </div>
-{% endif %}
+{% endif %} {% endcomment %}
 
 <h1 id="question-topic">{{ question.topic }}</h1>
 

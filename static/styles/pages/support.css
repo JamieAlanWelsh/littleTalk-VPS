@@ -1,22 +1,6 @@
-/* Contact Section */
-.contact-section {
-    text-align: center;
-    padding: 30px;
-    width: 500px;
-    background: var(--accent-color);
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    margin: 45px auto 50px auto; 
-}
-
-/* FAQ Section */
-.faq-section {
-    text-align: left;
-    background: var(--accent-color);
-    padding: 30px;
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-}
+/* -----------------------------
+   FAQ
+------------------------------ */
 
 .faq-item {
     margin-bottom: 20px;
@@ -39,6 +23,21 @@
     margin-top: 5px;
 }
 
+.text-link {
+    font-weight: bold;
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.2s ease;
+}
+
+.text-link:hover {
+    color: #ffd737;
+}
+
+/* -----------------------------
+   Logo Top Left
+------------------------------ */
+
 .logo-link {
     position: absolute;
     top: 30px;
@@ -51,26 +50,12 @@
     width: auto;
 }
 
-.contact-form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 20px;
-}
+/* -----------------------------
+   Contact Form
+------------------------------ */
 
 .success-message {
     margin-top: 15px;
     color: var(--button-green);
     font-weight: bold;
-}
-
-.text-link {
-    font-weight: bold;
-    text-decoration: none;
-    color: inherit;
-    transition: color 0.2s ease;
-}
-
-.text-link:hover {
-    color: #ffd737;
 }
