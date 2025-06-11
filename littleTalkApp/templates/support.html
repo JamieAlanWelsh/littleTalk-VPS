@@ -16,16 +16,16 @@
     <h1>Get in Touch</h1>
     <p>The team at LittleTalk is here to help you get the most out of the app. Send us a message!</p>
 
-    <form method="POST" action="{% url 'send_support_email' %}" class="contact-form">
+    <form method="POST" action="{% url 'send_support_email' %}">
         {% csrf_token %}
-        
-        <input type="text" id="name" name="name" placeholder="Name" required>
-    
-        <input type="email" id="email" name="email" placeholder="Email" required>
-    
-        <textarea id="message" name="message" rows="5" placeholder="Message" required></textarea>
-    
-        <button type="submit">Send Message</button>
+
+       <input type="text" id="name" name="name" placeholder="Name" class="input" required>
+
+        <input type="email" id="email" name="email" placeholder="Email" class="input" required>
+
+        <textarea id="message" name="message" rows="5" placeholder="Message" class="textarea" required></textarea>
+
+        <button type="submit" class="btn btn--yellow btn--full btn--small">Send Message</button>
     </form>
 
     {% if message_sent %}
