@@ -12,7 +12,7 @@
     text-align: center; /* Center text within buttons */
     font-size: 1.2rem;
     padding: 10px 20px;
-    border: none;
+    border: 1px solid transparent;
     color: var(--font-color);
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
@@ -44,7 +44,9 @@
 }
 
 .btn--green:hover { 
-    background-color: var(--button-hover);
+    background-color: white;
+    color: var(--button-green);
+    border: 1px solid var(--button-green);
 }
 
 .btn--red { 
@@ -70,7 +72,19 @@
 
 .btn--small { 
     font-size: 1rem; 
-    /* padding: 5px 15px; */
+}
+
+.btn--large {
+    font-size: 1.4rem;
+    padding: 15px 60px;
+}
+
+.btn--short {
+    width: 120px;
+}
+
+.btn--thick {
+    padding: 20px;
 }
 
 /* special buttons */

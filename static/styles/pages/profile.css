@@ -144,21 +144,3 @@
     text-align: center;
     margin-top: 40px;
 }
-
-.practice-button {
-    display: inline-block;
-    background-color: var(--button-green);
-    color: var(--font-color);
-    padding: 15px 30px;
-    font-size: 1.2rem;
-    font-weight: bold;
-    text-decoration: none;
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    transition: background-color 0.3s ease;
-    letter-spacing: 1px;
-}
-
-.practice-button:hover {
-    background-color: var(--button-hover);
-}
