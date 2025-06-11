@@ -69,5 +69,27 @@
 }
 
 .btn--small { 
-    font-size: 1rem; padding: 5px 15px;
+    font-size: 1rem; 
+    /* padding: 5px 15px; */
+}
+
+/* special buttons */
+
+.btn--save {
+    background-color: #d3d3d3;
+    color: #a0a0a0;
+    margin-bottom: 40px;
+    cursor: default;
+}
+
+/* When enabled */
+.btn--save:enabled {
+    background-color: var(--yellow-button-color);
+    color: var(--font-color);
+    cursor: pointer;
+}
+
+/* Hover on enabled */
+.btn--save:enabled:hover {
+    background-color: var(--yellow-button-hover);
 }
