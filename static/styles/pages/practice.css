@@ -1,5 +1,8 @@
+/* -----------------------------
+   Recommendation Widget
+------------------------------ */
+
 .recommendation-box {
-    /* position: relative; */
     display: flex;
     flex-direction: column;
     background-color: var(--accent-color);
@@ -19,16 +22,11 @@
     align-items: center;
 }
 
-.recommendation-text {
-    flex: 1;
-    min-width: 0;
-}
-
 .recommendation-mascot img {
-    width: 160px;
+    width: 150px;
     margin-right: 20px;
     height: auto;
-    max-width: 100%;
+    /* max-width: 100%; */
 }
 
 .recommendation-info {
@@ -39,35 +37,6 @@
     padding: 12px 16px;
     margin-top: 20px;
     border-radius: var(--border-radius-light);
-    color: var(--font-color);
-}
-
-.recommendation-box h3 {
-    margin-top: 5px;
-    font-family: var(--font-outfit);
-    font-size: 1.5rem;
-}
-
-.recommendation-box p {
-    font-size: 1rem;
-    color: var(--font-color);
-    margin-bottom: 12px;
-}
-
-.recommendation-box ul {
-    list-style-type: disc;
-    padding-left: 1.2rem;
-    margin: 0 0 10px 0;
-}
-
-.recommendation-box li {
-    margin-bottom: 0.4rem;
-    font-size: 0.95rem;
-    line-height: 1.4;
-}
-
-.recommendation-box strong {
-    font-weight: 600;
     color: var(--font-color);
 }
 
@@ -103,6 +72,10 @@
     flex-shrink: 0;
 }
 
+/* -----------------------------
+   Exercise Widgets
+------------------------------ */
+
 .exercise-widget {
     position: relative;
     display: flex;
@@ -117,8 +90,8 @@
 }
 
 .exercise-image img {
-    width: 80px; /* Adjust as needed */
-    height: 80px; /* Keep square aspect ratio */
+    width: 80px;
+    height: 80px;
     border-radius: var(--border-radius-light);
     margin-right: 20px;
     box-shadow: var(--box-shadow);
@@ -147,7 +120,7 @@
 }
 
 .skills-list ul {
-    list-style-type: disc; /* You can change this to 'circle' or 'square' */
+    list-style-type: disc;
     padding-left: 1rem;
     margin: 0;
 }
@@ -156,61 +129,35 @@
     margin-bottom: 0.4rem;
     font-size: 0.95rem;
     line-height: 1.4;
-    color: #333; /* Adjust to match your site's color palette */
+    color: #333;
 }
 
-/* Buttons Container - Ensures buttons stay aligned */
 .exercise-buttons {
     display: flex;
-    gap: 10px; /* Space between buttons */
+    gap: 10px;
     margin-top: 15px;
     margin-bottom: 10px;
 }
 
-/* Get Started Button */
-.exercise-btn {
-    display: inline-block;
-    background-color: var(--button-green);
-    color: var(--font-color);
-    width: 120px; /* Increased width for better fit */
+/* -----------------------------
+   Game Description
+------------------------------ */
+
+.description-button-wrapper {
+    margin-top: 40px;
+    margin-bottom: 30px;
     text-align: center;
-    text-decoration: none;
-    padding: 10px 20px;
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    font-weight: bold;
-    letter-spacing: 1px;
-    transition: background-color 0.3s ease;
 }
 
-.exercise-btn:hover {
-    background-color: var(--button-hover);
-}
+/* -----------------------------
+   Expired locked button
+------------------------------ */
 
-/* More Info Button */
-.info-btn {
-    display: inline-block;
-    background-color: white;
-    color: var(--font-color);
-    width: 120px; /* Matches the Get Started button */
-    text-align: center;
-    text-decoration: none;
-    padding: 10px 20px;
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-}
-
-.info-btn:hover {
-    background-color: var(--yellow-button-color);
-}
-
-.locked-btn {
-    pointer-events: none; /* Prevents clicking */
+/* .locked-btn {
+    pointer-events: none;
     background-color: #FF9292;
 }
 
 .locked-btn:hover {
     background-color: #FF9292;
-}
+} */

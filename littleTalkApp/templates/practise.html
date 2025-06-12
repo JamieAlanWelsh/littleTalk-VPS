@@ -7,9 +7,11 @@
 <!-- Learner not Selected -->
 {% if learner_selected != True %}
     <h1>Welcome to the practise section! 👩‍🏫</h1>
-    <p>Here, you will be able to access exercises and information to use on your learning journey.</p>
-    <p>To get started, add or select a learner in the profile section and come back!</p>
-    <a href="{% url 'profile' %}" class="btn btn-primary" style="width: 250px; text-align: center;">Go to Profile</a>
+    <div class="container-box">
+        <p>Here, you will be able to access exercises and information to use on your learning journey.</p>
+        <p>To get started, add or select a learner in the profile section and come back!</p>
+        <a href="{% url 'profile' %}" class="btn btn--white btn--full" style="width: 250px; text-align: center;">Go to Profile</a>
+    </div>
 <!-- Learner Selected -->
 {% else %}
     <h1>Welcome {{ selected_learner.name }}!</h1>
@@ -18,7 +20,7 @@
         <div class="recommendation-box">
             <div class="recommendation-content">
                 <div class="recommendation-text">
-                    <h3>Arlo's recommended exercises:</h3>
+                    <h2 class="heading-left">Arlo's recommended exercises:</h2>
                     <ul>
                         {% for ex in recommendation.exercises %}
                         <li>{{ ex }}</li>
@@ -81,8 +83,8 @@
             {% comment %} <p>Difficulty: {{ selected_learner.assessment2 }}/6</p> {% endcomment %}
             <!-- Buttons Wrapper -->
             <div class="exercise-buttons">
-                <a href="{% static 'exercises/colourful_semantics/index.html' %}" class="button exercise-btn">START</a>
-                <a href="{% url 'game_description' 'colourful_semantics' %}" class="button info-btn">More Info</a>
+                <a href="{% static 'exercises/colourful_semantics/index.html' %}" class="btn btn--green btn--small btn--short">START</a>
+                <a href="{% url 'game_description' 'colourful_semantics' %}" class="btn btn--white btn--small btn--short">More Info</a>
             </div>
         </div>
     </div>
@@ -96,7 +98,7 @@
         </div>
         <div class="exercise-details">
             <h3>{{ game.title }} - {{ game.target }}</h3>
-            {% if selected_learner.assessment1 < 1 %}
+            {% if selected_learner.assessment1 < 0 %}
                 <p>This exercise will be unlocked as you progress.</p>
                 <a class="button exercise-btn locked-btn">Locked</a>
             {% else %}
@@ -109,8 +111,8 @@
                     </ul>
                 </div>
                 <div class="exercise-buttons">
-                    <a href="{% static 'exercises/think_and_find/index.html' %}" class="button exercise-btn">START</a>
-                    <a href="{% url 'game_description' 'think_and_find' %}" class="button info-btn">More Info</a>
+                    <a href="{% static 'exercises/think_and_find/index.html' %}" class="btn btn--green btn--small btn--short">START</a>
+                    <a href="{% url 'game_description' 'think_and_find' %}" class="btn btn--white btn--small btn--short">More Info</a>
                 </div>
             {% endif %}
         </div>
@@ -125,7 +127,7 @@
         </div>
         <div class="exercise-details">
             <h3>{{ game.title }} - {{ game.target }}</h3>
-            {% if selected_learner.assessment1 < 1 %}
+            {% if selected_learner.assessment1 < 0 %}
                 <p>This exercise will be unlocked as you progress.</p>
                 <a class="button exercise-btn locked-btn">Locked</a>
             {% else %}
@@ -138,8 +140,8 @@
                     </ul>
                 </div>
                 <div class="exercise-buttons">
-                    <a href="{% static 'exercises/categorisation/index.html' %}" class="button exercise-btn">START</a>
-                    <a href="{% url 'game_description' 'categorisation' %}" class="button info-btn">More Info</a>
+                    <a href="{% static 'exercises/categorisation/index.html' %}" class="btn btn--green btn--small btn--short">START</a>
+                    <a href="{% url 'game_description' 'categorisation' %}" class="btn btn--white btn--small btn--short">More Info</a>
                 </div>
             {% endif %}
         </div>
@@ -154,7 +156,7 @@
         </div>
         <div class="exercise-details">
             <h3>{{ game.title }} - {{ game.target }}</h3>
-            {% if selected_learner.assessment1 < 1 %}
+            {% if selected_learner.assessment1 < 0 %}
                 <p>This exercise will be unlocked as you progress.</p>
                 <a class="button exercise-btn locked-btn">Locked</a>
             {% else %}
@@ -167,8 +169,8 @@
                     </ul>
                 </div>
                 <div class="exercise-buttons">
-                    <a href="{% static 'exercises/story_train/index.html' %}" class="button exercise-btn">START</a>
-                    <a href="{% url 'game_description' 'story_train' %}" class="button info-btn">More Info</a>
+                    <a href="{% static 'exercises/story_train/index.html' %}" class="btn btn--green btn--small btn--short">START</a>
+                    <a href="{% url 'game_description' 'story_train' %}" class="btn btn--white btn--small btn--short">More Info</a>
                 </div>
             {% endif %}
         </div>

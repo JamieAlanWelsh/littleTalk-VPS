@@ -13,25 +13,24 @@
 
 
 <div class="summary-wrapper">
-    <section class="summary-section">
-
+    <section>
         {% if readiness_status == "not_ready" %}
-            <div class="readiness-message warning">
-                <p><strong>LitteTalk may not be suitable for {{ learner.name }} at this time.</strong></p>
+            <div class="container-box container--white container--edgy">
+                <p class="summary-intro"><strong>LitteTalk may not be suitable for {{ learner.name }} at this time.</strong></p>
                 <p>It seems like {{ learner.name }} may be struggling with attention and listening skills. We can still support you but our exercises will be most effective once your child has developed this skill. In the meantime, we encourage you to check out our <a href="/tips/" class="text-link" target="_blank">free tips</a>.</p>
             </div>
         {% elif readiness_status == "ready" %}
-            <div class="readiness-message success">
-                <p><strong>Great news! We think LittleTalk is likely a good fit for {{ learner.name }}!</strong></p>
+            <div class="container-box container--white container--edgy">
+                <p class="summary-intro"><strong>Great news! We think LittleTalk is likely a good fit for {{ learner.name }}!</strong></p>
                 <p>{{ learner.name }} appears to have strong attention and listening skills. Our exercises are well-equipped to support their language development.</p>
             </div>
         {% endif %}
 
         <div class="summary-cta">
-            <a href="/" class="cta-button">Get your recommended exercises and start using LittleTalk</a>
+            <a href="/" class="btn btn--yellow">Get your recommended exercises and start using LittleTalk</a>
         </div>
 
-        <div class="skill-section-container">
+        <div class="container-box container--white container--edgy">
 
             <p class="summary-intro">
                 <strong>Assessment Summary</strong>
@@ -60,7 +59,7 @@
         </div>
 
         <div class="summary-cta">
-            <a href="/" class="cta-button">Get your recommended exercises and start using LittleTalk</a>
+            <a href="/" class="btn btn--yellow">Get your recommended exercises and start using LittleTalk</a>
         </div>
 
     </section>

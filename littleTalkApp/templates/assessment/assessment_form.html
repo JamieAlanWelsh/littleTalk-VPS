@@ -12,19 +12,19 @@
 </div>
 
 <!-- Register Button at the Top Right -->
-{% if not request.user.is_authenticated %}
+{% comment %} {% if not request.user.is_authenticated %}
     <div class="register-button-container">
-        <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
+        <a href="{% url 'login' %}" class="btn btn--invisible btn--small">Login</a>
     </div>
-{% endif %}
+{% endif %} {% endcomment %}
 
-<h1 id="question-topic">{{ question.topic }}</h1>
+<h1 id="question-topic" class="mt-50">{{ question.topic }}</h1>
 
 <div id="progress-bar-container">
     <progress id="progress-bar" max="100" value="{{ current_question_index|default_if_none:1 }}"></progress>
 </div>
 
-<div id="assessment-form-container">
+<div class="container-box container--white container--edgy">
     <p class="assessment-intro">
         Tell us more about your child that will be using this app.<br>We respect your privacy and will never share personal information or data.
     </p>

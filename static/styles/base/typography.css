@@ -14,6 +14,10 @@ h1, h2 {
     text-align: center;
 }
 
+h2 {
+    margin-top: 5px;
+}
+
 h3, h4, h5, h6 {
     font-family: var(--font-outfit);
     font-weight: 700;
@@ -23,4 +27,25 @@ h3, h4, h5, h6 {
 p {
     color: var(--font-color);
     margin: 10px 0 15px;
+}
+
+.text-link {
+    font-weight: bold;
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.2s ease;
+}
+
+.text-link:hover {
+    color: #ffd737;
+}
+
+/* Utility Classes */
+
+.heading-left {
+    text-align: left !important;
+}
+
+.mt-50 {
+    margin-top: 50px;
 }

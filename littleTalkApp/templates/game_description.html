@@ -7,7 +7,7 @@
 
 <h1>More Info</h1>
 
-<div class="game-description-container">
+<div class="container-box pt-70">
 
     <!-- Back Arrow -->
     <a href="{% url 'practise' %}" class="back-arrow" aria-label="Go back">
@@ -18,20 +18,20 @@
         </svg>
     </a>
 
-    <h2 class="learning-header">{{ game.title }}</h2>
+    <h2 class="heading-left">{{ game.title }}</h2>
     
-    <p class="game-description">{{ game.description }}</p>
+    <p>{{ game.description }}</p>
 
-    <h2 class="learning-header">Your child will learn how to:</h2>
-    <ul class="learning-bullets">
+    <h2 class="heading-left">Your child will learn how to:</h2>
+    <ul>
         <li>{{ game.bullet1 }}</li>
         <li>{{ game.bullet2 }}</li>
         <li>{{ game.bullet3 }}</li>
     </ul>
 
-    <h2 class="learning-header">How to Choose the Right Level for Your Child:</h2>
-    <p class="learning-level">{{ game.learninglevel1 }}</p>
-    <p class="learning-level">{{ game.learninglevel2 }}</p>
+    <h2 class="heading-left">How to Choose the Right Level for Your Child:</h2>
+    <p>{{ game.learninglevel1 }}</p>
+    <p>{{ game.learninglevel2 }}</p>
 
     {% comment %}
     <!-- YouTube video embed -->
@@ -47,8 +47,8 @@
     {% endcomment %}
 
     <!-- Start button -->
-    <div class="start-button-wrapper">
-        <a href="{% static 'exercises/'|add:game.static_name|add:'/index.html' %}" target="_blank" class="start-button">
+    <div class="description-button-wrapper">
+        <a href="{% static 'exercises/'|add:game.static_name|add:'/index.html' %}" target="_blank" class="btn btn--green btn--large">
             START
         </a>
     </div>
