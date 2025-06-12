@@ -34,6 +34,10 @@
     text-align: left;
 }
 
+.container--white {
+    background-color: white;
+}
+
 /* adds extra padding to top */
 .pt-70 {
     padding-top: 80px;
@@ -46,4 +50,8 @@
 .container--short {
     max-width: 500px;
     text-align: center;
+}
+
+.container--edgy {
+    border-radius: var(--border-radius-light);
 }

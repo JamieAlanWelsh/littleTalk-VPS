@@ -23,17 +23,6 @@
     margin-top: 5px;
 }
 
-.text-link {
-    font-weight: bold;
-    text-decoration: none;
-    color: inherit;
-    transition: color 0.2s ease;
-}
-
-.text-link:hover {
-    color: #ffd737;
-}
-
 /* -----------------------------
    Logo Top Left
 ------------------------------ */

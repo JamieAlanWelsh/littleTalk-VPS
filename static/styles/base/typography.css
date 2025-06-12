@@ -29,8 +29,23 @@ p {
     margin: 10px 0 15px;
 }
 
+.text-link {
+    font-weight: bold;
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.2s ease;
+}
+
+.text-link:hover {
+    color: #ffd737;
+}
+
 /* Utility Classes */
 
 .heading-left {
     text-align: left !important;
+}
+
+.mt-50 {
+    margin-top: 50px;
 }

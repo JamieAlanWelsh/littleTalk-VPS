@@ -23,10 +23,10 @@
 }
 
 .recommendation-mascot img {
-    width: 160px;
+    width: 150px;
     margin-right: 20px;
     height: auto;
-    max-width: 100%;
+    /* max-width: 100%; */
 }
 
 .recommendation-info {

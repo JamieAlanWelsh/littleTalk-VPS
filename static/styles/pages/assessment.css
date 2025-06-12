@@ -1,27 +1,11 @@
-/* Container for the entire form section */
-#assessment-form-container {
-    background-color: white;
-    border-radius: var(--border-radius-light);
-    box-shadow: var(--box-shadow);
-    padding: 20px;
-    width: 100%;
-    max-width: 650px;
-    margin: 0 auto;
-    text-align: center;
-}
+/* ASSESSMENT */
 
-#question-topic {
-    margin-top: 50px;
-}
-
-/* Question Text */
 #question-text {
     min-height: 80px;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-
     padding: 20px 40px;
     font-size: 22px;
     color: var(--font-color);
@@ -43,7 +27,6 @@
     background-color: white;
     color: var(--font-color);
     border: 2px solid var(--font-color);
-    /* box-shadow: var(--box-shadow); */
     border-radius: 20px;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -56,10 +39,9 @@
     color: white;
 }
 
-/* Progress Bar */
 #progress-bar-container {
     margin: 40px auto;
-    max-width: 650px;
+    max-width: 600px;
 }
 
 progress {
@@ -67,7 +49,6 @@ progress {
     height: 12px;
     border-radius: 10px;
     background-color: white;
-    /* box-shadow: var(--box-shadow); */
     appearance: none;
 }
 
@@ -93,7 +74,6 @@ progress::-webkit-progress-value {
     background-color: white;
     color: var(--font-color);
     border: none;
-    /* box-shadow: var(--box-shadow); */
     border-radius: 15px;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -109,7 +89,7 @@ progress::-webkit-progress-value {
 
 .back-button:disabled {
     background-color: white;
-    color: #a0a0a0; /* Dimmed text */
+    color: #a0a0a0;
     cursor: pointer;
     opacity: 0.6;
 }
@@ -119,47 +99,22 @@ progress::-webkit-progress-value {
     font-size: 18px;
     font-weight: 500;
     color: var(--font-color);
-    /* margin-bottom: 20px; */
-    /* padding-bottom: 20px; */
     padding-top: 20px;
     padding-bottom: 30px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.212); /* Subtle separator line */
+    border-bottom: 1px solid rgba(0, 0, 0, 0.212);
 }
+
+/* ASSESSMENT SUMMARY */
 
 .summary-intro {
     text-align: left;
     font-size: 18px;
     font-weight: 500;
     color: var(--font-color);
-    /* margin-bottom: 20px; */
-    /* padding-bottom: 20px; */
-    /* padding-top: 10px; */
     padding-bottom: 20px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.212); /* Subtle separator line */
 }
 
-/* SUMMARY SECTION */
-
-/* ===== Summary Section ===== */
-.summary-section {
-    /* padding: 2rem; */
-    max-width: 800px;
-    margin: 0 auto;
-    text-align: left;
-    font-size: 1rem;
-}
-
-.summary-section h2 {
-    font-size: 2rem;
-}
-
-/* .summary-section h3 {
-    font-size: 1.5rem;
-    margin-top: 0rem;
-    margin-bottom: 1.5rem;
-} */
-
-/* Skill Lists */
 .skill-list,
 .summary-list {
     list-style: none;
@@ -173,39 +128,6 @@ progress::-webkit-progress-value {
     line-height: 1.5;
 }
 
-/* Readiness Message Box */
-.readiness-message {
-    margin-top: 3rem;
-    padding: 1.5rem;
-    border-radius: var(--border-radius-light);
-    font-size: 1rem;
-    line-height: 1.6;
-    background-color: #ffffff;
-    box-shadow: var(--box-shadow);
-}
-
-/* Positive Feedback */
-.readiness-message.success {
-    border-left: 6px solid var(--yellow-button-hover);
-}
-
-/* Cautionary Feedback */
-.readiness-message.warning {
-    border-left: 6px solid var(--button-red);
-}
-
-/* Links inside summary */
-.readiness-message a {
-    color: inherit;
-    text-decoration: underline;
-    font-weight: 500;
-}
-
-.readiness-message a:hover {
-    text-decoration: none;
-}
-
-/* Optional: Container for the entire results page */
 .summary-wrapper {
     padding: 2rem;
     display: flex;
@@ -213,39 +135,11 @@ progress::-webkit-progress-value {
     align-items: center;
 }
 
-.skill-section-container {
-    background-color: #FFFFFF;
-    border-radius: 8px;
-    padding: 1.5rem;
-    box-shadow: var(--box-shadow);
-  }
-
-  .reassurance-text {
+.reassurance-text {
     color: #666; /* Soft grey */
     font-size: 0.95rem;
     margin-top: 2.0rem;
     line-height: 1.5;
-}
-
-.cta-button {
-    display: inline-block;
-    margin-top: 2rem;
-    margin-bottom: 2rem;
-    padding: 0.75rem 1.5rem;
-    background-color: var(--yellow-button-color);
-    color: var(--font-color);
-    font-weight: 600;
-    border: none;
-    border-radius: var(--border-radius);
-    text-decoration: none;
-    font-size: 1rem;
-    transition: background-color 0.3s ease;
-    box-shadow: var(--box-shadow);
-    text-align: center;
-}
-
-.cta-button:hover {
-    background-color: var(--yellow-button-hover);
 }
 
 /* Responsive Design */

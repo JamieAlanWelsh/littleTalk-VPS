@@ -20,7 +20,7 @@
         <div class="recommendation-box">
             <div class="recommendation-content">
                 <div class="recommendation-text">
-                    <h2>Arlo's recommended exercises:</h2>
+                    <h2 class="heading-left">Arlo's recommended exercises:</h2>
                     <ul>
                         {% for ex in recommendation.exercises %}
                         <li>{{ ex }}</li>
@@ -98,7 +98,7 @@
         </div>
         <div class="exercise-details">
             <h3>{{ game.title }} - {{ game.target }}</h3>
-            {% if selected_learner.assessment1 < 1 %}
+            {% if selected_learner.assessment1 < 0 %}
                 <p>This exercise will be unlocked as you progress.</p>
                 <a class="button exercise-btn locked-btn">Locked</a>
             {% else %}
@@ -127,7 +127,7 @@
         </div>
         <div class="exercise-details">
             <h3>{{ game.title }} - {{ game.target }}</h3>
-            {% if selected_learner.assessment1 < 1 %}
+            {% if selected_learner.assessment1 < 0 %}
                 <p>This exercise will be unlocked as you progress.</p>
                 <a class="button exercise-btn locked-btn">Locked</a>
             {% else %}
@@ -156,7 +156,7 @@
         </div>
         <div class="exercise-details">
             <h3>{{ game.title }} - {{ game.target }}</h3>
-            {% if selected_learner.assessment1 < 1 %}
+            {% if selected_learner.assessment1 < 0 %}
                 <p>This exercise will be unlocked as you progress.</p>
                 <a class="button exercise-btn locked-btn">Locked</a>
             {% else %}
