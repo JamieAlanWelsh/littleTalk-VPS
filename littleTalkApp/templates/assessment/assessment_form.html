@@ -48,11 +48,16 @@
 </div>
 
 <script>
+    // load list of questions from backend
+    const questions = {{ questions_json|safe }};
+    console.log(questions);
+    
     const progressBar = document.getElementById('progress-bar');
     const totalQuestions = {{ total_questions }};
     let currentQuestionIndex = {{ current_question_index }};
     let currentQuestionId = {{ question.order }};
     let previousQuestionId = null;
+    let answers = {};
 
     const backBtn = document.getElementById('back-btn');
 
@@ -67,8 +72,13 @@
     // Event listener for answer buttons
     document.querySelectorAll('.answer-button').forEach(button => {
         button.addEventListener('click', function () {
+            // on answer
             const answer = this.getAttribute('data-value');
             const questionId = document.querySelector('[name="question_id"]').value;
+
+            // Save to local storage
+            answers[questionId] = answer;
+            console.log("Current answers:", answers);  // Debugging: see what we have so far
 
             const formData = new FormData();
             formData.append('question_id', questionId);

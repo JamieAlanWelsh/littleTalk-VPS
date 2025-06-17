@@ -30,6 +30,7 @@ from django.conf import settings
 from .game_data import GAME_DESCRIPTIONS
 from .assessment_qs import QUESTIONS, RECOMMENDATIONS
 from collections import defaultdict
+import json
 
 
 def home(request):
@@ -63,11 +64,12 @@ def start_assessment(request):
     request.session['previous_question_id'] = None
 
     return render(request, 'assessment/assessment_form.html', {
-        'question': first_question,
-        'total_questions': total_questions,
-        'current_question_index': 1,
-        'user_logged_in': request.user.is_authenticated,
-    })
+    'question': first_question,
+    'total_questions': total_questions,
+    'current_question_index': 1,
+    'user_logged_in': request.user.is_authenticated,
+    'questions_json': json.dumps(QUESTIONS),
+})
 
 
 def handle_question(request):
