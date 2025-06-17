@@ -48,115 +48,96 @@
 </div>
 
 <script>
-    // load list of questions from backend
+    // Load list of all questions (already passed from your view)
     const questions = {{ questions_json|safe }};
-    console.log(questions);
-    
+    console.log("Loaded questions:", questions);
+
+    // Set up variables
     const progressBar = document.getElementById('progress-bar');
-    const totalQuestions = {{ total_questions }};
-    let currentQuestionIndex = {{ current_question_index }};
-    let currentQuestionId = {{ question.order }};
-    let previousQuestionId = null;
-    let answers = {};
+    const totalQuestions = questions.length;  // we no longer use template total
+    let currentIndex = 0;  // Track position in array (starts at first question)
+    let answers = {};      // Local storage for answers
 
     const backBtn = document.getElementById('back-btn');
 
+    // Function to update progress bar
     function updateProgressBar() {
-        let percentage = (currentQuestionIndex / totalQuestions) * 100;
+        let percentage = ((currentIndex + 1) / totalQuestions) * 100;
         progressBar.value = percentage;
     }
 
-    // Initialize progress bar
-    updateProgressBar();
+    // Function to show a question on the page
+    function showQuestion(index) {
+        const q = questions[index];
+        if (!q) return;  // Safety check
+
+        // Update DOM
+        document.getElementById('question-text').textContent = q.text;
+        document.getElementById('question-topic').textContent = q.topic;
+        document.querySelector('[name="question_id"]').value = q.order;
+
+        // Update progress
+        updateProgressBar();
+
+        // Enable/disable back button
+        backBtn.disabled = index === 0;
+    }
+
+    // Initialize first question
+    showQuestion(currentIndex);
 
     // Event listener for answer buttons
     document.querySelectorAll('.answer-button').forEach(button => {
         button.addEventListener('click', function () {
-            // on answer
             const answer = this.getAttribute('data-value');
-            const questionId = document.querySelector('[name="question_id"]').value;
+            const questionId = questions[currentIndex].order;
 
-            // Save to local storage
+            // Save locally
             answers[questionId] = answer;
-            console.log("Current answers:", answers);  // Debugging: see what we have so far
+            console.log("Current answers:", answers);
 
-            const formData = new FormData();
-            formData.append('question_id', questionId);
-            formData.append('answer', answer);
-            formData.append('csrfmiddlewaretoken', document.querySelector('[name="csrfmiddlewaretoken"]').value);
-
-            fetch('/assessment/handle/', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.next_question_id) {
-                    document.getElementById('question-text').textContent = data.next_question_text;
-                    document.getElementById('question-topic').textContent = data.next_question_topic;
-                    document.querySelector('[name="question_id"]').value = data.next_question_id;
-
-                    currentQuestionIndex++;
-                    updateProgressBar();
-
-                    previousQuestionId = data.previous_question_id;
-
-                    // Enable or disable the back button
-                    backBtn.disabled = previousQuestionId === null;
-
-                } else {
-                    const isLoggedIn = {{ user_logged_in|yesno:"true,false" }};
-                    const retakeLearnerId = "{{ request.session.retake_learner_id|default:'' }}";
-                    if (isLoggedIn === true) {
-                        if (retakeLearnerId) {
-                            // Send directly to summary to save new answers to existing learner
-                            window.location.href = "/assessment/save-retake/";
-                        } else {
-                            window.location.href = "/add-learner/";
-                        }
-                    } else {
-                        window.location.href = "/register/";
-                    }
-                }
-            })
-            .catch(error => console.log('Error:', error));
+            // Move to next question
+            currentIndex++;
+            if (currentIndex < totalQuestions) {
+                showQuestion(currentIndex);
+            } else {
+                submitAllAnswers();
+            }
         });
     });
 
-    // Back button logic
+    // Event listener for back button
     backBtn.addEventListener('click', function () {
-        if (backBtn.disabled) return;
-
-        if (previousQuestionId !== null) {
-            if (previousQuestionId - 1 === 0) {
-                window.location.href = '/assessment/start/';
-            } else {
-                const formData = new FormData();
-                formData.append('question_id', previousQuestionId - 1);
-                formData.append('csrfmiddlewaretoken', document.querySelector('[name="csrfmiddlewaretoken"]').value);
-
-                fetch('/assessment/handle/', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('question-text').textContent = data.next_question_text;
-                    document.getElementById('question-topic').textContent = data.next_question_topic;
-                    document.querySelector('[name="question_id"]').value = data.next_question_id;
-
-                    currentQuestionIndex--;
-                    updateProgressBar();
-
-                    previousQuestionId = data.previous_question_id;
-
-                    // Enable or disable the back button
-                    backBtn.disabled = previousQuestionId === null;
-                })
-                .catch(error => console.log('Error:', error));
-            }
+        if (currentIndex > 0) {
+            currentIndex--;
+            showQuestion(currentIndex);
         }
     });
+
+    // Submit all answers at the end
+    function submitAllAnswers() {
+        fetch('/assessment/save-all/', {
+            method: 'POST',
+            body: JSON.stringify(answers),
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': document.querySelector('[name="csrfmiddlewaretoken"]').value
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Server error: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Redirect to next step
+            window.location.href = data.redirect_url;
+        })
+        .catch(error => {
+            console.error('Error submitting answers:', error);
+        });
+    }
 </script>
 
 {% endblock %}

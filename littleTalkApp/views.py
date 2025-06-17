@@ -72,54 +72,87 @@ def start_assessment(request):
 })
 
 
-def handle_question(request):
-    if request.method == 'POST':
-        question_id = int(request.POST.get('question_id'))
-        answer_value = request.POST.get('answer')
+def save_all_assessment_answers(request):
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Invalid request'}, status=400)
 
-        current_question_index = next((i for i, q in enumerate(QUESTIONS) if q["order"] == question_id), None)
+    try:
+        data = json.loads(request.body)
+        # Example data: { "1": "Yes", "2": "No", ... }
 
-        if current_question_index is not None:
-            current_question = QUESTIONS[current_question_index]
-            next_question = QUESTIONS[current_question_index + 1] if current_question_index + 1 < len(QUESTIONS) else None
-            previous_question = QUESTIONS[current_question_index] if current_question_index >= 0 else None
+        # You can save the answers as you need here.
+        # For example, store in session or DB:
+        request.session['assessment_answers'] = data
+        request.session['assessment_complete'] = True
 
-            # === Save answer to session ===
-            answers = request.session.get("assessment_answers", [])
+        # debugging
+        print("Saved assessment answers:", request.session['assessment_answers'])
 
-            # Remove any existing answer for this question (in case user goes back)
-            answers = [a for a in answers if a["question_id"] != question_id]
+        # Decide where to redirect user
+        if request.user.is_authenticated:
+            if request.session.get("retake_learner_id"):
+                redirect_url = "/assessment/save-retake/"
+            else:
+                redirect_url = "/add-learner/"
+        else:
+            redirect_url = "/register/"
 
-            # Append the new answer
-            answers.append({
-                "question_id": question_id,
-                "answer": answer_value,
-                "topic": current_question["topic"],
-                "text": current_question["text"],
-                "skill": current_question["skill"]
-            })
+        return JsonResponse({'redirect_url': redirect_url})
 
-            # Save updated answers back into session
-            request.session["assessment_answers"] = answers
-            request.session.modified = True
-            # === End session save ===
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON'}, status=400)
 
-            # If there is no next question, mark assessment as complete
-            if next_question is None:
-                request.session['assessment_complete'] = True
 
-            response_data = {
-                "next_question_text": next_question["text"] if next_question else None,
-                "next_question_id": next_question["order"] if next_question else None,
-                "next_question_topic": next_question["topic"] if next_question else None,
-                "previous_question_text": previous_question["text"] if previous_question else None,
-                "previous_question_id": previous_question["order"] if previous_question else None,
-                "previous_question_topic": previous_question["topic"] if previous_question else None,
-            }
+# Saves and assigns learners assessment answers and recommendations
+def save_assessment_for_learner(learner, answers):
+    from collections import defaultdict
 
-            return JsonResponse(response_data)
+    # Delete old answers
+    learner.answers.all().delete()
 
-        return JsonResponse({"error": "Invalid question ID"}, status=400)
+    # Save new answers
+    for question_id_str, user_answer in answers.items():
+        try:
+            question_id = int(question_id_str)
+        except ValueError:
+            continue
+
+        question = next((q for q in QUESTIONS if q["order"] == question_id), None)
+        if not question:
+            continue
+
+        LearnerAssessmentAnswer.objects.create(
+            learner=learner,
+            question_id=question_id,
+            topic=question["topic"],
+            skill=question["skill"],
+            text=question["text"],
+            answer=user_answer,
+        )
+
+    # Calculate strong skills
+    skill_answers = defaultdict(list)
+    for question_id_str, user_answer in answers.items():
+        question_id = int(question_id_str)
+        question = next((q for q in QUESTIONS if q["order"] == question_id), None)
+        if not question:
+            continue
+        skill_answers[question["skill"]].append(user_answer)
+
+    strong_skills = [skill for skill, responses in skill_answers.items() if "No" not in responses]
+    learner.assessment1 = len(strong_skills)
+
+    # Recommendation level
+    max_complexity = 0
+    for question_id_str, user_answer in answers.items():
+        if user_answer.lower() == "yes":
+            question_id = int(question_id_str)
+            question = next((q for q in QUESTIONS if q["order"] == question_id), None)
+            if question and question.get("complexity") is not None:
+                max_complexity = max(max_complexity, question["complexity"])
+
+    learner.recommendation_level = max_complexity
+    learner.save()
 
 
 @login_required
@@ -174,47 +207,18 @@ def assessment_summary(request):
 @login_required
 def save_retake_assessment(request):
     learner_id = request.session.get("retake_learner_id")
-    answers = request.session.get("assessment_answers", [])
+    answers = request.session.get("assessment_answers", {})
+
+    if not learner_id:
+        return redirect("profile")
 
     learner = Learner.objects.filter(id=learner_id, user=request.user).first()
     if not learner:
         return redirect("profile")
 
-    # Delete old answers
-    learner.answers.all().delete()
+    save_assessment_for_learner(learner, answers)
 
-    # Save new answers
-    for ans in answers:
-        LearnerAssessmentAnswer.objects.create(
-            learner=learner,
-            question_id=ans["question_id"],
-            topic=ans["topic"],
-            skill=ans["skill"],
-            text=ans["text"],
-            answer=ans["answer"],
-        )
-
-    # Update assessment1 score
-    skill_answers = defaultdict(list)
-    for answer in answers:
-        skill_answers[answer["skill"]].append(answer["answer"])
-    strong_skills = [skill for skill, responses in skill_answers.items() if "No" not in responses]
-    learner.assessment1 = len(strong_skills)
-
-    # Update recommendation level
-    max_complexity = 0
-    for ans in answers:
-        if ans["answer"].lower() == "yes":
-            question = next((q for q in QUESTIONS if q["order"] == ans["question_id"]), None)
-            if question and question.get("complexity") is not None:
-                max_complexity = max(max_complexity, question["complexity"])
-    learner.recommendation_level = max_complexity
-    learner.save()
-
-    # Set as selected learner
     request.session["selected_learner_id"] = learner.id
-
-    # Cleanup session
     request.session.pop("retake_learner_id", None)
     request.session.pop("assessment_answers", None)
     request.session.pop("assessment_complete", None)
@@ -305,7 +309,7 @@ def register(request):
     # Prevent access unless assessment is complete
     if not request.session.get('assessment_complete'):
         return redirect('start_assessment')
-    
+
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
@@ -317,6 +321,7 @@ def register(request):
             hear_about = form.cleaned_data.get('hear_about')
             agree_updates = form.cleaned_data.get('agree_updates')
 
+            # Create user
             user = User.objects.create_user(
                 username=email,
                 email=email,
@@ -324,7 +329,7 @@ def register(request):
                 first_name=first_name,
             )
 
-            # Save to user profile (adjust this to match your Profile model)
+            # Create user profile
             Profile.objects.create(
                 user=user,
                 first_name=first_name,
@@ -339,58 +344,20 @@ def register(request):
                 date_of_birth=learner_dob,
             )
 
-            # Select this learner by default
-            request.session['selected_learner_id'] = learner.id
+            # Save answers using our helper
+            answers = request.session.get("assessment_answers", {})
+            save_assessment_for_learner(learner, answers)
 
-            # Save answers from session
-            answers = request.session.get("assessment_answers", [])
-
-            # Save answers to db
-            for ans in answers:
-                LearnerAssessmentAnswer.objects.create(
-                    learner=learner,
-                    question_id=ans["question_id"],
-                    topic=ans["topic"],
-                    skill=ans["skill"],
-                    text=ans["text"],
-                    answer=ans["answer"],
-                )
-
-            # Calculate assessment1 = number of strong skills
-            skill_answers = defaultdict(list)
-            for ans in answers:
-                skill_answers[ans["skill"]].append(ans["answer"])
-
-            strong_skills = [
-                skill for skill, responses in skill_answers.items()
-                if all(answer.lower() == "yes" for answer in responses)
-            ]
-            learner.assessment1 = min(len(strong_skills), 10)  # Cap to scale (if needed)
-
-            # Compute highest complexity of "Yes" answers
-            max_complexity = 0
-
-            for ans in answers:
-                if ans["answer"].lower() == "yes":
-                    question = next((q for q in QUESTIONS if q["order"] == ans["question_id"]), None)
-                    if question and question.get("complexity") is not None:
-                        max_complexity = max(max_complexity, question["complexity"])
-            
-            # Store it on the learner
-            learner.recommendation_level = max_complexity
-
-            learner.save()
-
-            # Clear session answers and log in
-            request.session.pop("assessment_answers", None)
-
+            # Log in the user
             login(request, user)
 
-            # select the newly created learner
+            # Select the learner
             request.session['selected_learner_id'] = learner.id
 
-            # clear assessment complete flag once used
-            request.session.pop('assessment_complete', None)
+            # Clean up session
+            request.session.pop("assessment_answers", None)
+            request.session.pop("assessment_complete", None)
+
             return redirect("assessment_summary")
     else:
         form = UserRegistrationForm()
@@ -455,47 +422,16 @@ def add_learner(request):
             # Store as selected learner
             request.session['selected_learner_id'] = learner.id
 
-            # Get assessment answers from session
-            answers = request.session.get("assessment_answers", [])
+            # Get answers from session
+            answers = request.session.get("assessment_answers", {})
 
-            # Save each answer to DB
-            for ans in answers:
-                LearnerAssessmentAnswer.objects.create(
-                    learner=learner,
-                    question_id=ans["question_id"],
-                    topic=ans["topic"],
-                    skill=ans["skill"],
-                    text=ans["text"],
-                    answer=ans["answer"],
-                )
+            # Save answers and compute metrics helper function
+            save_assessment_for_learner(learner, answers)
 
-            # Optional: Compute assessment1 score
-            skill_answers = defaultdict(list)
-            for answer in answers:
-                skill_answers[answer["skill"]].append(answer["answer"])
-
-            strong_skills = [skill for skill, responses in skill_answers.items() if "No" not in responses]
-            learner.assessment1 = len(strong_skills)
-
-            # Compute highest complexity of "Yes" answers
-            max_complexity = 0
-
-            for ans in answers:
-                if ans["answer"].lower() == "yes":
-                    question = next((q for q in QUESTIONS if q["order"] == ans["question_id"]), None)
-                    if question and question.get("complexity") is not None:
-                        max_complexity = max(max_complexity, question["complexity"])
-            
-            # Store it on the learner
-            learner.recommendation_level = max_complexity
-
-            learner.save()
-
-            # Clear answers from session
+            # Clean up session
             request.session.pop("assessment_answers", None)
-            request.session.pop('assessment_complete', None)  # clear assessment flag if used
+            request.session.pop("assessment_complete", None)
 
-            # Redirect to summary
             return redirect('/assessment/summary/')
     else:
         form = LearnerForm()

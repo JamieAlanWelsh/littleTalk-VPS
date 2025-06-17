@@ -15,7 +15,7 @@ urlpatterns = [
 
     # Assessment
     path('assessment/start/', views.start_assessment, name='start_assessment'),
-    path('assessment/handle/', views.handle_question, name='handle_question'),
+    path('assessment/save-all/', views.save_all_assessment_answers, name='save_all_assessment_answers'),
     path('assessment/summary/', views.assessment_summary, name='assessment_summary'),
     path('assessment/save-retake/', views.save_retake_assessment, name='save_retake_assessment'),
 
