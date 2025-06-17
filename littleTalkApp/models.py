@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from encrypted_model_fields.fields import EncryptedCharField
 import uuid
 
 
@@ -45,7 +46,7 @@ class LearnerAssessmentAnswer(models.Model):
 
 class Learner(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='learners')
-    name = models.CharField(max_length=50)
+    name = EncryptedCharField(max_length=255)
     learner_uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     exp = models.IntegerField(default=0)
     recommendation_level = models.IntegerField(blank=True, null=True)
