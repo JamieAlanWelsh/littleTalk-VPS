@@ -80,15 +80,10 @@ def save_all_assessment_answers(request):
         data = json.loads(request.body)
         # Example data: { "1": "Yes", "2": "No", ... }
 
-        # You can save the answers as you need here.
-        # For example, store in session or DB:
         request.session['assessment_answers'] = data
         request.session['assessment_complete'] = True
 
-        # debugging
-        print("Saved assessment answers:", request.session['assessment_answers'])
-
-        # Decide where to redirect user
+        # Compute where to redirect user
         if request.user.is_authenticated:
             if request.session.get("retake_learner_id"):
                 redirect_url = "/assessment/save-retake/"
