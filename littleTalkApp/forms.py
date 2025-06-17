@@ -102,16 +102,19 @@ class UserRegistrationForm(forms.ModelForm):
 
 
 class LearnerForm(forms.ModelForm):
+    name = forms.CharField(
+        label="Learner's name (or nickname)",
+        required=True
+    )
+    date_of_birth = forms.DateField(
+        label="Learner DOB",
+        required=True,
+        widget=forms.DateInput(attrs={'type': 'date'})
+    )
+
     class Meta:
         model = Learner
         fields = ['name', 'date_of_birth']
-        widgets = {
-            'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
-        }
-        labels = {
-            'name': "Learner's name (or nickname)",
-            'date_of_birth': "Learner DOB",
-        }
 
     def clean_name(self):
         name = self.cleaned_data.get("name", "").strip()
@@ -123,15 +126,17 @@ class LearnerForm(forms.ModelForm):
 
     def clean_date_of_birth(self):
         dob = self.cleaned_data.get("date_of_birth")
-        if dob and dob > date.today():
+        if not dob:
+            raise forms.ValidationError("Date of birth is required.")
+        if dob > date.today():
             raise forms.ValidationError("Learner's date of birth cannot be in the future.")
         return dob
 
 
-class WaitingListForm(forms.ModelForm):
-    class Meta:
-        model = WaitingList
-        fields = ['email']
+# class WaitingListForm(forms.ModelForm):
+#     class Meta:
+#         model = WaitingList
+#         fields = ['email']
 
 
 class LogEntryForm(forms.ModelForm):

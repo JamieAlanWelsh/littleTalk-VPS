@@ -1,34 +1,49 @@
+# Django core
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login
-from django.contrib.auth.models import User
-from .forms import UserRegistrationForm
-from .models import Profile
-from .forms import LearnerForm
-from .models import Learner
-from django.http import HttpResponseRedirect
+from django.http import JsonResponse, HttpResponseRedirect
 from django.urls import reverse
-from django.contrib.auth import authenticate
+from django.contrib import messages
+from django.conf import settings
+from django.core.mail import send_mail
+from django.middleware.csrf import get_token
+
+# Django auth
+from django.contrib.auth import login, authenticate, update_session_auth_hash
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.contrib.auth.views import LoginView
+
+# Third-party (DRF)
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+
+# Local app: forms
+from .forms import (
+    UserRegistrationForm,
+    LearnerForm,
+    CustomAuthenticationForm,
+    LogEntryForm,
+    UserUpdateForm,
+    PasswordUpdateForm,
+)
+
+# Local app: models
+from .models import (
+    Profile,
+    Learner,
+    LearnerAssessmentAnswer,
+    LogEntry,
+)
+
+# Local app: serializers
 from .serializers import LearnerExpUpdateSerializer
-from django.http import JsonResponse
-from django.middleware.csrf import get_token
-from django.contrib.auth.views import LoginView
-from .forms import WaitingListForm
-from .forms import CustomAuthenticationForm
-from django.contrib import messages
-from .models import LogEntry
-from .models import LearnerAssessmentAnswer
-from .forms import LogEntryForm
-from .forms import UserUpdateForm
-from .forms import PasswordUpdateForm
-from django.contrib.auth import update_session_auth_hash
-from django.core.mail import send_mail
-from django.conf import settings
+
+# Local app: other
 from .game_data import GAME_DESCRIPTIONS
 from .assessment_qs import QUESTIONS, RECOMMENDATIONS
+
+# Python stdlib
 from collections import defaultdict
 import json
 
