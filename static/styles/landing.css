@@ -140,7 +140,7 @@ body {
     font-size: 3.5rem;
     font-weight: 700;
     margin-bottom: 1.2rem;
-    margin-top: 1.2rem;
+    margin-top: 0rem;
 }
 
 .text-widget .body-text {
@@ -155,6 +155,16 @@ body {
     margin-bottom: 1.5rem;
 }
 
+.button-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    align-items: stretch;
+    width: 100%;
+    max-width: 25rem;   
+    gap: 1rem;
+}
+
 .cta-button {
     background-color: var(--yellow-button-color);
     color: var(--font-color);
@@ -163,15 +173,35 @@ body {
     border-radius: var(--border-radius);
     font-size: 1.1rem;
     font-weight: 600;
+    text-align: center;
     cursor: pointer;
     box-shadow: var(--box-shadow);
     transition: background-color 0.3s ease;
     text-decoration: none;
-    display: inline-block; /* ✅ This fixes the margin issue */
+    display: inline-block;
+    /* width: auto; */
+    /* max-width: 350px; */
 }
 
 .cta-button:hover {
-    background-color: var(--yellow-button-hover);
+    background-color: var(--font-color);
+    color: white;
+}
+
+.white-button {
+    background-color: white;
+    color: var(--font-color);
+    /* border: 2px solid var(--yellow-button-hover); */
+}
+
+/* .white-button:hover {
+    background-color: var(--font-color);
+    color: white;
+} */
+
+.main-button {
+    font-size: 1.2rem;
+    padding: 1rem 1.5rem;
 }
 
 .hero-img {
@@ -397,6 +427,16 @@ body {
     .header-right {
         display: none;
     }
+
+    .button-group {
+        width: 90%;
+        max-width: 25rem;
+        margin-left: auto;
+        margin-right: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+}
 
     .get-started-button,
     .login-button {
