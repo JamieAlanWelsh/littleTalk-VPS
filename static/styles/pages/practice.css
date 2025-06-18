@@ -29,17 +29,6 @@
     /* max-width: 100%; */
 }
 
-.recommendation-info {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    background-color: #ffffffb4; /* light green */
-    padding: 12px 16px;
-    margin-top: 20px;
-    border-radius: var(--border-radius-light);
-    color: var(--font-color);
-}
-
 .recommendation-retake {
     display: inline-block;
     background-color: white;
@@ -55,21 +44,6 @@
 
 .recommendation-retake:hover {
     background-color: var(--yellow-button-color);
-}
-
-.info-icon {
-    font-family: Arial, sans-serif;
-    font-weight: bold;
-    border: 2px solid var(--font-color);
-    color: var(--font-color);
-    border-radius: 50%;
-    width: 22px;
-    height: 22px;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
 }
 
 /* -----------------------------

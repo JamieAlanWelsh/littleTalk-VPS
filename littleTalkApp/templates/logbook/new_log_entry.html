@@ -12,7 +12,17 @@
         </svg>
     </a>
 
+    
+
     <form method="post" class="form-stack">
+
+    <div class="recommendation-info">
+        <span class="info-icon">i</span>
+        <p>
+            Avoid writing identifiable names in any log text.<br>Use the <strong>"Learner"</strong> dropdown to select your learner's name securely.
+        </p>
+    </div>
+
     {% csrf_token %}
 
     {% for field in form %}
