@@ -11,8 +11,8 @@ categorisation_complexity = GAME_DESCRIPTIONS['categorisation']['exercise_comple
 story_train_complexity = GAME_DESCRIPTIONS['story_train']['exercise_complexity']
 
 QUESTIONS = [
-    {"complexity": None, "exercise_complexity": None, "exercise": None, "skill": "Attention and listening", "topic": "Receptive Language", "text": "Can your child attend to an activity for 5 minutes?", "order": 1},
-    {"complexity": None, "exercise": None, "skill": "Attention and listening", "topic": "Receptive Language", "text": "Does your child seem to understand what you're saying most of the time?", "order": 2},
+    {"complexity": None, "exercise_complexity": None, "exercise": None, "skill": "Attention and listening", "topic": "Attention and Listening", "text": "Can your child attend to an activity for 5 minutes?", "order": 1},
+    {"complexity": None, "exercise": None, "skill": "Attention and listening", "topic": "Attention and Listening", "text": "Does your child seem to understand what you're saying most of the time?", "order": 2},
     {"complexity": colourful_semantics_complexity, "exercise": colourful_semantics_title, "skill": "Answering 'yes/no' and 'what' questions", "topic": "Receptive Language", "text": "Can your child respond to simple 'yes/no' or 'what' questions through speech or gesture?", "order": 3},
     {"complexity": colourful_semantics_complexity, "exercise": colourful_semantics_title, "skill": "Answering concrete questions such as 'where' and 'who'", "topic": "Receptive Language", "text": "Can your child answer 'where' or 'who' questions?", "order": 4},
     {"complexity": think_and_find_complexity, "exercise": think_and_find_title, "skill": "Following simple instructions", "topic": "Receptive Language", "text": "Can your child follow simple directions like 'get your shoes' or 'sit down'?", "order": 5},
