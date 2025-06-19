@@ -103,10 +103,9 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 90vw;
+    max-width: 1400px;
     margin: 0 auto;
-    /* padding: 2rem; */
-    margin: 4rem auto; 
+    padding: 2rem 1.25rem;
     box-sizing: border-box;
     flex-wrap: nowrap;
 }
