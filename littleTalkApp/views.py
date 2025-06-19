@@ -54,6 +54,9 @@ def home(request):
         return redirect('/practise/')
     return render(request, 'landing.html')
 
+def schools(request):
+    request.hide_sidebar = True
+    return render(request, 'schools.html')
 
 # This view will serve the first question when the assessment starts
 def start_assessment(request):
