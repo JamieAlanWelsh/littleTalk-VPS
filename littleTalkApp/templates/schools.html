@@ -1,5 +1,6 @@
 <!-- templates/landing.html -->
 {% extends "landing_base.html" %}
+{% block title %}LittleTalk | Schools{% endblock %}
 {% load static %}
 
 {% block content %}
@@ -13,7 +14,7 @@
             <p class="body-text">Our app recommends evidence-based exercises based on an in-app assessment, enabling staff to deliver high-quality SEN interventions directly through the platform - <strong>no specialist training or heavy prep required.</strong></p>
             <p class="small-text"><strong>If you are interested in using LittleTalk at your School, please get in touch.</strong></p>
             <div class="button-group">
-                <a href="/support/" class="cta-button start-assessment-btn main-button">Get in Touch</a>
+                <a href="/support/" class="cta-button white-button main-button" target="_blank">Get in Touch</a>
             </div>
         </div>
     </div>
@@ -24,7 +25,7 @@
     </div>
 </div>
 {% comment %} first content bar {% endcomment %}
-<div class="content-bar">
+<div class="content-bar content-bar-yellow">
     <p class="split-subtitle">
         LittleTalk helps your school achieve great outcomes while saving time and resources.
     </p>
@@ -45,10 +46,18 @@
     </div>
 </div>
 {% comment %} Benefits Section {% endcomment %}
-<div class="content-split">
+<div class="content-split white">
+    <div class="content-split-header">
+        <p class="split-subtitle">
+            All in one secure, easy-to-use platform designed for busy schools.
+        </p>
+        <h2 class="split-heading">
+            App Features
+        </h2>
+    </div>
     <div class="content-split-main">
         <div class="content-split-image">
-            <img src="{% static 'images/landing/arlo_building.png' %}" alt="Flexible routines" class="small-img"/>
+            <img src="{% static 'images/landing/assessment_screenshot_crop.png' %}" alt="Flexible routines"/>
         </div>
         <div class="content-split-text">
             <h3 class="split-small-heading">In-App Assessment</h3>
@@ -62,10 +71,10 @@
     </div>
 </div>
 
-<div class="content-split white">
+<div class="content-split white content-split-reverse content-split-compact">
     <div class="content-split-main">
         <div class="content-split-image">
-            <img src="{% static 'images/landing/arlo_building.png' %}" alt="Flexible routines" class="small-img"/>
+            <img src="{% static 'images/landing/exercises_screenshot_crop.png' %}" alt="Flexible routines"/>
         </div>
         <div class="content-split-text">
             <h3 class="split-small-heading">Tailored Exercise Delivery</h3>
@@ -73,7 +82,7 @@
                 Select from app-recommended, evidence-based activities such as Colourful Semantics and deliver them straight from your device - no printing, no prep, no fuss.
             </p>
             <p class="split-body">
-                <strong>Learn more about our program >></strong>
+                <strong><a href="/method/" class="text-link" target="_blank">Learn more about our program >></a></strong>
             </p>
         </div>
     </div>
@@ -82,29 +91,16 @@
 <div class="content-split white">
     <div class="content-split-main">
         <div class="content-split-image">
-            <img src="{% static 'images/landing/arlo_building.png' %}" alt="Flexible routines" class="small-img"/>
+            <img src="{% static 'images/landing/logbook_screenshot_crop.png' %}" alt="Flexible routines"/>
         </div>
         <div class="content-split-text">
             <h3 class="split-small-heading">Built-in Progress Logbook</h3>
             <p class="split-body">
-                Track each child’s progress in one place. The logbook keeps all staff in the loop and reduces the need for additional notes, emails, or meetings.
+                Track each child's progress in one place. The logbook keeps all staff in the loop and reduces the need for additional notes, emails, or meetings.
             </p>
         </div>
     </div>
 </div>
-
-<div class="content-split white">
-    <div class="content-split-main">
-        <div class="content-split-image">
-            <img src="{% static 'images/landing/arlo_building.png' %}" alt="Flexible routines" class="small-img"/>
-        </div>
-        <div class="content-split-text">
-            <h3 class="split-small-heading">Everything in One Place</h3>
-            <p class="split-body">
-                Access assessments, exercises, and tracking - all in one secure, easy-to-use platform designed for busy schools.
-            </p>
-        </div>
-    </div>
 </div>
 {% comment %} final call to action footer {% endcomment %}
 <div class="footer-cta">
@@ -113,7 +109,7 @@
     </p>
     <h1 class="footer-heading">Interested in using LittleTalk <br>at your School?</h1>
     {% comment %} <button class="footer-cta-button">Begin Your Free Assessment</button> {% endcomment %}
-    <a href="/support/" class="cta-button start-assessment-btn main-button">Get in Touch</a>
+    <a href="/support/" class="cta-button start-assessment-btn main-button" target="_blank">Get in Touch</a>
     <div class="footer-icon-wrapper">
         <img src="{% static 'images/landing/arlo_waving.png' %}" alt="LittleTalk icon" class="footer-icon">
     </div>

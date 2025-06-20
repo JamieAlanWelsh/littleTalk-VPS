@@ -216,6 +216,10 @@ body {
     text-align: center;
 }
 
+.content-bar-yellow {
+    background-color: var(--yellow-button-color);
+}
+
 .content-items {
     display: flex;
     justify-content: center;
@@ -277,6 +281,16 @@ body {
     align-items: center;
     justify-content: center;
     gap: 6rem; /* gap only applies between image + text now */
+}
+
+/* helper to reverse image + text order */
+.content-split-reverse .content-split-main {
+    flex-direction: row-reverse;
+}
+
+/* helper to reduce top/bottom padding */
+.content-split-compact {
+    padding: 0rem 1.25rem; /* adjust as needed */
 }
 
 .content-split-image {
@@ -409,6 +423,17 @@ body {
     height: 18rem;
     object-fit: cover;
     border-radius: 12px;
+}
+
+.text-link {
+    font-weight: bold;
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.2s ease;
+}
+
+.text-link:hover {
+    color: #ffd737;
 }
 
 /* MOBILE CSS */
