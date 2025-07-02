@@ -1,5 +1,12 @@
+.logbook-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
 .log-entries {
-    margin-top: 25px;
+    margin-top: 0px;
 }
 
 .log-entry {

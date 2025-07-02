@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.conf import settings
 from django.core.mail import send_mail
 from django.middleware.csrf import get_token
+from django.http import HttpResponse
 
 # Django auth
 from django.contrib.auth import login, authenticate, update_session_auth_hash
@@ -266,11 +267,27 @@ def practise(request):
 
 @login_required
 def logbook(request):
-    log_entries = LogEntry.objects.filter(user=request.user, deleted=False).order_by('-timestamp')
-    return render(request, 'logbook/logbook.html', {'log_entries': log_entries})
+    learner_id = request.GET.get("learner")
+    learners = Learner.objects.filter(user=request.user, deleted=False)
+
+    log_entries = LogEntry.objects.filter(user=request.user, deleted=False)
+
+    if learner_id:
+        log_entries = log_entries.filter(learner_id=learner_id)
+
+    log_entries = log_entries.order_by('-timestamp')
+
+    return render(request, 'logbook/logbook.html', {
+        'log_entries': log_entries,
+        'learners': learners,
+        'selected_learner_id': learner_id,
+    })
+
 
 @login_required
 def new_log_entry(request):
+    selected_learner_id = request.session.get('selected_learner_id')
+
     if request.method == "POST":
         form = LogEntryForm(request.POST, user=request.user)
         if form.is_valid():
@@ -279,7 +296,10 @@ def new_log_entry(request):
             log_entry.save()
             return redirect('logbook')  # Redirect to logbook page after saving
     else:
-        form = LogEntryForm(user=request.user)  # Pass user to filter learners
+        initial = {}
+        if selected_learner_id:
+            initial['learner'] = selected_learner_id  # pre-fill selected learner
+        form = LogEntryForm(user=request.user, initial=initial)
 
     return render(request, 'logbook/new_log_entry.html', {'form': form})
 
@@ -289,11 +309,43 @@ def log_entry_detail(request, entry_id):
     return render(request, 'logbook/log_entry_detail.html', {'log_entry': log_entry})
 
 @login_required
+def edit_log_entry(request, entry_id):
+    log_entry = get_object_or_404(LogEntry, id=entry_id, user=request.user)
+
+    if request.method == "POST":
+        form = LogEntryForm(request.POST, instance=log_entry, user=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('log_entry_detail', entry_id=log_entry.id)
+    else:
+        form = LogEntryForm(instance=log_entry, user=request.user)
+
+    return render(request, 'logbook/new_log_entry.html', {
+        'form': form,
+        'is_editing': True,
+        'log_entry': log_entry
+    })
+
+@login_required
 def delete_log_entry(request, entry_id):
     log_entry = get_object_or_404(LogEntry, id=entry_id, user=request.user)
     log_entry.deleted = True  # Soft delete the entry
     log_entry.save()
     return JsonResponse({"success": True})
+
+
+def generate_summary(request, learner_id):
+    learner = get_object_or_404(Learner, id=learner_id)
+    log_entries = LogEntry.objects.filter(
+        user=request.user,
+        learner=learner,
+        deleted=False
+    ).order_by("timestamp")
+
+    return render(request, "logbook/log_summary.html", {
+        "learner": learner,
+        "log_entries": log_entries
+    })
 
 
 @login_required
@@ -495,6 +547,11 @@ def confirm_delete_learner(request, learner_uuid):
             # User authenticated, mark the learner as deleted
             learner.deleted = True
             learner.save()
+
+            # Soft-delete all log entries linked to this learner
+            LogEntry.objects.filter(learner=learner, user=request.user, deleted=False).update(deleted=True)
+
+            # Clear session and redirect
             del request.session['selected_learner_id']
             return redirect('profile')  # Redirect to the profile page after deletion
         else:

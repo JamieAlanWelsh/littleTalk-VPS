@@ -13,7 +13,16 @@
       </svg>
     </a>
 
-    <p>You are about to delete the learner: <strong>{{ learner.name }}</strong><br>All progress and exp will be lost permanently.</p>
+    <p>
+      You are about to delete the learner: <strong>{{ learner.name }}</strong><br>
+      <strong>Please note - the following will no longer be acessible:</strong>
+    </p>
+    
+    <ul>
+      <li>Any progress and Experience Points</li>
+      <li>Log entries associated with the learner</li>
+    </ul>
+    
 
     <form method="POST" class="form-stack">
         {% csrf_token %}

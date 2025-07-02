@@ -43,6 +43,10 @@
     padding-top: 80px;
 }
 
+.pb-70 {
+    padding-bottom: 80px;
+}
+
 .container--wide {
     max-width: 800px;
 }

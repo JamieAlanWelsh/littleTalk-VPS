@@ -147,12 +147,14 @@ class LogEntryForm(forms.ModelForm):
         # Filter learners dropdown based on the logged-in user
         if user:
             self.fields['learner'].queryset = Learner.objects.filter(user=user, deleted=False)
+            
+        self.fields['learner'].required = True
 
     class Meta:
         model = LogEntry
         fields = ['learner', 'title', 'exercises_practised', 'goals', 'notes']
         widgets = {
-            'learner': forms.Select(attrs={'class': 'form-control'}),  # Dropdown
+            'learner': forms.Select(attrs={'class': 'form-control'}), 
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'exercises_practised': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
             'goals': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),

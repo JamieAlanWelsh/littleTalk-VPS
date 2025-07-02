@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}LittleTalk | Logbook{% endblock %}
+
+{% block content %}
+<h1>Logbook</h1>
+<div class="container-box pt-70">
+    <a href="{% url 'logbook' %}" class="back-arrow" aria-label="Go back">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+    </a>
+
+    <div class="log-entry no-hover">
+        <h3>Learner Summary: {{ learner.name }}</h3>
+        {% for entry in log_entries %}
+            <div class="summary-entry">
+                <hr>
+                <h3>{{ entry.title }}</h3>
+                <p><strong>Date:</strong> {{ entry.timestamp|date:"Y-m-d" }}</p>
+
+                {% if entry.exercises_practised %}
+                    <p><strong>Exercises Practised:</strong> {{ entry.exercises_practised }}</p>
+                {% endif %}
+
+                {% if entry.goals %}
+                    <p><strong>Goals:</strong> {{ entry.goals }}</p>
+                {% endif %}
+
+                {% if entry.notes %}
+                    <p><strong>Notes:</strong><br>{{ entry.notes|linebreaks }}</p>
+                {% endif %}
+            </div>
+        {% empty %}
+            <p>No log entries available for this learner.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

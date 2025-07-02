@@ -21,6 +21,7 @@
     transition: background-color 0.3s ease;
     letter-spacing: 1px;
     cursor: pointer;
+    line-height: 1.2;
 }
 
 .btn--white { 
@@ -69,6 +70,8 @@
 .btn--block {
     width: 100%;
     display: block;
+    max-width: 100%;     /* Prevent overflow */
+    box-sizing: border-box; /* Include padding in width */
 }
 
 .btn--auto {

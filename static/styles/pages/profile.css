@@ -96,24 +96,6 @@
    Custom Button Contexts
 ------------------------------ */
 
-.retake-btn {
-    background-color: white;
-    color: var(--font-color);
-    font-size: 1.2rem;
-    font-weight: bold;
-    padding: 5px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: block;
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.retake-btn:hover {
-    background-color: var(--button-green);
-}
-
 /* .edit-learner-btn {
     margin-top: 0;
 } */

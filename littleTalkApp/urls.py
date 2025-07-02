@@ -36,7 +36,9 @@ urlpatterns = [
     path('logbook/', views.logbook, name='logbook'),
     path('logbook/new/', views.new_log_entry, name='new_log_entry'),
     path('logbook/<int:entry_id>/', views.log_entry_detail, name='log_entry_detail'),
-    path('logbook/delete/<int:entry_id>/', views.delete_log_entry, name='delete_log_entry'),  # New delete URL
+    path("logbook/edit/<int:entry_id>/", views.edit_log_entry, name="edit_log_entry"),
+    path('logbook/delete/<int:entry_id>/', views.delete_log_entry, name='delete_log_entry'), 
+    path("logbook/summary/<int:learner_id>/", views.generate_summary, name="generate_summary"),
 
     # Settings
     path('settings/', views.settings_view, name='settings'),

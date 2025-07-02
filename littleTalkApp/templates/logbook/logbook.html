@@ -5,8 +5,36 @@
 {% block content %}
 <h1>Logbook</h1>
 <div class="container-box">
-    <!-- New Entry Button -->
-    <a href="{% url 'new_log_entry' %}" class="btn btn--yellow">+ New Entry</a>
+    <!-- Header Buttons -->
+    <div class="logbook-header">
+        <a href="{% url 'new_log_entry' %}" class="btn btn--yellow">
+            <svg xmlns="http://www.w3.org/2000/svg" height="18" width="18" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1.003 1.003 0 000-1.42l-2.34-2.34a1.003 1.003 0 00-1.42 0l-1.83 1.83 3.75 3.75 1.84-1.82z"/>
+            </svg>
+            New Entry
+        </a>
+
+        {% if selected_learner_id %}
+            <a href="{% url 'generate_summary' selected_learner_id %}" class="btn btn--yellow">
+                View Summary
+            </a>
+        {% endif %}
+    </div>
+
+    <!-- Filter -->
+    <form method="get" class="form-stack">
+        <div>
+            <label for="learner" class="label">Learner:</label>
+            <select name="learner" id="learner" class="select" onchange="this.form.submit()">
+                <option value="">-- All Learners --</option>
+                {% for learner in learners %}
+                    <option value="{{ learner.id }}" {% if learner.id|stringformat:"s" == selected_learner_id %}selected{% endif %}>
+                        {{ learner.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+    </form>
 
     <!-- Log Entries -->
     <div class="log-entries">
@@ -19,14 +47,12 @@
 
                 <a href="{% url 'log_entry_detail' entry.id %}" class="log-entry-link">
                     <p>{{ entry.title }}</p>
-                    <small>{{ entry.learner.name }}</small>
+                    <small>Learner: {{ entry.learner.name }}</small>
                     <small>{{ entry.timestamp }}</small>
                 </a>
             </div>
         {% empty %}
-            <p><strong>Welcome to your personal logbook! ✍️</strong></p>
-            <p>Use the logbook to keep a running record of your learner's journey and set goals to look back on.</p>
-            <p>If your learner is working with a speech therapist or a teaching assistant at school, be sure to share the information you've gathered to ensure the best outcomes.</p>
+            <p><strong>No logs found.</strong></p>
         {% endfor %}
     </div>
 </div>
