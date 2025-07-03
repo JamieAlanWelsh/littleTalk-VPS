@@ -111,10 +111,25 @@ class LearnerForm(forms.ModelForm):
         required=True,
         widget=forms.DateInput(attrs={'type': 'date'})
     )
+    cohort = forms.ModelChoiceField(
+        queryset=Cohort.objects.none(),  # override in __init__
+        label="Cohort",
+        required=False,
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
 
     class Meta:
         model = Learner
-        fields = ['name', 'date_of_birth']
+        fields = ['name', 'date_of_birth', 'cohort']
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+
+        if user:
+            self.fields['cohort'].queryset = Cohort.objects.filter(user=user)
+        # else:
+        #     self.fields['cohort'].queryset = Cohort.objects.none()
 
     def clean_name(self):
         name = self.cleaned_data.get("name", "").strip()

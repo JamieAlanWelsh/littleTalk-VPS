@@ -480,7 +480,7 @@ def add_learner(request):
         return redirect('start_assessment')
 
     if request.method == 'POST':
-        form = LearnerForm(request.POST)
+        form = LearnerForm(request.POST, user=request.user)
         if form.is_valid():
             learner = form.save(commit=False)
             learner.user = request.user
@@ -501,7 +501,7 @@ def add_learner(request):
 
             return redirect('/assessment/summary/')
     else:
-        form = LearnerForm()
+        form = LearnerForm(user=request.user)
 
     return render(request, 'profile/add_learner.html', {'form': form})
 
@@ -523,12 +523,12 @@ def edit_learner(request, learner_uuid):
         if 'remove' in request.POST:  # Check if the remove button was clicked
             return redirect('confirm_delete_learner', learner_uuid=learner.learner_uuid)
         
-        form = LearnerForm(request.POST, instance=learner)
+        form = LearnerForm(request.POST, instance=learner, user=request.user)
         if form.is_valid():
             form.save()
             return redirect('profile') 
     else:
-        form = LearnerForm(instance=learner)
+        form = LearnerForm(instance=learner, user=request.user)
 
     context = {
         'form': form,
