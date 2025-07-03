@@ -32,6 +32,11 @@ urlpatterns = [
     path('profile/edit_learner/<uuid:learner_uuid>/', views.edit_learner, name='edit_learner'),
     path('profile/edit_learner/confirm_delete_learner/<uuid:learner_uuid>/', views.confirm_delete_learner, name='confirm_delete_learner'),
 
+    path('cohorts/', views.cohort_list, name='cohort_list'),
+    path('cohorts/new/', views.cohort_create, name='cohort_create'),
+    path('cohorts/<int:cohort_id>/edit/', views.cohort_edit, name='cohort_edit'),
+    path('cohorts/<int:cohort_id>/delete/', views.cohort_delete, name='cohort_delete'),
+
     # Logbook
     path('logbook/', views.logbook, name='logbook'),
     path('logbook/new/', views.new_log_entry, name='new_log_entry'),

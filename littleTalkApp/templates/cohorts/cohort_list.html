@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}LittleTalk | Cohort{% endblock %}
+
+{% block content %}
+
+<h1>Cohorts</h1>
+<a href="{% url 'cohort_create' %}" class="btn btn--yellow">+ Add Cohort</a>
+
+{% if cohorts %}
+  <ul class="cohort-list">
+    {% for cohort in cohorts %}
+      <li>
+        <strong>{{ cohort.name }}</strong><br>
+        <small>{{ cohort.description }}</small><br>
+        <a href="{% url 'cohort_edit' cohort.id %}">Edit</a> |
+        <a href="{% url 'cohort_delete' cohort.id %}">Delete</a>
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>No cohorts defined yet.</p>
+{% endif %}
+
+{% endblock %}

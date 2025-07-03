@@ -27,6 +27,7 @@ from .forms import (
     LogEntryForm,
     UserUpdateForm,
     PasswordUpdateForm,
+    CohortForm,
 )
 
 # Local app: models
@@ -35,6 +36,7 @@ from .models import (
     Learner,
     LearnerAssessmentAnswer,
     LogEntry,
+    Cohort,
 )
 
 # Local app: serializers
@@ -560,6 +562,47 @@ def confirm_delete_learner(request, learner_uuid):
             return render(request, 'profile/confirm_delete_learner.html', {'learner': learner, 'error_message': error_message})
 
     return render(request, 'profile/confirm_delete_learner.html', {'learner': learner})
+
+
+# COHORT
+
+@login_required
+def cohort_list(request):
+    cohorts = Cohort.objects.filter(user=request.user).order_by('name')
+    return render(request, 'cohorts/cohort_list.html', {'cohorts': cohorts})
+
+@login_required
+def cohort_create(request):
+    if request.method == 'POST':
+        form = CohortForm(request.POST)
+        if form.is_valid():
+            cohort = form.save(commit=False)
+            cohort.user = request.user
+            cohort.save()
+            return redirect('cohort_list')
+    else:
+        form = CohortForm()
+    return render(request, 'cohorts/cohort_form.html', {'form': form, 'is_editing': False})
+
+@login_required
+def cohort_edit(request, cohort_id):
+    cohort = get_object_or_404(Cohort, id=cohort_id, user=request.user)
+    if request.method == 'POST':
+        form = CohortForm(request.POST, instance=cohort)
+        if form.is_valid():
+            form.save()
+            return redirect('cohort_list')
+    else:
+        form = CohortForm(instance=cohort)
+    return render(request, 'cohorts/cohort_form.html', {'form': form, 'is_editing': True})
+
+@login_required
+def cohort_delete(request, cohort_id):
+    cohort = get_object_or_404(Cohort, id=cohort_id, user=request.user)
+    if request.method == 'POST':
+        cohort.delete()
+        return redirect('cohort_list')
+    return render(request, 'cohorts/cohort_confirm_delete.html', {'cohort': cohort})
 
 
 # SETTINGS

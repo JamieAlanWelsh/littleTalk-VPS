@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from .models import Learner
-from .models import WaitingList
+from .models import Cohort
 from django.contrib.auth.forms import AuthenticationForm
 from .models import LogEntry
 import re
@@ -210,3 +210,12 @@ class PasswordUpdateForm(forms.Form):
         if not self.user.check_password(current_password):
             raise forms.ValidationError("Incorrect current password.")
         return current_password
+
+class CohortForm(forms.ModelForm):
+    class Meta:
+        model = Cohort
+        fields = ['name', 'description']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        }

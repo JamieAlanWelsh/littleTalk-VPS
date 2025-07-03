@@ -44,6 +44,16 @@ class LearnerAssessmentAnswer(models.Model):
         return f"{self.learner.name} - Q{self.question_id}: {self.answer}"
 
 
+class Cohort(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)  # school owner
+    name = models.CharField(max_length=100)
+    description = models.TextField(blank=True, null=True)  # optional
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Learner(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='learners')
     name = EncryptedCharField(max_length=255)
@@ -54,6 +64,7 @@ class Learner(models.Model):
     date_of_birth = models.DateField(null=True, blank=True)
     assessment1 = models.IntegerField(blank=True, null=True)
     assessment2 = models.IntegerField(blank=True, null=True)
+    cohort = models.ForeignKey(Cohort, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.name

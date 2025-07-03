@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}LittleTalk | Cohort{% endblock %}
+
+{% block content %}
+
+<h1>Delete Cohort</h1>
+<p>Are you sure you want to delete <strong>{{ cohort.name }}</strong>?</p>
+
+<form method="post">
+  {% csrf_token %}
+  <button type="submit" class="btn btn--yellow">Yes, delete</button>
+  <a href="{% url 'cohort_list' %}" class="btn btn--white">Cancel</a>
+</form>
+
+{% endblock %}
