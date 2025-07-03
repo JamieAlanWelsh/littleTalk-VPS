@@ -19,14 +19,16 @@
             <p><strong>Learner:</strong> {{ log_entry.learner }}</p>
         {% endif %}
 
-        <p><strong>Exercises Practised:</strong> {{ log_entry.exercises_practised }}</p>
-
         {% if log_entry.goals %}
-            <p><strong>Goals:</strong> {{ log_entry.goals }}</p>
+            <p><strong>Target:</strong> {{ log_entry.goals }}</p>
         {% endif %}
 
+        {% if log_entry.exercises_practised %}
+            <p><strong>Exercises Practised:</strong> {{ log_entry.exercises_practised }}</p>
+        {% endif %}
+        
         {% if log_entry.notes %}
-            <p><strong>Notes:</strong> {{ log_entry.notes }}</p>
+            <p><strong>Summary:</strong> {{ log_entry.notes }}</p>
         {% endif %}
 
         <small>Logged on: {{ log_entry.timestamp }}</small>

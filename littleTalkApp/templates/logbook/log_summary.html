@@ -20,16 +20,16 @@
                 <h3>{{ entry.title }}</h3>
                 <p><strong>Date:</strong> {{ entry.timestamp|date:"Y-m-d" }}</p>
 
+                {% if entry.goals %}
+                    <p><strong>Target:</strong> {{ entry.goals }}</p>
+                {% endif %}
+
                 {% if entry.exercises_practised %}
                     <p><strong>Exercises Practised:</strong> {{ entry.exercises_practised }}</p>
                 {% endif %}
 
-                {% if entry.goals %}
-                    <p><strong>Goals:</strong> {{ entry.goals }}</p>
-                {% endif %}
-
                 {% if entry.notes %}
-                    <p><strong>Notes:</strong><br>{{ entry.notes|linebreaks }}</p>
+                    <p><strong>Summary:</strong><br>{{ entry.notes|linebreaks }}</p>
                 {% endif %}
             </div>
         {% empty %}

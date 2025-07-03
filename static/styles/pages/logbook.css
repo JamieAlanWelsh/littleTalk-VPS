@@ -27,7 +27,7 @@
 
 .log-entry:hover {
     border: 1px solid #5f5f5f;
-    box-shadow: var(--box-shadow);
+    /* box-shadow: var(--box-shadow); */
 }
 
 .log-entry.no-hover:hover {

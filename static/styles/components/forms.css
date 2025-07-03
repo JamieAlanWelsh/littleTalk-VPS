@@ -17,6 +17,10 @@
     transition: border-color 0.3s ease;
 }
 
+.textarea {
+    resize: vertical;
+}
+
 /* Visual cue for invalid date fields (e.g., placeholder text) */
 .input:invalid {
     color: #999999;
@@ -93,4 +97,8 @@
     border: 1px solid #ccc;
     box-sizing: border-box;
     transition: border-color 0.3s ease;
+}
+
+.form-stack textarea {
+    resize: vertical;  /* Optional: allow resizing only vertically */
 }

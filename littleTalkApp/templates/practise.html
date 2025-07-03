@@ -14,13 +14,13 @@
     </div>
 <!-- Learner Selected -->
 {% else %}
-    <h1>Welcome {{ selected_learner.name }}!</h1>
-    <h2>Which exercise would you like to work on today?</h2>
+    {% comment %} <h1>What would you like to work on today?</h1> {% endcomment %}
+    {% comment %} <h2>Practising with: {{ selected_learner.name }}</h2> {% endcomment %}
     {% if recommendation %}
         <div class="recommendation-box">
             <div class="recommendation-content">
                 <div class="recommendation-text">
-                    <h2 class="heading-left">Arlo's recommended exercises:</h2>
+                    <h2 class="heading-left">{{ selected_learner.name }}'s recommended exercises:</h2>
                     <ul>
                         {% for ex in recommendation.exercises %}
                         <li>{{ ex }}</li>
@@ -48,12 +48,12 @@
         <div class="recommendation-box">
             <div class="recommendation-content">
                 <div class="recommendation-text">
-                    <h3>Let's personalise your journey</h3>
+                    <h2 class="heading-left">Need a hand choosing exercises?</h2>
                     <p>
-                        We couldn't find any recommendations for this learner.
+                        We couldn't find any recommendations for {{ selected_learner.name }}.
                         Please complete our questionairre to receive tailored suggestions.
                     </p>
-                    <a href="{% url 'start_assessment' %}?retake={{ selected_learner.id }}" class="recommendation-retake">
+                    <a href="{% url 'start_assessment' %}?retake={{ selected_learner.id }}" class="btn btn--white btn--small">
                         Find your child's starting point
                     </a>
                 </div>

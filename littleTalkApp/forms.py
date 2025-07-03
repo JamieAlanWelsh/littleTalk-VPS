@@ -141,23 +141,25 @@ class LearnerForm(forms.ModelForm):
 
 class LogEntryForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        user = kwargs.pop('user', None)  # Extract 'user' before calling super()
-        super(LogEntryForm, self).__init__(*args, **kwargs)  # Call parent constructor
+        user = kwargs.pop('user', None)
+        super(LogEntryForm, self).__init__(*args, **kwargs)
 
-        # Filter learners dropdown based on the logged-in user
         if user:
             self.fields['learner'].queryset = Learner.objects.filter(user=user, deleted=False)
-            
         self.fields['learner'].required = True
+
+        # Override labels
+        self.fields['goals'].label = 'Target'
+        self.fields['notes'].label = 'Summary'
 
     class Meta:
         model = LogEntry
-        fields = ['learner', 'title', 'exercises_practised', 'goals', 'notes']
+        fields = ['title', 'learner', 'goals', 'exercises_practised', 'notes']  # Maintain model field names
         widgets = {
-            'learner': forms.Select(attrs={'class': 'form-control'}), 
             'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'learner': forms.Select(attrs={'class': 'form-control'}),
+            'goals': forms.TextInput(attrs={'class': 'form-control'}),  # use TextInput for a CharField-like UI
             'exercises_practised': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
-            'goals': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
             'notes': forms.Textarea(attrs={'class': 'form-control', 'rows': 5}),
         }
 

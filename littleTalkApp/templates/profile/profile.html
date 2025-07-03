@@ -4,7 +4,7 @@
 {% block title %}LittleTalk | Profile{% endblock %}
 
 {% block content %}
-<h1>Hi {{ request.user.first_name|default:"there" }}! who's learning today?</h1>
+<h1>Learner Selection</h1>
 <div class="profile-container">
     <!-- Left Column -->
     <div class="left-column">
@@ -37,7 +37,7 @@
         {% if selected_learner %}
         <!-- Practice Button -->
         <div class="practice-button-container">
-            <a href="{% url 'practise' %}" class="btn btn--green btn--thick">Let's Practise!</a>
+            <a href="{% url 'practise' %}" class="btn btn--green btn--thick">Practise</a>
         </div>
         {% endif %}
     </div>
@@ -46,7 +46,7 @@
     <div class="right-column">
         <!-- Learning Level Section -->
         {% if selected_learner %}
-            <div class="total-exp-section">
+            {% comment %} <div class="total-exp-section">
                 <h3>Learning Level</h3>
                 <p>
                     {% if selected_learner.assessment1 %}
@@ -57,7 +57,7 @@
                         No learning level assigned.
                     {% endif %}
                 </p>
-            </div>
+            </div> {% endcomment %}
 
             <!-- Total Experience Section -->
             <div class="total-exp-section">
