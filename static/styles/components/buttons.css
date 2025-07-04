@@ -29,7 +29,9 @@
 }
 
 .btn--white:hover { 
-    background-color: var(--yellow-button-hover); 
+    /* background-color: var(--yellow-button-hover);  */
+    background-color: var(--font-color);
+    color: white;
 }
 
 .btn--yellow {
@@ -62,6 +64,11 @@
 
 .btn--red:hover { 
     background-color: var(--button-red);
+    color: white;
+}
+
+.btn--hover-font-color:hover {
+    background-color: var(--font-color);
     color: white;
 }
 

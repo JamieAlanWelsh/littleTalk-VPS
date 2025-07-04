@@ -470,18 +470,40 @@ def register(request):
 
 @login_required
 def profile(request):
-    # Fetch learners for the logged-in user, excluding the ones marked as deleted
-    learners = Learner.objects.filter(user=request.user, deleted=False)
+    # All learners for this user (not deleted)
+    all_learners = Learner.objects.filter(user=request.user, deleted=False)
 
-    # Get the selected learner from the session (if any)
-    selected_learner_id = request.session.get('selected_learner_id', None)
+    # Get all distinct cohorts for the dropdown
+    cohorts = Cohort.objects.filter(learner__in=all_learners).distinct()
+
+    # Get selected cohort from GET params
+    selected_cohort = request.GET.get('cohort')
+    try:
+        if selected_cohort:
+            selected_cohort_id = int(selected_cohort)
+            learners = all_learners.filter(cohort__id=selected_cohort_id)
+        else:
+            learners = all_learners
+            selected_cohort_id = None
+    except ValueError:
+        # Invalid cohort ID
+        learners = all_learners
+        selected_cohort_id = None
+
+    # Get selected learner from session (safe)
     selected_learner = None
-    if selected_learner_id:
-        selected_learner = Learner.objects.get(id=selected_learner_id)
+    selected_learner_id = request.session.get('selected_learner_id')
+    try:
+        if selected_learner_id not in [None, '']:
+            selected_learner = Learner.objects.get(id=int(selected_learner_id), user=request.user, deleted=False)
+    except (ValueError, Learner.DoesNotExist):
+        selected_learner = None
 
     return render(request, 'profile/profile.html', {
         'learners': learners,
-        'selected_learner': selected_learner
+        'selected_learner': selected_learner,
+        'cohorts': cohorts,
+        'selected_cohort': selected_cohort_id,
     })
 
 

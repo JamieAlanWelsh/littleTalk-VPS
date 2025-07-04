@@ -8,6 +8,25 @@
 <div class="profile-container">
     <!-- Left Column -->
     <div class="left-column">
+
+        <div class="add-learner-btn">
+            <a href="{% url 'start_assessment' %}" class="button">+ Add Learner</a>
+        </div>
+
+        <div class="cohort-filter-widget">
+            <form method="get" action="">
+                {% comment %} <label for="cohort"><strong>Cohort:</strong></label> {% endcomment %}
+                <select name="cohort" id="cohort" onchange="this.form.submit()">
+                    <option value="">-- All Cohorts --</option>
+                    {% for cohort in cohorts %}
+                        <option value="{{ cohort.id }}" {% if cohort.id == selected_cohort %}selected{% endif %}>
+                            {{ cohort.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </form>
+        </div>
+
         <div class="learners-list">
             {% if learners %}
                 <ul>
@@ -30,15 +49,13 @@
         </div>
 
         <!-- Add Learner Button -->
-        <div class="add-learner-btn">
-            <a href="{% url 'start_assessment' %}" class="button">+ Add Learner</a>
-        </div>
+        
 
         {% if selected_learner %}
         <!-- Practice Button -->
-        <div class="practice-button-container">
+        {% comment %} <div class="practice-button-container">
             <a href="{% url 'practise' %}" class="btn btn--green btn--thick">Practise</a>
-        </div>
+        </div> {% endcomment %}
         {% endif %}
     </div>
 
@@ -61,14 +78,30 @@
 
             <!-- Total Experience Section -->
             <div class="total-exp-section">
-                <h3>Total Experience</h3>
-                <h3>
+                <h3>Learner Profile</h3>
+                <p><strong>Name:</strong> {{ selected_learner.name }}</p>
+            
+                {% if selected_learner.cohort %}
+                    <p><strong>Cohort:</strong> {{ selected_learner.cohort }}</p>
+                {% else %}
+                    <p><strong>Cohort:</strong> Not assigned</p>
+                {% endif %}
+            
+                <p><strong>Total Experience:</strong>
                     {% if selected_learner.exp %}
                         {{ selected_learner.exp }}
                     {% else %}
                         No experience recorded.
                     {% endif %}
-                </h3>
+                </p>
+            
+                <p><strong>Exercises Completed:</strong>
+                    {% if selected_learner.exercises_completed %}
+                        {{ selected_learner.exercises_completed }}
+                    {% else %}
+                        No exercises recorded.
+                    {% endif %}
+                </p>
             </div>
             <!-- Edit Learner Button -->
             <div class="edit-learner-btn">
