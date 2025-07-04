@@ -23,6 +23,20 @@
 
     <!-- Filter -->
     <form method="get" class="form-stack">
+
+        <!-- Cohort Filter -->
+        <div>
+            <label for="cohort" class="label">Cohort:</label>
+            <select name="cohort" id="cohort" class="select" onchange="this.form.submit()">
+                <option value="">-- All Cohorts --</option>
+                {% for cohort in cohorts %}
+                    <option value="{{ cohort.id }}" {% if cohort.id|stringformat:"s" == selected_cohort_id %}selected{% endif %}>
+                        {{ cohort.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
         <div>
             <label for="learner" class="label">Learner:</label>
             <select name="learner" id="learner" class="select" onchange="this.form.submit()">
@@ -34,27 +48,29 @@
                 {% endfor %}
             </select>
         </div>
+
+        <!-- Log Entries -->
+        <div class="log-entries">
+            {% for entry in log_entries %}
+                <div class="log-entry">
+                    <!-- Delete Button -->
+                    <a href="#" class="delete-entry-btn" aria-label="Delete Entry" onclick="confirmDelete({{ entry.id }})">
+                        <img src="/static/icons/bin.png" alt="Delete" class="delete-icon">
+                    </a>
+
+                    <a href="{% url 'log_entry_detail' entry.id %}" class="log-entry-link">
+                        <p>{{ entry.title }}</p>
+                        <small>Learner: {{ entry.learner.name }}</small>
+                        <small>{{ entry.timestamp }}</small>
+                    </a>
+                </div>
+            {% empty %}
+                <p><strong>No logs found.</strong></p>
+            {% endfor %}
+        </div>
     </form>
 
-    <!-- Log Entries -->
-    <div class="log-entries">
-        {% for entry in log_entries %}
-            <div class="log-entry">
-                <!-- Delete Button -->
-                <a href="#" class="delete-entry-btn" aria-label="Delete Entry" onclick="confirmDelete({{ entry.id }})">
-                    <img src="/static/icons/bin.png" alt="Delete" class="delete-icon">
-                </a>
-
-                <a href="{% url 'log_entry_detail' entry.id %}" class="log-entry-link">
-                    <p>{{ entry.title }}</p>
-                    <small>Learner: {{ entry.learner.name }}</small>
-                    <small>{{ entry.timestamp }}</small>
-                </a>
-            </div>
-        {% empty %}
-            <p><strong>No logs found.</strong></p>
-        {% endfor %}
-    </div>
+    
 </div>
 
 <!-- JavaScript to Handle Delete Confirmation -->

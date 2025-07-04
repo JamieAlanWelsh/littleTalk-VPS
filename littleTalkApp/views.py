@@ -269,20 +269,32 @@ def practise(request):
 
 @login_required
 def logbook(request):
-    learner_id = request.GET.get("learner")
-    learners = Learner.objects.filter(user=request.user, deleted=False)
+    selected_learner_id = request.GET.get('learner')
+    selected_cohort_id = request.GET.get('cohort')
 
     log_entries = LogEntry.objects.filter(user=request.user, deleted=False)
+    learners = Learner.objects.filter(user=request.user, deleted=False)
+    cohorts = Cohort.objects.filter(user=request.user)
 
-    if learner_id:
-        log_entries = log_entries.filter(learner_id=learner_id)
+    # Filter learners by cohort
+    if selected_cohort_id:
+        learners = learners.filter(cohort__id=selected_cohort_id)
+
+    # Filter log entries by learner
+    if selected_learner_id:
+        log_entries = log_entries.filter(learner__id=selected_learner_id)
+    elif selected_cohort_id:
+        # Filter log entries by learners in selected cohort
+        log_entries = log_entries.filter(learner__cohort__id=selected_cohort_id)
 
     log_entries = log_entries.order_by('-timestamp')
 
     return render(request, 'logbook/logbook.html', {
         'log_entries': log_entries,
         'learners': learners,
-        'selected_learner_id': learner_id,
+        'cohorts': cohorts,
+        'selected_learner_id': selected_learner_id,
+        'selected_cohort_id': selected_cohort_id,
     })
 
 
