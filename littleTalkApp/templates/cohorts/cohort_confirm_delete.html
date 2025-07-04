@@ -1,16 +1,37 @@
 {% extends "base.html" %}
 
-{% block title %}LittleTalk | Cohort{% endblock %}
+{% block title %}LittleTalk | Delete Cohort{% endblock %}
 
 {% block content %}
+<h1>Cohort Settings</h1>
 
-<h1>Delete Cohort</h1>
-<p>Are you sure you want to delete <strong>{{ cohort.name }}</strong>?</p>
+<div class="container-box container--short pt-70">
 
-<form method="post">
-  {% csrf_token %}
-  <button type="submit" class="btn btn--yellow">Yes, delete</button>
-  <a href="{% url 'cohort_list' %}" class="btn btn--white">Cancel</a>
-</form>
+  <!-- Back arrow -->
+  <a href="{% url 'cohort_list' %}" class="back-arrow">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon">
+      <line x1="19" y1="12" x2="5" y2="12"></line>
+      <polyline points="12 19 5 12 12 5"></polyline>
+    </svg>
+  </a>
 
+  <p>
+    You are about to delete the cohort: <strong>{{ cohort.name }}</strong><br>
+    <strong>All learners assigned to this cohort will have their cohort unassigned</strong>
+  </p>
+
+  <form method="POST" class="form-stack">
+    {% csrf_token %}
+
+    <label for="password" class="label">Enter your password to confirm deletion:</label>
+    <input type="password" name="password" id="password" required class="input">
+
+    {% if error_message %}
+      <p class="error-message">{{ error_message }}</p>
+    {% endif %}
+
+    <button type="submit" class="btn btn--red btn--full">Confirm Deletion</button>
+  </form>
+
+</div>
 {% endblock %}

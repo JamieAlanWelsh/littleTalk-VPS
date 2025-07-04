@@ -4,22 +4,37 @@
 
 {% block content %}
 
-<h1>Cohorts</h1>
-<a href="{% url 'cohort_create' %}" class="btn btn--yellow">+ Add Cohort</a>
+<h1 class="page-title">Cohort Settings</h1>
 
-{% if cohorts %}
-  <ul class="cohort-list">
-    {% for cohort in cohorts %}
-      <li>
-        <strong>{{ cohort.name }}</strong><br>
-        <small>{{ cohort.description }}</small><br>
-        <a href="{% url 'cohort_edit' cohort.id %}">Edit</a> |
-        <a href="{% url 'cohort_delete' cohort.id %}">Delete</a>
-      </li>
-    {% endfor %}
-  </ul>
-{% else %}
-  <p>No cohorts defined yet.</p>
-{% endif %}
+<div class="container-box container--short"">
+
+  <div class="logbook-header">
+    <a href="{% url 'cohort_create' %}" class="btn btn--yellow">
+        + Add Cohort
+    </a>
+</div>
+
+  {% if cohorts %}
+    <div class="log-entries">
+      {% for cohort in cohorts %}
+        <div class="log-entry">
+          <!-- Delete Button -->
+          <a href="{% url 'cohort_delete' cohort.id %}" class="delete-entry-btn" aria-label="Delete Cohort">
+            <img src="/static/icons/bin.png" alt="Delete" class="delete-icon">
+          </a>
+    
+          <!-- Clickable Cohort Entry -->
+          <a href="{% url 'cohort_edit' cohort.id %}" class="log-entry-link">
+            <p>{{ cohort.name }}</p>
+            <small>{{ cohort.description }}</small>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>No cohorts defined yet.</p>
+  {% endif %}
+
+</div>
 
 {% endblock %}

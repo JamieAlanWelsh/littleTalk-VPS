@@ -6,14 +6,30 @@
 
 <h1>{% if is_editing %}Edit Cohort{% else %}Add Cohort{% endif %}</h1>
 
-<form method="post" class="form-stack">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit" class="btn btn--yellow btn--full">Save</button>
-</form>
+<div class="container-box container--short"">
 
-<a href="{% url 'cohort_list' %}" class="btn btn--white btn--full" style="margin-top: 10px;">
-  Cancel
-</a>
+  <form method="post" class="form-stack">
+    {% csrf_token %}
+
+    {% for field in form %}
+      <div class="form-field">
+        <label for="{{ field.id_for_label }}" class="label">{{ field.label }}</label>
+        {{ field }}
+        {% if field.errors %}
+          <div class="error-message">{{ field.errors.0 }}</div>
+        {% endif %}
+      </div>
+    {% endfor %}
+
+      <button type="submit" class="btn btn--yellow btn--full">Save</button>
+
+      <a href="{% url 'cohort_list' %}" class="btn btn--white btn--full cancel-btn">
+        Cancel
+      </a>
+  </form>
+
+  
+
+</div>
 
 {% endblock %}

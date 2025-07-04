@@ -633,9 +633,21 @@ def cohort_edit(request, cohort_id):
 @login_required
 def cohort_delete(request, cohort_id):
     cohort = get_object_or_404(Cohort, id=cohort_id, user=request.user)
+
     if request.method == 'POST':
-        cohort.delete()
-        return redirect('cohort_list')
+        password = request.POST.get('password')
+        user = authenticate(username=request.user.username, password=password)
+
+        if user is not None:
+            cohort.delete()
+            return redirect('cohort_list')
+        else:
+            error_message = "Incorrect password. Please try again."
+            return render(request, 'cohorts/cohort_confirm_delete.html', {
+                'cohort': cohort,
+                'error_message': error_message
+            })
+
     return render(request, 'cohorts/cohort_confirm_delete.html', {'cohort': cohort})
 
 
