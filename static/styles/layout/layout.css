@@ -53,6 +53,9 @@
 
 .container--short {
     max-width: 500px;
+}
+
+.text-center {
     text-align: center;
 }
 
