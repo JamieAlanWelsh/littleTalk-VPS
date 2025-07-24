@@ -4,28 +4,23 @@ from encrypted_model_fields.fields import EncryptedCharField
 import uuid
 
 
-# class Assessment(models.Model):
-#     user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
-#     learner_name = models.CharField(max_length=100)
-#     learner_dob = models.DateField()
-#     source = models.CharField(max_length=200, blank=True, null=True)
+class School(models.Model):
+    name = models.CharField(max_length=255)
+    address = models.TextField(blank=True, null=True)
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="schools_created")
+    created_at = models.DateTimeField(auto_now_add=True)
 
-# class AssessmentQuestion(models.Model):
-#     question_text = models.CharField(max_length=500)
-#     is_optional = models.BooleanField(default=False)
-#     order = models.IntegerField()
-
-# class AssessmentAnswer(models.Model):
-#     assessment = models.ForeignKey(Assessment, on_delete=models.CASCADE)
-#     question = models.ForeignKey(AssessmentQuestion, on_delete=models.CASCADE)
-#     answer = models.BooleanField()
+    def __str__(self):
+        return self.name
 
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     first_name = models.CharField(max_length=50, blank=True, null=True)
     hear_about = models.CharField(max_length=50, blank=True, null=True)
-    opted_in = models.BooleanField(default=False) 
+    opted_in = models.BooleanField(default=False)
+    school = models.ForeignKey(School, on_delete=models.SET_NULL, null=True, blank=True, related_name="users")
+    role = models.CharField(max_length=20, choices=[('admin', 'Admin'), ('staff', 'Staff')], default='staff')
 
     def __str__(self):
         return f"{self.user.username}'s Profile"
@@ -45,7 +40,7 @@ class LearnerAssessmentAnswer(models.Model):
 
 
 class Cohort(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)  # school owner
+    school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='cohorts', null=True, blank=True)
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)  # optional
     created_at = models.DateTimeField(auto_now_add=True)
@@ -55,7 +50,7 @@ class Cohort(models.Model):
 
 
 class Learner(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='learners')
+    school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='learners', null=True, blank=True)
     name = EncryptedCharField(max_length=255)
     learner_uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     exp = models.IntegerField(default=0)

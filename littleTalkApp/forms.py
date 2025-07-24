@@ -126,10 +126,11 @@ class LearnerForm(forms.ModelForm):
         user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
 
-        if user:
-            self.fields['cohort'].queryset = Cohort.objects.filter(user=user)
-        # else:
-        #     self.fields['cohort'].queryset = Cohort.objects.none()
+        if user and hasattr(user, 'profile') and user.profile.school:
+            self.fields['cohort'].queryset = Cohort.objects.filter(school=user.profile.school)
+        else:
+            self.fields['cohort'].queryset = Cohort.objects.none()
+            self.fields['cohort'].empty_label = "Select a cohort (optional)"
 
     def clean_name(self):
         name = self.cleaned_data.get("name", "").strip()
@@ -159,9 +160,13 @@ class LogEntryForm(forms.ModelForm):
         user = kwargs.pop('user', None)
         super(LogEntryForm, self).__init__(*args, **kwargs)
 
-        if user:
-            self.fields['learner'].queryset = Learner.objects.filter(user=user, deleted=False)
-        self.fields['learner'].required = True
+        if user and hasattr(user, 'profile') and user.profile.school:
+            self.fields['learner'].queryset = Learner.objects.filter(
+                school=user.profile.school,
+                deleted=False
+            )
+        else:
+            self.fields['learner'].queryset = Learner.objects.none()
 
         # Override labels
         self.fields['goals'].label = 'Target'

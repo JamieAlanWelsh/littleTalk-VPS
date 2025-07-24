@@ -272,9 +272,11 @@ def logbook(request):
     selected_learner_id = request.GET.get('learner')
     selected_cohort_id = request.GET.get('cohort')
 
+    user_school = request.user.profile.school
+
     log_entries = LogEntry.objects.filter(user=request.user, deleted=False)
-    learners = Learner.objects.filter(user=request.user, deleted=False)
-    cohorts = Cohort.objects.filter(user=request.user)
+    learners = Learner.objects.filter(school=user_school, deleted=False)
+    cohorts = Cohort.objects.filter(school=user_school)
 
     # Filter learners by cohort
     if selected_cohort_id:
@@ -470,11 +472,12 @@ def register(request):
 
 @login_required
 def profile(request):
-    # All learners for this user (not deleted)
-    all_learners = Learner.objects.filter(user=request.user, deleted=False)
+    # All learners for this user's school (not deleted)
+    user_school = request.user.profile.school
+    all_learners = Learner.objects.filter(school=user_school, deleted=False)
 
     # Get all distinct cohorts for the dropdown
-    cohorts = Cohort.objects.filter(learner__in=all_learners).distinct()
+    cohorts = Cohort.objects.filter(school=user_school).distinct()
 
     # Get selected cohort from GET params
     selected_cohort = request.GET.get('cohort')
@@ -495,7 +498,7 @@ def profile(request):
     selected_learner_id = request.session.get('selected_learner_id')
     try:
         if selected_learner_id not in [None, '']:
-            selected_learner = Learner.objects.get(id=int(selected_learner_id), user=request.user, deleted=False)
+            selected_learner = Learner.objects.get(id=int(selected_learner_id), school=user_school, deleted=False)
     except (ValueError, Learner.DoesNotExist):
         selected_learner = None
 
@@ -551,10 +554,15 @@ def select_learner(request):
 
 @login_required
 def edit_learner(request, learner_uuid):
-    learner = get_object_or_404(Learner, learner_uuid=learner_uuid, user=request.user)
+    learner = get_object_or_404(
+        Learner,
+        learner_uuid=learner_uuid,
+        school=request.user.profile.school,
+        deleted=False
+    )
 
     if request.method == 'POST':
-        if 'remove' in request.POST:  # Check if the remove button was clicked
+        if 'remove' in request.POST:
             return redirect('confirm_delete_learner', learner_uuid=learner.learner_uuid)
         
         form = LearnerForm(request.POST, instance=learner, user=request.user)
@@ -573,7 +581,12 @@ def edit_learner(request, learner_uuid):
 
 @login_required
 def confirm_delete_learner(request, learner_uuid):
-    learner = get_object_or_404(Learner, learner_uuid=learner_uuid, user=request.user)
+    learner = get_object_or_404(
+        Learner,
+        learner_uuid=learner_uuid,
+        school=request.user.profile.school,
+        deleted=False
+    )
 
     if request.method == 'POST':
         password = request.POST.get('password')
@@ -602,7 +615,7 @@ def confirm_delete_learner(request, learner_uuid):
 
 @login_required
 def cohort_list(request):
-    cohorts = Cohort.objects.filter(user=request.user).order_by('name')
+    cohorts = Cohort.objects.filter(school=request.user.profile.school).order_by('name')
     return render(request, 'cohorts/cohort_list.html', {'cohorts': cohorts})
 
 @login_required
@@ -611,7 +624,7 @@ def cohort_create(request):
         form = CohortForm(request.POST)
         if form.is_valid():
             cohort = form.save(commit=False)
-            cohort.user = request.user
+            cohort.school = request.user.profile.school  # Set the school
             cohort.save()
             return redirect('cohort_list')
     else:
@@ -620,7 +633,7 @@ def cohort_create(request):
 
 @login_required
 def cohort_edit(request, cohort_id):
-    cohort = get_object_or_404(Cohort, id=cohort_id, user=request.user)
+    cohort = get_object_or_404(Cohort, id=cohort_id, school=request.user.profile.school)
     if request.method == 'POST':
         form = CohortForm(request.POST, instance=cohort)
         if form.is_valid():
@@ -632,7 +645,7 @@ def cohort_edit(request, cohort_id):
 
 @login_required
 def cohort_delete(request, cohort_id):
-    cohort = get_object_or_404(Cohort, id=cohort_id, user=request.user)
+    cohort = get_object_or_404(Cohort, id=cohort_id, school=request.user.profile.school)
 
     if request.method == 'POST':
         password = request.POST.get('password')
@@ -752,6 +765,9 @@ def get_selected_learner(request):
         selected_learner = Learner.objects.get(id=selected_learner_id)
         return JsonResponse({'learner_id': selected_learner_id, 'csrf_token': csrf_token, 'cs_level': selected_learner.assessment2})
     return JsonResponse({'error': 'No learner selected'}, status=400)
+
+
+# API VIEWS END
 
 
 def support(request):
