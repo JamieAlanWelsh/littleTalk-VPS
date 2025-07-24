@@ -42,6 +42,7 @@ from .models import (
     Cohort,
     School,
     StaffInvite,
+    Role,
 )
 
 # Local app: serializers
@@ -921,19 +922,32 @@ def accept_invite(request, token):
 def school_dashboard(request):
     profile = request.user.profile
 
-    if profile.role != 'admin':
-        return redirect('profile')  # only admins can access for now
+    if not profile.is_admin():
+        return redirect('profile')
 
     school = profile.school
 
-    # Get all users in the school
-    staff_profiles = Profile.objects.filter(school=school).select_related('user')
+    if request.method == 'POST':
+        user_id = request.POST.get('user_id')
+        new_role = request.POST.get('new_role')
 
-    # Get pending invites
+        target_profile = get_object_or_404(Profile, user__id=user_id, school=school)
+
+        if new_role in dict(Role.CHOICES):
+            target_profile.role = new_role
+            target_profile.save()
+            messages.success(request, f"{target_profile.first_name}'s role updated to {new_role}.")
+        else:
+            messages.error(request, "Invalid role selected.")
+
+        return redirect('school_dashboard')
+
+    staff_profiles = Profile.objects.filter(school=school).select_related('user')
     invites = StaffInvite.objects.filter(school=school, used=False).order_by('-created_at')
 
     return render(request, 'school/school_dashboard.html', {
         'staff_profiles': staff_profiles,
         'invites': invites,
         'school_name': school.name,
+        'role_choices': Role.CHOICES,
     })
