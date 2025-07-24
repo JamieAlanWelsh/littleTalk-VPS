@@ -9,6 +9,19 @@ from django.core.exceptions import ValidationError
 from datetime import date
 
 
+class SchoolSignupForm(forms.Form):
+    full_name = forms.CharField(label="Your name", max_length=100)
+    email = forms.EmailField(label="Email")
+    password = forms.CharField(widget=forms.PasswordInput(), label="Password")
+    school_name = forms.CharField(label="School name", max_length=255)
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if User.objects.filter(username=email).exists():
+            raise forms.ValidationError("An account with this email already exists.")
+        return email
+
+
 def no_emoji_validator(value):
     emoji_pattern = re.compile(
         r"["

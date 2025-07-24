@@ -4,10 +4,13 @@ from . import views
 from .views import UpdateLearnerExpAPIView
 
 urlpatterns = [
+    # Landing content
     path('', views.home, name='home'),
-     path('schools/', views.schools, name='schools'),
+    path('schools/', views.schools, name='schools'),
     path('exercise/<str:game_name>/', views.game_description, name='game_description'),
     path('practise/', views.practise, name='practise'),
+
+    # Support
     path('support/', views.support, name='support'),
     path('support/send-email/', views.send_support_email, name='send_support_email'),
     # path('comingsoon/', views.comingsoon, name='comingsoon'),
@@ -25,6 +28,9 @@ urlpatterns = [
     # path('logout/', views.custom_logout_view, name='logout'),
     path('register/', views.register, name='register'),
 
+    # School sign up
+    path('school-signup/', views.school_signup, name='school_signup'),
+
     # Profile and adding learners
     path('profile/', views.profile, name='profile'),
     path('add-learner/', views.add_learner, name='add_learner'),
@@ -32,6 +38,7 @@ urlpatterns = [
     path('profile/edit_learner/<uuid:learner_uuid>/', views.edit_learner, name='edit_learner'),
     path('profile/edit_learner/confirm_delete_learner/<uuid:learner_uuid>/', views.confirm_delete_learner, name='confirm_delete_learner'),
 
+    # Cohorts
     path('cohorts/', views.cohort_list, name='cohort_list'),
     path('cohorts/new/', views.cohort_create, name='cohort_create'),
     path('cohorts/<int:cohort_id>/edit/', views.cohort_edit, name='cohort_edit'),

@@ -28,6 +28,7 @@ from .forms import (
     UserUpdateForm,
     PasswordUpdateForm,
     CohortForm,
+    SchoolSignupForm,
 )
 
 # Local app: models
@@ -37,6 +38,7 @@ from .models import (
     LearnerAssessmentAnswer,
     LogEntry,
     Cohort,
+    School,
 )
 
 # Local app: serializers
@@ -60,6 +62,40 @@ def home(request):
 def schools(request):
     request.hide_sidebar = True
     return render(request, 'schools.html')
+
+
+def school_signup(request):
+    request.hide_sidebar = True
+    if request.method == 'POST':
+        form = SchoolSignupForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            full_name = form.cleaned_data['full_name']
+            school_name = form.cleaned_data['school_name']
+
+            # Create user
+            user = User.objects.create_user(username=email, email=email, password=password)
+            user.first_name = full_name
+            user.save()
+
+            # Create school
+            school = School.objects.create(name=school_name, created_by=user)
+
+            # Link profile
+            profile = Profile.objects.create(user=user, first_name=full_name, school=school)
+            profile.role = 'admin'  # assumes you’ve added role field
+            profile.save()
+
+            # Auto-login
+            login(request, user)
+
+            return redirect('profile')  # or wherever your school users land
+    else:
+        form = SchoolSignupForm()
+
+    return render(request, 'registration/school_signup.html', {'form': form})
+
 
 # This view will serve the first question when the assessment starts
 def start_assessment(request):
@@ -512,31 +548,17 @@ def profile(request):
 
 @login_required
 def add_learner(request):
-    # Prevent access unless assessment is complete
-    if not request.session.get('assessment_complete'):
-        return redirect('start_assessment')
-
     if request.method == 'POST':
         form = LearnerForm(request.POST, user=request.user)
         if form.is_valid():
             learner = form.save(commit=False)
-            learner.user = request.user
+            learner.school = request.user.profile.school  # assign to school
             learner.save()
 
-            # Store as selected learner
+            # Store selected learner in session (optional)
             request.session['selected_learner_id'] = learner.id
 
-            # Get answers from session
-            answers = request.session.get("assessment_answers", {})
-
-            # Save answers and compute metrics helper function
-            save_assessment_for_learner(learner, answers)
-
-            # Clean up session
-            request.session.pop("assessment_answers", None)
-            request.session.pop("assessment_complete", None)
-
-            return redirect('/assessment/summary/')
+            return redirect('profile')  # or 'logbook' or any page you prefer
     else:
         form = LearnerForm(user=request.user)
 
