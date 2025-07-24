@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from encrypted_model_fields.fields import EncryptedCharField
 import uuid
+from django.utils import timezone
+from datetime import timedelta
 
 
 class School(models.Model):
@@ -85,3 +87,23 @@ class LogEntry(models.Model):
 
     def __str__(self):
         return f"{self.title} - {self.user.username}"
+
+
+def default_expiry():
+    return timezone.now() + timedelta(days=7)
+
+
+class StaffInvite(models.Model):
+    school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='invites')
+    email = models.EmailField()
+    role = models.CharField(max_length=20, choices=[('staff', 'Staff')], default='staff')
+    token = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    used = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    expires_at = models.DateTimeField(default=default_expiry)
+
+    def is_expired(self):
+        return timezone.now() > self.expires_at
+
+    def __str__(self):
+        return f"Invite to {self.email} for {self.school.name}"

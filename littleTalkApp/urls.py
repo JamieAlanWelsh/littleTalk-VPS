@@ -58,6 +58,9 @@ urlpatterns = [
     path('settings/change-password/', views.change_password, name='change_password'),
     path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
 
+    # School
+    path('school/invite-staff/', views.invite_staff, name='invite_staff'),
+
     # API endpoints
     path('api/learners/<int:learner_id>/update-exp/', UpdateLearnerExpAPIView.as_view(), name='update_learner_exp'),
     path('api/selected-learner/', views.get_selected_learner, name='get_selected_learner'),

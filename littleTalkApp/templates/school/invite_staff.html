@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Invite Staff{% endblock %}
+{% block content %}
+
+<h2>Invite Staff</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Send Invite</button>
+</form>
+
+<hr>
+
+<h3>Pending Invites</h3>
+<ul>
+    {% for invite in invites %}
+        <li>{{ invite.email }} — Token: {{ invite.token }} — {% if invite.used %}Used{% else %}Pending{% endif %}</li>
+    {% empty %}
+        <li>No invites yet.</li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

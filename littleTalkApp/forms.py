@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from .models import Learner
 from .models import Cohort
+from .models import StaffInvite
 from django.contrib.auth.forms import AuthenticationForm
 from .models import LogEntry
 import re
@@ -252,3 +253,20 @@ class CohortForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
         }
+
+
+class StaffInviteForm(forms.ModelForm):
+    class Meta:
+        model = StaffInvite
+        fields = ['email', 'role']
+
+    def __init__(self, *args, **kwargs):
+        self.school = kwargs.pop('school', None)
+        super().__init__(*args, **kwargs)
+
+    def save(self, commit=True):
+        invite = super().save(commit=False)
+        invite.school = self.school
+        if commit:
+            invite.save()
+        return invite

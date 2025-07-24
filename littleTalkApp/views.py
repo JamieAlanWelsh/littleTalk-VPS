@@ -29,6 +29,7 @@ from .forms import (
     PasswordUpdateForm,
     CohortForm,
     SchoolSignupForm,
+    StaffInviteForm,
 )
 
 # Local app: models
@@ -39,6 +40,7 @@ from .models import (
     LogEntry,
     Cohort,
     School,
+    StaffInvite,
 )
 
 # Local app: serializers
@@ -725,7 +727,6 @@ def change_user_details(request):
     })
 
 
-
 @login_required
 def change_password(request):
     if request.method == 'POST':
@@ -748,6 +749,34 @@ def change_password(request):
         'password_form': password_form
     })
 
+
+# SCHOOL CENTRIC
+@login_required
+def invite_staff(request):
+    if request.user.profile.role != 'admin':
+        return redirect('profile')  # restrict to school admins only
+
+    school = request.user.profile.school
+    invites = StaffInvite.objects.filter(school=school).order_by('-created_at')
+
+    if request.method == 'POST':
+        form = StaffInviteForm(request.POST, school=school)
+        if form.is_valid():
+            invite = form.save()
+
+            # Stub: print the invite URL for now (email later)
+            invite_url = request.build_absolute_uri(f"/accept-invite/{invite.token}/")
+            print(f"[DEBUG] Send this invite link via email: {invite_url}")
+
+            messages.success(request, f"Invite sent to {invite.email}")
+            return redirect('invite_staff')
+    else:
+        form = StaffInviteForm(school=school)
+
+    return render(request, 'school/invite_staff.html', {
+        'form': form,
+        'invites': invites,
+    })
 
 # API VIEWS
 
