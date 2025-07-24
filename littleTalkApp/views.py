@@ -767,7 +767,19 @@ def invite_staff(request):
 
             # Stub: print the invite URL for now (email later)
             invite_url = request.build_absolute_uri(f"/accept-invite/{invite.token}/")
-            print(f"[DEBUG] Send this invite link via email: {invite_url}")
+
+            send_mail(
+                subject=f"You're invited to join {school.name} on Chatterdillo",
+                message=(
+                    f"Hi there!\n\nYou've been invited to join {school.name} on Chatterdillo.\n\n"
+                    f"Click the link below to set up your account:\n{invite_url}\n\n"
+                    f"This invite will expire in 7 days.\n\n"
+                    f"If you weren’t expecting this email, feel free to ignore it."
+                ),
+                from_email='noreply@chatterdillo.com',
+                recipient_list=[invite.email],
+                fail_silently=False,
+            )
 
             messages.success(request, f"Invite sent to {invite.email}")
             return redirect('invite_staff')
@@ -865,6 +877,11 @@ def accept_invite(request, token):
     if invite.is_expired():
         return render(request, 'school/invite_expired.html', {'reason': 'This invite link has expired.'})
 
+    if User.objects.filter(username=invite.email).exists():
+        return render(request, 'school/invite_expired.html', {
+            'reason': 'An account with this email already exists. Please log in or contact support.'
+        })
+
     if request.method == 'POST':
         form = AcceptInviteForm(request.POST)
         if form.is_valid():
@@ -897,4 +914,26 @@ def accept_invite(request, token):
         'form': form,
         'school_name': invite.school.name,
         'email': invite.email
+    })
+
+
+@login_required
+def school_dashboard(request):
+    profile = request.user.profile
+
+    if profile.role != 'admin':
+        return redirect('profile')  # only admins can access for now
+
+    school = profile.school
+
+    # Get all users in the school
+    staff_profiles = Profile.objects.filter(school=school).select_related('user')
+
+    # Get pending invites
+    invites = StaffInvite.objects.filter(school=school, used=False).order_by('-created_at')
+
+    return render(request, 'school/school_dashboard.html', {
+        'staff_profiles': staff_profiles,
+        'invites': invites,
+        'school_name': school.name,
     })

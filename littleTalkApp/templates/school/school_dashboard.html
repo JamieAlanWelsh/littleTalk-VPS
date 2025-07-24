@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}School Dashboard{% endblock %}
+{% block content %}
+
+<div class="login-container">
+    <h2>{{ school_name }} – Staff Dashboard</h2>
+
+    <p><a href="{% url 'invite_staff' %}" class="btn btn--yellow">Invite Staff</a></p>
+
+    <h3>Staff Members</h3>
+    <table class="dashboard-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Last Login</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for profile in staff_profiles %}
+                <tr>
+                    <td>{{ profile.first_name }}</td>
+                    <td>{{ profile.user.email }}</td>
+                    <td>{{ profile.role|capfirst }}</td>
+                    <td>{{ profile.user.last_login|default:"Never" }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3 style="margin-top: 2em;">Pending Invites</h3>
+    <table class="dashboard-table">
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Sent</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for invite in invites %}
+                <tr>
+                    <td>{{ invite.email }}</td>
+                    <td>{{ invite.role|capfirst }}</td>
+                    <td>{{ invite.created_at|date:"M j, Y" }}</td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="3">No pending invites.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

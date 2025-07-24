@@ -263,6 +263,12 @@ class StaffInviteForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.school = kwargs.pop('school', None)
         super().__init__(*args, **kwargs)
+    
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if User.objects.filter(username=email).exists():
+            raise forms.ValidationError("A user with this email already exists.")
+        return email
 
     def save(self, commit=True):
         invite = super().save(commit=False)

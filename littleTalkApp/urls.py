@@ -61,6 +61,7 @@ urlpatterns = [
     # School
     path('school/invite-staff/', views.invite_staff, name='invite_staff'),
     path('accept-invite/<uuid:token>/', views.accept_invite, name='accept_invite'),
+    path('school/dashboard/', views.school_dashboard, name='school_dashboard'),
 
     # API endpoints
     path('api/learners/<int:learner_id>/update-exp/', UpdateLearnerExpAPIView.as_view(), name='update_learner_exp'),
