@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Accept Invite{% endblock %}
+{% block content %}
+
+<div class="login-container">
+    <h2>You've been invited to join {{ school_name }}</h2>
+    <p>This invite was sent to: <strong>{{ email }}</strong></p>
+
+    <form method="post" class="login-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn--yellow btn--full">Join School</button>
+    </form>
+</div>
+
+{% endblock %}

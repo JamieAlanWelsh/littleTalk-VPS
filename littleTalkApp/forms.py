@@ -270,3 +270,14 @@ class StaffInviteForm(forms.ModelForm):
         if commit:
             invite.save()
         return invite
+
+
+class AcceptInviteForm(forms.Form):
+    full_name = forms.CharField(label="Your name", max_length=100)
+    password = forms.CharField(widget=forms.PasswordInput, label="Password")
+
+    def clean_password(self):
+        password = self.cleaned_data['password']
+        if len(password) < 6:
+            raise forms.ValidationError("Password must be at least 6 characters.")
+        return password

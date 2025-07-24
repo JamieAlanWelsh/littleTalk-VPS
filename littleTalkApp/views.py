@@ -30,6 +30,7 @@ from .forms import (
     CohortForm,
     SchoolSignupForm,
     StaffInviteForm,
+    AcceptInviteForm,
 )
 
 # Local app: models
@@ -853,3 +854,47 @@ def method(request):
         'game_descriptions': GAME_DESCRIPTIONS,
     }
     return render(request, 'method.html', context)
+
+
+def accept_invite(request, token):
+    invite = get_object_or_404(StaffInvite, token=token)
+
+    if invite.used:
+        return render(request, 'school/invite_expired.html', {'reason': 'This invite link has already been used.'})
+
+    if invite.is_expired():
+        return render(request, 'school/invite_expired.html', {'reason': 'This invite link has expired.'})
+
+    if request.method == 'POST':
+        form = AcceptInviteForm(request.POST)
+        if form.is_valid():
+            email = invite.email
+            password = form.cleaned_data['password']
+            full_name = form.cleaned_data['full_name']
+
+            # Create user
+            user = User.objects.create_user(username=email, email=email, password=password)
+            user.first_name = full_name
+            user.save()
+
+            # Create profile and link to school
+            Profile.objects.create(
+                user=user,
+                first_name=full_name,
+                school=invite.school,
+                role=invite.role,
+            )
+
+            invite.used = True
+            invite.save()
+
+            login(request, user)
+            return redirect('profile')  # or dashboard
+    else:
+        form = AcceptInviteForm()
+
+    return render(request, 'school/accept_invite.html', {
+        'form': form,
+        'school_name': invite.school.name,
+        'email': invite.email
+    })
