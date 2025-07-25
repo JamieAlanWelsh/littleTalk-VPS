@@ -6,8 +6,21 @@
 
 <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Send Invite</button>
+    <p>
+        {{ form.email.label_tag }}<br>
+        {{ form.email }}
+        {% if form.email.errors %}
+            <div class="error-message">{{ form.email.errors.0 }}</div>
+        {% endif %}
+    </p>
+    <p>
+        {{ form.role.label_tag }}<br>
+        {{ form.role }}
+        {% if form.role.errors %}
+            <div class="error-message">{{ form.role.errors.0 }}</div>
+        {% endif %}
+    </p>
+    <button type="submit" class="btn btn--yellow">Send Invite</button>
 </form>
 
 <hr>

@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from .models import Learner
 from .models import Cohort
 from .models import StaffInvite
+from .models import Role
 from django.contrib.auth.forms import AuthenticationForm
 from .models import LogEntry
 import re
@@ -262,20 +263,19 @@ class StaffInviteForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.school = kwargs.pop('school', None)
+        user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
-    
-    def clean_email(self):
-        email = self.cleaned_data['email']
-        if User.objects.filter(username=email).exists():
-            raise forms.ValidationError("A user with this email already exists.")
-        return email
 
-    def save(self, commit=True):
-        invite = super().save(commit=False)
-        invite.school = self.school
-        if commit:
-            invite.save()
-        return invite
+        # Limit role options based on inviter's permissions
+        if user and not user.profile.is_admin():
+            # Team managers can't invite admins
+            self.fields['role'].choices = [
+                (Role.TEAM_MANAGER, "Team Manager"),
+                (Role.STAFF, "Staff"),
+                (Role.READ_ONLY, "Read Only"),
+            ]
+        else:
+            self.fields['role'].choices = Role.CHOICES
 
 
 class AcceptInviteForm(forms.Form):
