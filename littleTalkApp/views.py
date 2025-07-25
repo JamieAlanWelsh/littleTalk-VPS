@@ -56,6 +56,8 @@ from .assessment_qs import QUESTIONS, RECOMMENDATIONS
 from collections import defaultdict
 import json
 
+from .utilites import can_edit_or_delete_log
+
 
 def home(request):
     request.hide_sidebar = True
@@ -311,22 +313,24 @@ def practise(request):
 def logbook(request):
     selected_learner_id = request.GET.get('learner')
     selected_cohort_id = request.GET.get('cohort')
+    user = request.user
+    school = user.profile.school
 
-    user_school = request.user.profile.school
+    learners = Learner.objects.filter(school=school, deleted=False)
+    cohorts = Cohort.objects.filter(school=school)
 
-    log_entries = LogEntry.objects.filter(user=request.user, deleted=False)
-    learners = Learner.objects.filter(school=user_school, deleted=False)
-    cohorts = Cohort.objects.filter(school=user_school)
+    # Filter logs based on role
+    if user.profile.is_admin() or user.profile.is_manager():
+        log_entries = LogEntry.objects.filter(user__profile__school=school, deleted=False)
+    else:
+        log_entries = LogEntry.objects.filter(user=user, deleted=False)
 
-    # Filter learners by cohort
     if selected_cohort_id:
         learners = learners.filter(cohort__id=selected_cohort_id)
 
-    # Filter log entries by learner
     if selected_learner_id:
         log_entries = log_entries.filter(learner__id=selected_learner_id)
     elif selected_cohort_id:
-        # Filter log entries by learners in selected cohort
         log_entries = log_entries.filter(learner__cohort__id=selected_cohort_id)
 
     log_entries = log_entries.order_by('-timestamp')
@@ -359,14 +363,23 @@ def new_log_entry(request):
 
     return render(request, 'logbook/new_log_entry.html', {'form': form})
 
+
 @login_required
 def log_entry_detail(request, entry_id):
-    log_entry = get_object_or_404(LogEntry, id=entry_id, user=request.user)
+    log_entry = get_object_or_404(LogEntry, id=entry_id, deleted=False)
+
+    if not can_edit_or_delete_log(request.user, log_entry):
+        return redirect('logbook')
+
     return render(request, 'logbook/log_entry_detail.html', {'log_entry': log_entry})
+
 
 @login_required
 def edit_log_entry(request, entry_id):
-    log_entry = get_object_or_404(LogEntry, id=entry_id, user=request.user)
+    log_entry = get_object_or_404(LogEntry, id=entry_id, deleted=False)
+
+    if not can_edit_or_delete_log(request.user, log_entry):
+        return redirect('logbook')
 
     if request.method == "POST":
         form = LogEntryForm(request.POST, instance=log_entry, user=request.user)
@@ -382,10 +395,18 @@ def edit_log_entry(request, entry_id):
         'log_entry': log_entry
     })
 
+
 @login_required
 def delete_log_entry(request, entry_id):
-    log_entry = get_object_or_404(LogEntry, id=entry_id, user=request.user)
-    log_entry.deleted = True  # Soft delete the entry
+    if request.method != "POST":
+        return JsonResponse({"success": False, "error": "Invalid method"}, status=405)
+
+    log_entry = get_object_or_404(LogEntry, id=entry_id, deleted=False)
+
+    if not can_edit_or_delete_log(request.user, log_entry):
+        return JsonResponse({"success": False, "error": "Unauthorized"}, status=403)
+
+    log_entry.deleted = True
     log_entry.save()
     return JsonResponse({"success": True})
 
