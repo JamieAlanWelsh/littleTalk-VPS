@@ -127,6 +127,7 @@ class StaffInvite(models.Model):
     used = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     expires_at = models.DateTimeField(default=default_expiry)
+    sent_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='sent_invites')
 
     def is_expired(self):
         return timezone.now() > self.expires_at

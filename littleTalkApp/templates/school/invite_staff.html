@@ -28,7 +28,10 @@
 <h3>Pending Invites</h3>
 <ul>
     {% for invite in invites %}
-        <li>{{ invite.email }} — Token: {{ invite.token }} — {% if invite.used %}Used{% else %}Pending{% endif %}</li>
+        <li>
+            {{ invite.email }} — {{ invite.role|capfirst }} — Sent by {{ invite.sent_by.get_full_name|default:invite.sent_by.username }} — {{ invite.created_at|date:"M j, Y H:i" }}
+            {% if invite.used %}(Used){% else %}(Pending){% endif %}
+        </li>
     {% empty %}
         <li>No invites yet.</li>
     {% endfor %}

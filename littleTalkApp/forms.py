@@ -266,16 +266,21 @@ class StaffInviteForm(forms.ModelForm):
         user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
 
-        # Limit role options based on inviter's permissions
-        if user and not user.profile.is_admin():
-            # Team managers can't invite admins
-            self.fields['role'].choices = [
-                (Role.TEAM_MANAGER, "Team Manager"),
-                (Role.STAFF, "Staff"),
-                (Role.READ_ONLY, "Read Only"),
-            ]
-        else:
-            self.fields['role'].choices = Role.CHOICES
+        if user:
+            if user.profile.is_admin():
+                # Admins can assign all roles
+                self.fields['role'].choices = Role.CHOICES
+            elif user.profile.is_manager():
+                # Managers can assign limited roles
+                self.fields['role'].choices = [
+                    (Role.TEAM_MANAGER, "Team Manager"),
+                    (Role.STAFF, "Staff"),
+                    (Role.READ_ONLY, "Read Only"),
+                ]
+            else:
+                self.fields['role'].choices = [
+                    (Role.STAFF, "Staff"),
+                ]
 
 
 class AcceptInviteForm(forms.Form):

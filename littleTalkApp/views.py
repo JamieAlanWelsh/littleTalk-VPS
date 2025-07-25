@@ -764,9 +764,10 @@ def invite_staff(request):
     if request.method == 'POST':
         form = StaffInviteForm(request.POST, school=school, user=request.user)
         if form.is_valid():
-            invite = form.save()
+            invite = form.save(commit=False)
+            invite.sent_by = request.user
+            invite.save()
 
-            # Stub: print the invite URL for now (email later)
             invite_url = request.build_absolute_uri(f"/accept-invite/{invite.token}/")
 
             send_mail(
