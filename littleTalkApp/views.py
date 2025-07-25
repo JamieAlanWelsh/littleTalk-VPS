@@ -765,6 +765,7 @@ def invite_staff(request):
         form = StaffInviteForm(request.POST, school=school, user=request.user)
         if form.is_valid():
             invite = form.save(commit=False)
+            invite.school = school
             invite.sent_by = request.user
             invite.save()
 
@@ -786,7 +787,7 @@ def invite_staff(request):
             messages.success(request, f"Invite sent to {invite.email}")
             return redirect('invite_staff')
     else:
-        form = StaffInviteForm(school=school, user=request.user)
+        form = StaffInviteForm(request.POST or None, user=request.user, school=school)
 
     return render(request, 'school/invite_staff.html', {
         'form': form,
