@@ -751,18 +751,20 @@ def change_password(request):
         'password_form': password_form
     })
 
+# SCHOOL CENTRIC CODE
 
-# SCHOOL CENTRIC
 @login_required
 def invite_staff(request):
     if not request.user.profile.is_admin() and not request.user.profile.is_manager():
-        return redirect('profile')  # restrict to school admins only
+        return redirect('profile')
 
     school = request.user.profile.school
     invites = StaffInvite.objects.filter(school=school).order_by('-created_at')
 
     if request.method == 'POST':
         form = StaffInviteForm(request.POST, school=school, user=request.user)
+        print("POSTED ROLE VALUE:", request.POST.get('role'))
+        print("ROLE CHOICES AT INIT:", form.fields['role'].choices)
         if form.is_valid():
             invite = form.save(commit=False)
             invite.school = school
@@ -785,9 +787,10 @@ def invite_staff(request):
             )
 
             messages.success(request, f"Invite sent to {invite.email}")
+
             return redirect('invite_staff')
     else:
-        form = StaffInviteForm(request.POST or None, user=request.user, school=school)
+        form = StaffInviteForm(user=request.user, school=school)
 
     return render(request, 'school/invite_staff.html', {
         'form': form,

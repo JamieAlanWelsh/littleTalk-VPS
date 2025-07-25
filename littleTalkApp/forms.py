@@ -281,6 +281,8 @@ class StaffInviteForm(forms.ModelForm):
                 self.fields['role'].choices = [
                     (Role.STAFF, "Staff"),
                 ]
+        
+        print("ROLE CHOICES INIT:", self.fields['role'].choices)
 
 
 class AcceptInviteForm(forms.Form):

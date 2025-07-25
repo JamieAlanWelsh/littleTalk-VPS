@@ -122,7 +122,7 @@ def default_expiry():
 class StaffInvite(models.Model):
     school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='invites')
     email = models.EmailField()
-    role = models.CharField(max_length=20, choices=[('staff', 'Staff')], default='staff')
+    role = models.CharField(max_length=30, choices=Role.CHOICES)
     token = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     used = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
