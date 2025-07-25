@@ -1,40 +1,45 @@
 {% extends "base.html" %}
-
 {% block title %}LittleTalk | Cohorts{% endblock %}
 
 {% block content %}
+<h1 class="page-title">Cohorts</h1>
 
-<h1 class="page-title">Cohort Settings</h1>
-
-<div class="container-box container--short"">
+<div class="container-box container--short">
 
   <div class="logbook-header">
-    <a href="{% url 'cohort_create' %}" class="btn btn--yellow">
-        + Add Cohort
-    </a>
-</div>
+    {% if can_edit_cohorts %}
+      <a href="{% url 'cohort_create' %}" class="btn btn--yellow">+ Add Cohort</a>
+    {% else %}
+      <button class="btn btn--grey" disabled>+ Add Cohort</button>
+    {% endif %}
+  </div>
 
   {% if cohorts %}
     <div class="log-entries">
       {% for cohort in cohorts %}
-        <div class="log-entry">
-          <!-- Delete Button -->
-          <a href="{% url 'cohort_delete' cohort.id %}" class="delete-entry-btn" aria-label="Delete Cohort">
-            <img src="/static/icons/bin.png" alt="Delete" class="delete-icon">
-          </a>
-    
-          <!-- Clickable Cohort Entry -->
-          <a href="{% url 'cohort_edit' cohort.id %}" class="log-entry-link">
-            <p>{{ cohort.name }}</p>
-            <small>{{ cohort.description }}</small>
-          </a>
-        </div>
+        
+          {% if can_edit_cohorts %}
+            <div class="log-entry">
+              <a href="{% url 'cohort_delete' cohort.id %}" class="delete-entry-btn" aria-label="Delete Cohort">
+                <img src="/static/icons/bin.png" alt="Delete" class="delete-icon">
+              </a>
+              <a href="{% url 'cohort_edit' cohort.id %}" class="log-entry-link">
+                <p>{{ cohort.name }}</p>
+                <small>{{ cohort.description }}</small>
+              </a>
+            </div>
+          {% else %}
+            <div class="log-entry no-hover">
+              <div class="log-entry-link">
+                <p>{{ cohort.name }}</p>
+                <small>{{ cohort.description }}</small>
+              </div>
+            </div>
+          {% endif %}
       {% endfor %}
     </div>
   {% else %}
     <p><strong>No cohorts defined yet.</strong></p>
   {% endif %}
-
 </div>
-
 {% endblock %}

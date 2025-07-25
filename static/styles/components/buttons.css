@@ -104,21 +104,21 @@
 
 /* special buttons */
 
-.btn--save {
+.btn--grey {
     background-color: #d3d3d3;
     color: #a0a0a0;
-    margin-bottom: 40px;
+    /* margin-bottom: 40px; */
     cursor: default;
 }
 
 /* When enabled */
-.btn--save:enabled {
+.btn--grey:enabled {
     background-color: var(--yellow-button-color);
     color: var(--font-color);
     cursor: pointer;
 }
 
 /* Hover on enabled */
-.btn--save:enabled:hover {
+.btn--grey:enabled:hover {
     background-color: var(--yellow-button-hover);
 }

@@ -642,24 +642,39 @@ def confirm_delete_learner(request, learner_uuid):
 @login_required
 def cohort_list(request):
     cohorts = Cohort.objects.filter(school=request.user.profile.school).order_by('name')
-    return render(request, 'cohorts/cohort_list.html', {'cohorts': cohorts})
+    return render(request, 'cohorts/cohort_list.html', {
+        'cohorts': cohorts,
+        'can_edit_cohorts': request.user.profile.is_admin() or request.user.profile.is_manager(),
+    })
+
 
 @login_required
 def cohort_create(request):
+    if not request.user.profile.is_admin() and not request.user.profile.is_manager():
+        messages.error(request, "You don't have permission to create cohorts.")
+        return redirect('cohort_list')
+
     if request.method == 'POST':
         form = CohortForm(request.POST)
         if form.is_valid():
             cohort = form.save(commit=False)
-            cohort.school = request.user.profile.school  # Set the school
+            cohort.school = request.user.profile.school
             cohort.save()
             return redirect('cohort_list')
     else:
         form = CohortForm()
+
     return render(request, 'cohorts/cohort_form.html', {'form': form, 'is_editing': False})
+
 
 @login_required
 def cohort_edit(request, cohort_id):
+    if not request.user.profile.is_admin() and not request.user.profile.is_manager():
+        messages.error(request, "You don't have permission to edit cohorts.")
+        return redirect('cohort_list')
+
     cohort = get_object_or_404(Cohort, id=cohort_id, school=request.user.profile.school)
+
     if request.method == 'POST':
         form = CohortForm(request.POST, instance=cohort)
         if form.is_valid():
@@ -667,10 +682,16 @@ def cohort_edit(request, cohort_id):
             return redirect('cohort_list')
     else:
         form = CohortForm(instance=cohort)
+
     return render(request, 'cohorts/cohort_form.html', {'form': form, 'is_editing': True})
+
 
 @login_required
 def cohort_delete(request, cohort_id):
+    if not request.user.profile.is_admin() and not request.user.profile.is_manager():
+        messages.error(request, "You don't have permission to delete cohorts.")
+        return redirect('cohort_list')
+
     cohort = get_object_or_404(Cohort, id=cohort_id, school=request.user.profile.school)
 
     if request.method == 'POST':
@@ -756,15 +777,13 @@ def change_password(request):
 @login_required
 def invite_staff(request):
     if not request.user.profile.is_admin() and not request.user.profile.is_manager():
-        return redirect('profile')
+        return redirect('school_dashboard')
 
     school = request.user.profile.school
     invites = StaffInvite.objects.filter(school=school).order_by('-created_at')
 
     if request.method == 'POST':
         form = StaffInviteForm(request.POST, school=school, user=request.user)
-        print("POSTED ROLE VALUE:", request.POST.get('role'))
-        print("ROLE CHOICES AT INIT:", form.fields['role'].choices)
         if form.is_valid():
             invite = form.save(commit=False)
             invite.school = school
@@ -961,10 +980,12 @@ def school_dashboard(request):
 
     staff_profiles = Profile.objects.filter(school=school).select_related('user')
     invites = StaffInvite.objects.filter(school=school, used=False).order_by('-created_at')
+    can_invite_staff = request.user.profile.is_admin() or request.user.profile.is_manager()
 
     return render(request, 'school/school_dashboard.html', {
         'staff_profiles': staff_profiles,
         'invites': invites,
         'school_name': school.name,
         'role_choices': Role.CHOICES,
+        'can_invite_staff': can_invite_staff,
     })

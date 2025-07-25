@@ -62,3 +62,7 @@
 .container--edgy {
     border-radius: var(--border-radius-light);
 }
+
+.mb-40 {
+    margin-bottom: 40px;
+}
