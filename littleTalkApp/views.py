@@ -597,10 +597,13 @@ def edit_learner(request, learner_uuid):
             return redirect('profile') 
     else:
         form = LearnerForm(instance=learner, user=request.user)
+    
+    can_delete = request.user.profile.is_admin() or request.user.profile.is_manager()
 
     context = {
         'form': form,
         'learner': learner,
+        'can_delete': can_delete,
     }
     return render(request, 'profile/edit_learner.html', context)
 
@@ -613,6 +616,11 @@ def confirm_delete_learner(request, learner_uuid):
         school=request.user.profile.school,
         deleted=False
     )
+
+    # Restrict delete permissions
+    if not (request.user.profile.is_admin() or request.user.profile.is_manager()):
+        messages.error(request, "You do not have permission to delete learners.")
+        return redirect('profile')
 
     if request.method == 'POST':
         password = request.POST.get('password')
@@ -651,7 +659,7 @@ def cohort_list(request):
 @login_required
 def cohort_create(request):
     if not request.user.profile.is_admin() and not request.user.profile.is_manager():
-        messages.error(request, "You don't have permission to create cohorts.")
+        # messages.error(request, "You don't have permission to create cohorts.")
         return redirect('cohort_list')
 
     if request.method == 'POST':
@@ -670,7 +678,7 @@ def cohort_create(request):
 @login_required
 def cohort_edit(request, cohort_id):
     if not request.user.profile.is_admin() and not request.user.profile.is_manager():
-        messages.error(request, "You don't have permission to edit cohorts.")
+        # messages.error(request, "You don't have permission to edit cohorts.")
         return redirect('cohort_list')
 
     cohort = get_object_or_404(Cohort, id=cohort_id, school=request.user.profile.school)
@@ -689,7 +697,7 @@ def cohort_edit(request, cohort_id):
 @login_required
 def cohort_delete(request, cohort_id):
     if not request.user.profile.is_admin() and not request.user.profile.is_manager():
-        messages.error(request, "You don't have permission to delete cohorts.")
+        # messages.error(request, "You don't have permission to delete cohorts.")
         return redirect('cohort_list')
 
     cohort = get_object_or_404(Cohort, id=cohort_id, school=request.user.profile.school)
