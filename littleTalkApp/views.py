@@ -411,13 +411,22 @@ def delete_log_entry(request, entry_id):
     return JsonResponse({"success": True})
 
 
+@login_required
 def generate_summary(request, learner_id):
-    learner = get_object_or_404(Learner, id=learner_id)
-    log_entries = LogEntry.objects.filter(
-        user=request.user,
-        learner=learner,
-        deleted=False
-    ).order_by("timestamp")
+    learner = get_object_or_404(Learner, id=learner_id, school=request.user.profile.school)
+
+    # Allow broader access if the user is admin or manager
+    if request.user.profile.is_admin() or request.user.profile.is_manager():
+        log_entries = LogEntry.objects.filter(
+            learner=learner,
+            deleted=False
+        ).order_by("timestamp")
+    else:
+        log_entries = LogEntry.objects.filter(
+            user=request.user,
+            learner=learner,
+            deleted=False
+        ).order_by("timestamp")
 
     return render(request, "logbook/log_summary.html", {
         "learner": learner,
