@@ -26,21 +26,29 @@
                     <td>{{ profile.first_name }}</td>
                     <td>{{ profile.user.email }}</td>
                     <td>
-                        {% if request.user.profile.is_admin and not profile.user == request.user %}
-                            <form method="post" style="margin: 0;">
-                                {% csrf_token %}
-                                <input type="hidden" name="user_id" value="{{ profile.user.id }}">
-                                <select name="new_role" onchange="this.form.submit()">
-                                    {% for value, label in role_choices %}
-                                        <option value="{{ value }}" {% if profile.role == value %}selected{% endif %}>
-                                            {{ label }}
-                                        </option>
-                                    {% endfor %}
-                                </select>
-                            </form>
-                        {% else %}
-                            {{ profile.get_role_display }}
-                        {% endif %}
+                        {% with current_user=request.user.profile %}
+                            {% if current_user.is_admin or current_user.is_manager %}
+                                {% if profile.user != request.user and profile.role != 'admin' %}
+                                    <form method="post" style="margin: 0;">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="user_id" value="{{ profile.user.id }}">
+                                        <select name="new_role" onchange="this.form.submit()">
+                                            {% for value, label in role_choices %}
+                                                {% if current_user.is_admin or value != 'admin' %}
+                                                    <option value="{{ value }}" {% if profile.role == value %}selected{% endif %}>
+                                                        {{ label }}
+                                                    </option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                    </form>
+                                {% else %}
+                                    {{ profile.get_role_display }}
+                                {% endif %}
+                            {% else %}
+                                {{ profile.get_role_display }}
+                            {% endif %}
+                        {% endwith %}
                     </td>
                     <td>{{ profile.user.last_login|default:"Never" }}</td>
                 </tr>

@@ -921,10 +921,6 @@ def accept_invite(request, token):
 @login_required
 def school_dashboard(request):
     profile = request.user.profile
-
-    if not profile.is_admin():
-        return redirect('profile')
-
     school = profile.school
 
     if request.method == 'POST':
@@ -933,7 +929,23 @@ def school_dashboard(request):
 
         target_profile = get_object_or_404(Profile, user__id=user_id, school=school)
 
-        if new_role in dict(Role.CHOICES):
+        # Prevent editing own role
+        if target_profile.user == request.user:
+            messages.error(request, "You cannot change your own role.")
+            return redirect('school_dashboard')
+
+        # Prevent changing admins
+        if target_profile.role == Role.ADMIN:
+            messages.error(request, "You cannot change another admin’s role.")
+            return redirect('school_dashboard')
+
+        # Team managers can't assign admin role
+        if profile.is_manager() and new_role == Role.ADMIN:
+            messages.error(request, "Only admins can assign the admin role.")
+            return redirect('school_dashboard')
+
+        # Validate and assign role
+        if new_role in dict(Role.CHOICES).keys():
             target_profile.role = new_role
             target_profile.save()
             messages.success(request, f"{target_profile.first_name}'s role updated to {new_role}.")
