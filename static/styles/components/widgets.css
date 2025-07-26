@@ -58,7 +58,7 @@
 .table-wrapper {
     background-color: white;
     border: 1px solid #ccc;
-    border-radius: 8px;
+    border-radius: var(--border-radius-light);
     overflow: hidden;
 }
 
