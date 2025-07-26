@@ -5,10 +5,10 @@
 {% block content %}
 <h1>{{ school_name }} – Staff Dashboard</h1>
 
-<div class="container-box">
+<div class="container-box container--wide">
     <div class="logbook-header">
         {% if can_invite_staff %}
-            <a href="{% url 'invite_staff' %}" class="btn btn--white">+ Invite Staff</a>
+            <a href="{% url 'invite_staff' %}" class="btn btn--yellow">+ Invite Staff</a>
         {% else %}
             <button class="btn btn--grey" disabled>+ Invite Staff</button>
         {% endif %}

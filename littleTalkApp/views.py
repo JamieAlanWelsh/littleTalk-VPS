@@ -932,6 +932,7 @@ def method(request):
 
 
 def accept_invite(request, token):
+    request.hide_sidebar = True
     invite = get_object_or_404(StaffInvite, token=token)
 
     if invite.used:

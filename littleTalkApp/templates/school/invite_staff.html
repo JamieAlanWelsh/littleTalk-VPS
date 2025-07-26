@@ -2,39 +2,57 @@
 {% block title %}Invite Staff{% endblock %}
 {% block content %}
 
-<h2>Invite Staff</h2>
+<h1>Invite Staff</h1>
 
-<form method="post">
-    {% csrf_token %}
-    <p>
-        {{ form.email.label_tag }}<br>
-        {{ form.email }}
-        {% if form.email.errors %}
-            <div class="error-message">{{ form.email.errors.0 }}</div>
-        {% endif %}
-    </p>
-    <p>
-        {{ form.role.label_tag }}<br>
-        {{ form.role }}
-        {% if form.role.errors %}
-            <div class="error-message">{{ form.role.errors.0 }}</div>
-        {% endif %}
-    </p>
-    <button type="submit" class="btn btn--yellow">Send Invite</button>
-</form>
+<div class="container-box container--wide">
+    <!-- Invite Form -->
+    <form method="post" class="form-stack">
+        {% csrf_token %}
+        <div>
+            <label for="{{ form.email.id_for_label }}" class="label">Email</label>
+            {{ form.email }}
+            {% if form.email.errors %}
+                <p class="error-message">{{ form.email.errors.0 }}</p>
+            {% endif %}
+        </div>
 
-<hr>
+        <div>
+            <label for="{{ form.role.id_for_label }}" class="label">Role</label>
+            {{ form.role }}
+            {% if form.role.errors %}
+                <p class="error-message">{{ form.role.errors.0 }}</p>
+            {% endif %}
+        </div>
 
-<h3>Pending Invites</h3>
-<ul>
-    {% for invite in invites %}
-        <li>
-            {{ invite.email }} — {{ invite.role|capfirst }} — Sent by {{ invite.sent_by.get_full_name|default:invite.sent_by.username }} — {{ invite.created_at|date:"M j, Y H:i" }}
-            {% if invite.used %}(Used){% else %}(Pending){% endif %}
-        </li>
-    {% empty %}
-        <li>No invites yet.</li>
-    {% endfor %}
-</ul>
+        <button type="submit" class="btn btn--yellow">Send Invite</button>
+    </form>
+
+    <!-- Pending Invites -->
+    <h3 style="margin-top: 2em;">Pending Invites</h3>
+    <div class="table-wrapper">
+        <table class="dashboard-table">
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Sent By</th>
+                    <th>Sent</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for invite in invites %}
+                    <tr>
+                        <td>{{ invite.email }}</td>
+                        <td>{{ invite.role|capfirst }}</td>
+                        <td>{{ invite.sent_by.get_full_name|default:invite.sent_by.username }}</td>
+                        <td>{{ invite.created_at|date:"M j, Y H:i" }}</td>
+                    </tr>
+                {% empty %}
+                    <tr><td colspan="5">No invites yet.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 
 {% endblock %}
