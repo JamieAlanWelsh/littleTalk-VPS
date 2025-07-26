@@ -3,85 +3,89 @@
 {% load static %}
 
 {% block content %}
-<div class="login-container">
-    <h2>{{ school_name }} – Staff Dashboard</h2>
+<h1>{{ school_name }} – Staff Dashboard</h1>
 
-    <p>
+<div class="container-box">
+    <div class="logbook-header">
         {% if can_invite_staff %}
-            <a href="{% url 'invite_staff' %}" class="btn btn--yellow">Invite Staff</a>
+            <a href="{% url 'invite_staff' %}" class="btn btn--white">+ Invite Staff</a>
         {% else %}
-            <button class="btn btn--grey" disabled>Invite Staff (Restricted)</button>
+            <button class="btn btn--grey" disabled>+ Invite Staff</button>
         {% endif %}
-    <p>
 
-    <p><a href="{% url 'cohort_list' %}" class="btn btn--yellow">Manage Cohorts</a><p>
-
+        <a href="{% url 'cohort_list' %}" class="btn btn--white">Manage Cohorts</a>
+    </div>
+    
     <h3>Staff Members</h3>
-    <table class="dashboard-table">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Role</th>
-                <th>Last Login</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for profile in staff_profiles %}
+    <div class="table-wrapper">
+        <table class="dashboard-table">
+            <thead>
                 <tr>
-                    <td>{{ profile.first_name }}</td>
-                    <td>{{ profile.user.email }}</td>
-                    <td>
-                        {% with current_user=request.user.profile %}
-                            {% if current_user.is_admin or current_user.is_manager %}
-                                {% if profile.user != request.user and profile.role != 'admin' %}
-                                    <form method="post" style="margin: 0;">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="user_id" value="{{ profile.user.id }}">
-                                        <select name="new_role" onchange="this.form.submit()">
-                                            {% for value, label in role_choices %}
-                                                {% if current_user.is_admin or value != 'admin' %}
-                                                    <option value="{{ value }}" {% if profile.role == value %}selected{% endif %}>
-                                                        {{ label }}
-                                                    </option>
-                                                {% endif %}
-                                            {% endfor %}
-                                        </select>
-                                    </form>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Last Login</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for profile in staff_profiles %}
+                    <tr>
+                        <td>{{ profile.first_name }}</td>
+                        <td>{{ profile.user.email }}</td>
+                        <td>
+                            {% with current_user=request.user.profile %}
+                                {% if current_user.is_admin or current_user.is_manager %}
+                                    {% if profile.user != request.user and profile.role != 'admin' %}
+                                        <form method="post" style="margin: 0;">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="user_id" value="{{ profile.user.id }}">
+                                            <select name="new_role" onchange="this.form.submit()">
+                                                {% for value, label in role_choices %}
+                                                    {% if current_user.is_admin or value != 'admin' %}
+                                                        <option value="{{ value }}" {% if profile.role == value %}selected{% endif %}>
+                                                            {{ label }}
+                                                        </option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </form>
+                                    {% else %}
+                                        {{ profile.get_role_display }}
+                                    {% endif %}
                                 {% else %}
                                     {{ profile.get_role_display }}
                                 {% endif %}
-                            {% else %}
-                                {{ profile.get_role_display }}
-                            {% endif %}
-                        {% endwith %}
-                    </td>
-                    <td>{{ profile.user.last_login|default:"Never" }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                            {% endwith %}
+                        </td>
+                        <td>{{ profile.user.last_login|default:"Never" }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
     <h3 style="margin-top: 2em;">Pending Invites</h3>
-    <table class="dashboard-table">
-        <thead>
-            <tr>
-                <th>Email</th>
-                <th>Role</th>
-                <th>Sent</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for invite in invites %}
+    <div class="table-wrapper">
+        <table class="dashboard-table">
+            <thead>
                 <tr>
-                    <td>{{ invite.email }}</td>
-                    <td>{{ invite.role|capfirst }}</td>
-                    <td>{{ invite.created_at|date:"M j, Y" }}</td>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Sent</th>
                 </tr>
-            {% empty %}
-                <tr><td colspan="3">No pending invites.</td></tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                {% for invite in invites %}
+                    <tr>
+                        <td>{{ invite.email }}</td>
+                        <td>{{ invite.role|capfirst }}</td>
+                        <td>{{ invite.created_at|date:"M j, Y" }}</td>
+                    </tr>
+                {% empty %}
+                    <tr><td colspan="3">No pending invites.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 {% endblock %}

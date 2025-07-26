@@ -67,6 +67,12 @@
     color: white;
 }
 
+.btn--border {
+    border: 2px solid var(--font-color);
+    border-radius: 20px;
+    box-shadow: none;
+}
+
 .btn--hover-font-color:hover {
     background-color: var(--font-color);
     color: white;
