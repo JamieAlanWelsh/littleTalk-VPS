@@ -73,6 +73,9 @@
                     <th>Role</th>
                     <th>Sent By</th>
                     <th>Sent</th>
+                    {% if can_invite_staff %}
+                        <th>Actions</th>
+                    {% endif %}
                 </tr>
             </thead>
             <tbody>
@@ -82,9 +85,19 @@
                         <td>{{ invite.role|capfirst }}</td>
                         <td>{{ invite.sent_by.get_full_name|default:invite.sent_by.username }}</td>
                         <td>{{ invite.created_at|date:"M j, Y" }}</td>
+                        {% if can_invite_staff %}
+                            <td>
+                                <form method="post" style="display:inline;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="invite_id" value="{{ invite.id }}">
+                                    <button type="submit" name="resend_invite" class="btn btn--white small-btn">Resend</button>
+                                    <button type="submit" name="withdraw_invite" class="btn btn--white small-btn">Withdraw</button>
+                                </form>
+                            </td>
+                        {% endif %}
                     </tr>
                 {% empty %}
-                    <tr><td colspan="3">No pending invites.</td></tr>
+                    <tr><td colspan="5">No pending invites.</td></tr>
                 {% endfor %}
             </tbody>
         </table>

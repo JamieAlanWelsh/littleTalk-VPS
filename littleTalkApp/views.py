@@ -7,6 +7,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.middleware.csrf import get_token
 from django.http import HttpResponse
+from django.utils import timezone
 
 # Django auth
 from django.contrib.auth import login, authenticate, update_session_auth_hash
@@ -56,7 +57,7 @@ from .assessment_qs import QUESTIONS, RECOMMENDATIONS
 from collections import defaultdict
 import json
 
-from .utilites import can_edit_or_delete_log
+from .utilites import can_edit_or_delete_log, send_invite_email
 
 
 def home(request):
@@ -828,20 +829,7 @@ def invite_staff(request):
             invite.sent_by = request.user
             invite.save()
 
-            invite_url = request.build_absolute_uri(f"/accept-invite/{invite.token}/")
-
-            send_mail(
-                subject=f"You're invited to join {school.name} on Chatterdillo",
-                message=(
-                    f"Hi there!\n\nYou've been invited to join {school.name} on Chatterdillo.\n\n"
-                    f"Click the link below to set up your account:\n{invite_url}\n\n"
-                    f"This invite will expire in 7 days.\n\n"
-                    f"If you weren’t expecting this email, feel free to ignore it."
-                ),
-                from_email='noreply@chatterdillo.com',
-                recipient_list=[invite.email],
-                fail_silently=False,
-            )
+            send_invite_email(invite, school, request)
 
             messages.success(request, f"Invite sent to {invite.email}")
 
@@ -933,14 +921,17 @@ def method(request):
 
 def accept_invite(request, token):
     request.hide_sidebar = True
-    invite = get_object_or_404(StaffInvite, token=token)
+    
+    # Only get invites that are active, not used, not withdrawn, and not expired
+    invite = get_object_or_404(
+        StaffInvite,
+        token=token,
+        used=False,
+        withdrawn=False,
+        expires_at__gt=timezone.now()
+    )
 
-    if invite.used:
-        return render(request, 'school/invite_expired.html', {'reason': 'This invite link has already been used.'})
-
-    if invite.is_expired():
-        return render(request, 'school/invite_expired.html', {'reason': 'This invite link has expired.'})
-
+    # Additional protection in case of an existing account
     if User.objects.filter(username=invite.email).exists():
         return render(request, 'school/invite_expired.html', {
             'reason': 'An account with this email already exists. Please log in or contact support.'
@@ -987,39 +978,48 @@ def school_dashboard(request):
     school = profile.school
 
     if request.method == 'POST':
-        user_id = request.POST.get('user_id')
-        new_role = request.POST.get('new_role')
+        if 'user_id' in request.POST and 'new_role' in request.POST:
+            # Update user role logic
+            user_id = request.POST.get('user_id')
+            new_role = request.POST.get('new_role')
 
-        target_profile = get_object_or_404(Profile, user__id=user_id, school=school)
+            target_profile = get_object_or_404(Profile, user__id=user_id, school=school)
 
-        # Prevent editing own role
-        if target_profile.user == request.user:
-            messages.error(request, "You cannot change your own role.")
+            if target_profile.user == request.user:
+                messages.error(request, "You cannot change your own role.")
+            elif target_profile.role == Role.ADMIN:
+                messages.error(request, "You cannot change another admin’s role.")
+            elif profile.is_manager() and new_role == Role.ADMIN:
+                messages.error(request, "Only admins can assign the admin role.")
+            elif new_role in dict(Role.CHOICES).keys():
+                target_profile.role = new_role
+                target_profile.save()
+                messages.success(request, f"{target_profile.first_name}'s role updated to {new_role}.")
+            else:
+                messages.error(request, "Invalid role selected.")
             return redirect('school_dashboard')
 
-        # Prevent changing admins
-        if target_profile.role == Role.ADMIN:
-            messages.error(request, "You cannot change another admin’s role.")
+        elif 'resend_invite' in request.POST:
+            invite_id = request.POST.get('invite_id')
+            invite = get_object_or_404(StaffInvite, id=invite_id, school=school, used=False, withdrawn=False)
+
+            # Send invite again
+            send_invite_email(invite, school, request)
+            messages.success(request, f"Invite resent to {invite.email}.")
             return redirect('school_dashboard')
 
-        # Team managers can't assign admin role
-        if profile.is_manager() and new_role == Role.ADMIN:
-            messages.error(request, "Only admins can assign the admin role.")
+        elif 'withdraw_invite' in request.POST:
+            invite_id = request.POST.get('invite_id')
+            invite = get_object_or_404(StaffInvite, id=invite_id, school=school, used=False, withdrawn=False)
+
+            invite.withdrawn = True
+            invite.save()
+            messages.success(request, f"Invite to {invite.email} withdrawn.")
             return redirect('school_dashboard')
-
-        # Validate and assign role
-        if new_role in dict(Role.CHOICES).keys():
-            target_profile.role = new_role
-            target_profile.save()
-            messages.success(request, f"{target_profile.first_name}'s role updated to {new_role}.")
-        else:
-            messages.error(request, "Invalid role selected.")
-
-        return redirect('school_dashboard')
 
     staff_profiles = Profile.objects.filter(school=school).select_related('user')
-    invites = StaffInvite.objects.filter(school=school, used=False).order_by('-created_at')
-    can_invite_staff = request.user.profile.is_admin() or request.user.profile.is_manager()
+    invites = StaffInvite.objects.filter(school=school, used=False, withdrawn=False, expires_at__gt=timezone.now()).order_by('-created_at')
+    can_invite_staff = profile.is_admin() or profile.is_manager()
 
     return render(request, 'school/school_dashboard.html', {
         'staff_profiles': staff_profiles,
