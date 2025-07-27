@@ -921,21 +921,18 @@ def method(request):
 
 def accept_invite(request, token):
     request.hide_sidebar = True
-    
-    # Only get invites that are active, not used, not withdrawn, and not expired
-    invite = get_object_or_404(
-        StaffInvite,
-        token=token,
-        used=False,
-        withdrawn=False,
-        expires_at__gt=timezone.now()
-    )
 
-    # Additional protection in case of an existing account
+    try:
+        invite = StaffInvite.objects.get(token=token)
+    except StaffInvite.DoesNotExist:
+        return redirect('/')  # Invalid token
+
+    # Redirect if already used, expired, or withdrawn
+    if invite.used or invite.withdrawn or invite.expires_at < timezone.now():
+        return redirect('/')
+
     if User.objects.filter(username=invite.email).exists():
-        return render(request, 'school/invite_expired.html', {
-            'reason': 'An account with this email already exists. Please log in or contact support.'
-        })
+        return redirect('/')
 
     if request.method == 'POST':
         form = AcceptInviteForm(request.POST)
@@ -944,12 +941,10 @@ def accept_invite(request, token):
             password = form.cleaned_data['password']
             full_name = form.cleaned_data['full_name']
 
-            # Create user
             user = User.objects.create_user(username=email, email=email, password=password)
             user.first_name = full_name
             user.save()
 
-            # Create profile and link to school
             Profile.objects.create(
                 user=user,
                 first_name=full_name,
@@ -961,7 +956,7 @@ def accept_invite(request, token):
             invite.save()
 
             login(request, user)
-            return redirect('profile')  # or dashboard
+            return redirect('profile')
     else:
         form = AcceptInviteForm()
 
