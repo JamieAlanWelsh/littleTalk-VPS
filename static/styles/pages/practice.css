@@ -49,6 +49,7 @@
 .exercise-image img {
     width: 80px;
     height: 80px;
+    border: 1.5px solid #ccc;
     border-radius: var(--border-radius-light);
     margin-right: 20px;
     box-shadow: var(--box-shadow);

@@ -12,7 +12,8 @@
     text-align: center; /* Center text within buttons */
     font-size: 1.2rem;
     padding: 10px 20px;
-    border: 1px solid transparent;
+    /* border: 1px solid transparent; */
+    border: 1.5px solid #ccc;
     color: var(--font-color);
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
@@ -25,7 +26,7 @@
 }
 
 .btn--white { 
-    background-color: white; 
+    background-color: white;
 }
 
 .btn--white:hover { 
