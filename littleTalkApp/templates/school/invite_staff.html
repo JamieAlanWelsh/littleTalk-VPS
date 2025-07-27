@@ -35,8 +35,8 @@
         <button type="submit" class="btn btn--yellow">Send Invite</button>
     </form>
 
-    <!-- Pending Invites -->
-    <h3 style="margin-top: 2em;">Pending Invites</h3>
+    <!-- Invite History -->
+    <h3 style="margin-top: 2em;">Invite History</h3>
     <div class="table-wrapper">
         <table class="dashboard-table">
             <thead>
@@ -45,6 +45,7 @@
                     <th>Role</th>
                     <th>Sent By</th>
                     <th>Sent</th>
+                    <th>Status</th>
                 </tr>
             </thead>
             <tbody>
@@ -53,7 +54,18 @@
                         <td>{{ invite.email }}</td>
                         <td>{{ invite.role|capfirst }}</td>
                         <td>{{ invite.sent_by.get_full_name|default:invite.sent_by.username }}</td>
-                        <td>{{ invite.created_at|date:"M j, Y H:i" }}</td>
+                        <td>{{ invite.created_at|date:"M j, Y" }}</td>
+                        <td>
+                            {% if invite.used %}
+                                Accepted
+                            {% elif invite.withdrawn %}
+                                Withdrawn
+                            {% elif invite.expires_at and invite.expires_at < now %}
+                                Expired
+                            {% else %}
+                                Pending
+                            {% endif %}
+                        </td>
                     </tr>
                 {% empty %}
                     <tr><td colspan="5">No invites yet.</td></tr>

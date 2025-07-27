@@ -71,7 +71,6 @@
                 <tr>
                     <th>Email</th>
                     <th>Role</th>
-                    <th>Sent By</th>
                     <th>Sent</th>
                     {% if can_invite_staff %}
                         <th>Actions</th>
@@ -83,7 +82,6 @@
                     <tr>
                         <td>{{ invite.email }}</td>
                         <td>{{ invite.role|capfirst }}</td>
-                        <td>{{ invite.sent_by.get_full_name|default:invite.sent_by.username }}</td>
                         <td>{{ invite.created_at|date:"M j, Y" }}</td>
                         {% if can_invite_staff %}
                             <td>

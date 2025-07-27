@@ -819,7 +819,9 @@ def invite_staff(request):
         return redirect('school_dashboard')
 
     school = request.user.profile.school
-    invites = StaffInvite.objects.filter(school=school).order_by('-created_at')
+
+    # Get last 20 invites for the audit trail
+    invites = StaffInvite.objects.filter(school=school).order_by('-created_at')[:20]
 
     if request.method == 'POST':
         form = StaffInviteForm(request.POST, school=school, user=request.user)
@@ -832,7 +834,6 @@ def invite_staff(request):
             send_invite_email(invite, school, request)
 
             messages.success(request, f"Invite sent to {invite.email}")
-
             return redirect('invite_staff')
     else:
         form = StaffInviteForm(user=request.user, school=school)
@@ -840,6 +841,7 @@ def invite_staff(request):
     return render(request, 'school/invite_staff.html', {
         'form': form,
         'invites': invites,
+        'now': timezone.now(),
     })
 
 # API VIEWS
@@ -1013,7 +1015,11 @@ def school_dashboard(request):
             return redirect('school_dashboard')
 
     staff_profiles = Profile.objects.filter(school=school).select_related('user')
-    invites = StaffInvite.objects.filter(school=school, used=False, withdrawn=False, expires_at__gt=timezone.now()).order_by('-created_at')
+    invites = StaffInvite.objects.filter(
+        school=school,
+        used=False,
+        withdrawn=False
+    ).order_by('-created_at')[:10]
     can_invite_staff = profile.is_admin() or profile.is_manager()
 
     return render(request, 'school/school_dashboard.html', {
