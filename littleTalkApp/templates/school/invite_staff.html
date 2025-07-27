@@ -51,10 +51,12 @@
             <tbody>
                 {% for invite in invites %}
                     <tr>
-                        <td>{{ invite.email }}</td>
-                        <td>{{ invite.role|capfirst }}</td>
-                        <td>{{ invite.sent_by.get_full_name|default:invite.sent_by.username }}</td>
-                        <td>{{ invite.created_at|date:"M j, Y" }}</td>
+                        <td title="{{ invite.email }}">{{ invite.email }}</td>
+                        <td title="{{ invite.role|capfirst }}">{{ invite.role|capfirst }}</td>
+                        <td title="{{ invite.sent_by.get_full_name|default:invite.sent_by.username }}">
+                            {{ invite.sent_by.get_full_name|default:invite.sent_by.username }}
+                        </td>
+                        <td title="{{ invite.created_at|date:'M j, Y H:i' }}">{{ invite.created_at|date:"M j, Y" }}</td>
                         <td>
                             {% if invite.used %}
                                 Accepted

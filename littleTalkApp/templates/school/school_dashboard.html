@@ -30,9 +30,9 @@
             <tbody>
                 {% for profile in staff_profiles %}
                     <tr>
-                        <td>{{ profile.first_name }}</td>
-                        <td>{{ profile.user.email }}</td>
-                        <td>
+                        <td title="{{ profile.first_name }}">{{ profile.first_name }}</td>
+                        <td title="{{ profile.user.email }}">{{ profile.user.email }}</td>
+                        <td title="{{ profile.get_role_display }}">
                             {% with current_user=request.user.profile %}
                                 {% if current_user.is_admin or current_user.is_manager %}
                                     {% if profile.user != request.user and profile.role != 'admin' %}
@@ -57,7 +57,9 @@
                                 {% endif %}
                             {% endwith %}
                         </td>
-                        <td>{{ profile.user.last_login|default:"Never" }}</td>
+                        <td title="{{ profile.user.last_login|default:"Never" }}">
+                            {{ profile.user.last_login|default:"Never" }}
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -80,9 +82,9 @@
             <tbody>
                 {% for invite in invites %}
                     <tr>
-                        <td>{{ invite.email }}</td>
-                        <td>{{ invite.role|capfirst }}</td>
-                        <td>{{ invite.created_at|date:"M j, Y" }}</td>
+                        <td title="{{ invite.email }}">{{ invite.email }}</td>
+                        <td title="{{ invite.role|capfirst }}">{{ invite.role|capfirst }}</td>
+                        <td title="{{ invite.created_at|date:'M j, Y H:i' }}">{{ invite.created_at|date:"M j, Y" }}</td>
                         {% if can_invite_staff %}
                             <td>
                                 <form method="post" style="display:inline;">
