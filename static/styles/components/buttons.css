@@ -95,6 +95,13 @@
     font-size: 1rem; 
 }
 
+.btn--table {
+    font-size: 0.9rem;
+    padding: 5px;
+    text-align: left;
+    width: auto;
+}
+
 .btn--large {
     font-size: 1.4rem;
     padding: 15px 60px;

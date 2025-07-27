@@ -90,8 +90,8 @@
                                 <form method="post" style="display:inline;">
                                     {% csrf_token %}
                                     <input type="hidden" name="invite_id" value="{{ invite.id }}">
-                                    <button type="submit" name="resend_invite" class="btn btn--white small-btn">Resend</button>
-                                    <button type="submit" name="withdraw_invite" class="btn btn--white small-btn">Withdraw</button>
+                                    <button type="submit" name="resend_invite" class="btn btn--invisible btn--table">Resend</button>
+                                    <button type="submit" name="withdraw_invite" class="btn btn--invisible btn--table">Withdraw</button>
                                 </form>
                             </td>
                         {% endif %}
