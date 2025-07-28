@@ -822,9 +822,6 @@ def invite_staff(request):
 
     school = request.user.profile.school
 
-    # Get last 20 invites for the audit trail
-    invites = StaffInvite.objects.filter(school=school).order_by('-created_at')[:20]
-
     if request.method == 'POST':
         form = StaffInviteForm(request.POST, school=school, user=request.user)
         if form.is_valid():
@@ -842,8 +839,6 @@ def invite_staff(request):
 
     return render(request, 'school/invite_staff.html', {
         'form': form,
-        'invites': invites,
-        'now': timezone.now(),
     })
 
 # API VIEWS
@@ -906,12 +901,15 @@ def send_support_email(request):
             subject='Support Request - LittleTalk',
             message=full_message,
             from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=['jw.jamiewelsh@gmail.com'],  # Change to your support email
+            recipient_list=['jw.jamiewelsh@gmail.com'],  # Update to official support address
             fail_silently=False,
         )
-        return render(request, 'support.html', {'message_sent': True})
-    
+
+        messages.success(request, "Your message has been sent. We'll get back to you shortly.")
+        return redirect('support')  # Redirect to avoid resubmission on refresh
+
     return redirect('support')
+
 
 def tips(request):
     return render(request, 'tips.html', {})

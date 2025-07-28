@@ -6,11 +6,11 @@
 {% block content %}
 <!-- Learner not Selected -->
 {% if learner_selected != True %}
-    <h1>Welcome to the practise section! 👩‍🏫</h1>
-    <div class="container-box">
+    <h1>Welcome to the practise section!</h1>
+    <div class="container-box container--short">
         <p>Here, you will be able to access exercises and information to use on your learning journey.</p>
         <p>To get started, add or select a learner in the profile section and come back!</p>
-        <a href="{% url 'profile' %}" class="btn btn--white btn--full" style="width: 250px; text-align: center;">Go to Profile</a>
+        <a href="{% url 'profile' %}" class="btn btn--white btn--full">Go to Learner Selection</a>
     </div>
 <!-- Learner Selected -->
 {% else %}

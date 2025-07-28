@@ -32,6 +32,17 @@
 
 </head>
 <body>
+    {% if messages %}
+        <div class="message-container">
+            {% for message in messages %}
+                <div class="message-bar {{ message.tags }}">
+                    {{ message }}
+                    <span class="message-close" onclick="this.parentElement.style.display='none';">&times;</span>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
     <div class="layout {% if not hide_sidebar %}with-sidebar{% endif %}">
         {% if not hide_sidebar %}
             <!-- Sidebar / Bottom Navigation -->
@@ -91,3 +102,26 @@
     </div>
 </body>
 </html>
+
+{% comment %} slidey error bar {% endcomment %}
+<script>
+    window.addEventListener('load', () => {
+        const toast = document.querySelector('.message-container');
+
+        if (toast) {
+            toast.classList.add('show');
+
+            // Hide after 4s
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 4000);
+        }
+
+        const closeBtn = document.querySelector('.message-close');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                toast.classList.remove('show');
+            });
+        }
+    });
+</script>

@@ -37,13 +37,6 @@
         <button type="submit" class="btn btn--grey btn--small mb-40" id="password-save-btn" disabled>Save Changes</button>
     </form>
 
-    <!-- Display Messages -->
-    {% if messages %}
-        {% for message in messages %}
-            <p class="message">{{ message }}</p>
-        {% endfor %}
-    {% endif %}
-
     <!-- Logout Form (POST request) -->
     <form method="post" action="{% url 'logout' %}" class="logout-form">
         {% csrf_token %}
