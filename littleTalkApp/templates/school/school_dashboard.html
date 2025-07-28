@@ -9,11 +9,9 @@
     <div class="logbook-header">
         {% if can_invite_staff %}
             <a href="{% url 'invite_staff' %}" class="btn btn--yellow">+ Invite Staff</a>
-        {% else %}
-            <button class="btn btn--grey" disabled>+ Invite Staff</button>
+            <a href="{% url 'invite_staff' %}" class="btn btn--white">Audit Trail</a>
+            <a href="{% url 'cohort_list' %}" class="btn btn--white">Manage Cohorts</a>
         {% endif %}
-
-        <a href="{% url 'cohort_list' %}" class="btn btn--white">Manage Cohorts</a>
     </div>
     
     <h3>Staff Members</h3>
@@ -66,6 +64,45 @@
         </table>
     </div>
 
+    {% if can_invite_staff %}
+        <h3 style="margin-top: 2em;">Pending Join Requests</h3>
+        <div class="table-wrapper">
+            <table class="dashboard-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Requested</th>
+                        {% if can_invite_staff %}
+                            <th>Actions</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for request in join_requests %}
+                        <tr>
+                            <td title="{{ request.full_name }}">{{ request.full_name }}</td>
+                            <td title="{{ request.email }}">{{ request.email }}</td>
+                            <td title="{{ request.created_at|date:'M j, Y H:i' }}">{{ request.created_at|date:"M j, Y" }}</td>
+                            {% if can_invite_staff %}
+                                <td>
+                                    <form method="post" style="display:inline;">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="join_request_id" value="{{ request.id }}">
+                                        <button type="submit" name="approve_join_request" class="btn btn--invisible btn--table">Approve</button>
+                                        <button type="submit" name="reject_join_request" class="btn btn--invisible btn--table">Reject</button>
+                                    </form>
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% empty %}
+                        <tr><td colspan="4">No pending join requests.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+
     <h3 style="margin-top: 2em;">Pending Invites</h3>
     <div class="table-wrapper">
         <table class="dashboard-table">
@@ -103,4 +140,5 @@
         </table>
     </div>
 </div>
+
 {% endblock %}

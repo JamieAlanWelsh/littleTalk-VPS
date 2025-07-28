@@ -146,7 +146,6 @@ class JoinRequest(models.Model):
     full_name = models.CharField(max_length=255)
     email = models.EmailField()
     school = models.ForeignKey(School, on_delete=models.CASCADE)
-    message = models.TextField(blank=True)
     status = models.CharField(max_length=10, choices=Status.choices, default=Status.PENDING)
     created_at = models.DateTimeField(auto_now_add=True)
     resolved_at = models.DateTimeField(null=True, blank=True)

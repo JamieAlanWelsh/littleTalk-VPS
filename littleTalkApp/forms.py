@@ -301,10 +301,7 @@ class AcceptInviteForm(forms.Form):
 class JoinRequestForm(forms.ModelForm):
     class Meta:
         model = JoinRequest
-        fields = ['full_name', 'email', 'school', 'message']
-        widgets = {
-            'message': forms.Textarea(attrs={'rows': 3}),
-        }
+        fields = ['full_name', 'email', 'school']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

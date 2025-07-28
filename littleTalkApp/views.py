@@ -45,6 +45,7 @@ from .models import (
     School,
     StaffInvite,
     Role,
+    JoinRequest,
 )
 
 # Local app: serializers
@@ -1015,13 +1016,45 @@ def school_dashboard(request):
             messages.success(request, f"Invite to {invite.email} withdrawn.")
             return redirect('school_dashboard')
 
+        elif 'approve_join_request' in request.POST or 'reject_join_request' in request.POST:
+            join_request_id = request.POST.get('join_request_id')
+            join_request = get_object_or_404(JoinRequest, id=join_request_id, school=school, status='pending')
+
+            if 'approve_join_request' in request.POST:
+                # Create invite on approval
+                invite = StaffInvite.objects.create(
+                    email=join_request.email,
+                    role='staff',  # Default role, or use join_request.preferred_role if you add that
+                    school=school,
+                    sent_by=request.user
+                )
+                send_invite_email(invite, school, request)
+                join_request.status = 'accepted'
+                messages.success(request, f"Join request from {join_request.full_name} approved and invite sent.")
+            else:
+                join_request.status = 'rejected'
+                messages.info(request, f"Join request from {join_request.full_name} was rejected.")
+
+            join_request.resolved_by = request.user
+            join_request.resolved_at = timezone.now()
+            join_request.save()
+            return redirect('school_dashboard')
+
     staff_profiles = Profile.objects.filter(school=school).select_related('user')
     invites = StaffInvite.objects.filter(
         school=school,
         used=False,
         withdrawn=False
     ).order_by('-created_at')[:10]
+
+    # Only admins and managers can see join requests
     can_invite_staff = profile.is_admin() or profile.is_manager()
+    join_requests = []
+    if can_invite_staff:
+        join_requests = JoinRequest.objects.filter(
+            school=school,
+            status='pending'
+        ).order_by('-created_at')[:10]
 
     return render(request, 'school/school_dashboard.html', {
         'staff_profiles': staff_profiles,
@@ -1029,7 +1062,9 @@ def school_dashboard(request):
         'school_name': school.name,
         'role_choices': Role.CHOICES,
         'can_invite_staff': can_invite_staff,
+        'join_requests': join_requests, 
     })
+
 
 def request_join_school(request):
     request.hide_sidebar = True
