@@ -10,6 +10,7 @@
     width: 40px;
     height: 40px;
     background-color: white;
+    border: 1.5px solid #ccc;
     border-radius: 50%;
     text-decoration: none;
     color: var(--font-color);
@@ -58,7 +59,7 @@
 
 .table-wrapper {
     background-color: white;
-    border: 1px solid #ccc;
+    border: 1.5px solid #ccc;
     border-radius: var(--border-radius-light);
     overflow: hidden;
 }

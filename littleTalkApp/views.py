@@ -32,6 +32,7 @@ from .forms import (
     SchoolSignupForm,
     StaffInviteForm,
     AcceptInviteForm,
+    JoinRequestForm,
 )
 
 # Local app: models
@@ -1028,4 +1029,19 @@ def school_dashboard(request):
         'school_name': school.name,
         'role_choices': Role.CHOICES,
         'can_invite_staff': can_invite_staff,
+    })
+
+def request_join_school(request):
+    request.hide_sidebar = True
+    if request.method == 'POST':
+        form = JoinRequestForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Your request has been submitted. An admin will review it shortly. If approved, you will receive an invite via E-Mail")
+            return redirect('request_join_school')  # or somewhere else
+    else:
+        form = JoinRequestForm()
+
+    return render(request, 'school/request_join_school.html', {
+        'form': form
     })

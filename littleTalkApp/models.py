@@ -135,3 +135,22 @@ class StaffInvite(models.Model):
 
     def __str__(self):
         return f"Invite to {self.email} for {self.school.name}"
+
+
+class JoinRequest(models.Model):
+    class Status(models.TextChoices):
+        PENDING = 'pending', 'Pending'
+        APPROVED = 'approved', 'Approved'
+        REJECTED = 'rejected', 'Rejected'
+
+    full_name = models.CharField(max_length=255)
+    email = models.EmailField()
+    school = models.ForeignKey(School, on_delete=models.CASCADE)
+    message = models.TextField(blank=True)
+    status = models.CharField(max_length=10, choices=Status.choices, default=Status.PENDING)
+    created_at = models.DateTimeField(auto_now_add=True)
+    resolved_at = models.DateTimeField(null=True, blank=True)
+    resolved_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name='handled_join_requests')
+
+    def __str__(self):
+        return f"{self.full_name} ({self.email}) → {self.school.name} [{self.status}]"

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Request to Join a School{% endblock %}
+
+{% block content %}
+<h1>Request to Join a School</h1>
+
+<div class="container-box container--short">
+    <form method="post" class="form-stack">
+        {% csrf_token %}
+        {% for field in form %}
+            <div>
+                <label for="{{ field.id_for_label }}" class="label">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                    <p class="error-message">{{ field.errors.0 }}</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn btn--yellow btn--full">Submit Request</button>
+    </form>
+</div>
+{% endblock %}

@@ -4,6 +4,8 @@ from .models import Learner
 from .models import Cohort
 from .models import StaffInvite
 from .models import Role
+from .models import JoinRequest
+from .models import School
 from django.contrib.auth.forms import AuthenticationForm
 from .models import LogEntry
 import re
@@ -294,3 +296,17 @@ class AcceptInviteForm(forms.Form):
         if len(password) < 6:
             raise forms.ValidationError("Password must be at least 6 characters.")
         return password
+
+
+class JoinRequestForm(forms.ModelForm):
+    class Meta:
+        model = JoinRequest
+        fields = ['full_name', 'email', 'school', 'message']
+        widgets = {
+            'message': forms.Textarea(attrs={'rows': 3}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Optional: limit to active schools, alphabetize
+        self.fields['school'].queryset = School.objects.order_by('name')
