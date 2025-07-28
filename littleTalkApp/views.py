@@ -1080,3 +1080,20 @@ def request_join_school(request):
     return render(request, 'school/request_join_school.html', {
         'form': form
     })
+
+
+@login_required
+def invite_audit_trail(request):
+    if not request.user.profile.is_admin() and not request.user.profile.is_manager():
+        return redirect('school_dashboard')
+
+    school = request.user.profile.school
+
+    invites = StaffInvite.objects.filter(school=school).select_related('sent_by').order_by('-created_at')[:50]
+    join_requests = JoinRequest.objects.filter(school=school).select_related('resolved_by').order_by('-created_at')[:50]
+
+    return render(request, 'school/invite_audit_trail.html', {
+        'invites': invites,
+        'join_requests': join_requests,
+        'now': timezone.now(),
+    })

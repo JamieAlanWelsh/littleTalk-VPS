@@ -9,7 +9,7 @@
     <div class="logbook-header">
         {% if can_invite_staff %}
             <a href="{% url 'invite_staff' %}" class="btn btn--yellow">+ Invite Staff</a>
-            <a href="{% url 'invite_staff' %}" class="btn btn--white">Audit Trail</a>
+            <a href="{% url 'invite_audit_trail' %}" class="btn btn--white">Audit Trail</a>
             <a href="{% url 'cohort_list' %}" class="btn btn--white">Manage Cohorts</a>
         {% endif %}
     </div>

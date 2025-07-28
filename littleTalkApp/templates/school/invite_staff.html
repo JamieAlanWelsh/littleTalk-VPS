@@ -4,7 +4,7 @@
 
 <h1>Invite Staff</h1>
 
-<div class="container-box container--wide pt-70">
+<div class="container-box container--short pt-70">
     <!-- Back arrow button -->
     <a href="{% url 'school_dashboard' %}" class="back-arrow">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon">
@@ -32,49 +32,8 @@
             {% endif %}
         </div>
 
-        <button type="submit" class="btn btn--yellow">Send Invite</button>
+        <button type="submit" class="btn btn--yellow btn--full">Send Invite</button>
     </form>
-
-    <!-- Invite History -->
-    <h3 style="margin-top: 2em;">Invite History</h3>
-    <div class="table-wrapper">
-        <table class="dashboard-table">
-            <thead>
-                <tr>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Sent By</th>
-                    <th>Sent</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for invite in invites %}
-                    <tr>
-                        <td title="{{ invite.email }}">{{ invite.email }}</td>
-                        <td title="{{ invite.role|capfirst }}">{{ invite.role|capfirst }}</td>
-                        <td title="{{ invite.sent_by.get_full_name|default:invite.sent_by.username }}">
-                            {{ invite.sent_by.get_full_name|default:invite.sent_by.username }}
-                        </td>
-                        <td title="{{ invite.created_at|date:'M j, Y H:i' }}">{{ invite.created_at|date:"M j, Y" }}</td>
-                        <td>
-                            {% if invite.used %}
-                                Accepted
-                            {% elif invite.withdrawn %}
-                                Withdrawn
-                            {% elif invite.expires_at and invite.expires_at < now %}
-                                Expired
-                            {% else %}
-                                Pending
-                            {% endif %}
-                        </td>
-                    </tr>
-                {% empty %}
-                    <tr><td colspan="5">No invites yet.</td></tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
 </div>
 
 {% endblock %}

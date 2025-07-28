@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}Invite & Join Request Audit Trail{% endblock %}
+{% block content %}
+
+<h1>Invite & Join Request History</h1>
+
+<div class="container-box container--wide pt-70">
+    <!-- Back -->
+    <a href="{% url 'school_dashboard' %}" class="back-arrow">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+    </a>
+
+    <h3>Staff Invites</h3>
+    <div class="table-wrapper">
+        <table class="dashboard-table">
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Sent By</th>
+                    <th>Sent</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for invite in invites %}
+                    <tr>
+                        <td title="{{ invite.email }}">{{ invite.email }}</td>
+                        <td title="{{ invite.role|capfirst }}">{{ invite.role|capfirst }}</td>
+                        <td title="{{ invite.sent_by.get_full_name|default:invite.sent_by.username }}">
+                            {{ invite.sent_by.get_full_name|default:invite.sent_by.username }}
+                        </td>
+                        <td title="{{ invite.created_at|date:'M j, Y H:i' }}">{{ invite.created_at|date:"M j, Y" }}</td>
+                        <td>
+                            {% if invite.used %}
+                                Accepted
+                            {% elif invite.withdrawn %}
+                                Withdrawn
+                            {% elif invite.expires_at and invite.expires_at < now %}
+                                Expired
+                            {% else %}
+                                Pending
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr><td colspan="5">No staff invites yet.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <h3 style="margin-top: 2em;">Join Requests</h3>
+    <div class="table-wrapper">
+        <table class="dashboard-table">
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Full Name</th>
+                    <th>Requested</th>
+                    <th>Resolved By</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for req in join_requests %}
+                    <tr>
+                        <td title="{{ req.email }}">{{ req.email }}</td>
+                        <td title="{{ req.full_name }}">{{ req.full_name }}</td>
+                        <td title="{{ req.created_at|date:'M j, Y H:i' }}">{{ req.created_at|date:"M j, Y" }}</td>
+                        <td 
+                            {% if req.resolved_by %}
+                                title="{{ req.resolved_by.get_full_name|default:req.resolved_by.username }}"
+                            {% endif %}
+                        >
+                            {% if req.resolved_by %}
+                                {{ req.resolved_by.get_full_name|default:req.resolved_by.username }}
+                            {% else %}
+                                —
+                            {% endif %}
+                        </td>
+                        <td>
+                            {{ req.status|capfirst }}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr><td colspan="5">No join requests yet.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
