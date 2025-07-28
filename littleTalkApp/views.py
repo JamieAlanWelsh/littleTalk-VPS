@@ -817,10 +817,13 @@ def change_password(request):
 
 @login_required
 def invite_staff(request):
-    if not request.user.profile.is_admin() and not request.user.profile.is_manager():
+    profile = request.user.profile
+
+    # Only admins and managers can access
+    if not profile.is_admin() and not profile.is_manager():
         return redirect('school_dashboard')
 
-    school = request.user.profile.school
+    school = profile.school
 
     if request.method == 'POST':
         form = StaffInviteForm(request.POST, school=school, user=request.user)
@@ -830,6 +833,7 @@ def invite_staff(request):
             invite.sent_by = request.user
             invite.save()
 
+            # Uses updated HTML+text email utility
             send_invite_email(invite, school, request)
 
             messages.success(request, f"Invite sent to {invite.email}")

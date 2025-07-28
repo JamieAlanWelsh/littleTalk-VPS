@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', sans-serif;
+            background-color: #f7f7f7;
+            padding: 20px;
+            color: #333;
+        }
+        .email-container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        .button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 20px;
+            background-color: #FFE477;
+            color: #200D2A;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            box-shadow: 0px 5px 0px rgba(0, 0, 0, 0.2);
+        }
+        .footer {
+            margin-top: 40px;
+            font-size: 0.85em;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <h2>You're invited to join {{ school.name }} on Chatterdillo!</h2>
+
+        <p>Hi there,</p>
+
+        <p>You’ve been invited to join <strong>{{ school.name }}</strong> as a staff member.</p>
+
+        <p>Click the button below to set up your account:</p>
+
+        <p><a href="{{ invite_url }}" class="button">Accept Invite</a></p>
+
+        <p>This link will expire in 7 days.</p>
+
+        <img src="https://little-talk.org/static/images/littletalk_logo.png" alt="Chatterdillo Logo" style="max-width: 200px; margin-bottom: 20px;">
+        <div class="footer">
+            <p>If you weren’t expecting this invite, feel free to ignore it.</p>
+        </div>
+    </div>
+</body>
+</html>

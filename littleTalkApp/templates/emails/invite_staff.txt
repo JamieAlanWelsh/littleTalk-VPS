@@ -1,0 +1,10 @@
+Hi there,
+
+You’ve been invited to join {{ school.name }} on Chatterdillo.
+
+Visit the link below to accept your invitation:
+{{ invite_url }}
+
+This invite will expire in 7 days.
+
+If you weren’t expecting this email, you can ignore it.
