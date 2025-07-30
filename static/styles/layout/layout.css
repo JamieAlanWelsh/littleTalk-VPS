@@ -64,6 +64,14 @@
     border-radius: var(--border-radius-light);
 }
 
+.mb-10 {
+    margin-bottom: 10px;
+}
+
 .mb-40 {
     margin-bottom: 40px;
+}
+
+.mb-30 {
+    margin-bottom: 30px;
 }

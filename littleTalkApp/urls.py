@@ -50,7 +50,7 @@ urlpatterns = [
     path('logbook/<int:entry_id>/', views.log_entry_detail, name='log_entry_detail'),
     path("logbook/edit/<int:entry_id>/", views.edit_log_entry, name="edit_log_entry"),
     path('logbook/delete/<int:entry_id>/', views.delete_log_entry, name='delete_log_entry'), 
-    path("logbook/summary/<int:learner_id>/", views.generate_summary, name="generate_summary"),
+    path("logbook/summary/<uuid:learner_uuid>/", views.generate_summary, name="generate_summary"),
 
     # Settings
     path('settings/', views.settings_view, name='settings'),
@@ -64,6 +64,11 @@ urlpatterns = [
     path('school/dashboard/', views.school_dashboard, name='school_dashboard'),
     path('request-join-school/', views.request_join_school, name='request_join_school'),
     path('school/invite-audit/', views.invite_audit_trail, name='invite_audit_trail'),
+
+    # Generate parent token
+    path('learners/<uuid:learner_uuid>/parent-token/', views.view_parent_token, name='view_parent_token'),
+    path('learners/<uuid:learner_uuid>/generate-token/', views.generate_parent_token, name='generate_parent_token'),
+    path('learners/<uuid:learner_uuid>/parent-token/email/', views.email_parent_token, name='email_parent_token'),
 
     # API endpoints
     path('api/learners/<int:learner_id>/update-exp/', UpdateLearnerExpAPIView.as_view(), name='update_learner_exp'),

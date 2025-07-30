@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Parent Access Code{% endblock %}
+{% block content %}
+
+<h1>Parent Access Code</h1>
+
+<div class="container-box container--short pt-70">
+
+    <!-- Back arrow button -->
+    <a href="{% url 'profile' %}" class="back-arrow">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+    </a>
+
+    <p>Share this code with a parent to let them sign up and connect to <strong>{{ learner.name }}</strong>.</p>
+
+    <div class="token-box">
+        <label class="label mb-10">Access Code</label>
+        <div class="token-display">
+            <code id="token-code">{{ token.token }}</code>
+            <button type="button" class="btn btn--small btn--green" onclick="copyCode()">Copy</button>
+        </div>
+    </div>
+
+    <p>Expires on: {{ token.expires_at|date:"j M Y, H:i" }}</p>
+
+    <!-- Email form -->
+    <form method="post" action="{% url 'email_parent_token' learner.learner_uuid %}" class="form-stack">
+        {% csrf_token %}
+        <label for="email" class="label">Send Code to Parent Email</label>
+        <input type="email" name="email" placeholder="parent@example.com" class="input mb-10" required>
+        <button type="submit" class="btn btn--yellow btn--full">Send Email</button>
+        <!-- Regenerate link -->
+    <a href="{% url 'generate_parent_token' learner.learner_uuid %}?force=true" class="btn btn--white btn--full">Regenerate Code</a>
+    </form>
+
+</div>
+
+<script>
+function copyCode() {
+    const code = document.getElementById("token-code").innerText;
+    navigator.clipboard.writeText(code).then(() => {
+        alert("Access code copied to clipboard!");
+    });
+}
+</script>
+
+{% endblock %}

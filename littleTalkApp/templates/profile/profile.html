@@ -107,6 +107,9 @@
             <div class="edit-learner-btn">
                 <a href="{% url 'edit_learner' selected_learner.learner_uuid %}" class="button">Learner Settings</a>
             </div>
+            <div class="edit-learner-btn">
+                <a href="{% url 'view_parent_token' selected_learner.learner_uuid %}" class="button">Generate Parent Access code</a>
+            </div>
             {% comment %} <div class="edit-learner-btn">
                 <a href="{% url 'assessment_summary' %}" class="button">Assessment Summary</a>
             </div> {% endcomment %}

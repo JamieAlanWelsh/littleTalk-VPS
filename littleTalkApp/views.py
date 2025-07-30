@@ -46,6 +46,7 @@ from .models import (
     StaffInvite,
     Role,
     JoinRequest,
+    ParentAccessToken
 )
 
 # Local app: serializers
@@ -58,6 +59,7 @@ from .assessment_qs import QUESTIONS, RECOMMENDATIONS
 # Python stdlib
 from collections import defaultdict
 import json
+import uuid
 
 from .utilites import can_edit_or_delete_log, send_invite_email
 
@@ -1099,3 +1101,70 @@ def invite_audit_trail(request):
         'join_requests': join_requests,
         'now': timezone.now(),
     })
+
+
+# PARENT ACCESS
+
+@login_required
+def generate_parent_token(request, learner_uuid):
+    learner = get_object_or_404(Learner, learner_uuid=learner_uuid, school=request.user.profile.school)
+
+    # Replace or report on existing token
+    token, created = ParentAccessToken.objects.get_or_create(learner=learner)
+
+    if not created and token.is_expired():
+        token.token = uuid.uuid4()
+        token.created_at = timezone.now()
+        token.expires_at = ParentAccessToken._meta.get_field('expires_at').get_default()
+        token.save()
+        messages.success(request, "A new parent access token has been generated.")
+    elif created:
+        messages.success(request, "Parent access token created.")
+    else:
+        messages.info(request, "An active token already exists for this learner.")
+
+    return redirect('view_parent_token', learner_uuid=learner.learner_uuid)
+
+
+@login_required
+def view_parent_token(request, learner_uuid):
+    learner = get_object_or_404(Learner, learner_uuid=learner_uuid, school=request.user.profile.school)
+    token, created = ParentAccessToken.objects.get_or_create(learner=learner)
+
+    # Refresh expired token automatically (optional)
+    if token.is_expired():
+        token.token = uuid.uuid4()
+        token.created_at = timezone.now()
+        token.expires_at = ParentAccessToken._meta.get_field('expires_at').get_default()
+        token.save()
+
+    return render(request, 'parent_token/view_token.html', {
+        'learner': learner,
+        'token': token,
+        'signup_link': request.build_absolute_uri(f"/parent-signup/?code={token.token}")
+    })
+
+
+@login_required
+def email_parent_token(request, learner_uuid):
+    if request.method == "POST":
+        learner = get_object_or_404(Learner, learner_uuid=learner_uuid, school=request.user.profile.school)
+        token = learner.parent_token  # assumes OneToOne
+
+        email = request.POST.get("email")
+        if not email:
+            messages.error(request, "Email is required.")
+            return redirect('view_parent_token', learner_uuid=learner_uuid)
+
+        signup_url = request.build_absolute_uri(f"/parent-signup/?code={token.token}")
+
+        send_mail(
+            subject="Your Parent Access Code",
+            message=f"Use this code to sign up: {token.token}\nSign up here: {signup_url}",
+            html_message=f"<p>Use this code to sign up: <strong>{token.token}</strong></p><p><a href='{signup_url}'>Click here to sign up</a></p>",
+            from_email="noreply@yourdomain.com",
+            recipient_list=[email],
+        )
+
+        messages.success(request, "Email sent to parent.")
+        return redirect('view_parent_token', learner_uuid=learner_uuid)
