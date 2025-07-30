@@ -12,7 +12,7 @@ def can_edit_or_delete_log(user, log_entry):
         ))
     )
 
-# send invite mail
+# send staff invite mail
 
 def send_invite_email(invite, school, request):
     invite_url = request.build_absolute_uri(f"/accept-invite/{invite.token}/")
@@ -29,6 +29,28 @@ def send_invite_email(invite, school, request):
 
     text_content = render_to_string('emails/invite_staff.txt', context)
     html_content = render_to_string('emails/invite_staff.html', context)
+
+    email = EmailMultiAlternatives(subject, text_content, from_email, to_email)
+    email.attach_alternative(html_content, "text/html")
+    email.send()
+
+# send parent invite email
+
+def send_parent_access_email(token, learner, email, request):
+    signup_url = request.build_absolute_uri(f"/parent-signup/?code={token.token}")
+
+    context = {
+        'learner': learner,
+        'signup_url': signup_url,
+        'token': token.token,
+    }
+
+    subject = f"Your Parent Access Code for {learner.name}"
+    from_email = 'noreply@chatterdillo.com'
+    to_email = [email]
+
+    text_content = render_to_string('emails/parent_access.txt', context)
+    html_content = render_to_string('emails/parent_access.html', context)
 
     email = EmailMultiAlternatives(subject, text_content, from_email, to_email)
     email.attach_alternative(html_content, "text/html")

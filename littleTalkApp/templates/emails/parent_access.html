@@ -34,23 +34,24 @@
 </head>
 <body>
     <div class="email-container">
-        <h2>You're invited to join {{ school.name }} on Chatterdillo!</h2>
+        <h2>Your Parent Access Code for {{ learner.name }}</h2>
 
         <p>Hi there,</p>
 
-        <p>You’ve been invited to join <strong>{{ school.name }}</strong> as a staff member.</p>
+        <p>You’ve been invited to connect with <strong>{{ learner.name }}</strong>'s learning journey on Chatterdillo.</p>
 
-        <p>Click the button below to set up your account:</p>
+        <p><strong>Your access code is:</strong></p>
+        <p style="font-size: 1.5em; font-weight: bold; letter-spacing: 2px;">{{ token }}</p>
 
-        <p><a href="{{ invite_url }}" class="button">Accept Invite</a></p>
+        <p>Or simply click the button below to sign up and connect:</p>
 
-        <p>This link will expire in 7 days.</p>
+        <p><a href="{{ signup_url }}" class="button">Connect to {{ learner.name }}</a></p>
 
         <hr style="border: none; border-top: 1px solid #ccc; margin: 20px 0;">
 
         <img src="https://little-talk.org/static/images/littletalk_logo.png" alt="Chatterdillo Logo" style="max-width: 200px;">
         <div class="footer">
-            <p>If you weren’t expecting this invite, feel free to ignore it.</p>
+            <p>This access code is for one-time use only. If you weren't expecting this message, you can ignore it.</p>
         </div>
     </div>
 </body>

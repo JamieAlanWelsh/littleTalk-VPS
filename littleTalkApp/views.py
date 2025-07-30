@@ -59,9 +59,12 @@ from .assessment_qs import QUESTIONS, RECOMMENDATIONS
 # Python stdlib
 from collections import defaultdict
 import json
-import uuid
 
-from .utilites import can_edit_or_delete_log, send_invite_email
+from .utilites import (
+    can_edit_or_delete_log,
+    send_invite_email,
+    send_parent_access_email
+)
 
 
 def home(request):
@@ -1145,21 +1148,12 @@ def email_parent_token(request, learner_uuid):
     if request.method == "POST":
         learner = get_object_or_404(Learner, learner_uuid=learner_uuid, school=request.user.profile.school)
         token = learner.parent_token  # assumes OneToOne
-
         email = request.POST.get("email")
+
         if not email:
             messages.error(request, "Email is required.")
             return redirect('view_parent_token', learner_uuid=learner_uuid)
 
-        signup_url = request.build_absolute_uri(f"/parent-signup/?code={token.token}")
-
-        send_mail(
-            subject="Your Parent Access Code",
-            message=f"Use this code to sign up: {token.token}\nSign up here: {signup_url}",
-            html_message=f"<p>Use this code to sign up: <strong>{token.token}</strong></p><p><a href='{signup_url}'>Click here to sign up</a></p>",
-            from_email="noreply@yourdomain.com",
-            recipient_list=[email],
-        )
-
+        send_parent_access_email(token, learner, email, request)
         messages.success(request, "Email sent to parent.")
         return redirect('view_parent_token', learner_uuid=learner_uuid)
