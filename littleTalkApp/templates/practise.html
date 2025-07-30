@@ -50,11 +50,11 @@
                 <div class="recommendation-text">
                     <h2 class="heading-left">Need a hand choosing exercises?</h2>
                     <p>
-                        We couldn't find any recommendations for {{ selected_learner.name }}.
-                        Please complete our questionairre to receive tailored suggestions.
+                        We couldn't find any recommendations for <strong>{{ selected_learner.name }}</strong>.<br>
+                        Complete our <strong>screener</strong> to receive tailored exercise recommendations.
                     </p>
                     <a href="{% url 'start_assessment' %}?retake={{ selected_learner.id }}" class="btn btn--white btn--small">
-                        Find your child's starting point
+                        Learner Screener
                     </a>
                 </div>
                 <div class="recommendation-mascot">

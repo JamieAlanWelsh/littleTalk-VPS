@@ -1109,14 +1109,12 @@ def invite_audit_trail(request):
 def generate_parent_token(request, learner_uuid):
     learner = get_object_or_404(Learner, learner_uuid=learner_uuid, school=request.user.profile.school)
 
-    # Replace or report on existing token
     token, created = ParentAccessToken.objects.get_or_create(learner=learner)
 
-    if not created and token.is_expired():
-        token.token = uuid.uuid4()
-        token.created_at = timezone.now()
-        token.expires_at = ParentAccessToken._meta.get_field('expires_at').get_default()
-        token.save()
+    force = request.GET.get("force") == "true"
+
+    if force or token.is_expired():
+        token.regenerate_token()
         messages.success(request, "A new parent access token has been generated.")
     elif created:
         messages.success(request, "Parent access token created.")
@@ -1131,12 +1129,9 @@ def view_parent_token(request, learner_uuid):
     learner = get_object_or_404(Learner, learner_uuid=learner_uuid, school=request.user.profile.school)
     token, created = ParentAccessToken.objects.get_or_create(learner=learner)
 
-    # Refresh expired token automatically (optional)
+    # Optionally auto-regenerate if expired
     if token.is_expired():
-        token.token = uuid.uuid4()
-        token.created_at = timezone.now()
-        token.expires_at = ParentAccessToken._meta.get_field('expires_at').get_default()
-        token.save()
+        token.regenerate_token()
 
     return render(request, 'parent_token/view_token.html', {
         'learner': learner,

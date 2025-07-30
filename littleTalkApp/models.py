@@ -4,6 +4,8 @@ from encrypted_model_fields.fields import EncryptedCharField
 import uuid
 from django.utils import timezone
 from datetime import timedelta
+import random
+import string
 
 
 class School(models.Model):
@@ -155,16 +157,47 @@ class JoinRequest(models.Model):
         return f"{self.full_name} ({self.email}) → {self.school.name} [{self.status}]"
     
 
+def generate_short_code(length=6):
+    alphabet = string.ascii_uppercase + string.digits
+    return ''.join(random.choices(alphabet, k=length))
+
+
 class ParentAccessToken(models.Model):
     learner = models.OneToOneField(
         'Learner', on_delete=models.CASCADE, related_name='parent_token'
     )
-    token = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
+    token = models.CharField(max_length=6, unique=True, editable=False)
     created_at = models.DateTimeField(auto_now_add=True)
-    expires_at = models.DateTimeField(default=default_expiry)
+    used = models.BooleanField(default=False)
+    expires_at = models.DateTimeField(default=default_expiry)  # Optional time-based expiry
 
     def is_expired(self):
-        return timezone.now() > self.expires_at
+        return self.used or timezone.now() > self.expires_at
+
+    def regenerate_token(self):
+        # Generate a new unique short code
+        for _ in range(10):
+            new_token = generate_short_code()
+            if not ParentAccessToken.objects.filter(token=new_token).exists():
+                self.token = new_token
+                self.created_at = timezone.now()
+                self.expires_at = ParentAccessToken._meta.get_field('expires_at').get_default()
+                self.used = False
+                self.save()
+                return
+        raise Exception("Unable to generate unique token after multiple attempts")
+
+    def save(self, *args, **kwargs):
+        if not self.token:
+            # Only generate token here, do NOT save again
+            for _ in range(10):
+                new_token = generate_short_code()
+                if not ParentAccessToken.objects.filter(token=new_token).exists():
+                    self.token = new_token
+                    break
+            else:
+                raise Exception("Unable to generate a unique token.")
+        super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"Token for {self.learner.name}"
+        return f"Code for {self.learner.name}: {self.token}"
