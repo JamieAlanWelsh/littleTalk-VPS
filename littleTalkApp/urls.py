@@ -70,6 +70,9 @@ urlpatterns = [
     path('learners/<uuid:learner_uuid>/generate-token/', views.generate_parent_token, name='generate_parent_token'),
     path('learners/<uuid:learner_uuid>/parent-token/email/', views.email_parent_token, name='email_parent_token'),
 
+    # Parent
+    path('parent-signup/', views.parent_signup_view, name='parent_signup'),
+
     # API endpoints
     path('api/learners/<int:learner_id>/update-exp/', UpdateLearnerExpAPIView.as_view(), name='update_learner_exp'),
     path('api/selected-learner/', views.get_selected_learner, name='get_selected_learner'),

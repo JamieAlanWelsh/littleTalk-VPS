@@ -56,6 +56,21 @@ class Profile(models.Model):
         return self.role == Role.READ_ONLY
 
 
+def default_trial_end():
+    return timezone.now() + timedelta(days=7)
+
+
+class ParentProfile(models.Model):
+    profile = models.OneToOneField('Profile', on_delete=models.CASCADE, related_name='parent_profile')
+    learners = models.ManyToManyField('Learner', related_name='parents')
+    trial_started_at = models.DateTimeField(auto_now_add=True)
+    trial_ends_at = models.DateTimeField(default=default_trial_end)
+    is_subscribed = models.BooleanField(default=False)
+
+    def on_trial(self):
+        return timezone.now() < self.trial_ends_at and not self.is_subscribed
+
+
 class LearnerAssessmentAnswer(models.Model):
     learner = models.ForeignKey('Learner', on_delete=models.CASCADE, related_name='answers')
     question_id = models.IntegerField()

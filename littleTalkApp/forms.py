@@ -118,6 +118,19 @@ class UserRegistrationForm(forms.ModelForm):
         return learner_name
 
 
+class ParentSignupForm(forms.Form):
+    first_name = forms.CharField(max_length=50)
+    email = forms.EmailField()
+    password = forms.CharField(widget=forms.PasswordInput)
+    agree_updates = forms.BooleanField(required=False, label="I'm happy to receive updates")
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError("An account with this email already exists.")
+        return email
+
+
 class LearnerForm(forms.ModelForm):
     name = forms.CharField(
         label="Learner's name (or nickname)",

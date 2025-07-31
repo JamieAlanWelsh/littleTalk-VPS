@@ -33,6 +33,7 @@ from .forms import (
     StaffInviteForm,
     AcceptInviteForm,
     JoinRequestForm,
+    ParentSignupForm,
 )
 
 # Local app: models
@@ -46,7 +47,8 @@ from .models import (
     StaffInvite,
     Role,
     JoinRequest,
-    ParentAccessToken
+    ParentAccessToken,
+    ParentProfile,
 )
 
 # Local app: serializers
@@ -1157,3 +1159,51 @@ def email_parent_token(request, learner_uuid):
         send_parent_access_email(token, learner, email, request)
         messages.success(request, "Email sent to parent.")
         return redirect('view_parent_token', learner_uuid=learner_uuid)
+
+
+def parent_signup_view(request):
+    code = request.GET.get('code')
+    token = get_object_or_404(ParentAccessToken, token=code)
+
+    if token.is_expired():
+        messages.error(request, "This access code is expired or already used.")
+        return redirect('home')
+
+    if request.method == 'POST':
+        form = ParentSignupForm(request.POST)
+        if form.is_valid():
+            # Create user
+            user = User.objects.create_user(
+                username=form.cleaned_data['email'],
+                email=form.cleaned_data['email'],
+                password=form.cleaned_data['password'],
+                first_name=form.cleaned_data['first_name']
+            )
+
+           # Set profile.opted_in = True if they checked the box
+            profile = Profile.objects.create(
+                user=user,
+                first_name=form.cleaned_data['first_name'],
+                role='parent',
+                school=token.learner.school,
+                opted_in=form.cleaned_data.get('agree_updates', False)
+            )
+
+            # Create ParentProfile and link learner
+            parent_profile = ParentProfile.objects.create(profile=profile)
+            parent_profile.learners.add(token.learner)
+
+            # Mark token as used
+            token.used = True
+            token.save()
+
+            login(request, user)
+            return redirect('profile')  # Stub route for now
+    else:
+        form = ParentSignupForm()
+
+    return render(request, 'parent/signup.html', {
+        'form': form,
+        'learner': token.learner,
+        'code': token.token,
+    })
