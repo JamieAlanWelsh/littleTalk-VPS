@@ -12,15 +12,26 @@
     </div>
 
     <!-- Header Section -->
-    <h1 style="text-align: center; font-size: 2rem; margin-bottom: 40px;">You're connecting to {{ learner.name }}'s profile</h1>
+    {% if standalone %}
+        <h1 style="text-align: center; font-size: 2rem; margin-bottom: 40px;">Create Your Parent Account</h1>
+    {% else %}
+        <h1 style="text-align: center; font-size: 2rem; margin-bottom: 40px;">You're connecting to {{ learner.name }}'s profile</h1>
+    {% endif %}
 
     <!-- Signup Form -->
     <form method="post" class="login-form">
 
-        <p class="register-intro">
-            <strong>Set up your account to stay connected with {{ learner.name }}'s learning journey.</strong><br>
-            We’ll never share your personal info. Your access code: <strong>{{ code }}</strong>
-        </p>
+        {% if standalone %}
+            <p class="register-intro">
+                <strong>Create an account to explore learning tools and connect with your child’s progress.</strong><br>
+                You’ll be able to add your child after signing up.
+            </p>
+        {% else %}
+            <p class="register-intro">
+                <strong>Set up your account to stay connected with {{ learner.name }}'s learning journey.</strong><br>
+                We’ll never share your personal info. Your access code: <strong>{{ code }}</strong>
+            </p>
+        {% endif %}
 
         {% csrf_token %}
 

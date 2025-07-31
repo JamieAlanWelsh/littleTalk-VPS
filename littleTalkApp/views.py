@@ -552,33 +552,37 @@ def register(request):
 
 @login_required
 def profile(request):
-    # All learners for this user's school (not deleted)
-    user_school = request.user.profile.school
-    all_learners = Learner.objects.filter(school=user_school, deleted=False)
+    profile = request.user.profile
 
-    # Get all distinct cohorts for the dropdown
-    cohorts = Cohort.objects.filter(school=user_school).distinct()
+    if profile.role == 'parent':
+        # Standalone or invited parent: only show their linked learners
+        all_learners = profile.parent_profile.learners.filter(deleted=False)
+        cohorts = Cohort.objects.none()
+    else:
+        # Staff/admin: show all learners in their school
+        user_school = profile.school
+        all_learners = Learner.objects.filter(school=user_school, deleted=False)
+        cohorts = Cohort.objects.filter(school=user_school).distinct()
 
     # Get selected cohort from GET params
     selected_cohort = request.GET.get('cohort')
     try:
-        if selected_cohort:
+        if selected_cohort and profile.role != 'parent':
             selected_cohort_id = int(selected_cohort)
             learners = all_learners.filter(cohort__id=selected_cohort_id)
         else:
             learners = all_learners
             selected_cohort_id = None
     except ValueError:
-        # Invalid cohort ID
         learners = all_learners
         selected_cohort_id = None
 
-    # Get selected learner from session (safe)
+    # Get selected learner from session
     selected_learner = None
     selected_learner_id = request.session.get('selected_learner_id')
     try:
         if selected_learner_id not in [None, '']:
-            selected_learner = Learner.objects.get(id=int(selected_learner_id), school=user_school, deleted=False)
+            selected_learner = all_learners.get(id=int(selected_learner_id))
     except (ValueError, Learner.DoesNotExist):
         selected_learner = None
 
@@ -1163,11 +1167,20 @@ def email_parent_token(request, learner_uuid):
 
 def parent_signup_view(request):
     code = request.GET.get('code')
-    token = get_object_or_404(ParentAccessToken, token=code)
+    standalone = request.GET.get('standalone') == 'true'
 
-    if token.is_expired():
-        messages.error(request, "This access code is expired or already used.")
-        return redirect('home')
+    token = None
+    learner = None
+
+    if code:
+        token = get_object_or_404(ParentAccessToken, token=code)
+        if token.is_expired():
+            messages.error(request, "This access code is expired or already used.")
+            return redirect('login')
+        learner = token.learner
+    
+    if not code and not standalone:
+        return redirect('/parent-signup/?standalone=true')
 
     if request.method == 'POST':
         form = ParentSignupForm(request.POST)
@@ -1180,30 +1193,31 @@ def parent_signup_view(request):
                 first_name=form.cleaned_data['first_name']
             )
 
-           # Set profile.opted_in = True if they checked the box
+            school = learner.school if learner else None
+
             profile = Profile.objects.create(
                 user=user,
                 first_name=form.cleaned_data['first_name'],
                 role='parent',
-                school=token.learner.school,
+                school=school,
                 opted_in=form.cleaned_data.get('agree_updates', False)
             )
 
-            # Create ParentProfile and link learner
             parent_profile = ParentProfile.objects.create(profile=profile)
-            parent_profile.learners.add(token.learner)
 
-            # Mark token as used
-            token.used = True
-            token.save()
+            if learner:
+                parent_profile.learners.add(learner)
+                token.used = True
+                token.save()
 
             login(request, user)
-            return redirect('profile')  # Stub route for now
+            return redirect('profile')
     else:
         form = ParentSignupForm()
 
     return render(request, 'parent/signup.html', {
         'form': form,
-        'learner': token.learner,
-        'code': token.token,
+        'learner': learner,
+        'code': code,
+        'standalone': standalone,
     })
