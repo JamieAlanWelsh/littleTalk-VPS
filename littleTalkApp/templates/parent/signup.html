@@ -7,10 +7,9 @@
 <div class="login-container">
 
     <!-- logo top left -->
-    <div class="logo-container">
-        <img src="{% static 'images/littletalk_logo.png' %}" alt="LittleTalk Logo" style="max-width: 150px; height: auto;">
-    </div>
-
+    <a href="/" class="logo-link">
+        <img src="{% static 'images/chatterdillo_logo_official.png' %}" alt="LittleTalk Logo" style="max-width: 180px; height: auto;">
+    </a>
     <!-- Header Section -->
     <h1>
         Create Your Parent Account
@@ -65,9 +64,7 @@
             </label>
         </div>
 
-        <div style="margin-top: 30px;">
-            <button type="submit" class="btn btn--yellow btn--full">Create My Account</button>
-        </div>
+        <button type="submit" class="btn btn--yellow btn--full">Create My Account</button>
 
         {% if form.non_field_errors %}
             <div class="error-message">{{ form.non_field_errors.0 }}</div>

@@ -67,6 +67,9 @@ class ParentProfile(models.Model):
     trial_ends_at = models.DateTimeField(default=default_trial_end)
     is_subscribed = models.BooleanField(default=False)
 
+    # New field
+    is_standalone = models.BooleanField(default=False)
+
     def on_trial(self):
         return timezone.now() < self.trial_ends_at and not self.is_subscribed
 

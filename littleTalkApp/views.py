@@ -693,6 +693,10 @@ def confirm_delete_learner(request, learner_uuid):
 
 @login_required
 def cohort_list(request):
+    if not request.user.profile.is_admin() and not request.user.profile.is_manager():
+        # messages.error(request, "You don't have permission to create cohorts.")
+        return redirect('profile')
+
     cohorts = Cohort.objects.filter(school=request.user.profile.school).order_by('name')
     return render(request, 'cohorts/cohort_list.html', {
         'cohorts': cohorts,
@@ -704,7 +708,7 @@ def cohort_list(request):
 def cohort_create(request):
     if not request.user.profile.is_admin() and not request.user.profile.is_manager():
         # messages.error(request, "You don't have permission to create cohorts.")
-        return redirect('cohort_list')
+        return redirect('profile')
 
     if request.method == 'POST':
         form = CohortForm(request.POST)
@@ -1194,7 +1198,10 @@ def parent_signup_view(request):
                 opted_in=form.cleaned_data.get('agree_updates', False)
             )
 
-            parent_profile = ParentProfile.objects.create(profile=profile)
+            parent_profile = ParentProfile.objects.create(
+                profile=profile,
+                is_standalone=(token is None)
+            )
 
             if learner:
                 parent_profile.learners.add(learner)
