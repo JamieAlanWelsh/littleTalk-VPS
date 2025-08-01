@@ -78,6 +78,14 @@
                         No exercises recorded.
                     {% endif %}
                 </p>
+                {% if request.user.profile.role == 'parent' and not request.user.profile.parent_profile.is_standalone %}
+                    <div class="recommendation-info mb-20">
+                        <span class="info-icon">i</span>
+                        <p>
+                            You are viewing with Parent-Access. This learner is being managed by {{ request.user.profile.school.name }}
+                        </p>
+                    </div>
+                {% endif %}
             </div>
             <!-- Edit Learner Button -->
             {% if request.user.profile.role != 'parent' or request.user.profile.parent_profile.is_standalone %}
