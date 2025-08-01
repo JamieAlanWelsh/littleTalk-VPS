@@ -24,30 +24,32 @@
     <!-- Filter -->
     <form method="get" class="form-stack">
 
-        <!-- Cohort Filter -->
-        <div>
-            <label for="cohort" class="label">Cohort:</label>
-            <select name="cohort" id="cohort" class="select" onchange="this.form.submit()">
-                <option value="">-- All Cohorts --</option>
-                {% for cohort in cohorts %}
-                    <option value="{{ cohort.id }}" {% if cohort.id|stringformat:"s" == selected_cohort_id %}selected{% endif %}>
-                        {{ cohort.name }}
-                    </option>
-                {% endfor %}
-            </select>
-        </div>
-
-        <div>
-            <label for="learner" class="label">Learner:</label>
-            <select name="learner" id="learner" class="select" onchange="this.form.submit()">
-                <option value="">-- All Learners --</option>
-                {% for learner in learners %}
-                    <option value="{{ learner.id }}" {% if learner.id|stringformat:"s" == selected_learner_id %}selected{% endif %}>
-                        {{ learner.name }}
-                    </option>
-                {% endfor %}
-            </select>
-        </div>
+        {% if not request.user.profile.role == 'parent' %}
+            <!-- Cohort Filter -->
+            <div>
+                <label for="cohort" class="label">Cohort:</label>
+                <select name="cohort" id="cohort" class="select" onchange="this.form.submit()">
+                    <option value="">-- All Cohorts --</option>
+                    {% for cohort in cohorts %}
+                        <option value="{{ cohort.id }}" {% if cohort.id|stringformat:"s" == selected_cohort_id %}selected{% endif %}>
+                            {{ cohort.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <!-- Learner Filter -->
+            <div>
+                <label for="learner" class="label">Learner:</label>
+                <select name="learner" id="learner" class="select" onchange="this.form.submit()">
+                    <option value="">-- All Learners --</option>
+                    {% for learner in learners %}
+                        <option value="{{ learner.id }}" {% if learner.id|stringformat:"s" == selected_learner_id %}selected{% endif %}>
+                            {{ learner.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+        {% endif %}
 
         <!-- Log Entries -->
         <div class="log-entries">
