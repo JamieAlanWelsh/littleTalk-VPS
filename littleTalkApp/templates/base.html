@@ -73,12 +73,14 @@
                             <span>Logbook</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="{% url 'school_dashboard' %}">
-                            <img src="{% static 'icons/school.png' %}" alt="School" class="sidebar-icon">
-                            <span>School</span>
-                        </a>
-                    </li>
+                    {% if request.user.profile.role != 'parent' %}
+                        <li>
+                            <a href="{% url 'school_dashboard' %}">
+                                <img src="{% static 'icons/school.png' %}" alt="School" class="sidebar-icon">
+                                <span>School</span>
+                            </a>
+                        </li>
+                    {% endif %}
                     <li>
                         <a href="{% url 'support' %}">
                             <img src="{% static 'icons/help.png' %}" alt="Support" class="sidebar-icon">

@@ -363,6 +363,7 @@ def new_log_entry(request):
         if form.is_valid():
             log_entry = form.save(commit=False)
             log_entry.user = request.user  # Assign the logged-in user
+            log_entry.created_by_role = request.user.profile.role  
             log_entry.save()
             return redirect('logbook')  # Redirect to logbook page after saving
     else:
@@ -395,7 +396,7 @@ def edit_log_entry(request, entry_id):
         form = LogEntryForm(request.POST, instance=log_entry, user=request.user)
         if form.is_valid():
             form.save()
-            return redirect('log_entry_detail', entry_id=log_entry.id)
+            return redirect('log_entry_detail', entry_id=log_entry.id)    
     else:
         form = LogEntryForm(instance=log_entry, user=request.user)
 
@@ -1004,6 +1005,8 @@ def accept_invite(request, token):
 
 @login_required
 def school_dashboard(request):
+    if request.user.profile.role == 'parent':
+        return redirect('profile')
     profile = request.user.profile
     school = profile.school
 

@@ -204,11 +204,19 @@ class LogEntryForm(forms.ModelForm):
         user = kwargs.pop('user', None)
         super(LogEntryForm, self).__init__(*args, **kwargs)
 
-        if user and hasattr(user, 'profile') and user.profile.school:
-            self.fields['learner'].queryset = Learner.objects.filter(
-                school=user.profile.school,
-                deleted=False
-            )
+        if user and hasattr(user, 'profile'):
+            profile = user.profile
+            if profile.role == 'parent':
+                # Show only learners connected to this parent
+                self.fields['learner'].queryset = profile.parent_profile.learners.filter(deleted=False)
+            elif profile.school:
+                # Show all learners in the user's school
+                self.fields['learner'].queryset = Learner.objects.filter(
+                    school=profile.school,
+                    deleted=False
+                )
+            else:
+                self.fields['learner'].queryset = Learner.objects.none()
         else:
             self.fields['learner'].queryset = Learner.objects.none()
 
