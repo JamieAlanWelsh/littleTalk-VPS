@@ -17,13 +17,15 @@
     <form method="post" class="form-stack">
         {% csrf_token %}
         {% for field in form %}
-            <div>
-                <label for="{{ field.id_for_label }}" class="label">{{ field.label }}</label>
-                {{ field }}
-                {% if field.errors %}
-                    <p class="error-message">{{ field.errors.0 }}</p>
-                {% endif %}
-            </div>
+            {% if field.name != "cohort" or request.user.profile.role != 'parent' %}
+                <div>
+                    <label for="{{ field.id_for_label }}" class="label">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <p class="error-message">{{ field.errors.0 }}</p>
+                    {% endif %}
+                </div>
+            {% endif %}
         {% endfor %}
         <button type="submit" class="btn btn--yellow btn--full">Submit</button>
     </form>

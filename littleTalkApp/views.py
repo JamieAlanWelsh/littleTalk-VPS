@@ -585,6 +585,11 @@ def profile(request):
             selected_learner = all_learners.get(id=int(selected_learner_id))
     except (ValueError, Learner.DoesNotExist):
         selected_learner = None
+    
+    # If none selected, pick the first available learner
+    if not selected_learner and learners.exists():
+        selected_learner = learners.first()
+        request.session['selected_learner_id'] = selected_learner.id
 
     return render(request, 'profile/profile.html', {
         'learners': learners,
