@@ -4,28 +4,32 @@
 {% block title %}LittleTalk | Profile{% endblock %}
 
 {% block content %}
-<h1>Learner Selection</h1>
+<h1>Learner Profile</h1>
 <div class="profile-container">
     <!-- Left Column -->
     <div class="left-column">
 
-        <div class="add-learner-btn">
-            <a href="{% url 'add_learner' %}" class="button">+ Add Learner</a>
-        </div>
+        {% if request.user.profile.role != 'parent' or request.user.profile.parent_profile.learners.count == 0 %}
+            <div class="add-learner-btn">
+                <a href="{% url 'add_learner' %}" class="button">+ Add Learner</a>
+            </div>
+        {% endif %}
 
-        <div class="cohort-filter-widget">
-            <form method="get" action="">
-                <label for="cohort"><strong>Cohort:</strong></label>
-                <select name="cohort" id="cohort" onchange="this.form.submit()">
-                    <option value="">-- All Cohorts --</option>
-                    {% for cohort in cohorts %}
-                        <option value="{{ cohort.id }}" {% if cohort.id == selected_cohort %}selected{% endif %}>
-                            {{ cohort.name }}
-                        </option>
-                    {% endfor %}
-                </select>
-            </form>
-        </div>
+        {% if request.user.profile.role != 'parent' %}
+            <div class="cohort-filter-widget">
+                <form method="get" action="">
+                    <label for="cohort"><strong>Cohort:</strong></label>
+                    <select name="cohort" id="cohort" onchange="this.form.submit()">
+                        <option value="">-- All Cohorts --</option>
+                        {% for cohort in cohorts %}
+                            <option value="{{ cohort.id }}" {% if cohort.id == selected_cohort %}selected{% endif %}>
+                                {{ cohort.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </form>
+            </div>
+        {% endif %}
 
         <div class="learners-list">
             {% if learners %}
@@ -42,40 +46,14 @@
                         </li>
                     {% endfor %}
                 </ul>
-            {% else %}
-                <p>No learners added yet... 🔎</p>
-                <p>Click "Add Learner" to get started!</p>
             {% endif %}
         </div>
-
-        <!-- Add Learner Button -->
-        
-
-        {% if selected_learner %}
-        <!-- Practice Button -->
-        {% comment %} <div class="practice-button-container">
-            <a href="{% url 'practise' %}" class="btn btn--green btn--thick">Practise</a>
-        </div> {% endcomment %}
-        {% endif %}
     </div>
 
     <!-- Right Column -->
     <div class="right-column">
         <!-- Learning Level Section -->
         {% if selected_learner %}
-            {% comment %} <div class="total-exp-section">
-                <h3>Learning Level</h3>
-                <p>
-                    {% if selected_learner.assessment1 %}
-                        {% for _ in " "|center:selected_learner.assessment1 %}
-                            ⭐
-                        {% endfor %}
-                    {% else %}
-                        No learning level assigned.
-                    {% endif %}
-                </p>
-            </div> {% endcomment %}
-
             <!-- Total Experience Section -->
             <div class="total-exp-section">
                 <h3>Learner Profile</h3>
@@ -83,8 +61,6 @@
             
                 {% if selected_learner.cohort %}
                     <p><strong>Cohort:</strong> {{ selected_learner.cohort }}</p>
-                {% else %}
-                    <p><strong>Cohort:</strong> Not assigned</p>
                 {% endif %}
             
                 <p><strong>Total Experience:</strong>
@@ -104,25 +80,19 @@
                 </p>
             </div>
             <!-- Edit Learner Button -->
-            <div class="edit-learner-btn">
-                <a href="{% url 'edit_learner' selected_learner.learner_uuid %}" class="button">Learner Settings</a>
-            </div>
-            <div class="edit-learner-btn">
-                <a href="{% url 'view_parent_token' selected_learner.learner_uuid %}" class="button">Generate Parent-Access-Code</a>
-            </div>
-            {% comment %} <div class="edit-learner-btn">
-                <a href="{% url 'assessment_summary' %}" class="button">Assessment Summary</a>
-            </div> {% endcomment %}
-            <!-- Keep on track -->
-            {% comment %} <div class="total-exp-section">
-                <h3>Keep on track! ✍️</h3>
-                <p>Remember to re-take your assessment every now and then as you make progress.<br>This will allow us to update your learning level.</p>
-            </div> {% endcomment %}
+            {% if request.user.profile.role != 'parent' or request.user.profile.parent_profile.is_standalone %}
+                <div class="edit-learner-btn">
+                    <a href="{% url 'edit_learner' selected_learner.learner_uuid %}" class="button">Learner Settings</a>
+                </div>
+            {% endif %}
+
+            <!-- Generate Access Code Button -->
+            {% if request.user.profile.role != 'parent' %}
+                <div class="edit-learner-btn">
+                    <a href="{% url 'view_parent_token' selected_learner.learner_uuid %}" class="button">Generate Parent-Access-Code</a>
+                </div>
+            {% endif %}
         {% endif %}
     </div>
 </div>
-<!-- Practice Button -->
-{% comment %} <div class="practice-button-container">
-    <a href="{% url 'practise' %}" class="practice-button">Let's Practice!</a>
-</div> {% endcomment %}
 {% endblock %}

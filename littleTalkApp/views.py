@@ -596,12 +596,18 @@ def profile(request):
 
 @login_required
 def add_learner(request):
+    if request.user.profile.role == 'parent':
+        if request.user.profile.parent_profile.learners.exists():
+            return redirect('profile')
     if request.method == 'POST':
         form = LearnerForm(request.POST, user=request.user)
         if form.is_valid():
             learner = form.save(commit=False)
             learner.school = request.user.profile.school  # assign to school
             learner.save()
+
+            if request.user.profile.role == 'parent':
+                request.user.profile.parent_profile.learners.add(learner)
 
             # Store selected learner in session (optional)
             request.session['selected_learner_id'] = learner.id
@@ -624,6 +630,9 @@ def select_learner(request):
 
 @login_required
 def edit_learner(request, learner_uuid):
+    if request.user.profile.role == 'parent':
+        if not request.user.profile.parent_profile.is_standalone:
+            return redirect('profile')
     learner = get_object_or_404(
         Learner,
         learner_uuid=learner_uuid,
@@ -1139,6 +1148,8 @@ def generate_parent_token(request, learner_uuid):
 
 @login_required
 def view_parent_token(request, learner_uuid):
+    if request.user.profile.role == 'parent':
+        return redirect('profile')
     learner = get_object_or_404(Learner, learner_uuid=learner_uuid, school=request.user.profile.school)
     token, created = ParentAccessToken.objects.get_or_create(learner=learner)
 
