@@ -334,12 +334,18 @@ def logbook(request):
         log_entries = LogEntry.objects.filter(user__profile__school=school, deleted=False)
     else:
         log_entries = LogEntry.objects.filter(user=user, deleted=False)
+    
+    selected_learner = None
 
     if selected_cohort_id:
         learners = learners.filter(cohort__id=selected_cohort_id)
 
     if selected_learner_id:
         log_entries = log_entries.filter(learner__id=selected_learner_id)
+        try:
+            selected_learner = Learner.objects.get(id=selected_learner_id)
+        except Learner.DoesNotExist:
+            selected_learner = None
     elif selected_cohort_id:
         log_entries = log_entries.filter(learner__cohort__id=selected_cohort_id)
 
@@ -351,6 +357,7 @@ def logbook(request):
         'cohorts': cohorts,
         'selected_learner_id': selected_learner_id,
         'selected_cohort_id': selected_cohort_id,
+        'selected_learner': selected_learner,
     })
 
 
@@ -423,8 +430,8 @@ def delete_log_entry(request, entry_id):
 
 
 @login_required
-def generate_summary(request, learner_id):
-    learner = get_object_or_404(Learner, id=learner_id, school=request.user.profile.school)
+def generate_summary(request, learner_uuid):
+    learner = get_object_or_404(Learner, learner_uuid=learner_uuid, school=request.user.profile.school)
 
     # Allow broader access if the user is admin or manager
     if request.user.profile.is_admin() or request.user.profile.is_manager():

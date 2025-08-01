@@ -15,7 +15,7 @@
         </a>
 
         {% if selected_learner_id %}
-            <a href="{% url 'generate_summary' selected_learner_id %}" class="btn btn--white">
+            <a href="{% url 'generate_summary' selected_learner.learner_uuid %}" class="btn btn--white">
                 Learner Summary
             </a>
         {% endif %}
