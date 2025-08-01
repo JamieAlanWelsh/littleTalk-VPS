@@ -1166,26 +1166,15 @@ def email_parent_token(request, learner_uuid):
 
 
 def parent_signup_view(request):
-    code = request.GET.get('code')
-    standalone = request.GET.get('standalone') == 'true'
+    request.hide_sidebar = True
+    prefill_code = request.GET.get('code', '').strip()
 
-    token = None
-    learner = None
-
-    if code:
-        token = get_object_or_404(ParentAccessToken, token=code)
-        if token.is_expired():
-            messages.error(request, "This access code is expired or already used.")
-            return redirect('login')
-        learner = token.learner
-    
-    if not code and not standalone:
-        return redirect('/parent-signup/?standalone=true')
+    if request.user.is_authenticated:
+        return redirect('profile')
 
     if request.method == 'POST':
         form = ParentSignupForm(request.POST)
         if form.is_valid():
-            # Create user
             user = User.objects.create_user(
                 username=form.cleaned_data['email'],
                 email=form.cleaned_data['email'],
@@ -1193,6 +1182,8 @@ def parent_signup_view(request):
                 first_name=form.cleaned_data['first_name']
             )
 
+            token = form.cleaned_data.get('access_code')  # This is the actual token object or None
+            learner = token.learner if token else None
             school = learner.school if learner else None
 
             profile = Profile.objects.create(
@@ -1213,11 +1204,10 @@ def parent_signup_view(request):
             login(request, user)
             return redirect('profile')
     else:
-        form = ParentSignupForm()
+        # Pre-fill access code if passed via URL
+        form = ParentSignupForm(initial={'access_code': prefill_code})
 
     return render(request, 'parent/signup.html', {
         'form': form,
-        'learner': learner,
-        'code': code,
-        'standalone': standalone,
+        'standalone': not prefill_code,  # controls header/template messaging
     })

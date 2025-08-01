@@ -6,6 +6,7 @@ from .models import StaffInvite
 from .models import Role
 from .models import JoinRequest
 from .models import School
+from .models import ParentAccessToken
 from django.contrib.auth.forms import AuthenticationForm
 from .models import LogEntry
 import re
@@ -123,12 +124,25 @@ class ParentSignupForm(forms.Form):
     email = forms.EmailField()
     password = forms.CharField(widget=forms.PasswordInput)
     agree_updates = forms.BooleanField(required=False, label="I'm happy to receive updates")
+    access_code = forms.CharField(max_length=12, required=False, label="Parent Access Code")
 
     def clean_email(self):
         email = self.cleaned_data['email']
         if User.objects.filter(email=email).exists():
             raise forms.ValidationError("An account with this email already exists.")
         return email
+
+    def clean_access_code(self):
+        code = self.cleaned_data.get('access_code', '').strip()
+        if code:
+            try:
+                token = ParentAccessToken.objects.get(token=code)
+                if token.is_expired():
+                    raise forms.ValidationError("This access code is expired or already used.")
+                return token
+            except ParentAccessToken.DoesNotExist:
+                raise forms.ValidationError("Invalid access code.")
+        return None  # No code provided
 
 
 class LearnerForm(forms.ModelForm):

@@ -12,26 +12,18 @@
     </div>
 
     <!-- Header Section -->
-    {% if standalone %}
-        <h1 style="text-align: center; font-size: 2rem; margin-bottom: 40px;">Create Your Parent Account</h1>
-    {% else %}
-        <h1 style="text-align: center; font-size: 2rem; margin-bottom: 40px;">You're connecting to {{ learner.name }}'s profile</h1>
-    {% endif %}
+    <h1>
+        Create Your Parent Account
+    </h1>
 
     <!-- Signup Form -->
     <form method="post" class="login-form">
-
-        {% if standalone %}
-            <p class="register-intro">
-                <strong>Create an account to explore learning tools and connect with your child’s progress.</strong><br>
-                You’ll be able to add your child after signing up.
+        <div class="recommendation-info mb-20">
+            <span class="info-icon">i</span>
+            <p>
+                Parent Access Code allows you to connect to your child and their school automatically
             </p>
-        {% else %}
-            <p class="register-intro">
-                <strong>Set up your account to stay connected with {{ learner.name }}'s learning journey.</strong><br>
-                We’ll never share your personal info. Your access code: <strong>{{ code }}</strong>
-            </p>
-        {% endif %}
+        </div>
 
         {% csrf_token %}
 
@@ -58,8 +50,16 @@
             {% endif %}
         </div>
 
+        <div>
+            <input type="text" name="access_code" class="input" placeholder="Parent Access Code (optional)"
+                value="{{ form.access_code.value|default_if_none:'' }}">
+            {% if form.access_code.errors %}
+                <div class="error-message">{{ form.access_code.errors.0 }}</div>
+            {% endif %}
+        </div>
+
         <div class="checkbox-wrapper mt-20">
-            <input type="checkbox" name="agree_updates" id="agree_updates">
+            <input type="checkbox" name="agree_updates" id="agree_updates" {% if form.agree_updates.value %}checked{% endif %}>
             <label for="agree_updates">
                 I’m happy to receive occasional updates about LittleTalk
             </label>
