@@ -9,7 +9,6 @@
 /* Inner content gets centered within the main-content area */
 .main-content-inner {
     width: 100%;
-    max-width: 800px;
 }
 
 .layout {

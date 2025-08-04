@@ -6,6 +6,8 @@
     display: flex;
     justify-content: space-between;
     padding: 20px;
+    margin: 50px auto;
+    max-width: 800px;
 }
 
 /* Not sure this is doing anything */
@@ -33,7 +35,7 @@
     border-radius: var(--border-radius-light);
     box-shadow: var(--box-shadow);
     padding: 20px;
-    width: 26   0px;
+    /* width: 26   0px; */
     font-family: var(--font-outfit);
 }
 
@@ -84,7 +86,7 @@
 
 .learner-button,
 .add-learner-btn a {
-    width: 300px;
+    width: 100%;
     border-radius: var(--border-radius-light);
     font-family: var(--font-outfit);
     font-size: 18px;
@@ -107,7 +109,7 @@
 }
 
 .add-learner-btn a {
-    width: 250px;
+    width: 270px;
     background-color: var(--yellow-button-color);
     text-decoration: none;
 }

@@ -472,6 +472,11 @@ class CustomLoginView(LoginView):
         return super().dispatch(request, *args, **kwargs)
 
 
+def account_setup_view(request):
+    request.hide_sidebar = True
+    return render(request, 'registration/account_setup.html')
+
+
 def register(request):
     request.hide_sidebar = True
 

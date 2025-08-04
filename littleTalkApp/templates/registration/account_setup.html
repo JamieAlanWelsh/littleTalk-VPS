@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}LittleTalk | Set Up Account{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/account_setup.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="login-container">
+
+    <!-- Logo Top Left -->
+    <a href="/" class="logo-link">
+        <img src="{% static 'images/chatterdillo_logo_official.png' %}" alt="LittleTalk Logo" style="max-width: 180px; height: auto;">
+    </a>
+
+    <!-- Register Button Top Right -->
+    <div class="register-button-container">
+        <a href="{% url 'login' %}" class="btn btn--invisible btn--small">Login</a>
+    </div>
+
+    <div class="account-setup-container">
+        <h1>Set up an account</h1>
+        <h3>How can we help you today?</h3>
+
+        <div class="card-row">
+            <!-- School Leader -->
+            <a href="{% url 'school_signup' %}" class="setup-card">
+                <div class="setup-card-inner">
+                    <h2>School Leader</h2>
+                    <p>Set up a new school as an administrator</p>
+                </div>
+            </a>
+
+            <!-- Teacher -->
+            <a href="{% url 'request_join_school' %}" class="setup-card">
+                <div class="setup-card-inner">
+                    <h2>Teacher</h2>
+                    <p>Make a request to join an existing school</p>
+                </div>
+            </a>
+
+            <!-- Parent -->
+            <a href="{% url 'parent_signup' %}?standalone=true" class="setup-card">
+                <div class="setup-card-inner">
+                    <h2>Parent</h2>
+                    <p>Set up learning at home through your school or individually</p>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

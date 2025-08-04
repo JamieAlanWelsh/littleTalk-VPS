@@ -3,7 +3,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 100vh;
+    min-height: 90vh;
     box-sizing: border-box;
 }
 
@@ -40,4 +40,42 @@
     position: absolute;
     top: 20px;
     right: 20px;
+}
+
+/* account setup */
+
+.account-setup-container {
+    text-align: center;
+}
+
+.card-row {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 40px;
+    gap: 30px;
+}
+
+.setup-card {
+    text-decoration: none;
+}
+
+.setup-card-inner {
+    border-radius: 16px;
+    padding: 30px 20px;
+    width: 250px;
+    height: 150px;
+    background-color: white;
+    color: var(--font-color);
+    box-shadow: var(--box-shadow);
+}
+
+.setup-card-inner:hover {
+    background-color: var(--font-color);
+    color: white;
+}
+
+.setup-card-inner:hover h3,
+.setup-card-inner:hover p {
+    color: white;
 }

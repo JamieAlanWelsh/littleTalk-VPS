@@ -27,9 +27,7 @@ urlpatterns = [
     path('login/', views.CustomLoginView.as_view(), name='login'),
     # path('logout/', views.custom_logout_view, name='logout'),
     path('register/', views.register, name='register'),
-
-    # School sign up
-    path('school-signup/', views.school_signup, name='school_signup'),
+    path('account-setup/', views.account_setup_view, name='account_setup'),
 
     # Profile and adding learners
     path('profile/', views.profile, name='profile'),
@@ -59,6 +57,7 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
 
     # School
+    path('school-signup/', views.school_signup, name='school_signup'),
     path('school/invite-staff/', views.invite_staff, name='invite_staff'),
     path('accept-invite/<uuid:token>/', views.accept_invite, name='accept_invite'),
     path('school/dashboard/', views.school_dashboard, name='school_dashboard'),
