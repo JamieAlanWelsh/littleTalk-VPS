@@ -68,6 +68,7 @@
     background-color: white;
     color: var(--font-color);
     box-shadow: var(--box-shadow);
+    transition: background-color 0.2s ease;
 }
 
 .setup-card-inner:hover {

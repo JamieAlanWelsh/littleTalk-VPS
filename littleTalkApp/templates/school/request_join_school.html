@@ -3,26 +3,53 @@
 {% block title %}Request to Join a School{% endblock %}
 
 {% block content %}
-<!-- logo top left -->
-<a href="/" class="logo-link">
-    <img src="{% static 'images/chatterdillo_logo_official.png' %}" alt="LittleTalk Logo" style="max-width: 180px; height: auto;">
-</a>
+<div class="login-container">
+    <!-- logo top left -->
+    <a href="/" class="logo-link">
+        <img src="{% static 'images/chatterdillo_logo_official.png' %}" alt="LittleTalk Logo" style="max-width: 180px; height: auto;">
+    </a>
 
-<h1>Request to Join a School</h1>
+    <h1>Request to Join a School</h1>
 
-<div class="container-box container--short">
-    <form method="post" class="form-stack">
+    <form method="post" class="login-form">
         {% csrf_token %}
-        {% for field in form %}
-            <div>
-                <label for="{{ field.id_for_label }}" class="label">{{ field.label }}</label>
-                {{ field }}
-                {% if field.errors %}
-                    <p class="error-message">{{ field.errors.0 }}</p>
-                {% endif %}
-            </div>
-        {% endfor %}
-        <button type="submit" class="btn btn--yellow btn--full">Submit Request</button>
+        <div>
+            <input type="text" name="full_name" class="input" placeholder="Your name"
+                value="{{ form.full_name.value|default_if_none:'' }}" required>
+            {% if form.full_name.errors %}
+                <div class="error-message">{{ form.full_name.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <div>
+            <input type="email" name="email" class="input" placeholder="Email"
+                value="{{ form.email.value|default_if_none:'' }}" required>
+            {% if form.email.errors %}
+                <div class="error-message">{{ form.email.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <div>
+            <select name="school" class="input" required>
+                <option value="">Select a school</option>
+                {% for school in form.school.field.queryset %}
+                    <option value="{{ school.id }}" {% if school.id|stringformat:"s" == form.school.value|stringformat:"s" %}selected{% endif %}>
+                        {{ school.name }}
+                    </option>
+                {% endfor %}
+            </select>
+            {% if form.school.errors %}
+                <div class="error-message">{{ form.school.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <div>
+            <button type="submit" class="btn btn--yellow btn--full">Submit Request</button>
+        </div>
+
+        {% if form.non_field_errors %}
+            <div class="error-message">{{ form.non_field_errors.0 }}</div>
+        {% endif %}
     </form>
 </div>
 {% endblock %}
