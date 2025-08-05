@@ -51,6 +51,10 @@
     max-width: 800px;
 }
 
+.container--dash {
+    max-width: 1000px;
+}
+
 .container--short {
     max-width: 500px;
 }
