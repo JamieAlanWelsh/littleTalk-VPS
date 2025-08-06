@@ -127,7 +127,6 @@ body {
     background-color: var(--accent-color);
     padding: 4rem 1.25rem;
     text-align: center;
-    box-shadow: var(--box-shadow);
 }
 
 .content-items {
@@ -177,7 +176,6 @@ body {
 .content-split {
     padding: 4rem 1.25rem;
     background-color: var(--yellow-button-color);
-    box-shadow: var(--box-shadow);
 }
 
 .reduce-padding-top {
