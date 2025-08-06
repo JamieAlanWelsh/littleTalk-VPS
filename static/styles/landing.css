@@ -215,12 +215,13 @@ body {
 }
 
 .content-bar {
-    background-color: #FAFAFA;
+    background-color: var(--accent-color);
     padding: 4rem 1.25rem;
     text-align: center;
+    box-shadow: var(--box-shadow);
 }
 
-.content-bar-yellow {
+.content-bar.yellow {
     background-color: var(--yellow-button-color);
 }
 
@@ -271,11 +272,24 @@ body {
 .content-split {
     padding: 4rem 1.25rem;
     background-color: var(--yellow-button-color); /* or white via modifier */
+    box-shadow: var(--box-shadow);
+}
+
+.reduce-padding-top {
+    padding-top: 0.5rem;
+}
+
+.reduce-padding-bottom {
+    padding-bottom: 0.5rem;
 }
 
 /* background modifier */
 .content-split.white {
-    background-color: #fff;
+    background-color: white;
+}
+
+.content-split.grey {
+    background-color: var(--accent-color);
 }
 
 /* new main content layout */
@@ -411,7 +425,7 @@ body {
     margin-top: 1em;
     margin-bottom: 1em;
     text-decoration: none;
-    display: inline-block; /* ✅ This fixes the margin issue */
+    display: inline-block; /* This fixes the margin issue */
 }
 
 .footer-cta-button:hover {
