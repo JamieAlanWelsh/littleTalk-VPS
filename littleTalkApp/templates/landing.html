@@ -3,14 +3,64 @@
 {% load static %}
 
 {% block content %}
+<div class="landing-full-container">
+
+    <!-- Top Text and CTA -->
+    <div class="intro-section">
+        <h1 class="landing-title">Speech and Language Support Made Simple</h1>
+        <p class="landing-subtitle">
+            A powerful new app offering evidence-based speech and language<br>activities 
+            <strong>for children aged 2–11 with speech and language needs</strong>.
+        </p>
+        <p class="landing-subtitle">
+            <strong>Designed by licensed Speech and Language Therapists, for use in<br> schools and at home.</strong>
+        </p>
+    </div>
+
+    <!-- Role Cards -->
+    <div class="account-setup-container">
+        <h2 class="account-header">Get Started as a...</h2>
+
+        <div class="card-row">
+            <!-- School Leader -->
+            <a href="{% url 'school_signup' %}" class="setup-card">
+                <div class="setup-card-inner">
+                    <h2>School Leader</h2>
+                    <p>Set up a new school as an administrator</p>
+                </div>
+            </a>
+
+            <!-- Teacher -->
+            <a href="{% url 'request_join_school' %}" class="setup-card">
+                <div class="setup-card-inner">
+                    <h2>Teacher</h2>
+                    <p>Make a request to join an existing school</p>
+                </div>
+            </a>
+
+            <!-- Parent -->
+            <a href="{% url 'parent_signup' %}?standalone=true" class="setup-card">
+                <div class="setup-card-inner">
+                    <h2>Parent</h2>
+                    <p>Set up learning at home through your school or individually</p>
+                </div>
+            </a>
+        </div>
+
+        <!-- Login button under cards -->
+        <div class="already-have-account">
+            <a href="{% url 'login' %}" class="cta-button white-button">I already have an account</a>
+        </div>
+    </div>
+</div>
+
 
 {% comment %} initial view {% endcomment %}
-<div class="landing-container">
+{% comment %} <div class="landing-container">
     <div class="landing-left">
         <div class="text-widget">
             <h1 class="header">Speech and Language Support Made Simple</h1>
             <p class="body-text">A powerful new app offering evidence-based speech and language activities <strong>for children aged 2–11 with speech and language needs</strong>.</p>
-            {% comment %} <p class="body-text">Take the prep out of delivering speech and language interventions and enjoy fun and engaging activities.</p> {% endcomment %}
             <p class="small-text"><strong>for Special Needs Coordinators, Teaching Staff, and Parents.</strong></p>
             <div class="button-group">
                 <a href="/account-setup/" class="cta-button main-button">Get Started</a>
@@ -23,7 +73,7 @@
             <img src="{% static 'images/landing/exercise_shots.png' %}" class="hero-img" alt="Hero Image">
         </div>
     </div>
-</div>
+</div> {% endcomment %}
 {% comment %} first content bar {% endcomment %}
 {% comment %} <div class="content-bar">
     <h2 class="content-bar-heading">How Does it Work?</h2>

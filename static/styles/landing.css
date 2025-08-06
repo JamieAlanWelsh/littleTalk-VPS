@@ -1,4 +1,5 @@
 @import './base/variables.css';
+@import './pages/login_register.css';
 
 body {
     margin: 0;
@@ -670,4 +671,37 @@ body {
 
 .menu-cta-button:hover {
     background-color: var(--yellow-button-hover);
+}
+
+/* new landing front */
+
+.landing-full-container {
+    text-align: center;
+    padding: 60px 20px;
+    background-color: var(--bg-color);
+}
+
+.intro-section {
+    max-width: 700px;
+    margin: 0 auto 40px auto;
+}
+
+.landing-title {
+    font-size: 4rem;
+    margin-bottom: 60px;
+}
+
+.landing-subtitle {
+    font-size: 1.2rem;
+    margin-bottom: 60px;
+    color: var(--font-color);
+}
+
+.account-header {
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+}
+
+.already-have-account {
+    margin-top: 30px;
 }
