@@ -1305,4 +1305,5 @@ def stripe_webhook(request):
 
 @login_required
 def subscribe_success(request):
+    messages.info(request, "Subscription activated successfully - Welcome to the community!")
     return render(request, 'subscribe/success.html')
