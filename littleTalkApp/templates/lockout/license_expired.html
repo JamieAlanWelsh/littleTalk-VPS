@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}License Expired{% endblock %}
+
+{% block content %}
+<div class="login-container">
+    <h1>School License Expired</h1>
+    <p>The license for your school has expired. Please contact LittleTalk support to renew your license.</p>
+
+    <p style="margin-top: 20px;">
+        <strong>Email:</strong> <a href="mailto:support@littletalk.com">support@littletalk.com</a><br>
+        <strong>Phone:</strong> +1 (123) 456-7890
+    </p>
+
+    <a href="{% url 'profile' %}" class="btn btn--white btn--full" style="margin-top: 30px;">Go to Profile</a>
+</div>
+{% endblock %}

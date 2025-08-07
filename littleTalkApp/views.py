@@ -1245,3 +1245,11 @@ def parent_signup_view(request):
         'form': form,
         'standalone': not prefill_code,  # controls header/template messaging
     })
+
+def subscribe(request):
+    request.hide_sidebar = True
+    return render(request, 'lockout/subscribe.html')
+
+def license_expired(request):
+    request.hide_sidebar = True
+    return render(request, 'lockout/license_expired.html')

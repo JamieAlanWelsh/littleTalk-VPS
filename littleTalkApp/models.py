@@ -13,9 +13,15 @@ class School(models.Model):
     address = models.TextField(blank=True, null=True)
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="schools_created")
     created_at = models.DateTimeField(auto_now_add=True)
+    # Licensing fields
+    is_licensed = models.BooleanField(default=False)
+    license_expires_at = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return self.name
+    
+    def has_valid_license(self):
+        return self.is_licensed and (self.license_expires_at is None or self.license_expires_at > timezone.now())
 
 
 class Role:
@@ -63,6 +69,7 @@ def default_trial_end():
 class ParentProfile(models.Model):
     profile = models.OneToOneField('Profile', on_delete=models.CASCADE, related_name='parent_profile')
     learners = models.ManyToManyField('Learner', related_name='parents')
+    # subscripion fields
     trial_started_at = models.DateTimeField(auto_now_add=True)
     trial_ends_at = models.DateTimeField(default=default_trial_end)
     is_subscribed = models.BooleanField(default=False)
@@ -72,6 +79,9 @@ class ParentProfile(models.Model):
 
     def on_trial(self):
         return timezone.now() < self.trial_ends_at and not self.is_subscribed
+    
+    def has_access(self):
+        return self.is_subscribed or self.on_trial()
 
 
 class LearnerAssessmentAnswer(models.Model):

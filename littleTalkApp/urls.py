@@ -71,6 +71,10 @@ urlpatterns = [
     # Parent
     path('parent-signup/', views.parent_signup_view, name='parent_signup'),
 
+    # Subcription routes
+    path('subscribe/', views.subscribe, name='subscribe'),
+    path('license-expired/', views.license_expired, name='license_expired'),
+
     # API endpoints
     path('api/learners/<int:learner_id>/update-exp/', UpdateLearnerExpAPIView.as_view(), name='update_learner_exp'),
     path('api/selected-learner/', views.get_selected_learner, name='get_selected_learner'),

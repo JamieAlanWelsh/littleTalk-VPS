@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Subscribe to LittleTalk{% endblock %}
+
+{% block content %}
+<div class="login-container">
+    <h1>Subscribe to Continue</h1>
+    <p>Your free trial has ended. To continue using LittleTalk, please choose a subscription plan.</p>
+
+    <div class="btn-group" style="margin-top: 30px;">
+        <a href="#" class="btn btn--yellow btn--full">Subscribe Now</a>
+        <a href="{% url 'profile' %}" class="btn btn--white btn--full" style="margin-top: 10px;">Back to Profile</a>
+    </div>
+</div>
+{% endblock %}
