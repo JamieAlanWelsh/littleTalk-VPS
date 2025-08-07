@@ -12,6 +12,7 @@ from django.utils import timezone
 # Django auth
 from django.contrib.auth import login, authenticate, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
 
@@ -61,6 +62,7 @@ from .assessment_qs import QUESTIONS, RECOMMENDATIONS
 # Python stdlib
 from collections import defaultdict
 import json
+import stripe
 
 from .utilites import (
     can_edit_or_delete_log,
@@ -1253,3 +1255,49 @@ def subscribe(request):
 def license_expired(request):
     request.hide_sidebar = True
     return render(request, 'lockout/license_expired.html')
+
+# stripe payments
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
+
+@login_required
+def create_checkout_session(request):
+    checkout_session = stripe.checkout.Session.create(
+        customer_email=request.user.email,
+        payment_method_types=['card'],
+        line_items=[{
+            'price': settings.STRIPE_PARENT_PRICE_ID,
+            'quantity': 1,
+        }],
+        mode='subscription',
+        success_url=request.build_absolute_uri('/subscribe/success/'),
+        cancel_url=request.build_absolute_uri('/subscribe/cancel/'),
+    )
+
+    return redirect(checkout_session.url)
+
+
+@csrf_exempt
+def stripe_webhook(request):
+    payload = request.body
+    sig_header = request.META['HTTP_STRIPE_SIGNATURE']
+    endpoint_secret = settings.STRIPE_WEBHOOK_SECRET
+
+    try:
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, endpoint_secret
+        )
+    except stripe.error.SignatureVerificationError:
+        return HttpResponse(status=400)
+
+    if event['type'] == 'checkout.session.completed':
+        session = event['data']['object']
+        email = session.get('customer_email')
+        user = User.objects.filter(email=email).first()
+        if user and hasattr(user, 'profile'):
+            parent_profile = user.profile.parent_profile
+            parent_profile.is_subscribed = True
+            parent_profile.save()
+
+    return HttpResponse(status=200)
