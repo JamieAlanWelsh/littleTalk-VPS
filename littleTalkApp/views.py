@@ -75,10 +75,6 @@ def home(request):
         return redirect('/practise/')
     return render(request, 'landing.html')
 
-def schools(request):
-    request.hide_sidebar = True
-    return render(request, 'schools.html')
-
 
 def school_signup(request):
     request.hide_sidebar = True
