@@ -1272,7 +1272,7 @@ def create_checkout_session(request):
         }],
         mode='subscription',
         success_url=request.build_absolute_uri('/subscribe/success/'),
-        cancel_url=request.build_absolute_uri('/subscribe/cancel/'),
+        cancel_url=request.build_absolute_uri('/subscribe/'),
     )
 
     return redirect(checkout_session.url)
@@ -1301,3 +1301,8 @@ def stripe_webhook(request):
             parent_profile.save()
 
     return HttpResponse(status=200)
+
+
+@login_required
+def subscribe_success(request):
+    return render(request, 'subscribe/success.html')

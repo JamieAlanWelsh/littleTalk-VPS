@@ -78,6 +78,7 @@ urlpatterns = [
     # Stripe Webhook to activate subscription
     path('webhooks/stripe/', views.stripe_webhook, name='stripe_webhook'),
     path('subscribe/checkout/', views.create_checkout_session, name='create_checkout_session'),
+    path('subscribe/success/', views.subscribe_success, name='subscribe_success'),
 
     # API endpoints
     path('api/learners/<int:learner_id>/update-exp/', UpdateLearnerExpAPIView.as_view(), name='update_learner_exp'),

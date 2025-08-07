@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Subscription Successful{% endblock %}
+
+{% block content %}
+<div class="login-container">
+    <h1>You're All Set!</h1>
+    <p>Thank you for subscribing to LittleTalk. You now have full access to your learner’s tools and activities.</p>
+
+    <a href="{% url 'profile' %}" class="btn btn--yellow" style="margin-top: 20px;">Go to Profile</a>
+    <a href="{% url 'practise' %}" class="btn btn--yellow" style="margin-top: 20px;">Start Practsing</a>
+</div>
+{% endblock %}
