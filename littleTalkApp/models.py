@@ -73,6 +73,7 @@ class ParentProfile(models.Model):
     trial_started_at = models.DateTimeField(auto_now_add=True)
     trial_ends_at = models.DateTimeField(default=default_trial_end)
     is_subscribed = models.BooleanField(default=False)
+    stripe_customer_id = models.CharField(max_length=255, blank=True, null=True)
 
     # New field
     is_standalone = models.BooleanField(default=False)

@@ -1294,16 +1294,44 @@ def stripe_webhook(request):
     if event['type'] == 'checkout.session.completed':
         session = event['data']['object']
         email = session.get('customer_email')
+        customer_id = session.get('customer')
+
         user = User.objects.filter(email=email).first()
         if user and hasattr(user, 'profile'):
             parent_profile = user.profile.parent_profile
             parent_profile.is_subscribed = True
+            parent_profile.stripe_customer_id = customer_id
             parent_profile.save()
 
     return HttpResponse(status=200)
 
 
+
+
+
 @login_required
 def subscribe_success(request):
-    messages.info(request, "Subscription activated successfully - Welcome to the community!")
+    messages.info(request, "Subscription activated successfully. Welcome to the community!")
     return render(request, 'subscribe/success.html')
+
+
+@login_required
+def manage_subscription(request):
+    user = request.user
+    profile = user.profile
+    parent_profile = getattr(profile, 'parent_profile', None)
+
+    if not parent_profile:
+        return redirect('profile')
+
+    stripe_customer_id = parent_profile.stripe_customer_id
+
+    if not stripe_customer_id:
+        # fallback
+        return redirect('subscribe')
+
+    session = stripe.billing_portal.Session.create(
+        customer=stripe_customer_id,
+        return_url=request.build_absolute_uri('/profile/'),
+    )
+    return redirect(session.url)

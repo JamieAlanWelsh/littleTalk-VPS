@@ -75,10 +75,11 @@ urlpatterns = [
     path('subscribe/', views.subscribe, name='subscribe'),
     path('license-expired/', views.license_expired, name='license_expired'),
 
-    # Stripe Webhook to activate subscription
+    # Stripe Webhook to activate and manage subscription
     path('webhooks/stripe/', views.stripe_webhook, name='stripe_webhook'),
     path('subscribe/checkout/', views.create_checkout_session, name='create_checkout_session'),
     path('subscribe/success/', views.subscribe_success, name='subscribe_success'),
+    path('subscribe/manage/', views.manage_subscription, name='manage_subscription'),
 
     # API endpoints
     path('api/learners/<int:learner_id>/update-exp/', UpdateLearnerExpAPIView.as_view(), name='update_learner_exp'),

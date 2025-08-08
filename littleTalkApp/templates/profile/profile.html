@@ -56,7 +56,7 @@
         {% if selected_learner %}
             <!-- Total Experience Section -->
             <div class="total-exp-section">
-                <h3>Learner Profile</h3>
+                <h3>Learner Details</h3>
                 <p><strong>Name:</strong> {{ selected_learner.name }}</p>
             
                 {% if selected_learner.cohort %}
@@ -87,19 +87,40 @@
                     </div>
                 {% endif %}
             </div>
-            <!-- Edit Learner Button -->
+            <!-- Edit Learner Button SCHOOL AND STANDALONE ONLY -->
             {% if request.user.profile.role != 'parent' or request.user.profile.parent_profile.is_standalone %}
                 <div class="edit-learner-btn">
                     <a href="{% url 'edit_learner' selected_learner.learner_uuid %}" class="button">Learner Settings</a>
                 </div>
             {% endif %}
 
-            <!-- Generate Access Code Button -->
+            <!-- Generate Access Code Button SCHOOL ONLY -->
             {% if request.user.profile.role != 'parent' %}
                 <div class="edit-learner-btn">
                     <a href="{% url 'view_parent_token' selected_learner.learner_uuid %}" class="button">Generate Parent-Access-Code</a>
                 </div>
             {% endif %}
+
+            <!-- Susbcription details - PARENT ONLY -->
+            <div class="total-exp-section">
+                {% if request.user.profile.role == 'parent' %}
+                    {% with parent_profile=request.user.profile.parent_profile %}
+                        <div class="edit-learner-btn">
+                            <p>
+                                <strong>Subscription:</strong>
+                                {% if parent_profile.has_access %}
+                                    Active
+                                {% else %}
+                                    Inactive
+                                {% endif %}
+                            </p>
+                            <a href="{% url 'manage_subscription' %}" class="btn btn--white btn--small mb-20">
+                                Manage Subscription
+                            </a>
+                        </div>
+                    {% endwith %}
+                {% endif %}
+            </div>
         {% endif %}
     </div>
 </div>
