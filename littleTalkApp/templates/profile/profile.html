@@ -104,21 +104,19 @@
             <!-- Susbcription details - PARENT ONLY -->
             <div class="total-exp-section">
                 {% if request.user.profile.role == 'parent' %}
-                    {% with parent_profile=request.user.profile.parent_profile %}
-                        <div class="edit-learner-btn">
-                            <p>
-                                <strong>Subscription:</strong>
-                                {% if parent_profile.has_access %}
-                                    Active
-                                {% else %}
-                                    Inactive
-                                {% endif %}
-                            </p>
-                            <a href="{% url 'manage_subscription' %}" class="btn btn--white btn--small mb-20">
-                                Manage Subscription
-                            </a>
-                        </div>
-                    {% endwith %}
+                    <div class="edit-learner-btn">
+                        <h3>Subscription</h3>
+                        <p>
+                            {% if is_subscribed %}
+                                Active Parent Plan
+                            {% elif on_trial %}
+                                Free Trial - {{ trial_days_left }} days left
+                            {% else %}
+                                Inactive
+                            {% endif %}
+                        </p>
+                        <a href="{% url 'manage_subscription' %}" class="btn btn--white btn--small mb-20">Manage Subscription</a>
+                    </div>
                 {% endif %}
             </div>
         {% endif %}

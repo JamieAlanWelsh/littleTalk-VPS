@@ -83,6 +83,12 @@ class ParentProfile(models.Model):
     
     def has_access(self):
         return self.is_subscribed or self.on_trial()
+    
+    def trial_days_left(self):
+        #Return days remaining in trial, or 0 if trial expired.
+        if self.trial_ends_at and self.on_trial():
+            return max((self.trial_ends_at - timezone.now()).days, 0)
+        return 0
 
 
 class LearnerAssessmentAnswer(models.Model):

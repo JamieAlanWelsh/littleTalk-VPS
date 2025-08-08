@@ -564,11 +564,21 @@ def register(request):
 @login_required
 def profile(request):
     profile = request.user.profile
+    
+    # placeholders - allows school view to render
+    on_trial = False
+    trial_days_left = 0
+    is_subscribed = False
 
     if profile.role == 'parent':
+        parent_profile = profile.parent_profile
         # Standalone or invited parent: only show their linked learners
         all_learners = profile.parent_profile.learners.filter(deleted=False)
         cohorts = Cohort.objects.none()
+
+        on_trial = parent_profile.on_trial()
+        trial_days_left = parent_profile.trial_days_left()
+        is_subscribed = parent_profile.is_subscribed
     else:
         # Staff/admin: show all learners in their school
         user_school = profile.school
@@ -607,6 +617,9 @@ def profile(request):
         'selected_learner': selected_learner,
         'cohorts': cohorts,
         'selected_cohort': selected_cohort_id,
+        'on_trial': on_trial,
+        'trial_days_left': trial_days_left,
+        'is_subscribed': is_subscribed,
     })
 
 
@@ -1304,9 +1317,6 @@ def stripe_webhook(request):
             parent_profile.save()
 
     return HttpResponse(status=200)
-
-
-
 
 
 @login_required
