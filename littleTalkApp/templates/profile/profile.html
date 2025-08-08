@@ -100,26 +100,25 @@
                     <a href="{% url 'view_parent_token' selected_learner.learner_uuid %}" class="button">Generate Parent-Access-Code</a>
                 </div>
             {% endif %}
-
-            <!-- Susbcription details - PARENT ONLY -->
-            <div class="total-exp-section">
-                {% if request.user.profile.role == 'parent' %}
-                    <div class="edit-learner-btn">
-                        <h3>Subscription</h3>
-                        <p>
-                            {% if is_subscribed %}
-                                Active Parent Plan
-                            {% elif on_trial %}
-                                Free Trial - {{ trial_days_left }} days left
-                            {% else %}
-                                Inactive
-                            {% endif %}
-                        </p>
-                        <a href="{% url 'manage_subscription' %}" class="btn btn--white btn--small mb-20">Manage Subscription</a>
-                    </div>
-                {% endif %}
-            </div>
         {% endif %}
+        <!-- Susbcription details - PARENT ONLY -->
+        <div class="total-exp-section">
+            {% if request.user.profile.role == 'parent' %}
+                <div class="edit-learner-btn">
+                    <h3>Subscription</h3>
+                    <p>
+                        {% if is_subscribed %}
+                            Active Parent Plan
+                        {% elif on_trial %}
+                            Free Trial - {{ trial_days_left }} days left
+                        {% else %}
+                            Inactive
+                        {% endif %}
+                    </p>
+                    <a href="{% url 'manage_subscription' %}" class="btn btn--white btn--small mb-20">Manage Subscription</a>
+                </div>
+            {% endif %}
+        </div> 
     </div>
 </div>
 {% endblock %}
