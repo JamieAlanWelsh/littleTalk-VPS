@@ -1,18 +1,30 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}License Expired{% endblock %}
+{% block title %}School License Expired | Chatterdillo{% endblock %}
 
 {% block content %}
-<div class="login-container">
-    <h1>School License Expired</h1>
-    <p>The license for your school has expired. Please contact LittleTalk support to renew your license.</p>
+<h1>School License Expired</h1>
 
-    <p style="margin-top: 20px;">
-        <strong>Email:</strong> <a href="mailto:support@littletalk.com">support@littletalk.com</a><br>
-        <strong>Phone:</strong> +1 (123) 456-7890
-    </p>
+<div class="container-box container--short text-center">
+    <h3>Thanks for using Chatterdillo 💛</h3>
+    <p>Your school’s license has expired. Don’t worry—your data is safe and you still have limited access while we get things sorted.</p>
 
-    <a href="{% url 'profile' %}" class="btn btn--white btn--full" style="margin-top: 30px;">Go to Profile</a>
+    <div class="pricing-card" style="max-width:560px;">
+        <h2>What you can still do</h2>
+        <ul>
+            <li>Access your learners from the Profile page</li>
+            <li>Generate and share Parent Access Codes</li>
+            <li>View existing Logbook entries</li>
+        </ul>
+    </div>
+
+    
+    <h3>Renew your school license</h3>
+    <p>We’d love to get your team fully up and running again. Please contact us and we’ll help renew your access.</p>
+
+    <a href="{% url 'support' %}"class="btn btn--yellow btn--full">Contact Support</a>
+
+    <a href="{% url 'profile' %}" class="btn btn--white btn--full" style="margin-top: 16px;">Back to Learner Profile</a>
 </div>
 {% endblock %}

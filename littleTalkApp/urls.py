@@ -64,9 +64,9 @@ urlpatterns = [
     path('school/invite-audit/', views.invite_audit_trail, name='invite_audit_trail'),
 
     # Generate parent token
-    path('learners/<uuid:learner_uuid>/parent-token/', views.view_parent_token, name='view_parent_token'),
-    path('learners/<uuid:learner_uuid>/generate-token/', views.generate_parent_token, name='generate_parent_token'),
-    path('learners/<uuid:learner_uuid>/parent-token/email/', views.email_parent_token, name='email_parent_token'),
+    path('profile/parent-token/<uuid:learner_uuid>/', views.view_parent_token, name='view_parent_token'),
+    path('profile/generate-token/<uuid:learner_uuid>/', views.generate_parent_token, name='generate_parent_token'),
+    path('profile/parent-token/<uuid:learner_uuid>/email/', views.email_parent_token, name='email_parent_token'),
 
     # Parent
     path('parent-signup/', views.parent_signup_view, name='parent_signup'),

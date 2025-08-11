@@ -131,3 +131,25 @@
     white-space: nowrap;
     flex-shrink: 0;
 }
+
+/* Subscription */
+
+.pricing-card {
+    background: white;
+    border-radius: 16px;
+    padding: 30px;
+    max-width: 400px;
+    margin: 0 auto;
+    box-shadow: var(--box-shadow);
+    border: 1.5px solid #ccc;
+    text-align: center;
+}
+.pricing-card .price {
+    font-size: 2.5rem;
+    color: var(--font-color);
+}
+.trust-section {
+    margin-top: 20px;
+    font-size: 0.9rem;
+    color: gray;
+}

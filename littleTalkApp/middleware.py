@@ -17,6 +17,7 @@ class AccessControlMiddleware(MiddlewareMixin):
             reverse('login'),
             reverse('logout'),
             reverse('profile'),
+            reverse('select_learner'),
             reverse('subscribe'),
             reverse('license_expired'),
             reverse('settings'),
