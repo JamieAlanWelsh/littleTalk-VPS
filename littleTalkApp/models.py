@@ -29,6 +29,7 @@ class Role:
     TEAM_MANAGER = 'team_manager'
     STAFF = 'staff'
     READ_ONLY = 'read_only'
+    PARENT = 'parent'
 
     CHOICES = [
         (ADMIN, 'Admin'),

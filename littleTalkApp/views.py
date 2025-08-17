@@ -626,14 +626,21 @@ def profile(request):
 
 @login_required
 def add_learner(request):
-    if request.user.profile.role == 'parent':
-        if request.user.profile.parent_profile.learners.exists():
-            return redirect('profile')
+    # if request.user.profile.role == 'parent':
+    #     if request.user.profile.parent_profile.learners.count() < 2:
+    #         return redirect('profile')
     if request.method == 'POST':
         form = LearnerForm(request.POST, user=request.user)
         if form.is_valid():
             learner = form.save(commit=False)
-            learner.school = request.user.profile.school  # assign to school
+            learner.user = request.user
+            if request.user.profile.role != 'parent':
+                learner.school = request.user.profile.school
+            learner.save()
+
+            if request.user.profile.role == 'parent':
+                request.user.profile.parent_profile.learners.add(learner)
+
             learner.save()
 
             if request.user.profile.role == 'parent':
@@ -660,15 +667,15 @@ def select_learner(request):
 
 @login_required
 def edit_learner(request, learner_uuid):
-    if request.user.profile.role == 'parent':
-        if not request.user.profile.parent_profile.is_standalone:
-            return redirect('profile')
     learner = get_object_or_404(
         Learner,
         learner_uuid=learner_uuid,
-        school=request.user.profile.school,
         deleted=False
     )
+
+    # If user is a parent and this learner is tied to any school, send them back
+    if request.user.profile.role == 'parent' and learner.school_id:
+        return redirect('profile')
 
     if request.method == 'POST':
         if 'remove' in request.POST:
@@ -681,7 +688,7 @@ def edit_learner(request, learner_uuid):
     else:
         form = LearnerForm(instance=learner, user=request.user)
     
-    can_delete = request.user.profile.is_admin() or request.user.profile.is_manager()
+    can_delete = request.user.profile.is_admin() or request.user.profile.is_manager() or request.user.profile.is_parent()
 
     context = {
         'form': form,
@@ -696,12 +703,11 @@ def confirm_delete_learner(request, learner_uuid):
     learner = get_object_or_404(
         Learner,
         learner_uuid=learner_uuid,
-        school=request.user.profile.school,
         deleted=False
     )
 
     # Restrict delete permissions
-    if not (request.user.profile.is_admin() or request.user.profile.is_manager()):
+    if not (request.user.profile.is_admin() or request.user.profile.is_manager() or request.user.profile.is_parent()):
         messages.error(request, "You do not have permission to delete learners.")
         return redirect('profile')
 
@@ -715,7 +721,7 @@ def confirm_delete_learner(request, learner_uuid):
             learner.save()
 
             # Soft-delete all log entries linked to this learner
-            LogEntry.objects.filter(learner=learner, user=request.user, deleted=False).update(deleted=True)
+            LogEntry.objects.filter(learner=learner, deleted=False).update(deleted=True)
 
             # Clear session and redirect
             del request.session['selected_learner_id']
@@ -1232,14 +1238,14 @@ def parent_signup_view(request):
 
             token = form.cleaned_data.get('access_code')  # This is the actual token object or None
             learner = token.learner if token else None
-            school = learner.school if learner else None
+            # school = learner.school if learner else None
 
             profile = Profile.objects.create(
                 user=user,
                 first_name=form.cleaned_data['first_name'],
                 email=form.cleaned_data['email'],
                 role='parent',
-                school=school,
+                # school=school,
                 opted_in=form.cleaned_data.get('agree_updates', False)
             )
 

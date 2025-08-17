@@ -9,7 +9,7 @@
     <!-- Left Column -->
     <div class="left-column">
 
-        {% if request.user.profile.role != 'parent' or not learners %}
+        {% if request.user.profile.role != 'parent' or learners|length <= 2 %}
             <div class="add-learner-btn">
                 <a href="{% url 'add_learner' %}" class="button">+ Add Learner</a>
             </div>
@@ -78,7 +78,7 @@
                         No exercises recorded.
                     {% endif %}
                 </p>
-                {% if request.user.profile.role == 'parent' and not request.user.profile.parent_profile.is_standalone %}
+                {% if request.user.profile.role == 'parent' and selected_learner.school_id %}
                     <div class="recommendation-info mb-20">
                         <span class="info-icon">i</span>
                         <p>
@@ -88,7 +88,7 @@
                 {% endif %}
             </div>
             <!-- Edit Learner Button SCHOOL AND STANDALONE ONLY -->
-            {% if request.user.profile.role != 'parent' or request.user.profile.parent_profile.is_standalone %}
+            {% if request.user.profile.role != 'parent' or not selected_learner.school_id %}
                 <div class="edit-learner-btn">
                     <a href="{% url 'edit_learner' selected_learner.learner_uuid %}" class="button">Learner Settings</a>
                 </div>
@@ -108,7 +108,7 @@
                     <h3>Subscription</h3>
                     <p>
                         {% if is_subscribed %}
-                            Active Parent Plan
+                            Active Parent Plan - 3 Learners
                         {% elif on_trial %}
                             Free Trial - {{ trial_days_left }} days left
                         {% else %}
