@@ -504,6 +504,7 @@ def register(request):
             # Create user profile
             Profile.objects.create(
                 user=user,
+                email=email,
                 first_name=first_name,
                 hear_about=hear_about,
                 opted_in=agree_updates,
@@ -1006,6 +1007,7 @@ def accept_invite(request, token):
 
             Profile.objects.create(
                 user=user,
+                email=email,
                 first_name=full_name,
                 school=invite.school,
                 role=invite.role,
@@ -1235,6 +1237,7 @@ def parent_signup_view(request):
             profile = Profile.objects.create(
                 user=user,
                 first_name=form.cleaned_data['first_name'],
+                email=form.cleaned_data['email'],
                 role='parent',
                 school=school,
                 opted_in=form.cleaned_data.get('agree_updates', False)

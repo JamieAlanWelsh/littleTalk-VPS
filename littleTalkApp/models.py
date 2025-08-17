@@ -40,6 +40,7 @@ class Role:
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    email = models.CharField(max_length=50, blank=True, null=True)
     first_name = models.CharField(max_length=50, blank=True, null=True)
     hear_about = models.CharField(max_length=50, blank=True, null=True)
     opted_in = models.BooleanField(default=False)
@@ -60,6 +61,9 @@ class Profile(models.Model):
 
     def is_read_only(self):
         return self.role == Role.READ_ONLY
+    
+    def is_parent(self):
+        return self.role == Role.PARENT
 
 
 def default_trial_end():
@@ -115,6 +119,8 @@ class Cohort(models.Model):
 
 
 class Learner(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='learners')
+    # profile = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True, blank=True, related_name='learners')
     school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='learners', null=True, blank=True)
     name = EncryptedCharField(max_length=255)
     learner_uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
