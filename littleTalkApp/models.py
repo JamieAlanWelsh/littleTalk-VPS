@@ -46,7 +46,7 @@ class Profile(models.Model):
     hear_about = models.CharField(max_length=50, blank=True, null=True)
     opted_in = models.BooleanField(default=False)
     school = models.ForeignKey(School, on_delete=models.SET_NULL, null=True, blank=True, related_name="users")
-    role = models.CharField(max_length=20, choices=Role.CHOICES, default=Role.STAFF)
+    role = models.CharField(max_length=20, choices=Role.CHOICES, default=Role.PARENT)
 
     def __str__(self):
         return f"{self.user.username}'s Profile"

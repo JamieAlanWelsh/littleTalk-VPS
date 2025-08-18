@@ -1089,7 +1089,7 @@ def school_dashboard(request):
                 # Create invite on approval
                 invite = StaffInvite.objects.create(
                     email=join_request.email,
-                    role='staff',  # Default role, or use join_request.preferred_role if you add that
+                    role='staff',
                     school=school,
                     sent_by=request.user
                 )
