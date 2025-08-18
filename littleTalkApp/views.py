@@ -1051,14 +1051,14 @@ def school_dashboard(request):
 
             if target_profile.user == request.user:
                 messages.error(request, "You cannot change your own role.")
-            elif target_profile.role == Role.ADMIN:
-                messages.error(request, "You cannot change another admin’s role.")
+            # elif target_profile.role == Role.ADMIN:
+            #     messages.error(request, "You cannot change another admin’s role.")
             elif profile.is_manager() and new_role == Role.ADMIN:
                 messages.error(request, "Only admins can assign the admin role.")
             elif new_role in dict(Role.CHOICES).keys():
                 target_profile.role = new_role
                 target_profile.save()
-                messages.success(request, f"{target_profile.first_name}'s role updated to {new_role}.")
+                messages.success(request, f"{target_profile.first_name}'s role updated")
             else:
                 messages.error(request, "Invalid role selected.")
             return redirect('school_dashboard')

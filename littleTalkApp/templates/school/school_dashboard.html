@@ -33,7 +33,7 @@
                         <td title="{{ profile.get_role_display }}">
                             {% with current_user=request.user.profile %}
                                 {% if current_user.is_admin or current_user.is_manager %}
-                                    {% if profile.user != request.user and profile.role != 'admin' %}
+                                    {% if profile.user != request.user %}
                                         <form method="post" style="margin: 0;">
                                             {% csrf_token %}
                                             <input type="hidden" name="user_id" value="{{ profile.user.id }}">

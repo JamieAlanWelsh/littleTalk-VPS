@@ -55,7 +55,7 @@ class Profile(models.Model):
         return self.role == Role.ADMIN
 
     def is_manager(self):
-        return self.role in [Role.ADMIN, Role.TEAM_MANAGER]
+        return self.role == Role.TEAM_MANAGER
 
     def is_staff(self):
         return self.role == Role.STAFF
