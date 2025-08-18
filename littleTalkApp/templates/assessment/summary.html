@@ -8,7 +8,7 @@
 {% comment %} Simplified Header for Assessment Page {% endcomment %}
 <!-- logo top left -->
 <div class="logo-container">
-    <img src="{% static 'images/littletalk_logo.png' %}" alt="LittleTalk Logo" style="max-width: 150px; height: auto;">
+    <img src="{% static 'images/chatterdillo_logo_official.png' %}" alt="LittleTalk Logo" style="max-width: 180px; height: auto;">
 </div>
 
 
@@ -27,7 +27,7 @@
         {% endif %}
 
         <div class="summary-cta">
-            <a href="/" class="btn btn--yellow">Get your recommended exercises and start using LittleTalk</a>
+            <a href="/" class="btn btn--yellow">Get your recommended exercises and start using Chatterdillo</a>
         </div>
 
         <div class="container-box container--white container--edgy">
@@ -37,7 +37,7 @@
             </p>
 
             {% if strong_skills %}
-                <p><strong>Your child has strong skills in:</strong></p>
+                <p><strong>{{ learner.name }} has strong skills in:</strong></p>
                 <ul class="skill-list">
                     {% for skill in strong_skills %}
                         <li>{{ skill }}</li>
@@ -46,7 +46,7 @@
             {% endif %}
 
             {% if needs_support_skills %}
-                <p><strong>Your child may need support with:</strong></p>
+                <p><strong>{{ learner.name }} may need support with:</strong></p>
                 <ul class="skill-list">
                     {% for skill in needs_support_skills %}
                         <li>{{ skill }}</li>
@@ -59,7 +59,7 @@
         </div>
 
         <div class="summary-cta">
-            <a href="/" class="btn btn--yellow">Get your recommended exercises and start using LittleTalk</a>
+            <a href="/" class="btn btn--yellow">Get your recommended exercises and start using Chatterdillo</a>
         </div>
 
     </section>
