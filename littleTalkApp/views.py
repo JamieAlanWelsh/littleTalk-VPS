@@ -157,7 +157,7 @@ def save_all_assessment_answers(request):
         # Compute where to redirect user
         if request.user.is_authenticated:
             if request.session.get("retake_learner_id"):
-                redirect_url = "/assessment/save-retake/"
+                redirect_url = "/screener/save-retake/"
             else:
                 redirect_url = "/add-learner/"
         else:

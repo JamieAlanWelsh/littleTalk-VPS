@@ -17,10 +17,10 @@ urlpatterns = [
     path('method/', views.method, name='method'),
 
     # Assessment
-    path('assessment/start/', views.start_assessment, name='start_assessment'),
-    path('assessment/save-all/', views.save_all_assessment_answers, name='save_all_assessment_answers'),
-    path('assessment/summary/', views.assessment_summary, name='assessment_summary'),
-    path('assessment/save-retake/', views.save_retake_assessment, name='save_retake_assessment'),
+    path('screener/start/', views.start_assessment, name='start_assessment'),
+    path('screener/save-all/', views.save_all_assessment_answers, name='save_all_assessment_answers'),
+    path('screener/summary/', views.assessment_summary, name='assessment_summary'),
+    path('screener/save-retake/', views.save_retake_assessment, name='save_retake_assessment'),
 
     # Login and logout URLs
     path('login/', views.CustomLoginView.as_view(), name='login'),
