@@ -604,12 +604,13 @@ def add_learner(request):
         if form.is_valid():
             learner = form.save(commit=False)
             learner.user = request.user
+
             if not request.user.profile.is_parent():
                 learner.school = request.user.profile.school
+            learner.save()
 
             if request.user.profile.is_parent():
                 request.user.profile.parent_profile.learners.add(learner)
-
             learner.save()
 
             # Store selected learner in session (optional)
