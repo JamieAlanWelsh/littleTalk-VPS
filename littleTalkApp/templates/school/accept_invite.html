@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Accept Invite{% endblock %}
+
+{% block content %}
+
+<div class="logo-container">
+    <img src="{% static 'images/chatterdillo_logo_official.png' %}" alt="LittleTalk Logo" style="max-width: 200px; height: auto;">
+</div>
+
+<h1>Accept Invite</h1>
+
+<div class="container-box">
+    <h3>You've been invited to join {{ school_name }}</h3>
+    <p>This invite was sent to: <strong>{{ email }}</strong></p>
+
+    <form method="post" class="form-stack">
+        {% csrf_token %}
+
+        <div>
+            <label for="{{ form.full_name.id_for_label }}" class="label">Your Name</label>
+            {{ form.full_name }}
+            {% if form.full_name.errors %}
+                <p class="error-message">{{ form.full_name.errors.0 }}</p>
+            {% endif %}
+        </div>
+
+        <div>
+            <label for="{{ form.password.id_for_label }}" class="label">Password</label>
+            {{ form.password }}
+            {% if form.password.errors %}
+                <p class="error-message">{{ form.password.errors.0 }}</p>
+            {% endif %}
+        </div>
+
+        <button type="submit" class="btn btn--yellow btn--full">Join School</button>
+    </form>
+</div>
+{% endblock %}

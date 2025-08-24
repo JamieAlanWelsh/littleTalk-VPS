@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}LittleTalk | Parent Sign Up{% endblock %}
+{% load static %}
+
+{% block content %}
+<div class="login-container">
+
+    <!-- logo top left -->
+    <a href="/" class="logo-link">
+        <img src="{% static 'images/chatterdillo_logo_official.png' %}" alt="LittleTalk Logo" style="max-width: 180px; height: auto;">
+    </a>
+    <!-- Header Section -->
+    <h1>
+        Create Your Parent Account
+    </h1>
+
+    <!-- Signup Form -->
+    <form method="post" class="login-form">
+        <div class="recommendation-info mb-20">
+            <span class="info-icon">i</span>
+            <p>
+                Parent Access Code allows you to connect to your child and their school automatically
+            </p>
+        </div>
+
+        {% csrf_token %}
+
+        <div>
+            <input type="text" name="first_name" class="input" placeholder="Your name"
+                value="{{ form.first_name.value|default_if_none:'' }}" required>
+            {% if form.first_name.errors %}
+                <div class="error-message">{{ form.first_name.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <div>
+            <input type="email" name="email" class="input" placeholder="Email"
+                value="{{ form.email.value|default_if_none:'' }}" required>
+            {% if form.email.errors %}
+                <div class="error-message">{{ form.email.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <div>
+            <input type="password" name="password" class="input" placeholder="Create password" required>
+            {% if form.password.errors %}
+                <div class="error-message">{{ form.password.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <div>
+            <input type="text" name="access_code" class="input" placeholder="Parent Access Code (optional)"
+                value="{{ form.access_code.value|default_if_none:'' }}">
+            {% if form.access_code.errors %}
+                <div class="error-message">{{ form.access_code.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <div class="checkbox-wrapper mt-20">
+            <input type="checkbox" name="agree_updates" id="agree_updates" {% if form.agree_updates.value %}checked{% endif %}>
+            <label for="agree_updates">
+                I’m happy to receive occasional updates about LittleTalk
+            </label>
+        </div>
+
+        <button type="submit" class="btn btn--yellow btn--full">Create My Account</button>
+
+        {% if form.non_field_errors %}
+            <div class="error-message">{{ form.non_field_errors.0 }}</div>
+        {% endif %}
+    </form>
+</div>
+{% endblock %}

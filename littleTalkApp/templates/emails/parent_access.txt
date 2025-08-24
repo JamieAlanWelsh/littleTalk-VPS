@@ -1,0 +1,17 @@
+You're invited to connect with {{ learner.name }} on Chatterdillo!
+
+Hi there,
+
+You've been invited to access {{ learner.name }}'s learning profile and stay updated on their progress.
+
+Your access code is: {{ token }}
+
+You can sign up and connect using the link below:
+{{ signup_url }}
+
+This access code is for one-time use only.
+
+If you weren't expecting this email, you can safely ignore it.
+
+- The Chatterdillo Team
+https://little-talk.org

@@ -2,33 +2,98 @@ from django.db import models
 from django.contrib.auth.models import User
 from encrypted_model_fields.fields import EncryptedCharField
 import uuid
+from django.utils import timezone
+from datetime import timedelta
+import random
+import string
 
 
-# class Assessment(models.Model):
-#     user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
-#     learner_name = models.CharField(max_length=100)
-#     learner_dob = models.DateField()
-#     source = models.CharField(max_length=200, blank=True, null=True)
+class School(models.Model):
+    name = models.CharField(max_length=255)
+    address = models.TextField(blank=True, null=True)
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="schools_created")
+    created_at = models.DateTimeField(auto_now_add=True)
+    # Licensing fields
+    is_licensed = models.BooleanField(default=False)
+    license_expires_at = models.DateTimeField(null=True, blank=True)
 
-# class AssessmentQuestion(models.Model):
-#     question_text = models.CharField(max_length=500)
-#     is_optional = models.BooleanField(default=False)
-#     order = models.IntegerField()
+    def __str__(self):
+        return self.name
+    
+    def has_valid_license(self):
+        return self.is_licensed and (self.license_expires_at is None or self.license_expires_at > timezone.now())
 
-# class AssessmentAnswer(models.Model):
-#     assessment = models.ForeignKey(Assessment, on_delete=models.CASCADE)
-#     question = models.ForeignKey(AssessmentQuestion, on_delete=models.CASCADE)
-#     answer = models.BooleanField()
+
+class Role:
+    ADMIN = 'admin'
+    TEAM_MANAGER = 'team_manager'
+    STAFF = 'staff'
+    READ_ONLY = 'read_only'
+    PARENT = 'parent'
+
+    CHOICES = [
+        (ADMIN, 'Admin'),
+        (TEAM_MANAGER, 'Team Manager'),
+        (STAFF, 'Staff'),
+        (READ_ONLY, 'Read Only'),
+    ]
 
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    email = models.CharField(max_length=50, blank=True, null=True)
     first_name = models.CharField(max_length=50, blank=True, null=True)
     hear_about = models.CharField(max_length=50, blank=True, null=True)
-    opted_in = models.BooleanField(default=False) 
+    opted_in = models.BooleanField(default=False)
+    school = models.ForeignKey(School, on_delete=models.SET_NULL, null=True, blank=True, related_name="users")
+    role = models.CharField(max_length=20, choices=Role.CHOICES, default=Role.PARENT)
 
     def __str__(self):
         return f"{self.user.username}'s Profile"
+    
+    def is_admin(self):
+        return self.role == Role.ADMIN
+
+    def is_manager(self):
+        return self.role == Role.TEAM_MANAGER
+
+    def is_staff(self):
+        return self.role == Role.STAFF
+
+    def is_read_only(self):
+        return self.role == Role.READ_ONLY
+    
+    def is_parent(self):
+        return self.role == Role.PARENT
+
+
+def default_trial_end():
+    return timezone.now() + timedelta(days=7)
+
+
+class ParentProfile(models.Model):
+    profile = models.OneToOneField('Profile', on_delete=models.CASCADE, related_name='parent_profile')
+    learners = models.ManyToManyField('Learner', related_name='parents')
+    # subscripion fields
+    trial_started_at = models.DateTimeField(auto_now_add=True)
+    trial_ends_at = models.DateTimeField(default=default_trial_end)
+    is_subscribed = models.BooleanField(default=False)
+    stripe_customer_id = models.CharField(max_length=255, blank=True, null=True)
+
+    # New field
+    is_standalone = models.BooleanField(default=False)
+
+    def on_trial(self):
+        return timezone.now() < self.trial_ends_at and not self.is_subscribed
+    
+    def has_access(self):
+        return self.is_subscribed or self.on_trial()
+    
+    def trial_days_left(self):
+        #Return days remaining in trial, or 0 if trial expired.
+        if self.trial_ends_at and self.on_trial():
+            return max((self.trial_ends_at - timezone.now()).days, 0)
+        return 0
 
 
 class LearnerAssessmentAnswer(models.Model):
@@ -45,7 +110,7 @@ class LearnerAssessmentAnswer(models.Model):
 
 
 class Cohort(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)  # school owner
+    school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='cohorts', null=True, blank=True)
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)  # optional
     created_at = models.DateTimeField(auto_now_add=True)
@@ -56,6 +121,8 @@ class Cohort(models.Model):
 
 class Learner(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='learners')
+    # profile = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True, blank=True, related_name='learners')
+    school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='learners', null=True, blank=True)
     name = EncryptedCharField(max_length=255)
     learner_uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     exp = models.IntegerField(default=0)
@@ -86,7 +153,94 @@ class LogEntry(models.Model):
     goals = models.TextField(blank=True, null=True, max_length=255)
     notes = models.TextField(blank=True, null=True, max_length=1000)
     timestamp = models.DateTimeField(auto_now_add=True)  # Automatically set on creation
-    deleted = models.BooleanField(default=False) 
+    deleted = models.BooleanField(default=False)
+    created_by_role = models.CharField(max_length=20, blank=True, null=True)
 
     def __str__(self):
         return f"{self.title} - {self.user.username}"
+
+
+def default_expiry():
+    return timezone.now() + timedelta(days=7)
+
+
+class StaffInvite(models.Model):
+    school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='invites')
+    email = models.EmailField()
+    role = models.CharField(max_length=30, choices=Role.CHOICES)
+    token = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    used = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    expires_at = models.DateTimeField(default=default_expiry)
+    sent_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='sent_invites')
+    withdrawn = models.BooleanField(default=False)
+
+    def is_expired(self):
+        return timezone.now() > self.expires_at
+
+    def __str__(self):
+        return f"Invite to {self.email} for {self.school.name}"
+
+
+class JoinRequest(models.Model):
+    class Status(models.TextChoices):
+        PENDING = 'pending', 'Pending'
+        APPROVED = 'approved', 'Approved'
+        REJECTED = 'rejected', 'Rejected'
+
+    full_name = models.CharField(max_length=255)
+    email = models.EmailField()
+    school = models.ForeignKey(School, on_delete=models.CASCADE)
+    status = models.CharField(max_length=10, choices=Status.choices, default=Status.PENDING)
+    created_at = models.DateTimeField(auto_now_add=True)
+    resolved_at = models.DateTimeField(null=True, blank=True)
+    resolved_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name='handled_join_requests')
+
+    def __str__(self):
+        return f"{self.full_name} ({self.email}) → {self.school.name} [{self.status}]"
+    
+
+def generate_short_code(length=6):
+    alphabet = string.ascii_uppercase + string.digits
+    return ''.join(random.choices(alphabet, k=length))
+
+
+class ParentAccessToken(models.Model):
+    learner = models.OneToOneField(
+        'Learner', on_delete=models.CASCADE, related_name='parent_token'
+    )
+    token = models.CharField(max_length=6, unique=True, editable=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    used = models.BooleanField(default=False)
+    expires_at = models.DateTimeField(default=default_expiry)  # Optional time-based expiry
+
+    def is_expired(self):
+        return self.used or timezone.now() > self.expires_at
+
+    def regenerate_token(self):
+        # Generate a new unique short code
+        for _ in range(10):
+            new_token = generate_short_code()
+            if not ParentAccessToken.objects.filter(token=new_token).exists():
+                self.token = new_token
+                self.created_at = timezone.now()
+                self.expires_at = ParentAccessToken._meta.get_field('expires_at').get_default()
+                self.used = False
+                self.save()
+                return
+        raise Exception("Unable to generate unique token after multiple attempts")
+
+    def save(self, *args, **kwargs):
+        if not self.token:
+            # Only generate token here, do NOT save again
+            for _ in range(10):
+                new_token = generate_short_code()
+                if not ParentAccessToken.objects.filter(token=new_token).exists():
+                    self.token = new_token
+                    break
+            else:
+                raise Exception("Unable to generate a unique token.")
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"Code for {self.learner.name}: {self.token}"

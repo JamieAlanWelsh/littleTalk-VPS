@@ -9,7 +9,6 @@
 /* Inner content gets centered within the main-content area */
 .main-content-inner {
     width: 100%;
-    max-width: 800px;
 }
 
 .layout {
@@ -28,6 +27,7 @@
     margin: 50px auto;
     padding: 30px;
     background-color: var(--accent-color);
+    border: 1px solid #ccc;
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
     position: relative;
@@ -51,6 +51,10 @@
     max-width: 800px;
 }
 
+.container--dash {
+    max-width: 1000px;
+}
+
 .container--short {
     max-width: 500px;
 }
@@ -61,4 +65,20 @@
 
 .container--edgy {
     border-radius: var(--border-radius-light);
+}
+
+.mb-10 {
+    margin-bottom: 10px;
+}
+
+.mb-20 {
+    margin-bottom: 20px;
+}
+
+.mb-30 {
+    margin-bottom: 30px;
+}
+
+.mb-40 {
+    margin-bottom: 40px;
 }

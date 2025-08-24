@@ -32,6 +32,17 @@
 
 </head>
 <body>
+    {% if messages %}
+        <div class="message-container">
+            {% for message in messages %}
+                <div class="message-bar {{ message.tags }}">
+                    {{ message }}
+                    <span class="message-close" onclick="this.parentElement.style.display='none';">&times;</span>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
     <div class="layout {% if not hide_sidebar %}with-sidebar{% endif %}">
         {% if not hide_sidebar %}
             <!-- Sidebar / Bottom Navigation -->
@@ -39,7 +50,7 @@
                 <!-- Sidebar Logo (Only visible on larger screens) -->
                 <div class="sidebar-logo">
                     <a href="{% url 'home' %}">
-                        <img src="{% static 'images/littletalk_logo.png' %}" alt="LittleTalk Logo">
+                        <img src="{% static 'images/chatterdillo_logo_official.png' %}" alt="LittleTalk Logo" style="min-width: 180px; height: auto;">
                     </a>
                 </div>
 
@@ -53,7 +64,7 @@
                     <li>
                         <a href="{% url 'profile' %}">
                             <img src="{% static 'icons/children.png' %}" alt="Profile" class="sidebar-icon">
-                            <span>Learners</span>
+                            <span>Learner</span>
                         </a>
                     </li>
                     <li>
@@ -62,16 +73,18 @@
                             <span>Logbook</span>
                         </a>
                     </li>
+                    {% if request.user.profile.role != 'parent' %}
+                        <li>
+                            <a href="{% url 'school_dashboard' %}">
+                                <img src="{% static 'icons/school.png' %}" alt="School" class="sidebar-icon">
+                                <span>School</span>
+                            </a>
+                        </li>
+                    {% endif %}
                     <li>
                         <a href="{% url 'support' %}">
                             <img src="{% static 'icons/help.png' %}" alt="Support" class="sidebar-icon">
                             <span>Support</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{% url 'cohort_list' %}">
-                            <img src="{% static 'icons/group.png' %}" alt="Profile" class="sidebar-icon">
-                            <span>Cohorts</span>
                         </a>
                     </li>
                     <li>
@@ -91,3 +104,26 @@
     </div>
 </body>
 </html>
+
+{% comment %} slidey error bar {% endcomment %}
+<script>
+    window.addEventListener('load', () => {
+        const toast = document.querySelector('.message-container');
+
+        if (toast) {
+            toast.classList.add('show');
+
+            // Hide after 4s
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 4000);
+        }
+
+        const closeBtn = document.querySelector('.message-close');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                toast.classList.remove('show');
+            });
+        }
+    });
+</script>

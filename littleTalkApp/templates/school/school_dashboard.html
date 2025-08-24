@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+{% block title %}School Dashboard{% endblock %}
+{% load static %}
+
+{% block content %}
+<h1>{{ school_name }} – Staff Dashboard</h1>
+
+<div class="container-box container--dash">
+    <div class="logbook-header">
+        {% if can_invite_staff %}
+            <a href="{% url 'invite_staff' %}" class="btn btn--yellow">+ Invite Staff</a>
+            <a href="{% url 'invite_audit_trail' %}" class="btn btn--white">Audit Trail</a>
+            <a href="{% url 'cohort_list' %}" class="btn btn--white">Manage Cohorts</a>
+        {% endif %}
+    </div>
+    
+    <h3>Staff Members</h3>
+    <div class="table-wrapper">
+        <table class="dashboard-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Last Login</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for profile in staff_profiles %}
+                    <tr>
+                        <td title="{{ profile.first_name }}">{{ profile.first_name }}</td>
+                        <td title="{{ profile.user.email }}">{{ profile.user.email }}</td>
+                        <td title="{{ profile.get_role_display }}">
+                            {% with current_user=request.user.profile %}
+                                {% if current_user.is_admin or current_user.is_manager %}
+                                    {% if profile.user != request.user %}
+                                        <form method="post" style="margin: 0;">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="user_id" value="{{ profile.user.id }}">
+                                            <select name="new_role" onchange="this.form.submit()">
+                                                {% for value, label in role_choices %}
+                                                    {% if current_user.is_admin or value != 'admin' %}
+                                                        <option value="{{ value }}" {% if profile.role == value %}selected{% endif %}>
+                                                            {{ label }}
+                                                        </option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </form>
+                                    {% else %}
+                                        {{ profile.get_role_display }}
+                                    {% endif %}
+                                {% else %}
+                                    {{ profile.get_role_display }}
+                                {% endif %}
+                            {% endwith %}
+                        </td>
+                        <td title="{{ profile.user.last_login|default:"Never" }}">
+                            {{ profile.user.last_login|default:"Never" }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% if can_invite_staff %}
+        <h3 style="margin-top: 2em;">Pending Join Requests</h3>
+        <div class="table-wrapper">
+            <table class="dashboard-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Requested</th>
+                        {% if can_invite_staff %}
+                            <th>Actions</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for request in join_requests %}
+                        <tr>
+                            <td title="{{ request.full_name }}">{{ request.full_name }}</td>
+                            <td title="{{ request.email }}">{{ request.email }}</td>
+                            <td title="{{ request.created_at|date:'M j, Y H:i' }}">{{ request.created_at|date:"M j, Y" }}</td>
+                            {% if can_invite_staff %}
+                                <td>
+                                    <form method="post" style="display:inline;">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="join_request_id" value="{{ request.id }}">
+                                        <button type="submit" name="approve_join_request" class="btn btn--invisible btn--table">Approve</button>
+                                        <button type="submit" name="reject_join_request" class="btn btn--invisible btn--table">Reject</button>
+                                    </form>
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% empty %}
+                        <tr><td colspan="4">No pending join requests.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+
+    <h3 style="margin-top: 2em;">Pending Invites</h3>
+    <div class="table-wrapper">
+        <table class="dashboard-table">
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Sent</th>
+                    {% if can_invite_staff %}
+                        <th>Actions</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for invite in invites %}
+                    <tr>
+                        <td title="{{ invite.email }}">{{ invite.email }}</td>
+                        <td title="{{ invite.role|capfirst }}">{{ invite.role|capfirst }}</td>
+                        <td title="{{ invite.created_at|date:'M j, Y H:i' }}">{{ invite.created_at|date:"M j, Y" }}</td>
+                        {% if can_invite_staff %}
+                            <td>
+                                <form method="post" style="display:inline;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="invite_id" value="{{ invite.id }}">
+                                    <button type="submit" name="resend_invite" class="btn btn--invisible btn--table">Resend</button>
+                                    <button type="submit" name="withdraw_invite" class="btn btn--invisible btn--table">Withdraw</button>
+                                </form>
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% empty %}
+                    <tr><td colspan="4">No pending invites.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,6 +1,7 @@
 @import './base/variables.css';
 @import './base/typography.css';
 @import './layout/layout.css';
+@import './components/errorbar.css';
 @import './components/sidebar.css';
 @import './components/forms.css';
 @import './components/buttons.css';

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', sans-serif;
+            background-color: #f7f7f7;
+            padding: 20px;
+            color: #333;
+        }
+        .email-container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        .button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 20px;
+            background-color: #FFE477;
+            color: #200D2A;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            box-shadow: 0px 5px 0px rgba(0, 0, 0, 0.2);
+        }
+        .footer {
+            margin-top: 40px;
+            font-size: 0.85em;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <h2>Your Parent Access Code for {{ learner.name }}</h2>
+
+        <p>Hi there,</p>
+
+        <p>You’ve been invited to connect with <strong>{{ learner.name }}</strong>'s learning journey on Chatterdillo.</p>
+
+        <p><strong>Your access code is:</strong></p>
+        <p style="font-size: 1.5em; font-weight: bold; letter-spacing: 2px;">{{ token }}</p>
+
+        <p>Or simply click the button below to sign up and connect:</p>
+
+        <p><a href="{{ signup_url }}" class="button">Connect to {{ learner.name }}</a></p>
+
+        <hr style="border: none; border-top: 1px solid #ccc; margin: 20px 0;">
+
+        <img src="https://little-talk.org/static/images/littletalk_logo.png" alt="Chatterdillo Logo" style="max-width: 200px;">
+        <div class="footer">
+            <p>This access code is for one-time use only. If you weren't expecting this message, you can ignore it.</p>
+        </div>
+    </div>
+</body>
+</html>

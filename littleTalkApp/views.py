@@ -7,10 +7,12 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.middleware.csrf import get_token
 from django.http import HttpResponse
+from django.utils import timezone
 
 # Django auth
 from django.contrib.auth import login, authenticate, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
 
@@ -28,6 +30,11 @@ from .forms import (
     UserUpdateForm,
     PasswordUpdateForm,
     CohortForm,
+    SchoolSignupForm,
+    StaffInviteForm,
+    AcceptInviteForm,
+    JoinRequestForm,
+    ParentSignupForm,
 )
 
 # Local app: models
@@ -37,6 +44,12 @@ from .models import (
     LearnerAssessmentAnswer,
     LogEntry,
     Cohort,
+    School,
+    StaffInvite,
+    Role,
+    JoinRequest,
+    ParentAccessToken,
+    ParentProfile,
 )
 
 # Local app: serializers
@@ -49,6 +62,13 @@ from .assessment_qs import QUESTIONS, RECOMMENDATIONS
 # Python stdlib
 from collections import defaultdict
 import json
+import stripe
+
+from .utilites import (
+    can_edit_or_delete_log,
+    send_invite_email,
+    send_parent_access_email
+)
 
 
 def home(request):
@@ -57,18 +77,44 @@ def home(request):
         return redirect('/practise/')
     return render(request, 'landing.html')
 
-def schools(request):
+
+def school_signup(request):
     request.hide_sidebar = True
-    return render(request, 'schools.html')
+    if request.method == 'POST':
+        form = SchoolSignupForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            full_name = form.cleaned_data['full_name']
+            school_name = form.cleaned_data['school_name']
+
+            # Create user
+            user = User.objects.create_user(username=email, email=email, password=password)
+            user.first_name = full_name
+            user.save()
+
+            # Create school
+            school = School.objects.create(name=school_name, created_by=user)
+
+            # Link profile
+            profile = Profile.objects.create(user=user, first_name=full_name, school=school)
+            profile.role = 'admin'  # assumes you’ve added role field
+            profile.save()
+
+            # Auto-login
+            login(request, user)
+
+            return redirect('profile')  # or wherever your school users land
+    else:
+        form = SchoolSignupForm()
+
+    return render(request, 'registration/school_signup.html', {'form': form})
+
 
 # This view will serve the first question when the assessment starts
+@login_required
 def start_assessment(request):
     request.hide_sidebar = True
-
-    # Check for retake
-    retake_id = request.GET.get("retake")
-    if retake_id:
-        request.session["retake_learner_id"] = int(retake_id)
 
     # Reset assessment session state
     request.session["assessment_answers"] = []
@@ -93,33 +139,26 @@ def start_assessment(request):
 })
 
 
+@login_required
 def save_all_assessment_answers(request):
-    if request.method != 'POST':
-        return JsonResponse({'error': 'Invalid request'}, status=400)
+    if request.method != "POST":
+        return JsonResponse({"error": "Invalid request"}, status=400)
 
     try:
-        data = json.loads(request.body)
-        # Example data: { "1": "Yes", "2": "No", ... }
-
-        request.session['assessment_answers'] = data
-        request.session['assessment_complete'] = True
-
-        # Compute where to redirect user
-        if request.user.is_authenticated:
-            if request.session.get("retake_learner_id"):
-                redirect_url = "/assessment/save-retake/"
-            else:
-                redirect_url = "/add-learner/"
-        else:
-            redirect_url = "/register/"
-
-        return JsonResponse({'redirect_url': redirect_url})
-
+        data = json.loads(request.body or "{}")
     except json.JSONDecodeError:
-        return JsonResponse({'error': 'Invalid JSON'}, status=400)
+        return JsonResponse({"error": "Invalid JSON"}, status=400)
+
+    # Persist in session; we will apply to the selected learner only
+    request.session["assessment_answers"] = data
+    request.session["assessment_complete"] = True
+
+    # Send client to the final save endpoint (no user-controlled IDs)
+    return JsonResponse({"redirect_url": "/screener/save/"})
 
 
 # Saves and assigns learners assessment answers and recommendations
+@login_required
 def save_assessment_for_learner(learner, answers):
     from collections import defaultdict
 
@@ -180,7 +219,7 @@ def assessment_summary(request):
 
     selected_id = request.session.get('selected_learner_id')
     if selected_id:
-        learner = Learner.objects.filter(id=selected_id, user=request.user).first()
+        learner = Learner.objects.filter(id=selected_id).first()
         if learner:
             answers = learner.answers.all()
 
@@ -221,23 +260,28 @@ def assessment_summary(request):
 
 
 @login_required
-def save_retake_assessment(request):
-    learner_id = request.session.get("retake_learner_id")
+def save_assessment(request):
+    # Enforce selected learner & ownership
+    selected_learner_id = request.session.get('selected_learner_id')
+
+    if selected_learner_id:
+        selected_learner = Learner.objects.filter(id=selected_learner_id).first()
+
     answers = request.session.get("assessment_answers", {})
 
-    if not learner_id:
-        return redirect("profile")
+    if not answers:
+        # Nothing to save; send back to start
+        return redirect("start_assessment")
 
-    learner = Learner.objects.filter(id=learner_id, user=request.user).first()
-    if not learner:
-        return redirect("profile")
+    save_assessment_for_learner(selected_learner, answers)
 
-    save_assessment_for_learner(learner, answers)
-
-    request.session["selected_learner_id"] = learner.id
-    request.session.pop("retake_learner_id", None)
+    # Keep this learner selected; clear assessment temp state
+    # request.session["selected_learner_id"] = selected_learner.id
     request.session.pop("assessment_answers", None)
     request.session.pop("assessment_complete", None)
+    request.session.pop("current_question_index", None)
+    request.session.pop("previous_question_id", None)
+    # (No retake key anymore)
 
     return redirect("assessment_summary")
 
@@ -271,20 +315,30 @@ def practise(request):
 def logbook(request):
     selected_learner_id = request.GET.get('learner')
     selected_cohort_id = request.GET.get('cohort')
+    user = request.user
+    school = user.profile.school
 
-    log_entries = LogEntry.objects.filter(user=request.user, deleted=False)
-    learners = Learner.objects.filter(user=request.user, deleted=False)
-    cohorts = Cohort.objects.filter(user=request.user)
+    learners = Learner.objects.filter(school=school, deleted=False)
+    cohorts = Cohort.objects.filter(school=school)
 
-    # Filter learners by cohort
+    # Filter logs based on role
+    if user.profile.is_admin() or user.profile.is_manager():
+        log_entries = LogEntry.objects.filter(user__profile__school=school, deleted=False)
+    else:
+        log_entries = LogEntry.objects.filter(user=user, deleted=False)
+    
+    selected_learner = None
+
     if selected_cohort_id:
         learners = learners.filter(cohort__id=selected_cohort_id)
 
-    # Filter log entries by learner
     if selected_learner_id:
         log_entries = log_entries.filter(learner__id=selected_learner_id)
+        try:
+            selected_learner = Learner.objects.get(id=selected_learner_id)
+        except Learner.DoesNotExist:
+            selected_learner = None
     elif selected_cohort_id:
-        # Filter log entries by learners in selected cohort
         log_entries = log_entries.filter(learner__cohort__id=selected_cohort_id)
 
     log_entries = log_entries.order_by('-timestamp')
@@ -295,6 +349,7 @@ def logbook(request):
         'cohorts': cohorts,
         'selected_learner_id': selected_learner_id,
         'selected_cohort_id': selected_cohort_id,
+        'selected_learner': selected_learner,
     })
 
 
@@ -307,6 +362,7 @@ def new_log_entry(request):
         if form.is_valid():
             log_entry = form.save(commit=False)
             log_entry.user = request.user  # Assign the logged-in user
+            log_entry.created_by_role = request.user.profile.role
             log_entry.save()
             return redirect('logbook')  # Redirect to logbook page after saving
     else:
@@ -317,20 +373,29 @@ def new_log_entry(request):
 
     return render(request, 'logbook/new_log_entry.html', {'form': form})
 
+
 @login_required
 def log_entry_detail(request, entry_id):
-    log_entry = get_object_or_404(LogEntry, id=entry_id, user=request.user)
+    log_entry = get_object_or_404(LogEntry, id=entry_id, deleted=False)
+
+    if not can_edit_or_delete_log(request.user, log_entry):
+        return redirect('logbook')
+
     return render(request, 'logbook/log_entry_detail.html', {'log_entry': log_entry})
+
 
 @login_required
 def edit_log_entry(request, entry_id):
-    log_entry = get_object_or_404(LogEntry, id=entry_id, user=request.user)
+    log_entry = get_object_or_404(LogEntry, id=entry_id, deleted=False)
+
+    if not can_edit_or_delete_log(request.user, log_entry):
+        return redirect('logbook')
 
     if request.method == "POST":
         form = LogEntryForm(request.POST, instance=log_entry, user=request.user)
         if form.is_valid():
             form.save()
-            return redirect('log_entry_detail', entry_id=log_entry.id)
+            return redirect('log_entry_detail', entry_id=log_entry.id)    
     else:
         form = LogEntryForm(instance=log_entry, user=request.user)
 
@@ -340,21 +405,38 @@ def edit_log_entry(request, entry_id):
         'log_entry': log_entry
     })
 
+
 @login_required
 def delete_log_entry(request, entry_id):
-    log_entry = get_object_or_404(LogEntry, id=entry_id, user=request.user)
-    log_entry.deleted = True  # Soft delete the entry
+    if request.method != "POST":
+        return JsonResponse({"success": False, "error": "Invalid method"}, status=405)
+
+    log_entry = get_object_or_404(LogEntry, id=entry_id, deleted=False)
+
+    if not can_edit_or_delete_log(request.user, log_entry):
+        return JsonResponse({"success": False, "error": "Unauthorized"}, status=403)
+
+    log_entry.deleted = True
     log_entry.save()
     return JsonResponse({"success": True})
 
 
-def generate_summary(request, learner_id):
-    learner = get_object_or_404(Learner, id=learner_id)
-    log_entries = LogEntry.objects.filter(
-        user=request.user,
-        learner=learner,
-        deleted=False
-    ).order_by("timestamp")
+@login_required
+def generate_summary(request, learner_uuid):
+    learner = get_object_or_404(Learner, learner_uuid=learner_uuid, school=request.user.profile.school)
+
+    # Allow broader access if the user is admin or manager
+    if request.user.profile.is_admin() or request.user.profile.is_manager():
+        log_entries = LogEntry.objects.filter(
+            learner=learner,
+            deleted=False
+        ).order_by("timestamp")
+    else:
+        log_entries = LogEntry.objects.filter(
+            user=request.user,
+            learner=learner,
+            deleted=False
+        ).order_by("timestamp")
 
     return render(request, "logbook/log_summary.html", {
         "learner": learner,
@@ -380,6 +462,11 @@ class CustomLoginView(LoginView):
         # Set request.hide_panels to True before processing the request
         request.hide_sidebar = True
         return super().dispatch(request, *args, **kwargs)
+
+
+def account_setup_view(request):
+    request.hide_sidebar = True
+    return render(request, 'registration/account_setup.html')
 
 
 def register(request):
@@ -411,6 +498,7 @@ def register(request):
             # Create user profile
             Profile.objects.create(
                 user=user,
+                email=email,
                 first_name=first_name,
                 hear_about=hear_about,
                 opted_in=agree_updates,
@@ -444,96 +532,91 @@ def register(request):
     return render(request, 'registration/register.html', {'form': form})
 
 
-# def comingsoon(request):
-#     request.hide_sidebar = True
-#     if request.method == "POST":
-#         form = WaitingListForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             messages.success(request, "You've been added to the waiting list!")
-#             return redirect("comingsoon")
-#         else:
-#             messages.error(request, "Invalid email or already registered.")
-#     else:
-#         form = WaitingListForm()
-
-#     return render(request, "registration/comingsoon.html", {"form": form})
-
-
-# @login_required
-# def custom_logout_view(request):
-#     if request.method == 'POST':
-#         logout(request)
-#         return redirect('login')  # Redirect to the login page after logging out
-#     return render(request, 'logout_confirm.html')  # Show confirmation page
-
-
 @login_required
 def profile(request):
-    # All learners for this user (not deleted)
-    all_learners = Learner.objects.filter(user=request.user, deleted=False)
+    profile = request.user.profile
 
-    # Get all distinct cohorts for the dropdown
-    cohorts = Cohort.objects.filter(learner__in=all_learners).distinct()
+    # placeholders - allows school view to render
+    on_trial = False
+    trial_days_left = 0
+    is_subscribed = False
+
+    if profile.is_parent():
+        parent_profile = profile.parent_profile
+        # Standalone or invited parent: only show their linked learners
+        all_learners = profile.parent_profile.learners.filter(deleted=False)
+        cohorts = Cohort.objects.none()
+
+        on_trial = parent_profile.on_trial()
+        trial_days_left = parent_profile.trial_days_left()
+        is_subscribed = parent_profile.is_subscribed
+    else:
+        # Staff/admin: show all learners in their school
+        user_school = profile.school
+        all_learners = Learner.objects.filter(school=user_school, deleted=False)
+        cohorts = Cohort.objects.filter(school=user_school).distinct()
 
     # Get selected cohort from GET params
     selected_cohort = request.GET.get('cohort')
     try:
-        if selected_cohort:
+        if selected_cohort and not profile.is_parent():
             selected_cohort_id = int(selected_cohort)
             learners = all_learners.filter(cohort__id=selected_cohort_id)
         else:
             learners = all_learners
             selected_cohort_id = None
     except ValueError:
-        # Invalid cohort ID
         learners = all_learners
         selected_cohort_id = None
 
-    # Get selected learner from session (safe)
+    # Get selected learner from session
     selected_learner = None
     selected_learner_id = request.session.get('selected_learner_id')
     try:
         if selected_learner_id not in [None, '']:
-            selected_learner = Learner.objects.get(id=int(selected_learner_id), user=request.user, deleted=False)
+            selected_learner = all_learners.get(id=int(selected_learner_id))
     except (ValueError, Learner.DoesNotExist):
         selected_learner = None
+    
+    # If none selected, pick the first available learner
+    if not selected_learner and learners.exists():
+        selected_learner = learners.first()
+        request.session['selected_learner_id'] = selected_learner.id
 
     return render(request, 'profile/profile.html', {
         'learners': learners,
         'selected_learner': selected_learner,
         'cohorts': cohorts,
         'selected_cohort': selected_cohort_id,
+        'on_trial': on_trial,
+        'trial_days_left': trial_days_left,
+        'is_subscribed': is_subscribed,
     })
 
 
 @login_required
 def add_learner(request):
-    # Prevent access unless assessment is complete
-    if not request.session.get('assessment_complete'):
-        return redirect('start_assessment')
-
+    # if request.user.profile.role == 'parent':
+    #     if request.user.profile.parent_profile.learners.count() < 2:
+    #         return redirect('profile')
     if request.method == 'POST':
         form = LearnerForm(request.POST, user=request.user)
         if form.is_valid():
             learner = form.save(commit=False)
             learner.user = request.user
+
+            if not request.user.profile.is_parent():
+                learner.school = request.user.profile.school
             learner.save()
 
-            # Store as selected learner
+            if request.user.profile.is_parent():
+                request.user.profile.parent_profile.learners.add(learner)
+            learner.save()
+
+            # Store selected learner in session (optional)
             request.session['selected_learner_id'] = learner.id
 
-            # Get answers from session
-            answers = request.session.get("assessment_answers", {})
-
-            # Save answers and compute metrics helper function
-            save_assessment_for_learner(learner, answers)
-
-            # Clean up session
-            request.session.pop("assessment_answers", None)
-            request.session.pop("assessment_complete", None)
-
-            return redirect('/assessment/summary/')
+            return redirect('profile')  # or 'logbook' or any page you prefer
     else:
         form = LearnerForm(user=request.user)
 
@@ -551,10 +634,18 @@ def select_learner(request):
 
 @login_required
 def edit_learner(request, learner_uuid):
-    learner = get_object_or_404(Learner, learner_uuid=learner_uuid, user=request.user)
+    learner = get_object_or_404(
+        Learner,
+        learner_uuid=learner_uuid,
+        deleted=False
+    )
+
+    # If user is a parent and this learner is tied to any school, send them back
+    if request.user.profile.is_parent() and learner.school_id:
+        return redirect('profile')
 
     if request.method == 'POST':
-        if 'remove' in request.POST:  # Check if the remove button was clicked
+        if 'remove' in request.POST:
             return redirect('confirm_delete_learner', learner_uuid=learner.learner_uuid)
         
         form = LearnerForm(request.POST, instance=learner, user=request.user)
@@ -563,17 +654,35 @@ def edit_learner(request, learner_uuid):
             return redirect('profile') 
     else:
         form = LearnerForm(instance=learner, user=request.user)
+    
+    can_delete = request.user.profile.is_admin() or request.user.profile.is_manager() or request.user.profile.is_parent()
 
     context = {
         'form': form,
         'learner': learner,
+        'can_delete': can_delete,
     }
     return render(request, 'profile/edit_learner.html', context)
 
 
 @login_required
 def confirm_delete_learner(request, learner_uuid):
-    learner = get_object_or_404(Learner, learner_uuid=learner_uuid, user=request.user)
+    learner = get_object_or_404(
+        Learner,
+        learner_uuid=learner_uuid,
+        deleted=False
+    )
+
+    # If user is a parent and this learner is tied to any school, send them back
+    if request.user.profile.is_parent() and learner.school_id:
+        messages.error(request, "You do not have permission to delete this learner.")
+        return redirect('profile')
+
+    # Restrict delete permissions
+    if not (request.user.profile.is_admin() or request.user.profile.is_manager()
+            or (request.user.profile.is_parent() and learner.user_id == request.user.id)):
+        messages.error(request, "You do not have permission to delete this learner.")
+        return redirect('profile')
 
     if request.method == 'POST':
         password = request.POST.get('password')
@@ -585,7 +694,7 @@ def confirm_delete_learner(request, learner_uuid):
             learner.save()
 
             # Soft-delete all log entries linked to this learner
-            LogEntry.objects.filter(learner=learner, user=request.user, deleted=False).update(deleted=True)
+            LogEntry.objects.filter(learner=learner, deleted=False).update(deleted=True)
 
             # Clear session and redirect
             del request.session['selected_learner_id']
@@ -602,25 +711,44 @@ def confirm_delete_learner(request, learner_uuid):
 
 @login_required
 def cohort_list(request):
-    cohorts = Cohort.objects.filter(user=request.user).order_by('name')
-    return render(request, 'cohorts/cohort_list.html', {'cohorts': cohorts})
+    if not request.user.profile.is_admin() and not request.user.profile.is_manager():
+        # messages.error(request, "You don't have permission to create cohorts.")
+        return redirect('profile')
+
+    cohorts = Cohort.objects.filter(school=request.user.profile.school).order_by('name')
+    return render(request, 'cohorts/cohort_list.html', {
+        'cohorts': cohorts,
+        'can_edit_cohorts': request.user.profile.is_admin() or request.user.profile.is_manager(),
+    })
+
 
 @login_required
 def cohort_create(request):
+    if not request.user.profile.is_admin() and not request.user.profile.is_manager():
+        # messages.error(request, "You don't have permission to create cohorts.")
+        return redirect('profile')
+
     if request.method == 'POST':
         form = CohortForm(request.POST)
         if form.is_valid():
             cohort = form.save(commit=False)
-            cohort.user = request.user
+            cohort.school = request.user.profile.school
             cohort.save()
             return redirect('cohort_list')
     else:
         form = CohortForm()
+
     return render(request, 'cohorts/cohort_form.html', {'form': form, 'is_editing': False})
+
 
 @login_required
 def cohort_edit(request, cohort_id):
-    cohort = get_object_or_404(Cohort, id=cohort_id, user=request.user)
+    if not request.user.profile.is_admin() and not request.user.profile.is_manager():
+        # messages.error(request, "You don't have permission to edit cohorts.")
+        return redirect('cohort_list')
+
+    cohort = get_object_or_404(Cohort, id=cohort_id, school=request.user.profile.school)
+
     if request.method == 'POST':
         form = CohortForm(request.POST, instance=cohort)
         if form.is_valid():
@@ -628,11 +756,17 @@ def cohort_edit(request, cohort_id):
             return redirect('cohort_list')
     else:
         form = CohortForm(instance=cohort)
+
     return render(request, 'cohorts/cohort_form.html', {'form': form, 'is_editing': True})
+
 
 @login_required
 def cohort_delete(request, cohort_id):
-    cohort = get_object_or_404(Cohort, id=cohort_id, user=request.user)
+    if not request.user.profile.is_admin() and not request.user.profile.is_manager():
+        # messages.error(request, "You don't have permission to delete cohorts.")
+        return redirect('cohort_list')
+
+    cohort = get_object_or_404(Cohort, id=cohort_id, school=request.user.profile.school)
 
     if request.method == 'POST':
         password = request.POST.get('password')
@@ -690,7 +824,6 @@ def change_user_details(request):
     })
 
 
-
 @login_required
 def change_password(request):
     if request.method == 'POST':
@@ -713,6 +846,37 @@ def change_password(request):
         'password_form': password_form
     })
 
+# SCHOOL CENTRIC CODE
+
+@login_required
+def invite_staff(request):
+    profile = request.user.profile
+
+    # Only admins and managers can access
+    if not profile.is_admin() and not profile.is_manager():
+        return redirect('school_dashboard')
+
+    school = profile.school
+
+    if request.method == 'POST':
+        form = StaffInviteForm(request.POST, school=school, user=request.user)
+        if form.is_valid():
+            invite = form.save(commit=False)
+            invite.school = school
+            invite.sent_by = request.user
+            invite.save()
+
+            # Uses updated HTML+text email utility
+            send_invite_email(invite, school, request)
+
+            messages.success(request, f"Invite sent to {invite.email}")
+            return redirect('invite_staff')
+    else:
+        form = StaffInviteForm(user=request.user, school=school)
+
+    return render(request, 'school/invite_staff.html', {
+        'form': form,
+    })
 
 # API VIEWS
 
@@ -754,6 +918,9 @@ def get_selected_learner(request):
     return JsonResponse({'error': 'No learner selected'}, status=400)
 
 
+# API VIEWS END
+
+
 def support(request):
     request.hide_sidebar = True
     return render(request, 'support.html', {})
@@ -771,12 +938,15 @@ def send_support_email(request):
             subject='Support Request - LittleTalk',
             message=full_message,
             from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=['jw.jamiewelsh@gmail.com'],  # Change to your support email
+            recipient_list=['jw.jamiewelsh@gmail.com'],  # Update to official support address
             fail_silently=False,
         )
-        return render(request, 'support.html', {'message_sent': True})
-    
+
+        messages.success(request, "Your message has been sent. We'll get back to you shortly.")
+        return redirect('support')  # Redirect to avoid resubmission on refresh
+
     return redirect('support')
+
 
 def tips(request):
     return render(request, 'tips.html', {})
@@ -786,3 +956,374 @@ def method(request):
         'game_descriptions': GAME_DESCRIPTIONS,
     }
     return render(request, 'method.html', context)
+
+
+def accept_invite(request, token):
+    request.hide_sidebar = True
+
+    try:
+        invite = StaffInvite.objects.get(token=token)
+    except StaffInvite.DoesNotExist:
+        return redirect('/')  # Invalid token
+
+    # Redirect if already used, expired, or withdrawn
+    if invite.used or invite.withdrawn or invite.expires_at < timezone.now():
+        return redirect('/')
+
+    if User.objects.filter(username=invite.email).exists():
+        return redirect('/')
+
+    if request.method == 'POST':
+        form = AcceptInviteForm(request.POST)
+        if form.is_valid():
+            email = invite.email
+            password = form.cleaned_data['password']
+            full_name = form.cleaned_data['full_name']
+
+            user = User.objects.create_user(username=email, email=email, password=password)
+            user.first_name = full_name
+            user.save()
+
+            Profile.objects.create(
+                user=user,
+                email=email,
+                first_name=full_name,
+                school=invite.school,
+                role=invite.role,
+            )
+
+            invite.used = True
+            invite.save()
+
+            login(request, user)
+            return redirect('profile')
+    else:
+        form = AcceptInviteForm()
+
+    return render(request, 'school/accept_invite.html', {
+        'form': form,
+        'school_name': invite.school.name,
+        'email': invite.email
+    })
+
+
+@login_required
+def school_dashboard(request):
+    if request.user.profile.is_parent():
+        return redirect('profile')
+    profile = request.user.profile
+    school = profile.school
+
+    if request.method == 'POST':
+        if 'user_id' in request.POST and 'new_role' in request.POST:
+            # Update user role logic
+            user_id = request.POST.get('user_id')
+            new_role = request.POST.get('new_role')
+
+            target_profile = get_object_or_404(Profile, user__id=user_id, school=school)
+
+            if target_profile.user == request.user:
+                messages.error(request, "You cannot change your own role.")
+            # elif target_profile.role == Role.ADMIN:
+            #     messages.error(request, "You cannot change another admin’s role.")
+            elif profile.is_manager() and new_role == Role.ADMIN:
+                messages.error(request, "Only admins can assign the admin role.")
+            elif new_role in dict(Role.CHOICES).keys():
+                target_profile.role = new_role
+                target_profile.save()
+                messages.success(request, f"{target_profile.first_name}'s role updated")
+            else:
+                messages.error(request, "Invalid role selected.")
+            return redirect('school_dashboard')
+
+        elif 'resend_invite' in request.POST:
+            invite_id = request.POST.get('invite_id')
+            invite = get_object_or_404(StaffInvite, id=invite_id, school=school, used=False, withdrawn=False)
+
+            # Send invite again
+            send_invite_email(invite, school, request)
+            messages.success(request, f"Invite resent to {invite.email}.")
+            return redirect('school_dashboard')
+
+        elif 'withdraw_invite' in request.POST:
+            invite_id = request.POST.get('invite_id')
+            invite = get_object_or_404(StaffInvite, id=invite_id, school=school, used=False, withdrawn=False)
+
+            invite.withdrawn = True
+            invite.save()
+            messages.success(request, f"Invite to {invite.email} withdrawn.")
+            return redirect('school_dashboard')
+
+        elif 'approve_join_request' in request.POST or 'reject_join_request' in request.POST:
+            join_request_id = request.POST.get('join_request_id')
+            join_request = get_object_or_404(JoinRequest, id=join_request_id, school=school, status='pending')
+
+            if 'approve_join_request' in request.POST:
+                # Create invite on approval
+                invite = StaffInvite.objects.create(
+                    email=join_request.email,
+                    role='staff',
+                    school=school,
+                    sent_by=request.user
+                )
+                send_invite_email(invite, school, request)
+                join_request.status = 'accepted'
+                messages.success(request, f"Join request from {join_request.full_name} approved and invite sent.")
+            else:
+                join_request.status = 'rejected'
+                messages.info(request, f"Join request from {join_request.full_name} was rejected.")
+
+            join_request.resolved_by = request.user
+            join_request.resolved_at = timezone.now()
+            join_request.save()
+            return redirect('school_dashboard')
+
+    staff_profiles = Profile.objects.filter(school=school).select_related('user')
+    invites = StaffInvite.objects.filter(
+        school=school,
+        used=False,
+        withdrawn=False
+    ).order_by('-created_at')[:10]
+
+    # Only admins and managers can see join requests
+    can_invite_staff = profile.is_admin() or profile.is_manager()
+    join_requests = []
+    if can_invite_staff:
+        join_requests = JoinRequest.objects.filter(
+            school=school,
+            status='pending'
+        ).order_by('-created_at')[:10]
+
+    return render(request, 'school/school_dashboard.html', {
+        'staff_profiles': staff_profiles,
+        'invites': invites,
+        'school_name': school.name,
+        'role_choices': Role.CHOICES,
+        'can_invite_staff': can_invite_staff,
+        'join_requests': join_requests, 
+    })
+
+
+def request_join_school(request):
+    request.hide_sidebar = True
+    if request.method == 'POST':
+        form = JoinRequestForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Your request has been submitted. An admin will review it shortly. If approved, you will receive an invite via E-Mail")
+            return redirect('request_join_school')  # or somewhere else
+    else:
+        form = JoinRequestForm()
+
+    return render(request, 'school/request_join_school.html', {
+        'form': form
+    })
+
+
+@login_required
+def invite_audit_trail(request):
+    if not request.user.profile.is_admin() and not request.user.profile.is_manager():
+        return redirect('school_dashboard')
+
+    school = request.user.profile.school
+
+    invites = StaffInvite.objects.filter(school=school).select_related('sent_by').order_by('-created_at')[:50]
+    join_requests = JoinRequest.objects.filter(school=school).select_related('resolved_by').order_by('-created_at')[:50]
+
+    return render(request, 'school/invite_audit_trail.html', {
+        'invites': invites,
+        'join_requests': join_requests,
+        'now': timezone.now(),
+    })
+
+
+# PARENT ACCESS
+
+@login_required
+def generate_parent_token(request, learner_uuid):
+    learner = get_object_or_404(Learner, learner_uuid=learner_uuid, school=request.user.profile.school)
+
+    token, created = ParentAccessToken.objects.get_or_create(learner=learner)
+
+    force = request.GET.get("force") == "true"
+
+    if force or token.is_expired():
+        token.regenerate_token()
+        messages.success(request, "A new parent access token has been generated.")
+    elif created:
+        messages.success(request, "Parent access token created.")
+    else:
+        messages.info(request, "An active token already exists for this learner.")
+
+    return redirect('view_parent_token', learner_uuid=learner.learner_uuid)
+
+
+@login_required
+def view_parent_token(request, learner_uuid):
+    if request.user.profile.is_parent():
+        return redirect('profile')
+    learner = get_object_or_404(Learner, learner_uuid=learner_uuid, school=request.user.profile.school)
+    token, created = ParentAccessToken.objects.get_or_create(learner=learner)
+
+    # Optionally auto-regenerate if expired
+    if token.is_expired():
+        token.regenerate_token()
+
+    return render(request, 'parent_token/view_token.html', {
+        'learner': learner,
+        'token': token,
+        'signup_link': request.build_absolute_uri(f"/parent-signup/?code={token.token}")
+    })
+
+
+@login_required
+def email_parent_token(request, learner_uuid):
+    if request.method == "POST":
+        learner = get_object_or_404(Learner, learner_uuid=learner_uuid, school=request.user.profile.school)
+        token = learner.parent_token  # assumes OneToOne
+        email = request.POST.get("email")
+
+        if not email:
+            messages.error(request, "Email is required.")
+            return redirect('view_parent_token', learner_uuid=learner_uuid)
+
+        send_parent_access_email(token, learner, email, request)
+        messages.success(request, "Email sent to parent.")
+        return redirect('view_parent_token', learner_uuid=learner_uuid)
+
+
+def parent_signup_view(request):
+    request.hide_sidebar = True
+    prefill_code = request.GET.get('code', '').strip()
+
+    if request.user.is_authenticated:
+        return redirect('profile')
+
+    if request.method == 'POST':
+        form = ParentSignupForm(request.POST)
+        if form.is_valid():
+            user = User.objects.create_user(
+                username=form.cleaned_data['email'],
+                email=form.cleaned_data['email'],
+                password=form.cleaned_data['password'],
+                first_name=form.cleaned_data['first_name']
+            )
+
+            token = form.cleaned_data.get('access_code')  # This is the actual token object or None
+            learner = token.learner if token else None
+            # school = learner.school if learner else None
+
+            profile = Profile.objects.create(
+                user=user,
+                first_name=form.cleaned_data['first_name'],
+                email=form.cleaned_data['email'],
+                role='parent',
+                # school=school,
+                opted_in=form.cleaned_data.get('agree_updates', False)
+            )
+
+            parent_profile = ParentProfile.objects.create(
+                profile=profile,
+                is_standalone=(token is None)
+            )
+
+            if learner:
+                parent_profile.learners.add(learner)
+                token.used = True
+                token.save()
+
+            login(request, user)
+            return redirect('profile')
+    else:
+        # Pre-fill access code if passed via URL
+        form = ParentSignupForm(initial={'access_code': prefill_code})
+
+    return render(request, 'parent/signup.html', {
+        'form': form,
+        'standalone': not prefill_code,  # controls header/template messaging
+    })
+
+def subscribe(request):
+    request.hide_sidebar = True
+    return render(request, 'lockout/subscribe.html')
+
+def license_expired(request):
+    request.hide_sidebar = True
+    return render(request, 'lockout/license_expired.html')
+
+# stripe payments
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
+
+@login_required
+def create_checkout_session(request):
+    checkout_session = stripe.checkout.Session.create(
+        customer_email=request.user.email,
+        payment_method_types=['card'],
+        line_items=[{
+            'price': settings.STRIPE_PARENT_PRICE_ID,
+            'quantity': 1,
+        }],
+        mode='subscription',
+        success_url=request.build_absolute_uri('/subscribe/success/'),
+        cancel_url=request.build_absolute_uri('/subscribe/'),
+    )
+
+    return redirect(checkout_session.url)
+
+
+@csrf_exempt
+def stripe_webhook(request):
+    payload = request.body
+    sig_header = request.META['HTTP_STRIPE_SIGNATURE']
+    endpoint_secret = settings.STRIPE_WEBHOOK_SECRET
+
+    try:
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, endpoint_secret
+        )
+    except stripe.error.SignatureVerificationError:
+        return HttpResponse(status=400)
+
+    if event['type'] == 'checkout.session.completed':
+        session = event['data']['object']
+        email = session.get('customer_email')
+        customer_id = session.get('customer')
+
+        user = User.objects.filter(email=email).first()
+        if user and hasattr(user, 'profile'):
+            parent_profile = user.profile.parent_profile
+            parent_profile.is_subscribed = True
+            parent_profile.stripe_customer_id = customer_id
+            parent_profile.save()
+
+    return HttpResponse(status=200)
+
+
+@login_required
+def subscribe_success(request):
+    messages.info(request, "Subscription activated successfully. Welcome to the community!")
+    return render(request, 'subscribe/success.html')
+
+
+@login_required
+def manage_subscription(request):
+    user = request.user
+    profile = user.profile
+    parent_profile = getattr(profile, 'parent_profile', None)
+
+    if not parent_profile:
+        return redirect('profile')
+
+    stripe_customer_id = parent_profile.stripe_customer_id
+
+    if not stripe_customer_id:
+        # fallback
+        return redirect('subscribe')
+
+    session = stripe.billing_portal.Session.create(
+        customer=stripe_customer_id,
+        return_url=request.build_absolute_uri('/profile/'),
+    )
+    return redirect(session.url)

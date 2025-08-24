@@ -6,7 +6,7 @@
 {% block content %}
 
 <a href="/" class="logo-link">
-    <img src="{% static 'images/littletalk_logo.png' %}" alt="LittleTalk Logo" class="logo-img">
+    <img src="{% static 'images/chatterdillo_logo_official.png' %}" alt="LittleTalk Logo" style="max-width: 180px; height: auto;">
 </a>
 
 <h1>Help Centre</h1>
@@ -14,7 +14,7 @@
 <!-- Contact Section -->
 <section class="container-box container--short text-center">
     <h2>Get in Touch</h2>
-    <p>The team at LittleTalk is here to help you get the most out of the app. Send us a message!</p>
+    <p>If you have any enquiries, feedback or need support using our app, please send us a message below. Our team will respond in 72 hours.</p>
 
     <form method="POST" action="{% url 'send_support_email' %}">
         {% csrf_token %}
@@ -38,57 +38,45 @@
 <section class="container-box container--wide">
     <h2>Frequently Asked Questions</h2>
     <div class="faq-item">
-        <h3 class="question">Who is this tool for?</h3>
+        <h3 class="question">Who is Chatterdillo for?</h3>
         <div class="answer" style="display: none;">
-            This tool is designed for parents or teachers of children with speech and language needs. The tool aims to make it easy for parents to practise speech and language development at home through routine exercises. Use our tool to make a start while on the waiting list, or to ensure consistent carry carryover between therapy sessions.
+            <strong>This tool is designed for teaching staff and parents supporting children with speech and language needs.</strong> We provide gamified, evidence-based speech and language exercises for children aged 2 to 11. Schools also benefit from a dashboard with progress tracking to keep everyone on the team connected and aligned.
         </div>
     </div>
     <div class="faq-item">
-        <h3 class="question">What age is this tool for?</h3>
-        <div class="answer" style="display: none;">
-            LittleTalk is designed to be used by children between the ages of 2 and 11.
-        </div>
-    </div>
-        <div class="faq-item">
         <h3 class="question">How do you keep my data secure?</h3>
         <div class="answer" style="display: none;">
-            We take your privacy seriously. Children's names are encrypted, which means they're stored in a way that keeps them private and protected, so that only you can see them. We never share personal information with anyone.
+            Children’s names are encrypted, ensuring they remain private and accessible only to you. Within schools, we use role-based permissions so that only authorised staff can view child progress and approve access for parents and other staff members. We never share personal information with third parties.
         </div>
     </div>
     <div class="faq-item">
-        <h3 class="question">Okay sounds good, where do I start?</h3>
+        <h3 class="question">How do I access my Child's account?</h3>
         <div class="answer" style="display: none;">
-            Head on over to our <a href="/assessment/start/" class="text-link" target="_blank">Free Assessment</a> to get started! We will assess whether our programme is a good fit for your child and if they are, you will receive recommended exercises to suit your child's needs.
+            If your school uses Chatterdillo with your child, you can request a secure <strong>Parent-Access-Code</strong> from a school staff member. Once you've received a code, head on over to <a href="/parent-signup/" class="text-link" target="_blank">Parent-Signup</a> to get connected. Be sure to input your code when signing up!
         </div>
     </div>
     <div class="faq-item">
-        <h3 class="question">Does LittleTalk help with speech sounds?</h3>
+        <h3 class="question">Can Chatterdillo support speech sounds?</h3>
         <div class="answer" style="display: none;">
-            We are not currently able to support speech sound disorders or speech sound development. If your child is potentially struggling with a speech sound disorder, your best bet is to talk to your GP or seek out local Speech and Language Therapy services.
+            We do not currently support speech sound disorders or speech sound development. If you are working with a child who is potentially struggling with a speech sound disorder, we advise seeking out of local Speech and Language Therapy services.
         </div>
     </div>
     <div class="faq-item">
         <h3 class="question">Is this a replacement for Speech and Language Therapy?</h3>
         <div class="answer" style="display: none;">
-            While LittleTalk is a great way to supplement and accellerate children's language development, it should not be considered a replacement for Speech and Language Therapy. The LittleTalk team encourages anyone with speech and language needs to continue seeking traditional Speech and Language Therapy services in addition to using our programme.
+            While Chatterillo is a great way to supplement and accellerate children's language development, it should not be considered a replacement for Speech and Language Therapy. We encourage anyone with speech and language needs to continue seeking traditional Speech and Language Therapy services in addition to using our platform.
         </div>
     </div>
     <div class="faq-item">
-        <h3 class="question">Does LittleTalk require adult supervision?</h3>
+        <h3 class="question">Does Chatterdillo require adult supervision?</h3>
         <div class="answer" style="display: none;">
-            LittleTalk should ideally be used with your child in a play-like manner. Parents are encouraged to model language to their child to get the best results. If you're not sure what modelling language means, check out our <a href="/tips/" class="text-link" target="_blank">Free Tips</a>!
-        </div>
-    </div>
-    <div class="faq-item">
-        <h3 class="question">Do I need to practise daily to see results?</h3>
-        <div class="answer" style="display: none;">
-            Research shows that frequent learning is three times more likely to lead to improvement in results. For this reason, we encourage users to practise for 10-15 minutes a day, however, we understand that life can get in the way, so please feel free to practise whenever it suits you and your child - it all counts!
+            Yes! Chatterdillo is designed to be used with your child in a playful, interactive way. The best results come when language is consistently modelled and reinforced with the support of an adult. Not sure what “modelling language” means? Don’t worry, we’ll guide you as you go!
         </div>
     </div>
     <div class="faq-item">
         <h3 class="question">I'm still unsure about something. Who can I contact for help?</h3>
         <div class="answer" style="display: none;">
-            If you would like guidance, please get in contact with our Speech and Language Team using the form above. Our team is here to help you get the most out of our programme and we love hearing from you!
+            If you would like guidance, please get in contact with our Speech and Language Team using the form above. Our team is here to help you get the most out of our platform and we love hearing from you!
         </div>
     </div>
 </section>

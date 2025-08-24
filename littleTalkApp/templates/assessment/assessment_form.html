@@ -8,7 +8,7 @@
 {% comment %} Simplified Header for Assessment Page {% endcomment %}
 <!-- logo top left -->
 <div class="logo-container">
-    <img src="{% static 'images/littletalk_logo.png' %}" alt="LittleTalk Logo" style="max-width: 150px; height: auto;">
+    <img src="{% static 'images/chatterdillo_logo_official.png' %}" alt="LittleTalk Logo" style="max-width: 180px; height: auto;">
 </div>
 
 <!-- Register Button at the Top Right -->
@@ -26,7 +26,7 @@
 
 <div class="container-box container--white container--edgy">
     <p class="assessment-intro">
-        Tell us more about your child that will be using this app.<br>We respect your privacy and will never share personal information or data.
+        Tell us more about the child that will be using Chatterdillo.<br>We respect your privacy and will never share personal information or data.
     </p>
     <form id="assessment-form" method="POST">
         {% csrf_token %}
@@ -116,7 +116,7 @@
 
     // Submit all answers at the end
     function submitAllAnswers() {
-        fetch('/assessment/save-all/', {
+        fetch('/screener/save-all/', {
             method: 'POST',
             body: JSON.stringify(answers),
             headers: {

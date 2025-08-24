@@ -1,40 +1,56 @@
 {% extends "base.html" %}
-
 {% block title %}LittleTalk | Cohorts{% endblock %}
 
 {% block content %}
+<h1 class="page-title">Manage Cohorts</h1>
 
-<h1 class="page-title">Cohort Settings</h1>
-
-<div class="container-box container--short"">
+<div class="container-box container--short pt-70">
+    <!-- Back arrow button -->
+    <a href="{% url 'school_dashboard' %}" class="back-arrow">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+    </a>
 
   <div class="logbook-header">
-    <a href="{% url 'cohort_create' %}" class="btn btn--yellow">
-        + Add Cohort
-    </a>
-</div>
+    {% if can_edit_cohorts %}
+      <a href="{% url 'cohort_create' %}" class="btn btn--yellow btn--full">+ Add Cohort</a>
+    {% else %}
+      <div class="recommendation-info">
+        <span class="info-icon">i</span>
+        <p>You can view cohorts, but only admins and team managers can edit them.</p>
+      </div>
+
+    {% endif %}
+  </div>
 
   {% if cohorts %}
     <div class="log-entries">
       {% for cohort in cohorts %}
-        <div class="log-entry">
-          <!-- Delete Button -->
-          <a href="{% url 'cohort_delete' cohort.id %}" class="delete-entry-btn" aria-label="Delete Cohort">
-            <img src="/static/icons/bin.png" alt="Delete" class="delete-icon">
-          </a>
-    
-          <!-- Clickable Cohort Entry -->
-          <a href="{% url 'cohort_edit' cohort.id %}" class="log-entry-link">
-            <p>{{ cohort.name }}</p>
-            <small>{{ cohort.description }}</small>
-          </a>
-        </div>
+        
+          {% if can_edit_cohorts %}
+            <div class="log-entry">
+              <a href="{% url 'cohort_delete' cohort.id %}" class="delete-entry-btn" aria-label="Delete Cohort">
+                <img src="/static/icons/bin.png" alt="Delete" class="delete-icon">
+              </a>
+              <a href="{% url 'cohort_edit' cohort.id %}" class="log-entry-link">
+                <p>{{ cohort.name }}</p>
+                <small>{{ cohort.description }}</small>
+              </a>
+            </div>
+          {% else %}
+            <div class="log-entry no-hover">
+              <div class="log-entry-link">
+                <p>{{ cohort.name }}</p>
+                <small>{{ cohort.description }}</small>
+              </div>
+            </div>
+          {% endif %}
       {% endfor %}
     </div>
   {% else %}
     <p><strong>No cohorts defined yet.</strong></p>
   {% endif %}
-
 </div>
-
 {% endblock %}

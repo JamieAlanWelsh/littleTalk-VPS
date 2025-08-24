@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Subscribe to Chatterdillo{% endblock %}
+
+{% block content %}
+<h1>Subscribe to Chatterdillo</h2>
+
+<div class="container-box container--short text-center">
+    <h3>Thank you so much for trying Chatterdillo! 💛</h3>
+    <p>Please subscribe if you would like to continue</p>
+    <p>Subscription costs help us to cover app maintenance and the development of new exercises</p>
+    
+    
+    <div class="pricing-card">
+        <h2>Parent Subscription</h2>
+        <p class="price">£9.99<span>/month</span></p>
+        <ul>
+            <li>Unlimited access to all our activities</li>
+            <li>Designed by Speech & Language Therapists</li>
+            <li>Track progress and celebrate milestones</li>
+            <li>Cancel anytime — no hidden fees</li>
+        </ul>
+        <a href="{% url 'create_checkout_session' %}" class="btn btn--yellow btn--full">Subscribe Now</a>
+    </div>
+
+    <div class="trust-section">
+        <p>✔ Trusted by UK Schools & Speech Therapists</p>
+        <p>✔ Secure payments powered by Stripe</p>
+        <p>✔ Cancel anytime</p>
+    </div>
+
+    <a href="{% url 'profile' %}" class="btn btn--white btn--full" style="margin-top: 10px;">Back to Profile</a>
+
+</div>
+{% endblock %}
+

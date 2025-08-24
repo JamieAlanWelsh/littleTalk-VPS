@@ -8,6 +8,7 @@
     <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
     <link rel="stylesheet" href="{% static 'styles/landing.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     {% comment %} social media linking {% endcomment %}
@@ -39,12 +40,12 @@
         </div>
         <div class="header-center">
             <a href="/" class="logo-link">
-                <img src="{% static 'images/littletalk_logo.png' %}" alt="LittleTalk Logo" class="header-logo">
+                <img src="{% static 'images/chatterdillo_logo_official.png' %}" alt="Chatterdillo Logo" class="header-logo">
             </a>
         </div>
         <div class="header-right">
             <a href="/login/" class="login-button">Login</a>
-            <button class="cta-button start-assessment-btn">Find your child's starting point</button>
+            <a href="/account-setup/" class="cta-button">Sign up</a>
         </div>
     </header>
     {% comment %} Mobile Menu {% endcomment %}
@@ -53,17 +54,29 @@
             <button id="menu-close" class="menu-close" aria-label="Close menu">✖</button>
             <ul class="menu-links">
                 <li><a href="/">Home</a></li>
-                {% comment %} <li><a href="/about/">About</a></li> {% endcomment %}
+                <li><a href="/">About us</a></li>
                 <li><a href="/method/">Our Method</a></li>
-                <li><a href="/schools/">LittleTalk for Schools</a></li>
                 <li><a href="/support/">Contact</a></li>
                 <li><a href="/support/">FAQ's</a></li>
-                <li><a href="/tips/">Free Tips</a></li>
+                <li><a href="/tips/">Free Parent Tips</a></li>
             </ul>
 
             <div class="menu-actions">
                 <a href="/login/" class="menu-login-button">Login</a>
-                <button class="cta-button start-assessment-btn">Find your child's starting point</button>
+                 <a href="/account-setup/" class="cta-button">Sign up</a>
+            </div>
+            
+            {% comment %} social icons {% endcomment %}
+            <div class="menu-social">
+            <a href="https://www.facebook.com/profile.php?id=61574696260325&locale=en_GB" target="_blank" aria-label="Facebook" class="social-icon">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="https://www.instagram.com/chatterdillo/" target="_blank" aria-label="Instagram" class="social-icon">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://x.com/chatterdillo" target="_blank" aria-label="X" class="social-icon">
+                <i class="fab fa-x-twitter"></i>
+            </a>
             </div>
         </nav>
     </div>
@@ -94,6 +107,7 @@
             header.classList.add('show');
         });
     </script>
+    
     {% comment %} menu nav {% endcomment %}
     <script>
         const toggleBtn = document.getElementById('menu-toggle');

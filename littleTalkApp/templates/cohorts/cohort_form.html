@@ -6,8 +6,7 @@
 
 <h1>{% if is_editing %}Edit Cohort{% else %}Add Cohort{% endif %}</h1>
 
-<div class="container-box container--short"">
-
+<div class="container-box container--short">
   <form method="post" class="form-stack">
     {% csrf_token %}
 
@@ -27,9 +26,6 @@
         Cancel
       </a>
   </form>
-
-  
-
 </div>
 
 {% endblock %}

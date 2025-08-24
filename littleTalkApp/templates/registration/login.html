@@ -7,15 +7,13 @@
 <div class="login-container">
 
     <!-- Logo Top Left -->
-    <div class="logo-container">
-        <a href="/">
-            <img src="{% static 'images/littletalk_logo.png' %}" alt="LittleTalk Logo" class="logo">
-        </a>
-    </div>
+    <a href="/" class="logo-link">
+        <img src="{% static 'images/chatterdillo_logo_official.png' %}" alt="LittleTalk Logo" style="max-width: 180px; height: auto;">
+    </a>
 
     <!-- Register Button Top Right -->
     <div class="register-button-container">
-        <a href="{% url 'register' %}" class="btn btn--yellow btn--small">Sign up</a>
+        <a href="{% url 'account_setup' %}" class="btn btn--yellow btn--small">Sign up</a>
     </div>
 
     <!-- Page Title -->

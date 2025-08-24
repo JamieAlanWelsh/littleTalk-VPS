@@ -2,11 +2,29 @@ from django import forms
 from django.contrib.auth.models import User
 from .models import Learner
 from .models import Cohort
+from .models import StaffInvite
+from .models import Role
+from .models import JoinRequest
+from .models import School
+from .models import ParentAccessToken
 from django.contrib.auth.forms import AuthenticationForm
 from .models import LogEntry
 import re
 from django.core.exceptions import ValidationError
 from datetime import date
+
+
+class SchoolSignupForm(forms.Form):
+    full_name = forms.CharField(label="Your name", max_length=100)
+    email = forms.EmailField(label="Email")
+    password = forms.CharField(widget=forms.PasswordInput(), label="Password")
+    school_name = forms.CharField(label="School name", max_length=255)
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if User.objects.filter(username=email).exists():
+            raise forms.ValidationError("An account with this email already exists.")
+        return email
 
 
 def no_emoji_validator(value):
@@ -101,6 +119,32 @@ class UserRegistrationForm(forms.ModelForm):
         return learner_name
 
 
+class ParentSignupForm(forms.Form):
+    first_name = forms.CharField(max_length=50)
+    email = forms.EmailField()
+    password = forms.CharField(widget=forms.PasswordInput)
+    agree_updates = forms.BooleanField(required=False, label="I'm happy to receive updates")
+    access_code = forms.CharField(max_length=12, required=False, label="Parent Access Code")
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError("An account with this email already exists.")
+        return email
+
+    def clean_access_code(self):
+        code = self.cleaned_data.get('access_code', '').strip()
+        if code:
+            try:
+                token = ParentAccessToken.objects.get(token=code)
+                if token.is_expired():
+                    raise forms.ValidationError("This access code is expired or already used.")
+                return token
+            except ParentAccessToken.DoesNotExist:
+                raise forms.ValidationError("Invalid access code.")
+        return None  # No code provided
+
+
 class LearnerForm(forms.ModelForm):
     name = forms.CharField(
         label="Learner's name (or nickname)",
@@ -126,10 +170,11 @@ class LearnerForm(forms.ModelForm):
         user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
 
-        if user:
-            self.fields['cohort'].queryset = Cohort.objects.filter(user=user)
-        # else:
-        #     self.fields['cohort'].queryset = Cohort.objects.none()
+        if user and hasattr(user, 'profile') and user.profile.school:
+            self.fields['cohort'].queryset = Cohort.objects.filter(school=user.profile.school)
+        else:
+            self.fields['cohort'].queryset = Cohort.objects.none()
+            self.fields['cohort'].empty_label = "Select a cohort (optional)"
 
     def clean_name(self):
         name = self.cleaned_data.get("name", "").strip()
@@ -159,9 +204,21 @@ class LogEntryForm(forms.ModelForm):
         user = kwargs.pop('user', None)
         super(LogEntryForm, self).__init__(*args, **kwargs)
 
-        if user:
-            self.fields['learner'].queryset = Learner.objects.filter(user=user, deleted=False)
-        self.fields['learner'].required = True
+        if user and hasattr(user, 'profile'):
+            profile = user.profile
+            if profile.role == 'parent':
+                # Show only learners connected to this parent
+                self.fields['learner'].queryset = profile.parent_profile.learners.filter(deleted=False)
+            elif profile.school:
+                # Show all learners in the user's school
+                self.fields['learner'].queryset = Learner.objects.filter(
+                    school=profile.school,
+                    deleted=False
+                )
+            else:
+                self.fields['learner'].queryset = Learner.objects.none()
+        else:
+            self.fields['learner'].queryset = Learner.objects.none()
 
         # Override labels
         self.fields['goals'].label = 'Target'
@@ -234,3 +291,54 @@ class CohortForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
         }
+
+
+class StaffInviteForm(forms.ModelForm):
+    class Meta:
+        model = StaffInvite
+        fields = ['email', 'role']
+
+    def __init__(self, *args, **kwargs):
+        self.school = kwargs.pop('school', None)
+        user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+
+        if user:
+            if user.profile.is_admin():
+                # Admins can assign all roles
+                self.fields['role'].choices = Role.CHOICES
+            elif user.profile.is_manager():
+                # Managers can assign limited roles
+                self.fields['role'].choices = [
+                    (Role.TEAM_MANAGER, "Team Manager"),
+                    (Role.STAFF, "Staff"),
+                    (Role.READ_ONLY, "Read Only"),
+                ]
+            else:
+                self.fields['role'].choices = [
+                    (Role.STAFF, "Staff"),
+                ]
+        
+        print("ROLE CHOICES INIT:", self.fields['role'].choices)
+
+
+class AcceptInviteForm(forms.Form):
+    full_name = forms.CharField(label="Your name", max_length=100)
+    password = forms.CharField(widget=forms.PasswordInput, label="Password")
+
+    def clean_password(self):
+        password = self.cleaned_data['password']
+        if len(password) < 6:
+            raise forms.ValidationError("Password must be at least 6 characters.")
+        return password
+
+
+class JoinRequestForm(forms.ModelForm):
+    class Meta:
+        model = JoinRequest
+        fields = ['full_name', 'email', 'school']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Optional: limit to active schools, alphabetize
+        self.fields['school'].queryset = School.objects.order_by('name')

@@ -3,17 +3,70 @@
 {% load static %}
 
 {% block content %}
+<div class="character-wrapper">
+    <!-- Left Character -->
+    <img src="{% static 'images/landing/arlo_left_crop.png' %}" alt="Character Left" class="character character-left">
+
+    <!-- Right Character -->
+    <img src="{% static 'images/landing/arlo_right_crop.png' %}" alt="Character Right" class="character character-right">
+
+    <div class="landing-full-container">
+
+        <!-- Top Text and CTA -->
+        <div class="intro-section">
+            <h1 class="landing-title">Speech and Language Support Made Simple</h1>
+            <p class="landing-subtitle">
+                A powerful new app offering evidence-based speech and language<br>activities 
+                <strong>for children aged 2–11 with speech and language needs</strong>.
+            </p>
+            <p class="landing-subtitle">
+                <strong>Designed by licensed Speech and Language Therapists<br>for use in schools and at home.</strong>
+            </p>
+        </div>
+        <!-- Role Cards -->
+        <div class="account-setup-container">
+            <h2 class="account-header">Get Started as a...</h2>
+
+            <div class="card-row">
+                <!-- School Leader -->
+                <a href="{% url 'school_signup' %}" class="setup-card">
+                    <div class="setup-card-inner">
+                        <h2>School Manager</h2>
+                        <p>Set up a new school as an administrator</p>
+                    </div>
+                </a>
+                <!-- Teacher -->
+                <a href="{% url 'request_join_school' %}" class="setup-card">
+                    <div class="setup-card-inner">
+                        <h2>Teacher</h2>
+                        <p>Make a request to join an existing school</p>
+                    </div>
+                </a>
+                <!-- Parent -->
+                <a href="{% url 'parent_signup' %}?standalone=true" class="setup-card">
+                    <div class="setup-card-inner">
+                        <h2>Parent</h2>
+                        <p>Set up learning at home through a school or individually</p>
+                    </div>
+                </a>
+            </div>
+            <!-- Login button under cards -->
+            <div class="already-have-account">
+                <a href="{% url 'login' %}" class="cta-button white-button">I already have an account</a>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% comment %} initial view {% endcomment %}
-<div class="landing-container">
+{% comment %} <div class="landing-container">
     <div class="landing-left">
         <div class="text-widget">
-            <h1 class="header">Help Your Child's Speech & Language Grow - From Home</h1>
-            <p class="body-text">A new app that offers easy peasy, evidence-based speech and language exercises <strong>for children aged 2-11 with speech and language difficulties.</strong> Designed by Speech and Language Therapists.</p>
-            <p class="body-text">Watch your child make serious progress from home with just 10 minutes a day of fun and engaging activities, right from your devices.</p>
-            <p class="small-text"><strong>Currently Free for Early Testers!</strong></p>
+            <h1 class="header">Speech and Language Support Made Simple</h1>
+            <p class="body-text">A powerful new app offering evidence-based speech and language activities <strong>for children aged 2–11 with speech and language needs</strong>.</p>
+            <p class="small-text"><strong>for Special Needs Coordinators, Teaching Staff, and Parents.</strong></p>
             <div class="button-group">
-                <button class="cta-button start-assessment-btn main-button">Find your child's starting point</button>
+                <a href="/account-setup/" class="cta-button main-button">Get Started</a>
                 <a href="/login/" class="cta-button white-button main-button">I already have an account</a>
             </div>
         </div>
@@ -23,9 +76,9 @@
             <img src="{% static 'images/landing/exercise_shots.png' %}" class="hero-img" alt="Hero Image">
         </div>
     </div>
-</div>
+</div> {% endcomment %}
 {% comment %} first content bar {% endcomment %}
-<div class="content-bar">
+{% comment %} <div class="content-bar">
     <h2 class="content-bar-heading">How Does it Work?</h2>
     <div class="content-items">
         <div class="content-item">
@@ -44,9 +97,9 @@
             <p class="content-text">Our users have seen amazing results with just two weeks of daily practise</p>
         </div>
     </div>
-</div>
+</div> {% endcomment %}
 {% comment %} Amy intro section {% endcomment %}
-<div class="content-split">
+{% comment %} <div class="content-split">
     <div class="content-split-main">
         <div class="content-split-image">
             <img src="{% static 'images/landing/amy_founder.webp' %}" alt="amy" />
@@ -54,99 +107,110 @@
         <div class="content-split-text">
             <h2 class="split-heading">Hi, I'm Amy.</h2>
             <p class="split-body">
-                I'm a licensed Speech and Language Therapist and co-founder of LittleTalk.
+                I'm a licensed Speech and Language Therapist and co-founder of Chatterdillo.
             </p>
             <p class="split-body">           
-                It can be really frustrating when your child is struggling to communicate, but you're not sure where to begin, how to get support, or feel stuck waiting for help.
+                In schools, it can be frustrating when a child is struggling to communicate and staff aren’t sure where to begin, how to offer the right support, or feel stuck waiting for external input.
             </p>
             <p class="split-body">
-                I first experienced this while working as a one-to-one assistant, supporting a child with Down's Syndrome. I was handed a pack of speech and language exercises, but with no guidance or support on how to implement them. Even as a professional, I felt unsure and panicked because I cared deeply about getting it right. That experience made me realise how overwhelming it must be for parents facing the same thing.
+                I first experienced this while working as a one-to-one assistant, supporting a child with Down’s Syndrome. I was given a pack of speech and language exercises without any guidance on how to implement them. Even with my training, I felt unsure and anxious because I cared deeply about doing the right thing. That experience helped me understand how overwhelming it can be for school staff who want to help but don’t have the tools or support.
             </p>
             <p class="split-body">
-                This is why we created LittleTalk - to empower parents with the tools and confidence to build their child's speech and language from home, at their own pace.
+                This is why we created Chatterdillo: to empower educators with accessible, evidence-based resources that make it easy to build children’s speech and language skills in the classroom, with confidence and clarity.
             </p>
         </div>
     </div>
-</div>
+</div> {% endcomment %}
 {% comment %} Benefits Section {% endcomment %}
 <div class="content-split white">
     <div class="content-split-header">
         <p class="split-subtitle">
-            Guided activities help your child to develop language and encourage communication.
+            Guided activities help students build language skills and confidence in communication.
         </p>
         <h2 class="split-heading">
-            Support Your Child in Finding Their Words,<br>One Day at a Time
+            Support Every Child in Finding Their Words<br>One Day at a Time
         </h2>
     </div>
     <div class="content-split-main">
         <div class="content-split-image">
-            <img src="{% static 'images/landing/arlo_building.png' %}" alt="Flexible routines" class="small-img"/>
+            <img src="{% static 'images/landing/chatterdillo_exercises.png' %}" alt="Flexible routines"/>
         </div>
         <div class="content-split-text">
-            <h3 class="split-small-heading">Just 10 Minutes a Day, Anytime</h3>
+            <h3 class="split-small-heading">Deliver Interventions Quickly—Anytime</h3>
             <p class="split-body">
-                Busy schedule? We get it. LittleTalk fits into your day - whether it’s before school, after dinner, or whenever works for you.
+                Busy schedule? We get it. Let our app recommend suitable exercises using our in-built screener and deliver them directly through the platform - no training, no prep.
+            </p>
+            <h3 class="split-small-heading">3x Faster Progress with frequent Speech and Language Practise</h3>
+            <p class="split-body">
+                Research shows that consistent, high-frequency practice can triple the rate of learning in speech and language development!
             </p>
             <h3 class="split-small-heading">Easy for You, Fun for Them</h3>
             <p class="split-body">
-                No training, no prep. Just log in and follow our simple, therapist-designed activities proven to help your child build their language and confidence.
+                Students learn through play by earning EXP points as they practise - turning speech and language therapy into a game they want to play. It’s motivating, rewarding, and totally child-friendly.
             </p>
-            <h3 class="split-small-heading">Learning Through Play</h3>
             <p class="split-body">
-                Your child earns XP points as they practise - turning speech and language therapy into a game they want to play. It’s motivating, rewarding, and totally family-friendly.
+                <strong><a href="/method/" class="text-link">Learn more about our method ></a></strong>
             </p>
         </div>
     </div>
 </div>
 {% comment %} Benefits Section 2 {% endcomment %}
-<div class="content-split white">
+<div class="content-split white content-split-reverse">
     <div class="content-split-main">
         <div class="content-split-image">
-            <img src="{% static 'images/landing/arlo_running.png' %}" alt="Flexible routines" class="small-img"/>
+            <img src="{% static 'images/landing/chatterdillo_tools.png' %}" alt="Flexible routines"/>
         </div>
         <div class="content-split-text">
-            <h3 class="split-small-heading">3x Faster Progress with Daily Speech and Language Practise</h3>
+            <h3 class="split-small-heading">Keep Staff Aligned and Informed</h3>
             <p class="split-body">
-                Research shows that frequent, consistent practise can increase rate of learning from speech and language therapy by up to three times.
+                Track progress in real time and ensure team coordinators and support staff stay informed about each child’s development and support plan.
+            </p>
+            <h3 class="split-small-heading">Boost Productivity, Improve Outcomes</h3>
+            <p class="split-body">
+                Support more children, more often with streamlined tools and ready-to-use resources. Parents can also securely access practice activities from home using a unique access code, reinforcing progress and increasing impact between sessions.
+            </p>
+            <h3 class="split-small-heading">Made by Speech and Language Therapists</h3>
+            <p class="split-body">
+                Developed by licensed Speech and Language Therapists, our activities are evidence-based, easy to implement, and designed to support meaningful progress.
             </p>
             <p class="split-body">
-                With just 10 minutes a day, you can support your child's development at home - no waitlists, no pressure, and no training required.
-            </p>
-            <h3 class="split-small-heading">Made by Speech Therapists</h3>
-            <p class="split-body">
-                Our activities are designed by licensed speech and language therapists - so you know that they are effective, trustworthy, and made with your child’s success in mind.
-            </p>
-            <p class="split-body">
-                Whether you are waiting for therapy, supplementing sessions, or just getting started, our tools are designed to help your child take steps forward - one word at a time.
+                <strong><a href="/account-setup/" class="text-link">Set up an account ></a></strong>
             </p>
         </div>
     </div>
 </div>
-{% comment %} testimonial {% endcomment %}
-<div class="content-split">
+<div class="content-split reduce-padding-bottom">
+    <div class="content-split-header">
+        <h2 class="split-heading">
+            Chatter from Our Community 💬
+        </h2>
+    </div>
     <div class="content-split-main">
-        <div class="content-split-image">
-            <img src="{% static 'images/landing/parent.webp' %}" alt="amy" />
-        </div>
         <div class="content-split-text">
-            <h2 class="split-heading">★ ★ ★ ★ ★</h2>
             <p class="split-body"><strong>
-                Since using the app around 10 mins every day, my daughter has taken a huge interest in trying to say the words and even though they may not be clear she has definitely made an effort and really does try her best. We have had a couple of successes in a couple of words but her interest in wanting to talk and engage is huge. She finds using the app on my phone fun dragging the words to the boxes. She also finds the lady’s voice funny and tries her best to repeat what she says.
+                We introduced Chatterdillo to support children identified with speech and language needs and the impact has been incredible! Our students WANT to go on Chatterdillo, they find it fun, engaging, and it’s made a real difference in their progress! It’s so user-friendly and the support from the Chatterdillo team is fantastic. I would absolutely recommend it to other schools, it’s a fantastic resource for classroom and SEND support.
             </strong></p>
             <p class="split-body">
-                Danni,<br>Mother of two
+                Corrine,<br>SENDCo - South View Primary School
+            </p>
+        </div>
+        <div class="content-split-text">
+            <p class="split-body"><strong>
+                Using the app for just 10 minutes a day with my 2 year old has made a real difference. He is much more interested in trying to speak, even if the words aren’t always clear yet. We’ve seen some early successes, but most importantly, his motivation to talk and engage has grown massively. He loves the interactive activities and he always laughs at the voice on the app while trying his best to copy it. It’s become a fun part of our day.
+            </strong></p>
+            <p class="split-body">
+                Danni, Parent
             </p>
         </div>
     </div>
 </div>
 {% comment %} more testimonials {% endcomment %}
-<div class="content-bar">
-    <h2 class="content-bar-heading">What are people saying?</h2>
+<div class="content-bar yellow reduce-padding-top">
     <div class="content-items">
         <div class="content-item">
             {% comment %} <img src="{% static 'images/landing/arlo_butterfly.png' %}" alt="Evidence-based" class="content-icon"> {% endcomment %}
             <h3 class="content-title">"This is a huge need in our work and a great help for parents"</h3>
-            <p class="content-text">Jeremy, CEO of Talkback</p>
+            <p class="content-text">Jeremy, CEO of Talkback - Autism Support</p>
         </div>
         <div class="content-item">
             {% comment %} <img src="{% static 'images/landing/arlo_book.png' %}" alt="Evidence-based" class="content-icon"> {% endcomment %}
@@ -162,11 +226,11 @@
 </div>
 {% comment %} final call to action footer {% endcomment %}
 <div class="footer-cta">
-    <h1 class="footer-heading">Start Supporting Your Child's<br>Language Development</h1>
+    <h1 class="footer-heading">Let’s Build Language Skills Together!</h1>
     {% comment %} <button class="footer-cta-button">Begin Your Free Assessment</button> {% endcomment %}
-    <button class="cta-button start-assessment-btn">Find your child's starting point</button>
+    <a href="/account-setup/" class="cta-button main-button">Get Started</a>
     <div class="footer-icon-wrapper">
-        <img src="{% static 'images/landing/arlo_waving.png' %}" alt="LittleTalk icon" class="footer-icon">
+        <img src="{% static 'images/landing/arlo_waving.png' %}" alt="Chatterdillo icon" class="footer-icon">
     </div>
 </div>
 

@@ -4,7 +4,7 @@
 
 {% block content %}
 <h1>Settings</h1>
-<div class="container-box">
+<div class="container-box container--short">
 
     <!-- Change Email Form -->
     {% comment %} <h2>Email</h2> {% endcomment %}
@@ -19,7 +19,7 @@
                 {% endif %}
             </div>
         {% endfor %}
-        <button type="submit" class="btn btn--save btn--small" id="email-save-btn" disabled>Save Changes</button>
+        <button type="submit" class="btn btn--grey btn--small mb-40" id="email-save-btn" disabled>Save Changes</button>
     </form>
 
     {% comment %} <h2>Change Password</h2> {% endcomment %}
@@ -34,15 +34,8 @@
                 {% endif %}
             </div>
         {% endfor %}
-        <button type="submit" class="btn btn--save btn--small" id="password-save-btn" disabled>Save Changes</button>
+        <button type="submit" class="btn btn--grey btn--small mb-40" id="password-save-btn" disabled>Save Changes</button>
     </form>
-
-    <!-- Display Messages -->
-    {% if messages %}
-        {% for message in messages %}
-            <p class="message">{{ message }}</p>
-        {% endfor %}
-    {% endif %}
 
     <!-- Logout Form (POST request) -->
     <form method="post" action="{% url 'logout' %}" class="logout-form">

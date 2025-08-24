@@ -12,7 +12,8 @@
     text-align: center; /* Center text within buttons */
     font-size: 1.2rem;
     padding: 10px 20px;
-    border: 1px solid transparent;
+    /* border: 1px solid transparent; */
+    border: 1.5px solid #ccc;
     color: var(--font-color);
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
@@ -25,7 +26,7 @@
 }
 
 .btn--white { 
-    background-color: white; 
+    background-color: white;
 }
 
 .btn--white:hover { 
@@ -44,6 +45,7 @@
 
 .btn--invisible {
     background-color: rgba(255, 255, 255, 0);
+    border: none;
     box-shadow: none;
 }
 
@@ -65,6 +67,12 @@
 .btn--red:hover { 
     background-color: var(--button-red);
     color: white;
+}
+
+.btn--border {
+    border: 2px solid var(--font-color);
+    border-radius: 20px;
+    box-shadow: none;
 }
 
 .btn--hover-font-color:hover {
@@ -89,6 +97,13 @@
     font-size: 1rem; 
 }
 
+.btn--table {
+    font-size: 0.9rem;
+    padding: 5px;
+    text-align: left;
+    width: auto;
+}
+
 .btn--large {
     font-size: 1.4rem;
     padding: 15px 60px;
@@ -104,21 +119,21 @@
 
 /* special buttons */
 
-.btn--save {
+.btn--grey {
     background-color: #d3d3d3;
     color: #a0a0a0;
-    margin-bottom: 40px;
+    /* margin-bottom: 40px; */
     cursor: default;
 }
 
 /* When enabled */
-.btn--save:enabled {
+.btn--grey:enabled {
     background-color: var(--yellow-button-color);
     color: var(--font-color);
     cursor: pointer;
 }
 
 /* Hover on enabled */
-.btn--save:enabled:hover {
+.btn--grey:enabled:hover {
     background-color: var(--yellow-button-hover);
 }
