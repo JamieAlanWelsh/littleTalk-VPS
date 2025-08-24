@@ -362,7 +362,7 @@ def new_log_entry(request):
         if form.is_valid():
             log_entry = form.save(commit=False)
             log_entry.user = request.user  # Assign the logged-in user
-            log_entry.created_by_role = request.user.profile.role  
+            log_entry.created_by_role = request.user.profile.role
             log_entry.save()
             return redirect('logbook')  # Redirect to logbook page after saving
     else:
@@ -530,30 +530,6 @@ def register(request):
         form = UserRegistrationForm()
 
     return render(request, 'registration/register.html', {'form': form})
-
-
-# def comingsoon(request):
-#     request.hide_sidebar = True
-#     if request.method == "POST":
-#         form = WaitingListForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             messages.success(request, "You've been added to the waiting list!")
-#             return redirect("comingsoon")
-#         else:
-#             messages.error(request, "Invalid email or already registered.")
-#     else:
-#         form = WaitingListForm()
-
-#     return render(request, "registration/comingsoon.html", {"form": form})
-
-
-# @login_required
-# def custom_logout_view(request):
-#     if request.method == 'POST':
-#         logout(request)
-#         return redirect('login')  # Redirect to the login page after logging out
-#     return render(request, 'logout_confirm.html')  # Show confirmation page
 
 
 @login_required
