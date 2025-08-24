@@ -158,6 +158,7 @@ def save_all_assessment_answers(request):
 
 
 # Saves and assigns learners assessment answers and recommendations
+@login_required
 def save_assessment_for_learner(learner, answers):
     from collections import defaultdict
 
@@ -256,28 +257,6 @@ def assessment_summary(request):
         "readiness_status": readiness_status,
         "learner": learner,
     })
-
-
-# @login_required
-# def save_retake_assessment(request):
-#     learner_id = request.session.get("retake_learner_id")
-#     answers = request.session.get("assessment_answers", {})
-
-#     if not learner_id:
-#         return redirect("profile")
-
-#     learner = Learner.objects.filter(id=learner_id).first()
-#     if not learner:
-#         return redirect("profile")
-
-#     save_assessment_for_learner(learner, answers)
-
-#     request.session["selected_learner_id"] = learner.id
-#     request.session.pop("retake_learner_id", None)
-#     request.session.pop("assessment_answers", None)
-#     request.session.pop("assessment_complete", None)
-
-#     return redirect("assessment_summary")
 
 
 @login_required
@@ -580,13 +559,13 @@ def register(request):
 @login_required
 def profile(request):
     profile = request.user.profile
-    
+
     # placeholders - allows school view to render
     on_trial = False
     trial_days_left = 0
     is_subscribed = False
 
-    if profile.role == 'parent':
+    if profile.is_parent():
         parent_profile = profile.parent_profile
         # Standalone or invited parent: only show their linked learners
         all_learners = profile.parent_profile.learners.filter(deleted=False)
@@ -604,7 +583,7 @@ def profile(request):
     # Get selected cohort from GET params
     selected_cohort = request.GET.get('cohort')
     try:
-        if selected_cohort and profile.role != 'parent':
+        if selected_cohort and not profile.is_parent():
             selected_cohort_id = int(selected_cohort)
             learners = all_learners.filter(cohort__id=selected_cohort_id)
         else:
@@ -649,17 +628,13 @@ def add_learner(request):
         if form.is_valid():
             learner = form.save(commit=False)
             learner.user = request.user
-            if request.user.profile.role != 'parent':
+            if not request.user.profile.is_parent():
                 learner.school = request.user.profile.school
-            learner.save()
 
-            if request.user.profile.role == 'parent':
+            if request.user.profile.is_parent():
                 request.user.profile.parent_profile.learners.add(learner)
 
             learner.save()
-
-            if request.user.profile.role == 'parent':
-                request.user.profile.parent_profile.learners.add(learner)
 
             # Store selected learner in session (optional)
             request.session['selected_learner_id'] = learner.id
@@ -689,7 +664,7 @@ def edit_learner(request, learner_uuid):
     )
 
     # If user is a parent and this learner is tied to any school, send them back
-    if request.user.profile.role == 'parent' and learner.school_id:
+    if request.user.profile.is_parent() and learner.school_id:
         return redirect('profile')
 
     if request.method == 'POST':
@@ -721,9 +696,15 @@ def confirm_delete_learner(request, learner_uuid):
         deleted=False
     )
 
+    # If user is a parent and this learner is tied to any school, send them back
+    if request.user.profile.is_parent() and learner.school_id:
+        messages.error(request, "You do not have permission to delete this learner.")
+        return redirect('profile')
+
     # Restrict delete permissions
-    if not (request.user.profile.is_admin() or request.user.profile.is_manager() or request.user.profile.is_parent()):
-        messages.error(request, "You do not have permission to delete learners.")
+    if not (request.user.profile.is_admin() or request.user.profile.is_manager()
+            or (request.user.profile.is_parent() and learner.user_id == request.user.id)):
+        messages.error(request, "You do not have permission to delete this learner.")
         return redirect('profile')
 
     if request.method == 'POST':
@@ -1051,7 +1032,7 @@ def accept_invite(request, token):
 
 @login_required
 def school_dashboard(request):
-    if request.user.profile.role == 'parent':
+    if request.user.profile.is_parent():
         return redirect('profile')
     profile = request.user.profile
     school = profile.school
@@ -1202,7 +1183,7 @@ def generate_parent_token(request, learner_uuid):
 
 @login_required
 def view_parent_token(request, learner_uuid):
-    if request.user.profile.role == 'parent':
+    if request.user.profile.is_parent():
         return redirect('profile')
     learner = get_object_or_404(Learner, learner_uuid=learner_uuid, school=request.user.profile.school)
     token, created = ParentAccessToken.objects.get_or_create(learner=learner)
