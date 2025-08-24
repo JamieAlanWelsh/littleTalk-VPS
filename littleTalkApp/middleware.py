@@ -1,6 +1,8 @@
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.deprecation import MiddlewareMixin
+from django.http import HttpResponseForbidden
+
 
 class AccessControlMiddleware(MiddlewareMixin):
     """
@@ -49,3 +51,28 @@ class AccessControlMiddleware(MiddlewareMixin):
                 return redirect('license_expired')
 
         return None
+
+
+class RoleSchoolBlockMiddleware:
+    """
+    Blocks users from accessing the app if:
+    - user.profile.role != "parent"
+    - AND user.profile.school is None
+    """
+
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        user = request.user
+
+        if user.is_authenticated:
+            profile = getattr(user, "profile", None)
+            if profile:
+                if profile.role != "parent" and profile.school_id is None:
+                    # 1) show forbidden
+                    return HttpResponseForbidden("Your account is not configured for access.")
+                    # 2) or redirect to a support/contact page
+                    # return redirect(reverse("account_help"))
+
+        return self.get_response(request)
