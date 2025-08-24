@@ -158,10 +158,8 @@ def save_all_assessment_answers(request):
         if request.user.is_authenticated:
             if request.session.get("retake_learner_id"):
                 redirect_url = "/screener/save-retake/"
-            else:
-                redirect_url = "/add-learner/"
         else:
-            redirect_url = "/register/"
+            redirect_url = "/"
 
         return JsonResponse({'redirect_url': redirect_url})
 
@@ -230,7 +228,7 @@ def assessment_summary(request):
 
     selected_id = request.session.get('selected_learner_id')
     if selected_id:
-        learner = Learner.objects.filter(id=selected_id, user=request.user).first()
+        learner = Learner.objects.filter(id=selected_id).first()
         if learner:
             answers = learner.answers.all()
 
@@ -278,7 +276,7 @@ def save_retake_assessment(request):
     if not learner_id:
         return redirect("profile")
 
-    learner = Learner.objects.filter(id=learner_id, user=request.user).first()
+    learner = Learner.objects.filter(id=learner_id).first()
     if not learner:
         return redirect("profile")
 
