@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}LittleTalk | Asessment{% endblock %}
+{% block title %}Chatterdillo | Asessment{% endblock %}
 
 {% block content %}
 
 {% comment %} Simplified Header for Assessment Page {% endcomment %}
 <!-- logo top left -->
 <div class="logo-container">
-    <img src="{% static 'images/chatterdillo_logo_official.png' %}" alt="LittleTalk Logo" style="max-width: 180px; height: auto;">
+    <img src="{% static 'images/chatterdillo_logo_official.png' %}" alt="Chatterdillo Logo" style="max-width: 180px; height: auto;">
 </div>
 
 
@@ -16,12 +16,12 @@
     <section>
         {% if readiness_status == "not_ready" %}
             <div class="container-box container--white container--edgy">
-                <p class="summary-intro"><strong>LitteTalk may not be suitable for {{ learner.name }} at this time.</strong></p>
+                <p class="summary-intro"><strong>Chatterdillo may not be suitable for {{ learner.name }} at this time.</strong></p>
                 <p>It seems like {{ learner.name }} may be struggling with attention and listening skills. We can still support you but our exercises will be most effective once they have developed this skill. In the meantime, we encourage you to check out our <a href="/tips/" class="text-link" target="_blank">free tips</a>.</p>
             </div>
         {% elif readiness_status == "ready" %}
             <div class="container-box container--white container--edgy">
-                <p class="summary-intro"><strong>Great news! We think LittleTalk is likely a good fit for {{ learner.name }}!</strong></p>
+                <p class="summary-intro"><strong>Great news! We think Chatterdillo is likely a good fit for {{ learner.name }}!</strong></p>
                 <p>{{ learner.name }} appears to have strong attention and listening skills. Our exercises are well-equipped to support their language development.</p>
             </div>
         {% endif %}
