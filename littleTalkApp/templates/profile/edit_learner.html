@@ -26,7 +26,7 @@
                 </div>
             {% endif %}
         {% endfor %}
-        <a href="{% url 'start_assessment' %}?retake={{ learner.id }}" class="btn btn--white btn--full">
+        <a href="{% url 'start_assessment' %}" class="btn btn--white btn--full">
         Submit Screener
         </a>
         {% if can_delete %}

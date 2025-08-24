@@ -112,13 +112,9 @@ def school_signup(request):
 
 
 # This view will serve the first question when the assessment starts
+@login_required
 def start_assessment(request):
     request.hide_sidebar = True
-
-    # Check for retake
-    retake_id = request.GET.get("retake")
-    if retake_id:
-        request.session["retake_learner_id"] = int(retake_id)
 
     # Reset assessment session state
     request.session["assessment_answers"] = []
@@ -143,28 +139,22 @@ def start_assessment(request):
 })
 
 
+@login_required
 def save_all_assessment_answers(request):
-    if request.method != 'POST':
-        return JsonResponse({'error': 'Invalid request'}, status=400)
+    if request.method != "POST":
+        return JsonResponse({"error": "Invalid request"}, status=400)
 
     try:
-        data = json.loads(request.body)
-        # Example data: { "1": "Yes", "2": "No", ... }
-
-        request.session['assessment_answers'] = data
-        request.session['assessment_complete'] = True
-
-        # Compute where to redirect user
-        if request.user.is_authenticated:
-            if request.session.get("retake_learner_id"):
-                redirect_url = "/screener/save-retake/"
-        else:
-            redirect_url = "/"
-
-        return JsonResponse({'redirect_url': redirect_url})
-
+        data = json.loads(request.body or "{}")
     except json.JSONDecodeError:
-        return JsonResponse({'error': 'Invalid JSON'}, status=400)
+        return JsonResponse({"error": "Invalid JSON"}, status=400)
+
+    # Persist in session; we will apply to the selected learner only
+    request.session["assessment_answers"] = data
+    request.session["assessment_complete"] = True
+
+    # Send client to the final save endpoint (no user-controlled IDs)
+    return JsonResponse({"redirect_url": "/screener/save/"})
 
 
 # Saves and assigns learners assessment answers and recommendations
@@ -268,24 +258,51 @@ def assessment_summary(request):
     })
 
 
+# @login_required
+# def save_retake_assessment(request):
+#     learner_id = request.session.get("retake_learner_id")
+#     answers = request.session.get("assessment_answers", {})
+
+#     if not learner_id:
+#         return redirect("profile")
+
+#     learner = Learner.objects.filter(id=learner_id).first()
+#     if not learner:
+#         return redirect("profile")
+
+#     save_assessment_for_learner(learner, answers)
+
+#     request.session["selected_learner_id"] = learner.id
+#     request.session.pop("retake_learner_id", None)
+#     request.session.pop("assessment_answers", None)
+#     request.session.pop("assessment_complete", None)
+
+#     return redirect("assessment_summary")
+
+
 @login_required
-def save_retake_assessment(request):
-    learner_id = request.session.get("retake_learner_id")
+def save_assessment(request):
+    # Enforce selected learner & ownership
+    selected_learner_id = request.session.get('selected_learner_id')
+
+    if selected_learner_id:
+        selected_learner = Learner.objects.filter(id=selected_learner_id).first()
+
     answers = request.session.get("assessment_answers", {})
 
-    if not learner_id:
-        return redirect("profile")
+    if not answers:
+        # Nothing to save; send back to start
+        return redirect("start_assessment")
 
-    learner = Learner.objects.filter(id=learner_id).first()
-    if not learner:
-        return redirect("profile")
+    save_assessment_for_learner(selected_learner, answers)
 
-    save_assessment_for_learner(learner, answers)
-
-    request.session["selected_learner_id"] = learner.id
-    request.session.pop("retake_learner_id", None)
+    # Keep this learner selected; clear assessment temp state
+    # request.session["selected_learner_id"] = selected_learner.id
     request.session.pop("assessment_answers", None)
     request.session.pop("assessment_complete", None)
+    request.session.pop("current_question_index", None)
+    request.session.pop("previous_question_id", None)
+    # (No retake key anymore)
 
     return redirect("assessment_summary")
 
