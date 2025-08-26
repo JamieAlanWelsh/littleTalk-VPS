@@ -9,6 +9,11 @@
         <img src="{% static 'images/chatterdillo_logo_official.png' %}" alt="Chatterdillo Logo" style="max-width: 180px; height: auto;">
     </a>
 
+    <!-- Register Button Top Right -->
+    <div class="register-button-container">
+        <a href="{% url 'school_signup' %}" class="btn btn--yellow btn--small">Set up new School</a>
+    </div>
+
     <h1>Request to Join a School</h1>
 
     <form method="post" class="login-form">
@@ -30,8 +35,8 @@
         </div>
 
         <div>
-            <select name="school" class="input" required>
-                <option value="">Select a school</option>
+            <select name="school" class="input school-select" required>
+                <option value="">Search for your school</option>
                 {% for school in form.school.field.queryset %}
                     <option value="{{ school.id }}" {% if school.id|stringformat:"s" == form.school.value|stringformat:"s" %}selected{% endif %}>
                         {{ school.name }}
@@ -44,7 +49,7 @@
         </div>
 
         <div>
-            <button type="submit" class="btn btn--yellow btn--full">Submit Request</button>
+            <button type="submit" class="btn btn--yellow btn--full mt-20">Submit Request</button>
         </div>
 
         {% if form.non_field_errors %}
@@ -52,4 +57,15 @@
         {% endif %}
     </form>
 </div>
+
+{% comment %} for searching for school {% endcomment %}
+<script>
+    $(document).ready(function() {
+        $('.school-select').select2({
+            placeholder: 'Search for your school',
+            width: '100%'  // makes it stretch like the original input
+        });
+    });
+</script>
+
 {% endblock %}
