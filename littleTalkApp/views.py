@@ -35,6 +35,7 @@ from .forms import (
     AcceptInviteForm,
     JoinRequestForm,
     ParentSignupForm,
+    ParentAccessCodeForm,
 )
 
 # Local app: models
@@ -1238,10 +1239,40 @@ def parent_signup_view(request):
         # Pre-fill access code if passed via URL
         form = ParentSignupForm(initial={'access_code': prefill_code})
 
-    return render(request, 'parent/signup.html', {
+    return render(request, 'parent/parent_signup.html', {
         'form': form,
         'standalone': not prefill_code,  # controls header/template messaging
     })
+
+
+@login_required
+def add_learner_via_pac(request):
+    # Ensure only parent users can access
+    if not hasattr(request.user, 'profile') or request.user.profile.role != 'parent':
+        messages.error(request, "Only parent accounts can add learners via PAC.")
+        return redirect('add_learner')
+
+    parent_profile = request.user.profile.parent_profile
+
+    if request.method == 'POST':
+        form = ParentAccessCodeForm(request.POST)
+        if form.is_valid():
+            token = form.cleaned_data['access_code']
+            learner = token.learner
+
+            if learner in parent_profile.learners.all():
+                messages.info(request, "You already have access to this learner.")
+            else:
+                parent_profile.learners.add(learner)
+                token.used = True
+                token.save()
+                messages.success(request, f"{learner.name} has been added to your account.")
+                return redirect('profile')
+    else:
+        form = ParentAccessCodeForm()
+
+    return render(request, 'parent/add_learner_via_pac.html', {'form': form})
+
 
 def subscribe(request):
     request.hide_sidebar = True

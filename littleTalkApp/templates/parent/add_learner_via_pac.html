@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Add Learner via Parent Access Code</h1>
+<div class="container-box container--short pt-70">
+    <!-- Back Arrow -->
+    <a href="{% url 'add_learner' %}" class="back-arrow" aria-label="Go back">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+    </a>
+
+    <form method="post" class="form-stack">
+        <div class="recommendation-info">
+            <span class="info-icon">i</span>
+            <p>
+                Parent-Access-Code allows you to connect to your child and their school automatically
+            </p>
+        </div>
+        {% csrf_token %}
+        {% for field in form %}
+            <div>
+                <label for="{{ field.id_for_label }}" class="label">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                    <p class="error-message">{{ field.errors.0 }}</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn btn--yellow btn--full">Submit</button>
+    </form>
+</div>
+{% endblock %}

@@ -342,3 +342,19 @@ class JoinRequestForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         # Optional: limit to active schools, alphabetize
         self.fields['school'].queryset = School.objects.order_by('name')
+
+
+class ParentAccessCodeForm(forms.Form):
+    access_code = forms.CharField(max_length=12, label="Parent Access Code")
+
+    def clean_access_code(self):
+        code = self.cleaned_data.get('access_code', '').strip()
+        if code:
+            try:
+                token = ParentAccessToken.objects.get(token=code)
+                if token.is_expired():
+                    raise forms.ValidationError("This access code is expired or already used.")
+                return token
+            except ParentAccessToken.DoesNotExist:
+                raise forms.ValidationError("Invalid access code.")
+        raise forms.ValidationError("Please enter a code.")

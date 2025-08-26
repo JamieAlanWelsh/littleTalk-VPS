@@ -4,7 +4,7 @@
 
 {% block content %}
 <h1>Add Learner</h1>
-<div class="container-box pt-70">
+<div class="container-box container--short pt-70">
     <!-- Back Arrow -->
     <a href="{% url 'profile' %}" class="back-arrow" aria-label="Go back">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon">
@@ -27,6 +27,11 @@
                 </div>
             {% endif %}
         {% endfor %}
+        {% if request.user.profile.role == 'parent' %}
+            <a href="{% url 'add_pac_learner' %}" class="btn btn--white btn--full">
+            Add via Parent-Access-Code
+            </a>
+        {% endif %}
         <button type="submit" class="btn btn--yellow btn--full">Submit</button>
     </form>
 </div>

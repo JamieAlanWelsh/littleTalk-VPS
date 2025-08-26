@@ -70,6 +70,7 @@ urlpatterns = [
 
     # Parent
     path('parent-signup/', views.parent_signup_view, name='parent_signup'),
+    path('add-learner/pac', views.add_learner_via_pac, name='add_pac_learner'),
 
     # Subcription routes
     path('subscribe/', views.subscribe, name='subscribe'),
