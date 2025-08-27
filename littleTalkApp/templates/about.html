@@ -1,0 +1,159 @@
+<!-- templates/landing.html -->
+{% extends "landing_base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="landing-full-container">
+    <!-- Top Text and CTA -->
+    <div class="intro-section">
+        <h2 class="split-heading">
+            About Us
+        </h2>
+        <h2 class="account-header">Helping Every Child Develop Their Language Skills</h2>
+        <p class="landing-subtitle">
+            At Chatterdillo, we believe that speech and language support shouldn’t be a postcode lottery — or something only accessible to those with the loudest needs.
+        </p>
+        <p class="landing-subtitle">
+            We’re building tools that help schools deliver personalised, high-quality<br>communication support at scale, without requiring extra staff,<br>specialist knowledge, or complex systems.
+        </p>
+    </div>
+</div>
+
+{% comment %} early intervention {% endcomment %}
+<div class="content-bar">
+    <h2 class="content-bar-heading">Early Intervention Changes Lives</h2>
+    <div class="content-items">
+        <div class="content-item">
+            <img src="{% static 'images/landing/arlo_butterfly.png' %}" alt="Evidence-based" class="content-icon">
+            <h3 class="content-title">Quality of Life</h3>
+            <p class="content-text">Empowers children to communicate clearly, enriching their relationships and improving overall happiness.</p>
+        </div>
+        <div class="content-item">
+            <img src="{% static 'images/landing/arlo_book.png' %}" alt="Evidence-based" class="content-icon">
+            <h3 class="content-title">Access to Education</h3>
+            <p class="content-text">Helps children confidently participate in the classroom, ensuring they fully benefit from educational opportunities.</p>
+        </div>
+        <div class="content-item">
+            <img src="{% static 'images/landing/arlo_talking.png' %}" alt="Evidence-based" class="content-icon">
+            <h3 class="content-title">Confidence & Independence</h3>
+            <p class="content-text">Builds children’s self-esteem and independence, equipping them to express themselves in everyday situations.</p>
+        </div>
+    </div>
+</div>
+
+{% comment %} who we are {% endcomment %}
+<div class="content-split grey">
+    <div class="content-split-main">
+        <div class="content-split-image">
+            <img src="{% static 'images/landing/chatterdillo_exercises.png' %}" alt="Flexible routines" class="small-img"/>
+        </div>
+        <div class="content-split-text">
+            <h2 class="split-heading">Who we are</h2>
+            <p class="split-body">
+                We’re a small, mission-driven team with expertise in speech and language therapy, education, and AI-driven software development.
+            </p>
+            <p class="split-body">
+                 Our platform, Chatterdillo, is designed to be fun for children, intuitive for teachers, and powerful enough to make impact, especially for pupils who often fall through the cracks.
+            </p>
+        </div>
+    </div>
+</div>
+
+{% comment %} who we are {% endcomment %}
+<div class="content-split grey content-split-reverse">
+    <div class="content-split-main">
+        <div class="content-split-image">
+            <img src="{% static 'images/landing/chatterdillo_exercises.png' %}" alt="Flexible routines" class="small-img"/>
+        </div>
+        <div class="content-split-text">
+            <h2 class="split-heading">What we do</h2>
+            <p class="split-body">
+                Chatterdillo offers gamified, curriculum-aligned speech and language exercises for use in school and at home.
+            </p>
+            <p class="split-body">
+                It’s more than just content, it’s a smart system that helps teachers know what to do, when, and why.
+            </p>
+        </div>
+    </div>
+</div>
+
+{% comment %} our values {% endcomment %}
+<div class="content-bar">
+    <h2 class="content-bar-heading">Our Values</h2>
+    <div class="content-items">
+        <div class="content-item">
+            <img src="{% static 'images/landing/arlo_butterfly.png' %}" alt="Evidence-based" class="content-icon">
+            <h3 class="content-title">Evidence-Led</h3>
+            <p class="content-text">Everything we build is grounded in clinical best practice and co-designed with schools.</p>
+        </div>
+        <div class="content-item">
+            <img src="{% static 'images/landing/arlo_book.png' %}" alt="Evidence-based" class="content-icon">
+            <h3 class="content-title">Accessible</h3>
+            <p class="content-text">We believe technology should work for everyone, regardless of training or resources.</p>
+        </div>
+        <div class="content-item">
+            <img src="{% static 'images/landing/arlo_talking.png' %}" alt="Evidence-based" class="content-icon">
+            <h3 class="content-title">Impact-driven</h3>
+            <p class="content-text">We strive to help children who need support, not just those with diagnoses or formal referrals.</p>
+        </div>
+    </div>
+</div>
+
+{% comment %} our impact {% endcomment %}
+<div class="content-split grey">
+    <div class="content-split-main">
+        <div class="content-split-image">
+            <img src="{% static 'images/landing/chatterdillo_exercises.png' %}" alt="Flexible routines" class="small-img"/>
+        </div>
+        <div class="content-split-text">
+            <h2 class="split-heading">Our impact</h2>
+            <p class="split-body">
+                Our pilot schools are already seeing promising results. With Chatterdillo, schools can support 15-30 more pupils per site each year who would otherwise go without structured help.
+            </p>
+            <p class="split-body">
+                Because our system is low-prep and high-frequency, we estimate learning progress could triple, especially when reinforced at home.
+            </p>
+        </div>
+    </div>
+</div>
+
+{% comment %} Amy intro section {% endcomment %}
+<div class="content-split white">
+    <div class="content-split-header">
+        <h2 class="split-heading">
+            Our Story
+        </h2>
+    </div>
+    <div class="content-split-main">
+        <div class="content-split-image">
+            <img src="{% static 'images/landing/amy_founder.webp' %}" alt="amy" class="small-img"/>
+        </div>
+        <div class="content-split-text">
+            <strong><p class="split-body">
+                Hi, I’m Amy! I’m a Licensed Speech and Language Therapist and co-founder of Chatterdillo.
+            </p></strong>
+            <p class="split-body">                   
+                In schools, it’s tough when a child is struggling to communicate  and staff aren’t sure where to begin, or are left waiting for external support.
+            </p>
+            <p class="split-body">
+                I first saw this while working as a one-to-one assistant supporting a child with Down’s Syndrome. I was given a pack of exercises but no guidance and even with my training, I felt unsure. It showed me how overwhelming it can be for staff who want to help but don’t have the right tools.
+            </p>
+            <p class="split-body">
+                That’s why we created <strong>Chatterdillo</strong>: to empower educators with accessible, evidence-based resources that make it easy to build children’s speech and language skills in the classroom, with confidence and clarity.
+            </p>
+        </div>
+    </div>
+</div>
+
+{% comment %} final call to action footer {% endcomment %}
+<div class="footer-cta">
+    <h1 class="footer-heading">Want to get involved?</h1>
+    <p class="split-body">We’re always looking for new partner schools, supporters, and<br>collaborators who share our vision.</p>
+    <p class="split-body">If you’re passionate about early intervention, SEND support, or<br>inclusive EdTech — we’d love to hear from you.</p>
+    <a href="/support/" class="cta-button main-button">Contact Us</a>
+    <div class="footer-icon-wrapper">
+        <img src="{% static 'images/landing/arlo_waving.png' %}" alt="LittleTalk icon" class="footer-icon">
+    </div>
+</div>
+{% endblock %}

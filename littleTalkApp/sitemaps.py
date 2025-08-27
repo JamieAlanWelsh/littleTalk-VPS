@@ -8,6 +8,7 @@ class StaticViewSitemap(Sitemap):
     def items(self):
         return [
             'home',
+            'about'
             'support',
             'tips',
             'method',

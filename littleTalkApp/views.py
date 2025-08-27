@@ -958,6 +958,9 @@ def method(request):
     }
     return render(request, 'method.html', context)
 
+def about(request):
+    return render(request, 'about.html')
+
 
 def accept_invite(request, token):
     request.hide_sidebar = True

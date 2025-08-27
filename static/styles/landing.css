@@ -124,9 +124,10 @@ body {
 }
 
 .content-bar {
-    background-color: var(--accent-color);
+    background-color: white;
     padding: 4rem 1.25rem;
     text-align: center;
+    box-shadow: var(--box-shadow);
 }
 
 .content-items {
@@ -176,6 +177,7 @@ body {
 .content-split {
     padding: 4rem 1.25rem;
     background-color: var(--yellow-button-color);
+    box-shadow: var(--box-shadow);
 }
 
 .reduce-padding-top {
@@ -189,6 +191,10 @@ body {
 /* background modifiers */
 .content-split.white {
     background-color: white;
+}
+
+.content-split.grey {
+    background-color: var(--accent-color);
 }
 
 .content-bar.yellow {
@@ -228,7 +234,7 @@ body {
 }
 
 .content-split-image .small-img {
-    max-width: 300px;
+    max-width: 400px;
 }
 
 .content-split-text {
