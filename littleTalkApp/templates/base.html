@@ -3,6 +3,10 @@
 <html>
 <head>
 
+    {% block head_extra %}
+        <link rel="canonical" href="{{ canonical_url }}">
+    {% endblock %}
+
     <title>{% block title %}Chatterdillo{% endblock %}</title>
     <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@700&family=Roboto:wght@400&display=swap" rel="stylesheet">

@@ -3,6 +3,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% block head_extra %}
+        <link rel="canonical" href="{{ canonical_url }}">
+    {% endblock %}
+
     <meta charset="UTF-8">
     <title>{% block title %}Chatterdillo – Speech and Language Support Made Simple{% endblock %}</title>
     <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
