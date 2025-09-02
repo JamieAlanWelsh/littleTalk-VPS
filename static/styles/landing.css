@@ -234,7 +234,11 @@ body {
 }
 
 .content-split-image .small-img {
-    max-width: 400px;
+    max-width: 230px;
+}
+
+.content-split-image .medium-img {
+    max-width: 350px;
 }
 
 .content-split-text {
