@@ -33,19 +33,6 @@
     <p>{{ game.learninglevel1 }}</p>
     <p>{{ game.learninglevel2 }}</p>
 
-    {% comment %}
-    <!-- YouTube video embed -->
-    <div class="video-wrapper">
-        <iframe 
-            src="https://www.youtube.com/embed/{{ game.video_id }}" 
-            title="YouTube video player" 
-            frameborder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-            allowfullscreen>
-        </iframe>
-    </div>
-    {% endcomment %}
-
     <!-- Start button -->
     <div class="description-button-wrapper">
         <a href="{% static 'exercises/'|add:game.static_name|add:'/index.html' %}" target="_blank" class="btn btn--green btn--large">

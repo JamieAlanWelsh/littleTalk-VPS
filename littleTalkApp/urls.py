@@ -25,7 +25,7 @@ urlpatterns = [
     # Login and logout URLs
     path('login/', views.CustomLoginView.as_view(), name='login'),
     # path('logout/', views.custom_logout_view, name='logout'),
-    path('register/', views.register, name='register'),
+    # path('register/', views.register, name='register'),
     path('account-setup/', views.account_setup_view, name='account_setup'),
 
     # Profile and adding learners

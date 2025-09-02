@@ -59,6 +59,7 @@ from .serializers import LearnerExpUpdateSerializer
 # Local app: other
 from .game_data import GAME_DESCRIPTIONS
 from .assessment_qs import QUESTIONS, RECOMMENDATIONS
+from .decorators import valid_game_required
 
 # Python stdlib
 from collections import defaultdict
@@ -445,12 +446,10 @@ def generate_summary(request, learner_uuid):
     })
 
 
+@valid_game_required
 @login_required
 def game_description(request, game_name):
     game = GAME_DESCRIPTIONS.get(game_name, None)
-    if not game:
-        return render(request, '404.html', status=404)  # Return a 404 if the game name is invalid
-    
     return render(request, 'game_description.html', {'game': game})
 
 
@@ -470,67 +469,69 @@ def account_setup_view(request):
     return render(request, 'registration/account_setup.html')
 
 
-def register(request):
-    request.hide_sidebar = True
+# OLD REGISTER VIEW
 
-    # Prevent access unless assessment is complete
-    if not request.session.get('assessment_complete'):
-        return redirect('start_assessment')
+# def register(request):
+#     request.hide_sidebar = True
 
-    if request.method == 'POST':
-        form = UserRegistrationForm(request.POST)
-        if form.is_valid():
-            email = form.cleaned_data.get('email').lower()
-            password = form.cleaned_data.get('password1')
-            first_name = form.cleaned_data.get('first_name')
-            learner_name = form.cleaned_data.get('learner_name')
-            learner_dob = form.cleaned_data.get('learner_dob')
-            hear_about = form.cleaned_data.get('hear_about')
-            agree_updates = form.cleaned_data.get('agree_updates')
+#     # Prevent access unless assessment is complete
+#     if not request.session.get('assessment_complete'):
+#         return redirect('start_assessment')
 
-            # Create user
-            user = User.objects.create_user(
-                username=email,
-                email=email,
-                password=password,
-                first_name=first_name,
-            )
+#     if request.method == 'POST':
+#         form = UserRegistrationForm(request.POST)
+#         if form.is_valid():
+#             email = form.cleaned_data.get('email').lower()
+#             password = form.cleaned_data.get('password1')
+#             first_name = form.cleaned_data.get('first_name')
+#             learner_name = form.cleaned_data.get('learner_name')
+#             learner_dob = form.cleaned_data.get('learner_dob')
+#             hear_about = form.cleaned_data.get('hear_about')
+#             agree_updates = form.cleaned_data.get('agree_updates')
 
-            # Create user profile
-            Profile.objects.create(
-                user=user,
-                email=email,
-                first_name=first_name,
-                hear_about=hear_about,
-                opted_in=agree_updates,
-            )
+#             # Create user
+#             user = User.objects.create_user(
+#                 username=email,
+#                 email=email,
+#                 password=password,
+#                 first_name=first_name,
+#             )
 
-            # Create learner
-            learner = Learner.objects.create(
-                user=user,
-                name=learner_name,
-                date_of_birth=learner_dob,
-            )
+#             # Create user profile
+#             Profile.objects.create(
+#                 user=user,
+#                 email=email,
+#                 first_name=first_name,
+#                 hear_about=hear_about,
+#                 opted_in=agree_updates,
+#             )
 
-            # Save answers using our helper
-            answers = request.session.get("assessment_answers", {})
-            save_assessment_for_learner(learner, answers)
+#             # Create learner
+#             learner = Learner.objects.create(
+#                 user=user,
+#                 name=learner_name,
+#                 date_of_birth=learner_dob,
+#             )
 
-            # Log in the user
-            login(request, user)
+#             # Save answers using our helper
+#             answers = request.session.get("assessment_answers", {})
+#             save_assessment_for_learner(learner, answers)
 
-            # Select the learner
-            request.session['selected_learner_id'] = learner.id
+#             # Log in the user
+#             login(request, user)
 
-            # Clean up session
-            request.session.pop("assessment_answers", None)
-            request.session.pop("assessment_complete", None)
+#             # Select the learner
+#             request.session['selected_learner_id'] = learner.id
 
-            return redirect("assessment_summary")
-    else:
-        form = UserRegistrationForm()
+#             # Clean up session
+#             request.session.pop("assessment_answers", None)
+#             request.session.pop("assessment_complete", None)
 
-    return render(request, 'registration/register.html', {'form': form})
+#             return redirect("assessment_summary")
+#     else:
+#         form = UserRegistrationForm()
+
+#     return render(request, 'registration/register.html', {'form': form})
 
 
 @login_required
