@@ -3,6 +3,7 @@ from django.contrib.auth.models import Group
 from .models import (
     Profile,
     School,
+    ParentProfile,
 )
 
 #unregister groups
@@ -36,3 +37,27 @@ class SchoolAdmin(admin.ModelAdmin):
         else:
             return "❌ Not Licensed"
     license_status.short_description = "License Status"
+
+
+@admin.register(ParentProfile)
+class ParentProfileAdmin(admin.ModelAdmin):
+    list_display = (
+        'profile',
+        'trial_started_at',
+        'trial_ends_at',
+        'subscription_status',
+        'is_subscribed',
+        'stripe_customer_id',
+    )
+    list_editable = ('is_subscribed', 'trial_ends_at')
+    list_filter = ('is_subscribed',)
+    readonly_fields = ('stripe_customer_id',)
+    
+    def subscription_status(self, obj):
+        if obj.on_trial():
+            return "⌚ On Trial"
+        elif obj.is_subscribed:
+            return "✅ Active"
+        else:
+            return "❌ Not Subscribed"
+    subscription_status.short_description = "Sub Status"
