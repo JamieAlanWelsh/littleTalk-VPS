@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% include 'emails/partials/email_styles.html' %}
+</head>
+<body>
+    <div class="email-container">
+        <h2>Welcome to Chatterdillo, {{ school.name }}!</h2>
+
+        <p>Hi {{ user.first_name }},</p>
+
+        <p>Thanks for signing up to Chatterdillo. We're so excited to have your school on board!</p>
+
+        <p>To get started with your <strong>free demo and trial</strong>, just reply to this email — a member of our team will be in touch shortly to help you set everything up.</p>
+
+        <p>If you have any questions or want to dive in sooner, don't hesitate to reach out.</p>
+
+        <hr style="border: none; border-top: 1px solid #ccc; margin: 20px 0;">
+
+        <img src="https://chatterdillo.com/static/images/chatterdillo_logo_official.png" alt="Chatterdillo Logo" style="max-width: 200px;">
+        <div class="footer">
+            <p>We look forward to supporting your school’s communication journey.</p>
+        </div>
+    </div>
+</body>
+</html>

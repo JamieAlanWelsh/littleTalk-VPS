@@ -25,7 +25,7 @@ def send_invite_email(invite, school, request):
     }
 
     subject = f"You're invited to join {school.name} on Chatterdillo"
-    from_email = 'noreply@chatterdillo.com'
+    from_email = formataddr(("Chatterdillo Team", "noreply@chatterdillo.com"))
     to_email = [invite.email]
 
     text_content = render_to_string('emails/invite_staff.txt', context)
@@ -52,6 +52,25 @@ def send_parent_access_email(token, learner, email, request):
 
     text_content = render_to_string('emails/parent_access.txt', context)
     html_content = render_to_string('emails/parent_access.html', context)
+
+    email = EmailMultiAlternatives(subject, text_content, from_email, to_email)
+    email.attach_alternative(html_content, "text/html")
+    email.send()
+
+# Send school welcome email
+
+def send_school_welcome_email(school, user):
+    from_email = formataddr(("Chatterdillo Team", "noreply@chatterdillo.com"))
+    to_email = [user.email]
+
+    context = {
+        'user': user,
+        'school': school,
+    }
+
+    subject = f"Welcome to Chatterdillo, {school.name}!"
+    text_content = render_to_string('emails/school_welcome.txt', context)
+    html_content = render_to_string('emails/school_welcome.html', context)
 
     email = EmailMultiAlternatives(subject, text_content, from_email, to_email)
     email.attach_alternative(html_content, "text/html")

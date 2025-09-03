@@ -69,7 +69,8 @@ import stripe
 from .utilites import (
     can_edit_or_delete_log,
     send_invite_email,
-    send_parent_access_email
+    send_parent_access_email,
+    send_school_welcome_email,
 )
 
 
@@ -102,6 +103,9 @@ def school_signup(request):
             profile = Profile.objects.create(user=user, first_name=full_name, school=school)
             profile.role = 'admin'  # assumes you’ve added role field
             profile.save()
+
+            # Send welcome email
+            send_school_welcome_email(school, user)
 
             # Auto-login
             login(request, user)

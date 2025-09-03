@@ -1,36 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <style>
-        body {
-            font-family: 'Helvetica Neue', sans-serif;
-            background-color: #f7f7f7;
-            padding: 20px;
-            color: #333;
-        }
-        .email-container {
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        }
-        .button {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 12px 20px;
-            background-color: #FFE477;
-            color: #200D2A;
-            text-decoration: none;
-            border-radius: 30px;
-            font-weight: bold;
-            box-shadow: 0px 5px 0px rgba(0, 0, 0, 0.2);
-        }
-        .footer {
-            margin-top: 40px;
-            font-size: 0.85em;
-            color: #777;
-        }
-    </style>
+    {% include 'emails/partials/email_styles.html' %}
 </head>
 <body>
     <div class="email-container">

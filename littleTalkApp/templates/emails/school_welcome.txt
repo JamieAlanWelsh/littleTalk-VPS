@@ -1,0 +1,10 @@
+Hi {{ user.first_name }},
+
+Welcome to Chatterdillo! We're thrilled to have {{ school.name }} on board.
+
+Your free trial has started — explore the platform, invite your staff, and see how Chatterdillo can support your school’s communication.
+
+If you have any questions, just reply to this email — we're happy to help.
+
+Best,  
+The Chatterdillo Team

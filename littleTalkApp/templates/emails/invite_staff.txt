@@ -1,10 +1,10 @@
-Hi there,
+Hi {{ user.first_name }},
 
-You’ve been invited to join {{ school.name }} on Chatterdillo.
+Welcome to Chatterdillo! We're excited to have {{ school.name }} on board.
 
-Visit the link below to accept your invitation:
-{{ invite_url }}
+To get started with your free demo and trial, just reply to this email — a member of our team will be in touch shortly to help you set everything up.
 
-This invite will expire in 7 days.
+If you have any questions in the meantime, feel free to reach out.
 
-If you weren’t expecting this email, you can ignore it.
+Best,  
+The Chatterdillo Team
