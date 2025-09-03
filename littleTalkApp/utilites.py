@@ -75,3 +75,21 @@ def send_school_welcome_email(school, user):
     email = EmailMultiAlternatives(subject, text_content, from_email, to_email)
     email.attach_alternative(html_content, "text/html")
     email.send()
+
+# Send parent welcome email
+
+def send_parent_welcome_email(user):
+    from_email = formataddr(("Chatterdillo Team", "noreply@chatterdillo.com"))
+    to_email = [user.email]
+
+    context = {
+        'user': user,
+    }
+
+    subject = "Welcome to Chatterdillo!"
+    text_content = render_to_string('emails/parent_welcome.txt', context)
+    html_content = render_to_string('emails/parent_welcome.html', context)
+
+    email = EmailMultiAlternatives(subject, text_content, from_email, to_email)
+    email.attach_alternative(html_content, "text/html")
+    email.send()

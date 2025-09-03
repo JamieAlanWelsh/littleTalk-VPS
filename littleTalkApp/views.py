@@ -71,6 +71,7 @@ from .utilites import (
     send_invite_email,
     send_parent_access_email,
     send_school_welcome_email,
+    send_parent_welcome_email,
 )
 
 
@@ -1240,6 +1241,9 @@ def parent_signup_view(request):
                 parent_profile.learners.add(learner)
                 token.used = True
                 token.save()
+            
+            # Send welcome email
+            send_parent_welcome_email(user)
 
             login(request, user)
             return redirect('profile')

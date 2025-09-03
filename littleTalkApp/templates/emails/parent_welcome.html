@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% include 'emails/partials/email_styles.html' %}
+</head>
+<body>
+    <div class="email-container">
+        <h2>Welcome to Chatterdillo!</h2>
+
+        <p>Hi {{ user.first_name }},</p>
+
+        <p>Welcome to Chatterdillo! Your <strong>free trial</strong> has now started.</p>
+
+        <p>You can begin exploring exercises, engaging with your child’s learning, and experiencing how Chatterdillo makes communication fun and meaningful.</p>
+
+        <p>Enjoy exploring the platform!</p>
+
+        <hr style="border: none; border-top: 1px solid #ccc; margin: 20px 0;">
+
+        <img src="https://chatterdillo.com/static/images/chatterdillo_logo_official.png" alt="Chatterdillo Logo" style="max-width: 200px;">
+        <div class="footer">
+            <p>If you have any questions or feedback, just reply to this email — we're always happy to help.</p>
+        </div>
+    </div>
+</body>
+</html>

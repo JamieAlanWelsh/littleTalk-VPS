@@ -1,0 +1,10 @@
+Hi {{ user.first_name }},
+
+Welcome to Chatterdillo!
+
+Your free trial has started — you can now explore our exercises and connect with your child's learning!
+
+If you have any questions or feedback, just reply to this email — we're here to help.
+
+Enjoy exploring!  
+The Chatterdillo Team
