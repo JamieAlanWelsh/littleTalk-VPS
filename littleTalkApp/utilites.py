@@ -1,6 +1,7 @@
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.conf import settings
+from email.utils import formataddr
 
 # permissions
 
@@ -46,7 +47,7 @@ def send_parent_access_email(token, learner, email, request):
     }
 
     subject = f"Your Parent Access Code for {learner.name}"
-    from_email = 'noreply@chatterdillo.com'
+    from_email = formataddr(("Chatterdillo Team", "noreply@chatterdillo.com"))
     to_email = [email]
 
     text_content = render_to_string('emails/parent_access.txt', context)
