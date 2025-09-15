@@ -72,8 +72,8 @@
                 </p>
             
                 <p><strong>Exercises Completed:</strong>
-                    {% if selected_learner.exercises_completed %}
-                        {{ selected_learner.exercises_completed }}
+                    {% if selected_learner.total_exercises %}
+                        {{ selected_learner.total_exercises }}
                     {% else %}
                         No exercises recorded.
                     {% endif %}
