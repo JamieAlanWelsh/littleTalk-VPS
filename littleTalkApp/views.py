@@ -895,18 +895,24 @@ class UpdateLearnerExpAPIView(APIView):
             return Response({"detail": "Learner not found."}, status=status.HTTP_404_NOT_FOUND)
 
         new_exp = request.data.get("exp")
-        if new_exp is None:
-            return Response({"detail": "Experience points are required."}, status=status.HTTP_400_BAD_REQUEST)
+        new_total_exercises = request.data.get("total_exercises")
+
+        if new_exp is None or new_total_exercises is None:
+            return Response({"detail": "Both 'exp' and 'total_exercises' are required."}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             new_exp = int(new_exp)
+            new_total_exercises = int(new_total_exercises)
+
             learner.exp += new_exp
+            learner.total_exercises += new_total_exercises
             learner.save()
 
             serializer = LearnerExpUpdateSerializer(learner)
             return Response(serializer.data, status=status.HTTP_200_OK)
+        
         except ValueError:
-            return Response({"detail": "Invalid experience points value."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"detail": "Invalid 'exp' or 'total_exercises' value."}, status=status.HTTP_400_BAD_REQUEST)
 
 
 def get_selected_learner(request):

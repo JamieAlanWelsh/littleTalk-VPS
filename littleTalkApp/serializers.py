@@ -4,4 +4,4 @@ from .models import Learner
 class LearnerExpUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Learner
-        fields = ['id', 'exp']
+        fields = ['id', 'exp', 'total_exercises']

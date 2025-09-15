@@ -124,6 +124,7 @@ class Learner(models.Model):
     name = EncryptedCharField(max_length=255)
     learner_uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     exp = models.IntegerField(default=0)
+    total_exercises = models.IntegerField(default=0)
     recommendation_level = models.IntegerField(blank=True, null=True)
     deleted = models.BooleanField(default=False)
     date_of_birth = models.DateField(null=True, blank=True)
