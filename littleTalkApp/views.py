@@ -87,7 +87,7 @@ def school_signup(request):
     if request.method == 'POST':
         form = SchoolSignupForm(request.POST)
         if form.is_valid():
-            email = form.cleaned_data['email']
+            email = form.cleaned_data['email'].lower()
             password = form.cleaned_data['password']
             full_name = form.cleaned_data['full_name']
             school_name = form.cleaned_data['school_name']
@@ -992,7 +992,7 @@ def accept_invite(request, token):
     if request.method == 'POST':
         form = AcceptInviteForm(request.POST)
         if form.is_valid():
-            email = invite.email
+            email = invite.email.lower()
             password = form.cleaned_data['password']
             full_name = form.cleaned_data['full_name']
 
@@ -1218,9 +1218,12 @@ def parent_signup_view(request):
     if request.method == 'POST':
         form = ParentSignupForm(request.POST)
         if form.is_valid():
+            # lowercase that email
+            email = form.cleaned_data['email'].lower()
+            # set up user
             user = User.objects.create_user(
-                username=form.cleaned_data['email'],
-                email=form.cleaned_data['email'],
+                username=email,
+                email=email,
                 password=form.cleaned_data['password'],
                 first_name=form.cleaned_data['first_name']
             )
@@ -1232,7 +1235,7 @@ def parent_signup_view(request):
             profile = Profile.objects.create(
                 user=user,
                 first_name=form.cleaned_data['first_name'],
-                email=form.cleaned_data['email'],
+                email=email,
                 role='parent',
                 # school=school,
                 opted_in=form.cleaned_data.get('agree_updates', False)
