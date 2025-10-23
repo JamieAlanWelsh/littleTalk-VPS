@@ -2,12 +2,14 @@
 body {
     background-color: var(--background-color);
     margin: 0;
+    font-size: 16px;
     font-family: var(--font-roboto);
     color: var(--font-color);
     line-height: var(--line-height);
 }
 
-h1, h2 {
+h1 {
+    font-size: 2.5rem;
     font-family: var(--font-outfit);
     font-weight: 700;
     line-height: 1.4;
@@ -16,6 +18,15 @@ h1, h2 {
 
 h2 {
     margin-top: 5px;
+    font-size: 2rem;
+    font-family: var(--font-outfit);
+    font-weight: 700;
+    line-height: 1.4;
+    text-align: center;
+}
+
+h3 {
+    font-size: 1.5rem;
 }
 
 h3, h4, h5, h6 {
@@ -27,6 +38,11 @@ h3, h4, h5, h6 {
 p {
     color: var(--font-color);
     margin: 10px 0 15px;
+    font-size: 1rem;
+}
+
+li {
+    font-size: 1rem;
 }
 
 .text-link {
@@ -48,4 +64,31 @@ p {
 
 .mt-50 {
     margin-top: 50px;
+}
+
+.small {
+    font-size: 0.9rem;
+}
+
+/* Responsive typography for smaller screens */
+@media (max-width: 600px) {
+    body {
+        font-size: 14px;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    h3 {
+        font-size: 1.2rem;
+    }
+
+    p, li {
+        font-size: 0.9rem;
+    }
 }
