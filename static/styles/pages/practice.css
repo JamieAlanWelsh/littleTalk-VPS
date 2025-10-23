@@ -130,8 +130,8 @@
         position: absolute;
         top: 20px;
         right: 20px;
-        width: 60px; /* Reduce image size for small screens */
-        height: 60px;
+        width: 70px; /* Reduce image size for small screens */
+        height: 70px;
     }
 
     .exercise-image img {
@@ -144,7 +144,11 @@
     }
 
     .exercise-title {
-        margin-right: 100px; /* Add spacing so image doesn't overlap text */
+        margin-right: 70px; /* Add spacing so image doesn't overlap text */
+    }
+
+    .recommendation-box {
+        margin-top: 0;
     }
 }
 

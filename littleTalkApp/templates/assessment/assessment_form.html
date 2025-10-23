@@ -18,7 +18,9 @@
     </div>
 {% endif %} {% endcomment %}
 
-<h1 id="question-topic" class="mt-50">{{ question.topic }}</h1>
+<div class="page-heading-with-logo">
+    <h1 id="question-topic" class="mt-50">{{ question.topic }}</h1>
+</div>
 
 <div id="progress-bar-container">
     <progress id="progress-bar" max="100" value="{{ current_question_index|default_if_none:1 }}"></progress>

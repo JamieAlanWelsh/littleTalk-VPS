@@ -59,3 +59,9 @@
     height: 40px;
     margin-right: 20px; /* Space between icon and text */
 }
+
+@media (max-width: 600px) {
+    .sidebar-school {
+        display: none !important;
+    }
+}

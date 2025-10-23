@@ -18,7 +18,6 @@
     display: flex;
     justify-content: center;
     gap: 30px;
-    margin-bottom: 30px;
 }
 
 .answer-button {
@@ -29,7 +28,6 @@
     border: 2px solid var(--font-color);
     border-radius: 20px;
     cursor: pointer;
-    transition: all 0.3s ease;
     font-weight: bold;
     width: 270px;
 }
@@ -129,7 +127,6 @@ progress::-webkit-progress-value {
 }
 
 .summary-wrapper {
-    padding: 2rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -143,14 +140,27 @@ progress::-webkit-progress-value {
 }
 
 /* Responsive Design */
-@media (max-width: 480px) {
+@media (max-width: 600px) {
     #assessment-form-container {
         width: 90%;
+    }
+
+    #question-text {
+        font-size: 18px;
+        padding: 0;
+        /* min-height: auto; */
+    }
+
+    .assessment-intro,
+    .summary-intro {
+        font-size: 16px;
+        padding: 10px 0;
     }
 
     .answer-button {
         font-size: 16px;
         padding: 10px 20px;
+        width: 100%;
     }
 
     h2 {

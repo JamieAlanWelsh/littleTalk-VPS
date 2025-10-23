@@ -86,3 +86,10 @@
 .mb-40 {
     margin-bottom: 40px;
 }
+
+@media (max-width: 800px) {
+
+    .page-heading-with-logo {
+        margin-top: 70px;
+    }
+}
