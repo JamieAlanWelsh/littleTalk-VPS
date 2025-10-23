@@ -137,3 +137,19 @@
 .btn--grey:enabled:hover {
     background-color: var(--yellow-button-hover);
 }
+
+@media (max-width: 800px) {
+
+    .btn {
+        font-size: 1rem;
+    }
+
+    .btn--small { 
+        font-size: 0.9rem; 
+    }
+
+    .btn--large {
+        font-size: 1.2rem;
+        padding: 15px 60px;
+    }
+}

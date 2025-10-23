@@ -111,3 +111,34 @@
     margin-bottom: 0px;
     line-height: normal;
 }
+
+@media (max-width: 600px) {
+    .input,
+    .select,
+    .textarea {
+        font-size: 0.9rem;
+        padding: 8px;
+    }
+
+    .label,
+    .checkbox-wrapper label,
+    .input[type="date"] + label {
+        font-size: 0.9rem;
+    }
+
+    .checkbox-wrapper input[type="checkbox"] {
+        width: 14px;
+        height: 14px;
+    }
+
+    .form-stack input,
+    .form-stack select,
+    .form-stack textarea {
+        font-size: 0.9rem;
+        padding: 8px;
+    }
+
+    .form-stack {
+        gap: 10px;
+    }
+}

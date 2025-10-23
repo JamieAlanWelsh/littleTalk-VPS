@@ -8,11 +8,13 @@
 {% endblock %}
 
 {% block content %}
-<div class="login-container">
+<div class="account-setup-wider-container">
 
     <!-- Logo Top Left -->
     <a href="/" class="logo-link">
-        <img src="{% static 'images/chatterdillo_logo_official.png' %}" alt="Chatterdillo Logo" style="max-width: 180px; height: auto;">
+        <div class="logo-upper-left">
+            <img src="{% static 'images/chatterdillo_logo_official.png' %}" alt="Chatterdillo Logo">
+        </div>
     </a>
 
     <!-- Register Button Top Right -->
@@ -21,15 +23,17 @@
     </div>
 
     <div class="account-setup-container">
-        <h1>Set up an account</h1>
+        <div class="page-heading-with-logo">
+            <h1>Set up an account</h1>
+        </div>
         <h3>Who are you signing up as?</h3>
 
         <div class="card-row">
             <!-- School Leader -->
             <a href="{% url 'school_signup' %}" class="setup-card">
                 <div class="setup-card-inner">
-                    <h2>School Manager</h2>
-                    <p>Set up a new school as an administrator</p>
+                    <h2>School</h2>
+                    <p>Setup a new school as an administrator</p>
                 </div>
             </a>
 
@@ -45,7 +49,7 @@
             <a href="{% url 'parent_signup' %}?standalone=true" class="setup-card">
                 <div class="setup-card-inner">
                     <h2>Parent</h2>
-                    <p>Set up learning at home through a school or individually</p>
+                    <p>Learn at home through a school or individually</p>
                 </div>
             </a>
         </div>

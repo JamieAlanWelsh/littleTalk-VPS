@@ -315,7 +315,7 @@ body {
 
 .footer-cta {
     text-align: center;
-    padding: 100px 20px;
+    padding: 3.5rem 1rem;
     /* background-color: #f9f9f9; */
 }
 
@@ -506,7 +506,7 @@ body {
 
 .intro-section {
     max-width: 700px;
-    margin: 0 auto 40px auto;
+    margin: 0 auto 0 auto;
 }
 
 .landing-title {
@@ -557,6 +557,11 @@ body {
 /* MOBILE CSS */
 
 @media (max-width: 768px) {
+
+    .landing-full-container {
+        padding-top: 0.5rem;
+    }
+
     .main-header {
         padding: 1rem;
     }
@@ -587,7 +592,20 @@ body {
     }
 
     .content-items {
-        gap: 2rem;
+        margin-top: 0;
+        gap: 1rem;
+    }
+
+    .content-item {
+        max-width: none;
+    }
+
+    .content-title--small {
+        font-size: 0.9rem;
+    }
+
+     .content-text {
+        font-size: 0.9rem;
     }
 
     .content-icon {
@@ -603,6 +621,10 @@ body {
     .content-split-main {
         flex-direction: column;
         gap: 0rem;
+    }
+
+    .content-split-text {
+        text-align: center;
     }
 
     .split-list {

@@ -21,11 +21,13 @@
             <div class="recommendation-content">
                 <div class="recommendation-text">
                     <h2 class="heading-left">{{ selected_learner.name }}'s recommended exercises:</h2>
-                    <ul>
-                        {% for ex in recommendation.exercises %}
-                        <li>{{ ex }}</li>
-                        {% endfor %}
-                    </ul>
+                    <div class="skills-list">
+                        <ul>
+                            {% for ex in recommendation.exercises %}
+                            <li>{{ ex }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
                     <p>
                         Your focus should be <strong>{{ recommendation.focus }}.</strong>
                         {% if recommendation.nextlevel %}
@@ -71,7 +73,9 @@
             <img src="{% static 'icons/colour_semantics_icon_bg.png' %}" alt="Sentence Building">
         </div>
         <div class="exercise-details">
-            <h3>{{ game.title }} - {{ game.target }}</h3>
+            <div class="exercise-title">
+                <h3>{{ game.title }} - {{ game.target }}</h3>
+            </div>
             <p><strong>Develops ability to:</strong></p>
             <div class="skills-list">
                 <ul>
@@ -97,7 +101,9 @@
             <img src="{% static 'icons/think_and_find_icon.png' %}" alt="Sentence Building">
         </div>
         <div class="exercise-details">
-            <h3>{{ game.title }} - {{ game.target }}</h3>
+            <div class="exercise-title">
+                <h3>{{ game.title }} - {{ game.target }}</h3>
+            </div>
             {% if selected_learner.assessment1 < 0 %}
                 <p>This exercise will be unlocked as you progress.</p>
                 <a class="button exercise-btn locked-btn">Locked</a>
@@ -126,7 +132,9 @@
             <img src="{% static 'icons/categorisation_icon.png' %}" alt="Sentence Building">
         </div>
         <div class="exercise-details">
-            <h3>{{ game.title }} - {{ game.target }}</h3>
+            <div class="exercise-title">
+                <h3>{{ game.title }} - {{ game.target }}</h3>
+            </div>
             {% if selected_learner.assessment1 < 0 %}
                 <p>This exercise will be unlocked as you progress.</p>
                 <a class="button exercise-btn locked-btn">Locked</a>
@@ -155,7 +163,9 @@
             <img src="{% static 'icons/story_train_icon.png' %}" alt="Sentence Building">
         </div>
         <div class="exercise-details">
-            <h3>{{ game.title }} - {{ game.target }}</h3>
+            <div class="exercise-title">
+                <h3>{{ game.title }} - {{ game.target }}</h3>
+            </div>
             {% if selected_learner.assessment1 < 0 %}
                 <p>This exercise will be unlocked as you progress.</p>
                 <a class="button exercise-btn locked-btn">Locked</a>

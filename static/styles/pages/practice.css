@@ -63,13 +63,11 @@
 .exercise-details h3 {
     margin: 0;
     font-family: var(--font-outfit);
-    font-size: 1.5rem;
 }
 
 .exercise-details p {
     margin: 10px 0;
     color: var(--font-color);
-    font-size: 1rem;
 }
 
 .skills-list {
@@ -85,7 +83,6 @@
 
 .skills-list li {
     margin-bottom: 0.4rem;
-    font-size: 0.95rem;
     line-height: 1.4;
     color: #333;
 }
@@ -105,6 +102,51 @@
     margin-top: 40px;
     margin-bottom: 30px;
     text-align: center;
+}
+
+/* -----------------------------
+   Mobile Adjustability
+------------------------------ */
+
+@media (max-width: 600px) {
+    .recommendation-mascot {
+        display: none;
+    }
+
+    /* -----------------------------
+    exercise image goes top right insteaad
+    ------------------------------ */   
+
+    .exercise-widget {
+        flex-direction: column;
+        position: relative;
+        align-items: flex-start;
+    }
+
+    .exercise-image {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        width: 60px; /* Reduce image size for small screens */
+        height: 60px;
+    }
+
+    .exercise-image img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .exercise-details {
+        width: 100%;
+    }
+
+    .exercise-title {
+        margin-right: 90px; /* Add spacing so image doesn't overlap text */
+    }
+
+    .recommendation-box {
+        margin-top: 0;
+    }
 }
 
 /* -----------------------------

@@ -5,6 +5,9 @@
     justify-content: center;
     min-height: 90vh;
     box-sizing: border-box;
+    padding-left: 35px;
+    padding-right: 35px;
+    width: 100%;
 }
 
 .login-form {
@@ -44,6 +47,16 @@
 
 /* account setup */
 
+.account-setup-wider-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 90vh;
+    box-sizing: border-box;
+    width: 100%;
+}
+
 .account-setup-container {
     text-align: center;
 }
@@ -64,11 +77,15 @@
     border-radius: 16px;
     padding: 30px 20px;
     width: 250px;
-    height: 150px;
+    height: 140px;
     background-color: white;
     color: var(--font-color);
     box-shadow: var(--box-shadow);
     transition: background-color 0.2s ease;
+}
+
+.setup-card-inner h2 {
+    font-size: 1.5rem;
 }
 
 .setup-card-inner:hover {
@@ -79,4 +96,26 @@
 .setup-card-inner:hover h3,
 .setup-card-inner:hover p {
     color: white;
+}
+
+@media (max-width: 800px) {
+    .setup-card-inner {
+        padding: 15px 10px;
+        width: 130px;
+        height: 100px;
+    }
+
+    .setup-card-inner h2 {
+        font-size: 1.5rem;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    .setup-card-inner p {
+        font-size: 0.7rem;
+    }
+
+    .card-row {
+        gap: 20px;
+    }
 }

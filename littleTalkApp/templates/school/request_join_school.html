@@ -6,15 +6,18 @@
 <div class="login-container">
     <!-- logo top left -->
     <a href="/" class="logo-link">
-        <img src="{% static 'images/chatterdillo_logo_official.png' %}" alt="Chatterdillo Logo" style="max-width: 180px; height: auto;">
+        <div class="logo-upper-left">
+            <img src="{% static 'images/chatterdillo_logo_official.png' %}" alt="Chatterdillo Logo">
+        </div>
     </a>
+
 
     <!-- Register Button Top Right -->
     <div class="register-button-container">
-        <a href="{% url 'school_signup' %}" class="btn btn--yellow btn--small">Set up new School</a>
+        <a href="{% url 'school_signup' %}" class="btn btn--yellow btn--small">School Setup</a>
     </div>
 
-    <h1>Request to Join a School</h1>
+    <h1>Join a School</h1>
 
     <form method="post" class="login-form">
         {% csrf_token %}

@@ -7,22 +7,18 @@
 <div class="login-container">
 
     <!-- logo top left -->
-    <a href="/" class="logo-link">
-        <img src="{% static 'images/chatterdillo_logo_official.png' %}" alt="Chatterdillo Logo" style="max-width: 180px; height: auto;">
+     <a href="/" class="logo-link">
+        <div class="logo-upper-left">
+            <img src="{% static 'images/chatterdillo_logo_official.png' %}" alt="Chatterdillo Logo">
+        </div>
     </a>
     <!-- Header Section -->
     <h1>
-        Create Your Parent Account
+        Parent Setup
     </h1>
 
     <!-- Signup Form -->
     <form method="post" class="login-form">
-        <div class="recommendation-info mb-20">
-            <span class="info-icon">i</span>
-            <p>
-                Parent Access Code allows you to connect to your child and their school automatically
-            </p>
-        </div>
 
         {% csrf_token %}
 

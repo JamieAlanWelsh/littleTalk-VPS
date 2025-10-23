@@ -5,7 +5,6 @@
 .profile-container {
     display: flex;
     justify-content: space-between;
-    padding: 20px;
     margin: 50px auto;
     max-width: 800px;
 }
@@ -44,7 +43,6 @@
     margin-bottom: 8px;
     font-weight: 600;
     color: var(--font-color);
-    font-size: 16px;
 }
 
 .cohort-filter-widget select {
@@ -52,7 +50,6 @@
     padding: 10px 14px;
     border-radius: 8px;
     border: 1px solid #ccc;
-    font-size: 16px;
     font-family: var(--font-outfit);
     color: var(--font-color);
     background-color: white;
@@ -147,7 +144,6 @@
 
 .edit-learner-btn a {
     display: block;
-    font-size: 14px;
     font-weight: 600;
     font-family: var(--font-outfit);
     padding: 10px 20px;
@@ -162,6 +158,27 @@
 .edit-learner-btn a:hover {
     background-color: var(--font-color);
     color: white;
+}
+
+/* -----------------------------
+   make the layout a row layout on mobile
+------------------------------ */
+
+@media (max-width: 800px) {
+    .profile-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .right-column {
+        order: 1;
+        width: 100%;
+        margin-bottom: 24px;
+    }
+    .left-column {
+        order: 2;
+        width: 100%;
+        max-height: none;
+    }
 }
 
 /* -----------------------------
