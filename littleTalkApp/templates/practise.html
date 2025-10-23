@@ -21,11 +21,13 @@
             <div class="recommendation-content">
                 <div class="recommendation-text">
                     <h2 class="heading-left">{{ selected_learner.name }}'s recommended exercises:</h2>
-                    <ul>
-                        {% for ex in recommendation.exercises %}
-                        <li>{{ ex }}</li>
-                        {% endfor %}
-                    </ul>
+                    <div class="skills-list">
+                        <ul>
+                            {% for ex in recommendation.exercises %}
+                            <li>{{ ex }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
                     <p>
                         Your focus should be <strong>{{ recommendation.focus }}.</strong>
                         {% if recommendation.nextlevel %}

@@ -130,8 +130,8 @@
         position: absolute;
         top: 20px;
         right: 20px;
-        width: 70px; /* Reduce image size for small screens */
-        height: 70px;
+        width: 60px; /* Reduce image size for small screens */
+        height: 60px;
     }
 
     .exercise-image img {
@@ -144,11 +144,29 @@
     }
 
     .exercise-title {
-        margin-right: 70px; /* Add spacing so image doesn't overlap text */
+        margin-right: 90px; /* Add spacing so image doesn't overlap text */
     }
 
     .recommendation-box {
         margin-top: 0;
+    }
+
+    /* Responsive Font Sizes for Recommendation Widget */
+    .recommendation-text h2,
+    .exercise-details h3 {
+        font-size: 1.2rem;
+    }
+
+    .recommendation-text p,
+    .exercise-details p,
+    .skills-list li {
+        font-size: 0.9rem;
+    }
+
+    /* Adjust button font size and padding */
+    .exercise-buttons .btn {
+        font-size: 0.85rem;
+        padding: 8px 16px;
     }
 }
 
