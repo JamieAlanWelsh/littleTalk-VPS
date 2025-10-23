@@ -108,6 +108,47 @@
 }
 
 /* -----------------------------
+   Mobile Adjustability
+------------------------------ */
+
+@media (max-width: 600px) {
+    .recommendation-mascot {
+        display: none;
+    }
+
+    /* -----------------------------
+    exercise image goes top right insteaad
+    ------------------------------ */   
+
+    .exercise-widget {
+        flex-direction: column;
+        position: relative;
+        align-items: flex-start;
+    }
+
+    .exercise-image {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        width: 60px; /* Reduce image size for small screens */
+        height: 60px;
+    }
+
+    .exercise-image img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .exercise-details {
+        width: 100%;
+    }
+
+    .exercise-title {
+        margin-right: 100px; /* Add spacing so image doesn't overlap text */
+    }
+}
+
+/* -----------------------------
    Expired locked button
 ------------------------------ */
 
