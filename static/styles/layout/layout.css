@@ -92,4 +92,8 @@
     .page-heading-with-logo {
         margin-top: 70px;
     }
+    
+    .container-box {
+        margin-top: 0;
+    }
 }
