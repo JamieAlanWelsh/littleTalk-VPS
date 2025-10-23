@@ -15,19 +15,18 @@
 
     <!-- Register Button Top Right -->
     <div class="register-button-container">
-        <a href="{% url 'request_join_school' %}" class="btn btn--yellow btn--small">Join Existing School</a>
+        <a href="{% url 'request_join_school' %}" class="btn btn--yellow btn--small">Join a School</a>
     </div>
 
     <!-- Header Section -->
-    <h1 style="text-align: center; font-size: 2rem; margin-bottom: 40px;">Create Your School Account</h1>
+    <h1 style="text-align: center; font-size: 2rem; margin-bottom: 40px;">School Setup</h1>
 
     <!-- School Signup Form -->
     <form method="post" class="login-form">
         {% csrf_token %}
 
         <p class="register-intro">
-            <strong>Welcome!</strong><br>
-            Set up your school workspace to start adding learners and inviting staff.
+            Setup your school workspace to start adding learners and inviting staff.
         </p>
 
         <div>
