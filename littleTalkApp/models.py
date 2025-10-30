@@ -11,7 +11,9 @@ import string
 class School(models.Model):
     name = models.CharField(max_length=255)
     address = models.TextField(blank=True, null=True)
-    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="schools_created")
+    created_by = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, related_name="schools_created"
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     # Licensing fields
     is_licensed = models.BooleanField(default=False)
@@ -19,38 +21,42 @@ class School(models.Model):
 
     def __str__(self):
         return self.name
-    
+
     def has_valid_license(self):
-        return self.is_licensed and (self.license_expires_at is None or self.license_expires_at > timezone.now())
+        return self.is_licensed and (
+            self.license_expires_at is None or self.license_expires_at > timezone.now()
+        )
 
 
 class Role:
-    ADMIN = 'admin'
-    TEAM_MANAGER = 'team_manager'
-    STAFF = 'staff'
-    READ_ONLY = 'read_only'
-    PARENT = 'parent'
+    ADMIN = "admin"
+    TEAM_MANAGER = "team_manager"
+    STAFF = "staff"
+    READ_ONLY = "read_only"
+    PARENT = "parent"
 
     CHOICES = [
-        (ADMIN, 'Admin'),
-        (TEAM_MANAGER, 'Team Manager'),
-        (STAFF, 'Staff'),
-        (READ_ONLY, 'Read Only'),
+        (ADMIN, "Admin"),
+        (TEAM_MANAGER, "Team Manager"),
+        (STAFF, "Staff"),
+        (READ_ONLY, "Read Only"),
     ]
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
     email = models.CharField(max_length=50, blank=True, null=True)
     first_name = models.CharField(max_length=50, blank=True, null=True)
     hear_about = models.CharField(max_length=50, blank=True, null=True)
     opted_in = models.BooleanField(default=False)
-    school = models.ForeignKey(School, on_delete=models.SET_NULL, null=True, blank=True, related_name="users")
+    school = models.ForeignKey(
+        School, on_delete=models.SET_NULL, null=True, blank=True, related_name="users"
+    )  # remove for many-to-many relations
     role = models.CharField(max_length=20, choices=Role.CHOICES, default=Role.PARENT)
 
     def __str__(self):
         return f"{self.user.username}'s Profile"
-    
+
     def is_admin(self):
         return self.role == Role.ADMIN
 
@@ -62,7 +68,7 @@ class Profile(models.Model):
 
     def is_read_only(self):
         return self.role == Role.READ_ONLY
-    
+
     def is_parent(self):
         return self.role == Role.PARENT
 
@@ -72,8 +78,10 @@ def default_trial_end():
 
 
 class ParentProfile(models.Model):
-    profile = models.OneToOneField('Profile', on_delete=models.CASCADE, related_name='parent_profile')
-    learners = models.ManyToManyField('Learner', related_name='parents')
+    profile = models.OneToOneField(
+        "Profile", on_delete=models.CASCADE, related_name="parent_profile"
+    )
+    learners = models.ManyToManyField("Learner", related_name="parents")
     # subscripion fields
     trial_started_at = models.DateTimeField(auto_now_add=True)
     trial_ends_at = models.DateTimeField(default=default_trial_end)
@@ -83,19 +91,21 @@ class ParentProfile(models.Model):
 
     def on_trial(self):
         return timezone.now() < self.trial_ends_at and not self.is_subscribed
-    
+
     def has_access(self):
         return self.is_subscribed or self.on_trial()
-    
+
     def trial_days_left(self):
-        #Return days remaining in trial, or 0 if trial expired.
+        # Return days remaining in trial, or 0 if trial expired.
         if self.trial_ends_at and self.on_trial():
             return max((self.trial_ends_at - timezone.now()).days, 0)
         return 0
 
 
 class LearnerAssessmentAnswer(models.Model):
-    learner = models.ForeignKey('Learner', on_delete=models.CASCADE, related_name='answers')
+    learner = models.ForeignKey(
+        "Learner", on_delete=models.CASCADE, related_name="answers"
+    )
     question_id = models.IntegerField()
     topic = models.CharField(max_length=100)
     skill = models.CharField(max_length=100)
@@ -108,7 +118,9 @@ class LearnerAssessmentAnswer(models.Model):
 
 
 class Cohort(models.Model):
-    school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='cohorts', null=True, blank=True)
+    school = models.ForeignKey(
+        School, on_delete=models.CASCADE, related_name="cohorts", null=True, blank=True
+    )
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)  # optional
     created_at = models.DateTimeField(auto_now_add=True)
@@ -118,9 +130,11 @@ class Cohort(models.Model):
 
 
 class Learner(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='learners')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="learners")
     # profile = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True, blank=True, related_name='learners')
-    school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='learners', null=True, blank=True)
+    school = models.ForeignKey(
+        School, on_delete=models.CASCADE, related_name="learners", null=True, blank=True
+    )
     name = EncryptedCharField(max_length=255)
     learner_uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     exp = models.IntegerField(default=0)
@@ -145,8 +159,16 @@ class WaitingList(models.Model):
 
 
 class LogEntry(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="log_entries")  # Link log entry to a user
-    learner = models.ForeignKey(Learner, on_delete=models.CASCADE, related_name="log_entries", null=True, blank=True)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="log_entries"
+    )  # Link log entry to a user
+    learner = models.ForeignKey(
+        Learner,
+        on_delete=models.CASCADE,
+        related_name="log_entries",
+        null=True,
+        blank=True,
+    )
     title = models.CharField(max_length=70)
     exercises_practised = models.TextField(blank=True, null=True, max_length=255)
     goals = models.TextField(blank=True, null=True, max_length=255)
@@ -164,14 +186,20 @@ def default_expiry():
 
 
 class StaffInvite(models.Model):
-    school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='invites')
+    school = models.ForeignKey(School, on_delete=models.CASCADE, related_name="invites")
     email = models.EmailField()
     role = models.CharField(max_length=30, choices=Role.CHOICES)
     token = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     used = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     expires_at = models.DateTimeField(default=default_expiry)
-    sent_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='sent_invites')
+    sent_by = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="sent_invites",
+    )
     withdrawn = models.BooleanField(default=False)
 
     def is_expired(self):
@@ -183,35 +211,45 @@ class StaffInvite(models.Model):
 
 class JoinRequest(models.Model):
     class Status(models.TextChoices):
-        PENDING = 'pending', 'Pending'
-        APPROVED = 'approved', 'Approved'
-        REJECTED = 'rejected', 'Rejected'
+        PENDING = "pending", "Pending"
+        APPROVED = "approved", "Approved"
+        REJECTED = "rejected", "Rejected"
 
     full_name = models.CharField(max_length=255)
     email = models.EmailField()
     school = models.ForeignKey(School, on_delete=models.CASCADE)
-    status = models.CharField(max_length=10, choices=Status.choices, default=Status.PENDING)
+    status = models.CharField(
+        max_length=10, choices=Status.choices, default=Status.PENDING
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     resolved_at = models.DateTimeField(null=True, blank=True)
-    resolved_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name='handled_join_requests')
+    resolved_by = models.ForeignKey(
+        User,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="handled_join_requests",
+    )
 
     def __str__(self):
         return f"{self.full_name} ({self.email}) → {self.school.name} [{self.status}]"
-    
+
 
 def generate_short_code(length=6):
     alphabet = string.ascii_uppercase + string.digits
-    return ''.join(random.choices(alphabet, k=length))
+    return "".join(random.choices(alphabet, k=length))
 
 
 class ParentAccessToken(models.Model):
     learner = models.OneToOneField(
-        'Learner', on_delete=models.CASCADE, related_name='parent_token'
+        "Learner", on_delete=models.CASCADE, related_name="parent_token"
     )
     token = models.CharField(max_length=6, unique=True, editable=False)
     created_at = models.DateTimeField(auto_now_add=True)
     used = models.BooleanField(default=False)
-    expires_at = models.DateTimeField(default=default_expiry)  # Optional time-based expiry
+    expires_at = models.DateTimeField(
+        default=default_expiry
+    )  # Optional time-based expiry
 
     def is_expired(self):
         return self.used or timezone.now() > self.expires_at
@@ -223,7 +261,9 @@ class ParentAccessToken(models.Model):
             if not ParentAccessToken.objects.filter(token=new_token).exists():
                 self.token = new_token
                 self.created_at = timezone.now()
-                self.expires_at = ParentAccessToken._meta.get_field('expires_at').get_default()
+                self.expires_at = ParentAccessToken._meta.get_field(
+                    "expires_at"
+                ).get_default()
                 self.used = False
                 self.save()
                 return
