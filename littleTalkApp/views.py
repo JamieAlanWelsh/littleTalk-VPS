@@ -1449,6 +1449,19 @@ def add_learner_via_pac(request):
                 messages.info(request, "You already have access to this learner.")
             else:
                 parent_profile.learners.add(learner)
+                # Link the learner's school to the parent profile's schools M2M
+                try:
+                    profile = request.user.profile
+                    if learner.school:
+                        profile.schools.add(learner.school)
+                        # Keep legacy FK in sync if it isn't set yet
+                        if not profile.school:
+                            profile.school = learner.school
+                            profile.save()
+                except Exception:
+                    # Don't block the primary flow if M2M linking fails
+                    pass
+
                 token.used = True
                 token.save()
                 messages.success(
