@@ -1213,15 +1213,26 @@ def school_dashboard(request):
             join_request.save()
             return redirect("school_dashboard")
 
-    # Only show profiles associated with this school that are staff-like roles.
-    # Parent accounts may be associated with a school when creating learners;
-    # exclude them from the staff dashboard so parents don't appear as staff.
-    staff_profiles = (
-        Profile.objects.filter(Q(school=school) | Q(schools=school))
+    # Prefer SchoolMembership-based staff listings. Fall back to legacy
+    # Profile.role for profiles that haven't been migrated yet.
+    # Show all roles except parent in staff list
+    staff_roles = [Role.ADMIN, Role.TEAM_MANAGER, Role.STAFF, Role.READ_ONLY]
+
+    profiles_from_membership = (
+        Profile.objects.filter(memberships__school=school, memberships__role__in=staff_roles)
+        .select_related("user")
+        .distinct()
+    )
+
+    legacy_profiles = (
+        Profile.objects.filter((Q(school=school) | Q(schools=school)), role__in=staff_roles)
+        .exclude(id__in=profiles_from_membership.values_list("id", flat=True))
         .exclude(role=Role.PARENT)
         .select_related("user")
         .distinct()
     )
+
+    staff_profiles = list(profiles_from_membership) + list(legacy_profiles)
     invites = StaffInvite.objects.filter(
         school=school, used=False, withdrawn=False
     ).order_by("-created_at")[:10]

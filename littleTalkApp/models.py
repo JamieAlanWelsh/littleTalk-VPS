@@ -120,6 +120,39 @@ class Profile(models.Model):
         # 4) Nothing available
         return None
 
+    def get_role_for_school(self, school):
+        """
+        Resolve a role for this profile for the given school.
+
+        Resolution order:
+         1. If a SchoolMembership exists for (profile, school) return its role.
+         2. Fall back to the legacy Profile.role value.
+        """
+        if not school:
+            return self.role
+
+        try:
+            membership = self.schoolmembership_set.filter(school=school).first()
+            if membership and membership.role:
+                return membership.role
+        except Exception:
+            # Defensive: if membership relation unavailable, fall back
+            pass
+
+        return self.role
+
+    def has_role_for_school(self, school, role):
+        return self.get_role_for_school(school) == role
+
+    def is_admin_for_school(self, school):
+        return self.has_role_for_school(school, Role.ADMIN)
+
+    def is_manager_for_school(self, school):
+        return self.has_role_for_school(school, Role.TEAM_MANAGER)
+
+    def is_staff_for_school(self, school):
+        return self.has_role_for_school(school, Role.STAFF)
+
 
 def default_trial_end():
     return timezone.now() + timedelta(days=7)
@@ -148,6 +181,35 @@ class ParentProfile(models.Model):
         if self.trial_ends_at and self.on_trial():
             return max((self.trial_ends_at - timezone.now()).days, 0)
         return 0
+
+
+class SchoolMembership(models.Model):
+    """Assign a role to a Profile for a specific School.
+
+    This allows users to have different roles per school (e.g. admin at one
+    school and staff at another) while keeping the legacy `Profile.role`
+    as a fallback during migration.
+    """
+    profile = models.ForeignKey(
+        Profile, on_delete=models.CASCADE, related_name="memberships"
+    )
+    school = models.ForeignKey(School, on_delete=models.CASCADE, related_name="memberships")
+    # Reuse the Role choices; include parent choice if not present to be safe.
+    ROLE_CHOICES = list(Role.CHOICES)
+    if (Role.PARENT, "Parent") not in ROLE_CHOICES:
+        ROLE_CHOICES.append((Role.PARENT, "Parent"))
+
+    role = models.CharField(max_length=30, choices=ROLE_CHOICES, default=Role.STAFF)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ("profile", "school")
+        indexes = [models.Index(fields=["school", "role"]), models.Index(fields=["profile"])]
+
+    def __str__(self):
+        return f"{self.profile.user.username} @ {self.school.name}: {self.role}"
 
 
 class LearnerAssessmentAnswer(models.Model):
