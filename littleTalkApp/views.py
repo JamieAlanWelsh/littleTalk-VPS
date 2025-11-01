@@ -107,6 +107,11 @@ def school_signup(request):
             profile = Profile.objects.create(
                 user=user, first_name=full_name, school=school
             )
+            # Ensure new M2M relation includes this school for the profile
+            try:
+                profile.schools.add(school)
+            except Exception:
+                pass
             profile.role = "admin"  # assumes you’ve added role field
             profile.save()
 
@@ -1091,13 +1096,18 @@ def accept_invite(request, token):
             user.first_name = full_name
             user.save()
 
-            Profile.objects.create(
+            profile = Profile.objects.create(
                 user=user,
                 email=email,
                 first_name=full_name,
                 school=invite.school,
                 role=invite.role,
             )
+            # ensure M2M mapping is created
+            try:
+                profile.schools.add(invite.school)
+            except Exception:
+                pass
 
             invite.used = True
             invite.save()
@@ -1382,9 +1392,15 @@ def parent_signup_view(request):
                 first_name=form.cleaned_data["first_name"],
                 email=email,
                 role="parent",
-                # school=school,
                 opted_in=form.cleaned_data.get("agree_updates", False),
             )
+            # If the parent signs up with a learner access token and that learner
+            # is attached to a school, link that school to the parent profile.
+            if learner and learner.school_id:
+                try:
+                    profile.schools.add(learner.school)
+                except Exception:
+                    pass
 
             parent_profile = ParentProfile.objects.create(
                 profile=profile, is_standalone=(token is None)
