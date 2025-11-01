@@ -8,7 +8,13 @@ admin.site.unregister(Group)
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ("user", "first_name", "school", "role")
+    list_display = ("user", "first_name", "school", "schools_list", "role")
+    filter_horizontal = ("schools",)
+
+    def schools_list(self, obj):
+        return ", ".join([s.name for s in obj.schools.all()])
+
+    schools_list.short_description = "Schools"
 
 
 @admin.register(School)
