@@ -51,7 +51,12 @@ class Profile(models.Model):
     opted_in = models.BooleanField(default=False)
     school = models.ForeignKey(
         School, on_delete=models.SET_NULL, null=True, blank=True, related_name="users"
-    )  # remove for many-to-many relations
+    )
+    # Support multiple schools per user. Keep the legacy `school` FK for
+    # backward-compatibility and a smooth migration path. New code should
+    # prefer `get_current_school()` which will choose a session-selected
+    # school, then the legacy FK, then the first school on the M2M.
+    schools = models.ManyToManyField(School, blank=True, related_name="profiles")
     role = models.CharField(max_length=20, choices=Role.CHOICES, default=Role.PARENT)
 
     def __str__(self):
@@ -71,6 +76,49 @@ class Profile(models.Model):
 
     def is_parent(self):
         return self.role == Role.PARENT
+
+    def get_current_school(self, request=None):
+        """
+        Return the active/selected school for this profile.
+
+        Preference order:
+         1. If a request is provided and `request.session['selected_school_id']`
+            refers to a school that this profile is associated with, return it.
+         2. The legacy `school` FK (keeps existing behaviour until we've migrated).
+         3. The first school in the `schools` ManyToMany relation, if any.
+         4. None
+
+        This helper allows minimal changes to call sites: replace
+        `request.user.profile.school` with `request.user.profile.get_current_school(request)`
+        when supporting multiple schools is required.
+        """
+        # 1) Session-selected school
+        if request is not None:
+            try:
+                selected_id = request.session.get("selected_school_id")
+                if selected_id:
+                    try:
+                        # Prefer schools on the M2M relation
+                        school = self.schools.filter(id=selected_id).first()
+                        if school:
+                            return school
+                    except Exception:
+                        pass
+            except Exception:
+                # Defensive: don't break if session is unavailable
+                pass
+
+        # 2) Legacy FK
+        if self.school:
+            return self.school
+
+        # 3) First M2M school, if any
+        first = self.schools.first()
+        if first:
+            return first
+
+        # 4) Nothing available
+        return None
 
 
 def default_trial_end():
