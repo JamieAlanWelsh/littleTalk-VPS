@@ -1213,8 +1213,12 @@ def school_dashboard(request):
             join_request.save()
             return redirect("school_dashboard")
 
+    # Only show profiles associated with this school that are staff-like roles.
+    # Parent accounts may be associated with a school when creating learners;
+    # exclude them from the staff dashboard so parents don't appear as staff.
     staff_profiles = (
         Profile.objects.filter(Q(school=school) | Q(schools=school))
+        .exclude(role=Role.PARENT)
         .select_related("user")
         .distinct()
     )
