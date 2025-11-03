@@ -44,16 +44,19 @@ class AccessControlMiddleware(MiddlewareMixin):
             if parent_profile and not parent_profile.has_access():
                 return redirect("subscribe")
 
-        # --- School Staff Logic ---
-        if profile.role in ["admin", "manager", "staff"]:
-            # Use profile helper to support multiple schools per user
-            school = (
-                profile.get_current_school(request)
-                if hasattr(profile, "get_current_school")
-                else profile.school
-            )
-            if school and not school.has_valid_license():
-                return redirect("license_expired")
+        # --- School Staff Logic (per-school roles) ---
+        # Determine selected/current school then check the role for that school.
+        school = (
+            profile.get_current_school(request)
+            if hasattr(profile, "get_current_school")
+            else profile.school
+        )
+        if school:
+            role_for = profile.get_role_for_school(school)
+            # Check staff-like roles for this school (include legacy 'manager')
+            if role_for in ["admin", "team_manager", "staff", "manager"]:
+                if not school.has_valid_license():
+                    return redirect("license_expired")
 
         return None
 

@@ -128,17 +128,17 @@ class Profile(models.Model):
          1. If a SchoolMembership exists for (profile, school) return its role.
          2. Fall back to the legacy Profile.role value.
         """
-        if not school:
+        if not school or self.is_parent():
             return self.role
 
         try:
-            membership = self.schoolmembership_set.filter(school=school).first()
+            membership = self.memberships.filter(school=school).first()
             if membership and membership.role:
                 return membership.role
         except Exception:
             # Defensive: if membership relation unavailable, fall back
             pass
-
+        print('falling back to profile role:', self.role)
         return self.role
 
     def has_role_for_school(self, school, role):

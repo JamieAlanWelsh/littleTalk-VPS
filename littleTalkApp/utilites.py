@@ -16,10 +16,16 @@ def can_edit_or_delete_log(user, log_entry):
     try:
         user_schools = set(user.profile.schools.all())
         entry_schools = set(log_entry.user.profile.schools.all())
-        if user_schools & entry_schools and (
-            user.profile.is_admin() or user.profile.is_manager()
-        ):
-            return True
+        overlap = user_schools & entry_schools
+        if overlap:
+            # If the acting user is admin/manager for any overlapping school, allow
+            for school in overlap:
+                try:
+                    role_for = user.profile.get_role_for_school(school)
+                    if role_for in ["admin", "team_manager"]:
+                        return True
+                except Exception:
+                    continue
     except Exception:
         # Ignore if relation isn't available for any reason
         pass
@@ -30,9 +36,10 @@ def can_edit_or_delete_log(user, log_entry):
             user.profile.school is not None
             and log_entry.user.profile.school is not None
             and user.profile.school == log_entry.user.profile.school
-            and (user.profile.is_admin() or user.profile.is_manager())
         ):
-            return True
+            role_for = user.profile.get_role_for_school(user.profile.school)
+            if role_for in ["admin", "team_manager"]:
+                return True
     except Exception:
         pass
 

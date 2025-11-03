@@ -48,6 +48,7 @@ from .models import (
     Cohort,
     School,
     StaffInvite,
+    SchoolMembership,
     Role,
     JoinRequest,
     ParentAccessToken,
@@ -104,16 +105,20 @@ def school_signup(request):
             school = School.objects.create(name=school_name, created_by=user)
 
             # Link profile
-            profile = Profile.objects.create(
-                user=user, first_name=full_name, school=school
-            )
+            profile = Profile.objects.create(user=user, first_name=full_name, school=school)
             # Ensure new M2M relation includes this school for the profile
             try:
                 profile.schools.add(school)
             except Exception:
                 pass
-            profile.role = "admin"  # assumes you’ve added role field
+            # Keep legacy role as a fallback but create a SchoolMembership for the
+            # selected school so the user is admin for that school.
+            profile.role = Role.ADMIN
             profile.save()
+            try:
+                SchoolMembership.objects.create(profile=profile, school=school, role=Role.ADMIN, is_active=True)
+            except Exception:
+                pass
 
             # Send welcome email
             send_school_welcome_email(school, user)
@@ -351,8 +356,8 @@ def logbook(request):
     learners = Learner.objects.filter(school=school, deleted=False)
     cohorts = Cohort.objects.filter(school=school)
 
-    # Filter logs based on role
-    if user.profile.is_admin() or user.profile.is_manager():
+    # Filter logs based on role (per-school)
+    if user.profile.is_admin_for_school(school) or user.profile.is_manager_for_school(school):
         log_entries = LogEntry.objects.filter(
             user__profile__school=school, deleted=False
         )
@@ -398,7 +403,21 @@ def new_log_entry(request):
         if form.is_valid():
             log_entry = form.save(commit=False)
             log_entry.user = request.user  # Assign the logged-in user
-            log_entry.created_by_role = request.user.profile.role
+            # Determine role in context of the learner's school (if present),
+            # otherwise use the profile's currently selected school.
+            try:
+                profile = request.user.profile
+                role_for = None
+                if getattr(log_entry, "learner", None) and getattr(log_entry.learner, "school", None):
+                    role_for = profile.get_role_for_school(log_entry.learner.school)
+                else:
+                    school_ctx = profile.get_current_school(request) if hasattr(profile, "get_current_school") else profile.school
+                    role_for = profile.get_role_for_school(school_ctx)
+                log_entry.created_by_role = role_for
+            except Exception:
+                # Fall back to legacy value
+                log_entry.created_by_role = request.user.profile.role
+
             log_entry.save()
             return redirect("logbook")  # Redirect to logbook page after saving
     else:
@@ -462,8 +481,8 @@ def generate_summary(request, learner_uuid):
     school = request.user.profile.get_current_school(request)
     learner = get_object_or_404(Learner, learner_uuid=learner_uuid, school=school)
 
-    # Allow broader access if the user is admin or manager
-    if request.user.profile.is_admin() or request.user.profile.is_manager():
+    # Allow broader access if the user is admin or manager for this school
+    if request.user.profile.is_admin_for_school(school) or request.user.profile.is_manager_for_school(school):
         log_entries = LogEntry.objects.filter(learner=learner, deleted=False).order_by(
             "timestamp"
         )
@@ -694,11 +713,16 @@ def edit_learner(request, learner_uuid):
     else:
         form = LearnerForm(instance=learner, user=request.user)
 
-    can_delete = (
-        request.user.profile.is_admin()
-        or request.user.profile.is_manager()
-        or request.user.profile.is_parent()
-    )
+    # Determine delete permission in context of learner's school when applicable
+    if learner.school_id:
+        role_for = request.user.profile.get_role_for_school(learner.school)
+        can_delete = role_for in [Role.ADMIN, Role.TEAM_MANAGER] or request.user.profile.is_parent()
+    else:
+        can_delete = (
+            request.user.profile.is_admin()
+            or request.user.profile.is_manager()
+            or request.user.profile.is_parent()
+        )
 
     context = {
         "form": form,
@@ -718,11 +742,24 @@ def confirm_delete_learner(request, learner_uuid):
         return redirect("profile")
 
     # Restrict delete permissions
-    if not (
-        request.user.profile.is_admin()
-        or request.user.profile.is_manager()
-        or (request.user.profile.is_parent() and learner.user_id == request.user.id)
-    ):
+    # Determine permission to delete the learner. If the learner is attached to a school,
+    # check per-school roles for that specific school. Otherwise fall back to legacy checks.
+    allowed = False
+    if learner.school_id:
+        role_for = request.user.profile.get_role_for_school(learner.school)
+        if role_for in [Role.ADMIN, Role.TEAM_MANAGER] or (
+            request.user.profile.is_parent() and learner.user_id == request.user.id
+        ):
+            allowed = True
+    else:
+        if (
+            request.user.profile.is_admin()
+            or request.user.profile.is_manager()
+            or (request.user.profile.is_parent() and learner.user_id == request.user.id)
+        ):
+            allowed = True
+
+    if not allowed:
         messages.error(request, "You do not have permission to delete this learner.")
         return redirect("profile")
 
@@ -758,26 +795,34 @@ def confirm_delete_learner(request, learner_uuid):
 
 @login_required
 def cohort_list(request):
-    if not request.user.profile.is_admin() and not request.user.profile.is_manager():
+    school = request.user.profile.get_current_school(request)
+    # Only allow admins/managers for the current school
+    if not (
+        request.user.profile.is_admin_for_school(school)
+        or request.user.profile.is_manager_for_school(school)
+    ):
         # messages.error(request, "You don't have permission to create cohorts.")
         return redirect("profile")
 
-    school = request.user.profile.get_current_school(request)
     cohorts = Cohort.objects.filter(school=school).order_by("name")
     return render(
         request,
         "cohorts/cohort_list.html",
         {
             "cohorts": cohorts,
-            "can_edit_cohorts": request.user.profile.is_admin()
-            or request.user.profile.is_manager(),
+            "can_edit_cohorts": request.user.profile.is_admin_for_school(school)
+            or request.user.profile.is_manager_for_school(school),
         },
     )
 
 
 @login_required
 def cohort_create(request):
-    if not request.user.profile.is_admin() and not request.user.profile.is_manager():
+    school = request.user.profile.get_current_school(request)
+    if not (
+        request.user.profile.is_admin_for_school(school)
+        or request.user.profile.is_manager_for_school(school)
+    ):
         # messages.error(request, "You don't have permission to create cohorts.")
         return redirect("profile")
 
@@ -785,7 +830,7 @@ def cohort_create(request):
         form = CohortForm(request.POST)
         if form.is_valid():
             cohort = form.save(commit=False)
-            cohort.school = request.user.profile.get_current_school(request)
+            cohort.school = school
             cohort.save()
             return redirect("cohort_list")
     else:
@@ -798,13 +843,15 @@ def cohort_create(request):
 
 @login_required
 def cohort_edit(request, cohort_id):
-    if not request.user.profile.is_admin() and not request.user.profile.is_manager():
+    school = request.user.profile.get_current_school(request)
+    if not (
+        request.user.profile.is_admin_for_school(school)
+        or request.user.profile.is_manager_for_school(school)
+    ):
         # messages.error(request, "You don't have permission to edit cohorts.")
         return redirect("cohort_list")
 
-    cohort = get_object_or_404(
-        Cohort, id=cohort_id, school=request.user.profile.get_current_school(request)
-    )
+    cohort = get_object_or_404(Cohort, id=cohort_id, school=school)
 
     if request.method == "POST":
         form = CohortForm(request.POST, instance=cohort)
@@ -821,13 +868,15 @@ def cohort_edit(request, cohort_id):
 
 @login_required
 def cohort_delete(request, cohort_id):
-    if not request.user.profile.is_admin() and not request.user.profile.is_manager():
+    school = request.user.profile.get_current_school(request)
+    if not (
+        request.user.profile.is_admin_for_school(school)
+        or request.user.profile.is_manager_for_school(school)
+    ):
         # messages.error(request, "You don't have permission to delete cohorts.")
         return redirect("cohort_list")
 
-    cohort = get_object_or_404(
-        Cohort, id=cohort_id, school=request.user.profile.get_current_school(request)
-    )
+    cohort = get_object_or_404(Cohort, id=cohort_id, school=school)
 
     if request.method == "POST":
         password = request.POST.get("password")
@@ -924,12 +973,14 @@ def change_password(request):
 def invite_staff(request):
     profile = request.user.profile
 
-    # Only admins and managers can access
-    if not profile.is_admin() and not profile.is_manager():
-        return redirect("school_dashboard")
-
     # Use profile helper to support multiple schools per user
     school = profile.get_current_school(request)
+
+    # Only admins and managers for this school can access
+    if not (
+        profile.is_admin_for_school(school) or profile.is_manager_for_school(school)
+    ):
+        return redirect("school_dashboard")
 
     if request.method == "POST":
         form = StaffInviteForm(request.POST, school=school, user=request.user)
@@ -1097,15 +1148,18 @@ def accept_invite(request, token):
             user.save()
 
             profile = Profile.objects.create(
-                user=user,
-                email=email,
-                first_name=full_name,
-                school=invite.school,
-                role=invite.role,
+                user=user, email=email, first_name=full_name, school=invite.school
             )
-            # ensure M2M mapping is created
+            # ensure M2M mapping is created and create a SchoolMembership
             try:
                 profile.schools.add(invite.school)
+            except Exception:
+                pass
+            # keep legacy role for fallback but ensure membership exists
+            profile.role = invite.role
+            profile.save()
+            try:
+                SchoolMembership.objects.create(profile=profile, school=invite.school, role=invite.role, is_active=True)
             except Exception:
                 pass
 
@@ -1145,13 +1199,23 @@ def school_dashboard(request):
 
             if target_profile.user == request.user:
                 messages.error(request, "You cannot change your own role.")
-            # elif target_profile.role == Role.ADMIN:
-            #     messages.error(request, "You cannot change another admin’s role.")
-            elif profile.is_manager() and new_role == Role.ADMIN:
+            # Use per-school role checks for the acting user
+            if profile.is_manager_for_school(school) and new_role == Role.ADMIN:
                 messages.error(request, "Only admins can assign the admin role.")
             elif new_role in dict(Role.CHOICES).keys():
-                target_profile.role = new_role
-                target_profile.save()
+                # Update or create a SchoolMembership for the target profile
+                try:
+                    membership = target_profile.memberships.filter(school=school).first()
+                    if membership:
+                        membership.role = new_role
+                        membership.save()
+                    else:
+                        target_profile.schools.add(school)
+                        SchoolMembership.objects.create(profile=target_profile, school=school, role=new_role, is_active=True)
+                except Exception:
+                    # fallback: update legacy role
+                    target_profile.role = new_role
+                    target_profile.save()
                 messages.success(request, f"{target_profile.first_name}'s role updated")
             else:
                 messages.error(request, "Invalid role selected.")
@@ -1216,19 +1280,29 @@ def school_dashboard(request):
     # Only show profiles associated with this school that are staff-like roles.
     # Parent accounts may be associated with a school when creating learners;
     # exclude them from the staff dashboard so parents don't appear as staff.
-    staff_profiles = (
+    # Collect profiles associated with this school and filter out those who
+    # are parents for THIS school (membership takes precedence).
+    raw_profiles = (
         Profile.objects.filter(Q(school=school) | Q(schools=school))
-        .exclude(role=Role.PARENT)
         .select_related("user")
         .distinct()
     )
+    # Build a list of dicts so templates can access the per-school role
+    staff_profiles = []
+    for p in raw_profiles:
+        try:
+            role_for = p.get_role_for_school(school)
+        except Exception:
+            role_for = p.role
+        if role_for != Role.PARENT:
+            staff_profiles.append({"profile": p, "role": role_for})
 
     invites = StaffInvite.objects.filter(
         school=school, used=False, withdrawn=False
     ).order_by("-created_at")[:10]
 
-    # Only admins and managers can see join requests
-    can_invite_staff = profile.is_admin() or profile.is_manager()
+    # Only admins and managers for this school can see join requests
+    can_invite_staff = profile.is_admin_for_school(school) or profile.is_manager_for_school(school)
     join_requests = []
     if can_invite_staff:
         join_requests = JoinRequest.objects.filter(
@@ -1242,8 +1316,10 @@ def school_dashboard(request):
             "staff_profiles": staff_profiles,
             "invites": invites,
             "school_name": school.name,
+            "school": school,
             "role_choices": Role.CHOICES,
             "can_invite_staff": can_invite_staff,
+            "current_user_is_admin_or_manager": can_invite_staff,
             "join_requests": join_requests,
         },
     )
@@ -1268,10 +1344,12 @@ def request_join_school(request):
 
 @login_required
 def invite_audit_trail(request):
-    if not request.user.profile.is_admin() and not request.user.profile.is_manager():
+    school = request.user.profile.get_current_school(request)
+    if not (
+        request.user.profile.is_admin_for_school(school) or request.user.profile.is_manager_for_school(school)
+    ):
         return redirect("school_dashboard")
 
-    school = request.user.profile.get_current_school(request)
 
     invites = (
         StaffInvite.objects.filter(school=school)
