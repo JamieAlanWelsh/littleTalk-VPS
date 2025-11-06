@@ -656,7 +656,7 @@ def profile(request):
 
 @login_required
 def add_learner(request):
-    # if request.user.profile.role == 'parent':
+    # if request.user.profile.role == Role.PARENT:
     #     if request.user.profile.parent_profile.learners.count() < 2:
     #         return redirect('profile')
     if request.method == "POST":
@@ -1516,7 +1516,7 @@ def parent_signup_view(request):
 @login_required
 def add_learner_via_pac(request):
     # Ensure only parent users can access
-    if not hasattr(request.user, "profile") or request.user.profile.role != "parent":
+    if not hasattr(request.user, "profile") or request.user.profile.role != Role.PARENT:
         messages.error(request, "Only parent accounts can add learners via PAC.")
         return redirect("add_learner")
 

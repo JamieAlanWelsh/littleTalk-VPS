@@ -220,7 +220,7 @@ class LogEntryForm(forms.ModelForm):
 
         if user and hasattr(user, "profile"):
             profile = user.profile
-            if profile.role == "parent":
+            if profile.role == Role.PARENT:
                 # Show only learners connected to this parent
                 self.fields["learner"].queryset = (
                     profile.parent_profile.learners.filter(deleted=False)

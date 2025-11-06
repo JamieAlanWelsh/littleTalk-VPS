@@ -2,6 +2,7 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.deprecation import MiddlewareMixin
 from django.http import HttpResponseForbidden
+from .models import Role
 
 
 class AccessControlMiddleware(MiddlewareMixin):
@@ -39,7 +40,7 @@ class AccessControlMiddleware(MiddlewareMixin):
             return None
 
         # --- Parent User Logic ---
-        if profile.role == "parent":
+        if profile.role == Role.PARENT:
             parent_profile = getattr(profile, "parent_profile", None)
             if parent_profile and not parent_profile.has_access():
                 return redirect("subscribe")
@@ -54,7 +55,7 @@ class AccessControlMiddleware(MiddlewareMixin):
         if school:
             role_for = profile.get_role_for_school(school)
             # Check staff-like roles for this school (include legacy 'manager')
-            if role_for in ["admin", "team_manager", "staff", "manager"]:
+            if role_for in [Role.ADMIN, Role.TEAM_MANAGER, Role.STAFF, "manager"]:
                 if not school.has_valid_license():
                     return redirect("license_expired")
 
@@ -79,7 +80,7 @@ class RoleSchoolBlockMiddleware:
             if profile:
                 # If this user is staff (non-parent) and has no associated school
                 # (neither legacy FK nor any M2M schools), block access.
-                if profile.role != "parent" and not (
+                if profile.role != Role.PARENT and not (
                     profile.school or profile.schools.exists()
                 ):
                     # 1) show forbidden

@@ -2,6 +2,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.conf import settings
 from email.utils import formataddr
+from .models import Role
 
 # permissions
 
@@ -22,7 +23,7 @@ def can_edit_or_delete_log(user, log_entry):
             for school in overlap:
                 try:
                     role_for = user.profile.get_role_for_school(school)
-                    if role_for in ["admin", "team_manager"]:
+                    if role_for in [Role.ADMIN, Role.TEAM_MANAGER]:
                         return True
                 except Exception:
                     continue
@@ -38,7 +39,7 @@ def can_edit_or_delete_log(user, log_entry):
             and user.profile.school == log_entry.user.profile.school
         ):
             role_for = user.profile.get_role_for_school(user.profile.school)
-            if role_for in ["admin", "team_manager"]:
+            if role_for in [Role.ADMIN, Role.TEAM_MANAGER]:
                 return True
     except Exception:
         pass
