@@ -84,8 +84,8 @@ class Profile(models.Model):
         Preference order:
          1. If a request is provided and `request.session['selected_school_id']`
             refers to a school that this profile is associated with, return it.
-         2. The legacy `school` FK (keeps existing behaviour until we've migrated).
-         3. The first school in the `schools` ManyToMany relation, if any.
+         2. The first school in the `schools` ManyToMany relation, if any.
+         3. The legacy `school` FK (keeps existing behaviour until we've migrated).
          4. None
 
         This helper allows minimal changes to call sites: replace
@@ -101,21 +101,24 @@ class Profile(models.Model):
                         # Prefer schools on the M2M relation
                         school = self.schools.filter(id=selected_id).first()
                         if school:
+                            print('found school from session:', school)
                             return school
                     except Exception:
                         pass
             except Exception:
                 # Defensive: don't break if session is unavailable
                 pass
-
-        # 2) Legacy FK
-        if self.school:
-            return self.school
-
-        # 3) First M2M school, if any
+        
+        # 2) First M2M school, if any
         first = self.schools.first()
         if first:
+            print('falling back to first M2M school:', first)
             return first
+
+        # 3) Legacy FK
+        if self.school:
+            print('fallging back to school from legacy FK:', self.school)
+            return self.school
 
         # 4) Nothing available
         return None
@@ -134,6 +137,7 @@ class Profile(models.Model):
         try:
             membership = self.memberships.filter(school=school).first()
             if membership and membership.role:
+                print('found role from membership:', membership.role)
                 return membership.role
         except Exception:
             # Defensive: if membership relation unavailable, fall back
