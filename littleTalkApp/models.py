@@ -156,6 +156,26 @@ class Profile(models.Model):
 
     def is_staff_for_school(self, school):
         return self.has_role_for_school(school, Role.STAFF)
+    
+    def has_multiple_schools(self):
+        """Return True if this profile has access to multiple schools."""
+        return self.schools.count() > 1
+
+    def select_school(self, school_id, request=None):
+        """
+        Set the selected school in session if this profile has access to it.
+        Returns True if selection was successful, False otherwise.
+        """
+        if not request:
+            return False
+        
+        # Verify the school exists and this profile has access
+        school = self.schools.filter(id=school_id).first()
+        if not school:
+            return False
+            
+        request.session['selected_school_id'] = school_id
+        return True
 
 
 def default_trial_end():

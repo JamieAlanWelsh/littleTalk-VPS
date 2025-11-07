@@ -1628,6 +1628,41 @@ def subscribe_success(request):
 
 
 @login_required
+def select_school(request):
+    """Handle school selection for users with access to multiple schools."""
+    profile = request.user.profile
+    
+    # Parents don't select schools - they are linked via learners
+    if profile.is_parent():
+        return redirect('profile')
+        
+    # Single-school users don't need to select
+    if not profile.has_multiple_schools():
+        # Auto-select their only school if they have one
+        school = profile.schools.first()
+        if school:
+            request.session['selected_school_id'] = school.id
+        return redirect('profile')
+    
+    # Handle selection
+    if request.method == 'POST':
+        school_id = request.POST.get('school_id')
+        next_url = request.POST.get('next', 'profile')
+        
+        if school_id and school_id.isdigit():
+            if profile.select_school(int(school_id), request):
+                return redirect(next_url)
+        messages.error(request, 'Please select a valid school.')
+    
+    # Show selection form
+    schools = profile.schools.all()
+    return render(request, 'school/select_school.html', {
+        'schools': schools,
+        'next_url': request.GET.get('next'),
+    })
+
+
+@login_required
 def manage_subscription(request):
     user = request.user
     profile = user.profile

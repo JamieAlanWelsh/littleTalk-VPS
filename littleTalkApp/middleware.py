@@ -1,5 +1,5 @@
 from django.shortcuts import redirect
-from django.urls import reverse
+from django.urls import reverse, resolve
 from django.utils.deprecation import MiddlewareMixin
 from django.http import HttpResponseForbidden
 from .models import Role
@@ -60,6 +60,62 @@ class AccessControlMiddleware(MiddlewareMixin):
                     return redirect("license_expired")
 
         return None
+
+
+class SchoolSelectionMiddleware:
+    """
+    Ensure users with multiple schools have selected one.
+    Redirects to school selection if needed.
+    """
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        # Process request
+        if self._should_redirect_to_school_selection(request):
+            return redirect('select_school')
+            
+        response = self.get_response(request)
+        return response
+        
+    def _should_redirect_to_school_selection(self, request):
+        # Skip if not authenticated
+        if not request.user.is_authenticated:
+            return False
+            
+        # Get current URL name
+        try:
+            url_name = resolve(request.path_info).url_name
+        except Exception:
+            url_name = ''
+            
+        # Skip middleware for these paths
+        skip_urls = {
+            'select_school',
+            'logout',
+            'static',
+            'media',
+        }
+        if url_name in skip_urls:
+            return False
+            
+        # Skip for parent users
+        if hasattr(request.user, 'profile') and request.user.profile.is_parent():
+            return False
+            
+        # Check if user needs to select a school
+        profile = getattr(request.user, 'profile', None)
+        if profile and profile.has_multiple_schools():
+            # Needs selection if no school is selected in session
+            selected_id = request.session.get('selected_school_id')
+            if not selected_id:
+                return True
+                
+            # Or if selected school isn't valid for this user
+            if not profile.schools.filter(id=selected_id).exists():
+                return True
+                
+        return False
 
 
 class RoleSchoolBlockMiddleware:
