@@ -1639,6 +1639,7 @@ def subscribe_success(request):
 @login_required
 def select_school(request):
     """Handle school selection for users with access to multiple schools."""
+    request.hide_sidebar = True
     profile = request.user.profile
     
     # Parents don't select schools - they are linked via learners
