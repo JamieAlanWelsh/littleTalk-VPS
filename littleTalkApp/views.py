@@ -405,7 +405,7 @@ def new_log_entry(request):
     selected_learner_id = request.session.get("selected_learner_id")
 
     if request.method == "POST":
-        form = LogEntryForm(request.POST, user=request.user)
+        form = LogEntryForm(request.POST, user=request.user, request=request)
         if form.is_valid():
             log_entry = form.save(commit=False)
             log_entry.user = request.user  # Assign the logged-in user
@@ -435,7 +435,7 @@ def new_log_entry(request):
         initial = {}
         if selected_learner_id:
             initial["learner"] = selected_learner_id  # pre-fill selected learner
-        form = LogEntryForm(user=request.user, initial=initial)
+        form = LogEntryForm(user=request.user, request=request, initial=initial)
 
     return render(request, "logbook/new_log_entry.html", {"form": form})
 
@@ -458,12 +458,12 @@ def edit_log_entry(request, entry_id):
         return redirect("logbook")
 
     if request.method == "POST":
-        form = LogEntryForm(request.POST, instance=log_entry, user=request.user)
+        form = LogEntryForm(request.POST, instance=log_entry, user=request.user, request=request)
         if form.is_valid():
             form.save()
             return redirect("log_entry_detail", entry_id=log_entry.id)
     else:
-        form = LogEntryForm(instance=log_entry, user=request.user)
+        form = LogEntryForm(instance=log_entry, user=request.user, request=request)
 
     return render(
         request,
