@@ -15,15 +15,14 @@
             <input type="hidden" name="next" value="{{ next_url }}">
         {% endif %}
 
-        {% for school in schools %}
-            <div>
-                {% comment %} <label class="label" for="school_{{ school.id }}">{{ school.name }}</label> {% endcomment %}
-                <div>
+        <div class="choice-list" role="radiogroup" aria-labelledby="school-choice-heading">
+            {% for school in schools %}
+                <label class="choice-item" for="school_{{ school.id }}">
                     <input type="radio" name="school_id" id="school_{{ school.id }}" value="{{ school.id }}" {% if forloop.first %}checked{% endif %}>
-                    <span>{{ school.name }}</span>
-                </div>
-            </div>
-        {% endfor %}
+                    <span class="choice-item__title">{{ school.name }}</span>
+                </label>
+            {% endfor %}
+        </div>
 
         <button type="submit" class="btn btn--yellow btn--full">Continue</button>
     </form>

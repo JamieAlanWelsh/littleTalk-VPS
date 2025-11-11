@@ -1294,7 +1294,7 @@ def school_dashboard(request):
     # Collect profiles associated with this school and filter out those who
     # are parents for THIS school (membership takes precedence).
     raw_profiles = (
-        Profile.objects.filter(Q(school=school) | Q(schools=school))
+        Profile.objects.filter(Q(schools=school))
         .select_related("user")
         .distinct()
     )
@@ -1304,7 +1304,7 @@ def school_dashboard(request):
         try:
             role_for = p.get_role_for_school(school)
         except Exception:
-            role_for = p.role
+            role_for = p.role  # fallback to legacy role
         if role_for != Role.PARENT:
             staff_profiles.append({"profile": p, "role": role_for})
 
