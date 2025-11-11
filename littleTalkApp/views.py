@@ -405,16 +405,25 @@ def new_log_entry(request):
         if form.is_valid():
             log_entry = form.save(commit=False)
             log_entry.user = request.user  # Assign the logged-in user
-            # Determine role in context of the learner's school (if present),
-            # otherwise use the profile's currently selected school.
+            
+            # Set school and role based on context
             try:
                 profile = request.user.profile
-                role_for = None
-                if getattr(log_entry, "learner", None) and getattr(log_entry.learner, "school", None):
-                    role_for = profile.get_role_for_school(log_entry.learner.school)
-                else:
-                    school_ctx = profile.get_current_school(request) if hasattr(profile, "get_current_school") else profile.school
+                
+                # If entry has a learner, use learner's school
+                #if getattr(log_entry, "learner", None) and getattr(log_entry.learner, "school", None):
+                #    log_entry.school = log_entry.learner.school
+                #    role_for = profile.get_role_for_school(log_entry.learner.school)
+                # For non-parent users without learner, use session-selected school
+                if not profile.is_parent():
+                    school_ctx = profile.get_current_school(request) if hasattr(profile, "get_current_school") else None
+                    log_entry.school = school_ctx
                     role_for = profile.get_role_for_school(school_ctx)
+                # For parent users without learner, leave school as null
+                else:
+                    log_entry.school = None
+                    role_for = Role.PARENT
+                    
                 log_entry.created_by_role = role_for
             except Exception:
                 # Fall back to legacy value

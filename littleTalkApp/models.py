@@ -303,6 +303,13 @@ class LogEntry(models.Model):
         null=True,
         blank=True,
     )
+    school = models.ForeignKey(
+        'School',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="log_entries"
+    )
     title = models.CharField(max_length=70)
     exercises_practised = models.TextField(blank=True, null=True, max_length=255)
     goals = models.TextField(blank=True, null=True, max_length=255)
