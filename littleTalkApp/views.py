@@ -352,17 +352,22 @@ def logbook(request):
     user = request.user
     # Use profile helper to support multiple schools per user.
     school = user.profile.get_current_school(request) # if user is a parent this will return None
-    learners = Learner.objects.filter(school=school, deleted=False)
-    cohorts = Cohort.objects.filter(school=school)
-    print("Logbook view: current school is", school)
+    if school:
+        learners = Learner.objects.filter(school=school, deleted=False)
+        cohorts = Cohort.objects.filter(school=school)
 
-    # Admins/managers should see log entries for the whole school.
-    # Other roles should see their own log entries
-    if user.profile.is_admin_for_school(school) or user.profile.is_manager_for_school(school):
-        # Strict behaviour: staff see only entries that are linked to learners that belong to this school.
-        log_entries = LogEntry.objects.filter(school=school, deleted=False)
+        # Admins/managers should see log entries for the whole school.
+        # Other roles should see their own log entries
+        if user.profile.is_admin_for_school(school) or user.profile.is_manager_for_school(school):
+            # Strict behaviour: staff see only entries that are linked to learners that belong to this school.
+            log_entries = LogEntry.objects.filter(school=school, deleted=False)
+        else:
+            # Non-admin users see only their own entries
+            log_entries = LogEntry.objects.filter(school=school, user=user, deleted=False)
     else:
-        # Non-staff users see only their own entries
+        learners = None
+        cohorts = None
+        # Parent users see only their own entries
         log_entries = LogEntry.objects.filter(user=user, deleted=False)
 
     selected_learner = None
@@ -409,10 +414,6 @@ def new_log_entry(request):
             try:
                 profile = request.user.profile
                 
-                # If entry has a learner, use learner's school
-                #if getattr(log_entry, "learner", None) and getattr(log_entry.learner, "school", None):
-                #    log_entry.school = log_entry.learner.school
-                #    role_for = profile.get_role_for_school(log_entry.learner.school)
                 # For non-parent users without learner, use session-selected school
                 if not profile.is_parent():
                     school_ctx = profile.get_current_school(request) if hasattr(profile, "get_current_school") else None
