@@ -1202,16 +1202,18 @@ def school_dashboard(request):
             user_id = request.POST.get("user_id")
             new_role = request.POST.get("new_role")
 
-            target_profile = get_object_or_404(
-                Profile.objects.filter(
-                    Q(user__id=user_id) & (Q(school=school) | Q(schools=school))
-                )
-            )
+            # Get the profile by user ID, then verify they're associated with this school
+            target_profile = get_object_or_404(Profile, user__id=user_id)
+            
+            # Verify the target profile is associated with this school
+            if not (target_profile.schools.filter(id=school.id).exists()):
+                messages.error(request, "This user is not associated with this school. Please notify support")
+                return redirect("school_dashboard")
 
             if target_profile.user == request.user:
                 messages.error(request, "You cannot change your own role.")
             # Use per-school role checks for the acting user
-            if profile.is_manager_for_school(school) and new_role == Role.ADMIN:
+            elif profile.is_manager_for_school(school) and new_role == Role.ADMIN:
                 messages.error(request, "Only admins can assign the admin role.")
             elif new_role in dict(Role.CHOICES).keys():
                 # Update or create a SchoolMembership for the target profile

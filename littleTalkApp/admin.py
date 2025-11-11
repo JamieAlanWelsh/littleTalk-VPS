@@ -1,26 +1,67 @@
 from django.contrib import admin
 from django.contrib.auth.models import Group
-from .models import Profile, School, ParentProfile, Learner, JoinRequest
+from .models import Profile, School, ParentProfile, Learner, JoinRequest, SchoolMembership
 
 # unregister groups
 admin.site.unregister(Group)
 
 
+class SchoolMembershipInline(admin.TabularInline):
+    """Inline editor for school memberships with roles"""
+    model = SchoolMembership
+    extra = 1
+    fields = ("school", "role", "is_active", "created_at")
+    readonly_fields = ("created_at",)
+    autocomplete_fields = ("school",)
+
+
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ("user", "first_name", "school", "schools_list", "role")
+    list_display = ("user", "first_name", "legacy_school", "schools_with_roles", "legacy_role")
+    list_filter = ("role", "schools")
+    search_fields = ("user__username", "user__email", "first_name")
+    autocomplete_fields = ("user",)
     filter_horizontal = ("schools",)
+    inlines = [SchoolMembershipInline]
+    
+    fieldsets = (
+        ("User Info", {
+            "fields": ("user", "first_name", "email", "opted_in")
+        }),
+        ("Legacy Fields (for migration)", {
+            "fields": ("school", "role"),
+            "description": "These are legacy single-school fields. Use School Memberships below for multiple schools."
+        }),
+        ("Multiple Schools", {
+            "fields": ("schools",),
+            "description": "Select schools this profile has access to. Roles are managed in School Memberships below."
+        }),
+    )
 
-    def schools_list(self, obj):
-        return ", ".join([s.name for s in obj.schools.all()])
+    def legacy_school(self, obj):
+        """Display the legacy single school FK"""
+        return obj.school.name if obj.school else "—"
+    legacy_school.short_description = "Legacy School"
+    
+    def legacy_role(self, obj):
+        """Display the legacy role field"""
+        return obj.get_role_display() if obj.role else "—"
+    legacy_role.short_description = "Legacy Role"
 
-    schools_list.short_description = "Schools"
+    def schools_with_roles(self, obj):
+        """Display all schools with their roles from SchoolMembership"""
+        memberships = obj.memberships.select_related("school").order_by("school__name")
+        if not memberships.exists():
+            return "—"
+        return ", ".join([f"{m.school.name} ({m.get_role_display()})" for m in memberships])
+    schools_with_roles.short_description = "Schools & Roles"
 
 
 @admin.register(School)
 class SchoolAdmin(admin.ModelAdmin):
     list_display = (
         "name",
+        "member_count",
         "is_licensed",
         "license_expires_at",
         "license_status",
@@ -39,8 +80,12 @@ class SchoolAdmin(admin.ModelAdmin):
             return "⚠️ Expired"
         else:
             return "❌ Not Licensed"
-
     license_status.short_description = "License Status"
+    
+    def member_count(self, obj):
+        """Count of staff/members in this school"""
+        return obj.memberships.filter(is_active=True).count()
+    member_count.short_description = "Active Members"
 
 
 @admin.register(ParentProfile)
@@ -95,3 +140,34 @@ class JoinRequestAdmin(admin.ModelAdmin):
         "resolved_by",
     )
     search_fields = ("full_name", "email", "school")
+
+
+@admin.register(SchoolMembership)
+class SchoolMembershipAdmin(admin.ModelAdmin):
+    """Manage profile-school-role relationships"""
+    list_display = ("profile_user", "profile_name", "school", "role", "is_active", "created_at")
+    list_filter = ("role", "is_active", "school")
+    search_fields = ("profile__user__username", "profile__user__email", "profile__first_name", "school__name")
+    autocomplete_fields = ("profile", "school")
+    list_editable = ("role", "is_active")
+    readonly_fields = ("created_at", "updated_at")
+    
+    fieldsets = (
+        (None, {
+            "fields": ("profile", "school", "role", "is_active")
+        }),
+        ("Timestamps", {
+            "fields": ("created_at", "updated_at"),
+            "classes": ("collapse",)
+        }),
+    )
+    
+    def profile_user(self, obj):
+        return obj.profile.user.username
+    profile_user.short_description = "Username"
+    profile_user.admin_order_field = "profile__user__username"
+    
+    def profile_name(self, obj):
+        return obj.profile.first_name or "—"
+    profile_name.short_description = "Name"
+    profile_name.admin_order_field = "profile__first_name"
