@@ -1210,9 +1210,15 @@ def school_dashboard(request):
                 messages.error(request, "This user is not associated with this school. Please notify support")
                 return redirect("school_dashboard")
 
+            # Get the target user's current role for this school
+            target_current_role = target_profile.get_role_for_school(school)
+
             if target_profile.user == request.user:
                 messages.error(request, "You cannot change your own role.")
-            # Use per-school role checks for the acting user
+            # Team managers cannot edit admins at all
+            elif profile.is_manager_for_school(school) and target_current_role == Role.ADMIN:
+                messages.error(request, "Only admins can edit the roles of other admins.")
+            # Team managers cannot assign the admin role
             elif profile.is_manager_for_school(school) and new_role == Role.ADMIN:
                 messages.error(request, "Only admins can assign the admin role.")
             elif new_role in dict(Role.CHOICES).keys():
