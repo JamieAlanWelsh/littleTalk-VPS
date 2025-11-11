@@ -351,17 +351,16 @@ def logbook(request):
     selected_cohort_id = request.GET.get("cohort")
     user = request.user
     # Use profile helper to support multiple schools per user.
-    school = user.profile.get_current_school(request)
-    print("Logbook view: current school is", school)
-
+    school = user.profile.get_current_school(request) # if user is a parent this will return None
     learners = Learner.objects.filter(school=school, deleted=False)
     cohorts = Cohort.objects.filter(school=school)
+    print("Logbook view: current school is", school)
 
     # Admins/managers should see log entries for the whole school.
     # Other roles should see their own log entries
     if user.profile.is_admin_for_school(school) or user.profile.is_manager_for_school(school):
         # Strict behaviour: staff see only entries that are linked to learners that belong to this school.
-        log_entries = LogEntry.objects.filter(learner__school=school, deleted=False)
+        log_entries = LogEntry.objects.filter(school=school, deleted=False)
     else:
         # Non-staff users see only their own entries
         log_entries = LogEntry.objects.filter(user=user, deleted=False)

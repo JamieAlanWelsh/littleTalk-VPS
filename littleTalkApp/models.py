@@ -92,6 +92,10 @@ class Profile(models.Model):
         `request.user.profile.school` with `request.user.profile.get_current_school(request)`
         when supporting multiple schools is required.
         """
+        # return None if parent
+        if self.is_parent():
+            return None
+        
         # 1) Session-selected school
         if request is not None:
             try:
