@@ -216,6 +216,7 @@ class LearnerForm(forms.ModelForm):
 class LogEntryForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         user = kwargs.pop("user", None)
+        request = kwargs.pop("request", None)
         super(LogEntryForm, self).__init__(*args, **kwargs)
 
         if user and hasattr(user, "profile"):
@@ -227,7 +228,7 @@ class LogEntryForm(forms.ModelForm):
                 )
             else:
                 # Show all learners in the user's active school
-                school = profile.get_current_school()
+                school = profile.get_current_school(request)
                 if school:
                     self.fields["learner"].queryset = Learner.objects.filter(
                         school=school, deleted=False
