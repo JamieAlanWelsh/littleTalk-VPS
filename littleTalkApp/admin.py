@@ -26,7 +26,7 @@ class ProfileAdmin(admin.ModelAdmin):
     
     fieldsets = (
         ("User Info", {
-            "fields": ("user", "first_name", "email", "opted_in")
+            "fields": ("user", "first_name", "opted_in")
         }),
         ("Legacy Fields (for migration)", {
             "fields": ("school", "role"),

@@ -95,6 +95,7 @@ class SchoolSelectionMiddleware:
             'logout',
             'static',
             'media',
+            'support',
         }
         if url_name in skip_urls:
             return False
@@ -141,7 +142,7 @@ class RoleSchoolBlockMiddleware:
                 ):
                     # 1) show forbidden
                     return HttpResponseForbidden(
-                        "Your account is not configured for access."
+                        "Your account is not configured for access. Please contact support for assistance by emailing support@chatterdillo.com"
                     )
                     # 2) or redirect to a support/contact page
                     # return redirect(reverse("account_help"))

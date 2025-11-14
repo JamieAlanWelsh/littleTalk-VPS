@@ -1159,7 +1159,7 @@ def accept_invite(request, token):
             user.save()
 
             profile = Profile.objects.create(
-                user=user, email=email, first_name=full_name, school=invite.school
+                user=user, first_name=full_name, school=invite.school
             )
             # ensure M2M mapping is created and create a SchoolMembership
             try:
@@ -1492,7 +1492,6 @@ def parent_signup_view(request):
             profile = Profile.objects.create(
                 user=user,
                 first_name=form.cleaned_data["first_name"],
-                email=email,
                 role="parent",
                 opted_in=form.cleaned_data.get("agree_updates", False),
             )

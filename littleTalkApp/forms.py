@@ -357,8 +357,6 @@ class StaffInviteForm(forms.ModelForm):
                     (Role.STAFF, "Staff"),
                 ]
 
-        print("ROLE CHOICES INIT:", self.fields["role"].choices)
-
 
 class AcceptInviteForm(forms.Form):
     full_name = forms.CharField(label="Your name", max_length=100)

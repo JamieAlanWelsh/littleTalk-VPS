@@ -45,7 +45,6 @@ class Role:
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
-    email = models.CharField(max_length=50, blank=True, null=True)
     first_name = models.CharField(max_length=50, blank=True, null=True)
     hear_about = models.CharField(max_length=50, blank=True, null=True)
     opted_in = models.BooleanField(default=False)
@@ -105,7 +104,6 @@ class Profile(models.Model):
                         # Prefer schools on the M2M relation
                         school = self.schools.filter(id=selected_id).first()
                         if school:
-                            print('found school from session:', school)
                             return school
                     except Exception:
                         pass
@@ -116,12 +114,10 @@ class Profile(models.Model):
         # 2) First M2M school, if any
         first = self.schools.first()
         if first:
-            print('falling back to first M2M school:', first)
             return first
 
         # 3) Legacy FK
         if self.school:
-            print('fallging back to school from legacy FK:', self.school)
             return self.school
 
         # 4) Nothing available
@@ -141,12 +137,10 @@ class Profile(models.Model):
         try:
             membership = self.memberships.filter(school=school).first()
             if membership and membership.role:
-                print('found role from membership:', membership.role)
                 return membership.role
         except Exception:
             # Defensive: if membership relation unavailable, fall back
             pass
-        print('falling back to profile role:', self.role)
         return self.role
 
     def has_role_for_school(self, school, role):
