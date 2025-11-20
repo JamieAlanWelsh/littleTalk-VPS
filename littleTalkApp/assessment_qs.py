@@ -2,6 +2,7 @@ from .game_data import GAME_DESCRIPTIONS
 
 colourful_semantics_title = GAME_DESCRIPTIONS['colourful_semantics']['title']
 think_and_find_title = GAME_DESCRIPTIONS['think_and_find']['title']
+concept_quest_title = GAME_DESCRIPTIONS['concept_quest']['title']
 categorisation_title = GAME_DESCRIPTIONS['categorisation']['title']
 story_train_title = GAME_DESCRIPTIONS['story_train']['title']
 
@@ -34,7 +35,7 @@ QUESTIONS = [
 
 RECOMMENDATIONS = [
     {"exercises": [colourful_semantics_title], "focus": colourful_semantics_title, "nextlevel": think_and_find_title}, # complexity 0
-    {"exercises": [colourful_semantics_title, think_and_find_title], "focus": think_and_find_title, "nextlevel": categorisation_title}, # complexity 1
-    {"exercises": [colourful_semantics_title, think_and_find_title, categorisation_title], "focus": categorisation_title, "nextlevel": story_train_title},
-    {"exercises": [colourful_semantics_title,think_and_find_title, categorisation_title, story_train_title], "focus": story_train_title, "nextlevel": None}
+    {"exercises": [colourful_semantics_title, think_and_find_title, concept_quest_title], "focus": think_and_find_title, "nextlevel": categorisation_title}, # complexity 1
+    {"exercises": [colourful_semantics_title, think_and_find_title, concept_quest_title, categorisation_title], "focus": categorisation_title, "nextlevel": story_train_title},
+    {"exercises": [colourful_semantics_title, think_and_find_title, concept_quest_title, categorisation_title, story_train_title], "focus": story_train_title, "nextlevel": None}
 ]
