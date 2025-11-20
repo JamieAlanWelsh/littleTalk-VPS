@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Select School - Chatterdillo{% endblock %}
+
+{% block content %}
+
+<h1 class="text-center">Select School</h1>
+
+<div class="container-box container--short container--white">
+    <p class="mb-20"><strong>Please select which school you'd like to access.</strong></p>
+
+    <form method="post" action="{% url 'select_school' %}" class="form-stack">
+        {% csrf_token %}
+        {% if next_url %}
+            <input type="hidden" name="next" value="{{ next_url }}">
+        {% endif %}
+
+        <div class="choice-list" role="radiogroup" aria-labelledby="school-choice-heading">
+            {% for school in schools %}
+                <label class="choice-item" for="school_{{ school.id }}">
+                    <input type="radio" name="school_id" id="school_{{ school.id }}" value="{{ school.id }}" {% if forloop.first %}checked{% endif %}>
+                    <span class="choice-item__title">{{ school.name }}</span>
+                </label>
+            {% endfor %}
+        </div>
+
+        <button type="submit" class="btn btn--yellow btn--full">Continue</button>
+    </form>
+</div>
+
+{% endblock %}

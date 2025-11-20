@@ -5,8 +5,8 @@
 @import './components/sidebar.css';
 @import './components/forms.css';
 @import './components/buttons.css';
+@import './components/choice-list.css';
 @import './components/widgets.css';
-@import './responsive.css';
 @import './pages/login_register.css';
 @import './pages/profile.css';
 @import './pages/practice.css';
