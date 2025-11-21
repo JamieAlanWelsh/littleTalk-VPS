@@ -26,7 +26,7 @@ GAME_DESCRIPTIONS = {
         },
         'concept_quest': {
             'exercise_complexity': 1,
-            'title': 'Concept Quest',
+            'title': 'Concept Quest (Beta)',
             'target': 'Size Concepts',
             'quote': '"Understanding size and spatial relationships is foundational for mathematical thinking and everyday reasoning" (Clements & Sarama, 2007).',
             'description': "Concept Quest is designed to help children learn and apply early size concepts such as long, short, tall, big, and small. By matching pictures or objects to these concepts, children develop their ability to compare, categorize, and describe the world around them. This exercise supports language development, visual discrimination, and conceptual reasoning, laying the groundwork for spatial understanding and mathematical skills.",
