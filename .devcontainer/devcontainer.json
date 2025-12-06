@@ -34,6 +34,14 @@
     "8080": {
       "label": "Adminer",
       "onAutoForward": "notify"
+    },
+    "1025": {
+      "label": "MailHog SMTP",
+      "onAutoForward": "notify"
+    },
+    "8025": {
+      "label": "MailHog Web UI",
+      "onAutoForward": "notify"
     }
   }
 }

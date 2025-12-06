@@ -1196,6 +1196,11 @@ def school_dashboard(request):
     profile = request.user.profile
     school = profile.get_current_school(request)
 
+    print(json.dumps({
+        "method": request.method,
+        "POST": dict(request.POST),
+    }, indent=2))
+
     if request.method == "POST":
         if "user_id" in request.POST and "new_role" in request.POST:
             # Update user role logic
@@ -1294,6 +1299,43 @@ def school_dashboard(request):
             join_request.resolved_by = request.user
             join_request.resolved_at = timezone.now()
             join_request.save()
+            return redirect("school_dashboard")
+
+        elif ("remove_staff_by_user_id" in request.POST):
+            user_id = request.POST.get("remove_staff_by_user_id")
+            target_profile = get_object_or_404(Profile, user__id=user_id)
+
+            # Verify the target profile is associated with this school
+            if not (target_profile.schools.filter(id=school.id).exists()):
+                messages.error(request, "This user is not associated with this school. Please notify support")
+                return redirect("school_dashboard")
+
+            target_current_role = target_profile.get_role_for_school(school)
+
+            if target_profile.user == request.user:
+                messages.error(request, "You cannot remove yourself.")
+            elif (not profile.is_admin_for_school(school)) and target_current_role == Role.ADMIN:
+                messages.error(request, "Only admins can remove other admins.")
+            else:
+                # Remove SchoolMembership or fallback to legacy role removal
+                try:
+                    membership = target_profile.memberships.filter(school=school).first()
+                    print('school is:', school)
+                    print('memberships are:', target_profile.memberships.all())
+                    if membership:
+                        print("Deleting membership:", membership)
+                        membership.delete()
+                    # If no membership exists, fallback to legacy role removal
+                    else:
+                        target_profile.role = Role.STAFF
+                        target_profile.school_id = None
+                        target_profile.schools.remove(school)
+                        target_profile.save()
+                except Exception:
+                    target_profile.role = Role.STAFF
+                    target_profile.school_id = None
+                    target_profile.save()
+                messages.success(request, f"{target_profile.first_name} removed from staff.")
             return redirect("school_dashboard")
 
     # Only show profiles associated with this school that are staff-like roles.
