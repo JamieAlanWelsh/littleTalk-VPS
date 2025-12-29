@@ -14,3 +14,4 @@ sqlparse==0.5.2
 stripe==12.4.0
 requests==2.32.4
 tzdata==2025.2
+django-honeypot==1.2.1

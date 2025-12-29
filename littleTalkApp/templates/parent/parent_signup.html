@@ -2,6 +2,7 @@
 
 {% block title %}Chatterdillo | Parent Sign Up{% endblock %}
 {% load static %}
+{% load honeypot %}
 
 {% block content %}
 <div class="login-container">
@@ -21,6 +22,7 @@
     <form method="post" class="login-form">
 
         {% csrf_token %}
+        {% render_honeypot_field %}
 
         <div>
             <input type="text" name="first_name" class="input" placeholder="Your name"

@@ -22,6 +22,9 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.db.models import Q
 
+# Honeypot and rate limiting
+from honeypot.decorators import check_honeypot
+
 # Local app: forms
 from .forms import (
     UserRegistrationForm,
@@ -84,6 +87,7 @@ def home(request):
     return render(request, "landing.html")
 
 
+@check_honeypot
 def school_signup(request):
     request.hide_sidebar = True
     if request.method == "POST":
@@ -1089,6 +1093,7 @@ def support(request):
     return render(request, "support.html", {})
 
 
+@check_honeypot
 def send_support_email(request):
     if request.method == "POST":
         name = request.POST.get("name")
@@ -1130,6 +1135,7 @@ def about(request):
     return render(request, "about.html")
 
 
+@check_honeypot
 def accept_invite(request, token):
     request.hide_sidebar = True
 
@@ -1463,6 +1469,7 @@ def email_parent_token(request, learner_uuid):
         return redirect("view_parent_token", learner_uuid=learner_uuid)
 
 
+@check_honeypot
 def parent_signup_view(request):
     request.hide_sidebar = True
     prefill_code = request.GET.get("code", "").strip()

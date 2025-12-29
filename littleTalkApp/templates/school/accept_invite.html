@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load honeypot %}
 
 {% block title %}Chatterdillo | Accept Invite{% endblock %}
 
@@ -23,6 +24,7 @@
 
     <form method="post" class="form-stack">
         {% csrf_token %}
+        {% render_honeypot_field %}
 
         <div>
             <label for="{{ form.full_name.id_for_label }}" class="label">Your Name</label>
