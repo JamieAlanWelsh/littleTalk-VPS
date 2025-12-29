@@ -1,9 +1,20 @@
 from django.contrib import admin
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, User
+from django.contrib.auth.admin import UserAdmin
 from .models import Profile, School, ParentProfile, Learner, JoinRequest, SchoolMembership
 
 # unregister groups
 admin.site.unregister(Group)
+
+# Unregister the default User admin and register custom one
+# This change was created so we can custom order users by date joined
+admin.site.unregister(User)
+
+
+@admin.register(User)
+class CustomUserAdmin(UserAdmin):
+    list_filter = UserAdmin.list_filter + ('date_joined',)
+    ordering = ('-date_joined',)
 
 
 class SchoolMembershipInline(admin.TabularInline):
@@ -18,11 +29,12 @@ class SchoolMembershipInline(admin.TabularInline):
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ("user", "first_name", "legacy_school", "schools_with_roles", "legacy_role")
-    list_filter = ("role", "schools")
+    list_filter = ("role", "schools", "user__date_joined")
     search_fields = ("user__username", "user__email", "first_name")
     autocomplete_fields = ("user",)
     filter_horizontal = ("schools",)
     inlines = [SchoolMembershipInline]
+    ordering = ('-user__date_joined',)
     
     fieldsets = (
         ("User Info", {
