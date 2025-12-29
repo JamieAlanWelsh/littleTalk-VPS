@@ -2,6 +2,7 @@
 
 {% block title %}Chatterdillo | School Signup{% endblock %}
 {% load static %}
+{% load honeypot %}
 
 {% block content %}
 <div class="login-container">
@@ -24,6 +25,7 @@
     <!-- School Signup Form -->
     <form method="post" class="login-form">
         {% csrf_token %}
+        {% render_honeypot_field %}
 
         <p class="register-intro">
             Setup your school workspace to start adding learners and inviting staff.

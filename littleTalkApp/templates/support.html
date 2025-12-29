@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load honeypot %}
 
 {% block title %}Chatterdillo | Support{% endblock %}
 
@@ -22,6 +23,7 @@
 
     <form method="POST" action="{% url 'send_support_email' %}">
         {% csrf_token %}
+        {% render_honeypot_field %}
 
        <input type="text" id="name" name="name" placeholder="Name" class="input" required>
 
