@@ -1,7 +1,8 @@
 from django.shortcuts import redirect
-from django.urls import reverse
+from django.urls import reverse, resolve
 from django.utils.deprecation import MiddlewareMixin
 from django.http import HttpResponseForbidden
+from .models import Role
 
 
 class AccessControlMiddleware(MiddlewareMixin):
@@ -16,15 +17,15 @@ class AccessControlMiddleware(MiddlewareMixin):
 
         # Allow unauthenticated users to access login/logout
         allowed_paths = [
-            reverse('login'),
-            reverse('logout'),
-            reverse('profile'),
-            reverse('select_learner'),
-            reverse('subscribe'),
-            reverse('license_expired'),
-            reverse('settings'),
-            reverse('logbook'),
-            reverse('support'),
+            reverse("login"),
+            reverse("logout"),
+            reverse("profile"),
+            reverse("select_learner"),
+            reverse("subscribe"),
+            reverse("license_expired"),
+            reverse("settings"),
+            reverse("logbook"),
+            reverse("support"),
         ]
 
         if any(path.startswith(ap) for ap in allowed_paths):
@@ -33,24 +34,89 @@ class AccessControlMiddleware(MiddlewareMixin):
         if not user.is_authenticated:
             return None  # Let login-required decorators handle it
 
-        profile = getattr(user, 'profile', None)
+        profile = getattr(user, "profile", None)
 
         if not profile:
             return None
 
         # --- Parent User Logic ---
-        if profile.role == 'parent':
-            parent_profile = getattr(profile, 'parent_profile', None)
+        if profile.role == Role.PARENT:
+            parent_profile = getattr(profile, "parent_profile", None)
             if parent_profile and not parent_profile.has_access():
-                return redirect('subscribe')
+                return redirect("subscribe")
 
-        # --- School Staff Logic ---
-        if profile.role in ['admin', 'manager', 'staff']:
-            school = profile.school
-            if school and not school.has_valid_license():
-                return redirect('license_expired')
+        # --- School Staff Logic (per-school roles) ---
+        # Determine selected/current school then check the role for that school.
+        school = (
+            profile.get_current_school(request)
+            if hasattr(profile, "get_current_school")
+            else profile.school
+        )
+        if school:
+            role_for = profile.get_role_for_school(school)
+            # Check staff-like roles for this school (include legacy 'manager')
+            if role_for in [Role.ADMIN, Role.TEAM_MANAGER, Role.STAFF, "manager"]:
+                if not school.has_valid_license():
+                    return redirect("license_expired")
 
         return None
+
+
+class SchoolSelectionMiddleware:
+    """
+    Ensure users with multiple schools have selected one.
+    Redirects to school selection if needed.
+    """
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        # Process request
+        if self._should_redirect_to_school_selection(request):
+            return redirect('select_school')
+            
+        response = self.get_response(request)
+        return response
+        
+    def _should_redirect_to_school_selection(self, request):
+        # Skip if not authenticated
+        if not request.user.is_authenticated:
+            return False
+            
+        # Get current URL name
+        try:
+            url_name = resolve(request.path_info).url_name
+        except Exception:
+            url_name = ''
+            
+        # Skip middleware for these paths
+        skip_urls = {
+            'select_school',
+            'logout',
+            'static',
+            'media',
+            'support',
+        }
+        if url_name in skip_urls:
+            return False
+            
+        # Skip for parent users
+        if hasattr(request.user, 'profile') and request.user.profile.is_parent():
+            return False
+            
+        # Check if user needs to select a school
+        profile = getattr(request.user, 'profile', None)
+        if profile and profile.has_multiple_schools():
+            # Needs selection if no school is selected in session
+            selected_id = request.session.get('selected_school_id')
+            if not selected_id:
+                return True
+                
+            # Or if selected school isn't valid for this user
+            if not profile.schools.filter(id=selected_id).exists():
+                return True
+                
+        return False
 
 
 class RoleSchoolBlockMiddleware:
@@ -69,9 +135,15 @@ class RoleSchoolBlockMiddleware:
         if user.is_authenticated:
             profile = getattr(user, "profile", None)
             if profile:
-                if profile.role != "parent" and profile.school_id is None:
+                # If this user is staff (non-parent) and has no associated school
+                # (neither legacy FK nor any M2M schools), block access.
+                if profile.role != Role.PARENT and not (
+                    profile.school or profile.schools.exists()
+                ):
                     # 1) show forbidden
-                    return HttpResponseForbidden("Your account is not configured for access.")
+                    return HttpResponseForbidden(
+                        "Your account is not configured for access. Please contact support for assistance by emailing support@chatterdillo.com"
+                    )
                     # 2) or redirect to a support/contact page
                     # return redirect(reverse("account_help"))
 

@@ -38,6 +38,7 @@ urlpatterns = [
     # Cohorts
     path('cohorts/', views.cohort_list, name='cohort_list'),
     path('cohorts/new/', views.cohort_create, name='cohort_create'),
+    path('select-school/', views.select_school, name='select_school'),
     path('cohorts/<int:cohort_id>/edit/', views.cohort_edit, name='cohort_edit'),
     path('cohorts/<int:cohort_id>/delete/', views.cohort_delete, name='cohort_delete'),
 

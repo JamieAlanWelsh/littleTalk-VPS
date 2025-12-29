@@ -125,6 +125,37 @@
     </div>
     {% endwith %}
 
+    {% comment %} CONCEPT QUEST {% endcomment %}
+    {% with game=game_descriptions.concept_quest %}
+    <div class="exercise-widget">
+        <div class="exercise-image">
+            <img src="{% static 'icons/concept_quest_icon.png' %}" alt="Sentence Building">
+        </div>
+        <div class="exercise-details">
+            <div class="exercise-title">
+                <h3>{{ game.title }} - {{ game.target }}</h3>
+            </div>
+            {% if selected_learner.assessment1 < 0 %}
+                <p>This exercise will be unlocked as you progress.</p>
+                <a class="button exercise-btn locked-btn">Locked</a>
+            {% else %}
+                <p><strong>Develops ability to:</strong></p>
+                <div class="skills-list">
+                    <ul>
+                        <li>{{ game.bullet1 }}</li>
+                        <li>{{ game.bullet2 }}</li>
+                        <li>{{ game.bullet3 }}</li>
+                    </ul>
+                </div>
+                <div class="exercise-buttons">
+                    <a href="{% static 'exercises/concept_quest/index.html' %}" class="btn btn--green btn--small btn--short">START</a>
+                    <a href="{% url 'game_description' 'concept_quest' %}" class="btn btn--white btn--small btn--short">Guide</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endwith %}
+
     {% comment %} CATEGORISATAION {% endcomment %}
     {% with game=game_descriptions.categorisation %}
     <div class="exercise-widget">
