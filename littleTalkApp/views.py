@@ -7,7 +7,10 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.middleware.csrf import get_token
 from django.http import HttpResponse
-from django.utils import timezone
+from django.core.cache import cache
+import logging
+
+logger = logging.getLogger(__name__)
 
 # Django auth
 from django.contrib.auth import login, authenticate, update_session_auth_hash
@@ -20,6 +23,8 @@ from django.contrib.auth.views import LoginView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated, BasePermission
+from rest_framework.authentication import SessionAuthentication
 from django.db.models import Q
 
 # Honeypot and rate limiting
@@ -59,7 +64,7 @@ from .models import (
 )
 
 # Local app: serializers
-from .serializers import LearnerExpUpdateSerializer
+from .serializers import LearnerExpUpdateSerializer, LearnerExpUpdateInputSerializer
 
 # Local app: other
 from .game_data import GAME_DESCRIPTIONS
@@ -1025,40 +1030,70 @@ def invite_staff(request):
 # API VIEWS
 
 
+class CanUpdateLearnerPermission(BasePermission):
+    """
+    Custom permission to allow parents to update their own learners,
+    and staff to update learners in their school/cohort.
+    """
+    def has_object_permission(self, request, view, obj):
+        print('Checking permissions for user:', request.user)
+        user = request.user
+        profile = getattr(user, 'profile', None)
+        if not profile:
+            return False
+
+        learner = obj  # obj is the Learner instance
+
+        if profile.is_parent():
+            # Parents can only update their own learners
+            return learner.user == user
+        elif profile.is_staff() or profile.is_manager() or profile.is_admin():
+            # Staff can update learners in their school
+            current_school = profile.get_current_school(request)
+            if current_school:
+                print('Current school for permission check looks OK:', current_school)
+                return learner.school == current_school
+            print('No current school found for user:', user)
+            return False
+        print('User does not have permission to update learner:', user)
+        return False
+
+
 class UpdateLearnerExpAPIView(APIView):
-    def post(self, request, learner_id):
-        try:
-            learner = Learner.objects.get(id=learner_id)
-        except Learner.DoesNotExist:
-            return Response(
-                {"detail": "Learner not found."}, status=status.HTTP_404_NOT_FOUND
-            )
+    print('UpdateLearnerExpAPIView loaded')
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticated, CanUpdateLearnerPermission]
 
-        new_exp = request.data.get("exp")
-        new_total_exercises = request.data.get("total_exercises")
+    def post(self, request, learner_uuid):
+        learner = get_object_or_404(Learner, learner_uuid=learner_uuid)
+        self.check_object_permissions(request, learner)
 
-        if new_exp is None or new_total_exercises is None:
-            return Response(
-                {"detail": "Both 'exp' and 'total_exercises' are required."},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
+        input_serializer = LearnerExpUpdateInputSerializer(data=request.data)
+        if not input_serializer.is_valid():
+            print('Input serializer errors:', input_serializer.errors)
+            return Response(input_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        try:
-            new_exp = int(new_exp)
-            new_total_exercises = int(new_total_exercises)
+        nonce = input_serializer.validated_data['nonce']
+        cache_key = f"nonce_{request.user.id}_{nonce}"
+        if cache.get(cache_key):
+            print('Nonce already used:', nonce)
+            return Response({"detail": "Nonce already used."}, status=status.HTTP_400_BAD_REQUEST)
 
-            learner.exp += new_exp
-            learner.total_exercises += new_total_exercises
-            learner.save()
+        new_exp = input_serializer.validated_data['exp']
+        new_total_exercises = input_serializer.validated_data['total_exercises']
 
-            serializer = LearnerExpUpdateSerializer(learner)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+        learner.exp += new_exp
+        learner.total_exercises += new_total_exercises
+        learner.save()
 
-        except ValueError:
-            return Response(
-                {"detail": "Invalid 'exp' or 'total_exercises' value."},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
+        # Mark nonce as used, expire in 10 minutes
+        cache.set(cache_key, True, 600)
+
+        logger.info(f"User {request.user.username} updated learner {learner.id}: exp +{new_exp}, exercises +{new_total_exercises}")
+
+        serializer = LearnerExpUpdateSerializer(learner)
+        print('Returning updated learner data:', serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 def get_selected_learner(request):
@@ -1075,13 +1110,15 @@ def get_selected_learner(request):
 
     if selected_learner_id:
         selected_learner = Learner.objects.get(id=selected_learner_id)
+        print('selected learner:', selected_learner)
         return JsonResponse(
             {
-                "learner_id": selected_learner_id,
+                "learner_uuid": str(selected_learner.learner_uuid),
                 "csrf_token": csrf_token,
                 "cs_level": selected_learner.assessment2,
             }
         )
+    print('no learner selected')
     return JsonResponse({"error": "No learner selected"}, status=400)
 
 
