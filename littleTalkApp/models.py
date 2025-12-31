@@ -422,3 +422,18 @@ class ParentAccessToken(models.Model):
 
     def __str__(self):
         return f"Code for {self.learner.name}: {self.token}"
+
+
+class ExerciseSession(models.Model):
+    learner = models.ForeignKey(Learner, on_delete=models.CASCADE, related_name="exercise_sessions")
+    exercise_id = models.CharField(max_length=255)
+    difficulty_selected = models.CharField(max_length=50)
+    started_at = models.DateTimeField()
+    completed_at = models.DateTimeField()
+    total_questions = models.IntegerField()
+    incorrect_answers = models.IntegerField()
+    attempts_per_question = models.JSONField()  # List of integers, e.g. [1, 2, 3] for attempts per question
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.learner.name} - {self.exercise_id} ({self.completed_at})"

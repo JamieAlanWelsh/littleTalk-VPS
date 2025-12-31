@@ -61,6 +61,7 @@ from .models import (
     JoinRequest,
     ParentAccessToken,
     ParentProfile,
+    ExerciseSession,
 )
 
 # Local app: serializers
@@ -1036,7 +1037,6 @@ class CanUpdateLearnerPermission(BasePermission):
     and staff to update learners in their school/cohort.
     """
     def has_object_permission(self, request, view, obj):
-        print('Checking permissions for user:', request.user)
         user = request.user
         profile = getattr(user, 'profile', None)
         if not profile:
@@ -1051,16 +1051,12 @@ class CanUpdateLearnerPermission(BasePermission):
             # Staff can update learners in their school
             current_school = profile.get_current_school(request)
             if current_school:
-                print('Current school for permission check looks OK:', current_school)
                 return learner.school == current_school
-            print('No current school found for user:', user)
             return False
-        print('User does not have permission to update learner:', user)
         return False
 
 
 class UpdateLearnerExpAPIView(APIView):
-    print('UpdateLearnerExpAPIView loaded')
     authentication_classes = [SessionAuthentication]
     permission_classes = [IsAuthenticated, CanUpdateLearnerPermission]
 
@@ -1070,13 +1066,11 @@ class UpdateLearnerExpAPIView(APIView):
 
         input_serializer = LearnerExpUpdateInputSerializer(data=request.data)
         if not input_serializer.is_valid():
-            print('Input serializer errors:', input_serializer.errors)
             return Response(input_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         nonce = input_serializer.validated_data['nonce']
         cache_key = f"nonce_{request.user.id}_{nonce}"
         if cache.get(cache_key):
-            print('Nonce already used:', nonce)
             return Response({"detail": "Nonce already used."}, status=status.HTTP_400_BAD_REQUEST)
 
         new_exp = input_serializer.validated_data['exp']
@@ -1086,13 +1080,25 @@ class UpdateLearnerExpAPIView(APIView):
         learner.total_exercises += new_total_exercises
         learner.save()
 
+        # Create ExerciseSession if analytics data is provided
+        if 'exercise_id' in input_serializer.validated_data:
+            ExerciseSession.objects.create(
+                learner=learner,
+                exercise_id=input_serializer.validated_data['exercise_id'],
+                difficulty_selected=input_serializer.validated_data.get('difficulty_selected', ''),
+                started_at=input_serializer.validated_data['started_at'],
+                completed_at=input_serializer.validated_data['completed_at'],
+                total_questions=input_serializer.validated_data['total_questions'],
+                incorrect_answers=input_serializer.validated_data['incorrect_answers'],
+                attempts_per_question=input_serializer.validated_data['attempts_per_question'],
+            )
+
         # Mark nonce as used, expire in 10 minutes
         cache.set(cache_key, True, 600)
 
         logger.info(f"User {request.user.username} updated learner {learner.id}: exp +{new_exp}, exercises +{new_total_exercises}")
 
         serializer = LearnerExpUpdateSerializer(learner)
-        print('Returning updated learner data:', serializer.data)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
