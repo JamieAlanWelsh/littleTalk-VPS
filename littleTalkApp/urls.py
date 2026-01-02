@@ -84,6 +84,6 @@ urlpatterns = [
     path('subscribe/manage/', views.manage_subscription, name='manage_subscription'),
 
     # API endpoints
-    path('api/learners/<int:learner_id>/update-exp/', UpdateLearnerExpAPIView.as_view(), name='update_learner_exp'),
+    path('api/learners/<uuid:learner_uuid>/update-exp/', UpdateLearnerExpAPIView.as_view(), name='update_learner_exp'),
     path('api/selected-learner/', views.get_selected_learner, name='get_selected_learner'),
 ]

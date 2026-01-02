@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.models import Group, User
 from django.contrib.auth.admin import UserAdmin
-from .models import Profile, School, ParentProfile, Learner, JoinRequest, SchoolMembership
+from .models import Profile, School, ParentProfile, Learner, JoinRequest, SchoolMembership, ExerciseSession
 
 # unregister groups
 admin.site.unregister(Group)
@@ -152,6 +152,23 @@ class JoinRequestAdmin(admin.ModelAdmin):
         "resolved_by",
     )
     search_fields = ("full_name", "email", "school")
+
+
+@admin.register(ExerciseSession)
+class ExerciseSessionAdmin(admin.ModelAdmin):
+    list_display = (
+        "learner",
+        "exercise_id",
+        "difficulty_selected",
+        "started_at",
+        "completed_at",
+        "total_questions",
+        "incorrect_answers",
+        "created_at",
+    )
+    list_filter = ("exercise_id", "difficulty_selected", "created_at")
+    search_fields = ("learner__name", "exercise_id")
+    readonly_fields = ("created_at",)
 
 
 @admin.register(SchoolMembership)
