@@ -1116,7 +1116,6 @@ def get_selected_learner(request):
 
     if selected_learner_id:
         selected_learner = Learner.objects.get(id=selected_learner_id)
-        print('selected learner:', selected_learner)
         return JsonResponse(
             {
                 "learner_uuid": str(selected_learner.learner_uuid),
@@ -1124,7 +1123,6 @@ def get_selected_learner(request):
                 "cs_level": selected_learner.assessment2,
             }
         )
-    print('no learner selected')
     return JsonResponse({"error": "No learner selected"}, status=400)
 
 
