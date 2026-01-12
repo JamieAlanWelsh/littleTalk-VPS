@@ -7,6 +7,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.middleware.csrf import get_token
 from django.http import HttpResponse
+from django.utils import timezone
 from django.core.cache import cache
 import logging
 
