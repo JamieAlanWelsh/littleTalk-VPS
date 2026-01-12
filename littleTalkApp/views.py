@@ -1392,6 +1392,7 @@ def school_dashboard(request):
     )
 
 
+@check_honeypot
 def request_join_school(request):
     request.hide_sidebar = True
     if request.method == "POST":

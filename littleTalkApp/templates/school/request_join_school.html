@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load honeypot %}
 {% block title %}Chatterdillo | Join a School{% endblock %}
 
 {% block content %}
@@ -21,6 +22,7 @@
 
     <form method="post" class="login-form">
         {% csrf_token %}
+        {% render_honeypot_field %}
         <div>
             <input type="text" name="full_name" class="input" placeholder="Your name"
                 value="{{ form.full_name.value|default_if_none:'' }}" required>
