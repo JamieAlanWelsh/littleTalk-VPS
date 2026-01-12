@@ -1145,11 +1145,11 @@ def send_support_email(request):
         full_message = f"Message from {name} <{email}>:\n\n{message}"
 
         send_mail(
-            subject="Support Request - LittleTalk",
+            subject="Support Request - Chatterdillo",
             message=full_message,
             from_email=settings.DEFAULT_FROM_EMAIL,
             recipient_list=[
-                "jw.jamiewelsh@gmail.com"
+                "support@chatterdillo.com"
             ],  # Update to official support address
             fail_silently=False,
         )
