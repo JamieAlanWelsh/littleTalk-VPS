@@ -151,5 +151,52 @@
         });
     </script>
     {% block content %}{% endblock %}
+
+    {% comment %} Footer Border {% endcomment %}
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <img src="{% static 'images/chatterdillo_logo_official.png' %}" alt="Chatterdillo Logo">
+            </div>
+            <div class="footer-links">
+                <div class="footer-section">
+                    <h4>Explore</h4>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/about/">About us</a></li>
+                        <li><a href="/method/">Our Method</a></li>
+                        <li><a href="/support/">Contact</a></li>
+                        <li><a href="/support/">FAQ's</a></li>
+                        <li><a href="/tips/">Free Parent Tips</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/profile.php?id=61574696260325&locale=en_GB" target="_blank" aria-label="Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://www.instagram.com/chatterdillo/" target="_blank" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://x.com/chatterdillo" target="_blank" aria-label="X">
+                            <i class="fab fa-x-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="/terms/">Terms & Conditions</a></li>
+                        <li><a href="/privacy/">Privacy Policy</a></li>
+                        <li><a href="/data-policy/">Data Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Chatterdillo. All rights reserved.</p>
+        </div>
+    </footer>
 </body>
 </html>
