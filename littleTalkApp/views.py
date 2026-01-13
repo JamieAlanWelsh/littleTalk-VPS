@@ -1749,3 +1749,16 @@ def manage_subscription(request):
         return_url=request.build_absolute_uri("/profile/"),
     )
     return redirect(session.url)
+
+
+def terms_and_conditions(request):
+    request.hide_sidebar = True
+    return render(request, "legal/terms.html")
+
+def privacy_policy(request):
+    request.hide_sidebar = True
+    return render(request, "legal/privacy.html")
+
+def data_policy(request):
+    request.hide_sidebar = True
+    return render(request, "legal/data-policy.html")

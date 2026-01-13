@@ -1,0 +1,94 @@
+<!-- templates/landing.html -->
+{% extends "landing_base.html" %}
+{% block title %}Chatterdillo | Terms & Conditions{% endblock %}
+{% load static %}
+
+{% block content %}
+<div class="content-split text-only white">
+    <div class="content-split-text">
+        <div class="content-split-header">
+            <p class="split-subtitle">
+                Last updated: 12/01/26
+            </p>
+            <h2 class="split-heading">
+                Terms & Conditions
+            </h2>
+        </div>
+        <h2 class="split-subheading">Introduction</h2>
+        <p class="split-body">
+            Welcome to Chatterdillo, a speech and language development tool for primary schools.
+            These Terms and Conditions govern the use of Chatterdillo’s services, including our
+            desktop web app and related offerings (collectively, the "Service"). By using the Service,
+            you agree to abide by these Terms and Conditions. 
+
+        </p>
+        <h2 class="split-subheading">Acceptable Use</h2>
+        <p class="split-body">
+            <strong>Intended Purpose:</strong> The Service is intended to serve as a resource bank for
+            speech and language communication (SLCN) interventions, screener for
+            identifying SLCN related needs and auomated recommendation of suitable
+            exercises, and progress tracker to assist in tracking of provision targets and
+            learner outcomes. 
+        </p>
+        <p class="split-body">
+            <strong>Unacceptable Use:</strong> Hacking, data scraping, or any form of intellectual property
+            theft is strictly prohibited. 
+        </p>
+        <h2 class="split-subheading">Registration and Accounts</h2>
+        <p class="split-body">
+            Users are responsible for safeguarding their account information. Chatterdillo is not
+            liable for unauthorised access to accounts. 
+        </p>
+        <h2 class="split-subheading">Liability Limitation</h2>
+        <p class="split-body">
+            Chatterdillo is provided "as is" and serves as a supplementary tool. Chatterdillo is not
+            responsible for learner outcomes. Users are advised to seek other more comprehensive
+            Speech and Language Therapy services in addition to using our platform. 
+        </p>
+        <h2 class="split-subheading">Intellectual Property</h2>
+        <p class="split-body">
+            <strong>Ownership:</strong> Chatterdillo and its licensors own all intellectual property related to
+            the Service. 
+        </p>
+        <p class="split-body">
+            </strong>Restrictions:</strong> Users may not copy, distribute, or otherwise use the materials
+            from the Service for any purpose other than personal use. 
+        </p>
+        <h2 class="split-subheading">Payment and Refunds</h2>
+        <p class="split-body">
+            If the Service fails to improve learner outcomes, a refund may be issued at the sole
+            discretion of Chatterdillo. Payment can be made by bank transfer or via GoCardless
+            (Direct Debit). We do not accept cheques. All payments must be made in accordance
+            with the invoice due date unless otherwise agreed in writing. 
+        </p>
+        <h2 class="split-subheading">Termination Policy</h2>
+        <p class="split-body">
+            Accounts and related data will be retained for 6 months after the last interaction and
+            will then be deleted, unless a deletion request is made by the user.
+        </p>
+        <h2 class="split-subheading">Dispute Resolution</h2>
+        <p class="split-body">
+            All disputes arising out of or relating to these Terms and Conditions will be resolved
+            through arbitration in the United Kingdom. 
+        </p>
+        <h2 class="split-subheading">Modifications to Terms and Conditions</h2>
+        <p class="split-body">
+            Chatterdillo reserves the right to modify these Terms and Conditions at any time. Continued
+            use of the Service after changes constitutes acceptance of the new terms.
+        </p>
+        <h2 class="split-subheading">Governing Law</h2>
+        <p class="split-body">
+            These Terms and Conditions are governed by the laws of the United Kingdom.
+        </p>
+    </div>
+</div>
+{% comment %} final call to action footer {% endcomment %}
+<div class="footer-cta">
+    <h1 class="footer-heading">Let’s Build Language Skills Together!</h1>
+    {% comment %} <button class="footer-cta-button">Begin Your Free Assessment</button> {% endcomment %}
+    <a href="/account-setup/" class="cta-button main-button">Get Started</a>
+    <div class="footer-icon-wrapper">
+        <img src="{% static 'images/landing/arlo_waving.png' %}" alt="Chatterdillo icon" class="footer-icon">
+    </div>
+</div>
+{% endblock %}

@@ -11,6 +11,9 @@ urlpatterns = [
     path('tips/', views.tips, name='tips'),
     path('method/', views.method, name='method'),
     path('about/', views.about, name='about'),
+    path('terms/', views.terms_and_conditions, name='terms'),
+    path('privacy/', views.privacy_policy, name='privacy'),
+    path('data-policy/', views.data_policy, name='data_policy'),
 
     # Support
     path('support/', views.support, name='support'),

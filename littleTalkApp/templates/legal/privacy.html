@@ -1,0 +1,99 @@
+<!-- templates/landing.html -->
+{% extends "landing_base.html" %}
+{% block title %}Chatterdillo | Privacy policy{% endblock %}
+{% load static %}
+
+{% block content %}
+<div class="content-split text-only white">
+    <div class="content-split-text">
+        <div class="content-split-header">
+            <p class="split-subtitle">
+                Last updated: 12/01/26
+            </p>
+            <h2 class="split-heading">
+                Privacy policy 
+            </h2>
+        </div>
+        <h2 class="split-subheading">Introduction</h2>
+        <p class="split-body">
+            This Privacy Policy governs the manner in which Chatterdillo collects, uses, maintains,
+            and discloses information collected from users ("User" or "you") of the Chatterdillo
+            desktop web app and related services (the "Service"). We are committed to protecting your
+            privacy and ensuring the security of your personal information.
+        </p>
+        <h2 class="split-subheading">Personal Identification Information</h2>
+        <p class="split-body">
+            We may collect personal identification information such as name, age, screener results,
+            and progress tracking data such as log entries or exercises completed when Users register
+            for the Service. This information is used to provide and improve our services and will
+            not be shared with third parties without your consent, except as required by law.
+        </p>
+        <h2 class="split-subheading">Non-Personal Identification Information</h2>
+        <p class="split-body">
+            We may collect non-personal identification information about Users whenever they
+            interact with our Service. Non-personal identification information may include browser
+            name, the type of computer, and technical information about Users' means of
+            connection to our Service. 
+        </p>
+        <h2 class="split-subheading">Cookie Usage</h2>
+        <p class="split-body">
+            We use "cookies" to enhance User experience and track progress through the Service.
+        </p>
+        <h2 class="split-subheading">How We Use Collected Information</h2>
+        <p class="split-body">
+            Chatterdillo may collect and use User information for the following purposes: 
+        </p>
+        <p class="split-body">
+            - To provide a personalised experienced.<br>
+            - To provide tailored exercise recommendations.<br>
+            - To provide the User with contextual information about a learner and their progress.<br>
+            - To improve the Service based on User interactions and feedback.
+        </p>
+        <h2 class="split-subheading">How We Protect Your Information</h2>
+        <p class="split-body">
+            We employ encryption and other security measures to protect against unauthorised
+            access, alteration, disclosure, or destruction of your personal information.
+        </p>
+        <h2 class="split-subheading">Sharing Your Personal Information</h2>
+        <p class="split-body">
+            We do not share personal identification data with third parties for their own use.
+            However, we engage carefully selected service providers, such as Hetzner, to store and
+            process data strictly on our behalf, under formal Data Processing Agreements that
+            ensure compliance with data protection laws. These providers do not access, use, or
+            disclose personal identification data for any other purpose.
+        </p>
+        <h2 class="split-subheading">User Rights</h2>
+        <p class="split-body">
+            Users can request deletion of their personal data. To make such a request, please <a href="/support/" class="text-link" target="_blank">contact our support team</a>
+        </p>
+        <h2 class="split-subheading">Compliance with Laws</h2>
+        <p class="split-body">
+            This policy complies with data protection laws applicable in the United Kingdom.
+        </p>
+        <h2 class="split-subheading">Changes to This Privacy Policy</h2>
+        <p class="split-body">
+            Chatterdillo has the discretion to update this privacy policy at any time. Continued
+            use of the Service after changes constitutes acceptance of the new terms.
+        </p>
+        <h2 class="split-subheading">Your Acceptance of These Terms</h2>
+        <p class="split-body">
+            By using this Service, you signify your acceptance of this policy. 
+            If you do not agree to this policy, please do not use our Service.
+        </p>
+        <h2 class="split-subheading">Contacting Us</h2>
+        <p class="split-body">
+            If you have any questions about this Privacy Policy, the practices of this Service, or your
+            dealings with this Service, please <a href="/support/" class="text-link" target="_blank">contact our support team</a>
+        </p>
+    </div>
+</div>
+{% comment %} final call to action footer {% endcomment %}
+<div class="footer-cta">
+    <h1 class="footer-heading">Let’s Build Language Skills Together!</h1>
+    {% comment %} <button class="footer-cta-button">Begin Your Free Assessment</button> {% endcomment %}
+    <a href="/account-setup/" class="cta-button main-button">Get Started</a>
+    <div class="footer-icon-wrapper">
+        <img src="{% static 'images/landing/arlo_waving.png' %}" alt="Chatterdillo icon" class="footer-icon">
+    </div>
+</div>
+{% endblock %}

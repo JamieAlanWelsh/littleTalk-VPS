@@ -254,6 +254,14 @@ body {
     line-height: 1.4;
 }
 
+.split-subheading {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: var(--font-color);
+    line-height: 1.4;
+}
+
 .split-body {
     font-size: 1.125rem;
     color: var(--font-color);
@@ -638,6 +646,10 @@ body {
 
     .split-heading {
         font-size: 1.4rem;
+    }
+
+    .split-subheading {
+        font-size: 1.2rem;
     }
     
     .split-body {

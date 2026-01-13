@@ -1,0 +1,135 @@
+<!-- templates/landing.html -->
+{% extends "landing_base.html" %}
+{% block title %}Chatterdillo | Data policy{% endblock %}
+{% load static %}
+
+{% block content %}
+<div class="content-split text-only white">
+    <div class="content-split-text">
+        <div class="content-split-header">
+            <p class="split-subtitle">
+                Last updated: 12/01/26
+            </p>
+            <h2 class="split-heading">
+                Data Policy
+            </h2>
+        </div>
+        <h2 class="split-subheading">GDPR Compliance Policy</h2>
+        <p class="split-body">
+            Chatterdillo is committed to protecting the privacy and security of personal data
+            collected through our speech and language development tool. This policy outlines our
+            practices and compliance measures in accordance with the UK General Data
+            Protection Regulation (UK GDPR).
+        </p>
+        <h2 class="split-subheading">Personal Data We Collect </h2>
+        <p class="split-body">
+            - <strong>User’s/Parent’s/Student’s Name:</strong> Only first names (surname or nickname
+            optional), no other identifiers like addresses or detailed medical histories are
+            involved.<br>
+            - <strong>Email:</strong> Of each User/Parent/Student that signs up to the platform<br>
+            - <strong>Learner/Student’s Name:</strong> Only first names (surname or nickname optional), no
+            other identifiers like addresses or detailed medical histories are involved.<br>
+            - <strong>Date of birth:</strong> Of each learner/student added to the platform<br>
+            - <strong>Screener Answers:</strong> “Yes/No/Not sure” Answers to our screener questions
+            related to a learner/student. Screeners are optional.<br>
+            - <strong>Screener Results and Recommendations:</strong> Personalised exercise and support
+            recommendations related to a learner/student based on our optional screener.
+        </p>
+        <h2 class="split-subheading">Legal Basis for Processing</h2>
+        <p class="split-body">
+            We process this data under UK GDPR Article 6(1)(f), which relates to processing
+            necessary for the purposes of legitimate interests pursued by Chatterdillo or a third
+            party, provided that these interests are not overridden by the interests or fundamental
+            rights and freedoms of the data subjects. 
+        </p>
+        <h2 class="split-subheading">Necessity and Proportionality</h2>
+        <p class="split-body">
+            Data collection is minimised and strictly tailored to meet the objectives of providing a
+            personalised user-friendly experience and making suitable exercise & support
+            recommendations based oƯ our screener. We ensure that only essential data is
+            collected and used for these purposes.
+        </p>
+        <h2 class="split-subheading">Data Subject Rights</h2>
+        <p class="split-body">
+            Students and their guardians have the right to:
+        </p>
+        <p class="split-body">
+            - Access their personal data.<br>
+            - Request correction of incorrect data.<br>
+            - Request deletion of their personal data.<br>
+            - Restrict processing and object to processing (where applicable)<br>
+            - Withdraw consent at any time (where applicable). 
+        </p>
+        <h2 class="split-subheading">Risk Assessment and Mitigation</h2>
+        <p class="split-body">
+            We recognise potential risks such as unauthorised access and data breaches. To
+            mitigate these risks, we have implemented: 
+        </p>
+        <p class="split-body">
+            - Encryption of data during transmission and storage.<br>
+            - Strict access controls and authentication procedures.<br>
+            - Regular staff training on data protection.
+        </p>
+        <h2 class="split-subheading">Data Retention</h2>
+        <p class="split-body">
+            Personal data is retained only as long as necessary to fulfil the purposes for which it
+            was collected, including to satisfy any legal, accounting, or reporting requirements.
+            After this period, data is securely deleted or anonymised. We may delete accounts and
+            related data for clean-up purposes if an account has not been active for a long period of
+            time e.g. 2 years. Users reserve the right to request deletion of personal data on
+            request.
+        </p>
+        <h2 class="split-subheading">Data Storage Policy</h2>
+        <p class="split-body">
+            All personal data processed by our platform is stored exclusively within the European
+            Economic Area (EEA). Our data storage and processing partners, such as Hetzner, are
+            contracted under formal Data Processing Agreements (DPAs) in line with Article 28 of
+            the UK GDPR, ensuring strict controls and robust safeguards for personal data. No
+            personal data is transferred or processed outside the EEA unless it is subject to
+            adequate legal protections. We regularly review both our data management practices
+            and our partnerships for continued compliance with European data protection laws. We
+            also uphold all rights provided to data subjects under the GDPR, and further details
+            about our data processing agreements are available upon request.
+        </p>
+        <h2 class="split-subheading">Accountability and Data Governance</h2>
+        <p class="split-body">
+            Chatterdillo maintains rigorous data governance policies, ensuring accountability in
+            every aspect of data processing. We conduct regular audits to monitor and improve our
+            data handling practices.
+        </p>
+        <h2 class="split-subheading">Sharing of Personal Data</h2>
+        <p class="split-body">
+            We do not share personal identification data with third parties for their own use.
+            However, we engage carefully selected service providers, such as Hetzner, to store and
+            process data strictly on our behalf, under formal Data Processing Agreements that
+            ensure compliance with data protection laws. These providers do not access, use, or
+            disclose personal identification data for any other purpose.
+        </p>
+        <h2 class="split-subheading">Data Protection Officer</h2>
+        <p class="split-body">
+            We have appointed a Data Protection Officer (DPO) to oversee compliance with this
+            policy. The DPO can be contacted with any questions or concerns regarding our data
+            protection practices - <a href="/support/" class="text-link" target="_blank">contact us</a>
+        </p>
+        <h2 class="split-subheading">Changes to This Policy</h2>
+        <p class="split-body">
+            This policy may be updated periodically to reflect changes in our practices or regulatory
+            changes. Continued use of the Service after changes constitutes acceptance of the new terms.
+        </p>
+        <h2 class="split-subheading">Contacting Us</h2>
+        <p class="split-body">
+            For further information on our data protection practices or to exercise any of your rights,
+            please <a href="/support/" class="text-link" target="_blank">contact our support team</a>
+        </p>
+    </div>
+</div>
+{% comment %} final call to action footer {% endcomment %}
+<div class="footer-cta">
+    <h1 class="footer-heading">Let’s Build Language Skills Together!</h1>
+    {% comment %} <button class="footer-cta-button">Begin Your Free Assessment</button> {% endcomment %}
+    <a href="/account-setup/" class="cta-button main-button">Get Started</a>
+    <div class="footer-icon-wrapper">
+        <img src="{% static 'images/landing/arlo_waving.png' %}" alt="Chatterdillo icon" class="footer-icon">
+    </div>
+</div>
+{% endblock %}
