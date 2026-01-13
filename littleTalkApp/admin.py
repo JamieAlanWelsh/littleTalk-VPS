@@ -157,18 +157,37 @@ class JoinRequestAdmin(admin.ModelAdmin):
 @admin.register(ExerciseSession)
 class ExerciseSessionAdmin(admin.ModelAdmin):
     list_display = (
-        "learner",
+        "learner_uuid",
         "exercise_id",
         "difficulty_selected",
-        "started_at",
-        "completed_at",
+        "time_elapsed",
         "total_questions",
         "incorrect_answers",
+        "accuracy",
         "created_at",
     )
     list_filter = ("exercise_id", "difficulty_selected", "created_at")
-    search_fields = ("learner__name", "exercise_id")
+    search_fields = ("learner__learner_uuid", "exercise_id")
     readonly_fields = ("created_at",)
+
+    def learner_uuid(self, obj):
+        return obj.learner.learner_uuid
+    learner_uuid.short_description = "Learner UUID"
+    learner_uuid.admin_order_field = "learner__learner_uuid"
+
+    def time_elapsed(self, obj):
+        if obj.completed_at and obj.started_at:
+            elapsed = obj.completed_at - obj.started_at
+            return f"{elapsed.total_seconds():.2f}s"
+        return "N/A"
+    time_elapsed.short_description = "Time Elapsed"
+
+    def accuracy(self, obj):
+        if obj.total_questions > 0:
+            accuracy = (obj.total_questions - obj.incorrect_answers) / obj.total_questions * 100
+            return f"{accuracy:.2f}%"
+        return "N/A"
+    accuracy.short_description = "Accuracy"
 
 
 @admin.register(SchoolMembership)
