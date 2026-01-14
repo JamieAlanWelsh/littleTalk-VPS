@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from encrypted_model_fields.fields import EncryptedCharField
+from encrypted_model_fields.fields import EncryptedCharField, EncryptedTextField
 import uuid
 from django.utils import timezone
 from datetime import timedelta
@@ -308,10 +308,10 @@ class LogEntry(models.Model):
         blank=True,
         related_name="log_entries"
     )
-    title = models.CharField(max_length=70)
-    exercises_practised = models.TextField(blank=True, null=True, max_length=255)
-    goals = models.TextField(blank=True, null=True, max_length=255)
-    notes = models.TextField(blank=True, null=True, max_length=1000)
+    title = EncryptedCharField(max_length=70)
+    exercises_practised = EncryptedTextField(blank=True, null=True, max_length=255)
+    goals = EncryptedTextField(blank=True, null=True, max_length=255)
+    notes = EncryptedTextField(blank=True, null=True, max_length=1000)
     timestamp = models.DateTimeField(auto_now_add=True)  # Automatically set on creation
     deleted = models.BooleanField(default=False)
     created_by_role = models.CharField(max_length=20, blank=True, null=True)

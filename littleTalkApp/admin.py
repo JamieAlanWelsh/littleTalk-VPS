@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.models import Group, User
 from django.contrib.auth.admin import UserAdmin
-from .models import Profile, School, ParentProfile, Learner, JoinRequest, SchoolMembership, ExerciseSession
+from .models import Profile, School, ParentProfile, Learner, JoinRequest, SchoolMembership, ExerciseSession, LogEntry
 
 # unregister groups
 admin.site.unregister(Group)
@@ -74,6 +74,7 @@ class SchoolAdmin(admin.ModelAdmin):
     list_display = (
         "name",
         "member_count",
+        "active_learners_count",
         "is_licensed",
         "license_expires_at",
         "license_status",
@@ -98,6 +99,11 @@ class SchoolAdmin(admin.ModelAdmin):
         """Count of staff/members in this school"""
         return obj.memberships.filter(is_active=True).count()
     member_count.short_description = "Active Members"
+    
+    def active_learners_count(self, obj):
+        """Count of active (non-deleted) learners in this school"""
+        return obj.learners.filter(deleted=False).count()
+    active_learners_count.short_description = "Active Learners"
 
 
 @admin.register(ParentProfile)
@@ -138,6 +144,7 @@ class LearnerAdmin(admin.ModelAdmin):
         "assessment1",
         "cohort",
     )
+    search_fields = ("name", "user__username", "user__email", "learner_uuid")
 
 
 @admin.register(JoinRequest)
@@ -219,3 +226,17 @@ class SchoolMembershipAdmin(admin.ModelAdmin):
         return obj.profile.first_name or "—"
     profile_name.short_description = "Name"
     profile_name.admin_order_field = "profile__first_name"
+
+
+@admin.register(LogEntry)
+class LogEntryAdmin(admin.ModelAdmin):
+    """Admin interface for LogEntry with decryption view"""
+    list_display = (
+        "id",
+        "title",
+        "user",
+        "created_by_role",
+        "timestamp",
+        "deleted",
+    )
+    list_filter = ("created_by_role", "timestamp", "deleted", "school")
