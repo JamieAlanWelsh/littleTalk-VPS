@@ -167,6 +167,7 @@ class JoinRequestAdmin(admin.ModelAdmin):
 class ExerciseSessionAdmin(admin.ModelAdmin):
     list_display = (
         "learner_uuid",
+        "school_name",
         "exercise_id",
         "difficulty_selected",
         "time_elapsed",
@@ -175,7 +176,7 @@ class ExerciseSessionAdmin(admin.ModelAdmin):
         "accuracy",
         "created_at",
     )
-    list_filter = ("exercise_id", "difficulty_selected", "created_at")
+    list_filter = ("exercise_id", "learner__school", "created_at")
     search_fields = ("learner__learner_uuid", "exercise_id")
     readonly_fields = ("created_at",)
 
@@ -183,6 +184,11 @@ class ExerciseSessionAdmin(admin.ModelAdmin):
         return obj.learner.learner_uuid
     learner_uuid.short_description = "Learner UUID"
     learner_uuid.admin_order_field = "learner__learner_uuid"
+
+    def school_name(self, obj):
+        return obj.learner.school.name if obj.learner.school else "—"
+    school_name.short_description = "School"
+    school_name.admin_order_field = "learner__school__name"
 
     def time_elapsed(self, obj):
         if obj.completed_at and obj.started_at:
