@@ -29,7 +29,7 @@
                 {% for item in staff_profiles %}
                     {% with profile=item.profile role=item.role %}
                     <tr>
-                        <td title="{{ profile.first_name }}">{{ profile.first_name }}</td>
+                        <td title="{{ profile.user.first_name }}">{{ profile.user.first_name }}</td>
                         <td title="{{ profile.user.email }}">{{ profile.user.email }}</td>
                         <td title="{{ role|capfirst }}">
                             {% if current_user_is_admin_or_manager %}
