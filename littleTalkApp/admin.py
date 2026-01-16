@@ -141,9 +141,11 @@ class LearnerAdmin(admin.ModelAdmin):
         "recommendation_level",
         "deleted",
         "date_of_birth",
+        "age_group",
         "assessment1",
         "cohort",
     )
+    list_filter = ("age_group", "deleted", "school")
     search_fields = ("name", "user__username", "user__email", "learner_uuid")
 
 
