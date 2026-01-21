@@ -1,17 +1,22 @@
 from django import forms
-from django.contrib.auth.models import User
-from .models import Learner
-from .models import Cohort
-from .models import StaffInvite
-from .models import Role
-from .models import JoinRequest
-from .models import School
-from .models import ParentAccessToken
+from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import AuthenticationForm
-from .models import LogEntry
+from datetime import date
 import re
 from django.core.exceptions import ValidationError
-from datetime import date
+
+from .models import (
+    Cohort,
+    JoinRequest,
+    Learner,
+    LogEntry,
+    ParentAccessToken,
+    Role,
+    School,
+    StaffInvite,
+)
+
+User = get_user_model()
 
 
 class SchoolSignupForm(forms.Form):
@@ -21,8 +26,8 @@ class SchoolSignupForm(forms.Form):
     school_name = forms.CharField(label="School name", max_length=255)
 
     def clean_email(self):
-        email = self.cleaned_data["email"]
-        if User.objects.filter(username=email).exists():
+        email = self.cleaned_data["email"].lower()
+        if User.objects.filter(email=email).exists():
             raise forms.ValidationError("An account with this email already exists.")
         return email
 
@@ -51,6 +56,8 @@ def sanity_check_name(value):
 
 
 class CustomAuthenticationForm(AuthenticationForm):
+    username = forms.EmailField(label="Email", widget=forms.EmailInput())
+
     def clean_username(self):
         return self.cleaned_data["username"].lower()
 
@@ -58,6 +65,7 @@ class CustomAuthenticationForm(AuthenticationForm):
 class UserRegistrationForm(forms.ModelForm):
     password1 = forms.CharField(widget=forms.PasswordInput, label="Password")
     password2 = forms.CharField(widget=forms.PasswordInput, label="Confirm Password")
+    first_name = forms.CharField(label="Your name", max_length=100)
     learner_name = forms.CharField(label="Learner's Name", required=True)
     learner_dob = forms.DateField(
         label="Learner DOB",
@@ -84,11 +92,11 @@ class UserRegistrationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ["email", "first_name"]
+        fields = ["email"]
 
     def clean_email(self):
         email = self.cleaned_data.get("email", "").lower()
-        if User.objects.filter(username=email).exists():
+        if User.objects.filter(email=email).exists():
             raise ValidationError("An account with this email already exists.")
         return email
 
@@ -135,7 +143,7 @@ class ParentSignupForm(forms.Form):
     )
 
     def clean_email(self):
-        email = self.cleaned_data["email"]
+        email = self.cleaned_data["email"].lower()
         if User.objects.filter(email=email).exists():
             raise forms.ValidationError("An account with this email already exists.")
         return email
@@ -207,12 +215,6 @@ class LearnerForm(forms.ModelForm):
         return dob
 
 
-# class WaitingListForm(forms.ModelForm):
-#     class Meta:
-#         model = WaitingList
-#         fields = ['email']
-
-
 class LogEntryForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         user = kwargs.pop("user", None)
@@ -264,26 +266,36 @@ class LogEntryForm(forms.ModelForm):
         }
 
 
-# SETTINGS FORMS
-
-
 class UserUpdateForm(forms.ModelForm):
+    first_name = forms.CharField(
+        max_length=100,
+        widget=forms.TextInput(
+            attrs={"class": "form-control", "placeholder": "Your Name"}
+        ),
+    )
+
     class Meta:
         model = User
-        fields = ["first_name", "email"]
+        fields = ["email"]
         widgets = {
-            "first_name": forms.TextInput(
-                attrs={"class": "form-control", "placeholder": "Your Name"}
-            ),
             "email": forms.EmailInput(
                 attrs={"class": "form-control", "placeholder": "Your Email"}
             ),
         }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        profile = getattr(self.instance, "profile", None)
+        if profile:
+            self.fields["first_name"].initial = profile.first_name
+
     def clean_email(self):
-        email = self.cleaned_data.get("email")
-        if not email.strip():  # Prevent empty or whitespace-only input
+        email = self.cleaned_data.get("email", "").strip().lower()
+        if not email:
             raise forms.ValidationError("Email cannot be empty.")
+        qs = User.objects.filter(email=email).exclude(pk=self.instance.pk)
+        if qs.exists():
+            raise forms.ValidationError("An account with this email already exists.")
         return email
 
     def clean_first_name(self):
@@ -294,6 +306,17 @@ class UserUpdateForm(forms.ModelForm):
         no_emoji_validator(first_name)
         sanity_check_name(first_name)
         return first_name
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        if commit:
+            user.save()
+
+        profile = getattr(user, "profile", None)
+        if profile:
+            profile.first_name = self.cleaned_data.get("first_name", "").strip()
+            profile.save(update_fields=["first_name"])
+        return user
 
 
 class PasswordUpdateForm(forms.Form):
@@ -368,6 +391,34 @@ class AcceptInviteForm(forms.Form):
             raise forms.ValidationError("Password must be at least 6 characters.")
         return password
 
+
+class JoinRequestForm(forms.ModelForm):
+    class Meta:
+        model = JoinRequest
+        fields = ["full_name", "email", "school"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Optional: limit to active schools, alphabetize
+        self.fields["school"].queryset = School.objects.order_by("name")
+
+
+class ParentAccessCodeForm(forms.Form):
+    access_code = forms.CharField(max_length=12, label="Parent Access Code")
+
+    def clean_access_code(self):
+        code = self.cleaned_data.get("access_code", "").strip()
+        if code:
+            try:
+                token = ParentAccessToken.objects.get(token=code)
+                if token.is_expired():
+                    raise forms.ValidationError(
+                        "This access code is expired or already used."
+                    )
+                return token
+            except ParentAccessToken.DoesNotExist:
+                raise forms.ValidationError("Invalid access code.")
+        raise forms.ValidationError("Please enter a code.")
 
 class JoinRequestForm(forms.ModelForm):
     class Meta:

@@ -1,20 +1,71 @@
+from django import forms
 from django.contrib import admin
-from django.contrib.auth.models import Group, User
-from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth import get_user_model
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.contrib.auth.models import Group
 from .models import Profile, School, ParentProfile, Learner, JoinRequest, SchoolMembership, ExerciseSession, LogEntry
+
+User = get_user_model()
 
 # unregister groups
 admin.site.unregister(Group)
 
-# Unregister the default User admin and register custom one
-# This change was created so we can custom order users by date joined
-admin.site.unregister(User)
+class CustomUserCreationForm(forms.ModelForm):
+    password1 = forms.CharField(label="Password", widget=forms.PasswordInput)
+    password2 = forms.CharField(label="Confirm Password", widget=forms.PasswordInput)
+
+    class Meta:
+        model = User
+        fields = ("email", "is_staff", "is_superuser", "is_active", "groups", "user_permissions")
+
+    def clean_password2(self):
+        password1 = self.cleaned_data.get("password1")
+        password2 = self.cleaned_data.get("password2")
+        if password1 and password2 and password1 != password2:
+            raise forms.ValidationError("Passwords do not match")
+        return password2
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data["password1"])
+        if commit:
+            user.save()
+            self.save_m2m()
+        return user
+
+
+class CustomUserChangeForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ("email", "is_active", "is_staff", "is_superuser", "groups", "user_permissions")
 
 
 @admin.register(User)
-class CustomUserAdmin(UserAdmin):
-    list_filter = UserAdmin.list_filter + ('date_joined',)
-    ordering = ('-date_joined',)
+class CustomUserAdmin(BaseUserAdmin):
+    add_form = CustomUserCreationForm
+    form = CustomUserChangeForm
+    model = User
+    list_display = ("email", "is_staff", "is_superuser", "is_active", "date_joined")
+    list_filter = ("is_staff", "is_superuser", "is_active", "groups")
+    ordering = ("-date_joined",)
+    search_fields = ("email",)
+    readonly_fields = ("last_login", "date_joined")
+
+    fieldsets = (
+        (None, {"fields": ("email", "password")}),
+        ("Permissions", {"fields": ("is_active", "is_staff", "is_superuser", "groups", "user_permissions")}),
+        ("Important dates", {"fields": ("last_login", "date_joined")}),
+    )
+
+    add_fieldsets = (
+        (
+            None,
+            {
+                "classes": ("wide",),
+                "fields": ("email", "password1", "password2", "is_staff", "is_superuser", "is_active", "groups", "user_permissions"),
+            },
+        ),
+    )
 
 
 class SchoolMembershipInline(admin.TabularInline):
@@ -30,7 +81,7 @@ class SchoolMembershipInline(admin.TabularInline):
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ("user", "first_name", "legacy_school", "schools_with_roles", "legacy_role")
     list_filter = ("role", "schools", "user__date_joined")
-    search_fields = ("user__username", "user__email", "first_name")
+    search_fields = ("user__email", "first_name")
     autocomplete_fields = ("user",)
     filter_horizontal = ("schools",)
     inlines = [SchoolMembershipInline]
@@ -83,7 +134,7 @@ class SchoolAdmin(admin.ModelAdmin):
     )
     list_editable = ("is_licensed", "license_expires_at")
     list_filter = ("is_licensed", "license_expires_at", "created_at")
-    search_fields = ("name", "address", "created_by__email", "created_by__username")
+    search_fields = ("name", "address", "created_by__email")
     readonly_fields = ("created_at",)
 
     def license_status(self, obj):
@@ -146,7 +197,7 @@ class LearnerAdmin(admin.ModelAdmin):
         "cohort",
     )
     list_filter = ("age_group", "deleted", "school")
-    search_fields = ("name", "user__username", "user__email", "learner_uuid")
+    search_fields = ("name", "user__email", "learner_uuid")
 
 
 @admin.register(JoinRequest)
@@ -210,7 +261,7 @@ class SchoolMembershipAdmin(admin.ModelAdmin):
     """Manage profile-school-role relationships"""
     list_display = ("profile_user", "profile_name", "school", "role", "is_active", "created_at")
     list_filter = ("role", "is_active", "school")
-    search_fields = ("profile__user__username", "profile__user__email", "profile__first_name", "school__name")
+    search_fields = ("profile__user__email", "profile__first_name", "school__name")
     autocomplete_fields = ("profile", "school")
     list_editable = ("role", "is_active")
     readonly_fields = ("created_at", "updated_at")
@@ -226,9 +277,9 @@ class SchoolMembershipAdmin(admin.ModelAdmin):
     )
     
     def profile_user(self, obj):
-        return obj.profile.user.username
-    profile_user.short_description = "Username"
-    profile_user.admin_order_field = "profile__user__username"
+        return obj.profile.user.email
+    profile_user.short_description = "Email"
+    profile_user.admin_order_field = "profile__user__email"
     
     def profile_name(self, obj):
         return obj.profile.first_name or "—"

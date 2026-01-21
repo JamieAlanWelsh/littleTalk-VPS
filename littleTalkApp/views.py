@@ -17,8 +17,8 @@ logger = logging.getLogger(__name__)
 from django.contrib.auth import login, authenticate, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
+from django.contrib.auth import get_user_model
 
 # Third-party (DRF)
 from rest_framework.views import APIView
@@ -86,6 +86,8 @@ from .utilites import (
     send_parent_welcome_email,
 )
 
+User = get_user_model()
+
 
 def home(request):
     request.hide_sidebar = True
@@ -106,11 +108,7 @@ def school_signup(request):
             school_name = form.cleaned_data["school_name"]
 
             # Create user
-            user = User.objects.create_user(
-                username=email, email=email, password=password
-            )
-            user.first_name = full_name
-            user.save()
+            user = User.objects.create_user(email=email, password=password)
 
             # Create school
             school = School.objects.create(name=school_name, created_by=user)
@@ -787,7 +785,7 @@ def confirm_delete_learner(request, learner_uuid):
 
     if request.method == "POST":
         password = request.POST.get("password")
-        user = authenticate(request, username=request.user.username, password=password)
+        user = authenticate(request, username=request.user.email, password=password)
 
         if user is not None:
             # User authenticated, mark the learner as deleted
@@ -902,7 +900,7 @@ def cohort_delete(request, cohort_id):
 
     if request.method == "POST":
         password = request.POST.get("password")
-        user = authenticate(username=request.user.username, password=password)
+        user = authenticate(username=request.user.email, password=password)
 
         if user is not None:
             cohort.delete()
@@ -942,10 +940,7 @@ def change_user_details(request):
         )  # Ensure password form is included
 
         if user_form.is_valid():
-            user = user_form.save(commit=False)
-            user.username = user.email  # Keep username in sync with email
-            user.first_name = user.first_name
-            user.save()
+            user_form.save()
             messages.success(request, "Your details have been updated successfully!")
             return redirect("settings")
         else:
@@ -1097,7 +1092,7 @@ class UpdateLearnerExpAPIView(APIView):
         # Mark nonce as used, expire in 10 minutes
         cache.set(cache_key, True, 600)
 
-        logger.info(f"User {request.user.username} updated learner {learner.id}: exp +{new_exp}, exercises +{new_total_exercises}")
+        logger.info(f"User {request.user.email} updated learner {learner.id}: exp +{new_exp}, exercises +{new_total_exercises}")
 
         serializer = LearnerExpUpdateSerializer(learner)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -1190,7 +1185,7 @@ def accept_invite(request, token):
     if invite.used or invite.withdrawn or invite.expires_at < timezone.now():
         return redirect("/")
 
-    if User.objects.filter(username=invite.email).exists():
+    if User.objects.filter(email=invite.email).exists():
         return redirect("/")
 
     if request.method == "POST":
@@ -1200,11 +1195,7 @@ def accept_invite(request, token):
             password = form.cleaned_data["password"]
             full_name = form.cleaned_data["full_name"]
 
-            user = User.objects.create_user(
-                username=email, email=email, password=password
-            )
-            user.first_name = full_name
-            user.save()
+            user = User.objects.create_user(email=email, password=password)
 
             profile = Profile.objects.create(
                 user=user, first_name=full_name, school=invite.school
@@ -1527,10 +1518,8 @@ def parent_signup_view(request):
             email = form.cleaned_data["email"].lower()
             # set up user
             user = User.objects.create_user(
-                username=email,
                 email=email,
                 password=form.cleaned_data["password"],
-                first_name=form.cleaned_data["first_name"],
             )
 
             token = form.cleaned_data.get(
