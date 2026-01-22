@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
 from encrypted_model_fields.fields import (
     EncryptedCharField,
     EncryptedDateField,
@@ -16,7 +16,7 @@ class School(models.Model):
     name = models.CharField(max_length=255)
     address = models.TextField(blank=True, null=True)
     created_by = models.ForeignKey(
-        User, on_delete=models.SET_NULL, null=True, related_name="schools_created"
+        settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name="schools_created"
     )
     created_at = models.DateTimeField(auto_now_add=True)
     # Licensing fields
@@ -76,7 +76,7 @@ class AgeGroup:
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="profile")
     first_name = EncryptedCharField(max_length=50, blank=True, null=True)
     hear_about = models.CharField(max_length=50, blank=True, null=True)
     opted_in = models.BooleanField(default=False)
@@ -294,7 +294,7 @@ class Cohort(models.Model):
 
 
 class Learner(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="learners")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="learners")
     # profile = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True, blank=True, related_name='learners')
     school = models.ForeignKey(
         School, on_delete=models.CASCADE, related_name="learners", null=True, blank=True
@@ -355,7 +355,7 @@ class WaitingList(models.Model):
 
 class LogEntry(models.Model):
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="log_entries"
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="log_entries"
     )  # Link log entry to a user
     learner = models.ForeignKey(
         Learner,
@@ -396,7 +396,7 @@ class StaffInvite(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     expires_at = models.DateTimeField(default=default_expiry)
     sent_by = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
@@ -426,7 +426,7 @@ class JoinRequest(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     resolved_at = models.DateTimeField(null=True, blank=True)
     resolved_by = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         null=True,
         blank=True,
         on_delete=models.SET_NULL,

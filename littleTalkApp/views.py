@@ -14,11 +14,12 @@ import logging
 logger = logging.getLogger(__name__)
 
 # Django auth
-from django.contrib.auth import login, authenticate, update_session_auth_hash
+from django.contrib.auth import login, authenticate, update_session_auth_hash, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
+
+User = get_user_model()
 
 # Third-party (DRF)
 from rest_framework.views import APIView
@@ -106,7 +107,7 @@ def school_signup(request):
             school_name = form.cleaned_data["school_name"]
 
             # Create user
-            user = User.objects.create_user(
+            user = get_user_model().objects.create_user(
                 username=email, email=email, password=password
             )
             user.first_name = full_name
@@ -1190,7 +1191,7 @@ def accept_invite(request, token):
     if invite.used or invite.withdrawn or invite.expires_at < timezone.now():
         return redirect("/")
 
-    if User.objects.filter(username=invite.email).exists():
+    if get_user_model().objects.filter(username=invite.email).exists():
         return redirect("/")
 
     if request.method == "POST":
@@ -1200,7 +1201,7 @@ def accept_invite(request, token):
             password = form.cleaned_data["password"]
             full_name = form.cleaned_data["full_name"]
 
-            user = User.objects.create_user(
+            user = get_user_model().objects.create_user(
                 username=email, email=email, password=password
             )
             user.first_name = full_name
@@ -1526,7 +1527,7 @@ def parent_signup_view(request):
             # lowercase that email
             email = form.cleaned_data["email"].lower()
             # set up user
-            user = User.objects.create_user(
+            user = get_user_model().objects.create_user(
                 username=email,
                 email=email,
                 password=form.cleaned_data["password"],
@@ -1675,7 +1676,7 @@ def stripe_webhook(request):
         email = session.get("customer_email")
         customer_id = session.get("customer")
 
-        user = User.objects.filter(email=email).first()
+        user = get_user_model().objects.filter(email=email).first()
         if user and hasattr(user, "profile"):
             parent_profile = user.profile.parent_profile
             parent_profile.is_subscribed = True
