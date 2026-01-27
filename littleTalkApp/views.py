@@ -1195,7 +1195,11 @@ def accept_invite(request, token):
     if invite.used or invite.withdrawn or invite.expires_at < timezone.now():
         return redirect("/")
 
-    if get_user_model().objects.filter(username=invite.email).exists():
+    email_hash = hash_email(invite.email.lower())
+    if email_hash and get_user_model().objects.filter(email_hash=email_hash).first():
+        return redirect("/")
+    # Fallback for backward compatibility
+    if get_user_model().objects.filter(username=invite.email.lower()).exists():
         return redirect("/")
 
     if request.method == "POST":
@@ -1209,6 +1213,9 @@ def accept_invite(request, token):
                 username=email, email=email, password=password
             )
             user.first_name = full_name
+            # Add these lines:
+            user.email_encrypted = email
+            user.email_hash = hash_email(email)
             user.save()
 
             profile = Profile.objects.create(

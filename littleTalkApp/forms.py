@@ -24,7 +24,11 @@ class SchoolSignupForm(forms.Form):
     school_name = forms.CharField(label="School name", max_length=255)
 
     def clean_email(self):
-        email = self.cleaned_data["email"]
+        email = self.cleaned_data["email"].lower()
+        email_hash = hash_email(email)
+        # Check by email_hash first (new approach), then fall back to username for backward compatibility
+        if email_hash and get_user_model().objects.filter(email_hash=email_hash).exists():
+            raise forms.ValidationError("An account with this email already exists.")
         if get_user_model().objects.filter(username=email).exists():
             raise forms.ValidationError("An account with this email already exists.")
         return email
