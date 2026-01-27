@@ -269,6 +269,7 @@ class LogEntryAdmin(admin.ModelAdmin):
         "deleted",
     )
     list_filter = ("created_by_role", "timestamp", "deleted", "school")
+    exclude = ("learner",)
 
     def user_email(self, obj):
         """Display the encrypted email of the user who created the log entry"""
