@@ -298,8 +298,6 @@ class LogEntryForm(forms.ModelForm):
 
 
 # SETTINGS FORMS
-
-
 class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = User
@@ -314,9 +312,18 @@ class UserUpdateForm(forms.ModelForm):
         }
 
     def clean_email(self):
-        email = self.cleaned_data.get("email")
-        if not email.strip():  # Prevent empty or whitespace-only input
+        email = self.cleaned_data.get("email", "").lower()
+        if not email.strip():
             raise forms.ValidationError("Email cannot be empty.")
+        
+        # Check for duplicate email by email_hash
+        email_hash = hash_email(email)
+        if email_hash:
+            # Exclude current user from the check
+            existing = User.objects.filter(email_hash=email_hash).exclude(pk=self.instance.pk)
+            if existing.exists():
+                raise forms.ValidationError("An account with this email already exists.")
+        
         return email
 
     def clean_first_name(self):
@@ -327,6 +334,18 @@ class UserUpdateForm(forms.ModelForm):
         no_emoji_validator(first_name)
         sanity_check_name(first_name)
         return first_name
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        email = self.cleaned_data.get("email", "").lower()
+        
+        # Update email_encrypted and email_hash when email changes
+        user.email_encrypted = email
+        user.email_hash = hash_email(email)
+        
+        if commit:
+            user.save()
+        return user
 
 
 class PasswordUpdateForm(forms.Form):

@@ -948,8 +948,8 @@ def change_user_details(request):
 
         if user_form.is_valid():
             user = user_form.save(commit=False)
-            user.username = user.email  # Keep username in sync with email
-            user.first_name = user.first_name
+            # Keep username in sync with email
+            user.username = user.email.lower()
             user.save()
             messages.success(request, "Your details have been updated successfully!")
             return redirect("settings")
