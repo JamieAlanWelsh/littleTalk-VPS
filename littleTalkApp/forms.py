@@ -209,12 +209,6 @@ class LearnerForm(forms.ModelForm):
         return dob
 
 
-# class WaitingListForm(forms.ModelForm):
-#     class Meta:
-#         model = WaitingList
-#         fields = ['email']
-
-
 class LogEntryForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         user = kwargs.pop("user", None)
