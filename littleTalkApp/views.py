@@ -78,6 +78,7 @@ from .decorators import valid_game_required
 from collections import defaultdict
 import json
 import stripe
+import uuid
 
 from .utilites import (
     can_edit_or_delete_log,
@@ -107,9 +108,9 @@ def school_signup(request):
             full_name = form.cleaned_data["full_name"]
             school_name = form.cleaned_data["school_name"]
 
-            # Create user
+            # Create user with a random UUID username (no plaintext email)
             user = get_user_model().objects.create_user(
-                username=email, email=email, password=password
+                username=str(uuid.uuid4()), email=email, password=password
             )
             user.first_name = full_name
             # Populate encrypted email and hash
@@ -948,8 +949,6 @@ def change_user_details(request):
 
         if user_form.is_valid():
             user = user_form.save(commit=False)
-            # Keep username in sync with email
-            user.username = user.email.lower()
             user.save()
             messages.success(request, "Your details have been updated successfully!")
             return redirect("settings")
@@ -1207,7 +1206,7 @@ def accept_invite(request, token):
             full_name = form.cleaned_data["full_name"]
 
             user = get_user_model().objects.create_user(
-                username=email, email=email, password=password
+                username=str(uuid.uuid4()), email=email, password=password
             )
             user.first_name = full_name
             # Add these lines:
@@ -1536,7 +1535,7 @@ def parent_signup_view(request):
             email = form.cleaned_data["email"].lower()
             # set up user
             user = get_user_model().objects.create_user(
-                username=email,
+                username=str(uuid.uuid4()),
                 email=email,
                 password=form.cleaned_data["password"],
                 first_name=form.cleaned_data["first_name"],
