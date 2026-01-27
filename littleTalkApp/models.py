@@ -345,14 +345,6 @@ class Learner(models.Model):
         super().save(*args, **kwargs)
 
 
-class WaitingList(models.Model):
-    email = models.EmailField(unique=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.email
-
-
 class LogEntry(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="log_entries"

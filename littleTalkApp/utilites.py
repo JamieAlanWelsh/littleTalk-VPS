@@ -3,6 +3,15 @@ from django.template.loader import render_to_string
 from django.conf import settings
 from email.utils import formataddr
 from .models import Role
+import hashlib
+
+
+def hash_email(email):
+    """Generate SHA256 hash of an email address for authentication lookups."""
+    if not email:
+        return None
+    return hashlib.sha256(email.lower().encode()).hexdigest()
+
 
 # permissions
 

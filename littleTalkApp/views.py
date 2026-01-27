@@ -78,6 +78,7 @@ from .decorators import valid_game_required
 from collections import defaultdict
 import json
 import stripe
+import uuid
 
 from .utilites import (
     can_edit_or_delete_log,
@@ -85,6 +86,7 @@ from .utilites import (
     send_parent_access_email,
     send_school_welcome_email,
     send_parent_welcome_email,
+    hash_email,
 )
 
 
@@ -106,11 +108,14 @@ def school_signup(request):
             full_name = form.cleaned_data["full_name"]
             school_name = form.cleaned_data["school_name"]
 
-            # Create user
+            # Create user with a random UUID username (no plaintext email)
             user = get_user_model().objects.create_user(
-                username=email, email=email, password=password
+                username=str(uuid.uuid4()), email=email, password=password
             )
             user.first_name = full_name
+            # Populate encrypted email and hash
+            user.email_encrypted = email
+            user.email_hash = hash_email(email)
             user.save()
 
             # Create school
@@ -944,8 +949,6 @@ def change_user_details(request):
 
         if user_form.is_valid():
             user = user_form.save(commit=False)
-            user.username = user.email  # Keep username in sync with email
-            user.first_name = user.first_name
             user.save()
             messages.success(request, "Your details have been updated successfully!")
             return redirect("settings")
@@ -1191,7 +1194,8 @@ def accept_invite(request, token):
     if invite.used or invite.withdrawn or invite.expires_at < timezone.now():
         return redirect("/")
 
-    if get_user_model().objects.filter(username=invite.email).exists():
+    email_hash = hash_email(invite.email.lower())
+    if email_hash and get_user_model().objects.filter(email_hash=email_hash).first():
         return redirect("/")
 
     if request.method == "POST":
@@ -1202,9 +1206,12 @@ def accept_invite(request, token):
             full_name = form.cleaned_data["full_name"]
 
             user = get_user_model().objects.create_user(
-                username=email, email=email, password=password
+                username=str(uuid.uuid4()), email=email, password=password
             )
             user.first_name = full_name
+            # Add these lines:
+            user.email_encrypted = email
+            user.email_hash = hash_email(email)
             user.save()
 
             profile = Profile.objects.create(
@@ -1528,11 +1535,15 @@ def parent_signup_view(request):
             email = form.cleaned_data["email"].lower()
             # set up user
             user = get_user_model().objects.create_user(
-                username=email,
+                username=str(uuid.uuid4()),
                 email=email,
                 password=form.cleaned_data["password"],
                 first_name=form.cleaned_data["first_name"],
             )
+            # Populate encrypted email and hash
+            user.email_encrypted = email
+            user.email_hash = hash_email(email)
+            user.save()
 
             token = form.cleaned_data.get(
                 "access_code"
@@ -1676,12 +1687,21 @@ def stripe_webhook(request):
         email = session.get("customer_email")
         customer_id = session.get("customer")
 
-        user = get_user_model().objects.filter(email=email).first()
-        if user and hasattr(user, "profile"):
-            parent_profile = user.profile.parent_profile
-            parent_profile.is_subscribed = True
-            parent_profile.stripe_customer_id = customer_id
-            parent_profile.save()
+        # Look up user by email_hash for security
+        if email:
+            email_lower = email.lower()
+            email_hash = hash_email(email_lower)
+            
+            # Lookup by email_hash
+            user = None
+            if email_hash:
+                user = get_user_model().objects.filter(email_hash=email_hash).first()
+            
+            if user and hasattr(user, "profile"):
+                parent_profile = user.profile.parent_profile
+                parent_profile.is_subscribed = True
+                parent_profile.stripe_customer_id = customer_id
+                parent_profile.save()
 
     return HttpResponse(status=200)
 

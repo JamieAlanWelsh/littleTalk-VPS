@@ -17,9 +17,9 @@ class SchoolMembershipInline(admin.TabularInline):
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ("user", "first_name", "legacy_school", "schools_with_roles", "legacy_role")
+    list_display = ("user_email", "first_name", "legacy_school", "schools_with_roles", "legacy_role")
     list_filter = ("role", "schools", "user__date_joined")
-    search_fields = ("user__username", "user__email", "first_name")
+    search_fields = ("user__username", "user__email_encrypted", "first_name")
     autocomplete_fields = ("user",)
     filter_horizontal = ("schools",)
     inlines = [SchoolMembershipInline]
@@ -57,6 +57,12 @@ class ProfileAdmin(admin.ModelAdmin):
         return ", ".join([f"{m.school.name} ({m.get_role_display()})" for m in memberships])
     schools_with_roles.short_description = "Schools & Roles"
 
+    def user_email(self, obj):
+        """Display the encrypted email of the user"""
+        return obj.user.email_encrypted or "—"
+    user_email.short_description = "User Email"
+    user_email.admin_order_field = "user__email_encrypted"
+
 
 @admin.register(School)
 class SchoolAdmin(admin.ModelAdmin):
@@ -67,12 +73,12 @@ class SchoolAdmin(admin.ModelAdmin):
         "is_licensed",
         "license_expires_at",
         "license_status",
-        "created_by",
+        "created_by_email",
         "created_at",
     )
     list_editable = ("is_licensed", "license_expires_at")
     list_filter = ("is_licensed", "license_expires_at", "created_at")
-    search_fields = ("name", "address", "created_by__email", "created_by__username")
+    search_fields = ("name", "address", "created_by__email_encrypted", "created_by__username")
     readonly_fields = ("created_at",)
 
     def license_status(self, obj):
@@ -94,11 +100,19 @@ class SchoolAdmin(admin.ModelAdmin):
         return obj.learners.filter(deleted=False).count()
     active_learners_count.short_description = "Active Learners"
 
+    def created_by_email(self, obj):
+        """Display the encrypted email of the user who created this school"""
+        if obj.created_by:
+            return obj.created_by.email_encrypted or "—"
+        return "—"
+    created_by_email.short_description = "Created By"
+    created_by_email.admin_order_field = "created_by__email_encrypted"
+
 
 @admin.register(ParentProfile)
 class ParentProfileAdmin(admin.ModelAdmin):
     list_display = (
-        "profile",
+        "user_email",
         "trial_started_at",
         "trial_ends_at",
         "subscription_status",
@@ -116,26 +130,36 @@ class ParentProfileAdmin(admin.ModelAdmin):
             return "✅ Active"
         else:
             return "❌ Not Subscribed"
-
     subscription_status.short_description = "Sub Status"
+
+    def user_email(self, obj):
+        """Display the encrypted email of the user"""
+        return obj.profile.user.email_encrypted or "—"
+    user_email.short_description = "User Email"
+    user_email.admin_order_field = "user__email_encrypted"
 
 
 @admin.register(Learner)
 class LearnerAdmin(admin.ModelAdmin):
     list_display = (
-        "user",
+        "user_email",
         "school",
         "exp",
         "total_exercises",
         "recommendation_level",
         "deleted",
-        "date_of_birth",
         "age_group",
-        "assessment1",
         "cohort",
     )
     list_filter = ("age_group", "deleted", "school")
-    search_fields = ("name", "user__username", "user__email", "learner_uuid")
+    search_fields = ("user__username", "user__email_encrypted", "learner_uuid")
+    exclude = ("name", "date_of_birth")
+
+    def user_email(self, obj):
+        """Display the encrypted email of the user"""
+        return obj.user.email_encrypted or "—"
+    user_email.short_description = "User Email" 
+    user_email.admin_order_field = "user__email_encrypted"
 
 
 @admin.register(JoinRequest)
@@ -147,9 +171,17 @@ class JoinRequestAdmin(admin.ModelAdmin):
         "status",
         "created_at",
         "resolved_at",
-        "resolved_by",
+        "resolved_by_email",
     )
     search_fields = ("full_name", "email", "school")
+
+    def resolved_by_email(self, obj):
+        """Display the encrypted email of the user who resolved the join request"""
+        if obj.resolved_by:
+            return obj.resolved_by.email_encrypted or "—"
+        return "—"
+    resolved_by_email.short_description = "Resolved By"
+    resolved_by_email.admin_order_field = "resolved_by__email_encrypted"
 
 
 @admin.register(ExerciseSession)
@@ -199,7 +231,7 @@ class SchoolMembershipAdmin(admin.ModelAdmin):
     """Manage profile-school-role relationships"""
     list_display = ("profile_user", "profile_name", "school", "role", "is_active", "created_at")
     list_filter = ("role", "is_active", "school")
-    search_fields = ("profile__user__username", "profile__user__email", "profile__first_name", "school__name")
+    search_fields = ("profile__user__username", "profile__user__email_encrypted", "profile__first_name", "school__name")
     autocomplete_fields = ("profile", "school")
     list_editable = ("role", "is_active")
     readonly_fields = ("created_at", "updated_at")
@@ -231,9 +263,18 @@ class LogEntryAdmin(admin.ModelAdmin):
     list_display = (
         "id",
         "title",
-        "user",
+        "user_email",
         "created_by_role",
         "timestamp",
         "deleted",
     )
     list_filter = ("created_by_role", "timestamp", "deleted", "school")
+    exclude = ("learner",)
+
+    def user_email(self, obj):
+        """Display the encrypted email of the user who created the log entry"""
+        if obj.user:
+            return obj.user.email_encrypted or "—"
+        return "—"
+    user_email.short_description = "User Email"
+    user_email.admin_order_field = "user__email_encrypted"

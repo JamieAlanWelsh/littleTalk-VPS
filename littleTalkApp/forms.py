@@ -12,6 +12,7 @@ from .models import LogEntry
 import re
 from django.core.exceptions import ValidationError
 from datetime import date
+from .utilites import hash_email
 
 User = get_user_model()
 
@@ -23,8 +24,10 @@ class SchoolSignupForm(forms.Form):
     school_name = forms.CharField(label="School name", max_length=255)
 
     def clean_email(self):
-        email = self.cleaned_data["email"]
-        if get_user_model().objects.filter(username=email).exists():
+        email = self.cleaned_data["email"].lower()
+        email_hash = hash_email(email)
+        # Check by email_hash
+        if email_hash and get_user_model().objects.filter(email_hash=email_hash).exists():
             raise forms.ValidationError("An account with this email already exists.")
         return email
 
@@ -53,8 +56,38 @@ def sanity_check_name(value):
 
 
 class CustomAuthenticationForm(AuthenticationForm):
-    def clean_username(self):
-        return self.cleaned_data["username"].lower()
+    """
+    Custom authentication form that uses email_hash for secure user lookups.
+    """
+    def clean(self):
+        username = self.cleaned_data.get("username")
+        password = self.cleaned_data.get("password")
+
+        if username is not None and password:
+            # Hash the email input
+            email_hash = hash_email(username)
+            
+            # Find user by email_hash
+            if email_hash:
+                self.user_cache = User.objects.filter(email_hash=email_hash).first()
+                if self.user_cache:
+                    # Verify password
+                    if not self.user_cache.check_password(password):
+                        raise ValidationError(
+                            self.error_messages["invalid_login"],
+                            code="invalid_login",
+                            params={"username": self.username_field.verbose_name},
+                        )
+                    return self.cleaned_data
+            
+            # User not found or invalid credentials
+            raise ValidationError(
+                self.error_messages["invalid_login"],
+                code="invalid_login",
+                params={"username": self.username_field.verbose_name},
+            )
+
+        return self.cleaned_data
 
 
 class UserRegistrationForm(forms.ModelForm):
@@ -90,7 +123,9 @@ class UserRegistrationForm(forms.ModelForm):
 
     def clean_email(self):
         email = self.cleaned_data.get("email", "").lower()
-        if get_user_model().objects.filter(username=email).exists():
+        email_hash = hash_email(email)
+        # Check by email_hash
+        if email_hash and get_user_model().objects.filter(email_hash=email_hash).exists():
             raise ValidationError("An account with this email already exists.")
         return email
 
@@ -137,8 +172,10 @@ class ParentSignupForm(forms.Form):
     )
 
     def clean_email(self):
-        email = self.cleaned_data["email"]
-        if get_user_model().objects.filter(email=email).exists():
+        email = self.cleaned_data["email"].lower()
+        email_hash = hash_email(email)
+        # Check by email_hash
+        if email_hash and get_user_model().objects.filter(email_hash=email_hash).exists():
             raise forms.ValidationError("An account with this email already exists.")
         return email
 
@@ -209,12 +246,6 @@ class LearnerForm(forms.ModelForm):
         return dob
 
 
-# class WaitingListForm(forms.ModelForm):
-#     class Meta:
-#         model = WaitingList
-#         fields = ['email']
-
-
 class LogEntryForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         user = kwargs.pop("user", None)
@@ -267,8 +298,6 @@ class LogEntryForm(forms.ModelForm):
 
 
 # SETTINGS FORMS
-
-
 class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = User
@@ -283,9 +312,18 @@ class UserUpdateForm(forms.ModelForm):
         }
 
     def clean_email(self):
-        email = self.cleaned_data.get("email")
-        if not email.strip():  # Prevent empty or whitespace-only input
+        email = self.cleaned_data.get("email", "").lower()
+        if not email.strip():
             raise forms.ValidationError("Email cannot be empty.")
+        
+        # Check for duplicate email by email_hash
+        email_hash = hash_email(email)
+        if email_hash:
+            # Exclude current user from the check
+            existing = User.objects.filter(email_hash=email_hash).exclude(pk=self.instance.pk)
+            if existing.exists():
+                raise forms.ValidationError("An account with this email already exists.")
+        
         return email
 
     def clean_first_name(self):
@@ -296,6 +334,18 @@ class UserUpdateForm(forms.ModelForm):
         no_emoji_validator(first_name)
         sanity_check_name(first_name)
         return first_name
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        email = self.cleaned_data.get("email", "").lower()
+        
+        # Update email_encrypted and email_hash when email changes
+        user.email_encrypted = email
+        user.email_hash = hash_email(email)
+        
+        if commit:
+            user.save()
+        return user
 
 
 class PasswordUpdateForm(forms.Form):
