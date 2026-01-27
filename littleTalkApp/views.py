@@ -85,6 +85,7 @@ from .utilites import (
     send_parent_access_email,
     send_school_welcome_email,
     send_parent_welcome_email,
+    hash_email,
 )
 
 
@@ -111,6 +112,9 @@ def school_signup(request):
                 username=email, email=email, password=password
             )
             user.first_name = full_name
+            # Populate encrypted email and hash
+            user.email_encrypted = email
+            user.email_hash = hash_email(email)
             user.save()
 
             # Create school
@@ -1533,6 +1537,10 @@ def parent_signup_view(request):
                 password=form.cleaned_data["password"],
                 first_name=form.cleaned_data["first_name"],
             )
+            # Populate encrypted email and hash
+            user.email_encrypted = email
+            user.email_hash = hash_email(email)
+            user.save()
 
             token = form.cleaned_data.get(
                 "access_code"
@@ -1676,12 +1684,25 @@ def stripe_webhook(request):
         email = session.get("customer_email")
         customer_id = session.get("customer")
 
-        user = get_user_model().objects.filter(email=email).first()
-        if user and hasattr(user, "profile"):
-            parent_profile = user.profile.parent_profile
-            parent_profile.is_subscribed = True
-            parent_profile.stripe_customer_id = customer_id
-            parent_profile.save()
+        # Look up user by email_hash for security
+        if email:
+            email_lower = email.lower()
+            email_hash = hash_email(email_lower)
+            user = None
+            
+            # Try lookup by email_hash first (new approach)
+            if email_hash:
+                user = get_user_model().objects.filter(email_hash=email_hash).first()
+            
+            # Fallback to email lookup for backward compatibility
+            if not user:
+                user = get_user_model().objects.filter(email=email_lower).first()
+            
+            if user and hasattr(user, "profile"):
+                parent_profile = user.profile.parent_profile
+                parent_profile.is_subscribed = True
+                parent_profile.stripe_customer_id = customer_id
+                parent_profile.save()
 
     return HttpResponse(status=200)
 

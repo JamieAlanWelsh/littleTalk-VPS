@@ -12,6 +12,7 @@ from .models import LogEntry
 import re
 from django.core.exceptions import ValidationError
 from datetime import date
+from .utilites import hash_email
 
 User = get_user_model()
 
@@ -53,8 +54,51 @@ def sanity_check_name(value):
 
 
 class CustomAuthenticationForm(AuthenticationForm):
-    def clean_username(self):
-        return self.cleaned_data["username"].lower()
+    """
+    Custom authentication form that uses email_hash for user lookups instead of username.
+    This provides faster, more secure authentication while maintaining backward compatibility.
+    """
+    def clean(self):
+        username = self.cleaned_data.get("username")
+        password = self.cleaned_data.get("password")
+
+        if username is not None and password:
+            print('Starting authentication process.')
+            # Hash the email input
+            email_hash = hash_email(username)
+            
+            # Try to find user by email_hash first (new encrypted approach)
+            print('Attempting email_hash lookup for authentication.')
+            if email_hash:
+                self.user_cache = User.objects.filter(email_hash=email_hash).first()
+                if self.user_cache:
+                    # Verify password
+                    if not self.user_cache.check_password(password):
+                        raise ValidationError(
+                            self.error_messages["invalid_login"],
+                            code="invalid_login",
+                            params={"username": self.username_field.verbose_name},
+                        )
+                    return self.cleaned_data
+            
+            # Fallback: try username lookup for backward compatibility
+            print('Using fallback username lookup for authentication.')
+            self.user_cache = User.objects.filter(username=username.lower()).first()
+            if self.user_cache:
+                if not self.user_cache.check_password(password):
+                    raise ValidationError(
+                        self.error_messages["invalid_login"],
+                        code="invalid_login",
+                        params={"username": self.username_field.verbose_name},
+                    )
+            else:
+                raise ValidationError(
+                    self.error_messages["invalid_login"],
+                    code="invalid_login",
+                    params={"username": self.username_field.verbose_name},
+                )
+
+        return self.cleaned_data
 
 
 class UserRegistrationForm(forms.ModelForm):
@@ -90,6 +134,10 @@ class UserRegistrationForm(forms.ModelForm):
 
     def clean_email(self):
         email = self.cleaned_data.get("email", "").lower()
+        email_hash = hash_email(email)
+        # Check by email_hash first (new approach), then fall back to username for backward compatibility
+        if email_hash and get_user_model().objects.filter(email_hash=email_hash).exists():
+            raise ValidationError("An account with this email already exists.")
         if get_user_model().objects.filter(username=email).exists():
             raise ValidationError("An account with this email already exists.")
         return email
@@ -137,7 +185,11 @@ class ParentSignupForm(forms.Form):
     )
 
     def clean_email(self):
-        email = self.cleaned_data["email"]
+        email = self.cleaned_data["email"].lower()
+        email_hash = hash_email(email)
+        # Check by email_hash first (new approach), then fall back to email for backward compatibility
+        if email_hash and get_user_model().objects.filter(email_hash=email_hash).exists():
+            raise forms.ValidationError("An account with this email already exists.")
         if get_user_model().objects.filter(email=email).exists():
             raise forms.ValidationError("An account with this email already exists.")
         return email
