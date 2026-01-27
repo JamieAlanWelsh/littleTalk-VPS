@@ -1198,9 +1198,6 @@ def accept_invite(request, token):
     email_hash = hash_email(invite.email.lower())
     if email_hash and get_user_model().objects.filter(email_hash=email_hash).first():
         return redirect("/")
-    # Fallback for backward compatibility
-    if get_user_model().objects.filter(username=invite.email.lower()).exists():
-        return redirect("/")
 
     if request.method == "POST":
         form = AcceptInviteForm(request.POST)
@@ -1695,15 +1692,11 @@ def stripe_webhook(request):
         if email:
             email_lower = email.lower()
             email_hash = hash_email(email_lower)
-            user = None
             
-            # Try lookup by email_hash first (new approach)
+            # Lookup by email_hash
+            user = None
             if email_hash:
                 user = get_user_model().objects.filter(email_hash=email_hash).first()
-            
-            # Fallback to email lookup for backward compatibility
-            if not user:
-                user = get_user_model().objects.filter(email=email_lower).first()
             
             if user and hasattr(user, "profile"):
                 parent_profile = user.profile.parent_profile
