@@ -110,7 +110,7 @@ def school_signup(request):
 
             # Create user with a random UUID username (no plaintext email)
             user = get_user_model().objects.create_user(
-                username=str(uuid.uuid4()), email=email, password=password
+                username=str(uuid.uuid4()), password=password
             )
             # Populate encrypted email and hash
             user.email_encrypted = email
@@ -1204,7 +1204,7 @@ def accept_invite(request, token):
             full_name = form.cleaned_data["full_name"]
 
             user = get_user_model().objects.create_user(
-                username=str(uuid.uuid4()), email=email, password=password
+                username=str(uuid.uuid4()), password=password
             )
             # Add these lines:
             user.email_encrypted = email
@@ -1533,9 +1533,7 @@ def parent_signup_view(request):
             # set up user
             user = get_user_model().objects.create_user(
                 username=str(uuid.uuid4()),
-                email=email,
                 password=form.cleaned_data["password"],
-                first_name=form.cleaned_data["first_name"],
             )
             # Populate encrypted email and hash
             user.email_encrypted = email
