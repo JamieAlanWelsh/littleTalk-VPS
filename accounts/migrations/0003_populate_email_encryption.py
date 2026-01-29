@@ -22,37 +22,17 @@ def populate_email_encrypted_and_hash(apps, schema_editor):
     """
     User = apps.get_model('accounts', 'User')
     
-    total_users = User.objects.count()
     processed = 0
-    
-    # Process users in batches to avoid memory issues
-    batch_size = 100
-    users_to_update = []
     
     for user in User.objects.all():
         if user.email:
-            # The EncryptedEmailField will handle encryption during assignment
+            # Assign email to encrypted fields
             user.email_encrypted = user.email
             user.email_hash = hash_email(user.email)
-            users_to_update.append(user)
+            # CRITICAL: Use save() instead of bulk_update() to trigger encryption
+            # bulk_update() bypasses Django's field encryption logic
+            user.save(update_fields=['email_encrypted', 'email_hash'])
             processed += 1
-            
-            # Bulk update in batches
-            if len(users_to_update) >= batch_size:
-                User.objects.bulk_update(
-                    users_to_update,
-                    ['email_encrypted', 'email_hash'],
-                    batch_size=batch_size
-                )
-                users_to_update = []
-    
-    # Final batch
-    if users_to_update:
-        User.objects.bulk_update(
-            users_to_update,
-            ['email_encrypted', 'email_hash'],
-            batch_size=batch_size
-        )
     
     print(f"Successfully processed {processed} users")
 

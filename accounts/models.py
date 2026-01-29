@@ -9,10 +9,17 @@ class User(AbstractUser):
     Uses db_table = 'auth_user' to reuse the existing user table.
     
     Email encryption fields:
-    - email: Original email field (kept for backward compatibility during migration)
     - email_encrypted: EncryptedEmailField - stores encrypted email
     - email_hash: SHA256 hash of email for fast lookups (indexed)
+    
+    Note: email, first_name, and last_name columns from AbstractUser are
+    explicitly set to None to indicate they are not used (removed from DB).
     """
+    # Override AbstractUser fields to remove them
+    email = None
+    first_name = None
+    last_name = None
+    
     email_encrypted = EncryptedEmailField(blank=True, null=True)
     email_hash = models.CharField(
         max_length=64,

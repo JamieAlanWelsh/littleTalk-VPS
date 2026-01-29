@@ -112,7 +112,6 @@ def school_signup(request):
             user = get_user_model().objects.create_user(
                 username=str(uuid.uuid4()), email=email, password=password
             )
-            user.first_name = full_name
             # Populate encrypted email and hash
             user.email_encrypted = email
             user.email_hash = hash_email(email)
@@ -1208,7 +1207,6 @@ def accept_invite(request, token):
             user = get_user_model().objects.create_user(
                 username=str(uuid.uuid4()), email=email, password=password
             )
-            user.first_name = full_name
             # Add these lines:
             user.email_encrypted = email
             user.email_hash = hash_email(email)
@@ -1655,7 +1653,7 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 @login_required
 def create_checkout_session(request):
     checkout_session = stripe.checkout.Session.create(
-        customer_email=request.user.email,
+        customer_email=request.user.email_encrypted,
         payment_method_types=["card"],
         line_items=[
             {

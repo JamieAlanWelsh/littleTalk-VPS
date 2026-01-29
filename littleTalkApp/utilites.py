@@ -109,7 +109,7 @@ def send_parent_access_email(token, learner, email, request):
 
 def send_school_welcome_email(school, user):
     from_email = formataddr(("Chatterdillo Team", "noreply@chatterdillo.com"))
-    to_email = [user.email]
+    to_email = [user.email_encrypted]
 
     context = {
         "user": user,
@@ -130,7 +130,7 @@ def send_school_welcome_email(school, user):
 
 def send_parent_welcome_email(user):
     from_email = formataddr(("Chatterdillo Team", "noreply@chatterdillo.com"))
-    to_email = [user.email]
+    to_email = [user.email_encrypted]
 
     context = {
         "user": user,
