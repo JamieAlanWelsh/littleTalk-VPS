@@ -91,6 +91,8 @@ class CustomAuthenticationForm(AuthenticationForm):
 
 
 class UserRegistrationForm(forms.ModelForm):
+    email = forms.EmailField(required=True, label="Email")
+    first_name = forms.CharField(max_length=50, required=True, label="Your Name")
     password1 = forms.CharField(widget=forms.PasswordInput, label="Password")
     password2 = forms.CharField(widget=forms.PasswordInput, label="Confirm Password")
     learner_name = forms.CharField(label="Learner's Name", required=True)
@@ -119,7 +121,7 @@ class UserRegistrationForm(forms.ModelForm):
 
     class Meta:
         model = get_user_model()
-        fields = ["email", "first_name"]
+        fields = []
 
     def clean_email(self):
         email = self.cleaned_data.get("email", "").lower()
@@ -299,17 +301,31 @@ class LogEntryForm(forms.ModelForm):
 
 # SETTINGS FORMS
 class UserUpdateForm(forms.ModelForm):
+    first_name = forms.CharField(
+        max_length=50,
+        required=True,
+        widget=forms.TextInput(
+            attrs={"class": "form-control", "placeholder": "Your Name"}
+        ),
+    )
+    email = forms.EmailField(
+        required=True,
+        widget=forms.EmailInput(
+            attrs={"class": "form-control", "placeholder": "Your Email"}
+        ),
+    )
+
     class Meta:
         model = User
-        fields = ["first_name", "email"]
-        widgets = {
-            "first_name": forms.TextInput(
-                attrs={"class": "form-control", "placeholder": "Your Name"}
-            ),
-            "email": forms.EmailInput(
-                attrs={"class": "form-control", "placeholder": "Your Email"}
-            ),
-        }
+        fields = []
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Populate from encrypted sources
+        if self.instance and self.instance.pk:
+            self.initial['email'] = self.instance.email_encrypted or ''
+            if hasattr(self.instance, 'profile'):
+                self.initial['first_name'] = self.instance.profile.first_name or ''
 
     def clean_email(self):
         email = self.cleaned_data.get("email", "").lower()
@@ -338,6 +354,7 @@ class UserUpdateForm(forms.ModelForm):
     def save(self, commit=True):
         user = super().save(commit=False)
         email = self.cleaned_data.get("email", "").lower()
+        first_name = self.cleaned_data.get("first_name", "")
         
         # Update email_encrypted and email_hash when email changes
         user.email_encrypted = email
@@ -345,6 +362,10 @@ class UserUpdateForm(forms.ModelForm):
         
         if commit:
             user.save()
+            # Update profile first_name
+            if hasattr(user, 'profile'):
+                user.profile.first_name = first_name
+                user.profile.save()
         return user
 
 

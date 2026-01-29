@@ -947,8 +947,7 @@ def change_user_details(request):
         )  # Ensure password form is included
 
         if user_form.is_valid():
-            user = user_form.save(commit=False)
-            user.save()
+            user_form.save()
             messages.success(request, "Your details have been updated successfully!")
             return redirect("settings")
         else:
