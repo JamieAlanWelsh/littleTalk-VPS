@@ -31,7 +31,7 @@
         {% endif %}
 
         <small>Logged on: {{ log_entry.timestamp }}</small>
-        <small>Logged by: {{ log_entry.user.first_name }}, {{ log_entry.created_by_role|title }}</small>
+        <small>Logged by: {{ log_entry.user.profile.first_name }}, {{ log_entry.created_by_role|title }}</small>
     </div>
 
     <a href="{% url 'edit_log_entry' log_entry.id %}" class="btn btn--white btn--full btn--hover-font-color" style="margin-top: 20px;">

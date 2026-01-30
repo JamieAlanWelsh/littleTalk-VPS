@@ -110,9 +110,8 @@ def school_signup(request):
 
             # Create user with a random UUID username (no plaintext email)
             user = get_user_model().objects.create_user(
-                username=str(uuid.uuid4()), email=email, password=password
+                username=str(uuid.uuid4()), password=password
             )
-            user.first_name = full_name
             # Populate encrypted email and hash
             user.email_encrypted = email
             user.email_hash = hash_email(email)
@@ -948,8 +947,7 @@ def change_user_details(request):
         )  # Ensure password form is included
 
         if user_form.is_valid():
-            user = user_form.save(commit=False)
-            user.save()
+            user_form.save()
             messages.success(request, "Your details have been updated successfully!")
             return redirect("settings")
         else:
@@ -1206,9 +1204,8 @@ def accept_invite(request, token):
             full_name = form.cleaned_data["full_name"]
 
             user = get_user_model().objects.create_user(
-                username=str(uuid.uuid4()), email=email, password=password
+                username=str(uuid.uuid4()), password=password
             )
-            user.first_name = full_name
             # Add these lines:
             user.email_encrypted = email
             user.email_hash = hash_email(email)
@@ -1536,9 +1533,7 @@ def parent_signup_view(request):
             # set up user
             user = get_user_model().objects.create_user(
                 username=str(uuid.uuid4()),
-                email=email,
                 password=form.cleaned_data["password"],
-                first_name=form.cleaned_data["first_name"],
             )
             # Populate encrypted email and hash
             user.email_encrypted = email
@@ -1655,7 +1650,7 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 @login_required
 def create_checkout_session(request):
     checkout_session = stripe.checkout.Session.create(
-        customer_email=request.user.email,
+        customer_email=request.user.email_encrypted,
         payment_method_types=["card"],
         line_items=[
             {

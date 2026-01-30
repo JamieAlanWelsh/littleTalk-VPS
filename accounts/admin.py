@@ -8,12 +8,12 @@ class CustomUserAdmin(UserAdmin):
     """Custom User admin with encrypted email display"""
     
     # Override list_display to show email_encrypted instead of email
-    list_display = ('username', 'email_encrypted', 'first_name', 'last_name', 'is_staff', 'date_joined')
+    list_display = ('username', 'email_encrypted', 'is_staff', 'date_joined')
     
     # Add email_encrypted and email_hash to the fieldsets
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
-        ('Personal info', {'fields': ('first_name', 'last_name', 'email_encrypted', 'email_hash')}),
+        ('Personal info', {'fields': ('email_encrypted', 'email_hash')}),
         ('Permissions', {
             'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions'),
         }),
@@ -30,7 +30,7 @@ class CustomUserAdmin(UserAdmin):
     list_filter = ('is_staff', 'is_superuser', 'is_active', 'groups', 'date_joined')
     
     # Update search to use email_encrypted instead of email
-    search_fields = ('username', 'first_name', 'last_name', 'email_encrypted')
+    search_fields = ('username', 'email_encrypted')
     
     # Ordering by date_joined (newest first)
     ordering = ('-date_joined',)

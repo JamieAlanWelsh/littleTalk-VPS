@@ -1,4 +1,4 @@
-Hi {{ user.first_name }},
+Hi {{ user.profile.first_name }},
 
 Welcome to Chatterdillo!
 
