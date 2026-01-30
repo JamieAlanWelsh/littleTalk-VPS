@@ -28,6 +28,7 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated, BasePermission
 from rest_framework.authentication import SessionAuthentication
 from django.db.models import Q
+from django.db import models
 
 # Honeypot and rate limiting
 from honeypot.decorators import check_honeypot
@@ -1765,6 +1766,222 @@ def manage_subscription(request):
         return_url=request.build_absolute_uri("/profile/"),
     )
     return redirect(session.url)
+
+
+@login_required
+def learner_dashboard(request):
+    """
+    Progress dashboard showing charts for individual learner analytics.
+    Accessible by parents (own learners) and staff (school learners).
+    """
+    profile = request.user.profile
+    
+    # Get accessible learners based on role
+    if profile.is_parent():
+        accessible_learners = profile.parent_profile.learners.filter(deleted=False)
+    else:
+        user_school = profile.get_current_school(request)
+        if not user_school:
+            messages.error(request, "No school assigned to your profile.")
+            return redirect("profile")
+        accessible_learners = Learner.objects.filter(school=user_school, deleted=False)
+    
+    # Get selected learner from query param or session
+    learner_uuid = request.GET.get("learner")
+    selected_learner = None
+    
+    if learner_uuid:
+        try:
+            selected_learner = accessible_learners.get(learner_uuid=learner_uuid)
+        except Learner.DoesNotExist:
+            messages.error(request, "Learner not found or access denied.")
+    
+    # Fall back to session or first learner
+    if not selected_learner:
+        selected_learner_id = request.session.get("selected_learner_id")
+        if selected_learner_id:
+            try:
+                selected_learner = accessible_learners.get(id=selected_learner_id)
+            except Learner.DoesNotExist:
+                pass
+    
+    if not selected_learner and accessible_learners.exists():
+        selected_learner = accessible_learners.first()
+    
+    # Get list of exercises for filter dropdown
+    exercise_choices = [
+        {"id": "colourful_semantics", "name": "Colourful Semantics"},
+        {"id": "think_and_find", "name": "Think and Find"},
+        {"id": "concept_quest", "name": "Concept Quest"},
+        {"id": "categorisation", "name": "Categorisation"},
+        {"id": "story_train", "name": "Story Train"},
+    ]
+    
+    context = {
+        "learners": accessible_learners,
+        "selected_learner": selected_learner,
+        "exercise_choices": exercise_choices,
+    }
+    
+    return render(request, "dashboard/learner_dashboard.html", context)
+
+
+@login_required
+def learner_progress_data(request):
+    """
+    API endpoint returning JSON data for progress charts.
+    Query params:
+    - learner_uuid: UUID of learner (required)
+    - exercise_id: Filter by specific exercise (optional)
+    - date_start: Start date YYYY-MM-DD (default: 30 days ago)
+    - date_end: End date YYYY-MM-DD (default: today)
+    - metric: exp|exercises|accuracy|difficulty (default: exp)
+    """
+    from datetime import datetime, timedelta
+    from django.db.models import Count, Avg, Sum, FloatField
+    from django.db.models.functions import TruncDate
+    
+    profile = request.user.profile
+    learner_uuid = request.GET.get("learner_uuid")
+    
+    if not learner_uuid:
+        return JsonResponse({"error": "learner_uuid is required"}, status=400)
+    
+    # Verify access to learner
+    try:
+        if profile.is_parent():
+            learner = profile.parent_profile.learners.get(learner_uuid=learner_uuid, deleted=False)
+        else:
+            user_school = profile.get_current_school(request)
+            if not user_school:
+                return JsonResponse({"error": "No school assigned"}, status=403)
+            learner = Learner.objects.get(learner_uuid=learner_uuid, school=user_school, deleted=False)
+    except Learner.DoesNotExist:
+        return JsonResponse({"error": "Learner not found or access denied"}, status=404)
+    
+    # Parse date range (default to last 30 days)
+    date_end = request.GET.get("date_end")
+    date_start = request.GET.get("date_start")
+    
+    if date_end:
+        try:
+            date_end = datetime.strptime(date_end, "%Y-%m-%d").date()
+        except ValueError:
+            date_end = timezone.now().date()
+    else:
+        date_end = timezone.now().date()
+    
+    if date_start:
+        try:
+            date_start = datetime.strptime(date_start, "%Y-%m-%d").date()
+        except ValueError:
+            date_start = date_end - timedelta(days=30)
+    else:
+        date_start = date_end - timedelta(days=30)
+    
+    # Optional exercise filter
+    exercise_id = request.GET.get("exercise_id")
+    metric = request.GET.get("metric", "exp")
+    
+    # Query exercise sessions in date range
+    sessions = ExerciseSession.objects.filter(
+        learner=learner,
+        created_at__date__gte=date_start,
+        created_at__date__lte=date_end,
+    )
+    
+    if exercise_id and exercise_id != "all":
+        sessions = sessions.filter(exercise_id=exercise_id)
+    
+    # Aggregate by date
+    daily_data = sessions.annotate(
+        date=TruncDate('created_at')
+    ).values('date').annotate(
+        session_count=Count('id'),
+        total_questions_sum=Sum('total_questions'),
+        incorrect_answers_sum=Sum('incorrect_answers'),
+        avg_difficulty=Avg(
+            models.Case(
+                models.When(difficulty_selected='easy', then=models.Value(1)),
+                models.When(difficulty_selected='medium', then=models.Value(2)),
+                models.When(difficulty_selected='hard', then=models.Value(3)),
+                default=models.Value(2),
+                output_field=FloatField()
+            )
+        )
+    ).order_by('date')
+    
+    # Build response based on metric type
+    dates = []
+    values = []
+    
+    # Create a dict of daily data for easy lookup
+    daily_dict = {item['date']: item for item in daily_data}
+    
+    # For cumulative metrics (exp, exercises), we need all dates in range
+    # For point metrics (accuracy, difficulty), only include dates with data
+    if metric in ['exp', 'exercises']:
+        # Get starting values for cumulative metrics
+        prior_sessions = ExerciseSession.objects.filter(
+            learner=learner,
+            created_at__date__lt=date_start
+        )
+        if exercise_id and exercise_id != "all":
+            prior_sessions = prior_sessions.filter(exercise_id=exercise_id)
+        
+        cumulative_exp = prior_sessions.count() * 10
+        cumulative_exercises = prior_sessions.count()
+        
+        # Generate all dates in range for cumulative metrics
+        current_date = date_start
+        while current_date <= date_end:
+            dates.append(current_date.strftime("%Y-%m-%d"))
+            
+            day_data = daily_dict.get(current_date)
+            
+            if metric == "exp":
+                if day_data:
+                    cumulative_exp += day_data['session_count'] * 10
+                values.append(cumulative_exp)
+            elif metric == "exercises":
+                if day_data:
+                    cumulative_exercises += day_data['session_count']
+                values.append(cumulative_exercises)
+            
+            current_date += timedelta(days=1)
+    else:
+        # For point metrics (accuracy, difficulty), only include dates with data
+        # This allows the line to connect directly without gaps
+        for date_obj in sorted(daily_dict.keys()):
+            if date_obj < date_start or date_obj > date_end:
+                continue
+            
+            day_data = daily_dict[date_obj]
+            dates.append(date_obj.strftime("%Y-%m-%d"))
+            
+            if metric == "accuracy":
+                # Daily accuracy percentage
+                if day_data['total_questions_sum'] > 0:
+                    correct = day_data['total_questions_sum'] - day_data['incorrect_answers_sum']
+                    accuracy = (correct / day_data['total_questions_sum']) * 100
+                    values.append(round(accuracy, 1))
+            elif metric == "difficulty":
+                # Average difficulty level selected
+                if day_data['avg_difficulty'] is not None:
+                    values.append(round(day_data['avg_difficulty'], 2))
+    
+    # Build response
+    response_data = {
+        "dates": dates,
+        "values": values,
+        "metric": metric,
+        "learner_name": learner.name,
+        "exercise_id": exercise_id or "all",
+        "date_start": date_start.strftime("%Y-%m-%d"),
+        "date_end": date_end.strftime("%Y-%m-%d"),
+    }
+    
+    return JsonResponse(response_data)
 
 
 def terms_and_conditions(request):
