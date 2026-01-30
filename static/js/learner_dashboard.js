@@ -170,7 +170,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!hasData) {
                 setMessage("No sessions recorded for this range.");
             } else {
-                setMessage("Data updated.");
+                setMessage("");
             }
         } catch (error) {
             setMessage(error.message, true);
@@ -180,10 +180,12 @@ document.addEventListener("DOMContentLoaded", () => {
     setDefaultDates();
     fetchProgressData();
 
-    applyButton.addEventListener("click", (event) => {
-        event.preventDefault();
-        fetchProgressData();
-    });
+    if (applyButton) {
+        applyButton.addEventListener("click", (event) => {
+            event.preventDefault();
+            fetchProgressData();
+        });
+    }
 
     [learnerSelect, exerciseSelect, metricSelect].forEach((element) => {
         element.addEventListener("change", fetchProgressData);
