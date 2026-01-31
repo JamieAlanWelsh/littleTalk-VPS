@@ -37,14 +37,25 @@
                 </div>
 
                 <div class="filter-group">
-                    <label class="label" for="metric-select">Metric</label>
-                    <select id="metric-select" class="select">
-                        <option value="exp">Experience</option>
-                        <option value="exercises">Exercises Completed</option>
-                        <option value="accuracy">Accuracy (%)</option>
-                        <option value="difficulty">Difficulty Level</option>
-                        <option value="time_elapsed">Time to Complete (mins)</option>
-                    </select>
+                    <label class="label">Metrics</label>
+                    <div class="metric-checkboxes">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="metric-exercises" name="metric" value="exercises" checked>
+                            <label for="metric-exercises">Exercises Completed</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="metric-accuracy" name="metric" value="accuracy">
+                            <label for="metric-accuracy">Accuracy (%)</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="metric-difficulty" name="metric" value="difficulty">
+                            <label for="metric-difficulty">Difficulty Level</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="metric-time_elapsed" name="metric" value="time_elapsed">
+                            <label for="metric-time_elapsed">Time to Complete (mins)</label>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="filter-group">

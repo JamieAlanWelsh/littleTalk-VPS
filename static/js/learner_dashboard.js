@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     const learnerSelect = document.getElementById("learner-select");
     const exerciseSelect = document.getElementById("exercise-select");
-    const metricSelect = document.getElementById("metric-select");
+    const metricCheckboxes = document.querySelectorAll('input[name="metric"]');
     const dateRangeSelect = document.getElementById("date-range");
     const applyButton = document.getElementById("apply-filters");
     const messageEl = document.getElementById("dashboard-message");
@@ -16,15 +16,13 @@ document.addEventListener("DOMContentLoaded", () => {
     let progressChart = null;
 
     const metricLabels = {
-        exp: "Experience Over Time",
-        exercises: "Exercises Completed Over Time",
-        accuracy: "Accuracy Over Time",
-        difficulty: "Difficulty Level Over Time",
-        time_elapsed: "Time to Complete Over Time (mins)",
+        exercises: "Exercises Completed",
+        accuracy: "Accuracy (%)",
+        difficulty: "Difficulty Level",
+        time_elapsed: "Time to Complete (mins)",
     };
 
     const metricColors = {
-        exp: "#4A90E2",
         exercises: "#7B61FF",
         accuracy: "#00B894",
         difficulty: "#F39C12",
@@ -46,51 +44,81 @@ document.addEventListener("DOMContentLoaded", () => {
         messageEl.classList.toggle("success", !isError);
     }
 
-    function buildChart(labels, data, metric, maxDifficulty) {
-        const color = metricColors[metric] || "#4A90E2";
-
+    function buildChart(labels, metricsData) {
         if (progressChart) {
             progressChart.destroy();
         }
 
+        // If multiple metrics, normalize them to 0-100 for visual comparison
+        let normalizedMetricsData = metricsData;
+        if (metricsData.length > 1) {
+            normalizedMetricsData = metricsData.map((metricData) => {
+                const values = metricData.values;
+                const validValues = values.filter(v => v !== null);
+                
+                if (validValues.length === 0) {
+                    return metricData;
+                }
+                
+                const min = Math.min(...validValues);
+                const max = Math.max(...validValues);
+                const range = max - min || 1; // Avoid division by zero
+                
+                const normalizedValues = values.map(v => {
+                    if (v === null) return null;
+                    return ((v - min) / range) * 100;
+                });
+                
+                return {
+                    ...metricData,
+                    values: normalizedValues,
+                    originalValues: values,
+                    min,
+                    max,
+                };
+            });
+        }
+
+        // Build datasets for each selected metric
+        const datasets = [];
+        normalizedMetricsData.forEach((metricData) => {
+            const metric = metricData.metric;
+            const data = metricData.values;
+            const color = metricColors[metric] || "#4A90E2";
+
+            datasets.push({
+                label: metricLabels[metric] || "Progress",
+                data,
+                borderColor: color,
+                backgroundColor: `${color}33`,
+                fill: false,
+                tension: 0.35,
+                pointRadius: 2,
+                pointHoverRadius: 4,
+                spanGaps: true,
+                borderWidth: 2,
+            });
+        });
+
         const yAxisConfig = {
-            beginAtZero: metric !== "accuracy",
+            beginAtZero: true,
             ticks: {},
         };
-
-        if (metric === "accuracy") {
+        
+        // If multiple metrics, use normalized 0-100 scale
+        if (metricsData.length > 1) {
             yAxisConfig.min = 0;
             yAxisConfig.max = 100;
-        }
-
-        if (metric === "difficulty") {
-            yAxisConfig.min = 0;
-            if (typeof maxDifficulty === "number") {
-                yAxisConfig.max = maxDifficulty;
-            }
-        }
-
-        if (metric === "time_elapsed") {
-            yAxisConfig.min = 0;
+            yAxisConfig.ticks.callback = (value) => {
+                return value + "%";
+            };
         }
 
         progressChart = new Chart(chartCtx, {
             type: "line",
             data: {
                 labels,
-                datasets: [
-                    {
-                        label: metricLabels[metric] || "Progress",
-                        data,
-                        borderColor: color,
-                        backgroundColor: `${color}33`,
-                        fill: true,
-                        tension: 0.35,
-                        pointRadius: 2,
-                        pointHoverRadius: 4,
-                        spanGaps: true,
-                    },
-                ],
+                datasets,
             },
             options: {
                 responsive: true,
@@ -100,7 +128,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 },
                 plugins: {
                     legend: {
-                        display: false,
+                        display: true,
+                        position: "top",
                     },
                     tooltip: {
                         mode: "index",
@@ -118,7 +147,7 @@ document.addEventListener("DOMContentLoaded", () => {
     async function fetchProgressData() {
         const learnerUuid = learnerSelect.value;
         const exerciseId = exerciseSelect.value;
-        const metric = metricSelect.value;
+        const selectedMetrics = Array.from(metricCheckboxes).filter(cb => cb.checked).map(cb => cb.value);
         const dateRange = dateRangeSelect ? dateRangeSelect.value : "30";
 
         if (!learnerUuid) {
@@ -126,10 +155,15 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+        if (selectedMetrics.length === 0) {
+            setMessage("Please select at least one metric.", true);
+            return;
+        }
+
         const params = new URLSearchParams({
             learner_uuid: learnerUuid,
             exercise_id: exerciseId,
-            metric,
+            metrics: selectedMetrics.join(","),
             date_range: dateRange,
         });
 
@@ -143,13 +177,14 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             const data = await response.json();
 
-            chartTitle.textContent = metricLabels[metric] || "Progress";
+            const metricsText = selectedMetrics.map(m => metricLabels[m]).join(" vs ");
+            chartTitle.textContent = metricsText;
             chartSubtitle.textContent = `${data.date_start} to ${data.date_end}`;
 
-            buildChart(data.dates, data.values, metric, data.max_difficulty);
+            buildChart(data.dates, data.metrics_data);
 
-            const hasData = data.values.some(value => value !== null);
-            if (!hasData) {
+            const hasAnyData = data.metrics_data.some(md => md.values.some(v => v !== null));
+            if (!hasAnyData) {
                 setMessage("No sessions recorded for this range.");
             } else {
                 setMessage("");
@@ -169,7 +204,11 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    [learnerSelect, exerciseSelect, metricSelect, dateRangeSelect].forEach((element) => {
+    [learnerSelect, exerciseSelect, dateRangeSelect].forEach((element) => {
         element.addEventListener("change", fetchProgressData);
+    });
+
+    metricCheckboxes.forEach((checkbox) => {
+        checkbox.addEventListener("change", fetchProgressData);
     });
 });

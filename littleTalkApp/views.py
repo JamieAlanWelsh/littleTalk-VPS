@@ -1878,7 +1878,10 @@ def learner_progress_data(request):
     
     # Optional exercise filter
     exercise_id = request.GET.get("exercise_id")
-    metric = request.GET.get("metric", "exp")
+    metrics_param = request.GET.get("metrics", "exp")
+    metrics = [m.strip() for m in metrics_param.split(",") if m.strip()]
+    if not metrics:
+        metrics = ["exp"]
     
     # Query exercise sessions in date range
     sessions = ExerciseSession.objects.filter(
@@ -1910,79 +1913,90 @@ def learner_progress_data(request):
         max_value=Max(Cast('difficulty_selected', IntegerField()))
     )['max_value']
     
-    # Build response based on metric type
-    dates = []
-    values = []
-    
     # Create a dict of daily data for easy lookup
     daily_dict = {item['date']: item for item in daily_data}
     
-    # For cumulative metrics (exp, exercises), we need all dates in range
-    # For point metrics (accuracy, difficulty, time_elapsed), only include dates with data
-    if metric in ['exp', 'exercises']:
-        # Get starting values for cumulative metrics
-        prior_sessions = ExerciseSession.objects.filter(
-            learner=learner,
-            created_at__date__lt=date_start
-        )
-        if exercise_id and exercise_id != "all":
-            prior_sessions = prior_sessions.filter(exercise_id=exercise_id)
-        
-        cumulative_exp = prior_sessions.count() * 10
-        cumulative_exercises = prior_sessions.count()
-        
-        # Generate all dates in range for cumulative metrics
+    # Determine if we need all dates (for cumulative metrics) or only dates with data (for point metrics)
+    has_cumulative = any(m in metrics for m in ['exp', 'exercises'])
+    
+    dates = []
+    metrics_data = []
+    
+    if has_cumulative:
+        # For cumulative metrics, include all dates in range
         current_date = date_start
         while current_date <= date_end:
             dates.append(current_date.strftime("%Y-%m-%d"))
-            
-            day_data = daily_dict.get(current_date)
-            
-            if metric == "exp":
-                if day_data:
-                    cumulative_exp += day_data['session_count'] * 10
-                values.append(cumulative_exp)
-            elif metric == "exercises":
-                if day_data:
-                    cumulative_exercises += day_data['session_count']
-                values.append(cumulative_exercises)
-            
             current_date += timedelta(days=1)
     else:
-        # For point metrics (accuracy, difficulty), only include dates with data
-        # This allows the line to connect directly without gaps
+        # For point metrics, only include dates with data
         for date_obj in sorted(daily_dict.keys()):
             if date_obj < date_start or date_obj > date_end:
                 continue
-            
-            day_data = daily_dict[date_obj]
             dates.append(date_obj.strftime("%Y-%m-%d"))
+    
+    # Build values for each requested metric
+    for metric in metrics:
+        values = []
+        
+        if metric in ['exp', 'exercises']:
+            # Cumulative metrics
+            prior_sessions = ExerciseSession.objects.filter(
+                learner=learner,
+                created_at__date__lt=date_start
+            )
+            if exercise_id and exercise_id != "all":
+                prior_sessions = prior_sessions.filter(exercise_id=exercise_id)
             
-            if metric == "accuracy":
-                # Daily accuracy percentage
-                if day_data['total_questions_sum'] > 0:
-                    correct = day_data['total_questions_sum'] - day_data['incorrect_answers_sum']
-                    accuracy = (correct / day_data['total_questions_sum']) * 100
-                    values.append(round(accuracy, 1))
-            elif metric == "difficulty":
-                # Average difficulty level selected
-                if day_data['avg_difficulty'] is not None:
-                    values.append(round(day_data['avg_difficulty'], 2))
-            elif metric == "time_elapsed":
-                # Average time to complete in minutes
-                if day_data['avg_time_elapsed'] is not None:
-                    values.append(round(day_data['avg_time_elapsed'].total_seconds() / 60, 2))
+            cumulative_exp = prior_sessions.count() * 10
+            cumulative_exercises = prior_sessions.count()
+            
+            for date_str in dates:
+                date_obj = datetime.strptime(date_str, "%Y-%m-%d").date()
+                day_data = daily_dict.get(date_obj)
+                
+                if metric == "exp":
+                    if day_data:
+                        cumulative_exp += day_data['session_count'] * 10
+                    values.append(cumulative_exp)
+                elif metric == "exercises":
+                    if day_data:
+                        cumulative_exercises += day_data['session_count']
+                    values.append(cumulative_exercises)
+        else:
+            # Point metrics - only process dates with data
+            for date_str in dates:
+                date_obj = datetime.strptime(date_str, "%Y-%m-%d").date()
+                day_data = daily_dict.get(date_obj)
+                
+                if not day_data:
+                    continue
+                
+                if metric == "accuracy":
+                    if day_data['total_questions_sum'] > 0:
+                        correct = day_data['total_questions_sum'] - day_data['incorrect_answers_sum']
+                        accuracy = (correct / day_data['total_questions_sum']) * 100
+                        values.append(round(accuracy, 1))
+                elif metric == "difficulty":
+                    if day_data['avg_difficulty'] is not None:
+                        values.append(round(day_data['avg_difficulty'], 2))
+                elif metric == "time_elapsed":
+                    if day_data['avg_time_elapsed'] is not None:
+                        values.append(round(day_data['avg_time_elapsed'].total_seconds() / 60, 2))
+        
+        metrics_data.append({
+            "metric": metric,
+            "values": values,
+        })
     
     # Build response
     response_data = {
         "dates": dates,
-        "values": values,
-        "metric": metric,
+        "metrics_data": metrics_data,
         "learner_name": learner.name,
         "exercise_id": exercise_id or "all",
         "date_start": date_start.strftime("%Y-%m-%d"),
         "date_end": date_end.strftime("%Y-%m-%d"),
-        "max_difficulty": max_difficulty,
     }
     
     return JsonResponse(response_data)
