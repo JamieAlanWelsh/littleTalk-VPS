@@ -12,10 +12,10 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AddIndex(
             model_name='exercisesession',
-            index=models.Index(fields=['learner', 'created_at'], name='exercisesession_learner_created_idx'),
+            index=models.Index(fields=['learner', 'created_at'], name='exsess_lrnr_created_idx'),
         ),
         migrations.AddIndex(
             model_name='exercisesession',
-            index=models.Index(fields=['learner', 'exercise_id', 'created_at'], name='exercisesession_learner_exercise_idx'),
+            index=models.Index(fields=['learner', 'exercise_id', 'created_at'], name='exsess_lrnr_exercise_idx'),
         ),
     ]

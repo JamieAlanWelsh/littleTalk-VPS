@@ -490,5 +490,11 @@ class ExerciseSession(models.Model):
     attempts_per_question = models.JSONField()  # List of integers, e.g. [1, 2, 3] for attempts per question
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        indexes = [
+            models.Index(fields=['learner', 'created_at'], name='exsess_lrnr_created_idx'),
+            models.Index(fields=['learner', 'exercise_id', 'created_at'], name='exsess_lrnr_exercise_idx'),
+        ]
+
     def __str__(self):
         return f"{self.learner.name} - {self.exercise_id} ({self.completed_at})"
