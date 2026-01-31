@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let progressChart = null;
 
     const metricLabels = {
-        exercises: "Exercises Completed",
+        exercises: "Sessions Completed",
         accuracy: "Accuracy (%)",
         difficulty: "Difficulty Level",
         time_elapsed: "Time to Complete (mins)",

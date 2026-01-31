@@ -1918,18 +1918,27 @@ def learner_progress_data(request):
     
     # Determine if we need all dates (for cumulative metrics) or only dates with data (for point metrics)
     has_cumulative = any(m in metrics for m in ['exp', 'exercises'])
+    has_point_metrics = any(m in metrics for m in ['accuracy', 'difficulty', 'time_elapsed'])
     
     dates = []
     metrics_data = []
     
-    if has_cumulative:
-        # For cumulative metrics, include all dates in range
+    # When mixing cumulative and point metrics, or when filtering by exercise,
+    # only use dates that have data in daily_dict
+    if has_cumulative and (has_point_metrics or exercise_id):
+        # Use only dates with data
+        for date_obj in sorted(daily_dict.keys()):
+            if date_obj < date_start or date_obj > date_end:
+                continue
+            dates.append(date_obj.strftime("%Y-%m-%d"))
+    elif has_cumulative:
+        # For cumulative metrics alone, include all dates in range
         current_date = date_start
         while current_date <= date_end:
             dates.append(current_date.strftime("%Y-%m-%d"))
             current_date += timedelta(days=1)
     else:
-        # For point metrics, only include dates with data
+        # For point metrics only, only include dates with data
         for date_obj in sorted(daily_dict.keys()):
             if date_obj < date_start or date_obj > date_end:
                 continue
