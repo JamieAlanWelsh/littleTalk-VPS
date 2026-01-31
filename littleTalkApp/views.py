@@ -1838,7 +1838,7 @@ def learner_progress_data(request):
     - metric: exp|exercises|accuracy|difficulty (default: exp)
     """
     from datetime import datetime, timedelta
-    from django.db.models import Count, Avg, Sum, FloatField, IntegerField, Max
+    from django.db.models import Count, Avg, Sum, FloatField, IntegerField, Max, ExpressionWrapper, DurationField
     from django.db.models.functions import TruncDate, Cast
     
     profile = request.user.profile
@@ -1898,6 +1898,12 @@ def learner_progress_data(request):
         total_questions_sum=Sum('total_questions'),
         incorrect_answers_sum=Sum('incorrect_answers'),
         avg_difficulty=Avg(Cast('difficulty_selected', IntegerField())),
+        avg_time_elapsed=Avg(
+            ExpressionWrapper(
+                models.F('completed_at') - models.F('started_at'),
+                output_field=DurationField(),
+            )
+        ),
     ).order_by('date')
 
     max_difficulty = sessions.aggregate(
@@ -1912,7 +1918,7 @@ def learner_progress_data(request):
     daily_dict = {item['date']: item for item in daily_data}
     
     # For cumulative metrics (exp, exercises), we need all dates in range
-    # For point metrics (accuracy, difficulty), only include dates with data
+    # For point metrics (accuracy, difficulty, time_elapsed), only include dates with data
     if metric in ['exp', 'exercises']:
         # Get starting values for cumulative metrics
         prior_sessions = ExerciseSession.objects.filter(
@@ -1962,6 +1968,10 @@ def learner_progress_data(request):
                 # Average difficulty level selected
                 if day_data['avg_difficulty'] is not None:
                     values.append(round(day_data['avg_difficulty'], 2))
+            elif metric == "time_elapsed":
+                # Average time to complete in minutes
+                if day_data['avg_time_elapsed'] is not None:
+                    values.append(round(day_data['avg_time_elapsed'].total_seconds() / 60, 2))
     
     # Build response
     response_data = {

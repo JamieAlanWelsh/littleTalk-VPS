@@ -20,6 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
         exercises: "Exercises Completed Over Time",
         accuracy: "Accuracy Over Time",
         difficulty: "Difficulty Level Over Time",
+        time_elapsed: "Time to Complete Over Time (mins)",
     };
 
     const metricColors = {
@@ -27,6 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
         exercises: "#7B61FF",
         accuracy: "#00B894",
         difficulty: "#F39C12",
+        time_elapsed: "#E67E22",
     };
 
     function setDefaultDates() {
@@ -66,6 +68,10 @@ document.addEventListener("DOMContentLoaded", () => {
             if (typeof maxDifficulty === "number") {
                 yAxisConfig.max = maxDifficulty;
             }
+        }
+
+        if (metric === "time_elapsed") {
+            yAxisConfig.min = 0;
         }
 
         progressChart = new Chart(chartCtx, {
