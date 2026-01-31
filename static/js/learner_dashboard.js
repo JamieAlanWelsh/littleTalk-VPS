@@ -49,6 +49,9 @@ document.addEventListener("DOMContentLoaded", () => {
             progressChart.destroy();
         }
 
+        // Parse date strings into Date objects
+        const dateObjects = labels.map(label => new Date(label));
+
         // If multiple metrics, normalize them to 0-100 for visual comparison
         let normalizedMetricsData = metricsData;
         if (metricsData.length > 1) {
@@ -79,12 +82,18 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
 
-        // Build datasets for each selected metric
+        // Build datasets for each selected metric with {x, y} format for time scale
         const datasets = [];
         normalizedMetricsData.forEach((metricData) => {
             const metric = metricData.metric;
-            const data = metricData.values;
+            const values = metricData.values;
             const color = metricColors[metric] || "#4A90E2";
+
+            // Convert to {x: Date, y: value} format
+            const data = dateObjects.map((date, i) => ({
+                x: date,
+                y: values[i]
+            }));
 
             datasets.push({
                 label: metricLabels[metric] || "Progress",
@@ -117,13 +126,27 @@ document.addEventListener("DOMContentLoaded", () => {
         progressChart = new Chart(chartCtx, {
             type: "line",
             data: {
-                labels,
                 datasets,
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
                 scales: {
+                    x: {
+                        type: 'time',
+                        time: {
+                            displayFormats: {
+                                hour: 'MMM d, HH:mm',
+                                day: 'MMM d',
+                                week: 'MMM d',
+                                month: 'MMM yyyy'
+                            },
+                            tooltipFormat: 'PPp'
+                        },
+                        title: {
+                            display: false
+                        }
+                    },
                     y: yAxisConfig,
                 },
                 plugins: {
