@@ -44,13 +44,13 @@ document.addEventListener("DOMContentLoaded", () => {
         messageEl.classList.toggle("success", !isError);
     }
 
-    function buildChart(timestamps, metricsData) {
+    function buildChart(labels, metricsData) {
         if (progressChart) {
             progressChart.destroy();
         }
 
-        // Parse ISO timestamp strings into Date objects
-        const dateObjects = timestamps.map(ts => new Date(ts));
+        // Parse date strings into Date objects
+        const dateObjects = labels.map(label => new Date(label));
 
         // If multiple metrics, normalize them to 0-100 for visual comparison
         let normalizedMetricsData = metricsData;
@@ -202,9 +202,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const metricsText = selectedMetrics.map(m => metricLabels[m]).join(" vs ");
             chartTitle.textContent = metricsText;
-            chartSubtitle.textContent = `${data.date_start} to ${data.date_end} (${data.session_count} sessions)`;
+            chartSubtitle.textContent = `${data.date_start} to ${data.date_end}`;
 
-            buildChart(data.timestamps, data.metrics_data);
+            buildChart(data.dates, data.metrics_data);
 
             const hasAnyData = data.metrics_data.some(md => md.values.some(v => v !== null));
             if (!hasAnyData) {
