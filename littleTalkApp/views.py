@@ -1810,11 +1810,11 @@ def learner_dashboard(request):
     
     # Get list of exercises for filter dropdown
     exercise_choices = [
-        {"id": "colourful_semantics", "name": "Colourful Semantics"},
-        {"id": "think_and_find", "name": "Think and Find"},
-        {"id": "concept_quest", "name": "Concept Quest"},
-        {"id": "categorisation", "name": "Categorisation"},
-        {"id": "story_train", "name": "Story Train"},
+        {"id": "Colourful Semantics", "name": "Colourful Semantics"},
+        {"id": "Think and Find", "name": "Think and Find"},
+        {"id": "Concept Quest", "name": "Concept Quest"},
+        {"id": "Categorisation", "name": "Categorisation"},
+        {"id": "Story Train", "name": "Story Train"},
     ]
     
     context = {
