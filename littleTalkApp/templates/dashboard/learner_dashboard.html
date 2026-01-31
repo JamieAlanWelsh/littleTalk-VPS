@@ -47,13 +47,13 @@
                 </div>
 
                 <div class="filter-group">
-                    <label class="label" for="date-start">Start Date</label>
-                    <input id="date-start" type="date" class="input">
-                </div>
-
-                <div class="filter-group">
-                    <label class="label" for="date-end">End Date</label>
-                    <input id="date-end" type="date" class="input">
+                    <label class="label" for="date-range">Date Range</label>
+                    <select id="date-range" class="select">
+                        <option value="all">All Time</option>
+                        <option value="7">Last 7 Days</option>
+                        <option value="30" selected>Last 30 Days</option>
+                        <option value="90">Last 90 Days</option>
+                    </select>
                 </div>
             </div>
 

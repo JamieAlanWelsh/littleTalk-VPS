@@ -2,8 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const learnerSelect = document.getElementById("learner-select");
     const exerciseSelect = document.getElementById("exercise-select");
     const metricSelect = document.getElementById("metric-select");
-    const dateStartInput = document.getElementById("date-start");
-    const dateEndInput = document.getElementById("date-end");
+    const dateRangeSelect = document.getElementById("date-range");
     const applyButton = document.getElementById("apply-filters");
     const messageEl = document.getElementById("dashboard-message");
     const chartTitle = document.getElementById("chart-title");
@@ -31,15 +30,8 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     function setDefaultDates() {
-        const today = new Date();
-        const start = new Date();
-        start.setDate(today.getDate() - 30);
-
-        if (!dateEndInput.value) {
-            dateEndInput.value = today.toISOString().split("T")[0];
-        }
-        if (!dateStartInput.value) {
-            dateStartInput.value = start.toISOString().split("T")[0];
+        if (dateRangeSelect && !dateRangeSelect.value) {
+            dateRangeSelect.value = "30";
         }
     }
 
@@ -121,21 +113,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const learnerUuid = learnerSelect.value;
         const exerciseId = exerciseSelect.value;
         const metric = metricSelect.value;
-        const dateStart = dateStartInput.value;
-        const dateEnd = dateEndInput.value;
+        const dateRange = dateRangeSelect ? dateRangeSelect.value : "30";
 
         if (!learnerUuid) {
             setMessage("Please select a learner.", true);
-            return;
-        }
-
-        if (!dateStart || !dateEnd) {
-            setMessage("Please select a date range.", true);
-            return;
-        }
-
-        if (dateStart > dateEnd) {
-            setMessage("Start date must be before end date.", true);
             return;
         }
 
@@ -143,8 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
             learner_uuid: learnerUuid,
             exercise_id: exerciseId,
             metric,
-            date_start: dateStart,
-            date_end: dateEnd,
+            date_range: dateRange,
         });
 
         setMessage("Loading data...");
@@ -183,7 +163,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    [learnerSelect, exerciseSelect, metricSelect].forEach((element) => {
+    [learnerSelect, exerciseSelect, metricSelect, dateRangeSelect].forEach((element) => {
         element.addEventListener("change", fetchProgressData);
     });
 });

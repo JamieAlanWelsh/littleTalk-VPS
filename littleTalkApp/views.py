@@ -1859,25 +1859,22 @@ def learner_progress_data(request):
     except Learner.DoesNotExist:
         return JsonResponse({"error": "Learner not found or access denied"}, status=404)
     
-    # Parse date range (default to last 30 days)
-    date_end = request.GET.get("date_end")
-    date_start = request.GET.get("date_start")
-    
-    if date_end:
-        try:
-            date_end = datetime.strptime(date_end, "%Y-%m-%d").date()
-        except ValueError:
-            date_end = timezone.now().date()
+    # Parse date range preset (default to last 30 days)
+    date_range = request.GET.get("date_range", "30")
+    date_end = timezone.now().date()
+
+    if date_range == "all":
+        earliest_session = ExerciseSession.objects.filter(learner=learner).order_by("created_at").first()
+        if earliest_session:
+            date_start = earliest_session.created_at.date()
+        else:
+            date_start = date_end
     else:
-        date_end = timezone.now().date()
-    
-    if date_start:
         try:
-            date_start = datetime.strptime(date_start, "%Y-%m-%d").date()
+            days = int(date_range)
         except ValueError:
-            date_start = date_end - timedelta(days=30)
-    else:
-        date_start = date_end - timedelta(days=30)
+            days = 30
+        date_start = date_end - timedelta(days=days)
     
     # Optional exercise filter
     exercise_id = request.GET.get("exercise_id")
