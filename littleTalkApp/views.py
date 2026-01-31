@@ -1838,8 +1838,8 @@ def learner_progress_data(request):
     - metric: exp|exercises|accuracy|difficulty (default: exp)
     """
     from datetime import datetime, timedelta
-    from django.db.models import Count, Avg, Sum, FloatField
-    from django.db.models.functions import TruncDate
+    from django.db.models import Count, Avg, Sum, FloatField, IntegerField, Max
+    from django.db.models.functions import TruncDate, Cast
     
     profile = request.user.profile
     learner_uuid = request.GET.get("learner_uuid")
@@ -1900,16 +1900,12 @@ def learner_progress_data(request):
         session_count=Count('id'),
         total_questions_sum=Sum('total_questions'),
         incorrect_answers_sum=Sum('incorrect_answers'),
-        avg_difficulty=Avg(
-            models.Case(
-                models.When(difficulty_selected='easy', then=models.Value(1)),
-                models.When(difficulty_selected='medium', then=models.Value(2)),
-                models.When(difficulty_selected='hard', then=models.Value(3)),
-                default=models.Value(2),
-                output_field=FloatField()
-            )
-        )
+        avg_difficulty=Avg(Cast('difficulty_selected', IntegerField())),
     ).order_by('date')
+
+    max_difficulty = sessions.aggregate(
+        max_value=Max(Cast('difficulty_selected', IntegerField()))
+    )['max_value']
     
     # Build response based on metric type
     dates = []
@@ -1979,6 +1975,7 @@ def learner_progress_data(request):
         "exercise_id": exercise_id or "all",
         "date_start": date_start.strftime("%Y-%m-%d"),
         "date_end": date_end.strftime("%Y-%m-%d"),
+        "max_difficulty": max_difficulty,
     }
     
     return JsonResponse(response_data)

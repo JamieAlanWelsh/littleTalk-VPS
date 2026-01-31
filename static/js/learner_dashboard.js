@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
         messageEl.classList.toggle("success", !isError);
     }
 
-    function buildChart(labels, data, metric) {
+    function buildChart(labels, data, metric, maxDifficulty) {
         const color = metricColors[metric] || "#4A90E2";
 
         if (progressChart) {
@@ -70,14 +70,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         if (metric === "difficulty") {
-            yAxisConfig.min = 1;
-            yAxisConfig.max = 3;
-            yAxisConfig.ticks.callback = (value) => {
-                if (value === 1) return "Easy";
-                if (value === 2) return "Medium";
-                if (value === 3) return "Hard";
-                return value;
-            };
+            yAxisConfig.min = 0;
+            if (typeof maxDifficulty === "number") {
+                yAxisConfig.max = maxDifficulty;
+            }
         }
 
         progressChart = new Chart(chartCtx, {
@@ -164,7 +160,7 @@ document.addEventListener("DOMContentLoaded", () => {
             chartTitle.textContent = metricLabels[metric] || "Progress";
             chartSubtitle.textContent = `${data.date_start} to ${data.date_end}`;
 
-            buildChart(data.dates, data.values, metric);
+            buildChart(data.dates, data.values, metric, data.max_difficulty);
 
             const hasData = data.values.some(value => value !== null);
             if (!hasData) {
