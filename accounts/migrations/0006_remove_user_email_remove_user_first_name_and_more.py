@@ -6,7 +6,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("accounts", "0004_randomize_usernames"),
+        ("accounts", "0005_fix_encrypted_email_data"),
     ]
 
     operations = [
