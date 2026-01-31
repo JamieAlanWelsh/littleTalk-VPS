@@ -87,9 +87,6 @@
                     </div>
                 {% endif %}
             </div>
-            <div class="edit-learner-btn">
-                <a href="{% url 'learner_dashboard' %}?learner={{ selected_learner.learner_uuid }}" class="button">View Progress Dashboard</a>
-            </div>
             <!-- Edit Learner Button SCHOOL AND STANDALONE ONLY -->
             {% if request.user.profile.role != 'parent' or not selected_learner.school_id %}
                 <div class="edit-learner-btn">
