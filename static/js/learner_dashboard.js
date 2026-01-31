@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function setDefaultDates() {
         if (dateRangeSelect && !dateRangeSelect.value) {
-            dateRangeSelect.value = "30";
+            dateRangeSelect.value = "all";
         }
     }
 
@@ -148,7 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const learnerUuid = learnerSelect.value;
         const exerciseId = exerciseSelect.value;
         const selectedMetrics = Array.from(metricCheckboxes).filter(cb => cb.checked).map(cb => cb.value);
-        const dateRange = dateRangeSelect ? dateRangeSelect.value : "30";
+        const dateRange = dateRangeSelect ? dateRangeSelect.value : "all";
 
         if (!learnerUuid) {
             setMessage("Please select a learner.", true);
