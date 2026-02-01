@@ -196,6 +196,13 @@ document.addEventListener("DOMContentLoaded", () => {
             ticks: {},
         };
         
+        // Check if we're viewing difficulty metric for Colourful Semantics
+        const selectedMetrics = Array.from(metricCheckboxes).filter(cb => cb.checked).map(cb => cb.value);
+        const isColourfulSemanticsWithDifficulty = 
+            selectedMetrics.length === 1 && 
+            selectedMetrics[0] === "difficulty" && 
+            exerciseSelect.value === "Colourful Semantics";
+        
         // If multiple metrics, use normalized 0-100 scale
         if (metricsData.length > 1) {
             yAxisConfig.min = 0;
@@ -203,7 +210,40 @@ document.addEventListener("DOMContentLoaded", () => {
             yAxisConfig.ticks.callback = (value) => {
                 return value + "%";
             };
+        } else if (isColourfulSemanticsWithDifficulty) {
+            // Custom labels for Colourful Semantics difficulty levels
+            yAxisConfig.min = 0;
+            yAxisConfig.max = 50;
+            yAxisConfig.ticks.callback = (value) => {
+                if (value < 10) return "Subject";
+                if (value < 20) return "Verb";
+                if (value < 30) return "Subject+Verb";
+                if (value < 40) return "Subject+Verb+Object";
+                return "Subject+Verb+Object+Location";
+            };
+            yAxisConfig.ticks.stepSize = 10;
         }
+
+        const xAxisConfig = {
+            ticks: {
+                maxRotation: 0,
+                minRotation: 0,
+                callback: (value, index) => {
+                    const label = labels[value];
+                    if (!label) return "";
+                    
+                    // Show tick every 5th point or if it's the first/last
+                    const totalPoints = labels.length;
+                    const showFrequency = Math.max(1, Math.ceil(totalPoints / 10));
+                    
+                    if (value === 0 || value === totalPoints - 1 || value % showFrequency === 0) {
+                        // Extract just the date part (YYYY-MM-DD) from "YYYY-MM-DD HH:MM"
+                        return label.split(" ")[0];
+                    }
+                    return "";
+                },
+            },
+        };
 
         progressChart = new Chart(chartCtx, {
             type: "line",
@@ -215,6 +255,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 responsive: true,
                 maintainAspectRatio: false,
                 scales: {
+                    x: xAxisConfig,
                     y: yAxisConfig,
                 },
                 plugins: {
