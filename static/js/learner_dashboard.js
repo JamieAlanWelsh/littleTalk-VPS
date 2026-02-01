@@ -197,12 +197,10 @@ document.addEventListener("DOMContentLoaded", () => {
             ticks: {},
         };
         
-        // Check if we're viewing difficulty metric for Colourful Semantics
+        // Check if we're viewing difficulty metric for specific exercises
         const selectedMetrics = Array.from(metricCheckboxes).filter(cb => cb.checked).map(cb => cb.value);
-        const isColourfulSemanticsWithDifficulty = 
-            selectedMetrics.length === 1 && 
-            selectedMetrics[0] === "difficulty" && 
-            exerciseSelect.value === "Colourful Semantics";
+        const isDifficultyMetric = selectedMetrics.length === 1 && selectedMetrics[0] === "difficulty";
+        const exerciseId = exerciseSelect.value;
         
         // If multiple metrics, use normalized 0-100 scale
         if (metricsData.length > 1) {
@@ -211,7 +209,7 @@ document.addEventListener("DOMContentLoaded", () => {
             yAxisConfig.ticks.callback = (value) => {
                 return value + "%";
             };
-        } else if (isColourfulSemanticsWithDifficulty) {
+        } else if (isDifficultyMetric && exerciseId === "Colourful Semantics") {
             // Custom labels for Colourful Semantics difficulty levels
             yAxisConfig.min = 0;
             yAxisConfig.max = 50;
@@ -221,6 +219,39 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (value < 30) return "Subject+Verb";
                 if (value < 40) return "Subject+Verb+Object";
                 return "Subject+Verb+Object+Location";
+            };
+            yAxisConfig.ticks.stepSize = 10;
+        } else if (isDifficultyMetric && exerciseId === "Categorisation") {
+            // Custom labels for Categorisation difficulty levels
+            yAxisConfig.min = 10;
+            yAxisConfig.max = 40;
+            yAxisConfig.ticks.callback = (value) => {
+                if (value < 20) return "2 Categories";
+                if (value < 30) return "3 Categories";
+                return "4 Categories";
+            };
+            yAxisConfig.ticks.stepSize = 10;
+        } else if (isDifficultyMetric && exerciseId === "Think and Find") {
+            // Custom labels for Think and Find difficulty levels
+            yAxisConfig.min = 10;
+            yAxisConfig.max = 40;
+            yAxisConfig.ticks.callback = (value) => {
+                if (value <= 10) return "2 options";
+                if (value <= 20) return "3 options";
+                if (value <= 30) return "4 options";
+                return "5 options";
+            };
+            yAxisConfig.ticks.stepSize = 10;
+        } else if (isDifficultyMetric && exerciseId === "Concept Quest") {
+            // Custom labels for Concept Quest difficulty levels
+            yAxisConfig.min = 0;
+            yAxisConfig.max = 50;
+            yAxisConfig.ticks.callback = (value) => {
+                if (value < 10) return "Big";
+                if (value < 20) return "Small";
+                if (value < 30) return "Short";
+                if (value < 40) return "Long";
+                return "Tall";
             };
             yAxisConfig.ticks.stepSize = 10;
         }
