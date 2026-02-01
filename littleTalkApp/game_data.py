@@ -42,7 +42,7 @@ GAME_DESCRIPTIONS = {
             'title': 'Categorisation',
             'target': 'Sorting into Groups',
             'quote': '“Arranging thoughts, concepts and words into categories facilitate meaning, memory and retrieval” (Roth & Troia, 2005)',
-            'description': "Categorisation levels up conceptual thinking by encouraging children group things together based on similarities. Learning to group things together helps children understand and recall new words more easily, build their vocabulary, and clearly express ideas.",
+            'description': "Categorisation levels up conceptual thinking by encouraging children to group things together based on similarities. Learning to group things together helps children understand and recall new words more easily, build their vocabulary, and clearly express ideas.",
             'bullet1': """Group items - “Which of these go together?”""",
             'bullet2': """Identify categories - “What kind of thing is this?”""",
             'bullet3': """Compare and contrast: - “How are these similar?”""",
