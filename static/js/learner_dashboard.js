@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const chartSubtitle = document.getElementById("chart-subtitle");
     const bestFitCheckbox = document.getElementById("plot-best-fit");
     const smoothingCheckbox = document.getElementById("smooth-data");
+    const layerMetricsCheckbox = document.getElementById("layer-metrics");
 
     if (!learnerSelect) {
         return;
@@ -317,7 +318,8 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
         const selectedMetrics = Array.from(metricCheckboxes).filter(cb => cb.checked).map(cb => cb.value);
-        const shouldShow = selectedMetrics.length === 1;
+        const layerMetricsEnabled = layerMetricsCheckbox && layerMetricsCheckbox.checked;
+        const shouldShow = selectedMetrics.length === 1 && !layerMetricsEnabled;
         bestFitCheckbox.disabled = !shouldShow;
         if (bestFitCheckbox.parentElement) {
             bestFitCheckbox.parentElement.classList.toggle("is-disabled", !shouldShow);
@@ -399,9 +401,29 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     metricCheckboxes.forEach((checkbox) => {
-        checkbox.addEventListener("change", fetchProgressData);
-        checkbox.addEventListener("change", updateBestFitVisibility);
+        checkbox.addEventListener("change", (event) => {
+            const layerMetricsEnabled = layerMetricsCheckbox && layerMetricsCheckbox.checked;
+            
+            // If Layer Metrics is OFF and this checkbox was just checked, uncheck all others
+            if (!layerMetricsEnabled && checkbox.checked) {
+                metricCheckboxes.forEach((otherCheckbox) => {
+                    if (otherCheckbox !== checkbox && !otherCheckbox.disabled) {
+                        otherCheckbox.checked = false;
+                    }
+                });
+            }
+            
+            updateBestFitVisibility();
+            fetchProgressData();
+        });
     });
+
+    if (layerMetricsCheckbox) {
+        layerMetricsCheckbox.addEventListener("change", () => {
+            updateBestFitVisibility();
+            fetchProgressData();
+        });
+    }
 
     if (bestFitCheckbox) {
         bestFitCheckbox.addEventListener("change", fetchProgressData);
