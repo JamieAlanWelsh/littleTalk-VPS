@@ -213,45 +213,77 @@ document.addEventListener("DOMContentLoaded", () => {
             // Custom labels for Colourful Semantics difficulty levels
             yAxisConfig.min = 0;
             yAxisConfig.max = 50;
+            let lastLabel = "";
             yAxisConfig.ticks.callback = (value) => {
-                if (value < 10) return "Subject";
-                if (value < 20) return "Verb";
-                if (value < 30) return "Subject+Verb";
-                if (value < 40) return "Subject+Verb+Object";
-                return "Subject+Verb+Object+Location";
+                let label;
+                if (value < 10) label = "Subject";
+                else if (value < 20) label = "Verb";
+                else if (value < 30) label = "Subject+Verb";
+                else if (value < 40) label = "Subject+Verb+Object";
+                else label = "Subject+Verb+Object+Location";
+                
+                if (label === lastLabel) {
+                    return "Max";
+                }
+                lastLabel = label;
+                return label;
             };
             yAxisConfig.ticks.stepSize = 10;
         } else if (isDifficultyMetric && exerciseId === "Categorisation") {
             // Custom labels for Categorisation difficulty levels
             yAxisConfig.min = 10;
             yAxisConfig.max = 40;
+            let lastLabel = "";
             yAxisConfig.ticks.callback = (value) => {
-                if (value < 20) return "2 Categories";
-                if (value < 30) return "3 Categories";
-                return "4 Categories";
+                let label;
+                if (value < 20) label = "2 Categories";
+                else if (value < 30) label = "3 Categories";
+                else label = "4 Categories";
+                
+                if (label === lastLabel) {
+                    return "Max";
+                }
+                lastLabel = label;
+                return label;
             };
             yAxisConfig.ticks.stepSize = 10;
         } else if (isDifficultyMetric && exerciseId === "Think and Find") {
             // Custom labels for Think and Find difficulty levels
             yAxisConfig.min = 10;
             yAxisConfig.max = 40;
+            let lastLabel = "";
             yAxisConfig.ticks.callback = (value) => {
-                if (value <= 10) return "2 options";
-                if (value <= 20) return "3 options";
-                if (value <= 30) return "4 options";
-                return "5 options";
+                let label;
+                if (value <= 10) label = "2 options";
+                else if (value <= 20) label = "3 options";
+                else if (value <= 30) label = "4 options";
+                else label = "5 options";
+                
+                if (label === lastLabel) {
+                    return "Max";
+                }
+                lastLabel = label;
+                return label;
             };
             yAxisConfig.ticks.stepSize = 10;
         } else if (isDifficultyMetric && exerciseId === "Concept Quest") {
             // Custom labels for Concept Quest difficulty levels
             yAxisConfig.min = 0;
             yAxisConfig.max = 50;
+            let lastLabel = "";
             yAxisConfig.ticks.callback = (value) => {
-                if (value < 10) return "Big";
-                if (value < 20) return "Small";
-                if (value < 30) return "Short";
-                if (value < 40) return "Long";
-                return "Tall";
+                let label;
+                if (value < 10) label = "Big";
+                else if (value < 20) label = "Small";
+                else if (value < 30) label = "Short";
+                else if (value < 40) label = "Long";
+                else label = "Tall";
+                
+                if (label === lastLabel) {
+                    return "Max";
+                }
+                lastLabel = label;
+                return label;
             };
             yAxisConfig.ticks.stepSize = 10;
         }
