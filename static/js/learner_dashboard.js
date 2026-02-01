@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const messageEl = document.getElementById("dashboard-message");
     const chartTitle = document.getElementById("chart-title");
     const chartSubtitle = document.getElementById("chart-subtitle");
+    const bestFitCheckbox = document.getElementById("plot-best-fit");
 
     if (!learnerSelect) {
         return;
@@ -42,6 +43,42 @@ document.addEventListener("DOMContentLoaded", () => {
         messageEl.textContent = text;
         messageEl.classList.toggle("error", isError);
         messageEl.classList.toggle("success", !isError);
+    }
+
+    function getBestFitValues(values) {
+        const points = [];
+        values.forEach((v, i) => {
+            if (v !== null && v !== undefined) {
+                points.push({ x: i, y: v });
+            }
+        });
+
+        if (points.length < 2) {
+            return null;
+        }
+
+        const n = points.length;
+        let sumX = 0;
+        let sumY = 0;
+        let sumXY = 0;
+        let sumXX = 0;
+
+        points.forEach((p) => {
+            sumX += p.x;
+            sumY += p.y;
+            sumXY += p.x * p.y;
+            sumXX += p.x * p.x;
+        });
+
+        const denominator = (n * sumXX) - (sumX * sumX);
+        if (denominator === 0) {
+            return null;
+        }
+
+        const slope = ((n * sumXY) - (sumX * sumY)) / denominator;
+        const intercept = (sumY - (slope * sumX)) / n;
+
+        return values.map((_, i) => Math.round((slope * i + intercept) * 100) / 100);
     }
 
     function buildChart(labels, metricsData) {
@@ -100,6 +137,27 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
 
+        const singleMetric = metricsData.length === 1;
+        const plotBestFit = singleMetric && bestFitCheckbox && bestFitCheckbox.checked;
+
+        if (plotBestFit) {
+            const bestFitValues = getBestFitValues(metricsData[0].values);
+            if (bestFitValues) {
+                datasets.push({
+                    label: "Best fit (linear)",
+                    data: bestFitValues,
+                    borderColor: "#E74C3C",
+                    backgroundColor: "#E74C3C00",
+                    fill: false,
+                    tension: 0,
+                    pointRadius: 0,
+                    borderDash: [8, 6],
+                    borderWidth: 3,
+                    order: 100,
+                });
+            }
+        }
+
         const yAxisConfig = {
             beginAtZero: true,
             ticks: {},
@@ -142,6 +200,21 @@ document.addEventListener("DOMContentLoaded", () => {
                 },
             },
         });
+    }
+
+    function updateBestFitVisibility() {
+        if (!bestFitCheckbox) {
+            return;
+        }
+        const selectedMetrics = Array.from(metricCheckboxes).filter(cb => cb.checked).map(cb => cb.value);
+        const shouldShow = selectedMetrics.length === 1;
+        bestFitCheckbox.disabled = !shouldShow;
+        if (bestFitCheckbox.parentElement) {
+            bestFitCheckbox.parentElement.classList.toggle("is-disabled", !shouldShow);
+        }
+        if (!shouldShow) {
+            bestFitCheckbox.checked = false;
+        }
     }
 
     async function fetchProgressData() {
@@ -195,6 +268,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     setDefaultDates();
+    updateBestFitVisibility();
     fetchProgressData();
 
     if (applyButton) {
@@ -210,5 +284,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     metricCheckboxes.forEach((checkbox) => {
         checkbox.addEventListener("change", fetchProgressData);
+        checkbox.addEventListener("change", updateBestFitVisibility);
     });
+
+    if (bestFitCheckbox) {
+        bestFitCheckbox.addEventListener("change", fetchProgressData);
+    }
 });
