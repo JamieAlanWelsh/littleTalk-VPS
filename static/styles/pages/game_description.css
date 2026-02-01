@@ -1,0 +1,33 @@
+/* Exercise Guide - Video Container */
+
+.exercise-video-container {
+    margin: 30px 0;
+    border-radius: var(--border-radius-light);
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background-color: var(--accent-color);
+}
+
+.exercise-video-wrapper {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    height: 0;
+    overflow: hidden;
+}
+
+.exercise-video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: var(--border-radius-light);
+}
+
+/* Hide video container if no video ID is provided */
+.exercise-video-container:empty,
+.exercise-video-container:has(.exercise-video-wrapper:empty) {
+    display: none;
+}

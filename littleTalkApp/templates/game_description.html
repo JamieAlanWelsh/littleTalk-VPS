@@ -5,7 +5,7 @@
 
 {% block content %}
 
-<h1>More Info</h1>
+<h1>Exercise Guide</h1>
 
 <div class="container-box pt-70">
 
@@ -21,6 +21,16 @@
     <h2 class="heading-left">{{ game.title }}</h2>
     
     <p>{{ game.description }}</p>
+
+    <div class="exercise-video-container">
+        <div class="exercise-video-wrapper">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ game.youtube_video_id }}" 
+                title="Exercise Guide Video" frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+            </iframe>
+        </div>
+    </div>
 
     <h2 class="heading-left">Develops children's ability to:</h2>
     <div class="skills-list">
