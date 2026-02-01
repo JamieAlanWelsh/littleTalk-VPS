@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const chartTitle = document.getElementById("chart-title");
     const chartSubtitle = document.getElementById("chart-subtitle");
     const bestFitCheckbox = document.getElementById("plot-best-fit");
+    const smoothingCheckbox = document.getElementById("smooth-data");
 
     if (!learnerSelect) {
         return;
@@ -81,6 +82,32 @@ document.addEventListener("DOMContentLoaded", () => {
         return values.map((_, i) => Math.round((slope * i + intercept) * 100) / 100);
     }
 
+    function smoothValues(values, windowSize = 3) {
+        if (!Array.isArray(values) || values.length === 0) {
+            return values;
+        }
+
+        const radius = Math.floor(windowSize / 2);
+        return values.map((_, index) => {
+            let sum = 0;
+            let count = 0;
+
+            for (let i = index - radius; i <= index + radius; i += 1) {
+                const value = values[i];
+                if (value !== null && value !== undefined) {
+                    sum += value;
+                    count += 1;
+                }
+            }
+
+            if (count === 0) {
+                return null;
+            }
+
+            return Math.round((sum / count) * 100) / 100;
+        });
+    }
+
     function buildChart(labels, metricsData) {
         if (progressChart) {
             progressChart.destroy();
@@ -116,9 +143,17 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
 
+        const smoothData = smoothingCheckbox && smoothingCheckbox.checked;
+        const dataForDisplay = smoothData
+            ? normalizedMetricsData.map((metricData) => ({
+                ...metricData,
+                values: smoothValues(metricData.values, 3),
+            }))
+            : normalizedMetricsData;
+
         // Build datasets for each selected metric
         const datasets = [];
-        normalizedMetricsData.forEach((metricData) => {
+        dataForDisplay.forEach((metricData) => {
             const metric = metricData.metric;
             const data = metricData.values;
             const color = metricColors[metric] || "#4A90E2";
@@ -141,7 +176,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const plotBestFit = singleMetric && bestFitCheckbox && bestFitCheckbox.checked;
 
         if (plotBestFit) {
-            const bestFitValues = getBestFitValues(metricsData[0].values);
+            const bestFitValues = getBestFitValues(dataForDisplay[0].values);
             if (bestFitValues) {
                 datasets.push({
                     label: "Best fit (linear)",
@@ -289,5 +324,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (bestFitCheckbox) {
         bestFitCheckbox.addEventListener("change", fetchProgressData);
+    }
+
+    if (smoothingCheckbox) {
+        smoothingCheckbox.addEventListener("change", fetchProgressData);
     }
 });
