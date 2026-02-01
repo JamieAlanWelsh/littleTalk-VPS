@@ -1941,12 +1941,6 @@ def learner_progress_data(request):
                     metrics_data[metric].append(round(difficulty, 2))
                 except (ValueError, TypeError):
                     metrics_data[metric].append(None)
-            elif metric == "time_elapsed":
-                if session.time_elapsed:
-                    time_minutes = session.time_elapsed.total_seconds() / 60
-                    metrics_data[metric].append(round(time_minutes, 2))
-                else:
-                    metrics_data[metric].append(None)
     
     # Build response with metrics data in the same format
     metrics_data_response = [

@@ -21,14 +21,12 @@ document.addEventListener("DOMContentLoaded", () => {
         exercises: "Sessions Completed",
         accuracy: "Accuracy (%)",
         difficulty: "Difficulty Level",
-        time_elapsed: "Time to Complete (mins)",
     };
 
     const metricColors = {
         exercises: "#7B61FF",
         accuracy: "#00B894",
         difficulty: "#F39C12",
-        time_elapsed: "#E67E22",
     };
 
     function setDefaultDates() {
@@ -237,6 +235,42 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    function updateMetricAvailability() {
+        const exerciseId = exerciseSelect.value;
+        const isAllExercises = exerciseId === "all";
+        
+        const accuracyCheckbox = document.getElementById("metric-accuracy");
+        const difficultyCheckbox = document.getElementById("metric-difficulty");
+        const exercisesCheckbox = document.getElementById("metric-exercises");
+        
+        if (isAllExercises) {
+            // Only "Sessions Completed" available
+            if (accuracyCheckbox) {
+                accuracyCheckbox.disabled = true;
+                accuracyCheckbox.checked = false;
+                accuracyCheckbox.parentElement.classList.add("is-disabled");
+            }
+            if (difficultyCheckbox) {
+                difficultyCheckbox.disabled = true;
+                difficultyCheckbox.checked = false;
+                difficultyCheckbox.parentElement.classList.add("is-disabled");
+            }
+            if (exercisesCheckbox) {
+                exercisesCheckbox.checked = true;
+            }
+        } else {
+            // All metrics available
+            if (accuracyCheckbox) {
+                accuracyCheckbox.disabled = false;
+                accuracyCheckbox.parentElement.classList.remove("is-disabled");
+            }
+            if (difficultyCheckbox) {
+                difficultyCheckbox.disabled = false;
+                difficultyCheckbox.parentElement.classList.remove("is-disabled");
+            }
+        }
+    }
+
     function updateBestFitVisibility() {
         if (!bestFitCheckbox) {
             return;
@@ -303,6 +337,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     setDefaultDates();
+    updateMetricAvailability();
     updateBestFitVisibility();
     fetchProgressData();
 
@@ -313,8 +348,13 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    [learnerSelect, exerciseSelect, dateRangeSelect].forEach((element) => {
+    [learnerSelect, dateRangeSelect].forEach((element) => {
         element.addEventListener("change", fetchProgressData);
+    });
+
+    exerciseSelect.addEventListener("change", () => {
+        updateMetricAvailability();
+        fetchProgressData();
     });
 
     metricCheckboxes.forEach((checkbox) => {
