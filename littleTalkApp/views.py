@@ -317,23 +317,29 @@ def get_screener_comparison_data(learner):
     if not learner:
         return None
 
-    # Get all sessions ordered by date
-    all_answers = learner.answers.all().order_by('assessment_date', 'session_id')
+    # Get all answers
+    all_answers = learner.answers.all()
     
     if not all_answers.exists():
         return None
 
     # Group by session_id to identify distinct screener sessions
-    from itertools import groupby
+    # Use distinct session_ids and order by timestamp to get chronological order
+    session_ids = all_answers.values_list('session_id', flat=True).distinct()
+    
     sessions = []
-    for session_id, group in groupby(all_answers.values('session_id', 'assessment_date'), key=lambda x: x['session_id']):
-        session_answers = list(all_answers.filter(session_id=session_id))
+    for session_id in session_ids:
+        session_answers = list(all_answers.filter(session_id=session_id).order_by('timestamp'))
         if session_answers:
             sessions.append({
                 'session_id': session_id,
                 'date': session_answers[0].assessment_date,
+                'timestamp': session_answers[0].timestamp,
                 'answers': session_answers
             })
+    
+    # Sort sessions by timestamp to get chronological order
+    sessions.sort(key=lambda x: x['timestamp'])
     
     # If fewer than 2 sessions, no comparison available
     if len(sessions) < 2:
@@ -425,8 +431,8 @@ def assessment_summary(request):
     if selected_id:
         learner = Learner.objects.filter(id=selected_id).first()
         if learner:
-            # Get only the current (most recent) screener session
-            latest_session = learner.answers.order_by('-session_id').values('session_id').first()
+            # Get only the current (most recent) screener session by timestamp
+            latest_session = learner.answers.order_by('-timestamp').values('session_id').first()
             if latest_session:
                 answers = learner.answers.filter(session_id=latest_session['session_id'])
             

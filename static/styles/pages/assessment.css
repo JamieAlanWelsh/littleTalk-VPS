@@ -194,12 +194,6 @@ progress::-webkit-progress-value {
 }
 
 /* Comparison Sections - Re-screener Progress Tracking */
-.comparison-subtitle {
-    font-size: 0.95rem;
-    color: #666;
-    margin-bottom: 20px;
-    margin-top: -10px;
-}
 
 .comparison-section {
     margin: 25px 0;
@@ -288,16 +282,6 @@ progress::-webkit-progress-value {
 
 .recommendation-change p {
     margin: 0;
-}
-
-.comparison-positive {
-    color: #27ae60;
-    font-weight: 500;
-}
-
-.comparison-neutral {
-    color: #555;
-    font-weight: 500;
 }
 
 /* Print Styles */

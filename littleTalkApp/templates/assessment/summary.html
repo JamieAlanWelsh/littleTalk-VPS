@@ -29,8 +29,8 @@
         {% endif %}
 
         <div class="summary-button-row no-print">
-            <a href="{% url 'practise' %}" class="btn btn--white btn--full btn--small">Go to Recommendations</a>
             <a href="{% url 'profile' %}" class="btn btn--white btn--full btn--small">Back to Profile</a>
+            <a href="{% url 'practise' %}" class="btn btn--white btn--full btn--small">Go to Recommendations</a>
         </div>
 
         {% if has_previous %}
@@ -39,8 +39,9 @@
                 <p class="summary-intro">
                     <strong>Progress Since Last Screener</strong>
                 </p>
+                <button onclick="printScreenerSummary()" class="btn btn--white btn--small btn--border no-print">🖨 Print Progress</button>
             </div>
-            <p class="comparison-subtitle">Last screener completed: <strong>{{ previous_session_date|date:"M d, Y" }}</strong></p>
+            <p class="comparison-note">Last screener completed: <strong>{{ previous_session_date|date:"M d, Y" }}</strong></p>
 
             {% if skills_gained %}
             <div class="comparison-section skills-gained">
@@ -78,13 +79,14 @@
             {% endif %}
 
             {% if recommendation_change.direction %}
-            <div class="recommendation-change">
+            <div class="recommendation-info">
+                <span class="info-icon">i</span>
                 {% if recommendation_change.direction == "improved" %}
-                    <p class="comparison-positive"><strong>Recommendation Level:</strong> Improved! {{ learner.name }} may now benefit from more advanced exercises.</p>
+                    <p>{{ learner.name }} has improved! Recommendation level has adjusted - consider more advanced exercises.</p>
                 {% elif recommendation_change.direction == "declined" %}
-                    <p class="comparison-neutral"><strong>Recommendation Level:</strong> Has adjusted. Focus on foundational skills before advancing.</p>
+                    <p>Recommendation level has adjusted. Focus on foundational skills before advancing.</p>
                 {% else %}
-                    <p class="comparison-neutral"><strong>Recommendation Level:</strong> Consistent with previous screener.</p>
+                    <p>Results are consistent with previous screener.</p>
                 {% endif %}
             </div>
             {% endif %}
