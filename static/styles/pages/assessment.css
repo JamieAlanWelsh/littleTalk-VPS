@@ -192,3 +192,66 @@ progress::-webkit-progress-value {
         gap: 15px;
     }
 }
+
+/* Print Styles */
+@media print {
+    /* Hide elements that shouldn't be printed */
+    .no-print,
+    .sidebar,
+    header,
+    nav,
+    .summary-button-row {
+        display: none !important;
+    }
+
+    /* Show logo only for print */
+    .logo-upper-left {
+        display: block !important;
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        width: 120px;
+        height: auto;
+    }
+
+    .logo-upper-left img {
+        width: 100%;
+        height: auto;
+    }
+
+    /* Reset page styling for print */
+    body {
+        background: white !important;
+        color: black !important;
+        position: relative;
+    }
+
+    .summary-wrapper {
+        background: white !important;
+        box-shadow: none !important;
+        margin-top: 100px;
+    }
+
+    .printable-section {
+        page-break-inside: avoid;
+        border: 1px solid #ddd !important;
+        box-shadow: none !important;
+        margin-bottom: 20px !important;
+    }
+
+    /* Ensure good spacing for print */
+    .skill-list li {
+        page-break-inside: avoid;
+    }
+
+    /* Add print header */
+    .summary-wrapper::before {
+        content: "Screener Summary";
+        display: block;
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #333;
+    }
+}
