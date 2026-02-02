@@ -1774,6 +1774,8 @@ def learner_dashboard(request):
     Progress dashboard showing charts for individual learner analytics.
     Accessible by parents (own learners) and staff (school learners).
     """
+    from django.db.models import Count
+    
     profile = request.user.profile
     
     # Get accessible learners based on role
@@ -1785,6 +1787,11 @@ def learner_dashboard(request):
             messages.error(request, "No school assigned to your profile.")
             return redirect("profile")
         accessible_learners = Learner.objects.filter(school=user_school, deleted=False)
+    
+    # Annotate learners with session counts
+    accessible_learners = accessible_learners.annotate(
+        session_count=Count('exercise_sessions')
+    ).order_by('name')
     
     # Get selected learner from query param or session
     learner_uuid = request.GET.get("learner")
@@ -1808,19 +1815,35 @@ def learner_dashboard(request):
     if not selected_learner and accessible_learners.exists():
         selected_learner = accessible_learners.first()
     
+    # Get exercise session counts for selected learner
+    exercise_counts = {}
+    if selected_learner:
+        from django.db.models import Count
+        exercise_count_qs = ExerciseSession.objects.filter(
+            learner=selected_learner
+        ).values('exercise_id').annotate(
+            count=Count('id')
+        )
+        exercise_counts = {item['exercise_id']: item['count'] for item in exercise_count_qs}
+        
+        # Get total count for "All Exercises"
+        total_count = ExerciseSession.objects.filter(learner=selected_learner).count()
+        exercise_counts['all'] = total_count
+    
     # Get list of exercises for filter dropdown
     exercise_choices = [
-        {"id": "Colourful Semantics", "name": "Colourful Semantics"},
-        {"id": "Think and Find", "name": "Think and Find"},
-        {"id": "Concept Quest", "name": "Concept Quest"},
-        {"id": "Categorisation", "name": "Categorisation"},
-        {"id": "Story Train", "name": "Story Train"},
+        {"id": "Colourful Semantics", "name": "Colourful Semantics", "count": exercise_counts.get("Colourful Semantics", 0)},
+        {"id": "Think and Find", "name": "Think and Find", "count": exercise_counts.get("Think and Find", 0)},
+        {"id": "Concept Quest", "name": "Concept Quest", "count": exercise_counts.get("Concept Quest", 0)},
+        {"id": "Categorisation", "name": "Categorisation", "count": exercise_counts.get("Categorisation", 0)},
+        {"id": "Story Train", "name": "Story Train", "count": exercise_counts.get("Story Train", 0)},
     ]
     
     context = {
         "learners": accessible_learners,
         "selected_learner": selected_learner,
         "exercise_choices": exercise_choices,
+        "total_sessions": exercise_counts.get('all', 0),
     }
     
     return render(request, "dashboard/learner_dashboard.html", context)
