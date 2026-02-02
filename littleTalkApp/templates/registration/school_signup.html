@@ -66,6 +66,10 @@
             <button type="submit" class="btn btn--yellow btn--full">Create School Account</button>
         </div>
 
+        <p class="text-center" style="margin-top: 20px; margin-bottom: 0; font-size: 0.9rem;">
+            By signing up, you agree to our <a href="/terms/" target="_blank" class="text-link">Terms and Conditions</a>
+        </p>
+
         {% if form.non_field_errors %}
             <div class="error-message">{{ form.non_field_errors.0 }}</div>
         {% endif %}
