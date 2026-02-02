@@ -28,15 +28,14 @@
 }
 
 /* -----------------------------
-   Cohort Filter
+   Cohort Filter (inside learners list)
 ------------------------------ */
 
 .cohort-filter-widget {
-    background-color: var(--accent-color);
-    border-radius: var(--border-radius-light);
-    box-shadow: var(--box-shadow);
-    padding: 20px;
-    /* width: 26   0px; */
+    padding: 15px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.212);
+    margin-bottom: 10px;
     font-family: var(--font-outfit);
 }
 
@@ -71,37 +70,40 @@
 
 .learners-list {
     flex-grow: 1;
-    overflow-y: auto;
-    max-height: calc(80vh - 360px); /* Adjust based on other elements (add button + cohort filter) */
     background-color: var(--accent-color);
     border-radius: var(--border-radius-light);
     box-shadow: var(--box-shadow);
-    padding: 15px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    max-height: calc(80vh - 185px); /* Adjust based on add button */
 }
 
 .learners-list ul {
     list-style-type: none;
-    padding: 0;
+    padding: 10px;
     margin: 0;
+    overflow-y: auto;
+    flex-grow: 1;
 }
 
 /* Custom scrollbar styling */
-.learners-list::-webkit-scrollbar {
+.learners-list ul::-webkit-scrollbar {
     width: 8px;
 }
 
-.learners-list::-webkit-scrollbar-track {
+.learners-list ul::-webkit-scrollbar-track {
     background: #f1f1f1;
     border-radius: var(--border-radius-light);
 }
 
-.learners-list::-webkit-scrollbar-thumb {
+.learners-list ul::-webkit-scrollbar-thumb {
     background: var(--font-color);
     border-radius: var(--border-radius-light);
     opacity: 0.5;
 }
 
-.learners-list::-webkit-scrollbar-thumb:hover {
+.learners-list ul::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
 
@@ -196,6 +198,7 @@
     .profile-container {
         flex-direction: column;
         align-items: stretch;
+        margin-bottom: 20px;
     }
     .right-column {
         order: 1;

@@ -15,23 +15,22 @@
             </div>
         {% endif %}
 
-        {% if request.user.profile.role != 'parent' %}
-            <div class="cohort-filter-widget">
-                <form method="get" action="">
-                    <label for="cohort"><strong>Cohort:</strong></label>
-                    <select name="cohort" id="cohort" onchange="this.form.submit()">
-                        <option value="">-- All Cohorts --</option>
-                        {% for cohort in cohorts %}
-                            <option value="{{ cohort.id }}" {% if cohort.id == selected_cohort %}selected{% endif %}>
-                                {{ cohort.name }}
-                            </option>
-                        {% endfor %}
-                    </select>
-                </form>
-            </div>
-        {% endif %}
-
         <div class="learners-list">
+            {% if request.user.profile.role != 'parent' %}
+                <div class="cohort-filter-widget">
+                    <form method="get" action="">
+                        <label for="cohort"><strong>Cohort:</strong></label>
+                        <select name="cohort" id="cohort" onchange="this.form.submit()">
+                            <option value="">-- All Cohorts --</option>
+                            {% for cohort in cohorts %}
+                                <option value="{{ cohort.id }}" {% if cohort.id == selected_cohort %}selected{% endif %}>
+                                    {{ cohort.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </form>
+                </div>
+            {% endif %}
             {% if learners %}
                 <ul>
                     {% for learner in learners %}
