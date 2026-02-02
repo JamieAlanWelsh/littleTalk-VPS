@@ -94,6 +94,11 @@
                 </div>
             {% endif %}
 
+            <!-- Screener Button -->
+            <div class="edit-learner-btn">
+                <a href="{% url 'screener' %}" class="button">Screener</a>
+            </div>
+
             <!-- Generate Access Code Button SCHOOL ONLY -->
             {% if request.user.profile.role != 'parent' %}
                 <div class="edit-learner-btn">

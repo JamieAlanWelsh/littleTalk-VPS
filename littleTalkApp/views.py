@@ -150,6 +150,34 @@ def school_signup(request):
     return render(request, "registration/school_signup.html", {"form": form})
 
 
+# Screener Hub - Crossroad for starting or viewing screener results
+@login_required
+def screener(request):
+    request.hide_sidebar = True
+    
+    # Get selected learner
+    selected_learner_id = request.session.get("selected_learner_id")
+    selected_learner = None
+    has_screener = False
+    
+    if selected_learner_id:
+        try:
+            selected_learner = Learner.objects.get(id=int(selected_learner_id))
+            # Check if learner has assessment answers (screener submitted)
+            has_screener = selected_learner.answers.exists()
+        except (ValueError, Learner.DoesNotExist):
+            selected_learner = None
+    
+    return render(
+        request,
+        "assessment/screener.html",
+        {
+            "selected_learner": selected_learner,
+            "has_screener": has_screener,
+        },
+    )
+
+
 # This view will serve the first question when the assessment starts
 @login_required
 def start_assessment(request):
