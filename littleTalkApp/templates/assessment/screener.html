@@ -9,6 +9,9 @@
     
     {% if selected_learner %}
         <strong><p>Selected Learner: </strong>{{ selected_learner.name }}</p>
+        {% if last_screener_date %}
+            <p><strong>Last Screener:</strong> {{ last_screener_date|date:"M d, Y" }}</p>
+        {% endif %}
         
         <div class="screener-card-row">
             {% if not has_screener %}
@@ -16,7 +19,7 @@
                 <a href="{% url 'start_assessment' %}" class="screener-card">
                     <div class="screener-card-inner">
                         <h2>Submit New Screener</h2>
-                        <p>Submit short question/profile to get exercise recommendations for your learner</p>
+                        <p>A short questionnaire to profile needs and get exercise recommendations for your learner</p>
                     </div>
                 </a>
             {% else %}
@@ -24,7 +27,7 @@
                 <a href="{% url 'start_assessment' %}" class="screener-card">
                     <div class="screener-card-inner">
                         <h2>Submit Re-Screener</h2>
-                        <p>Re-take questionnaire to show your learners progress and update exercise recommendations</p>
+                        <p>Re-take questionnaire to show learner progress and update exercise recommendations</p>
                     </div>
                 </a>
                 

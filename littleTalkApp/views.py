@@ -159,12 +159,17 @@ def screener(request):
     selected_learner_id = request.session.get("selected_learner_id")
     selected_learner = None
     has_screener = False
+    last_screener_date = None
     
     if selected_learner_id:
         try:
             selected_learner = Learner.objects.get(id=int(selected_learner_id))
             # Check if learner has assessment answers (screener submitted)
             has_screener = selected_learner.answers.exists()
+            # Get the date of the last screener
+            if has_screener:
+                last_answer = selected_learner.answers.order_by('-timestamp').first()
+                last_screener_date = last_answer.timestamp if last_answer else None
         except (ValueError, Learner.DoesNotExist):
             selected_learner = None
     
@@ -174,6 +179,7 @@ def screener(request):
         {
             "selected_learner": selected_learner,
             "has_screener": has_screener,
+            "last_screener_date": last_screener_date,
         },
     )
 
