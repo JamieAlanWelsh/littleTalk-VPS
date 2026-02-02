@@ -276,6 +276,8 @@ class LearnerAssessmentAnswer(models.Model):
     text = models.TextField()
     answer = models.CharField(max_length=10)  # 'Yes' or 'No'
     timestamp = models.DateTimeField(auto_now_add=True)
+    session_id = models.UUIDField(default=uuid.uuid4)  # Groups answers by screener session
+    assessment_date = models.DateField(auto_now_add=True, null=True)  # Date screener was completed
 
     def __str__(self):
         return f"{self.learner.name} - Q{self.question_id}: {self.answer}"

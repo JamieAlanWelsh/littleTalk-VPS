@@ -33,11 +33,69 @@
             <a href="{% url 'profile' %}" class="btn btn--white btn--full btn--small">Back to Profile</a>
         </div>
 
+        {% if has_previous %}
+        <div class="container-box container--white container--edgy marginsupperlower-30 printable-section">
+            <div class="summary-header">
+                <p class="summary-intro">
+                    <strong>Progress Since Last Screener</strong>
+                </p>
+            </div>
+            <p class="comparison-subtitle">Last screener completed: <strong>{{ previous_session_date|date:"M d, Y" }}</strong></p>
+
+            {% if skills_gained %}
+            <div class="comparison-section skills-gained">
+                <p><strong>✓ Skills Gained:</strong></p>
+                <ul class="skill-list skill-list--gained">
+                    {% for skill in skills_gained %}
+                        <li><span class="skill-indicator skill-indicator--gained">✓</span> {{ skill }}</li>
+                    {% endfor %}
+                </ul>
+                <p class="comparison-note">{{ learner.name }} now shows strong skills in these areas.</p>
+            </div>
+            {% endif %}
+
+            {% if skills_lost %}
+            <div class="comparison-section skills-lost">
+                <p><strong>⚠ Areas Showing Fluctuation:</strong></p>
+                <ul class="skill-list skill-list--lost">
+                    {% for skill in skills_lost %}
+                        <li><span class="skill-indicator skill-indicator--lost">⚠</span> {{ skill }}</li>
+                    {% endfor %}
+                </ul>
+                <p class="comparison-note">Skills can naturally fluctuate as children develop. These areas may benefit from continued practice.</p>
+            </div>
+            {% endif %}
+
+            {% if skills_maintained_strong %}
+            <div class="comparison-section skills-maintained">
+                <p><strong>Maintained Strengths:</strong></p>
+                <ul class="skill-list skill-list--maintained">
+                    {% for skill in skills_maintained_strong %}
+                        <li>{{ skill }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            {% if recommendation_change.direction %}
+            <div class="recommendation-change">
+                {% if recommendation_change.direction == "improved" %}
+                    <p class="comparison-positive"><strong>Recommendation Level:</strong> Improved! {{ learner.name }} may now benefit from more advanced exercises.</p>
+                {% elif recommendation_change.direction == "declined" %}
+                    <p class="comparison-neutral"><strong>Recommendation Level:</strong> Has adjusted. Focus on foundational skills before advancing.</p>
+                {% else %}
+                    <p class="comparison-neutral"><strong>Recommendation Level:</strong> Consistent with previous screener.</p>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+
         <div class="container-box container--white container--edgy marginsupperlower-30 printable-section">
 
             <div class="summary-header">
                 <p class="summary-intro">
-                    <strong>Screener Summary</strong>
+                    <strong>Current Screener Results</strong>
                 </p>
                 <button onclick="printScreenerSummary()" class="btn btn--white btn--small btn--border no-print">🖨 Print Summary</button>
             </div>
