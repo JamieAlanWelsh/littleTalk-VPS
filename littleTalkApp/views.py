@@ -153,8 +153,6 @@ def school_signup(request):
 # Screener Hub - Crossroad for starting or viewing screener results
 @login_required
 def screener(request):
-    request.hide_sidebar = True
-    
     # Get selected learner
     selected_learner_id = request.session.get("selected_learner_id")
     selected_learner = None
@@ -421,7 +419,7 @@ def get_screener_comparison_data(learner):
 
 @login_required
 def assessment_summary(request):
-    request.hide_sidebar = True
+    # request.hide_sidebar = True
 
     answers = []
     learner = None

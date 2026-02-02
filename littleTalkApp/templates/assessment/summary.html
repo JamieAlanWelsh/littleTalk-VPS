@@ -6,15 +6,8 @@
 {% block content %}
 
 {% comment %} Simplified Header for Assessment Page {% endcomment %}
-<!-- logo top left -->
-<a href="/" class="logo-link">
-    <div class="logo-upper-left">
-        <img src="{% static 'images/chatterdillo_logo_official.png' %}" alt="Chatterdillo Logo">
-    </div>
-</a>
-
-
 <div class="summary-wrapper">
+    <h1>Screener Summary</h1>
     <section>
         {% if readiness_status == "not_ready" %}
             <div class="container-box container--white container--edgy marginsupperlower-30 no-print">
@@ -30,7 +23,7 @@
 
         <div class="summary-button-row no-print">
             <a href="{% url 'profile' %}" class="btn btn--white btn--full btn--small">Back to Profile</a>
-            <a href="{% url 'practise' %}" class="btn btn--white btn--full btn--small">Go to Recommendations</a>
+            <a href="{% url 'start_assessment' %}" class="btn btn--white btn--full btn--small">Submit Re-Screener</a>
         </div>
 
         {% if has_previous %}

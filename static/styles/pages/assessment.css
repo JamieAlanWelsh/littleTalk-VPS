@@ -295,21 +295,6 @@ progress::-webkit-progress-value {
         display: none !important;
     }
 
-    /* Show logo only for print */
-    .logo-upper-left {
-        display: block !important;
-        position: absolute;
-        top: 20px;
-        left: 20px;
-        width: 120px;
-        height: auto;
-    }
-
-    .logo-upper-left img {
-        width: 100%;
-        height: auto;
-    }
-
     /* Reset page styling for print */
     body {
         background: white !important;
@@ -337,7 +322,7 @@ progress::-webkit-progress-value {
 
     /* Add print header */
     .summary-wrapper::before {
-        content: "Screener Summary";
+        content: "Chatterdillo Screener Summary";
         display: block;
         font-size: 20px;
         font-weight: bold;
