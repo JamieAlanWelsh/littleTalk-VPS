@@ -17,12 +17,12 @@
 <div class="summary-wrapper">
     <section>
         {% if readiness_status == "not_ready" %}
-            <div class="container-box container--white container--edgy marginsupperlower-30 printable-section">
+            <div class="container-box container--white container--edgy marginsupperlower-30 no-print">
                 <p class="summary-intro"><strong>Chatterdillo may not be suitable for {{ learner.name }} at this time.</strong></p>
                 <p>It seems like {{ learner.name }} may be struggling with attention and listening skills. We can still support you but our exercises will be most effective once they have developed this skill.</a>.</p>
             </div>
         {% elif readiness_status == "ready" %}
-            <div class="container-box container--white container--edgy marginsupperlower-30 printable-section">
+            <div class="container-box container--white container--edgy marginsupperlower-30 no-print">
                 <p class="summary-intro"><strong>Great news! Chatterdillo is likely a good fit for {{ learner.name }}!</strong></p>
                 <p>{{ learner.name }} appears to have strong attention and listening skills. Our exercises are well-equipped to support their language development.</p>
             </div>
@@ -79,7 +79,7 @@
             {% endif %}
 
             {% if recommendation_change.direction %}
-            <div class="recommendation-info">
+            <div class="recommendation-info no-print">
                 <span class="info-icon">i</span>
                 {% if recommendation_change.direction == "improved" %}
                     <p>{{ learner.name }} has improved! Recommendation level has adjusted - consider more advanced exercises.</p>
