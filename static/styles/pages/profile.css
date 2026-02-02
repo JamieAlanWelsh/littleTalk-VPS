@@ -16,6 +16,8 @@
     flex-direction: column;
     max-height: 80vh;
     gap: 20px;
+    position: sticky;
+    top: 20px; /* Keeps the left column in view when scrolling */
 }
 
 .right-column {
@@ -68,13 +70,39 @@
 ------------------------------ */
 
 .learners-list {
-    flex-grow: 0;
+    flex-grow: 1;
+    overflow-y: auto;
+    max-height: calc(80vh - 360px); /* Adjust based on other elements (add button + cohort filter) */
+    background-color: var(--accent-color);
+    border-radius: var(--border-radius-light);
+    box-shadow: var(--box-shadow);
+    padding: 15px;
 }
 
 .learners-list ul {
     list-style-type: none;
     padding: 0;
     margin: 0;
+}
+
+/* Custom scrollbar styling */
+.learners-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.learners-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: var(--border-radius-light);
+}
+
+.learners-list::-webkit-scrollbar-thumb {
+    background: var(--font-color);
+    border-radius: var(--border-radius-light);
+    opacity: 0.5;
+}
+
+.learners-list::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
 
 .learner-item {
@@ -96,7 +124,7 @@
     cursor: pointer;
     background-color: white;
     color: var(--font-color);
-    border: 1px solid transparent;
+    border: 1px solid #ccc;;
     transition: background-color 0.3s, color 0.3s, transform 0.2s;
 }
 
