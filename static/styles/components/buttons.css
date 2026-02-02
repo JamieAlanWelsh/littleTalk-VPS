@@ -71,7 +71,7 @@
 }
 
 .btn--border {
-    border: 2px solid var(--font-color);
+    border: 2px solid solid rgba(0, 0, 0, 0.527);
     border-radius: 20px;
     box-shadow: none;
 }

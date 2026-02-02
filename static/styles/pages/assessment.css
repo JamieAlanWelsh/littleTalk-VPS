@@ -108,7 +108,21 @@ progress::-webkit-progress-value {
     font-weight: 500;
     color: var(--font-color);
     padding-bottom: 20px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.212); /* Subtle separator line */
+}
+
+.summary-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.212);
+}
+
+.summary-header .summary-intro {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
 }
 
 .skill-list,
@@ -135,6 +149,18 @@ progress::-webkit-progress-value {
     font-size: 0.95rem;
     margin-top: 2.0rem;
     line-height: 1.5;
+}
+
+.summary-button-row {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.summary-button-row .btn {
+    flex: 1;
+    width: 50%;
 }
 
 /* Responsive Design */

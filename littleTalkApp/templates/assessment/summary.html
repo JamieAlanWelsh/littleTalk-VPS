@@ -17,26 +17,30 @@
 <div class="summary-wrapper">
     <section>
         {% if readiness_status == "not_ready" %}
-            <div class="container-box container--white container--edgy">
+            <div class="container-box container--white container--edgy marginsupperlower-30">
                 <p class="summary-intro"><strong>Chatterdillo may not be suitable for {{ learner.name }} at this time.</strong></p>
                 <p>It seems like {{ learner.name }} may be struggling with attention and listening skills. We can still support you but our exercises will be most effective once they have developed this skill.</a>.</p>
             </div>
         {% elif readiness_status == "ready" %}
-            <div class="container-box container--white container--edgy">
-                <p class="summary-intro"><strong>Chatterdillo is likely a good fit for {{ learner.name }}!</strong></p>
+            <div class="container-box container--white container--edgy marginsupperlower-30">
+                <p class="summary-intro"><strong>Great news! Chatterdillo is likely a good fit for {{ learner.name }}!</strong></p>
                 <p>{{ learner.name }} appears to have strong attention and listening skills. Our exercises are well-equipped to support their language development.</p>
             </div>
         {% endif %}
 
-        <div class="summary-cta">
-            <a href="/" class="btn btn--yellow btn--full">Continue</a>
+        <div class="summary-button-row">
+            <a href="{% url 'practise' %}" class="btn btn--white btn--full btn--small">Go to Recommendations</a>
+            <a href="{% url 'profile' %}" class="btn btn--white btn--full btn--small">Back to Profile</a>
         </div>
 
-        <div class="container-box container--white container--edgy">
+        <div class="container-box container--white container--edgy marginsupperlower-30">
 
-            <p class="summary-intro">
-                <strong>Screener Summary</strong>
-            </p>
+            <div class="summary-header">
+                <p class="summary-intro">
+                    <strong>Screener Summary</strong>
+                </p>
+                <button class="btn btn--white btn--small btn--border">🖨 Print Summary</button>
+            </div>
 
             {% if strong_skills %}
                 <p><strong>{{ learner.name }} has strong skills in:</strong></p>
@@ -55,13 +59,6 @@
                     {% endfor %}
                 </ul>
             {% endif %}
-            <p class="reassurance-text">
-                Click "Continue" to get your exercise recommendations and start practising exercises.
-            </p>
-        </div>
-
-        <div class="summary-cta">
-            <a href="/" class="btn btn--yellow btn--full">Continue</a>
         </div>
 
     </section>
