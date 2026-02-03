@@ -463,6 +463,38 @@
     color: var(--font-color);
 }
 
+.sample-target-label {
+    display: block;
+    font-weight: 600;
+    color: var(--font-color);
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.sample-target-select {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    font-family: var(--font-outfit);
+    background-color: white;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.sample-target-select:focus {
+    outline: none;
+    border-color: var(--font-color);
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+}
+
+.sample-target-hint {
+    margin: 0 0 12px 0;
+    color: #777;
+    font-size: 12px;
+}
+
 .new-target-modal-content input {
     width: 100%;
     padding: 10px 14px;

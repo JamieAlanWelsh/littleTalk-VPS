@@ -11,6 +11,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const targetsFilter = document.getElementById('targets-filter');
     let isEditMode = false;
     let currentFilter = 'all';
+
+    const SMART_SAMPLES = Array.isArray(window.SMART_SAMPLES) ? window.SMART_SAMPLES : [];
     
     if (!targetsContainer) return; // Exit if not on profile page
     
@@ -75,11 +77,18 @@ document.addEventListener('DOMContentLoaded', function() {
      * Show modal for creating a new target
      */
     function showNewTargetModal() {
+        const sampleOptions = renderSampleOptions();
         // Create modal HTML
         const modalHTML = `
             <div class="new-target-modal show" id="new-target-modal">
                 <div class="new-target-modal-content">
                     <h4>Add New Target</h4>
+                    <label for="sample-target-select" class="sample-target-label">Choose a sample (optional)</label>
+                    <select id="sample-target-select" class="sample-target-select">
+                        <option value="">-- Select a sample --</option>
+                        ${sampleOptions}
+                    </select>
+                    <p class="sample-target-hint">Replace placeholders like x% and x weeks to make it SMART.</p>
                     <input type="text" id="new-target-text" placeholder="Enter target" maxlength="255">
                     <div class="modal-buttons">
                         <button class="btn-cancel" onclick="document.getElementById('new-target-modal').remove();">Cancel</button>
@@ -100,6 +109,19 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Focus on input
         document.getElementById('new-target-text').focus();
+
+        const sampleSelect = document.getElementById('sample-target-select');
+        const targetInput = document.getElementById('new-target-text');
+
+        if (sampleSelect && targetInput) {
+            sampleSelect.addEventListener('change', function() {
+                if (this.value) {
+                    targetInput.value = this.value;
+                    targetInput.focus();
+                    targetInput.setSelectionRange(targetInput.value.length, targetInput.value.length);
+                }
+            });
+        }
         
         // Handle Enter key
         document.getElementById('new-target-text').addEventListener('keypress', function(e) {
@@ -117,6 +139,25 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         });
+    }
+
+    function renderSampleOptions() {
+        const grouped = SMART_SAMPLES.reduce((acc, sample) => {
+            if (!acc[sample.group]) {
+                acc[sample.group] = [];
+            }
+            acc[sample.group].push(sample);
+            return acc;
+        }, {});
+
+        return Object.entries(grouped)
+            .map(([group, samples]) => {
+                const options = samples
+                    .map(sample => `<option value="${escapeHtml(sample.text)}">${escapeHtml(sample.label)}</option>`)
+                    .join('');
+                return `<optgroup label="${escapeHtml(group)}">${options}</optgroup>`;
+            })
+            .join('');
     }
     
     /**
