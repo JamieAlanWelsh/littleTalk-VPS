@@ -41,7 +41,9 @@
 }
 
 .btn--yellow:hover {
-    background-color: var(--yellow-button-hover);
+    background-color: white;
+    color: var(--yellow-button-hover);
+    border: 1.5px solid var(--yellow-button-hover);
 }
 
 .btn--invisible {
@@ -57,7 +59,7 @@
 .btn--green:hover { 
     background-color: white;
     color: var(--button-green);
-    border: 1px solid var(--button-green);
+    border: 1.5px solid var(--button-green);
 }
 
 .btn--red { 

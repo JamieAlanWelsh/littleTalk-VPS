@@ -10,6 +10,7 @@ from django.http import HttpResponse
 from django.utils import timezone
 from django.core.cache import cache
 import logging
+import json
 
 logger = logging.getLogger(__name__)
 
@@ -708,11 +709,7 @@ def generate_summary(request, learner_uuid):
 @login_required
 def game_description(request, game_name):
     game = GAME_DESCRIPTIONS.get(game_name, None)
-    return render(request, "game_description.html", {
-        "game": game,
-        "game_descriptions": GAME_DESCRIPTIONS,
-        "current_game_name": game_name,
-    })
+    return render(request, "game_description.html", {"game": game})
 
 
 class CustomLoginView(LoginView):
@@ -1310,6 +1307,110 @@ def get_selected_learner(request):
             }
         )
     return JsonResponse({"error": "No learner selected"}, status=400)
+
+
+@login_required
+def create_target(request):
+    """Create a new target for a learner"""
+    if request.method != 'POST':
+        return JsonResponse({"error": "Method not allowed"}, status=405)
+    
+    try:
+        data = json.loads(request.body)
+        learner_uuid = data.get('learner_uuid')
+        target_text = data.get('text', '').strip()
+        status_value = data.get('status', '---')
+        
+        if not learner_uuid or not target_text:
+            return JsonResponse({"error": "Missing required fields"}, status=400)
+        
+        # Get the learner
+        learner = get_object_or_404(Learner, learner_uuid=learner_uuid)
+        
+        # Check permissions - user must own the learner or be staff at the learner's school
+        if request.user.profile.is_parent():
+            if learner not in request.user.profile.parent_profile.learners.all():
+                return JsonResponse({"error": "Permission denied"}, status=403)
+        else:
+            if learner.school != request.user.profile.get_current_school(request):
+                return JsonResponse({"error": "Permission denied"}, status=403)
+        
+        # Create the target
+        from littleTalkApp.models import Target
+        target = Target.objects.create(
+            learner=learner,
+            text=target_text,
+            status=status_value
+        )
+        
+        return JsonResponse({
+            "id": target.id,
+            "text": target.text,
+            "status": target.status,
+            "created_at": target.created_at.isoformat(),
+        }, status=201)
+    
+    except json.JSONDecodeError:
+        return JsonResponse({"error": "Invalid JSON"}, status=400)
+    except Exception as e:
+        logger.error(f"Error creating target: {str(e)}")
+        return JsonResponse({"error": "Error creating target"}, status=500)
+
+
+@login_required
+def target_detail(request, target_id):
+    """Get, update, or delete a target"""
+    from littleTalkApp.models import Target
+    
+    target = get_object_or_404(Target, id=target_id)
+    
+    # Check permissions
+    if request.user.profile.is_parent():
+        if target.learner not in request.user.profile.parent_profile.learners.all():
+            return JsonResponse({"error": "Permission denied"}, status=403)
+    else:
+        if target.learner.school != request.user.profile.get_current_school(request):
+            return JsonResponse({"error": "Permission denied"}, status=403)
+    
+    if request.method == 'GET':
+        return JsonResponse({
+            "id": target.id,
+            "text": target.text,
+            "status": target.status,
+            "created_at": target.created_at.isoformat(),
+        })
+    
+    elif request.method == 'PATCH':
+        try:
+            data = json.loads(request.body)
+            
+            if 'text' in data:
+                target.text = data['text'].strip()
+            
+            if 'status' in data:
+                target.status = data['status']
+            
+            target.save()
+            
+            return JsonResponse({
+                "id": target.id,
+                "text": target.text,
+                "status": target.status,
+                "updated_at": target.updated_at.isoformat(),
+            })
+        
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid JSON"}, status=400)
+        except Exception as e:
+            logger.error(f"Error updating target: {str(e)}")
+            return JsonResponse({"error": "Error updating target"}, status=500)
+    
+    elif request.method == 'DELETE':
+        target.delete()
+        return JsonResponse({"status": "deleted"}, status=204)
+    
+    else:
+        return JsonResponse({"error": "Method not allowed"}, status=405)
 
 
 # API VIEWS END

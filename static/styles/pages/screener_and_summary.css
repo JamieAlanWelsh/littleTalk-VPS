@@ -259,17 +259,17 @@ progress::-webkit-progress-value {
 }
 
 .skills-gained {
-    border-left: 4px solid #27ae60;
+    border-left: 4px solid var(--target-green);
     background-color: #f0f8f4;
 }
 
 .skills-lost {
-    border-left: 4px solid #e67e22;
+    border-left: 4px solid var(--target-orange);
     background-color: #fef8f3;
 }
 
 .skills-maintained {
-    border-left: 4px solid #3498db;
+    border-left: 4px solid var(--target-neutral);
     background-color: #f0f6fb;
 }
 
