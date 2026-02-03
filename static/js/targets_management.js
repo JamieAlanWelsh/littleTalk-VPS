@@ -8,7 +8,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const editTargetsBtn = document.getElementById('edit-targets-btn');
     const targetsContainer = document.getElementById('targets-container');
     const targetsSection = document.querySelector('.targets-section');
+    const targetsFilter = document.getElementById('targets-filter');
     let isEditMode = false;
+    let currentFilter = 'all';
     
     if (!targetsContainer) return; // Exit if not on profile page
     
@@ -59,6 +61,15 @@ document.addEventListener('DOMContentLoaded', function() {
             toggleEditMode();
         });
     }
+
+    if (targetsFilter) {
+        targetsFilter.addEventListener('change', function() {
+            currentFilter = this.value;
+            applyFilterAndOrder();
+        });
+    }
+
+    applyFilterAndOrder();
     
     /**
      * Show modal for creating a new target
@@ -195,7 +206,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 targetCard.className = targetCard.className.replace(/target-status-\S+/, '');
                 // Add new status class
                 targetCard.classList.add(`target-status-${newStatus}`);
+                targetCard.dataset.status = newStatus;
             }
+
+            applyFilterAndOrder();
         })
         .catch(error => {
             console.error('Error:', error);
@@ -234,6 +248,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Update no targets message
             updateNoTargetsMessage();
+            applyFilterAndOrder();
         })
         .catch(error => {
             console.error('Error:', error);
@@ -247,7 +262,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function addTargetToDOM(target) {
         const statusClass = `target-status-${target.status}`;
         const targetHTML = `
-            <div class="target-card ${statusClass}" data-target-id="${target.id}">
+            <div class="target-card ${statusClass}" data-target-id="${target.id}" data-status="${target.status}">
                 <div class="target-content">
                     <span class="target-text">${escapeHtml(target.text)}</span>
                     <input
@@ -298,6 +313,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (newTextInput) {
             bindTextInput(newTextInput);
         }
+
+        applyFilterAndOrder();
     }
     
     /**
@@ -322,6 +339,63 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (editTargetsBtn) {
             editTargetsBtn.textContent = isEditMode ? 'Done Editing' : 'Edit Targets';
+        }
+    }
+
+    function applyFilterAndOrder() {
+        const targetCards = Array.from(targetsContainer.querySelectorAll('.target-card'));
+        const visibleCards = [];
+
+        targetCards.forEach(card => {
+            const status = card.dataset.status || '---';
+            const matches = currentFilter === 'all' || status === currentFilter;
+            card.style.display = matches ? '' : 'none';
+            if (matches) {
+                visibleCards.push(card);
+            }
+        });
+
+        if (currentFilter === 'all') {
+            const statusOrder = {
+                achieved: 0,
+                ongoing: 1,
+                not_achieved: 2,
+                '---': 3
+            };
+
+            visibleCards.sort((a, b) => {
+                const aStatus = a.dataset.status || '---';
+                const bStatus = b.dataset.status || '---';
+                return (statusOrder[aStatus] ?? 99) - (statusOrder[bStatus] ?? 99);
+            });
+
+            visibleCards.forEach(card => {
+                targetsContainer.appendChild(card);
+            });
+        }
+
+        updateFilterEmptyMessage(visibleCards.length, targetCards.length);
+    }
+
+    function updateFilterEmptyMessage(visibleCount, totalCount) {
+        const existing = targetsContainer.querySelector('.filter-empty-message');
+
+        if (totalCount === 0) {
+            if (existing) {
+                existing.remove();
+            }
+            return;
+        }
+
+        if (visibleCount === 0) {
+            if (!existing) {
+                const message = document.createElement('p');
+                message.className = 'filter-empty-message';
+                message.textContent = 'No targets match this filter.';
+                targetsContainer.appendChild(message);
+            }
+        } else if (existing) {
+            existing.remove();
         }
     }
 

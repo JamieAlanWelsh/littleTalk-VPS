@@ -75,12 +75,22 @@
             <div class="targets-section">
                 <div class="targets-header">
                     <h3>Targets</h3>
+                    <div class="targets-filter">
+                        <label for="targets-filter">Filter:</label>
+                        <select id="targets-filter" class="targets-filter-dropdown">
+                            <option value="all" selected>All Targets</option>
+                            <option value="achieved">Achieved</option>
+                            <option value="ongoing">Ongoing</option>
+                            <option value="not_achieved">Not Achieved</option>
+                            <option value="---">----</option>
+                        </select>
+                    </div>
                 </div>
                 
                 <div class="targets-container" id="targets-container">
                     {% if selected_learner.targets.all %}
                         {% for target in selected_learner.targets.all %}
-                            <div class="target-card target-status-{{ target.status }}" data-target-id="{{ target.id }}">
+                            <div class="target-card target-status-{{ target.status }}" data-target-id="{{ target.id }}" data-status="{{ target.status }}">
                                 <div class="target-content">
                                     <span class="target-text">{{ target.text }}</span>
                                     <input
