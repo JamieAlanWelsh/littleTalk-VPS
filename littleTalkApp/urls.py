@@ -90,6 +90,8 @@ urlpatterns = [
     # API endpoints
     path('api/learners/<uuid:learner_uuid>/update-exp/', UpdateLearnerExpAPIView.as_view(), name='update_learner_exp'),
     path('api/selected-learner/', views.get_selected_learner, name='get_selected_learner'),
+    path('api/targets/', views.create_target, name='create_target'),
+    path('api/targets/<int:target_id>/', views.target_detail, name='target_detail'),
 
     # Dashboard
     path('dashboard/learner/', views.learner_dashboard, name='learner_dashboard'),

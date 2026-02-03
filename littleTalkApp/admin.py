@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.models import Group
-from .models import Profile, School, ParentProfile, Learner, JoinRequest, SchoolMembership, ExerciseSession, LogEntry
+from .models import Profile, School, ParentProfile, Learner, JoinRequest, SchoolMembership, ExerciseSession, LogEntry, Target
 
 # unregister groups
 admin.site.unregister(Group)
@@ -278,3 +278,22 @@ class LogEntryAdmin(admin.ModelAdmin):
         return "—"
     user_email.short_description = "User Email"
     user_email.admin_order_field = "user__email_encrypted"
+
+
+@admin.register(Target)
+class TargetAdmin(admin.ModelAdmin):
+    """Admin interface for Target"""
+    list_display = ("id", "learner", "text", "status", "created_at", "updated_at")
+    list_filter = ("status", "created_at", "updated_at")
+    search_fields = ("learner__name", "text")
+    readonly_fields = ("created_at", "updated_at")
+    
+    fieldsets = (
+        (None, {
+            "fields": ("learner", "text", "status")
+        }),
+        ("Timestamps", {
+            "fields": ("created_at", "updated_at"),
+            "classes": ("collapse",)
+        }),
+    )

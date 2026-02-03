@@ -61,22 +61,6 @@
                 {% if selected_learner.cohort %}
                     <p><strong>Cohort:</strong> {{ selected_learner.cohort }}</p>
                 {% endif %}
-            
-                <p><strong>Total Experience:</strong>
-                    {% if selected_learner.exp %}
-                        {{ selected_learner.exp }}
-                    {% else %}
-                        No experience recorded.
-                    {% endif %}
-                </p>
-            
-                <p><strong>Exercises Completed:</strong>
-                    {% if selected_learner.total_exercises %}
-                        {{ selected_learner.total_exercises }}
-                    {% else %}
-                        No exercises recorded.
-                    {% endif %}
-                </p>
                 {% if request.user.profile.role == 'parent' and selected_learner.school_id %}
                     <div class="recommendation-info mb-20">
                         <span class="info-icon">i</span>
@@ -85,6 +69,39 @@
                         </p>
                     </div>
                 {% endif %}
+            </div>
+
+            <!-- Targets Section -->
+            <div class="targets-section">
+                <div class="targets-header">
+                    <h3>Targets</h3>
+                </div>
+                
+                <div class="targets-container" id="targets-container">
+                    {% if selected_learner.targets.all %}
+                        {% for target in selected_learner.targets.all %}
+                            <div class="target-card target-status-{{ target.status }}" data-target-id="{{ target.id }}">
+                                <div class="target-content">
+                                    <span class="target-text">{{ target.text }}</span>
+                                    <select class="target-status-dropdown" data-target-id="{{ target.id }}">
+                                        <option value="---" {% if target.status == '---' %}selected{% endif %}>----</option>
+                                        <option value="achieved" {% if target.status == 'achieved' %}selected{% endif %}>Achieved</option>
+                                        <option value="not_achieved" {% if target.status == 'not_achieved' %}selected{% endif %}>Not Achieved</option>
+                                        <option value="ongoing" {% if target.status == 'ongoing' %}selected{% endif %}>Ongoing</option>
+                                    </select>
+                                </div>
+                                <button class="target-delete-btn" data-target-id="{{ target.id }}" title="Delete target">×</button>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="no-targets-message">No targets added yet.</p>
+                    {% endif %}
+                </div>
+
+                <div class="targets-actions">
+                    <button class="button-secondary" id="new-target-btn">+ New Target</button>
+                    <button class="button-secondary" id="edit-targets-btn">Edit Targets</button>
+                </div>
             </div>
             <!-- Edit Learner Button SCHOOL AND STANDALONE ONLY -->
             {% if request.user.profile.role != 'parent' or not selected_learner.school_id %}
@@ -125,4 +142,13 @@
         </div> 
     </div>
 </div>
+
+<!-- Pass learner UUID to JavaScript -->
+{% if selected_learner %}
+<script>
+    window.currentLearnerUuid = '{{ selected_learner.learner_uuid }}';
+</script>
+{% endif %}
+
+<script src="{% static 'js/targets_management.js' %}"></script>
 {% endblock %}

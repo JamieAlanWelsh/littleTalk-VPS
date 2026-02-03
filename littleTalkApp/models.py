@@ -500,3 +500,27 @@ class ExerciseSession(models.Model):
 
     def __str__(self):
         return f"{self.learner.name} - {self.exercise_id} ({self.completed_at})"
+
+
+class Target(models.Model):
+    class Status(models.TextChoices):
+        NOT_SET = "---", "Not Set"
+        ACHIEVED = "achieved", "Achieved"
+        NOT_ACHIEVED = "not_achieved", "Not Achieved"
+        ONGOING = "ongoing", "Ongoing"
+
+    learner = models.ForeignKey(Learner, on_delete=models.CASCADE, related_name="targets")
+    text = EncryptedCharField(max_length=255)
+    status = models.CharField(
+        max_length=20,
+        choices=Status.choices,
+        default=Status.NOT_SET,
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['created_at']
+
+    def __str__(self):
+        return f"{self.learner.name} - {self.text} ({self.status})"
