@@ -296,17 +296,17 @@
 }
 
 .target-status-achieved {
-    border-left-color: #4caf50;
+    border-left-color: var(--target-green);
     background-color: #e8f5e9;
 }
 
 .target-status-not_achieved {
-    border-left-color: #f44336;
+    border-left-color: var(--target-red);
     background-color: #ffebee;
 }
 
 .target-status-ongoing {
-    border-left-color: #ff9800;
+    border-left-color: var(--target-orange);
     background-color: #fff3e0;
 }
 
