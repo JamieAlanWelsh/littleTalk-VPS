@@ -15,11 +15,11 @@
             </div>
         {% endif %}
 
-        <div class="learners-list">
+        <div class="learners-list profile-card">
             {% if request.user.profile.role != 'parent' %}
-                <div class="cohort-filter-widget">
+                <div class="profile-card__header">
+                    <h3 class="profile-card__title">Cohort:</h3>
                     <form method="get" action="" class="section-filter">
-                        <label for="cohort" class="section-filter__label"><strong>Cohort:</strong></label>
                         <select name="cohort" id="cohort" class="section-filter__select" onchange="this.form.submit()">
                             <option value="">All Cohorts</option>
                             {% for cohort in cohorts %}
@@ -54,8 +54,10 @@
         <!-- Learning Level Section -->
         {% if selected_learner %}
             <!-- Total Experience Section -->
-            <div class="total-exp-section">
-                <h3>Learner Details</h3>
+            <div class="profile-card profile-card--details">
+                <div class="profile-card__header">
+                    <h3 class="profile-card__title">Learner Details:</h3>
+                </div>
                 <p><strong>Name:</strong> {{ selected_learner.name }}</p>
             
                 {% if selected_learner.cohort %}
@@ -72,11 +74,10 @@
             </div>
 
             <!-- Targets Section -->
-            <div class="targets-section">
-                <div class="targets-header">
-                    <h3>Targets</h3>
+            <div class="profile-card profile-card--targets profile-card--padded">
+                <div class="profile-card__header">
+                    <h3 class="profile-card__title">Targets:</h3>
                     <div class="section-filter">
-                        <label for="targets-filter" class="section-filter__label">Filter:</label>
                         <select id="targets-filter" class="section-filter__select">
                             <option value="all" selected>All Targets</option>
                             <option value="achieved">Achieved</option>
@@ -141,7 +142,7 @@
             {% endif %}
         {% endif %}
         <!-- Susbcription details - PARENT ONLY -->
-        <div class="total-exp-section">
+        <div class="profile-card profile-card--details">
             {% if request.user.profile.role == 'parent' %}
                 <div class="edit-learner-btn">
                     <h3>Subscription</h3>

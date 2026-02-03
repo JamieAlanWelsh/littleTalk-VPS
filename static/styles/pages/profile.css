@@ -28,16 +28,8 @@
 }
 
 /* -----------------------------
-   Cohort Filter (inside learners list)
+    Cohort Filter (inside learners list)
 ------------------------------ */
-
-.cohort-filter-widget {
-    padding: 15px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.212);
-    margin-bottom: 10px;
-    font-family: var(--font-outfit);
-}
 
 .section-filter {
     display: flex;
@@ -74,24 +66,43 @@
     outline: none;
 }
 
+.learners-list .profile-card__header {
+    padding: 20px;
+}
+
+.profile-card--details .profile-card__header {
+    padding-top: 20px;
+}
+
 /* -----------------------------
    Learner List & Buttons
 ------------------------------ */
 
-.learners-list {
-    flex-grow: 1;
+.profile-card {
     background-color: var(--accent-color);
     border-radius: var(--border-radius-light);
     box-shadow: var(--box-shadow);
+}
+
+.profile-card--padded {
+    padding: 20px;
+}
+
+.profile-card--details {
+    padding: 0 20px;
+}
+
+.learners-list {
+    flex-grow: 1;
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    max-height: 745px;
+    max-height: 755px;
 }
 
 .learners-list ul {
     list-style-type: none;
-    padding: 10px;
+    padding: 0 15px;
     margin: 0;
     overflow-y: auto;
     flex-grow: 1;
@@ -161,18 +172,8 @@
    Right Column Content Blocks
 ------------------------------ */
 
-.learning-level-section,
-.total-exp-section {
-    background-color: var(--accent-color);
-    border-radius: var(--border-radius-light);
-    box-shadow: var(--box-shadow);
-    padding: 0 20px;
-}
-
-.learning-level-section h3,
-.total-exp-section h3,
-.learning-level-section p,
-.total-exp-section p {
+.profile-card--details h3,
+.profile-card--details p {
     color: var(--font-color);
 }
 
@@ -226,21 +227,11 @@
 
 /* Targets Section */
 
-.targets-section {
-    background-color: var(--accent-color);
-    border-radius: var(--border-radius-light);
-    box-shadow: var(--box-shadow);
+.profile-card--targets {
     padding: 20px;
 }
 
-.targets-header h3 {
-    color: var(--font-color);
-    margin: 0 0 15px 0;
-    font-size: 18px;
-    font-weight: 600;
-}
-
-.targets-header {
+.profile-card__header {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -250,11 +241,18 @@
     border-bottom: 1px solid rgba(0, 0, 0, 0.212);
 }
 
+.profile-card__title {
+    color: var(--font-color);
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
 
 .targets-container {
     min-height: 60px;
     margin-bottom: 15px;
-    max-height: 320px;
+    max-height: 330px;
     overflow-y: auto;
     padding-right: 4px;
 }
@@ -401,15 +399,15 @@
     flex-wrap: wrap;
 }
 
-.targets-section.edit-mode .target-delete-btn {
+.profile-card--targets.edit-mode .target-delete-btn {
     display: flex;
 }
 
-.targets-section.edit-mode .target-text {
+.profile-card--targets.edit-mode .target-text {
     display: none;
 }
 
-.targets-section.edit-mode .target-text-input {
+.profile-card--targets.edit-mode .target-text-input {
     display: block;
 }
 

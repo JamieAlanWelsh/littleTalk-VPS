@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const newTargetBtn = document.getElementById('new-target-btn');
     const editTargetsBtn = document.getElementById('edit-targets-btn');
     const targetsContainer = document.getElementById('targets-container');
-    const targetsSection = document.querySelector('.targets-section');
+    const targetsSection = document.querySelector('.profile-card--targets');
     const targetsFilter = document.getElementById('targets-filter');
     let isEditMode = false;
     let currentFilter = 'all';
