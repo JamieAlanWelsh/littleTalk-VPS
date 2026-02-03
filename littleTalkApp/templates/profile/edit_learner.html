@@ -26,9 +26,6 @@
                 </div>
             {% endif %}
         {% endfor %}
-        <a href="{% url 'start_assessment' %}" class="btn btn--white btn--full">
-        Submit Screener
-        </a>
         {% if can_delete %}
             <button type="submit" name="remove" class="btn btn--red btn--full">
                 Delete Learner

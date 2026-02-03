@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Chatterdillo | Screener{% endblock %}
+
+{% block content %}
+<div class="screener-container">
+    <h1>Screener</h1>
+    
+    {% if selected_learner %}
+        <!-- <strong><p>Selected Learner: </strong>{{ selected_learner.name }}</p>
+        {% if last_screener_date %}
+            <p><strong>Last Screener:</strong> {{ last_screener_date|date:"M d, Y" }}</p>
+        {% endif %} -->
+        
+        <div class="screener-card-row">
+            {% if not has_screener %}
+                <!-- Submit New Screener -->
+                <a href="{% url 'start_assessment' %}" class="screener-card">
+                    <div class="screener-card-inner">
+                        <h2>Submit New Screener</h2>
+                        <p>A short questionnaire to profile needs and get exercise recommendations</p>
+                    </div>
+                </a>
+            {% else %}
+                <!-- Submit Re-Screener -->
+                <a href="{% url 'start_assessment' %}" class="screener-card">
+                    <div class="screener-card-inner">
+                        <h2>Submit Re-Screener</h2>
+                        <p>Re-take questionnaire to show progress and update exercise recommendations</p>
+                    </div>
+                </a>
+                
+                <!-- View Screener Results -->
+                <a href="{% url 'assessment_summary' %}" class="screener-card">
+                    <div class="screener-card-inner">
+                        <h2>View Screener Results</h2>
+                        <p>Review or print previous screener results</p>
+                    </div>
+                </a>
+            {% endif %}
+        </div>
+
+        <div class="screener-back-button">
+            <a href="{% url 'profile' %}" class="btn btn--white btn--small">Back to Profile</a>
+        </div>
+    {% else %}
+        <p class="error-message">No learner selected. Please select a learner from the profile page.</p>
+    {% endif %}
+</div>
+{% endblock %}

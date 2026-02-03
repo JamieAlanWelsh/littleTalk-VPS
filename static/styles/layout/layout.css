@@ -67,6 +67,10 @@
     border-radius: var(--border-radius-light);
 }
 
+.marginsupperlower-30 {
+    margin: 30px auto;
+}
+
 .mt-20 {
     margin-top: 20px;
 }

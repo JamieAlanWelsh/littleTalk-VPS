@@ -21,7 +21,7 @@
                     <select id="learner-select" class="select">
                         {% for learner in learners %}
                             <option value="{{ learner.learner_uuid }}" {% if selected_learner and learner.id == selected_learner.id %}selected{% endif %}>
-                                {{ learner.name }}
+                                {{ learner.name }} ({{ learner.session_count }})
                             </option>
                         {% endfor %}
                     </select>
@@ -30,9 +30,9 @@
                 <div class="filter-group">
                     <label class="label" for="exercise-select">Exercise</label>
                     <select id="exercise-select" class="select">
-                        <option value="all">All Exercises</option>
+                        <option value="all">All Exercises ({{ total_sessions }})</option>
                         {% for exercise in exercise_choices %}
-                            <option value="{{ exercise.id }}">{{ exercise.name }}</option>
+                            <option value="{{ exercise.id }}">{{ exercise.name }} ({{ exercise.count }})</option>
                         {% endfor %}
                     </select>
                 </div>

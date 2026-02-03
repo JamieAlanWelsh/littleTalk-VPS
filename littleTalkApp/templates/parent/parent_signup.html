@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Chatterdillo | Parent Sign Up{% endblock %}
+{% block title %}Chatterdillo | Individual Account Sign Up{% endblock %}
 {% load static %}
 {% load honeypot %}
 
@@ -14,8 +14,8 @@
         </div>
     </a>
     <!-- Header Section -->
-    <h1>
-        Parent Setup
+    <h1 style="text-align: center; font-size: 2rem; margin-bottom: 40px;">
+        Individual Account Setup
     </h1>
 
     <!-- Signup Form -->
@@ -55,14 +55,18 @@
             {% endif %}
         </div>
 
-        <div class="checkbox-wrapper mt-20">
+        <div class="checkbox-wrapper">
             <input type="checkbox" name="agree_updates" id="agree_updates" {% if form.agree_updates.value %}checked{% endif %}>
-            <label for="agree_updates">
-                I’m happy to receive occasional updates about Chatterdillo
+            <label for="agree_updates" style="font-size: 0.9rem;">
+                I would like to receive updates and news from Chatterdillo
             </label>
         </div>
 
         <button type="submit" class="btn btn--yellow btn--full">Create My Account</button>
+
+        <p class="text-center" style="margin-top: 20px; margin-bottom: 0; font-size: 0.9rem;">
+            By signing up, you agree to our <a href="/terms/" target="_blank" class="text-link">Terms and Conditions</a>
+        </p>
 
         {% if form.non_field_errors %}
             <div class="error-message">{{ form.non_field_errors.0 }}</div>

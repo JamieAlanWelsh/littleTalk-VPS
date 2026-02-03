@@ -150,16 +150,52 @@ def school_signup(request):
     return render(request, "registration/school_signup.html", {"form": form})
 
 
+# Screener Hub - Crossroad for starting or viewing screener results
+@login_required
+def screener(request):
+    # Get selected learner
+    selected_learner_id = request.session.get("selected_learner_id")
+    selected_learner = None
+    has_screener = False
+    last_screener_date = None
+    
+    if selected_learner_id:
+        try:
+            selected_learner = Learner.objects.get(id=int(selected_learner_id))
+            # Check if learner has assessment answers (screener submitted)
+            has_screener = selected_learner.answers.exists()
+            # Get the date of the last screener
+            if has_screener:
+                last_answer = selected_learner.answers.order_by('-timestamp').first()
+                last_screener_date = last_answer.timestamp if last_answer else None
+        except (ValueError, Learner.DoesNotExist):
+            selected_learner = None
+    
+    return render(
+        request,
+        "assessment/screener.html",
+        {
+            "selected_learner": selected_learner,
+            "has_screener": has_screener,
+            "last_screener_date": last_screener_date,
+        },
+    )
+
+
 # This view will serve the first question when the assessment starts
 @login_required
 def start_assessment(request):
     request.hide_sidebar = True
+
+    # Generate a unique session ID for this screener attempt
+    assessment_session_id = uuid.uuid4()
 
     # Reset assessment session state
     request.session["assessment_answers"] = []
     request.session["assessment_complete"] = False
     request.session["current_question_index"] = 1
     request.session["previous_question_id"] = None
+    request.session["assessment_session_id"] = str(assessment_session_id)  # Store session UUID
 
     # Get the first question
     first_question = QUESTIONS[0]
@@ -202,13 +238,19 @@ def save_all_assessment_answers(request):
 
 # Saves and assigns learners assessment answers and recommendations
 @login_required
-def save_assessment_for_learner(learner, answers):
+def save_assessment_for_learner(learner, answers, session_id=None):
     from collections import defaultdict
 
-    # Delete old answers
-    learner.answers.all().delete()
+    # Archive previous assessment metrics before updating
+    # Store current recommendation_level as previous (assessment2) for comparison
+    if learner.recommendation_level is not None:
+        learner.assessment2 = learner.recommendation_level
 
-    # Save new answers
+    # If no session_id provided, generate one (for backwards compatibility)
+    if not session_id:
+        session_id = uuid.uuid4()
+
+    # Save new answers with session_id (old answers are preserved via session_id grouping)
     for question_id_str, user_answer in answers.items():
         try:
             question_id = int(question_id_str)
@@ -226,6 +268,7 @@ def save_assessment_for_learner(learner, answers):
             skill=question["skill"],
             text=question["text"],
             answer=user_answer,
+            session_id=session_id,
         )
 
     # Calculate strong skills
@@ -255,18 +298,144 @@ def save_assessment_for_learner(learner, answers):
     learner.save()
 
 
+def get_screener_comparison_data(learner):
+    """
+    Compares current and previous screener sessions to identify progress.
+    
+    Returns dict with:
+    - has_previous: bool indicating if a previous session exists
+    - previous_session_date: date of previous screener
+    - skills_gained: skills that changed from No to Yes
+    - skills_lost: skills that changed from Yes to No (regression tracking)
+    - skills_maintained_strong: skills that remained Yes
+    - skills_maintained_support: skills that remained No
+    - recommendation_change: dict with previous, current, and direction
+    """
+    
+    if not learner:
+        return None
+
+    # Get all answers
+    all_answers = learner.answers.all()
+    
+    if not all_answers.exists():
+        return None
+
+    # Group by session_id to identify distinct screener sessions
+    # Use distinct session_ids and order by timestamp to get chronological order
+    session_ids = all_answers.values_list('session_id', flat=True).distinct()
+    
+    sessions = []
+    for session_id in session_ids:
+        session_answers = list(all_answers.filter(session_id=session_id).order_by('timestamp'))
+        if session_answers:
+            sessions.append({
+                'session_id': session_id,
+                'date': session_answers[0].assessment_date,
+                'timestamp': session_answers[0].timestamp,
+                'answers': session_answers
+            })
+    
+    # Sort sessions by timestamp to get chronological order
+    sessions.sort(key=lambda x: x['timestamp'])
+    
+    # If fewer than 2 sessions, no comparison available
+    if len(sessions) < 2:
+        return None
+
+    # Get current (most recent) and previous sessions
+    current_session = sessions[-1]
+    previous_session = sessions[-2]
+    
+    # Build answer maps by question_id for easier comparison
+    current_answers_map = {a.question_id: a.answer for a in current_session['answers']}
+    previous_answers_map = {a.question_id: a.answer for a in previous_session['answers']}
+    
+    # Build skill maps (skill -> list of answers)
+    current_skill_map = defaultdict(list)
+    for a in current_session['answers']:
+        current_skill_map[a.skill].append(a.answer)
+    
+    previous_skill_map = defaultdict(list)
+    for a in previous_session['answers']:
+        previous_skill_map[a.skill].append(a.answer)
+    
+    # Determine skill statuses for current and previous
+    def get_skill_status(skill_map):
+        """Returns dict of skill -> 'strong' or 'needs_support'"""
+        status = {}
+        for skill, responses in skill_map.items():
+            status[skill] = 'strong' if 'No' not in responses else 'needs_support'
+        return status
+    
+    current_skill_status = get_skill_status(current_skill_map)
+    previous_skill_status = get_skill_status(previous_skill_map)
+    
+    # Calculate skill changes
+    skills_gained = []  # Was needs_support (No), now strong (Yes)
+    skills_lost = []    # Was strong (Yes), now needs_support (No)
+    skills_maintained_strong = []  # Remained strong
+    skills_maintained_support = []  # Remained needs_support
+    
+    all_skills = set(current_skill_status.keys()) | set(previous_skill_status.keys())
+    
+    for skill in sorted(all_skills):
+        prev_status = previous_skill_status.get(skill)
+        curr_status = current_skill_status.get(skill)
+        
+        if prev_status == 'needs_support' and curr_status == 'strong':
+            skills_gained.append(skill)
+        elif prev_status == 'strong' and curr_status == 'needs_support':
+            skills_lost.append(skill)
+        elif prev_status == 'strong' and curr_status == 'strong':
+            skills_maintained_strong.append(skill)
+        elif prev_status == 'needs_support' and curr_status == 'needs_support':
+            skills_maintained_support.append(skill)
+    
+    # Recommendation level changes
+    recommendation_change = {
+        'previous': learner.assessment2 if learner.assessment2 is not None else None,
+        'current': learner.recommendation_level,
+    }
+    
+    if recommendation_change['previous'] is not None:
+        if recommendation_change['current'] > recommendation_change['previous']:
+            recommendation_change['direction'] = 'improved'
+        elif recommendation_change['current'] < recommendation_change['previous']:
+            recommendation_change['direction'] = 'declined'
+        else:
+            recommendation_change['direction'] = 'same'
+    
+    return {
+        'has_previous': True,
+        'previous_session_date': previous_session['date'],
+        'skills_gained': skills_gained,
+        'skills_lost': skills_lost,
+        'skills_maintained_strong': skills_maintained_strong,
+        'skills_maintained_support': skills_maintained_support,
+        'recommendation_change': recommendation_change,
+    }
+
+
 @login_required
 def assessment_summary(request):
-    request.hide_sidebar = True
+    # request.hide_sidebar = True
 
     answers = []
     learner = None
+    comparison_data = None
 
     selected_id = request.session.get("selected_learner_id")
     if selected_id:
         learner = Learner.objects.filter(id=selected_id).first()
         if learner:
-            answers = learner.answers.all()
+            # Get only the current (most recent) screener session by timestamp
+            latest_session = learner.answers.order_by('-timestamp').values('session_id').first()
+            if latest_session:
+                answers = learner.answers.filter(session_id=latest_session['session_id'])
+            
+            # Get comparison data if multiple sessions exist
+            comparison_data = get_screener_comparison_data(learner)
 
     # Group answers by skill
     skill_answers = defaultdict(list)
@@ -295,17 +464,24 @@ def assessment_summary(request):
     else:
         readiness_status = "mixed"
 
+    context = {
+        "answers": answers,
+        "strong_skills": strong_skills,
+        "needs_support_skills": needs_support_skills,
+        "readiness_status": readiness_status,
+        "learner": learner,
+    }
+    
+    # Add comparison data if available
+    if comparison_data:
+        context.update(comparison_data)
+
     return render(
         request,
         "assessment/summary.html",
-        {
-            "answers": answers,
-            "strong_skills": strong_skills,
-            "needs_support_skills": needs_support_skills,
-            "readiness_status": readiness_status,
-            "learner": learner,
-        },
+        context,
     )
+
 
 
 @login_required
@@ -317,12 +493,13 @@ def save_assessment(request):
         selected_learner = Learner.objects.filter(id=selected_learner_id).first()
 
     answers = request.session.get("assessment_answers", {})
+    assessment_session_id = request.session.get("assessment_session_id")
 
     if not answers:
         # Nothing to save; send back to start
         return redirect("start_assessment")
 
-    save_assessment_for_learner(selected_learner, answers)
+    save_assessment_for_learner(selected_learner, answers, session_id=assessment_session_id)
 
     # Keep this learner selected; clear assessment temp state
     # request.session["selected_learner_id"] = selected_learner.id
@@ -330,6 +507,7 @@ def save_assessment(request):
     request.session.pop("assessment_complete", None)
     request.session.pop("current_question_index", None)
     request.session.pop("previous_question_id", None)
+    request.session.pop("assessment_session_id", None)
     # (No retake key anymore)
 
     return redirect("assessment_summary")
@@ -1778,6 +1956,8 @@ def learner_dashboard(request):
     Progress dashboard showing charts for individual learner analytics.
     Accessible by parents (own learners) and staff (school learners).
     """
+    from django.db.models import Count
+    
     profile = request.user.profile
     
     # Get accessible learners based on role
@@ -1789,6 +1969,11 @@ def learner_dashboard(request):
             messages.error(request, "No school assigned to your profile.")
             return redirect("profile")
         accessible_learners = Learner.objects.filter(school=user_school, deleted=False)
+    
+    # Annotate learners with session counts
+    accessible_learners = accessible_learners.annotate(
+        session_count=Count('exercise_sessions')
+    ).order_by('name')
     
     # Get selected learner from query param or session
     learner_uuid = request.GET.get("learner")
@@ -1812,19 +1997,35 @@ def learner_dashboard(request):
     if not selected_learner and accessible_learners.exists():
         selected_learner = accessible_learners.first()
     
+    # Get exercise session counts for selected learner
+    exercise_counts = {}
+    if selected_learner:
+        from django.db.models import Count
+        exercise_count_qs = ExerciseSession.objects.filter(
+            learner=selected_learner
+        ).values('exercise_id').annotate(
+            count=Count('id')
+        )
+        exercise_counts = {item['exercise_id']: item['count'] for item in exercise_count_qs}
+        
+        # Get total count for "All Exercises"
+        total_count = ExerciseSession.objects.filter(learner=selected_learner).count()
+        exercise_counts['all'] = total_count
+    
     # Get list of exercises for filter dropdown
     exercise_choices = [
-        {"id": "Colourful Semantics", "name": "Colourful Semantics"},
-        {"id": "Think and Find", "name": "Think and Find"},
-        {"id": "Concept Quest", "name": "Concept Quest"},
-        {"id": "Categorisation", "name": "Categorisation"},
-        {"id": "Story Train", "name": "Story Train"},
+        {"id": "Colourful Semantics", "name": "Colourful Semantics", "count": exercise_counts.get("Colourful Semantics", 0)},
+        {"id": "Think and Find", "name": "Think and Find", "count": exercise_counts.get("Think and Find", 0)},
+        {"id": "Concept Quest", "name": "Concept Quest", "count": exercise_counts.get("Concept Quest", 0)},
+        {"id": "Categorisation", "name": "Categorisation", "count": exercise_counts.get("Categorisation", 0)},
+        {"id": "Story Train", "name": "Story Train", "count": exercise_counts.get("Story Train", 0)},
     ]
     
     context = {
         "learners": accessible_learners,
         "selected_learner": selected_learner,
         "exercise_choices": exercise_choices,
+        "total_sessions": exercise_counts.get('all', 0),
     }
     
     return render(request, "dashboard/learner_dashboard.html", context)

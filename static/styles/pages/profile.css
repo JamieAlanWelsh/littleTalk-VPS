@@ -16,6 +16,8 @@
     flex-direction: column;
     max-height: 80vh;
     gap: 20px;
+    position: sticky;
+    top: 20px; /* Keeps the left column in view when scrolling */
 }
 
 .right-column {
@@ -26,15 +28,14 @@
 }
 
 /* -----------------------------
-   Cohort Filter
+   Cohort Filter (inside learners list)
 ------------------------------ */
 
 .cohort-filter-widget {
-    background-color: var(--accent-color);
-    border-radius: var(--border-radius-light);
-    box-shadow: var(--box-shadow);
-    padding: 20px;
-    /* width: 26   0px; */
+    padding: 15px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.212);
+    margin-bottom: 10px;
     font-family: var(--font-outfit);
 }
 
@@ -68,13 +69,42 @@
 ------------------------------ */
 
 .learners-list {
-    flex-grow: 0;
+    flex-grow: 1;
+    background-color: var(--accent-color);
+    border-radius: var(--border-radius-light);
+    box-shadow: var(--box-shadow);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    max-height: calc(80vh - 185px); /* Adjust based on add button */
 }
 
 .learners-list ul {
     list-style-type: none;
-    padding: 0;
+    padding: 10px;
     margin: 0;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+/* Custom scrollbar styling */
+.learners-list ul::-webkit-scrollbar {
+    width: 8px;
+}
+
+.learners-list ul::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: var(--border-radius-light);
+}
+
+.learners-list ul::-webkit-scrollbar-thumb {
+    background: var(--font-color);
+    border-radius: var(--border-radius-light);
+    opacity: 0.5;
+}
+
+.learners-list ul::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
 
 .learner-item {
@@ -96,7 +126,7 @@
     cursor: pointer;
     background-color: white;
     color: var(--font-color);
-    border: 1px solid transparent;
+    border: 1px solid #ccc;;
     transition: background-color 0.3s, color 0.3s, transform 0.2s;
 }
 
@@ -168,6 +198,7 @@
     .profile-container {
         flex-direction: column;
         align-items: stretch;
+        margin-bottom: 20px;
     }
     .right-column {
         order: 1;

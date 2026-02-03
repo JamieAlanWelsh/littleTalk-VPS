@@ -20,6 +20,7 @@ urlpatterns = [
     path('support/send-email/', views.send_support_email, name='send_support_email'),
 
     # Assessment
+    path('screener/', views.screener, name='screener'),
     path('screener/start/', views.start_assessment, name='start_assessment'),
     path('screener/save-all/', views.save_all_assessment_answers, name='save_all_assessment_answers'),
     path('screener/save/', views.save_assessment, name='save_assessment'),

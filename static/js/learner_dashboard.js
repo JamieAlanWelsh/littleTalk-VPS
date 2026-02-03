@@ -454,9 +454,15 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    [learnerSelect, dateRangeSelect].forEach((element) => {
-        element.addEventListener("change", fetchProgressData);
+    // Learner selection should reload page to update exercise counts
+    learnerSelect.addEventListener("change", () => {
+        const selectedUuid = learnerSelect.value;
+        if (selectedUuid) {
+            window.location.href = `?learner=${selectedUuid}`;
+        }
     });
+
+    dateRangeSelect.addEventListener("change", fetchProgressData);
 
     exerciseSelect.addEventListener("change", () => {
         updateMetricAvailability();

@@ -13,6 +13,7 @@
 @import './pages/logbook.css';
 @import './pages/cohorts.css';
 @import './pages/support.css';
-@import './pages/assessment.css';
 @import './pages/dashboard.css';
 @import './pages/game_description.css';
+@import './pages/screener_and_summary.css';
+@import './pages/screener_crossroads.css';
