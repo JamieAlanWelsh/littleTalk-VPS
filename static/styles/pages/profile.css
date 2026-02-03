@@ -269,6 +269,28 @@
 .targets-container {
     min-height: 60px;
     margin-bottom: 15px;
+    max-height: 320px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.targets-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.targets-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: var(--border-radius-light);
+}
+
+.targets-container::-webkit-scrollbar-thumb {
+    background: var(--font-color);
+    border-radius: var(--border-radius-light);
+    opacity: 0.5;
+}
+
+.targets-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
 
 .target-card {
