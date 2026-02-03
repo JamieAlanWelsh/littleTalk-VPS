@@ -142,7 +142,9 @@
 }
 
 .add-learner-btn a:hover {
-    background-color: var(--yellow-button-hover);
+    background-color: white;
+    color: var(--yellow-button-hover);
+    border: 1.5px solid var(--yellow-button-hover);
 }
 
 /* -----------------------------
@@ -507,13 +509,15 @@
 }
 
 .modal-buttons .btn-save {
-    background-color: #4caf50;
-    color: white;
-    border-color: #4caf50;
+    background-color: var(--yellow-button-color);
+    color: var(--font-color);
+    /* border-color: #4caf50; */
 }
 
 .modal-buttons .btn-save:hover {
-    background-color: #45a049;
+    background-color: white;
+    color: var(--yellow-button-hover);
+    border: 1.5px solid var(--yellow-button-hover);
 }
 
 .modal-buttons .btn-cancel {
@@ -522,7 +526,8 @@
 }
 
 .modal-buttons .btn-cancel:hover {
-    background-color: #f0f0f0;
+    background-color: var(--font-color);
+    color: white;
 }
 
 /* Practice Button
