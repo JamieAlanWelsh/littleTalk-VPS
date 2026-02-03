@@ -18,10 +18,10 @@
         <div class="learners-list">
             {% if request.user.profile.role != 'parent' %}
                 <div class="cohort-filter-widget">
-                    <form method="get" action="">
-                        <label for="cohort"><strong>Cohort:</strong></label>
-                        <select name="cohort" id="cohort" onchange="this.form.submit()">
-                            <option value="">-- All Cohorts --</option>
+                    <form method="get" action="" class="section-filter">
+                        <label for="cohort" class="section-filter__label"><strong>Cohort:</strong></label>
+                        <select name="cohort" id="cohort" class="section-filter__select" onchange="this.form.submit()">
+                            <option value="">All Cohorts</option>
                             {% for cohort in cohorts %}
                                 <option value="{{ cohort.id }}" {% if cohort.id == selected_cohort %}selected{% endif %}>
                                     {{ cohort.name }}
@@ -75,9 +75,9 @@
             <div class="targets-section">
                 <div class="targets-header">
                     <h3>Targets</h3>
-                    <div class="targets-filter">
-                        <label for="targets-filter">Filter:</label>
-                        <select id="targets-filter" class="targets-filter-dropdown">
+                    <div class="section-filter">
+                        <label for="targets-filter" class="section-filter__label">Filter:</label>
+                        <select id="targets-filter" class="section-filter__select">
                             <option value="all" selected>All Targets</option>
                             <option value="achieved">Achieved</option>
                             <option value="ongoing">Ongoing</option>
