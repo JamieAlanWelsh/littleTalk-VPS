@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const newTargetBtn = document.getElementById('new-target-btn');
     const editTargetsBtn = document.getElementById('edit-targets-btn');
     const targetsContainer = document.getElementById('targets-container');
+    const targetsSection = document.querySelector('.targets-section');
+    let isEditMode = false;
     
     if (!targetsContainer) return; // Exit if not on profile page
     
@@ -38,6 +40,11 @@ document.addEventListener('DOMContentLoaded', function() {
             handleDeleteTarget(this);
         });
     });
+
+    // Event listeners for text inputs
+    document.querySelectorAll('.target-text-input').forEach(input => {
+        bindTextInput(input);
+    });
     
     // New Target button
     if (newTargetBtn) {
@@ -62,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="new-target-modal show" id="new-target-modal">
                 <div class="new-target-modal-content">
                     <h4>Add New Target</h4>
-                    <input type="text" id="new-target-text" placeholder="Enter target description" maxlength="255">
+                    <input type="text" id="new-target-text" placeholder="Enter target" maxlength="255">
                     <div class="modal-buttons">
                         <button class="btn-cancel" onclick="document.getElementById('new-target-modal').remove();">Cancel</button>
                         <button class="btn-save" onclick="saveNewTarget();">Add Target</button>
@@ -243,6 +250,14 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="target-card ${statusClass}" data-target-id="${target.id}">
                 <div class="target-content">
                     <span class="target-text">${escapeHtml(target.text)}</span>
+                    <input
+                        type="text"
+                        class="target-text-input"
+                        data-target-id="${target.id}"
+                        value="${escapeHtml(target.text)}"
+                        maxlength="255"
+                        aria-label="Edit target"
+                    />
                     <select class="target-status-dropdown" data-target-id="${target.id}">
                         <option value="---" ${target.status === '---' ? 'selected' : ''}>----</option>
                         <option value="achieved" ${target.status === 'achieved' ? 'selected' : ''}>Achieved</option>
@@ -278,6 +293,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 handleDeleteTarget(this);
             });
         }
+
+        const newTextInput = document.querySelector(`.target-text-input[data-target-id="${target.id}"]`);
+        if (newTextInput) {
+            bindTextInput(newTextInput);
+        }
     }
     
     /**
@@ -295,9 +315,83 @@ document.addEventListener('DOMContentLoaded', function() {
      * Toggle edit mode
      */
     function toggleEditMode() {
-        const targetCards = document.querySelectorAll('.target-card');
-        targetCards.forEach(card => {
-            card.classList.toggle('edit-mode');
+        isEditMode = !isEditMode;
+        if (targetsSection) {
+            targetsSection.classList.toggle('edit-mode', isEditMode);
+        }
+
+        if (editTargetsBtn) {
+            editTargetsBtn.textContent = isEditMode ? 'Done Editing' : 'Edit Targets';
+        }
+    }
+
+    function bindTextInput(input) {
+        const targetId = input.dataset.targetId;
+
+        input.addEventListener('focus', function() {
+            input.dataset.originalText = input.value;
+        });
+
+        input.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                input.blur();
+            }
+
+            if (event.key === 'Escape') {
+                if (input.dataset.originalText !== undefined) {
+                    input.value = input.dataset.originalText;
+                }
+                input.blur();
+            }
+        });
+
+        input.addEventListener('blur', function() {
+            const newText = input.value.trim();
+            const originalText = input.dataset.originalText || '';
+
+            if (!newText) {
+                input.value = originalText;
+                return;
+            }
+
+            if (newText === originalText) {
+                return;
+            }
+
+            updateTargetText(targetId, newText, input, originalText);
+        });
+    }
+
+    function updateTargetText(targetId, newText, input, originalText) {
+        fetch(`/api/targets/${targetId}/`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({
+                text: newText
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to update target');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const targetCard = document.querySelector(`[data-target-id="${targetId}"]`);
+            const textSpan = targetCard ? targetCard.querySelector('.target-text') : null;
+            if (textSpan) {
+                textSpan.textContent = data.text;
+            }
+            input.dataset.originalText = data.text;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            input.value = originalText;
+            alert('Failed to update target text');
         });
     }
 });

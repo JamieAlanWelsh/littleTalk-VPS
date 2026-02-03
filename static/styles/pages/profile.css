@@ -282,6 +282,19 @@
     flex: 1;
 }
 
+.target-text-input {
+    display: none;
+    flex: 1;
+    min-width: 0;
+    padding: 6px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: var(--font-outfit);
+    font-size: 14px;
+    color: var(--font-color);
+    background-color: white;
+}
+
 .target-status-dropdown {
     padding: 6px 10px;
     border: 1px solid #ddd;
@@ -311,7 +324,7 @@
     margin-left: 10px;
     width: 30px;
     height: 30px;
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
     border-radius: 4px;
@@ -334,6 +347,18 @@
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
+}
+
+.targets-section.edit-mode .target-delete-btn {
+    display: flex;
+}
+
+.targets-section.edit-mode .target-text {
+    display: none;
+}
+
+.targets-section.edit-mode .target-text-input {
+    display: block;
 }
 
 .button-secondary {
