@@ -6,37 +6,94 @@
 {% block content %}
 
 {% comment %} Simplified Header for Assessment Page {% endcomment %}
-<!-- logo top left -->
-<a href="/" class="logo-link">
-    <div class="logo-upper-left">
-        <img src="{% static 'images/chatterdillo_logo_official.png' %}" alt="Chatterdillo Logo">
-    </div>
-</a>
-
-
 <div class="summary-wrapper">
+    <h1>Screener Summary</h1>
     <section>
         {% if readiness_status == "not_ready" %}
-            <div class="container-box container--white container--edgy">
+            <div class="container-box container--white container--edgy marginsupperlower-30 no-print">
                 <p class="summary-intro"><strong>Chatterdillo may not be suitable for {{ learner.name }} at this time.</strong></p>
                 <p>It seems like {{ learner.name }} may be struggling with attention and listening skills. We can still support you but our exercises will be most effective once they have developed this skill.</a>.</p>
             </div>
         {% elif readiness_status == "ready" %}
-            <div class="container-box container--white container--edgy">
-                <p class="summary-intro"><strong>Chatterdillo is likely a good fit for {{ learner.name }}!</strong></p>
+            <div class="container-box container--white container--edgy marginsupperlower-30 no-print">
+                <p class="summary-intro"><strong>Great news! Chatterdillo is likely a good fit for {{ learner.name }}!</strong></p>
                 <p>{{ learner.name }} appears to have strong attention and listening skills. Our exercises are well-equipped to support their language development.</p>
             </div>
         {% endif %}
 
-        <div class="summary-cta">
-            <a href="/" class="btn btn--yellow btn--full">Continue</a>
+        <div class="summary-button-row no-print">
+            <a href="{% url 'profile' %}" class="btn btn--white btn--full btn--small">Back to Profile</a>
+            <a href="{% url 'start_assessment' %}" class="btn btn--white btn--full btn--small">Submit Re-Screener</a>
         </div>
 
-        <div class="container-box container--white container--edgy">
+        {% if has_previous %}
+        <div class="container-box container--white container--edgy marginsupperlower-30 printable-section">
+            <div class="summary-header">
+                <p class="summary-intro">
+                    <strong>Progress Since Last Screener</strong>
+                </p>
+                <button onclick="printScreenerSummary()" class="btn btn--white btn--small btn--border no-print">🖨 Print Progress</button>
+            </div>
+            <p class="comparison-note">Last screener completed: <strong>{{ previous_session_date|date:"M d, Y" }}</strong></p>
 
-            <p class="summary-intro">
-                <strong>Screener Summary</strong>
-            </p>
+            {% if skills_gained %}
+            <div class="comparison-section skills-gained">
+                <p><strong>✓ Skills Gained:</strong></p>
+                <ul class="skill-list skill-list--gained">
+                    {% for skill in skills_gained %}
+                        <li><span class="skill-indicator skill-indicator--gained">✓</span> {{ skill }}</li>
+                    {% endfor %}
+                </ul>
+                <p class="comparison-note">{{ learner.name }} now shows strong skills in these areas.</p>
+            </div>
+            {% endif %}
+
+            {% if skills_lost %}
+            <div class="comparison-section skills-lost">
+                <p><strong>⚠ Areas Showing Fluctuation:</strong></p>
+                <ul class="skill-list skill-list--lost">
+                    {% for skill in skills_lost %}
+                        <li><span class="skill-indicator skill-indicator--lost">⚠</span> {{ skill }}</li>
+                    {% endfor %}
+                </ul>
+                <p class="comparison-note">Skills can naturally fluctuate as children develop. These areas may benefit from continued practice.</p>
+            </div>
+            {% endif %}
+
+            {% if skills_maintained_strong %}
+            <div class="comparison-section skills-maintained">
+                <p><strong>Maintained Strengths:</strong></p>
+                <ul class="skill-list skill-list--maintained">
+                    {% for skill in skills_maintained_strong %}
+                        <li>{{ skill }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            {% if recommendation_change.direction %}
+            <div class="recommendation-info no-print">
+                <span class="info-icon">i</span>
+                {% if recommendation_change.direction == "improved" %}
+                    <p>{{ learner.name }} has improved! Recommendation level has adjusted - consider more advanced exercises.</p>
+                {% elif recommendation_change.direction == "declined" %}
+                    <p>Recommendation level has adjusted. Focus on foundational skills before advancing.</p>
+                {% else %}
+                    <p>Results are consistent with previous screener.</p>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        <div class="container-box container--white container--edgy marginsupperlower-30 printable-section">
+
+            <div class="summary-header">
+                <p class="summary-intro">
+                    <strong>Current Screener Results</strong>
+                </p>
+                <button onclick="printScreenerSummary()" class="btn btn--white btn--small btn--border no-print">🖨 Print Summary</button>
+            </div>
 
             {% if strong_skills %}
                 <p><strong>{{ learner.name }} has strong skills in:</strong></p>
@@ -55,16 +112,10 @@
                     {% endfor %}
                 </ul>
             {% endif %}
-            <p class="reassurance-text">
-                Click "Continue" to get your exercise recommendations and start practising exercises.
-            </p>
-        </div>
-
-        <div class="summary-cta">
-            <a href="/" class="btn btn--yellow btn--full">Continue</a>
         </div>
 
     </section>
 </div>
 
+<script src="{% static 'js/print_utils.js' %}"></script>
 {% endblock %}

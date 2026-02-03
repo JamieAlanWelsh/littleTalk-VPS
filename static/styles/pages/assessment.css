@@ -108,7 +108,21 @@ progress::-webkit-progress-value {
     font-weight: 500;
     color: var(--font-color);
     padding-bottom: 20px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.212); /* Subtle separator line */
+}
+
+.summary-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.212);
+}
+
+.summary-header .summary-intro {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
 }
 
 .skill-list,
@@ -135,6 +149,18 @@ progress::-webkit-progress-value {
     font-size: 0.95rem;
     margin-top: 2.0rem;
     line-height: 1.5;
+}
+
+.summary-button-row {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.summary-button-row .btn {
+    flex: 1;
+    width: 50%;
 }
 
 /* Responsive Design */
@@ -164,5 +190,144 @@ progress::-webkit-progress-value {
     .answer-button-group {
         flex-direction: column;
         gap: 15px;
+    }
+}
+
+/* Comparison Sections - Re-screener Progress Tracking */
+
+.comparison-section {
+    margin: 25px 0;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.comparison-section p {
+    margin: 8px 0;
+}
+
+.comparison-note {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 10px;
+    font-style: italic;
+}
+
+.skill-list--gained {
+    list-style: none;
+}
+
+.skill-list--gained li {
+    padding-left: 20px;
+    margin-bottom: 8px;
+}
+
+.skill-list--lost {
+    list-style: none;
+}
+
+.skill-list--lost li {
+    padding-left: 20px;
+    margin-bottom: 8px;
+}
+
+.skill-list--maintained {
+    list-style: none;
+    padding-left: 0;
+}
+
+.skill-list--maintained li {
+    padding-left: 0;
+    margin-bottom: 8px;
+    color: #666;
+}
+
+.skill-indicator {
+    display: inline-block;
+    width: 20px;
+    text-align: center;
+    margin-right: 8px;
+    font-weight: bold;
+}
+
+.skill-indicator--gained {
+    color: #27ae60; /* Green for gains */
+}
+
+.skill-indicator--lost {
+    color: #e67e22; /* Orange for regression/fluctuation */
+}
+
+.skills-gained {
+    border-left: 4px solid #27ae60;
+    background-color: #f0f8f4;
+}
+
+.skills-lost {
+    border-left: 4px solid #e67e22;
+    background-color: #fef8f3;
+}
+
+.skills-maintained {
+    border-left: 4px solid #3498db;
+    background-color: #f0f6fb;
+}
+
+.recommendation-change {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.recommendation-change p {
+    margin: 0;
+}
+
+/* Print Styles */
+@media print {
+    /* Hide elements that shouldn't be printed */
+    .no-print,
+    .sidebar,
+    header,
+    nav,
+    .summary-button-row {
+        display: none !important;
+    }
+
+    /* Reset page styling for print */
+    body {
+        background: white !important;
+        color: black !important;
+        position: relative;
+    }
+
+    .summary-wrapper {
+        background: white !important;
+        box-shadow: none !important;
+        margin-top: 100px;
+    }
+
+    .printable-section {
+        page-break-inside: avoid;
+        border: 1px solid #666 !important;
+        box-shadow: none !important;
+        margin-bottom: 20px !important;
+    }
+
+    /* Ensure good spacing for print */
+    .skill-list li {
+        page-break-inside: avoid;
+    }
+
+    /* Add print header */
+    .summary-wrapper::before {
+        content: "Chatterdillo Screener Summary";
+        display: block;
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #333;
     }
 }

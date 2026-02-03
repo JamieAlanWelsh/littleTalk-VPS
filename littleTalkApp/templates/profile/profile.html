@@ -89,14 +89,19 @@
             <!-- Edit Learner Button SCHOOL AND STANDALONE ONLY -->
             {% if request.user.profile.role != 'parent' or not selected_learner.school_id %}
                 <div class="edit-learner-btn">
-                    <a href="{% url 'edit_learner' selected_learner.learner_uuid %}" class="button">Learner Settings</a>
+                    <a href="{% url 'edit_learner' selected_learner.learner_uuid %}" class="button">📝 Edit Learner</a>
                 </div>
             {% endif %}
+
+            <!-- Screener Button -->
+            <div class="edit-learner-btn">
+                <a href="{% url 'screener' %}" class="button">📋 Screener</a>
+            </div>
 
             <!-- Generate Access Code Button SCHOOL ONLY -->
             {% if request.user.profile.role != 'parent' %}
                 <div class="edit-learner-btn">
-                    <a href="{% url 'view_parent_token' selected_learner.learner_uuid %}" class="button">Parent Invite</a>
+                    <a href="{% url 'view_parent_token' selected_learner.learner_uuid %}" class="button">💌 Parent Invite</a>
                 </div>
             {% endif %}
         {% endif %}
