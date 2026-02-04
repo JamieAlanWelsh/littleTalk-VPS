@@ -57,7 +57,7 @@
     }
     
     .section-header-actions {
-        display: none;
+        display: none !important;
     }
     
     .filter-btn {
@@ -73,6 +73,15 @@
     /* Only print sections that are visible (not hidden by checkboxes) */
     .dashboard-section[style*="display: none"] {
         display: none !important;
+    }
+    
+    /* Remove container-box styling for print */
+    .container-box.container--dash {
+        border: none;
+        background: none;
+        box-shadow: none;
+        padding: 0;
+        border-radius: 0;
     }
     
     /* Add print-only header */
@@ -558,5 +567,6 @@
     
     .skill-list {
         grid-template-columns: 1fr;
+        gap: 0;
     }
 }

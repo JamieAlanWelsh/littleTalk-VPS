@@ -129,7 +129,7 @@ progress::-webkit-progress-value {
 .summary-list {
     list-style: none;
     padding-left: 0;
-    margin-bottom: 1rem;
+    /* margin-bottom: 1rem; */
 }
 
 .skill-list li,
@@ -250,13 +250,13 @@ progress::-webkit-progress-value {
     font-weight: bold;
 }
 
-.skill-indicator--gained {
-    color: #27ae60; /* Green for gains */
+/* .skill-indicator--gained {
+    color: #27ae60;
 }
 
 .skill-indicator--lost {
-    color: #e67e22; /* Orange for regression/fluctuation */
-}
+    color: #e67e22;
+} */
 
 .skills-gained {
     border-left: 4px solid var(--target-green);
