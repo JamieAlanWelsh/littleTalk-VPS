@@ -56,6 +56,10 @@
         display: none;
     }
     
+    .section-header-actions {
+        display: none;
+    }
+    
     .filter-btn {
         display: none;
     }

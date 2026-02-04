@@ -452,7 +452,18 @@ document.addEventListener("DOMContentLoaded", () => {
             const data = await response.json();
 
             const metricsText = selectedMetrics.map(m => metricLabels[m]).join(" vs ");
-            chartTitle.textContent = metricsText;
+            
+            // Add exercise name to title if specific exercise is selected
+            let titleText = metricsText;
+            if (exerciseId !== 'all') {
+                const activeExerciseBtn = document.querySelector('[data-exercise].active');
+                if (activeExerciseBtn) {
+                    const exerciseName = activeExerciseBtn.textContent.split('(')[0].trim();
+                    titleText = `${metricsText} for ${exerciseName}`;
+                }
+            }
+            
+            chartTitle.textContent = titleText;
             chartSubtitle.textContent = `${data.date_start} to ${data.date_end}`;
 
             buildChart(data.dates, data.metrics_data);
