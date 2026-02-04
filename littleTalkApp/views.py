@@ -2122,11 +2122,79 @@ def learner_dashboard(request):
         {"id": "Story Train", "name": "Story Train", "count": exercise_counts.get("Story Train", 0)},
     ]
     
+    # Get targets data for selected learner
+    targets_data = None
+    if selected_learner:
+        from littleTalkApp.models import Target
+        targets = Target.objects.filter(learner=selected_learner).order_by('-created_at')
+        
+        # Calculate target achievement percentage
+        total_targets = targets.count()
+        achieved_targets = targets.filter(status=Target.Status.ACHIEVED).count()
+        targets_percentage = round((achieved_targets / total_targets * 100)) if total_targets > 0 else 0
+        
+        targets_data = {
+            'all': list(targets),
+            'achieved': list(targets.filter(status=Target.Status.ACHIEVED)),
+            'not_achieved': list(targets.filter(status=Target.Status.NOT_ACHIEVED)),
+            'ongoing': list(targets.filter(status=Target.Status.ONGOING)),
+            'not_set': list(targets.filter(status=Target.Status.NOT_SET)),
+            'total_count': total_targets,
+            'achieved_count': achieved_targets,
+            'percentage': targets_percentage,
+        }
+    
+    # Get screener comparison data for selected learner
+    screener_data = None
+    if selected_learner:
+        comparison_data = get_screener_comparison_data(selected_learner)
+        
+        # Get current screener skills
+        latest_session = selected_learner.answers.order_by('-timestamp').values('session_id').first()
+        current_strong_skills = []
+        current_support_skills = []
+        
+        if latest_session:
+            from collections import defaultdict
+            answers = selected_learner.answers.filter(session_id=latest_session['session_id'])
+            skill_answers = defaultdict(list)
+            for answer in answers:
+                skill_answers[answer.skill].append(answer.answer)
+            
+            for skill, responses in skill_answers.items():
+                if "No" in responses:
+                    current_support_skills.append(skill)
+                else:
+                    current_strong_skills.append(skill)
+        
+        # Calculate skills gained count
+        skills_gained_count = 0
+        first_screener_date = None
+        
+        if comparison_data and comparison_data['has_previous']:
+            skills_gained_count = len(comparison_data['skills_gained'])
+            
+            # Get first screener date
+            first_session = selected_learner.answers.order_by('timestamp').values('assessment_date').first()
+            if first_session:
+                first_screener_date = first_session['assessment_date']
+        
+        screener_data = {
+            'comparison': comparison_data,
+            'current_strong_skills': current_strong_skills,
+            'current_support_skills': current_support_skills,
+            'skills_gained_count': skills_gained_count,
+            'first_screener_date': first_screener_date,
+            'has_screener_data': latest_session is not None,
+        }
+    
     context = {
         "learners": accessible_learners,
         "selected_learner": selected_learner,
         "exercise_choices": exercise_choices,
         "total_sessions": exercise_counts.get('all', 0),
+        "targets_data": targets_data,
+        "screener_data": screener_data,
     }
     
     return render(request, "dashboard/learner_dashboard.html", context)

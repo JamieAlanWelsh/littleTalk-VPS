@@ -15,85 +15,204 @@
 
 {% if learners %}
     <div class="container-box container--dash">
-        <div class="dashboard-filters">
-            <div class="filter-group">
-                <label class="label" for="learner-select">Learner</label>
-                <select id="learner-select" class="select">
-                    {% for learner in learners %}
-                        <option value="{{ learner.learner_uuid }}" {% if selected_learner and learner.id == selected_learner.id %}selected{% endif %}>
-                            {{ learner.name }} ({{ learner.session_count }})
-                        </option>
-                    {% endfor %}
-                </select>
+        <!-- Chart Section -->
+        <div class="dashboard-section">
+            <div class="section-header">
+                <h3>Exercise Sessions Chart</h3>
             </div>
+            <div class="dashboard-filters">
+                <div class="filter-group">
+                    <label class="label" for="learner-select">Learner</label>
+                    <select id="learner-select" class="select">
+                        {% for learner in learners %}
+                            <option value="{{ learner.learner_uuid }}" {% if selected_learner and learner.id == selected_learner.id %}selected{% endif %}>
+                                {{ learner.name }} ({{ learner.session_count }})
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
 
-            <div class="filter-group">
-                <label class="label" for="exercise-select">Exercise</label>
-                <select id="exercise-select" class="select">
-                    <option value="all">All Exercises ({{ total_sessions }})</option>
-                    {% for exercise in exercise_choices %}
-                        <option value="{{ exercise.id }}">{{ exercise.name }} ({{ exercise.count }})</option>
-                    {% endfor %}
-                </select>
-            </div>
+                <div class="filter-group">
+                    <label class="label" for="exercise-select">Exercise</label>
+                    <select id="exercise-select" class="select">
+                        <option value="all">All Exercises ({{ total_sessions }})</option>
+                        {% for exercise in exercise_choices %}
+                            <option value="{{ exercise.id }}">{{ exercise.name }} ({{ exercise.count }})</option>
+                        {% endfor %}
+                    </select>
+                </div>
 
-            <div class="filter-group">
-                <label class="label">Metrics</label>
-                <div class="metric-checkboxes">
-                    <div class="checkbox-wrapper">
-                        <input type="checkbox" id="metric-exercises" name="metric" value="exercises" checked>
-                        <label for="metric-exercises">Sessions Completed</label>
+                <div class="filter-group">
+                    <label class="label">Metrics</label>
+                    <div class="metric-checkboxes">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="metric-exercises" name="metric" value="exercises" checked>
+                            <label for="metric-exercises">Sessions Completed</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="metric-accuracy" name="metric" value="accuracy">
+                            <label for="metric-accuracy">Accuracy (%)</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="metric-difficulty" name="metric" value="difficulty">
+                            <label for="metric-difficulty">Difficulty Level</label>
+                        </div>
                     </div>
-                    <div class="checkbox-wrapper">
-                        <input type="checkbox" id="metric-accuracy" name="metric" value="accuracy">
-                        <label for="metric-accuracy">Accuracy (%)</label>
+                </div>
+
+                <div class="filter-group">
+                    <label class="label">Smart Data View</label>
+                    <div class="metric-checkboxes">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="layer-metrics" name="layer-metrics" title="Enable selecting multiple metrics to overlay on the same chart">
+                            <label for="layer-metrics" title="Enable selecting multiple metrics to overlay on the same chart">Layer Metrics</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="plot-best-fit" name="plot-best-fit" title="Visualise overall direction and trend">
+                            <label for="plot-best-fit" title="Visualise overall direction and trend">Show Line of Best Fit</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="smooth-data" name="smooth-data" title="Reduce noise and outliers by applying a moving average algorithm">
+                            <label for="smooth-data" title="Reduce noise and outliers by applying a moving average algorithm">Data Smoothing</label>
+                        </div>
                     </div>
-                    <div class="checkbox-wrapper">
-                        <input type="checkbox" id="metric-difficulty" name="metric" value="difficulty">
-                        <label for="metric-difficulty">Difficulty Level</label>
-                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label class="label" for="date-range">Date Range</label>
+                    <select id="date-range" class="select">
+                        <option value="all" selected>Full History</option>
+                        <option value="7">Last 7 Days</option>
+                        <option value="30">Last 30 Days</option>
+                        <option value="90">Last 90 Days</option>
+                    </select>
                 </div>
             </div>
 
-            <div class="filter-group">
-                <label class="label">Smart Data View</label>
-                <div class="metric-checkboxes">
-                    <div class="checkbox-wrapper">
-                        <input type="checkbox" id="layer-metrics" name="layer-metrics" title="Enable selecting multiple metrics to overlay on the same chart">
-                        <label for="layer-metrics" title="Enable selecting multiple metrics to overlay on the same chart">Layer Metrics</label>
+            <div class="dashboard-chart-section">
+            <div class="dashboard-chart-header">
+                <h3 id="chart-title">Experience Over Time</h3>
+                <p class="chart-subtitle" id="chart-subtitle"></p>
+            </div>
+            <div class="dashboard-chart-container">
+                <canvas id="progress-chart" height="120"></canvas>
+            </div>
+            <div class="dashboard-message" id="dashboard-message"></div>
+            </div>
+        </div>
+
+        {% if selected_learner %}
+        <!-- Custom Targets Section -->
+        <div class="dashboard-section">
+            <div class="section-header">
+                <h3>Custom Targets</h3>
+                {% if targets_data %}
+                <p class="section-note">
+                    {{ selected_learner.name }} has achieved <strong>{{ targets_data.percentage }}%</strong> of their targets 
+                    ({{ targets_data.achieved_count }} of {{ targets_data.total_count }})
+                </p>
+                {% endif %}
+            </div>
+            
+            {% if targets_data and targets_data.all %}
+            <div class="targets-filter">
+                <label>Filter by status:</label>
+                <button class="filter-btn active" data-filter="all">All ({{ targets_data.total_count }})</button>
+                <button class="filter-btn" data-filter="achieved">Achieved ({{ targets_data.achieved_count }})</button>
+                <button class="filter-btn" data-filter="not_achieved">Not Achieved ({{ targets_data.not_achieved|length }})</button>
+                <button class="filter-btn" data-filter="ongoing">Ongoing ({{ targets_data.ongoing|length }})</button>
+                <button class="filter-btn" data-filter="not_set">Not Set ({{ targets_data.not_set|length }})</button>
+            </div>
+            
+            <div class="targets-list">
+                {% for target in targets_data.all %}
+                <div class="target-item" data-status="{{ target.status }}">
+                    <div class="target-content">
+                        <span class="target-status-badge status-{{ target.status }}">
+                            {% if target.status == 'achieved' %}✓{% elif target.status == 'not_achieved' %}✗{% elif target.status == 'ongoing' %}→{% else %}○{% endif %}
+                        </span>
+                        <span class="target-text">{{ target.text }}</span>
                     </div>
-                    <div class="checkbox-wrapper">
-                        <input type="checkbox" id="plot-best-fit" name="plot-best-fit" title="Visualise overall direction and trend">
-                        <label for="plot-best-fit" title="Visualise overall direction and trend">Show Line of Best Fit</label>
-                    </div>
-                    <div class="checkbox-wrapper">
-                        <input type="checkbox" id="smooth-data" name="smooth-data" title="Reduce noise and outliers by applying a moving average algorithm">
-                        <label for="smooth-data" title="Reduce noise and outliers by applying a moving average algorithm">Data Smoothing</label>
-                    </div>
+                    <span class="target-date">{{ target.created_at|date:"M d, Y" }}</span>
                 </div>
+                {% endfor %}
             </div>
-
-            <div class="filter-group">
-                <label class="label" for="date-range">Date Range</label>
-                <select id="date-range" class="select">
-                    <option value="all" selected>Full History</option>
-                    <option value="7">Last 7 Days</option>
-                    <option value="30">Last 30 Days</option>
-                    <option value="90">Last 90 Days</option>
-                </select>
-            </div>
+            {% else %}
+            <p class="empty-state">No targets have been set for {{ selected_learner.name }} yet.</p>
+            {% endif %}
         </div>
 
-        <div class="dashboard-chart-section">
-        <div class="dashboard-chart-header">
-            <h3 id="chart-title">Experience Over Time</h3>
-            <p class="chart-subtitle" id="chart-subtitle"></p>
+        <!-- Screener Analysis Section -->
+        {% if screener_data and screener_data.has_screener_data %}
+        <div class="dashboard-section">
+            <div class="section-header">
+                <h3>Screener Progress Analysis</h3>
+                {% if screener_data.comparison and screener_data.first_screener_date %}
+                <p class="section-note">
+                    {{ selected_learner.name }} has gained <strong>{{ screener_data.skills_gained_count }} skill{{ screener_data.skills_gained_count|pluralize }}</strong> 
+                    since their first screener on {{ screener_data.first_screener_date|date:"M d, Y" }}
+                </p>
+                {% endif %}
+            </div>
+
+            {% if screener_data.comparison %}
+            <!-- Skills Comparison (only if re-screener exists) -->
+            <div class="screener-comparison">
+                <p class="comparison-subtitle">
+                    Comparison: <strong>{{ screener_data.comparison.previous_session_date|date:"M d, Y" }}</strong> → 
+                    <strong>Most Recent</strong>
+                </p>
+
+                {% if screener_data.comparison.skills_gained %}
+                <div class="skill-category skills-gained">
+                    <h4>✓ Skills Gained</h4>
+                    <ul class="skill-list">
+                        {% for skill in screener_data.comparison.skills_gained %}
+                        <li><span class="skill-indicator skill-indicator--gained">✓</span> {{ skill }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+                {% if screener_data.comparison.skills_lost %}
+                <div class="skill-category skills-fluctuating">
+                    <h4>⚠ Skills Showing Fluctuation</h4>
+                    <ul class="skill-list">
+                        {% for skill in screener_data.comparison.skills_lost %}
+                        <li><span class="skill-indicator skill-indicator--fluctuating">⚠</span> {{ skill }}</li>
+                        {% endfor %}
+                    </ul>
+                    <p class="skill-note">These areas showed strong skills previously but may need renewed support.</p>
+                </div>
+                {% endif %}
+
+                {% if screener_data.comparison.skills_maintained_strong %}
+                <div class="skill-category skills-maintained">
+                    <h4>✓ Skills Maintained</h4>
+                    <ul class="skill-list">
+                        {% for skill in screener_data.comparison.skills_maintained_strong %}
+                        <li><span class="skill-indicator skill-indicator--maintained">✓</span> {{ skill }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            <!-- Current Support Areas -->
+            {% if screener_data.current_support_skills %}
+            <div class="screener-current">
+                <h4>📌 Current Support Areas</h4>
+                <ul class="skill-list skill-list--support">
+                    {% for skill in screener_data.current_support_skills %}
+                    <li><span class="skill-indicator skill-indicator--support">○</span> {{ skill }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
         </div>
-        <div class="dashboard-chart-container">
-            <canvas id="progress-chart" height="120"></canvas>
-        </div>
-        <div class="dashboard-message" id="dashboard-message"></div>
-        </div>
+        {% endif %}
+        {% endif %}
     </div>
 {% else %}
     <div class="dashboard-empty">
@@ -102,5 +221,36 @@
 {% endif %}
 
 
+
 <script src="{% static 'js/learner_dashboard.js' %}"></script>
+<script>
+// Target filter functionality
+document.addEventListener("DOMContentLoaded", () => {
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const targetItems = document.querySelectorAll('.target-item');
+    
+    filterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Update active state
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            
+            const filter = button.dataset.filter;
+            
+            // Show/hide targets based on filter
+            targetItems.forEach(item => {
+                if (filter === 'all') {
+                    item.style.display = 'flex';
+                } else {
+                    if (item.dataset.status === filter) {
+                        item.style.display = 'flex';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                }
+            });
+        });
+    });
+});
+</script>
 {% endblock %}
