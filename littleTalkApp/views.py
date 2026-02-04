@@ -154,29 +154,77 @@ def school_signup(request):
 # Screener Hub - Crossroad for starting or viewing screener results
 @login_required
 def screener(request):
-    # Get selected learner
-    selected_learner_id = request.session.get("selected_learner_id")
+    from django.db.models import Count
+    
+    profile = request.user.profile
+    
+    # Get accessible learners based on role
+    if profile.is_parent():
+        learners = profile.parent_profile.learners.filter(deleted=False)
+        cohorts = Cohort.objects.none()
+    else:
+        user_school = profile.get_current_school(request)
+        if not user_school:
+            messages.error(request, "No school assigned to your profile.")
+            return redirect("profile")
+        learners = Learner.objects.filter(school=user_school, deleted=False)
+        cohorts = Cohort.objects.filter(school=user_school).distinct()
+    
+    # Filter by cohort if selected
+    selected_cohort_id = request.GET.get("cohort")
+    if selected_cohort_id and not profile.is_parent():
+        try:
+            learners = learners.filter(cohort__id=int(selected_cohort_id))
+        except ValueError:
+            pass
+    
+    # Annotate learners with session counts
+    learners = learners.annotate(
+        session_count=Count('exercise_sessions')
+    ).order_by('name')
+    
+    # Get selected learner from query param or session
+    learner_uuid = request.GET.get("learner")
     selected_learner = None
     has_screener = False
     last_screener_date = None
     
-    if selected_learner_id:
+    if learner_uuid:
         try:
-            selected_learner = Learner.objects.get(id=int(selected_learner_id))
-            # Check if learner has assessment answers (screener submitted)
-            has_screener = selected_learner.answers.exists()
-            # Get the date of the last screener
-            if has_screener:
-                last_answer = selected_learner.answers.order_by('-timestamp').first()
-                last_screener_date = last_answer.timestamp if last_answer else None
-        except (ValueError, Learner.DoesNotExist):
-            selected_learner = None
+            selected_learner = learners.get(learner_uuid=learner_uuid)
+            # Update session with selected learner
+            request.session["selected_learner_id"] = selected_learner.id
+        except Learner.DoesNotExist:
+            messages.error(request, "Learner not found or access denied.")
+    
+    # Fall back to session or first learner
+    if not selected_learner:
+        selected_learner_id = request.session.get("selected_learner_id")
+        if selected_learner_id:
+            try:
+                selected_learner = learners.get(id=selected_learner_id)
+            except Learner.DoesNotExist:
+                pass
+    
+    if not selected_learner and learners.exists():
+        selected_learner = learners.first()
+        request.session["selected_learner_id"] = selected_learner.id
+    
+    # Get screener info for selected learner
+    if selected_learner:
+        has_screener = selected_learner.answers.exists()
+        if has_screener:
+            last_answer = selected_learner.answers.order_by('-timestamp').first()
+            last_screener_date = last_answer.timestamp if last_answer else None
     
     return render(
         request,
         "assessment/screener.html",
         {
+            "learners": learners,
             "selected_learner": selected_learner,
+            "cohorts": cohorts,
+            "selected_cohort": int(selected_cohort_id) if selected_cohort_id and selected_cohort_id.isdigit() else None,
             "has_screener": has_screener,
             "last_screener_date": last_screener_date,
         },
@@ -850,11 +898,17 @@ def profile(request):
         selected_learner = learners.first()
         request.session["selected_learner_id"] = selected_learner.id
 
+    # Sort learners: selected learner first, then others alphabetically
+    learners_list = list(learners)
+    if selected_learner and selected_learner in learners_list:
+        learners_list.remove(selected_learner)
+        learners_list.insert(0, selected_learner)
+
     return render(
         request,
         "profile/profile.html",
         {
-            "learners": learners,
+            "learners": learners_list,
             "selected_learner": selected_learner,
             "cohorts": cohorts,
             "selected_cohort": selected_cohort_id,
@@ -2068,12 +2122,22 @@ def learner_dashboard(request):
     # Get accessible learners based on role
     if profile.is_parent():
         accessible_learners = profile.parent_profile.learners.filter(deleted=False)
+        cohorts = Cohort.objects.none()
     else:
         user_school = profile.get_current_school(request)
         if not user_school:
             messages.error(request, "No school assigned to your profile.")
             return redirect("profile")
         accessible_learners = Learner.objects.filter(school=user_school, deleted=False)
+        cohorts = Cohort.objects.filter(school=user_school).distinct()
+    
+    # Filter by cohort if selected
+    selected_cohort_id = request.GET.get("cohort")
+    if selected_cohort_id and not profile.is_parent():
+        try:
+            accessible_learners = accessible_learners.filter(cohort__id=int(selected_cohort_id))
+        except ValueError:
+            pass
     
     # Annotate learners with session counts
     accessible_learners = accessible_learners.annotate(
@@ -2195,6 +2259,8 @@ def learner_dashboard(request):
     context = {
         "learners": accessible_learners,
         "selected_learner": selected_learner,
+        "cohorts": cohorts,
+        "selected_cohort": int(selected_cohort_id) if selected_cohort_id and selected_cohort_id.isdigit() else None,
         "exercise_choices": exercise_choices,
         "total_sessions": exercise_counts.get('all', 0),
         "targets_data": targets_data,

@@ -64,11 +64,11 @@
                     <p><strong>Cohort:</strong> {{ selected_learner.cohort }}</p>
                 {% endif %}
                 {% if request.user.profile.role == 'parent' and selected_learner.school_id %}
-                    <div class="recommendation-info mb-20">
-                        <span class="info-icon">i</span>
-                        <p>
-                            Parent-Access - This learner is being managed by {{ selected_learner.school.name }}
-                        </p>
+                    <div class="recommendation-info no-print" style="margin-top: 16px; margin-bottom: 20px; padding: 12px; background: #f0f3ff; border-radius: 8px; display: flex; gap: 8px; align-items: flex-start;">
+                        <span style="font-weight: 600; color: #0066cc;">i</span>
+                        <div>
+                            <p style="margin: 0; font-size: 0.95rem;">Parent-Access - This learner is being managed by {{ selected_learner.school.name }}</p>
+                        </div>
                     </div>
                 {% endif %}
             </div>
@@ -127,12 +127,12 @@
                 <div class="edit-learner-btn">
                     <a href="{% url 'edit_learner' selected_learner.learner_uuid %}" class="button">📝 Edit Learner</a>
                 </div>
-            {% endif %}
 
-            <!-- Screener Button -->
-            <div class="edit-learner-btn">
-                <a href="{% url 'screener' %}" class="button">📋 Screener</a>
-            </div>
+                <!-- Screener Button -->
+                <div class="edit-learner-btn">
+                    <a href="{% url 'screener' %}" class="button">📋 Screener</a>
+                </div>
+            {% endif %}
 
             <!-- Generate Access Code Button SCHOOL ONLY -->
             {% if request.user.profile.role != 'parent' %}

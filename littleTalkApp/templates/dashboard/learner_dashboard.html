@@ -17,6 +17,19 @@
     <div class="container-box container--dash">
         <!-- Dashboard Header -->
         <div class="dashboard-header">
+            {% if request.user.profile.role != 'parent' and cohorts %}
+            <div class="header-learner-section">
+                <label class="header-label" for="cohort-select">Cohort:</label>
+                <select id="cohort-select" class="select" style="margin-bottom: 0;">
+                    <option value="">All Cohorts</option>
+                    {% for cohort in cohorts %}
+                        <option value="{{ cohort.id }}" {% if cohort.id == selected_cohort %}selected{% endif %}>
+                            {{ cohort.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            {% endif %}
             <div class="header-learner-section">
                 <label class="header-label" for="learner-select">Learner:</label>
                 <select id="learner-select" class="select" style="margin-bottom: 0;">

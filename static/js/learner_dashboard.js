@@ -484,12 +484,41 @@ document.addEventListener("DOMContentLoaded", () => {
     updateBestFitVisibility();
     fetchProgressData();
 
+    // Cohort selection should reload page to filter learners
+    const cohortSelect = document.getElementById("cohort-select");
+    if (cohortSelect) {
+        cohortSelect.addEventListener("change", () => {
+            const selectedCohortId = cohortSelect.value;
+            const currentUrl = new URL(window.location.href);
+            
+            if (selectedCohortId) {
+                currentUrl.searchParams.set('cohort', selectedCohortId);
+            } else {
+                currentUrl.searchParams.delete('cohort');
+            }
+            
+            // Remove learner parameter when changing cohort
+            currentUrl.searchParams.delete('learner');
+            window.location.href = currentUrl.toString();
+        });
+    }
+
     // Learner selection should reload page to update exercise counts
     learnerSelect.addEventListener("change", () => {
         const selectedUuid = learnerSelect.value;
+        const currentUrl = new URL(window.location.href);
+        
         if (selectedUuid) {
-            window.location.href = `?learner=${selectedUuid}`;
+            currentUrl.searchParams.set('learner', selectedUuid);
         }
+        
+        // Preserve cohort filter when changing learner
+        const cohortSelect = document.getElementById("cohort-select");
+        if (cohortSelect && cohortSelect.value) {
+            currentUrl.searchParams.set('cohort', cohortSelect.value);
+        }
+        
+        window.location.href = currentUrl.toString();
     });
 
     // Date range filter

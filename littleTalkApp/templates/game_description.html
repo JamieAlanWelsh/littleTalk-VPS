@@ -22,7 +22,6 @@
     <div class="exercise-selector-wrapper">
         <label for="exercise-dropdown" class="label">Select an Exercise:</label>
         <select id="exercise-dropdown" class="select" onchange="navigateToExercise(this.value)">
-            <option value="">-- Choose an exercise --</option>
             {% for game_id, game_details in game_descriptions.items %}
                 <option value="{% url 'game_description' game_id %}" {% if game_id == current_game_name %}selected{% endif %}>
                     {{ game_details.title }}
