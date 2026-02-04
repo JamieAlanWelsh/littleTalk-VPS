@@ -84,13 +84,13 @@
                             <span>Learner</span>
                         </a>
                     </li>
-                    <li>
+                    <li class="sidebar-screener">
                         <a href="{% url 'screener' %}">
                             <img src="{% static 'icons/clipboard.png' %}" alt="Screener" class="sidebar-icon">
                             <span>Screener</span>
                         </a>
                     </li>
-                    <li>
+                    <li class="sidebar-dashboard">
                         <a href="{% url 'learner_dashboard' %}{% if selected_learner %}?learner={{ selected_learner.learner_uuid }}{% endif %}">
                             <img src="{% static 'icons/graph.png' %}" alt="Dashboard" class="sidebar-icon">
                             <span>Dashboard</span>

@@ -202,7 +202,9 @@
         height: 80px;
     }
 
-    .sidebar-school {
+    .sidebar-school,
+    .sidebar-screener,
+    .sidebar-dashboard {
         display: none !important;
     }
 
