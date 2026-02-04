@@ -15,23 +15,27 @@
 
 {% if learners %}
     <div class="container-box container--dash">
+        <!-- Dashboard Header -->
+        <div class="dashboard-header">
+            <div class="header-learner-section">
+                <label class="header-label" for="learner-select">Learner:</label>
+                <select id="learner-select" class="header-select">
+                    {% for learner in learners %}
+                        <option value="{{ learner.learner_uuid }}" {% if selected_learner and learner.id == selected_learner.id %}selected{% endif %}>
+                            {{ learner.name }} ({{ learner.session_count }})
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button id="print-dashboard" class="btn btn--print" title="Print this dashboard">🖨 Print</button>
+        </div>
+
         <!-- Chart Section -->
         <div class="dashboard-section">
             <div class="section-header">
                 <h3>Exercise Sessions Chart</h3>
             </div>
             <div class="dashboard-filters">
-                <div class="filter-group">
-                    <label class="label" for="learner-select">Learner</label>
-                    <select id="learner-select" class="select">
-                        {% for learner in learners %}
-                            <option value="{{ learner.learner_uuid }}" {% if selected_learner and learner.id == selected_learner.id %}selected{% endif %}>
-                                {{ learner.name }} ({{ learner.session_count }})
-                            </option>
-                        {% endfor %}
-                    </select>
-                </div>
-
                 <div class="filter-group">
                     <label class="label" for="exercise-select">Exercise</label>
                     <select id="exercise-select" class="select">
@@ -251,6 +255,14 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
     });
+    
+    // Print functionality
+    const printButton = document.getElementById('print-dashboard');
+    if (printButton) {
+        printButton.addEventListener('click', () => {
+            window.print();
+        });
+    }
 });
 </script>
 {% endblock %}
