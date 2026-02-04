@@ -12,22 +12,33 @@
 
 <h1 class="no-print">Screener Summary</h1>
 
-<div class="container-box container--dash">
+<div class="container-box container--dash screener-summary-print">
     <section>
         {% if readiness_status == "not_ready" %}
             <div class="dashboard-section no-print" style="margin-top: 0 !important;">
-                <p class="summary-intro"><strong>Chatterdillo may not be suitable for {{ learner.name }} at this time.</strong></p>
+                <div class="section-header">
+                    <div class="section-header-title">
+                        <h3>Chatterdillo may not be suitable</h3>
+                    </div>
+                    <button onclick="printScreenerSummary()" class="btn btn--white btn--small btn--border no-print">🖨 Print Results</button>
+                </div>
                 <p>It seems like {{ learner.name }} may be struggling with attention and listening skills. We can still support you but our exercises will be most effective once they have developed this skill.</p>
             </div>
         {% elif readiness_status == "ready" %}
             <div class="dashboard-section no-print" style="margin-top: 0 !important;">
-                <p class="summary-intro"><strong>Great news! Chatterdillo is likely a good fit for {{ learner.name }}!</strong></p>
+                <div class="section-header">
+                    <div class="section-header-title">
+                        <h3>Great news! 🎉</h3>
+                    </div>
+                    <button onclick="printScreenerSummary()" class="btn btn--white btn--small btn--border no-print">🖨 Print Results</button>
+                </div>
                 <p>{{ learner.name }} appears to have strong attention and listening skills. Our exercises are well-equipped to support their language development.</p>
             </div>
         {% endif %}
 
-        <div class="summary-button-row no-print" style="display: flex; gap: 12px; margin-bottom: 24px;">
-            <a href="{% url 'profile' %}" class="btn btn--white btn--full btn--small">Back to Profile</a>
+        <div class="summary-button-row no-print" style="display: flex; gap: 15px; margin-bottom: 24px;">
+            <a href="{% url 'profile' %}" class="btn btn--white btn--full btn--small">Profile</a>
+            <a href="{% url 'practise' %}" class="btn btn--white btn--full btn--small">Practise</a>
             <a href="{% url 'start_assessment' %}" class="btn btn--white btn--full btn--small">Submit Re-Screener</a>
         </div>
 
@@ -38,7 +49,6 @@
                     <h3>Progress Since Last Screener</h3>
                     <p class="section-note">Last screener completed: <strong>{{ previous_session_date|date:"M d, Y" }}</strong></p>
                 </div>
-                <button onclick="printScreenerSummary()" class="btn btn--white btn--small btn--border no-print">🖨 Print Progress</button>
             </div>
 
             {% if skills_gained %}
@@ -98,7 +108,6 @@
                 <div class="section-header-title">
                     <h3>Current Screener Results</h3>
                 </div>
-                <button onclick="printScreenerSummary()" class="btn btn--white btn--small btn--border no-print">🖨 Print Summary</button>
             </div>
 
             {% if strong_skills %}
@@ -113,7 +122,7 @@
             {% endif %}
 
             {% if needs_support_skills %}
-                <div class="skill-category screener-current">
+                <div class="screener-current">
                     <h4>📌 Areas for Support</h4>
                     <ul class="skill-list">
                         {% for skill in needs_support_skills %}

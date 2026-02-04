@@ -93,6 +93,10 @@
         color: var(--font-color);
     }
     
+    .container-box.container--dash.screener-summary-print::before {
+        content: "Chatterdillo | Screener Summary";
+    }
+    
     /* Fix chart overflow in print */
     .dashboard-chart-container {
         max-width: 100%;
