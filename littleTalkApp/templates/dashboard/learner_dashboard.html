@@ -236,29 +236,52 @@
 <script>
 // Target filter functionality
 document.addEventListener("DOMContentLoaded", () => {
-    const filterButtons = document.querySelectorAll('.filter-btn');
+    const filterButtons = document.querySelectorAll('.targets-filter .filter-btn');
     const targetItems = document.querySelectorAll('.target-item');
     
     filterButtons.forEach(button => {
         button.addEventListener('click', () => {
-            // Update active state
-            filterButtons.forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-            
             const filter = button.dataset.filter;
             
-            // Show/hide targets based on filter
-            targetItems.forEach(item => {
-                if (filter === 'all') {
-                    item.style.display = 'flex';
-                } else {
-                    if (item.dataset.status === filter) {
-                        item.style.display = 'flex';
-                    } else {
-                        item.style.display = 'none';
-                    }
+            if (filter === 'all') {
+                // Clicking "All" - activate All, deactivate others, show all items
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                targetItems.forEach(item => item.style.display = 'flex');
+            } else {
+                // Clicking a specific filter
+                const allButton = document.querySelector('.targets-filter .filter-btn[data-filter="all"]');
+                
+                // Toggle this button's active state
+                button.classList.toggle('active');
+                
+                // Deactivate "All" button
+                if (allButton) {
+                    allButton.classList.remove('active');
                 }
-            });
+                
+                // Get all active filters (excluding "all")
+                const activeFilters = Array.from(filterButtons)
+                    .filter(btn => btn.classList.contains('active') && btn.dataset.filter !== 'all')
+                    .map(btn => btn.dataset.filter);
+                
+                // If no filters are active, activate "All"
+                if (activeFilters.length === 0) {
+                    if (allButton) {
+                        allButton.classList.add('active');
+                    }
+                    targetItems.forEach(item => item.style.display = 'flex');
+                } else {
+                    // Show/hide items based on active filters
+                    targetItems.forEach(item => {
+                        if (activeFilters.includes(item.dataset.status)) {
+                            item.style.display = 'flex';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                }
+            }
         });
     });
     
@@ -268,23 +291,47 @@ document.addEventListener("DOMContentLoaded", () => {
     
     sectionFilterButtons.forEach(button => {
         button.addEventListener('click', () => {
-            // Update active state
-            sectionFilterButtons.forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-            
             const filter = button.dataset.sectionFilter;
             
-            // Show/hide sections based on filter
-            allSections.forEach(section => {
-                const sectionName = section.dataset.section;
-                if (filter === 'all') {
-                    section.style.display = 'block';
-                } else if (sectionName === filter) {
-                    section.style.display = 'block';
-                } else {
-                    section.style.display = 'none';
+            if (filter === 'all') {
+                // Clicking "All" - activate All, deactivate others, show all sections
+                sectionFilterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                allSections.forEach(section => section.style.display = 'block');
+            } else {
+                // Clicking a specific filter
+                const allButton = document.querySelector('.section-filter .filter-btn[data-section-filter="all"]');
+                
+                // Toggle this button's active state
+                button.classList.toggle('active');
+                
+                // Deactivate "All" button
+                if (allButton) {
+                    allButton.classList.remove('active');
                 }
-            });
+                
+                // Get all active filters (excluding "all")
+                const activeFilters = Array.from(sectionFilterButtons)
+                    .filter(btn => btn.classList.contains('active') && btn.dataset.sectionFilter !== 'all')
+                    .map(btn => btn.dataset.sectionFilter);
+                
+                // If no filters are active, activate "All"
+                if (activeFilters.length === 0) {
+                    if (allButton) {
+                        allButton.classList.add('active');
+                    }
+                    allSections.forEach(section => section.style.display = 'block');
+                } else {
+                    // Show/hide sections based on active filters
+                    allSections.forEach(section => {
+                        if (activeFilters.includes(section.dataset.section)) {
+                            section.style.display = 'block';
+                        } else {
+                            section.style.display = 'none';
+                        }
+                    });
+                }
+            }
         });
     });
     
