@@ -12,95 +12,95 @@
 {% block content %}
 <h1>Progress Dashboard</h1>
 
-<div class="dashboard-container">
-    {% if learners %}
-        <div class="dashboard-card">
-            <div class="dashboard-filters">
-                <div class="filter-group">
-                    <label class="label" for="learner-select">Learner</label>
-                    <select id="learner-select" class="select">
-                        {% for learner in learners %}
-                            <option value="{{ learner.learner_uuid }}" {% if selected_learner and learner.id == selected_learner.id %}selected{% endif %}>
-                                {{ learner.name }} ({{ learner.session_count }})
-                            </option>
-                        {% endfor %}
-                    </select>
-                </div>
 
-                <div class="filter-group">
-                    <label class="label" for="exercise-select">Exercise</label>
-                    <select id="exercise-select" class="select">
-                        <option value="all">All Exercises ({{ total_sessions }})</option>
-                        {% for exercise in exercise_choices %}
-                            <option value="{{ exercise.id }}">{{ exercise.name }} ({{ exercise.count }})</option>
-                        {% endfor %}
-                    </select>
-                </div>
+{% if learners %}
+    <div class="container-box container--dash">
+        <div class="dashboard-filters">
+            <div class="filter-group">
+                <label class="label" for="learner-select">Learner</label>
+                <select id="learner-select" class="select">
+                    {% for learner in learners %}
+                        <option value="{{ learner.learner_uuid }}" {% if selected_learner and learner.id == selected_learner.id %}selected{% endif %}>
+                            {{ learner.name }} ({{ learner.session_count }})
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
 
-                <div class="filter-group">
-                    <label class="label">Metrics</label>
-                    <div class="metric-checkboxes">
-                        <div class="checkbox-wrapper">
-                            <input type="checkbox" id="metric-exercises" name="metric" value="exercises" checked>
-                            <label for="metric-exercises">Sessions Completed</label>
-                        </div>
-                        <div class="checkbox-wrapper">
-                            <input type="checkbox" id="metric-accuracy" name="metric" value="accuracy">
-                            <label for="metric-accuracy">Accuracy (%)</label>
-                        </div>
-                        <div class="checkbox-wrapper">
-                            <input type="checkbox" id="metric-difficulty" name="metric" value="difficulty">
-                            <label for="metric-difficulty">Difficulty Level</label>
-                        </div>
+            <div class="filter-group">
+                <label class="label" for="exercise-select">Exercise</label>
+                <select id="exercise-select" class="select">
+                    <option value="all">All Exercises ({{ total_sessions }})</option>
+                    {% for exercise in exercise_choices %}
+                        <option value="{{ exercise.id }}">{{ exercise.name }} ({{ exercise.count }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label class="label">Metrics</label>
+                <div class="metric-checkboxes">
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="metric-exercises" name="metric" value="exercises" checked>
+                        <label for="metric-exercises">Sessions Completed</label>
+                    </div>
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="metric-accuracy" name="metric" value="accuracy">
+                        <label for="metric-accuracy">Accuracy (%)</label>
+                    </div>
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="metric-difficulty" name="metric" value="difficulty">
+                        <label for="metric-difficulty">Difficulty Level</label>
                     </div>
                 </div>
+            </div>
 
-                <div class="filter-group">
-                    <label class="label">Smart Data View</label>
-                    <div class="metric-checkboxes">
-                        <div class="checkbox-wrapper">
-                            <input type="checkbox" id="layer-metrics" name="layer-metrics" title="Enable selecting multiple metrics to overlay on the same chart">
-                            <label for="layer-metrics" title="Enable selecting multiple metrics to overlay on the same chart">Layer Metrics</label>
-                        </div>
-                        <div class="checkbox-wrapper">
-                            <input type="checkbox" id="plot-best-fit" name="plot-best-fit" title="Visualise overall direction and trend">
-                            <label for="plot-best-fit" title="Visualise overall direction and trend">Show Line of Best Fit</label>
-                        </div>
-                        <div class="checkbox-wrapper">
-                            <input type="checkbox" id="smooth-data" name="smooth-data" title="Reduce noise and outliers by applying a moving average algorithm">
-                            <label for="smooth-data" title="Reduce noise and outliers by applying a moving average algorithm">Data Smoothing</label>
-                        </div>
+            <div class="filter-group">
+                <label class="label">Smart Data View</label>
+                <div class="metric-checkboxes">
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="layer-metrics" name="layer-metrics" title="Enable selecting multiple metrics to overlay on the same chart">
+                        <label for="layer-metrics" title="Enable selecting multiple metrics to overlay on the same chart">Layer Metrics</label>
+                    </div>
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="plot-best-fit" name="plot-best-fit" title="Visualise overall direction and trend">
+                        <label for="plot-best-fit" title="Visualise overall direction and trend">Show Line of Best Fit</label>
+                    </div>
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="smooth-data" name="smooth-data" title="Reduce noise and outliers by applying a moving average algorithm">
+                        <label for="smooth-data" title="Reduce noise and outliers by applying a moving average algorithm">Data Smoothing</label>
                     </div>
                 </div>
-
-                <div class="filter-group">
-                    <label class="label" for="date-range">Date Range</label>
-                    <select id="date-range" class="select">
-                        <option value="all" selected>Full History</option>
-                        <option value="7">Last 7 Days</option>
-                        <option value="30">Last 30 Days</option>
-                        <option value="90">Last 90 Days</option>
-                    </select>
-                </div>
             </div>
 
-            <div class="dashboard-chart-section">
-            <div class="dashboard-chart-header">
-                <h3 id="chart-title">Experience Over Time</h3>
-                <p class="chart-subtitle" id="chart-subtitle"></p>
-            </div>
-            <div class="dashboard-chart-container">
-                <canvas id="progress-chart" height="120"></canvas>
-            </div>
-            <div class="dashboard-message" id="dashboard-message"></div>
+            <div class="filter-group">
+                <label class="label" for="date-range">Date Range</label>
+                <select id="date-range" class="select">
+                    <option value="all" selected>Full History</option>
+                    <option value="7">Last 7 Days</option>
+                    <option value="30">Last 30 Days</option>
+                    <option value="90">Last 90 Days</option>
+                </select>
             </div>
         </div>
-    {% else %}
-        <div class="dashboard-empty">
-            <p>No learners available for analytics.</p>
+
+        <div class="dashboard-chart-section">
+        <div class="dashboard-chart-header">
+            <h3 id="chart-title">Experience Over Time</h3>
+            <p class="chart-subtitle" id="chart-subtitle"></p>
         </div>
-    {% endif %}
-</div>
+        <div class="dashboard-chart-container">
+            <canvas id="progress-chart" height="120"></canvas>
+        </div>
+        <div class="dashboard-message" id="dashboard-message"></div>
+        </div>
+    </div>
+{% else %}
+    <div class="dashboard-empty">
+        <p>No learners available for analytics.</p>
+    </div>
+{% endif %}
+
 
 <script src="{% static 'js/learner_dashboard.js' %}"></script>
 {% endblock %}
