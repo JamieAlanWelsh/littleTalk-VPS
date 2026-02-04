@@ -709,7 +709,11 @@ def generate_summary(request, learner_uuid):
 @login_required
 def game_description(request, game_name):
     game = GAME_DESCRIPTIONS.get(game_name, None)
-    return render(request, "game_description.html", {"game": game})
+    return render(request, "game_description.html", {
+        "game": game,
+        "game_descriptions": GAME_DESCRIPTIONS,
+        "current_game_name": game_name,
+    })
 
 
 class CustomLoginView(LoginView):

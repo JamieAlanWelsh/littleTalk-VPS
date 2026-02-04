@@ -60,6 +60,65 @@
     margin-right: 20px; /* Space between icon and text */
 }
 
+/* More Dropdown Menu */
+.sidebar-more {
+    position: relative;
+    margin-top: auto; /* Push to bottom of sidebar */
+}
+
+.more-trigger {
+    cursor: pointer;
+}
+
+.more-dropdown {
+    display: none;
+    position: absolute;
+    left: calc(100% - 5px);
+    bottom: 0;
+    background-color: white;
+    border-radius: var(--border-radius-light);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    min-width: 180px;
+    z-index: 1001;
+    overflow: hidden;
+}
+
+.sidebar-more:hover .more-dropdown,
+.more-dropdown:hover {
+    display: block;
+}
+
+.more-dropdown .dropdown-item {
+    display: block;
+    padding: 15px 20px;
+    color: var(--font-color);
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background-color 0.2s;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    cursor: pointer;
+    font-family: var(--font-outfit);
+}
+
+.more-dropdown .dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.more-dropdown .dropdown-item:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.more-dropdown .dropdown-item span {
+    margin-left: 0;
+}
+
 /* Responsive Sidebar - Mobile View */
 @media (max-width: 1080px) {
     .layout {
@@ -127,6 +186,15 @@
         margin-right: 0; /* Remove extra spacing */
         margin-bottom: 5px; /* Add space between icon and text */
     }
+
+    /* Mobile More Dropdown */
+    .more-dropdown {
+        left: auto;
+        right: 0;
+        bottom: 100%;
+        margin-left: 0;
+        margin-bottom: 10px;
+    }
 }
 
 @media (max-width: 600px) {
@@ -147,5 +215,15 @@
 
     .sidebar-menu a {
         font-size: 13px;
+    }
+
+    /* Mobile More Dropdown - Small screens */
+    .more-dropdown {
+        min-width: 150px;
+    }
+
+    .more-dropdown .dropdown-item {
+        padding: 12px 15px;
+        font-size: 14px;
     }
 }

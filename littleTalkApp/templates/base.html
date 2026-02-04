@@ -85,6 +85,18 @@
                         </a>
                     </li>
                     <li>
+                        <a href="{% url 'screener' %}">
+                            <img src="{% static 'icons/clipboard.png' %}" alt="Screener" class="sidebar-icon">
+                            <span>Screener</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'learner_dashboard' %}{% if selected_learner %}?learner={{ selected_learner.learner_uuid }}{% endif %}">
+                            <img src="{% static 'icons/graph.png' %}" alt="Dashboard" class="sidebar-icon">
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
                         <a href="{% url 'logbook' %}">
                             <img src="{% static 'icons/diary.png' %}" alt="Logbook" class="sidebar-icon">
                             <span>Logbook</span>
@@ -98,17 +110,25 @@
                             </a>
                         </li>
                     {% endif %}
-                    <li>
-                        <a href="{% url 'support' %}">
-                            <img src="{% static 'icons/help.png' %}" alt="Support" class="sidebar-icon">
-                            <span>Support</span>
+                    <li class="sidebar-more">
+                        <a href="#" class="more-trigger">
+                            <img src="{% static 'icons/more.png' %}" alt="More" class="sidebar-icon">
+                            <span>More</span>
                         </a>
-                    </li>
-                    <li>
-                        <a href="{% url 'settings' %}">
-                            <img src="{% static 'icons/service.png' %}" alt="Settings" class="sidebar-icon">
-                            <span>Settings</span>
-                        </a>
+                        <div class="more-dropdown">
+                            <a href="{% url 'support' %}" class="dropdown-item">
+                                <span>Help Centre</span>
+                            </a>
+                            <a href="{% url 'settings' %}" class="dropdown-item">
+                                <span>Settings</span>
+                            </a>
+                            <form method="post" action="{% url 'logout' %}" style="margin: 0;">
+                                {% csrf_token %}
+                                <button type="submit" class="dropdown-item dropdown-item--logout">
+                                    <span>Logout</span>
+                                </button>
+                            </form>
+                        </div>
                     </li>
                 </ul>
             </div>
