@@ -83,6 +83,24 @@
         font-weight: 700;
         color: var(--font-color);
     }
+    
+    /* Fix chart overflow in print */
+    .dashboard-chart-container {
+        max-width: 100%;
+        width: 100% !important;
+        height: 300px;
+        min-height: 300px;
+    }
+    
+    #progress-chart {
+        max-width: 100%;
+    }
+    
+    /* Keep sections together on pages */
+    .dashboard-section {
+        page-break-inside: avoid;
+        page-break-after: auto;
+    }
 }
 
 .filter-group {
