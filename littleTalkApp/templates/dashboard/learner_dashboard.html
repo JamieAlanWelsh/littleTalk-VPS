@@ -96,7 +96,7 @@
         <div class="dashboard-section" data-section="targets">
             <div class="section-header">
                 <h3>Custom Targets</h3>
-                {% if targets_data %}
+                {% if targets_data and targets_data.achieved_count > 0 %}
                 <p class="section-note">
                     {{ selected_learner.name }} has achieved <strong>{{ targets_data.percentage }}%</strong> of their targets 
                     ({{ targets_data.achieved_count }} of {{ targets_data.total_count }})
@@ -136,7 +136,7 @@
         <div class="dashboard-section" data-section="screener">
             <div class="section-header">
                 <h3>Screener Progress Analysis</h3>
-                {% if screener_data.comparison and screener_data.first_screener_date %}
+                {% if screener_data.comparison and screener_data.first_screener_date and screener_data.skills_gained_count > 0 %}
                 <p class="section-note">
                     {{ selected_learner.name }} has gained <strong>{{ screener_data.skills_gained_count }} skill{{ screener_data.skills_gained_count|pluralize }}</strong> 
                     since their first screener on {{ screener_data.first_screener_date|date:"M d, Y" }}
