@@ -81,7 +81,7 @@
     background-color: white;
     color: var(--font-color);
     box-shadow: var(--box-shadow);
-    transition: background-color 0.2s ease;
+    transition: all 0.3s ease;
 }
 
 .setup-card-inner h2 {
@@ -90,6 +90,7 @@
 
 .setup-card-inner:hover {
     background-color: var(--font-color);
+    transform: translateY(-5px);
     color: white;
 }
 

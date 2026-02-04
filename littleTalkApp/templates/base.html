@@ -90,12 +90,14 @@
                             <span>Screener</span>
                         </a>
                     </li>
+                    {% if request.user.profile.role != 'parent' %}
                     <li class="sidebar-dashboard">
                         <a href="{% url 'learner_dashboard' %}{% if selected_learner %}?learner={{ selected_learner.learner_uuid }}{% endif %}">
                             <img src="{% static 'icons/graph.png' %}" alt="Dashboard" class="sidebar-icon">
                             <span>Dashboard</span>
                         </a>
                     </li>
+                    {% endif %}
                     <li>
                         <a href="{% url 'logbook' %}">
                             <img src="{% static 'icons/diary.png' %}" alt="Logbook" class="sidebar-icon">

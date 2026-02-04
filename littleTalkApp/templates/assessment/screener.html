@@ -9,7 +9,7 @@
     
     {% if learners %}
         <!-- Learner Selector -->
-        <div class="screener-header">
+        <div class="screener-header" style="margin-bottom: 0;">
             {% if request.user.profile.role != 'parent' and cohorts %}
             <div class="header-learner-section">
                 <label class="header-label" for="cohort-select">Cohort:</label>
@@ -42,27 +42,27 @@
             <p><strong>Last Screener:</strong> {{ last_screener_date|date:"M d, Y" }}</p>
         {% endif %} -->
         
-        <div class="screener-card-row">
+        <div class="card-row">
             {% if not has_screener %}
                 <!-- Submit New Screener -->
-                <a href="{% url 'start_assessment' %}" class="screener-card">
-                    <div class="screener-card-inner">
+                <a href="{% url 'start_assessment' %}" class="setup-card">
+                    <div class="setup-card-inner">
                         <h2>Submit New Screener</h2>
                         <p>A short questionnaire to profile needs and get exercise recommendations</p>
                     </div>
                 </a>
             {% else %}
                 <!-- Submit Re-Screener -->
-                <a href="{% url 'start_assessment' %}" class="screener-card">
-                    <div class="screener-card-inner">
+                <a href="{% url 'start_assessment' %}" class="setup-card">
+                    <div class="setup-card-inner">
                         <h2>Submit Re-Screener</h2>
                         <p>Re-take questionnaire to show progress and update exercise recommendations</p>
                     </div>
                 </a>
                 
                 <!-- View Screener Results -->
-                <a href="{% url 'assessment_summary' %}" class="screener-card">
-                    <div class="screener-card-inner">
+                <a href="{% url 'assessment_summary' %}" class="setup-card">
+                    <div class="setup-card-inner">
                         <h2>View Screener Results</h2>
                         <p>Review or print previous screener results</p>
                     </div>

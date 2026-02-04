@@ -160,7 +160,8 @@ def screener(request):
     
     # Get accessible learners based on role
     if profile.is_parent():
-        learners = profile.parent_profile.learners.filter(deleted=False)
+        # Parents can only access their own learners (not school-owned)
+        learners = profile.parent_profile.learners.filter(deleted=False, school__isnull=True)
         cohorts = Cohort.objects.none()
     else:
         user_school = profile.get_current_school(request)
@@ -1569,8 +1570,16 @@ def accept_invite(request, token):
             except Exception:
                 pass
 
+            # Mark this invite as used
             invite.used = True
             invite.save()
+            
+            # Mark all other pending invites for this email as used to prevent duplicates
+            StaffInvite.objects.filter(
+                email__iexact=invite.email,
+                used=False,
+                withdrawn=False
+            ).exclude(id=invite.id).update(used=True)
 
             login(request, user)
             return redirect("profile")
@@ -2113,23 +2122,25 @@ def manage_subscription(request):
 def learner_dashboard(request):
     """
     Progress dashboard showing charts for individual learner analytics.
-    Accessible by parents (own learners) and staff (school learners).
+    Accessible by staff (school learners) only. Parents are redirected to profile.
     """
     from django.db.models import Count
     
     profile = request.user.profile
     
-    # Get accessible learners based on role
+    # Redirect parents to profile
     if profile.is_parent():
-        accessible_learners = profile.parent_profile.learners.filter(deleted=False)
-        cohorts = Cohort.objects.none()
-    else:
-        user_school = profile.get_current_school(request)
-        if not user_school:
-            messages.error(request, "No school assigned to your profile.")
-            return redirect("profile")
-        accessible_learners = Learner.objects.filter(school=user_school, deleted=False)
-        cohorts = Cohort.objects.filter(school=user_school).distinct()
+        messages.info(request, "Dashboard access is not available for parent accounts.")
+        return redirect("profile")
+    
+    # Get accessible learners based on role
+    user_school = profile.get_current_school(request)
+    if not user_school:
+        messages.error(request, "No school assigned to your profile.")
+        return redirect("profile")
+    
+    accessible_learners = Learner.objects.filter(school=user_school, deleted=False)
+    cohorts = Cohort.objects.filter(school=user_school).distinct()
     
     # Filter by cohort if selected
     selected_cohort_id = request.GET.get("cohort")
