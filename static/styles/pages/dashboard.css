@@ -65,7 +65,8 @@
     }
     
     .targets-filter,
-    .section-filter {
+    .section-filter,
+    .screener-filter {
         display: none;
     }
     
@@ -227,7 +228,8 @@
 /* Targets Section */
 /* Reusable Filter Buttons */
 .targets-filter,
-.section-filter {
+.section-filter,
+.screener-filter {
     display: flex;
     gap: 8px;
     margin-bottom: 20px;
@@ -516,7 +518,8 @@
     }
     
     .targets-filter,
-    .section-filter {
+    .section-filter,
+    .screener-filter {
         flex-direction: column;
         align-items: stretch;
     }

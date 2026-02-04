@@ -143,6 +143,22 @@
                 </p>
                 {% endif %}
             </div>
+            
+            <div class="screener-filter">
+                <button class="filter-btn active" data-screener-filter="all">All</button>
+                {% if screener_data.comparison.skills_gained %}
+                <button class="filter-btn" data-screener-filter="skills_gained">Skills Gained ({{ screener_data.comparison.skills_gained|length }})</button>
+                {% endif %}
+                {% if screener_data.comparison.skills_lost %}
+                <button class="filter-btn" data-screener-filter="skills_fluctuating">Skills Fluctuating ({{ screener_data.comparison.skills_lost|length }})</button>
+                {% endif %}
+                {% if screener_data.comparison.skills_maintained_strong %}
+                <button class="filter-btn" data-screener-filter="skills_maintained">Skills Maintained ({{ screener_data.comparison.skills_maintained_strong|length }})</button>
+                {% endif %}
+                {% if screener_data.current_support_skills %}
+                <button class="filter-btn" data-screener-filter="current_support">Current Support Areas ({{ screener_data.current_support_skills|length }})</button>
+                {% endif %}
+            </div>
 
             {% if screener_data.comparison %}
             <!-- Skills Comparison (only if re-screener exists) -->
@@ -153,7 +169,7 @@
                 </p>
 
                 {% if screener_data.comparison.skills_gained %}
-                <div class="skill-category skills-gained">
+                <div class="skill-category skills-gained" data-category="skills_gained">
                     <h4>✓ Skills Gained</h4>
                     <ul class="skill-list">
                         {% for skill in screener_data.comparison.skills_gained %}
@@ -164,7 +180,7 @@
                 {% endif %}
 
                 {% if screener_data.comparison.skills_lost %}
-                <div class="skill-category skills-fluctuating">
+                <div class="skill-category skills-fluctuating" data-category="skills_fluctuating">
                     <h4>⚠ Skills Showing Fluctuation</h4>
                     <ul class="skill-list">
                         {% for skill in screener_data.comparison.skills_lost %}
@@ -176,7 +192,7 @@
                 {% endif %}
 
                 {% if screener_data.comparison.skills_maintained_strong %}
-                <div class="skill-category skills-maintained">
+                <div class="skill-category skills-maintained" data-category="skills_maintained">
                     <h4>✓ Skills Maintained</h4>
                     <ul class="skill-list">
                         {% for skill in screener_data.comparison.skills_maintained_strong %}
@@ -190,7 +206,7 @@
 
             <!-- Current Support Areas -->
             {% if screener_data.current_support_skills %}
-            <div class="screener-current">
+            <div class="screener-current" data-category="current_support">
                 <h4>📌 Current Support Areas</h4>
                 <ul class="skill-list skill-list--support">
                     {% for skill in screener_data.current_support_skills %}
@@ -321,6 +337,56 @@ document.addEventListener("DOMContentLoaded", () => {
             window.print();
         });
     }
+    
+    // Screener filter functionality
+    const screenerFilterButtons = document.querySelectorAll('.screener-filter .filter-btn');
+    const screenerCategories = document.querySelectorAll('[data-category]');
+    
+    screenerFilterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const filter = button.dataset.screenerFilter;
+            
+            if (filter === 'all') {
+                // Clicking "All" - activate All, deactivate others, show all categories
+                screenerFilterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                screenerCategories.forEach(category => category.style.display = 'block');
+            } else {
+                // Clicking a specific filter
+                const allButton = document.querySelector('.screener-filter .filter-btn[data-screener-filter="all"]');
+                
+                // Toggle this button's active state
+                button.classList.toggle('active');
+                
+                // Deactivate "All" button
+                if (allButton) {
+                    allButton.classList.remove('active');
+                }
+                
+                // Get all active filters (excluding "all")
+                const activeFilters = Array.from(screenerFilterButtons)
+                    .filter(btn => btn.classList.contains('active') && btn.dataset.screenerFilter !== 'all')
+                    .map(btn => btn.dataset.screenerFilter);
+                
+                // If no filters are active, activate "All"
+                if (activeFilters.length === 0) {
+                    if (allButton) {
+                        allButton.classList.add('active');
+                    }
+                    screenerCategories.forEach(category => category.style.display = 'block');
+                } else {
+                    // Show/hide categories based on active filters
+                    screenerCategories.forEach(category => {
+                        if (activeFilters.includes(category.dataset.category)) {
+                            category.style.display = 'block';
+                        } else {
+                            category.style.display = 'none';
+                        }
+                    });
+                }
+            }
+        });
+    });
 });
 </script>
 {% endblock %}
