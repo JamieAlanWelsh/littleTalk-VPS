@@ -27,22 +27,11 @@
                     {% endfor %}
                 </select>
             </div>
-            <div class="header-sections-control">
-                <label class="header-label">Show sections:</label>
-                <div class="section-checkboxes">
-                    <div class="checkbox-wrapper">
-                        <input type="checkbox" id="show-chart" checked>
-                        <label for="show-chart">Exercises</label>
-                    </div>
-                    <div class="checkbox-wrapper">
-                        <input type="checkbox" id="show-targets" checked>
-                        <label for="show-targets">Targets</label>
-                    </div>
-                    <div class="checkbox-wrapper">
-                        <input type="checkbox" id="show-screener" checked>
-                        <label for="show-screener">Screener</label>
-                    </div>
-                </div>
+            <div class="section-filter">
+                <button class="filter-btn active" data-section-filter="all">All</button>
+                <button class="filter-btn" data-section-filter="chart">Exercises</button>
+                <button class="filter-btn" data-section-filter="targets">Targets</button>
+                <button class="filter-btn" data-section-filter="screener">Screener</button>
             </div>
             <button id="print-dashboard" class="btn btn--white btn--small btn--border no-print" title="Print this dashboard">🖨 Print</button>
         </div>
@@ -273,28 +262,30 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
     
-    // Section visibility control
-    const sectionCheckboxes = {
-        'show-chart': 'chart',
-        'show-targets': 'targets',
-        'show-screener': 'screener'
-    };
+    // Section visibility control with buttons
+    const sectionFilterButtons = document.querySelectorAll('.section-filter .filter-btn');
+    const allSections = document.querySelectorAll('[data-section]');
     
-    Object.keys(sectionCheckboxes).forEach(checkboxId => {
-        const checkbox = document.getElementById(checkboxId);
-        if (checkbox) {
-            checkbox.addEventListener('change', () => {
-                const sectionName = sectionCheckboxes[checkboxId];
-                const section = document.querySelector(`[data-section="${sectionName}"]`);
-                if (section) {
-                    if (checkbox.checked) {
-                        section.style.display = 'block';
-                    } else {
-                        section.style.display = 'none';
-                    }
+    sectionFilterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Update active state
+            sectionFilterButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            
+            const filter = button.dataset.sectionFilter;
+            
+            // Show/hide sections based on filter
+            allSections.forEach(section => {
+                const sectionName = section.dataset.section;
+                if (filter === 'all') {
+                    section.style.display = 'block';
+                } else if (sectionName === filter) {
+                    section.style.display = 'block';
+                } else {
+                    section.style.display = 'none';
                 }
             });
-        }
+        });
     });
     
     // Print functionality

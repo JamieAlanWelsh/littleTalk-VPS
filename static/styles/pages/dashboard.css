@@ -11,6 +11,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #f0f0f0;
     gap: 16px;
     flex-wrap: wrap;
 }
@@ -21,67 +24,11 @@
     gap: 12px;
 }
 
-.header-sections-control {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex: 1;
-    justify-content: center;
-}
-
-.section-checkboxes {
-    display: flex;
-    gap: 16px;
-    align-items: center;
-}
-
-.section-checkboxes .checkbox-wrapper {
-    display: flex;
-    align-items: center;
-    margin-bottom: 0;
-    gap: 6px;
-}
-
-.section-checkboxes input[type="checkbox"] {
-    width: 16px;
-    height: 16px;
-    cursor: pointer;
-}
-
-.section-checkboxes label {
-    font-size: 0.9rem;
-    color: var(--font-color);
-    cursor: pointer;
-    white-space: nowrap;
-}
-
 .header-label {
     font-size: 1rem;
     font-weight: 600;
     color: var(--font-color);
     white-space: nowrap;
-}
-
-.header-select {
-    padding: 10px 12px;
-    border: 2px solid #e8e8e8;
-    border-radius: 8px;
-    font-size: 1rem;
-    color: var(--font-color);
-    background: #ffffff;
-    cursor: pointer;
-    transition: border-color 0.2s ease;
-    min-width: 200px;
-}
-
-.header-select:hover {
-    border-color: var(--primary-color);
-}
-
-.header-select:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(123, 97, 255, 0.1);
 }
 
 /* Print Styles */
@@ -103,7 +50,8 @@
         display: none;
     }
     
-    .targets-filter {
+    .targets-filter,
+    .section-filter {
         display: none;
     }
     
@@ -231,12 +179,20 @@
 }
 
 /* Targets Section */
-.targets-filter {
+/* Reusable Filter Buttons */
+.targets-filter,
+.section-filter {
     display: flex;
     gap: 8px;
     margin-bottom: 20px;
     flex-wrap: wrap;
     align-items: center;
+}
+
+.section-filter {
+    margin-bottom: 0;
+    flex: 1;
+    justify-content: center;
 }
 
 .targets-filter label {
@@ -479,18 +435,9 @@
         flex: 1;
     }
     
-    .header-sections-control {
+    .section-filter {
         width: 100%;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-    }
-    
-    .section-checkboxes {
-        flex-direction: column;
-        align-items: flex-start;
-        width: 100%;
-        gap: 8px;
+        justify-content: flex-start;
     }
     
     .btn--print {
@@ -501,7 +448,8 @@
         grid-template-columns: 1fr;
     }
     
-    .targets-filter {
+    .targets-filter,
+    .section-filter {
         flex-direction: column;
         align-items: stretch;
     }
