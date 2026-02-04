@@ -12,13 +12,47 @@
     justify-content: space-between;
     align-items: center;
     gap: 16px;
+    flex-wrap: wrap;
 }
 
 .header-learner-section {
     display: flex;
     align-items: center;
     gap: 12px;
+}
+
+.header-sections-control {
+    display: flex;
+    align-items: center;
+    gap: 12px;
     flex: 1;
+    justify-content: center;
+}
+
+.section-checkboxes {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.section-checkboxes .checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0;
+    gap: 6px;
+}
+
+.section-checkboxes input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.section-checkboxes label {
+    font-size: 0.9rem;
+    color: var(--font-color);
+    cursor: pointer;
+    white-space: nowrap;
 }
 
 .header-label {
@@ -50,29 +84,13 @@
     box-shadow: 0 0 0 3px rgba(123, 97, 255, 0.1);
 }
 
-.btn--print {
-    padding: 10px 18px;
-    background: #ffffff;
-    border: 2px solid #e8e8e8;
-    border-radius: 8px;
-    font-size: 1rem;
-    color: var(--font-color);
-    cursor: pointer;
-    transition: all 0.2s ease;
-    white-space: nowrap;
-}
-
-.btn--print:hover {
-    border-color: var(--primary-color);
-    background: rgba(123, 97, 255, 0.05);
-}
-
-.btn--print:active {
-    transform: scale(0.98);
-}
-
 /* Print Styles */
 @media print {
+    /* Hide screen-only elements */
+    h1 {
+        display: none;
+    }
+    
     .dashboard-header {
         display: none;
     }
@@ -83,6 +101,24 @@
     
     .filter-btn {
         display: none;
+    }
+    
+    .targets-filter {
+        display: none;
+    }
+    
+    /* Only print sections that are visible (not hidden by checkboxes) */
+    .dashboard-section[style*="display: none"] {
+        display: none !important;
+    }
+    
+    /* Add print-only header */
+    .container-box.container--dash::before {
+        content: "Chatterdillo | Progress Review";
+        display: block;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--font-color);
     }
 }
 
@@ -148,11 +184,11 @@
 }
 
 .dashboard-message.error {
-    color: #d63031;
+    color: var(--target-red);
 }
 
 .dashboard-message.success {
-    color: #00b894;
+    color: var(--target-green);
 }
 
 .dashboard-empty {
@@ -221,13 +257,13 @@
 }
 
 .filter-btn:hover {
-    border-color: var(--primary-color);
+    border-color: var(--font-color);
     background: rgba(123, 97, 255, 0.05);
 }
 
 .filter-btn.active {
-    border-color: var(--primary-color);
-    background: var(--primary-color);
+    border-color: var(--font-color);
+    background: var(--font-color);
     color: #ffffff;
 }
 
@@ -249,15 +285,15 @@
 }
 
 .target-item[data-status="achieved"] {
-    border-left-color: #00b894;
+    border-left-color: var(--target-green);
 }
 
 .target-item[data-status="not_achieved"] {
-    border-left-color: #d63031;
+    border-left-color: var(--target-red);
 }
 
 .target-item[data-status="ongoing"] {
-    border-left-color: #fdcb6e;
+    border-left-color: var(--target-orange);
 }
 
 .target-item[data-status="---"] {
@@ -283,17 +319,17 @@
 }
 
 .target-status-badge.status-achieved {
-    background: #00b894;
+    background: var(--target-green);
     color: #ffffff;
 }
 
 .target-status-badge.status-not_achieved {
-    background: #d63031;
+    background: var(--target-red);
     color: #ffffff;
 }
 
 .target-status-badge.status-ongoing {
-    background: #fdcb6e;
+    background: var(--target-orange);
     color: #2d3436;
 }
 
@@ -430,6 +466,37 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    .dashboard-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .header-learner-section {
+        width: 100%;
+    }
+    
+    .header-select {
+        flex: 1;
+    }
+    
+    .header-sections-control {
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .section-checkboxes {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        gap: 8px;
+    }
+    
+    .btn--print {
+        width: 100%;
+    }
+    
     .dashboard-filters {
         grid-template-columns: 1fr;
     }

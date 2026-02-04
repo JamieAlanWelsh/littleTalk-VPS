@@ -19,7 +19,7 @@
         <div class="dashboard-header">
             <div class="header-learner-section">
                 <label class="header-label" for="learner-select">Learner:</label>
-                <select id="learner-select" class="header-select">
+                <select id="learner-select" class="select" style="margin-bottom: 0;">
                     {% for learner in learners %}
                         <option value="{{ learner.learner_uuid }}" {% if selected_learner and learner.id == selected_learner.id %}selected{% endif %}>
                             {{ learner.name }} ({{ learner.session_count }})
@@ -27,11 +27,28 @@
                     {% endfor %}
                 </select>
             </div>
-            <button id="print-dashboard" class="btn btn--print" title="Print this dashboard">🖨 Print</button>
+            <div class="header-sections-control">
+                <label class="header-label">Show sections:</label>
+                <div class="section-checkboxes">
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="show-chart" checked>
+                        <label for="show-chart">Exercises</label>
+                    </div>
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="show-targets" checked>
+                        <label for="show-targets">Targets</label>
+                    </div>
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="show-screener" checked>
+                        <label for="show-screener">Screener</label>
+                    </div>
+                </div>
+            </div>
+            <button id="print-dashboard" class="btn btn--white btn--small btn--border no-print" title="Print this dashboard">🖨 Print</button>
         </div>
 
         <!-- Chart Section -->
-        <div class="dashboard-section">
+        <div class="dashboard-section" data-section="chart">
             <div class="section-header">
                 <h3>Exercise Sessions Chart</h3>
             </div>
@@ -107,7 +124,7 @@
 
         {% if selected_learner %}
         <!-- Custom Targets Section -->
-        <div class="dashboard-section">
+        <div class="dashboard-section" data-section="targets">
             <div class="section-header">
                 <h3>Custom Targets</h3>
                 {% if targets_data %}
@@ -148,7 +165,7 @@
 
         <!-- Screener Analysis Section -->
         {% if screener_data and screener_data.has_screener_data %}
-        <div class="dashboard-section">
+        <div class="dashboard-section" data-section="screener">
             <div class="section-header">
                 <h3>Screener Progress Analysis</h3>
                 {% if screener_data.comparison and screener_data.first_screener_date %}
@@ -254,6 +271,30 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             });
         });
+    });
+    
+    // Section visibility control
+    const sectionCheckboxes = {
+        'show-chart': 'chart',
+        'show-targets': 'targets',
+        'show-screener': 'screener'
+    };
+    
+    Object.keys(sectionCheckboxes).forEach(checkboxId => {
+        const checkbox = document.getElementById(checkboxId);
+        if (checkbox) {
+            checkbox.addEventListener('change', () => {
+                const sectionName = sectionCheckboxes[checkboxId];
+                const section = document.querySelector(`[data-section="${sectionName}"]`);
+                if (section) {
+                    if (checkbox.checked) {
+                        section.style.display = 'block';
+                    } else {
+                        section.style.display = 'none';
+                    }
+                }
+            });
+        }
     });
     
     // Print functionality
