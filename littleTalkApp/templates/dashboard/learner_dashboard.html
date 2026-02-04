@@ -39,63 +39,43 @@
         <!-- Chart Section -->
         <div class="dashboard-section" data-section="chart">
             <div class="section-header">
-                <h3>Exercise Sessions Chart</h3>
-            </div>
-            <div class="dashboard-filters">
-                <div class="filter-group">
-                    <label class="label" for="exercise-select">Exercise</label>
-                    <select id="exercise-select" class="select">
-                        <option value="all">All Exercises ({{ total_sessions }})</option>
-                        {% for exercise in exercise_choices %}
-                            <option value="{{ exercise.id }}">{{ exercise.name }} ({{ exercise.count }})</option>
-                        {% endfor %}
-                    </select>
+                <div class="section-header-title">
+                    <h3>Exercise Sessions Chart</h3>
                 </div>
-
-                <div class="filter-group">
-                    <label class="label">Metrics</label>
-                    <div class="metric-checkboxes">
-                        <div class="checkbox-wrapper">
-                            <input type="checkbox" id="metric-exercises" name="metric" value="exercises" checked>
-                            <label for="metric-exercises">Sessions Completed</label>
-                        </div>
-                        <div class="checkbox-wrapper">
-                            <input type="checkbox" id="metric-accuracy" name="metric" value="accuracy">
-                            <label for="metric-accuracy">Accuracy (%)</label>
-                        </div>
-                        <div class="checkbox-wrapper">
-                            <input type="checkbox" id="metric-difficulty" name="metric" value="difficulty">
-                            <label for="metric-difficulty">Difficulty Level</label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="filter-group">
-                    <label class="label">Smart Data View</label>
-                    <div class="metric-checkboxes">
-                        <div class="checkbox-wrapper">
-                            <input type="checkbox" id="layer-metrics" name="layer-metrics" title="Enable selecting multiple metrics to overlay on the same chart">
-                            <label for="layer-metrics" title="Enable selecting multiple metrics to overlay on the same chart">Layer Metrics</label>
-                        </div>
-                        <div class="checkbox-wrapper">
-                            <input type="checkbox" id="plot-best-fit" name="plot-best-fit" title="Visualise overall direction and trend">
-                            <label for="plot-best-fit" title="Visualise overall direction and trend">Show Line of Best Fit</label>
-                        </div>
-                        <div class="checkbox-wrapper">
-                            <input type="checkbox" id="smooth-data" name="smooth-data" title="Reduce noise and outliers by applying a moving average algorithm">
-                            <label for="smooth-data" title="Reduce noise and outliers by applying a moving average algorithm">Data Smoothing</label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="filter-group">
-                    <label class="label" for="date-range">Date Range</label>
-                    <select id="date-range" class="select">
+                <div class="section-header-actions">
+                    <label class="label" for="date-range">Date Range:</label>
+                    <select id="date-range" class="select" style="margin-bottom: 0;">
                         <option value="all" selected>Full History</option>
                         <option value="7">Last 7 Days</option>
                         <option value="30">Last 30 Days</option>
                         <option value="90">Last 90 Days</option>
                     </select>
+                </div>
+            </div>
+            <div class="dashboard-filters">
+                <div class="filter-row">
+                    <div class="chart-filter-buttons">
+                        <button class="filter-btn active" data-exercise="all">All ({{ total_sessions }})</button>
+                        {% for exercise in exercise_choices %}
+                            <button class="filter-btn" data-exercise="{{ exercise.id }}">{{ exercise.name }} ({{ exercise.count }})</button>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="filter-row">
+                    <div class="chart-filter-buttons">
+                        <button class="filter-btn active" data-metric="exercises">Sessions Completed</button>
+                        <button class="filter-btn" data-metric="accuracy">Accuracy (%)</button>
+                        <button class="filter-btn" data-metric="difficulty">Difficulty Level</button>
+                    </div>
+                </div>
+
+                <div class="filter-row">
+                    <div class="chart-filter-buttons">
+                        <button class="filter-btn" data-smart="layer-metrics" title="Enable selecting multiple metrics to overlay on the same chart">Layer Metrics</button>
+                        <button class="filter-btn" data-smart="plot-best-fit" title="Visualise overall direction and trend">Line of Best Fit</button>
+                        <button class="filter-btn" data-smart="smooth-data" title="Reduce noise and outliers by applying a moving average algorithm">Data Smoothing</button>
+                    </div>
                 </div>
             </div>
 
@@ -126,7 +106,6 @@
             
             {% if targets_data and targets_data.all %}
             <div class="targets-filter">
-                <label>Filter by status:</label>
                 <button class="filter-btn active" data-filter="all">All ({{ targets_data.total_count }})</button>
                 <button class="filter-btn" data-filter="achieved">Achieved ({{ targets_data.achieved_count }})</button>
                 <button class="filter-btn" data-filter="not_achieved">Not Achieved ({{ targets_data.not_achieved|length }})</button>

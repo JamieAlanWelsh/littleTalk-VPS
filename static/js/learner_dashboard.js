@@ -1,15 +1,14 @@
 document.addEventListener("DOMContentLoaded", () => {
     const learnerSelect = document.getElementById("learner-select");
-    const exerciseSelect = document.getElementById("exercise-select");
-    const metricCheckboxes = document.querySelectorAll('input[name="metric"]');
     const dateRangeSelect = document.getElementById("date-range");
-    const applyButton = document.getElementById("apply-filters");
     const messageEl = document.getElementById("dashboard-message");
     const chartTitle = document.getElementById("chart-title");
     const chartSubtitle = document.getElementById("chart-subtitle");
-    const bestFitCheckbox = document.getElementById("plot-best-fit");
-    const smoothingCheckbox = document.getElementById("smooth-data");
-    const layerMetricsCheckbox = document.getElementById("layer-metrics");
+
+    // Button-style filters
+    const exerciseButtons = document.querySelectorAll('[data-exercise]');
+    const metricButtons = document.querySelectorAll('[data-metric]');
+    const smartButtons = document.querySelectorAll('[data-smart]');
 
     if (!learnerSelect) {
         return;
@@ -30,11 +29,32 @@ document.addEventListener("DOMContentLoaded", () => {
         difficulty: "#F39C12",
     };
 
-    function setDefaultDates() {
-        if (dateRangeSelect && !dateRangeSelect.value) {
-            dateRangeSelect.value = "all";
-        }
+    // Helper functions to get active states
+    function getSelectedExercise() {
+        const activeBtn = document.querySelector('[data-exercise].active');
+        return activeBtn ? activeBtn.dataset.exercise : 'all';
     }
+
+    function getSelectedMetrics() {
+        const activeButtons = document.querySelectorAll('[data-metric].active');
+        return Array.from(activeButtons).map(btn => btn.dataset.metric);
+    }
+
+    function isLayerMetricsEnabled() {
+        const layerBtn = document.querySelector('[data-smart="layer-metrics"]');
+        return layerBtn ? layerBtn.classList.contains('active') : false;
+    }
+
+    function isBestFitEnabled() {
+        const bestFitBtn = document.querySelector('[data-smart="plot-best-fit"]');
+        return bestFitBtn ? bestFitBtn.classList.contains('active') : false;
+    }
+
+    function isSmoothingEnabled() {
+        const smoothBtn = document.querySelector('[data-smart="smooth-data"]');
+        return smoothBtn ? smoothBtn.classList.contains('active') : false;
+    }
+
 
     function setMessage(text, isError = false) {
         if (!messageEl) {
@@ -142,7 +162,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
 
-        const smoothData = smoothingCheckbox && smoothingCheckbox.checked;
+        const smoothData = isSmoothingEnabled();
         const dataForDisplay = smoothData
             ? normalizedMetricsData.map((metricData) => ({
                 ...metricData,
@@ -172,7 +192,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         const singleMetric = metricsData.length === 1;
-        const plotBestFit = singleMetric && bestFitCheckbox && bestFitCheckbox.checked;
+        const plotBestFit = singleMetric && isBestFitEnabled();
 
         if (plotBestFit) {
             const bestFitValues = getBestFitValues(dataForDisplay[0].values);
@@ -198,9 +218,9 @@ document.addEventListener("DOMContentLoaded", () => {
         };
         
         // Check if we're viewing difficulty metric for specific exercises
-        const selectedMetrics = Array.from(metricCheckboxes).filter(cb => cb.checked).map(cb => cb.value);
+        const selectedMetrics = getSelectedMetrics();
         const isDifficultyMetric = selectedMetrics.length === 1 && selectedMetrics[0] === "difficulty";
-        const exerciseId = exerciseSelect.value;
+        const exerciseId = getSelectedExercise();
         
         // If multiple metrics, use normalized 0-100 scale
         if (metricsData.length > 1) {
@@ -341,61 +361,67 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function updateMetricAvailability() {
-        const exerciseId = exerciseSelect.value;
+        const exerciseId = getSelectedExercise();
         const isAllExercises = exerciseId === "all";
         
-        const accuracyCheckbox = document.getElementById("metric-accuracy");
-        const difficultyCheckbox = document.getElementById("metric-difficulty");
-        const exercisesCheckbox = document.getElementById("metric-exercises");
+        const accuracyButton = document.querySelector('[data-metric="accuracy"]');
+        const difficultyButton = document.querySelector('[data-metric="difficulty"]');
+        const exercisesButton = document.querySelector('[data-metric="exercises"]');
         
         if (isAllExercises) {
             // Only "Sessions Completed" available
-            if (accuracyCheckbox) {
-                accuracyCheckbox.disabled = true;
-                accuracyCheckbox.checked = false;
-                accuracyCheckbox.parentElement.classList.add("is-disabled");
+            if (accuracyButton) {
+                accuracyButton.disabled = true;
+                accuracyButton.classList.remove('active');
+                accuracyButton.style.opacity = '0.5';
+                accuracyButton.style.cursor = 'not-allowed';
             }
-            if (difficultyCheckbox) {
-                difficultyCheckbox.disabled = true;
-                difficultyCheckbox.checked = false;
-                difficultyCheckbox.parentElement.classList.add("is-disabled");
+            if (difficultyButton) {
+                difficultyButton.disabled = true;
+                difficultyButton.classList.remove('active');
+                difficultyButton.style.opacity = '0.5';
+                difficultyButton.style.cursor = 'not-allowed';
             }
-            if (exercisesCheckbox) {
-                exercisesCheckbox.checked = true;
+            if (exercisesButton && !exercisesButton.classList.contains('active')) {
+                exercisesButton.classList.add('active');
             }
         } else {
             // All metrics available
-            if (accuracyCheckbox) {
-                accuracyCheckbox.disabled = false;
-                accuracyCheckbox.parentElement.classList.remove("is-disabled");
+            if (accuracyButton) {
+                accuracyButton.disabled = false;
+                accuracyButton.style.opacity = '1';
+                accuracyButton.style.cursor = 'pointer';
             }
-            if (difficultyCheckbox) {
-                difficultyCheckbox.disabled = false;
-                difficultyCheckbox.parentElement.classList.remove("is-disabled");
+            if (difficultyButton) {
+                difficultyButton.disabled = false;
+                difficultyButton.style.opacity = '1';
+                difficultyButton.style.cursor = 'pointer';
             }
         }
     }
 
     function updateBestFitVisibility() {
-        if (!bestFitCheckbox) {
+        const bestFitButton = document.querySelector('[data-smart="plot-best-fit"]');
+        if (!bestFitButton) {
             return;
         }
-        const selectedMetrics = Array.from(metricCheckboxes).filter(cb => cb.checked).map(cb => cb.value);
-        const layerMetricsEnabled = layerMetricsCheckbox && layerMetricsCheckbox.checked;
+        const selectedMetrics = getSelectedMetrics();
+        const layerMetricsEnabled = isLayerMetricsEnabled();
         const shouldShow = selectedMetrics.length === 1 && !layerMetricsEnabled;
-        bestFitCheckbox.disabled = !shouldShow;
-        if (bestFitCheckbox.parentElement) {
-            bestFitCheckbox.parentElement.classList.toggle("is-disabled", !shouldShow);
-        }
-        if (!shouldShow) {
-            bestFitCheckbox.checked = false;
+        
+        bestFitButton.disabled = !shouldShow;
+        bestFitButton.style.opacity = shouldShow ? '1' : '0.5';
+        bestFitButton.style.cursor = shouldShow ? 'pointer' : 'not-allowed';
+        
+        if (!shouldShow && bestFitButton.classList.contains('active')) {
+            bestFitButton.classList.remove('active');
         }
     }
 
     async function fetchProgressData() {
         const learnerUuid = learnerSelect.value;
-        const exerciseId = exerciseSelect.value;
-        const selectedMetrics = Array.from(metricCheckboxes).filter(cb => cb.checked).map(cb => cb.value);
+        const exerciseId = getSelectedExercise();
+        const selectedMetrics = getSelectedMetrics();
         const dateRange = dateRangeSelect ? dateRangeSelect.value : "all";
 
         if (!learnerUuid) {
@@ -442,17 +468,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    setDefaultDates();
+    // Initialize
     updateMetricAvailability();
     updateBestFitVisibility();
     fetchProgressData();
-
-    if (applyButton) {
-        applyButton.addEventListener("click", (event) => {
-            event.preventDefault();
-            fetchProgressData();
-        });
-    }
 
     // Learner selection should reload page to update exercise counts
     learnerSelect.addEventListener("change", () => {
@@ -462,24 +481,41 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    dateRangeSelect.addEventListener("change", fetchProgressData);
+    // Date range filter
+    if (dateRangeSelect) {
+        dateRangeSelect.addEventListener("change", fetchProgressData);
+    }
 
-    exerciseSelect.addEventListener("change", () => {
-        updateMetricAvailability();
-        fetchProgressData();
+    // Exercise filter buttons
+    exerciseButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            exerciseButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            updateMetricAvailability();
+            fetchProgressData();
+        });
     });
 
-    metricCheckboxes.forEach((checkbox) => {
-        checkbox.addEventListener("change", (event) => {
-            const layerMetricsEnabled = layerMetricsCheckbox && layerMetricsCheckbox.checked;
+    // Metric filter buttons (multi-select unless Layer Metrics is disabled)
+    metricButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            if (button.disabled) return;
             
-            // If Layer Metrics is OFF and this checkbox was just checked, uncheck all others
-            if (!layerMetricsEnabled && checkbox.checked) {
-                metricCheckboxes.forEach((otherCheckbox) => {
-                    if (otherCheckbox !== checkbox && !otherCheckbox.disabled) {
-                        otherCheckbox.checked = false;
-                    }
-                });
+            const layerMetricsEnabled = isLayerMetricsEnabled();
+            
+            if (!layerMetricsEnabled) {
+                // Single selection mode - only one metric at a time
+                metricButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+            } else {
+                // Multi-selection mode - toggle this button
+                button.classList.toggle('active');
+                
+                // Ensure at least one metric is selected
+                const activeMetrics = document.querySelectorAll('[data-metric].active');
+                if (activeMetrics.length === 0) {
+                    button.classList.add('active');
+                }
             }
             
             updateBestFitVisibility();
@@ -487,18 +523,19 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    if (layerMetricsCheckbox) {
-        layerMetricsCheckbox.addEventListener("change", () => {
-            updateBestFitVisibility();
+    // Smart data view buttons (toggles)
+    smartButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            if (button.disabled) return;
+            
+            button.classList.toggle('active');
+            
+            // If layer metrics was toggled, update best fit visibility
+            if (button.dataset.smart === 'layer-metrics') {
+                updateBestFitVisibility();
+            }
+            
             fetchProgressData();
         });
-    }
-
-    if (bestFitCheckbox) {
-        bestFitCheckbox.addEventListener("change", fetchProgressData);
-    }
-
-    if (smoothingCheckbox) {
-        smoothingCheckbox.addEventListener("change", fetchProgressData);
-    }
+    });
 });
