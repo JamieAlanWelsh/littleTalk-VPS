@@ -1,26 +1,121 @@
-.dashboard-container {
+.dashboard-filters {
     display: flex;
     flex-direction: column;
-    gap: 24px;
-}
-
-.dashboard-card {
-    background: var(--accent-color);
-    padding: 24px;
-    border-radius: 20px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-    width: 75%;
-    margin: 0 auto;
-    box-shadow: var(--box-shadow);
-}
-
-.dashboard-filters {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 16px;
-    margin-bottom: 24px;
+    gap: 12px;
     padding-bottom: 24px;
     border-bottom: 1px solid #e8e8e8;
+}
+
+.filter-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.chart-filter-buttons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    flex: 1;
+}
+
+/* Dashboard Header */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.header-learner-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+}
+
+.header-label {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--font-color);
+    white-space: nowrap;
+    margin: 0;
+}
+
+/* Print Styles */
+@media print {
+    /* Hide screen-only elements */
+    h1 {
+        display: none;
+    }
+    
+    .dashboard-header {
+        display: none;
+    }
+    
+    .dashboard-filters {
+        display: none;
+    }
+    
+    .section-header-actions {
+        display: none !important;
+    }
+    
+    .filter-btn {
+        display: none;
+    }
+    
+    .targets-filter,
+    .section-filter,
+    .screener-filter {
+        display: none;
+    }
+    
+    /* Only print sections that are visible (not hidden by checkboxes) */
+    .dashboard-section[style*="display: none"] {
+        display: none !important;
+    }
+    
+    /* Remove container-box styling for print */
+    .container-box.container--dash {
+        border: none;
+        background: none;
+        box-shadow: none;
+        padding: 0;
+        border-radius: 0;
+    }
+    
+    /* Add print-only header */
+    .container-box.container--dash::before {
+        content: "Chatterdillo | Progress Review";
+        display: block;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--font-color);
+    }
+    
+    .container-box.container--dash.screener-summary-print::before {
+        content: "Chatterdillo | Screener Summary";
+    }
+    
+    /* Fix chart overflow in print */
+    .dashboard-chart-container {
+        max-width: 100%;
+        width: 100% !important;
+        height: 300px;
+        min-height: 300px;
+    }
+    
+    #progress-chart {
+        max-width: 100%;
+    }
+    
+    /* Keep sections together on pages */
+    .dashboard-section {
+        page-break-inside: avoid;
+        page-break-after: auto;
+    }
 }
 
 .filter-group {
@@ -85,16 +180,399 @@
 }
 
 .dashboard-message.error {
-    color: #d63031;
+    color: var(--target-red);
 }
 
 .dashboard-message.success {
-    color: #00b894;
+    color: var(--target-green);
 }
 
 .dashboard-empty {
     padding: 24px;
     background: #ffffff;
     border-radius: 16px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+    box-shadow: var(--box-shadow);
+}
+
+/* Dashboard Sections */
+.dashboard-section {
+    margin-top: 32px;
+    padding: 24px;
+    background: #ffffff;
+    border: 1px solid var(--border-grey);
+    border-radius: 16px;
+    box-shadow: var(--box-shadow);
+}
+
+.section-header {
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.section-header-title {
+    flex: 1;
+}
+
+.section-header-title h3 {
+    margin: 0;
+    color: var(--font-color);
+    font-size: 1.4rem;
+}
+
+.section-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.section-header-actions .label {
+    font-size: 0.9rem;
+    color: #6c6c6c;
+    margin: 0;
+    white-space: nowrap;
+}
+
+.section-header-actions .select {
+    min-width: 150px;
+}
+
+.section-header h3 {
+    margin: 0 0 8px 0;
+    color: var(--font-color);
+    font-size: 1.4rem;
+}
+
+.section-note {
+    margin: 8px 0 0 0;
+    color: #6c6c6c;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.section-note strong {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+/* Targets Section */
+/* Reusable Filter Buttons */
+.targets-filter,
+.section-filter,
+.screener-filter {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.section-filter {
+    margin-bottom: 0;
+    flex: 1;
+    justify-content: right;
+}
+
+.filter-btn {
+    padding: 8px 16px;
+    border: 2px solid #e8e8e8;
+    background: #ffffff;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: var(--font-color);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.filter-btn:hover {
+    border-color: var(--font-color);
+    background: rgba(123, 97, 255, 0.05);
+}
+
+.filter-btn.active {
+    border-color: var(--font-color);
+    background: var(--font-color);
+    color: #ffffff;
+}
+
+.targets-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.target-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    border-left: 4px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.target-item[data-status="achieved"] {
+    border-left-color: var(--target-green);
+}
+
+.target-item[data-status="not_achieved"] {
+    border-left-color: var(--target-red);
+}
+
+.target-item[data-status="ongoing"] {
+    border-left-color: var(--target-orange);
+}
+
+.target-item[data-status="---"] {
+    border-left-color: #b2bec3;
+}
+
+.target-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+}
+
+.target-status-badge {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.target-status-badge.status-achieved {
+    background: var(--target-green);
+    color: #ffffff;
+}
+
+.target-status-badge.status-not_achieved {
+    background: var(--target-red);
+    color: #ffffff;
+}
+
+.target-status-badge.status-ongoing {
+    background: var(--target-orange);
+    color: #2d3436;
+}
+
+.target-status-badge.status--- {
+    background: #b2bec3;
+    color: #ffffff;
+}
+
+.target-text {
+    font-size: 0.95rem;
+    color: var(--font-color);
+    line-height: 1.4;
+}
+
+.target-date {
+    font-size: 0.85rem;
+    color: #6c6c6c;
+    white-space: nowrap;
+}
+
+.empty-state {
+    padding: 32px;
+    text-align: center;
+    color: #6c6c6c;
+    font-size: 0.95rem;
+}
+
+/* Screener Analysis Section */
+.comparison-subtitle {
+    margin: 0 0 20px 0;
+    padding: 12px;
+    background: #f0f3ff;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: var(--font-color);
+}
+
+.skill-category {
+    margin-bottom: 24px;
+    padding: 16px;
+    border-radius: 12px;
+}
+
+.skill-category h4 {
+    margin: 0 0 12px 0;
+    font-size: 1.1rem;
+    color: var(--font-color);
+}
+
+.skills-gained {
+    background: rgba(0, 184, 148, 0.05);
+    border-left: 4px solid var(--target-green);
+}
+
+.skills-fluctuating {
+    background: rgba(255, 107, 107, 0.05);
+    border-left: 4px solid var(--target-red);
+}
+
+.skills-maintained {
+    background: rgba(123, 97, 255, 0.05);
+    border-left: 4px solid var(--target-neutral);
+}
+
+.screener-current {
+    margin-top: 24px;
+    padding: 16px;
+    background: #fff9e6;
+    border-radius: 12px;
+    border-left: 4px solid var(--target-orange);
+}
+
+.screener-current h4 {
+    margin: 0 0 12px 0;
+    font-size: 1.1rem;
+    color: var(--font-color);
+}
+
+.skill-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 8px;
+}
+
+.skill-list li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 0;
+    font-size: 0.95rem;
+    color: var(--font-color);
+}
+
+.skill-indicator {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+}
+
+.skill-indicator--gained {
+    background: var(--target-green);
+    color: #ffffff;
+}
+
+.skill-indicator--fluctuating {
+    background: var(--target-red);
+    color: #ffffff;
+}
+
+.skill-indicator--maintained {
+    background: var(--target-neutral);
+    color: #ffffff;
+}
+
+.skill-indicator--support {
+    background: var(--target-orange);
+    color: #2d3436;
+}
+
+.skill-note {
+    margin: 12px 0 0 0;
+    font-size: 0.85rem;
+    color: #6c6c6c;
+    font-style: italic;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .dashboard-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .header-learner-section {
+        width: 100%;
+    }
+    
+    .header-select {
+        flex: 1;
+    }
+    
+    .section-filter {
+        width: 100%;
+        justify-content: flex-start;
+    }
+    
+    .btn--print {
+        width: 100%;
+    }
+    
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .section-header-actions {
+        width: 100%;
+    }
+    
+    .section-header-actions .select {
+        flex: 1;
+    }
+    
+    .dashboard-filters {
+        gap: 12px;
+    }
+    
+    .filter-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .chart-filter-buttons {
+        width: 100%;
+    }
+    
+    .dashboard-filters {
+        grid-template-columns: 1fr;
+    }
+    
+    .targets-filter,
+    .section-filter,
+    .screener-filter {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .filter-btn {
+        width: 100%;
+    }
+    
+    .target-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .target-date {
+        align-self: flex-end;
+    }
+    
+    .skill-list {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
 }

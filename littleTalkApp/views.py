@@ -154,29 +154,78 @@ def school_signup(request):
 # Screener Hub - Crossroad for starting or viewing screener results
 @login_required
 def screener(request):
-    # Get selected learner
-    selected_learner_id = request.session.get("selected_learner_id")
+    from django.db.models import Count
+    
+    profile = request.user.profile
+    
+    # Get accessible learners based on role
+    if profile.is_parent():
+        # Parents can only access their own learners (not school-owned)
+        learners = profile.parent_profile.learners.filter(deleted=False, school__isnull=True)
+        cohorts = Cohort.objects.none()
+    else:
+        user_school = profile.get_current_school(request)
+        if not user_school:
+            messages.error(request, "No school assigned to your profile.")
+            return redirect("profile")
+        learners = Learner.objects.filter(school=user_school, deleted=False)
+        cohorts = Cohort.objects.filter(school=user_school).distinct()
+    
+    # Filter by cohort if selected
+    selected_cohort_id = request.GET.get("cohort")
+    if selected_cohort_id and not profile.is_parent():
+        try:
+            learners = learners.filter(cohort__id=int(selected_cohort_id))
+        except ValueError:
+            pass
+    
+    # Annotate learners with session counts
+    learners = learners.annotate(
+        session_count=Count('exercise_sessions')
+    ).order_by('name')
+    
+    # Get selected learner from query param or session
+    learner_uuid = request.GET.get("learner")
     selected_learner = None
     has_screener = False
     last_screener_date = None
     
-    if selected_learner_id:
+    if learner_uuid:
         try:
-            selected_learner = Learner.objects.get(id=int(selected_learner_id))
-            # Check if learner has assessment answers (screener submitted)
-            has_screener = selected_learner.answers.exists()
-            # Get the date of the last screener
-            if has_screener:
-                last_answer = selected_learner.answers.order_by('-timestamp').first()
-                last_screener_date = last_answer.timestamp if last_answer else None
-        except (ValueError, Learner.DoesNotExist):
-            selected_learner = None
+            selected_learner = learners.get(learner_uuid=learner_uuid)
+            # Update session with selected learner
+            request.session["selected_learner_id"] = selected_learner.id
+        except Learner.DoesNotExist:
+            messages.error(request, "Learner not found or access denied.")
+    
+    # Fall back to session or first learner
+    if not selected_learner:
+        selected_learner_id = request.session.get("selected_learner_id")
+        if selected_learner_id:
+            try:
+                selected_learner = learners.get(id=selected_learner_id)
+            except Learner.DoesNotExist:
+                pass
+    
+    if not selected_learner and learners.exists():
+        selected_learner = learners.first()
+        request.session["selected_learner_id"] = selected_learner.id
+    
+    # Get screener info for selected learner
+    if selected_learner:
+        has_screener = selected_learner.answers.exists()
+        if has_screener:
+            last_answer = selected_learner.answers.order_by('-timestamp').first()
+            last_screener_date = last_answer.timestamp if last_answer else None
     
     return render(
         request,
         "assessment/screener.html",
         {
+            "learners": learners,
             "selected_learner": selected_learner,
+            "cohorts": cohorts,
+            "selected_cohort": int(selected_cohort_id) if selected_cohort_id and selected_cohort_id.isdigit() else None,
             "has_screener": has_screener,
             "last_screener_date": last_screener_date,
         },
@@ -709,7 +758,11 @@ def generate_summary(request, learner_uuid):
 @login_required
 def game_description(request, game_name):
     game = GAME_DESCRIPTIONS.get(game_name, None)
-    return render(request, "game_description.html", {"game": game})
+    return render(request, "game_description.html", {
+        "game": game,
+        "game_descriptions": GAME_DESCRIPTIONS,
+        "current_game_name": game_name,
+    })
 
 
 class CustomLoginView(LoginView):
@@ -846,11 +899,17 @@ def profile(request):
         selected_learner = learners.first()
         request.session["selected_learner_id"] = selected_learner.id
 
+    # Sort learners: selected learner first, then others alphabetically
+    learners_list = list(learners)
+    if selected_learner and selected_learner in learners_list:
+        learners_list.remove(selected_learner)
+        learners_list.insert(0, selected_learner)
+
     return render(
         request,
         "profile/profile.html",
         {
-            "learners": learners,
+            "learners": learners_list,
             "selected_learner": selected_learner,
             "cohorts": cohorts,
             "selected_cohort": selected_cohort_id,
@@ -1511,8 +1570,16 @@ def accept_invite(request, token):
             except Exception:
                 pass
 
+            # Mark this invite as used
             invite.used = True
             invite.save()
+            
+            # Mark all other pending invites for this email as used to prevent duplicates
+            StaffInvite.objects.filter(
+                email__iexact=invite.email,
+                used=False,
+                withdrawn=False
+            ).exclude(id=invite.id).update(used=True)
 
             login(request, user)
             return redirect("profile")
@@ -2055,21 +2122,33 @@ def manage_subscription(request):
 def learner_dashboard(request):
     """
     Progress dashboard showing charts for individual learner analytics.
-    Accessible by parents (own learners) and staff (school learners).
+    Accessible by staff (school learners) only. Parents are redirected to profile.
     """
     from django.db.models import Count
     
     profile = request.user.profile
     
-    # Get accessible learners based on role
+    # Redirect parents to profile
     if profile.is_parent():
-        accessible_learners = profile.parent_profile.learners.filter(deleted=False)
-    else:
-        user_school = profile.get_current_school(request)
-        if not user_school:
-            messages.error(request, "No school assigned to your profile.")
-            return redirect("profile")
-        accessible_learners = Learner.objects.filter(school=user_school, deleted=False)
+        messages.info(request, "Dashboard access is not available for parent accounts.")
+        return redirect("profile")
+    
+    # Get accessible learners based on role
+    user_school = profile.get_current_school(request)
+    if not user_school:
+        messages.error(request, "No school assigned to your profile.")
+        return redirect("profile")
+    
+    accessible_learners = Learner.objects.filter(school=user_school, deleted=False)
+    cohorts = Cohort.objects.filter(school=user_school).distinct()
+    
+    # Filter by cohort if selected
+    selected_cohort_id = request.GET.get("cohort")
+    if selected_cohort_id and not profile.is_parent():
+        try:
+            accessible_learners = accessible_learners.filter(cohort__id=int(selected_cohort_id))
+        except ValueError:
+            pass
     
     # Annotate learners with session counts
     accessible_learners = accessible_learners.annotate(
@@ -2122,11 +2201,81 @@ def learner_dashboard(request):
         {"id": "Story Train", "name": "Story Train", "count": exercise_counts.get("Story Train", 0)},
     ]
     
+    # Get targets data for selected learner
+    targets_data = None
+    if selected_learner:
+        from littleTalkApp.models import Target
+        targets = Target.objects.filter(learner=selected_learner).order_by('-created_at')
+        
+        # Calculate target achievement percentage
+        total_targets = targets.count()
+        achieved_targets = targets.filter(status=Target.Status.ACHIEVED).count()
+        targets_percentage = round((achieved_targets / total_targets * 100)) if total_targets > 0 else 0
+        
+        targets_data = {
+            'all': list(targets),
+            'achieved': list(targets.filter(status=Target.Status.ACHIEVED)),
+            'not_achieved': list(targets.filter(status=Target.Status.NOT_ACHIEVED)),
+            'ongoing': list(targets.filter(status=Target.Status.ONGOING)),
+            'not_set': list(targets.filter(status=Target.Status.NOT_SET)),
+            'total_count': total_targets,
+            'achieved_count': achieved_targets,
+            'percentage': targets_percentage,
+        }
+    
+    # Get screener comparison data for selected learner
+    screener_data = None
+    if selected_learner:
+        comparison_data = get_screener_comparison_data(selected_learner)
+        
+        # Get current screener skills
+        latest_session = selected_learner.answers.order_by('-timestamp').values('session_id').first()
+        current_strong_skills = []
+        current_support_skills = []
+        
+        if latest_session:
+            from collections import defaultdict
+            answers = selected_learner.answers.filter(session_id=latest_session['session_id'])
+            skill_answers = defaultdict(list)
+            for answer in answers:
+                skill_answers[answer.skill].append(answer.answer)
+            
+            for skill, responses in skill_answers.items():
+                if "No" in responses:
+                    current_support_skills.append(skill)
+                else:
+                    current_strong_skills.append(skill)
+        
+        # Calculate skills gained count
+        skills_gained_count = 0
+        first_screener_date = None
+        
+        if comparison_data and comparison_data['has_previous']:
+            skills_gained_count = len(comparison_data['skills_gained'])
+            
+            # Get first screener date
+            first_session = selected_learner.answers.order_by('timestamp').values('assessment_date').first()
+            if first_session:
+                first_screener_date = first_session['assessment_date']
+        
+        screener_data = {
+            'comparison': comparison_data,
+            'current_strong_skills': current_strong_skills,
+            'current_support_skills': current_support_skills,
+            'skills_gained_count': skills_gained_count,
+            'first_screener_date': first_screener_date,
+            'has_screener_data': latest_session is not None,
+        }
+    
     context = {
         "learners": accessible_learners,
         "selected_learner": selected_learner,
+        "cohorts": cohorts,
+        "selected_cohort": int(selected_cohort_id) if selected_cohort_id and selected_cohort_id.isdigit() else None,
         "exercise_choices": exercise_choices,
         "total_sessions": exercise_counts.get('all', 0),
+        "targets_data": targets_data,
+        "screener_data": screener_data,
     }
     
     return render(request, "dashboard/learner_dashboard.html", context)

@@ -1,5 +1,32 @@
 /* ASSESSMENT */
 
+/* Screener Header */
+.screener-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: var(--border-radius-light);
+    box-shadow: var(--box-shadow);
+    margin-bottom: 30px;
+}
+
+/* .screener-header .header-learner-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.screener-header .header-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--font-color);
+    white-space: nowrap;
+    margin: 0;
+} */
+
 #question-text {
     min-height: 80px;
     display: flex;
@@ -103,54 +130,6 @@ progress::-webkit-progress-value {
 
 /* ASSESSMENT SUMMARY */
 
-.summary-intro {
-    text-align: left;
-    font-weight: 500;
-    color: var(--font-color);
-    padding-bottom: 20px;
-}
-
-.summary-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.212);
-}
-
-.summary-header .summary-intro {
-    margin-bottom: 0;
-    padding-bottom: 0;
-    border-bottom: none;
-}
-
-.skill-list,
-.summary-list {
-    list-style: none;
-    padding-left: 0;
-    margin-bottom: 1rem;
-}
-
-.skill-list li,
-.summary-list li {
-    margin-bottom: 0.5rem;
-    line-height: 1.5;
-}
-
-.summary-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.reassurance-text {
-    color: #666; /* Soft grey */
-    font-size: 0.95rem;
-    margin-top: 2.0rem;
-    line-height: 1.5;
-}
-
 .summary-button-row {
     display: flex;
     gap: 20px;
@@ -165,18 +144,13 @@ progress::-webkit-progress-value {
 
 /* Responsive Design */
 @media (max-width: 600px) {
-    #assessment-form-container {
-        width: 90%;
-    }
-
     #question-text {
         font-size: 18px;
         padding: 0;
         /* min-height: auto; */
     }
 
-    .assessment-intro,
-    .summary-intro {
+    .assessment-intro {
         /* font-size: 16px; */
         padding: 10px 0;
     }
@@ -195,93 +169,11 @@ progress::-webkit-progress-value {
 
 /* Comparison Sections - Re-screener Progress Tracking */
 
-.comparison-section {
-    margin: 25px 0;
-    padding: 15px;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-}
-
-.comparison-section p {
-    margin: 8px 0;
-}
-
 .comparison-note {
     font-size: 0.9rem;
     color: #666;
     margin-top: 10px;
     font-style: italic;
-}
-
-.skill-list--gained {
-    list-style: none;
-}
-
-.skill-list--gained li {
-    padding-left: 20px;
-    margin-bottom: 8px;
-}
-
-.skill-list--lost {
-    list-style: none;
-}
-
-.skill-list--lost li {
-    padding-left: 20px;
-    margin-bottom: 8px;
-}
-
-.skill-list--maintained {
-    list-style: none;
-    padding-left: 0;
-}
-
-.skill-list--maintained li {
-    padding-left: 0;
-    margin-bottom: 8px;
-    color: #666;
-}
-
-.skill-indicator {
-    display: inline-block;
-    width: 20px;
-    text-align: center;
-    margin-right: 8px;
-    font-weight: bold;
-}
-
-.skill-indicator--gained {
-    color: #27ae60; /* Green for gains */
-}
-
-.skill-indicator--lost {
-    color: #e67e22; /* Orange for regression/fluctuation */
-}
-
-.skills-gained {
-    border-left: 4px solid var(--target-green);
-    background-color: #f0f8f4;
-}
-
-.skills-lost {
-    border-left: 4px solid var(--target-orange);
-    background-color: #fef8f3;
-}
-
-.skills-maintained {
-    border-left: 4px solid var(--target-neutral);
-    background-color: #f0f6fb;
-}
-
-.recommendation-change {
-    margin-top: 20px;
-    padding: 15px;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-}
-
-.recommendation-change p {
-    margin: 0;
 }
 
 /* Print Styles */
@@ -302,32 +194,8 @@ progress::-webkit-progress-value {
         position: relative;
     }
 
-    .summary-wrapper {
-        background: white !important;
-        box-shadow: none !important;
-        margin-top: 100px;
-    }
-
-    .printable-section {
-        page-break-inside: avoid;
-        border: 1px solid #666 !important;
-        box-shadow: none !important;
-        margin-bottom: 20px !important;
-    }
-
     /* Ensure good spacing for print */
     .skill-list li {
         page-break-inside: avoid;
-    }
-
-    /* Add print header */
-    .summary-wrapper::before {
-        content: "Chatterdillo Screener Summary";
-        display: block;
-        font-size: 20px;
-        font-weight: bold;
-        margin-bottom: 20px;
-        padding-bottom: 10px;
-        border-bottom: 2px solid #333;
     }
 }

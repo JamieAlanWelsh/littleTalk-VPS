@@ -4,7 +4,7 @@
 {% block title %}Chatterdillo | Profile{% endblock %}
 
 {% block content %}
-<h1>Learner Profile</h1>
+<!-- <h1>Learner Profile</h1> -->
 <div class="profile-container">
     <!-- Left Column -->
     <div class="left-column">
@@ -20,7 +20,7 @@
                 <div class="profile-card__header">
                     <h3 class="profile-card__title">Cohort:</h3>
                     <form method="get" action="" class="section-filter">
-                        <select name="cohort" id="cohort" class="section-filter__select" onchange="this.form.submit()">
+                        <select name="cohort" id="cohort" class="select section-filter__select" onchange="this.form.submit()">
                             <option value="">All Cohorts</option>
                             {% for cohort in cohorts %}
                                 <option value="{{ cohort.id }}" {% if cohort.id == selected_cohort %}selected{% endif %}>
@@ -29,6 +29,10 @@
                             {% endfor %}
                         </select>
                     </form>
+                </div>
+            {% else %}
+                <div class="profile-card__header">
+                    <h3 class="profile-card__title">Select Learner</h3>
                 </div>
             {% endif %}
             {% if learners %}
@@ -59,26 +63,27 @@
                     <h3 class="profile-card__title">Learner Details:</h3>
                 </div>
                 <p><strong>Name:</strong> {{ selected_learner.name }}</p>
-            
                 {% if selected_learner.cohort %}
                     <p><strong>Cohort:</strong> {{ selected_learner.cohort }}</p>
                 {% endif %}
+                <p><strong>Experience:</strong> {{ selected_learner.exp }}</p>
                 {% if request.user.profile.role == 'parent' and selected_learner.school_id %}
-                    <div class="recommendation-info mb-20">
-                        <span class="info-icon">i</span>
-                        <p>
-                            Parent-Access - This learner is being managed by {{ selected_learner.school.name }}
-                        </p>
+                    <div class="recommendation-info no-print" style="margin-top: 16px; margin-bottom: 20px; padding: 12px; background: #f0f3ff; border-radius: 8px; display: flex; gap: 8px; align-items: flex-start;">
+                        <span style="font-weight: 600; color: #0066cc;">i</span>
+                        <div>
+                            <p style="margin: 0; font-size: 0.95rem;">This learner is being managed by {{ selected_learner.school.name }}</p>
+                        </div>
                     </div>
                 {% endif %}
             </div>
 
-            <!-- Targets Section -->
+            <!-- Targets Section - SCHOOL STAFF ONLY -->
+            {% if request.user.profile.role != 'parent' %}
             <div class="profile-card profile-card--targets profile-card--padded">
                 <div class="profile-card__header">
                     <h3 class="profile-card__title">Targets:</h3>
                     <div class="section-filter">
-                        <select id="targets-filter" class="section-filter__select">
+                        <select id="targets-filter" class="select section-filter__select">
                             <option value="all" selected>All Targets</option>
                             <option value="achieved">Achieved</option>
                             <option value="ongoing">Ongoing</option>
@@ -122,17 +127,19 @@
                     <button class="button-secondary" id="edit-targets-btn">Edit Targets</button>
                 </div>
             </div>
+            {% endif %}
+
             <!-- Edit Learner Button SCHOOL AND STANDALONE ONLY -->
             {% if request.user.profile.role != 'parent' or not selected_learner.school_id %}
                 <div class="edit-learner-btn">
                     <a href="{% url 'edit_learner' selected_learner.learner_uuid %}" class="button">📝 Edit Learner</a>
                 </div>
-            {% endif %}
 
-            <!-- Screener Button -->
-            <div class="edit-learner-btn">
-                <a href="{% url 'screener' %}" class="button">📋 Screener</a>
-            </div>
+                <!-- Screener Button -->
+                <div class="edit-learner-btn">
+                    <a href="{% url 'screener' %}" class="button">📋 Screener</a>
+                </div>
+            {% endif %}
 
             <!-- Generate Access Code Button SCHOOL ONLY -->
             {% if request.user.profile.role != 'parent' %}
@@ -141,24 +148,28 @@
                 </div>
             {% endif %}
         {% endif %}
-        <!-- Susbcription details - PARENT ONLY -->
+
+        <!-- Subscription Details - PARENT ONLY -->
+        {% if request.user.profile.role == 'parent' %}
         <div class="profile-card profile-card--details">
-            {% if request.user.profile.role == 'parent' %}
-                <div class="edit-learner-btn">
-                    <h3>Subscription</h3>
-                    <p>
-                        {% if is_subscribed %}
-                            Active Parent Plan - 3 Learners
-                        {% elif on_trial %}
-                            Free Trial - {{ trial_days_left }} days left
-                        {% else %}
-                            Inactive
-                        {% endif %}
-                    </p>
-                    <a href="{% url 'manage_subscription' %}" class="btn btn--white btn--small mb-20">Manage Subscription</a>
-                </div>
-            {% endif %}
-        </div> 
+            <div class="profile-card__header">
+                <h3 class="profile-card__title">Subscription</h3>
+            </div>
+            <p>
+                {% if is_subscribed %}
+                    Active Parent Plan - 3 Learners
+                {% elif on_trial %}
+                    Free Trial - {{ trial_days_left }} days left
+                {% else %}
+                    Inactive
+                {% endif %}
+            </p>
+        </div>
+
+        <div class="edit-learner-btn">
+            <a href="{% url 'manage_subscription' %}" class="button">⚙ Manage Subscription</a>
+        </div>
+        {% endif %} 
     </div>
 </div>
 

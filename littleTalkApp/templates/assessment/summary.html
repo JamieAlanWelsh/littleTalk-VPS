@@ -3,43 +3,58 @@
 
 {% block title %}Chatterdillo | Screener{% endblock %}
 
+{% block head_extra %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'styles/pages/dashboard.css' %}">
+{% endblock %}
+
 {% block content %}
 
-{% comment %} Simplified Header for Assessment Page {% endcomment %}
-<div class="summary-wrapper">
-    <h1>Screener Summary</h1>
+<h1 class="no-print">Screener Summary</h1>
+
+<div class="container-box container--dash screener-summary-print">
     <section>
         {% if readiness_status == "not_ready" %}
-            <div class="container-box container--white container--edgy marginsupperlower-30 no-print">
-                <p class="summary-intro"><strong>Chatterdillo may not be suitable for {{ learner.name }} at this time.</strong></p>
-                <p>It seems like {{ learner.name }} may be struggling with attention and listening skills. We can still support you but our exercises will be most effective once they have developed this skill.</a>.</p>
+            <div class="dashboard-section no-print" style="margin-top: 0 !important;">
+                <div class="section-header">
+                    <div class="section-header-title">
+                        <h3>Chatterdillo may not be suitable</h3>
+                    </div>
+                    <button onclick="printScreenerSummary()" class="btn btn--white btn--small btn--border no-print">🖨 Print Results</button>
+                </div>
+                <p>It seems like {{ learner.name }} may be struggling with attention and listening skills. We can still support you but our exercises will be most effective once they have developed this skill.</p>
             </div>
         {% elif readiness_status == "ready" %}
-            <div class="container-box container--white container--edgy marginsupperlower-30 no-print">
-                <p class="summary-intro"><strong>Great news! Chatterdillo is likely a good fit for {{ learner.name }}!</strong></p>
+            <div class="dashboard-section no-print" style="margin-top: 0 !important;">
+                <div class="section-header">
+                    <div class="section-header-title">
+                        <h3>Great news! 🎉</h3>
+                    </div>
+                    <button onclick="printScreenerSummary()" class="btn btn--white btn--small btn--border no-print">🖨 Print Results</button>
+                </div>
                 <p>{{ learner.name }} appears to have strong attention and listening skills. Our exercises are well-equipped to support their language development.</p>
             </div>
         {% endif %}
 
-        <div class="summary-button-row no-print">
-            <a href="{% url 'profile' %}" class="btn btn--white btn--full btn--small">Back to Profile</a>
+        <div class="summary-button-row no-print" style="display: flex; gap: 15px; margin-bottom: 24px;">
+            <a href="{% url 'profile' %}" class="btn btn--white btn--full btn--small">Profile</a>
+            <a href="{% url 'practise' %}" class="btn btn--white btn--full btn--small">Practise</a>
             <a href="{% url 'start_assessment' %}" class="btn btn--white btn--full btn--small">Submit Re-Screener</a>
         </div>
 
         {% if has_previous %}
-        <div class="container-box container--white container--edgy marginsupperlower-30 printable-section">
-            <div class="summary-header">
-                <p class="summary-intro">
-                    <strong>Progress Since Last Screener</strong>
-                </p>
-                <button onclick="printScreenerSummary()" class="btn btn--white btn--small btn--border no-print">🖨 Print Progress</button>
+        <div class="dashboard-section">
+            <div class="section-header">
+                <div class="section-header-title">
+                    <h3>Progress Since Last Screener</h3>
+                    <p class="section-note">Last screener completed: <strong>{{ previous_session_date|date:"M d, Y" }}</strong></p>
+                </div>
             </div>
-            <p class="comparison-note">Last screener completed: <strong>{{ previous_session_date|date:"M d, Y" }}</strong></p>
 
             {% if skills_gained %}
-            <div class="comparison-section skills-gained">
-                <p><strong>✓ Skills Gained:</strong></p>
-                <ul class="skill-list skill-list--gained">
+            <div class="skill-category skills-gained" data-category="skills_gained">
+                <h4>✓ Skills Gained</h4>
+                <ul class="skill-list">
                     {% for skill in skills_gained %}
                         <li><span class="skill-indicator skill-indicator--gained">✓</span> {{ skill }}</li>
                     {% endfor %}
@@ -49,11 +64,11 @@
             {% endif %}
 
             {% if skills_lost %}
-            <div class="comparison-section skills-lost">
-                <p><strong>⚠ Areas Showing Fluctuation:</strong></p>
-                <ul class="skill-list skill-list--lost">
+            <div class="skill-category skills-fluctuating" data-category="skills_fluctuating">
+                <h4>⚠ Areas Showing Fluctuation</h4>
+                <ul class="skill-list">
                     {% for skill in skills_lost %}
-                        <li><span class="skill-indicator skill-indicator--lost">⚠</span> {{ skill }}</li>
+                        <li><span class="skill-indicator skill-indicator--fluctuating">⚠</span> {{ skill }}</li>
                     {% endfor %}
                 </ul>
                 <p class="comparison-note">Skills can naturally fluctuate as children develop. These areas may benefit from continued practice.</p>
@@ -61,56 +76,60 @@
             {% endif %}
 
             {% if skills_maintained_strong %}
-            <div class="comparison-section skills-maintained">
-                <p><strong>Maintained Strengths:</strong></p>
-                <ul class="skill-list skill-list--maintained">
+            <div class="skill-category skills-maintained" data-category="skills_maintained">
+                <h4>✓ Maintained Strengths</h4>
+                <ul class="skill-list">
                     {% for skill in skills_maintained_strong %}
-                        <li>{{ skill }}</li>
+                        <li><span class="skill-indicator skill-indicator--maintained">✓</span> {{ skill }}</li>
                     {% endfor %}
                 </ul>
             </div>
             {% endif %}
 
             {% if recommendation_change.direction %}
-            <div class="recommendation-info no-print">
-                <span class="info-icon">i</span>
+            <div class="recommendation-info no-print" style="margin-top: 16px; padding: 12px; background: #f0f3ff; border-radius: 8px; display: flex; gap: 8px; align-items: flex-start;">
+                <span style="font-weight: 600; color: #0066cc;">i</span>
+                <div>
                 {% if recommendation_change.direction == "improved" %}
-                    <p>{{ learner.name }} has improved! Recommendation level has adjusted - consider more advanced exercises.</p>
+                    <p style="margin: 0; font-size: 0.95rem;">{{ learner.name }} has improved! Recommendation level has adjusted - consider more advanced exercises.</p>
                 {% elif recommendation_change.direction == "declined" %}
-                    <p>Recommendation level has adjusted. Focus on foundational skills before advancing.</p>
+                    <p style="margin: 0; font-size: 0.95rem;">Recommendation level has adjusted. Focus on foundational skills before advancing.</p>
                 {% else %}
-                    <p>Results are consistent with previous screener.</p>
+                    <p style="margin: 0; font-size: 0.95rem;">Results are consistent with previous screener.</p>
                 {% endif %}
+                </div>
             </div>
             {% endif %}
         </div>
         {% endif %}
 
-        <div class="container-box container--white container--edgy marginsupperlower-30 printable-section">
-
-            <div class="summary-header">
-                <p class="summary-intro">
-                    <strong>Current Screener Results</strong>
-                </p>
-                <button onclick="printScreenerSummary()" class="btn btn--white btn--small btn--border no-print">🖨 Print Summary</button>
+        <div class="dashboard-section">
+            <div class="section-header">
+                <div class="section-header-title">
+                    <h3>Current Screener Results</h3>
+                </div>
             </div>
 
             {% if strong_skills %}
-                <p><strong>{{ learner.name }} has strong skills in:</strong></p>
-                <ul class="skill-list">
-                    {% for skill in strong_skills %}
-                        <li>{{ skill }}</li>
-                    {% endfor %}
-                </ul>
+                <div class="skill-category skills-gained">
+                    <h4>✓ Strong Areas</h4>
+                    <ul class="skill-list">
+                        {% for skill in strong_skills %}
+                            <li><span class="skill-indicator skill-indicator--gained">✓</span> {{ skill }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
             {% endif %}
 
             {% if needs_support_skills %}
-                <p><strong>{{ learner.name }} may need support with:</strong></p>
-                <ul class="skill-list">
-                    {% for skill in needs_support_skills %}
-                        <li>{{ skill }}</li>
-                    {% endfor %}
-                </ul>
+                <div class="screener-current">
+                    <h4>📌 Areas for Support</h4>
+                    <ul class="skill-list">
+                        {% for skill in needs_support_skills %}
+                            <li><span class="skill-indicator" style="background: var(--target-orange); color: #2d3436;"></span> {{ skill }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
             {% endif %}
         </div>
 

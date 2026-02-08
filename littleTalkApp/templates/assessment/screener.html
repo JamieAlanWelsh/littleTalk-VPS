@@ -7,33 +7,62 @@
 <div class="screener-container">
     <h1>Screener</h1>
     
+    {% if learners %}
+        <!-- Learner Selector -->
+        <div class="screener-header" style="margin-bottom: 0;">
+            {% if request.user.profile.role != 'parent' and cohorts %}
+            <div class="header-learner-section">
+                <label class="header-label" for="cohort-select">Cohort:</label>
+                <select id="cohort-select" class="select" style="margin-bottom: 0;">
+                    <option value="">All Cohorts</option>
+                    {% for cohort in cohorts %}
+                        <option value="{{ cohort.id }}" {% if cohort.id == selected_cohort %}selected{% endif %}>
+                            {{ cohort.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            {% endif %}
+            <div class="header-learner-section">
+                <label class="header-label" for="learner-select">Learner:</label>
+                <select id="learner-select" class="select" style="margin-bottom: 0;">
+                    {% for learner in learners %}
+                        <option value="{{ learner.learner_uuid }}" {% if selected_learner and learner.id == selected_learner.id %}selected{% endif %}>
+                            {{ learner.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    {% endif %}
+    
     {% if selected_learner %}
         <!-- <strong><p>Selected Learner: </strong>{{ selected_learner.name }}</p>
         {% if last_screener_date %}
             <p><strong>Last Screener:</strong> {{ last_screener_date|date:"M d, Y" }}</p>
         {% endif %} -->
         
-        <div class="screener-card-row">
+        <div class="card-row">
             {% if not has_screener %}
                 <!-- Submit New Screener -->
-                <a href="{% url 'start_assessment' %}" class="screener-card">
-                    <div class="screener-card-inner">
+                <a href="{% url 'start_assessment' %}" class="setup-card">
+                    <div class="setup-card-inner">
                         <h2>Submit New Screener</h2>
                         <p>A short questionnaire to profile needs and get exercise recommendations</p>
                     </div>
                 </a>
             {% else %}
                 <!-- Submit Re-Screener -->
-                <a href="{% url 'start_assessment' %}" class="screener-card">
-                    <div class="screener-card-inner">
+                <a href="{% url 'start_assessment' %}" class="setup-card">
+                    <div class="setup-card-inner">
                         <h2>Submit Re-Screener</h2>
                         <p>Re-take questionnaire to show progress and update exercise recommendations</p>
                     </div>
                 </a>
                 
                 <!-- View Screener Results -->
-                <a href="{% url 'assessment_summary' %}" class="screener-card">
-                    <div class="screener-card-inner">
+                <a href="{% url 'assessment_summary' %}" class="setup-card">
+                    <div class="setup-card-inner">
                         <h2>View Screener Results</h2>
                         <p>Review or print previous screener results</p>
                     </div>
@@ -44,8 +73,47 @@
         <div class="screener-back-button">
             <a href="{% url 'profile' %}" class="btn btn--white btn--small">Back to Profile</a>
         </div>
-    {% else %}
-        <p class="error-message">No learner selected. Please select a learner from the profile page.</p>
     {% endif %}
 </div>
+
+<script>
+    // Cohort selection should reload page to filter learners
+    const cohortSelect = document.getElementById("cohort-select");
+    if (cohortSelect) {
+        cohortSelect.addEventListener("change", () => {
+            const selectedCohortId = cohortSelect.value;
+            const currentUrl = new URL(window.location.href);
+            
+            if (selectedCohortId) {
+                currentUrl.searchParams.set('cohort', selectedCohortId);
+            } else {
+                currentUrl.searchParams.delete('cohort');
+            }
+            
+            // Remove learner parameter when changing cohort
+            currentUrl.searchParams.delete('learner');
+            window.location.href = currentUrl.toString();
+        });
+    }
+
+    const learnerSelect = document.getElementById("learner-select");
+    if (learnerSelect) {
+        learnerSelect.addEventListener("change", () => {
+            const selectedUuid = learnerSelect.value;
+            const currentUrl = new URL(window.location.href);
+            
+            if (selectedUuid) {
+                currentUrl.searchParams.set('learner', selectedUuid);
+            }
+            
+            // Preserve cohort filter when changing learner
+            const cohortSelect = document.getElementById("cohort-select");
+            if (cohortSelect && cohortSelect.value) {
+                currentUrl.searchParams.set('cohort', cohortSelect.value);
+            }
+            
+            window.location.href = currentUrl.toString();
+        });
+    }
+</script>
 {% endblock %}

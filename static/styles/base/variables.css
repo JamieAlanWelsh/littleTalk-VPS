@@ -5,6 +5,7 @@
     --font-color: #200D2A;
     --accent-color: #F2F5F9;
     --accent-color-dark: #9DC1E9;
+    --border-grey: #ccc;
     --sidebar-color: #FFE477;
     --yellow-button-color: #FFE477;
     --yellow-button-hover: #ffcc00;
@@ -17,7 +18,7 @@
     --font-outfit: 'Outfit', sans-serif;
     --line-height: 1.5;
     --button-red: #ff4d4d;
-    --target-green: #4caf50;
+    --target-green: #00b894;
     --target-red: #f44336;
     --target-orange: #ff9800;
     --target-neutral: #3498db;

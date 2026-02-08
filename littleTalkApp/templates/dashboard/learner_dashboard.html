@@ -12,75 +12,83 @@
 {% block content %}
 <h1>Progress Dashboard</h1>
 
-<div class="dashboard-container">
-    {% if learners %}
-        <div class="dashboard-card">
-            <div class="dashboard-filters">
-                <div class="filter-group">
-                    <label class="label" for="learner-select">Learner</label>
-                    <select id="learner-select" class="select">
-                        {% for learner in learners %}
-                            <option value="{{ learner.learner_uuid }}" {% if selected_learner and learner.id == selected_learner.id %}selected{% endif %}>
-                                {{ learner.name }} ({{ learner.session_count }})
-                            </option>
-                        {% endfor %}
-                    </select>
-                </div>
 
-                <div class="filter-group">
-                    <label class="label" for="exercise-select">Exercise</label>
-                    <select id="exercise-select" class="select">
-                        <option value="all">All Exercises ({{ total_sessions }})</option>
-                        {% for exercise in exercise_choices %}
-                            <option value="{{ exercise.id }}">{{ exercise.name }} ({{ exercise.count }})</option>
-                        {% endfor %}
-                    </select>
-                </div>
+{% if learners %}
+    <div class="container-box container--dash">
+        <!-- Dashboard Header -->
+        <div class="dashboard-header">
+            {% if request.user.profile.role != 'parent' and cohorts %}
+            <div class="header-learner-section">
+                <label class="header-label" for="cohort-select">Cohort:</label>
+                <select id="cohort-select" class="select" style="margin-bottom: 0;">
+                    <option value="">All Cohorts</option>
+                    {% for cohort in cohorts %}
+                        <option value="{{ cohort.id }}" {% if cohort.id == selected_cohort %}selected{% endif %}>
+                            {{ cohort.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            {% endif %}
+            <div class="header-learner-section">
+                <label class="header-label" for="learner-select">Learner:</label>
+                <select id="learner-select" class="select" style="margin-bottom: 0;">
+                    {% for learner in learners %}
+                        <option value="{{ learner.learner_uuid }}" {% if selected_learner and learner.id == selected_learner.id %}selected{% endif %}>
+                            {{ learner.name }} ({{ learner.session_count }})
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="section-filter">
+                <button class="filter-btn active" data-section-filter="all">All</button>
+                <button class="filter-btn" data-section-filter="chart">Exercises</button>
+                <button class="filter-btn" data-section-filter="targets">Targets</button>
+                <button class="filter-btn" data-section-filter="screener">Screener</button>
+            </div>
+            <button id="print-dashboard" class="btn btn--white btn--small btn--border no-print" title="Print this dashboard">🖨 Print</button>
+        </div>
 
-                <div class="filter-group">
-                    <label class="label">Metrics</label>
-                    <div class="metric-checkboxes">
-                        <div class="checkbox-wrapper">
-                            <input type="checkbox" id="metric-exercises" name="metric" value="exercises" checked>
-                            <label for="metric-exercises">Sessions Completed</label>
-                        </div>
-                        <div class="checkbox-wrapper">
-                            <input type="checkbox" id="metric-accuracy" name="metric" value="accuracy">
-                            <label for="metric-accuracy">Accuracy (%)</label>
-                        </div>
-                        <div class="checkbox-wrapper">
-                            <input type="checkbox" id="metric-difficulty" name="metric" value="difficulty">
-                            <label for="metric-difficulty">Difficulty Level</label>
-                        </div>
-                    </div>
+        <!-- Chart Section -->
+        <div class="dashboard-section" data-section="chart">
+            <div class="section-header">
+                <div class="section-header-title">
+                    <h3>Exercise Sessions Chart</h3>
                 </div>
-
-                <div class="filter-group">
-                    <label class="label">Smart Data View</label>
-                    <div class="metric-checkboxes">
-                        <div class="checkbox-wrapper">
-                            <input type="checkbox" id="layer-metrics" name="layer-metrics" title="Enable selecting multiple metrics to overlay on the same chart">
-                            <label for="layer-metrics" title="Enable selecting multiple metrics to overlay on the same chart">Layer Metrics</label>
-                        </div>
-                        <div class="checkbox-wrapper">
-                            <input type="checkbox" id="plot-best-fit" name="plot-best-fit" title="Visualise overall direction and trend">
-                            <label for="plot-best-fit" title="Visualise overall direction and trend">Show Line of Best Fit</label>
-                        </div>
-                        <div class="checkbox-wrapper">
-                            <input type="checkbox" id="smooth-data" name="smooth-data" title="Reduce noise and outliers by applying a moving average algorithm">
-                            <label for="smooth-data" title="Reduce noise and outliers by applying a moving average algorithm">Data Smoothing</label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="filter-group">
-                    <label class="label" for="date-range">Date Range</label>
-                    <select id="date-range" class="select">
+                <div class="section-header-actions">
+                    <label class="label" for="date-range">Date Range:</label>
+                    <select id="date-range" class="select" style="margin-bottom: 0;">
                         <option value="all" selected>Full History</option>
                         <option value="7">Last 7 Days</option>
                         <option value="30">Last 30 Days</option>
                         <option value="90">Last 90 Days</option>
                     </select>
+                </div>
+            </div>
+            <div class="dashboard-filters">
+                <div class="filter-row">
+                    <div class="chart-filter-buttons">
+                        <button class="filter-btn active" data-exercise="all">All ({{ total_sessions }})</button>
+                        {% for exercise in exercise_choices %}
+                            <button class="filter-btn" data-exercise="{{ exercise.id }}">{{ exercise.name }} ({{ exercise.count }})</button>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="filter-row">
+                    <div class="chart-filter-buttons">
+                        <button class="filter-btn active" data-metric="exercises">Sessions Completed</button>
+                        <button class="filter-btn" data-metric="accuracy">Accuracy (%)</button>
+                        <button class="filter-btn" data-metric="difficulty">Difficulty Level</button>
+                    </div>
+                </div>
+
+                <div class="filter-row">
+                    <div class="chart-filter-buttons">
+                        <button class="filter-btn" data-smart="layer-metrics" title="Enable selecting multiple metrics to overlay on the same chart">Layer Metrics</button>
+                        <button class="filter-btn" data-smart="plot-best-fit" title="Visualise overall direction and trend">Line of Best Fit</button>
+                        <button class="filter-btn" data-smart="smooth-data" title="Reduce noise and outliers by applying a moving average algorithm">Data Smoothing</button>
+                    </div>
                 </div>
             </div>
 
@@ -95,12 +103,303 @@
             <div class="dashboard-message" id="dashboard-message"></div>
             </div>
         </div>
-    {% else %}
-        <div class="dashboard-empty">
-            <p>No learners available for analytics.</p>
+
+        {% if selected_learner %}
+        <!-- Custom Targets Section -->
+        <div class="dashboard-section" data-section="targets">
+            <div class="section-header">
+                <h3>Custom Targets</h3>
+                {% if targets_data and targets_data.achieved_count > 0 %}
+                <p class="section-note">
+                    {{ selected_learner.name }} has achieved <strong>{{ targets_data.percentage }}%</strong> of their targets 
+                    ({{ targets_data.achieved_count }} of {{ targets_data.total_count }})
+                </p>
+                {% endif %}
+            </div>
+            
+            {% if targets_data and targets_data.all %}
+            <div class="targets-filter">
+                <button class="filter-btn active" data-filter="all">All ({{ targets_data.total_count }})</button>
+                <button class="filter-btn" data-filter="achieved">Achieved ({{ targets_data.achieved_count }})</button>
+                <button class="filter-btn" data-filter="not_achieved">Not Achieved ({{ targets_data.not_achieved|length }})</button>
+                <button class="filter-btn" data-filter="ongoing">Ongoing ({{ targets_data.ongoing|length }})</button>
+                <button class="filter-btn" data-filter="not_set">Not Set ({{ targets_data.not_set|length }})</button>
+            </div>
+            
+            <div class="targets-list">
+                {% for target in targets_data.all %}
+                <div class="target-item" data-status="{{ target.status }}">
+                    <div class="target-content">
+                        <span class="target-status-badge status-{{ target.status }}">
+                            {% if target.status == 'achieved' %}✓{% elif target.status == 'not_achieved' %}✗{% elif target.status == 'ongoing' %}→{% else %}○{% endif %}
+                        </span>
+                        <span class="target-text">{{ target.text }}</span>
+                    </div>
+                    <span class="target-date">{{ target.created_at|date:"M d, Y" }}</span>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="empty-state">No targets have been set for {{ selected_learner.name }} yet.</p>
+            {% endif %}
         </div>
-    {% endif %}
-</div>
+
+        <!-- Screener Analysis Section -->
+        {% if screener_data and screener_data.has_screener_data %}
+        <div class="dashboard-section" data-section="screener">
+            <div class="section-header">
+                <h3>Screener Progress Analysis</h3>
+                {% if screener_data.comparison and screener_data.first_screener_date and screener_data.skills_gained_count > 0 %}
+                <p class="section-note">
+                    {{ selected_learner.name }} has gained <strong>{{ screener_data.skills_gained_count }} skill{{ screener_data.skills_gained_count|pluralize }}</strong> 
+                    since their first screener on {{ screener_data.first_screener_date|date:"M d, Y" }}
+                </p>
+                {% endif %}
+            </div>
+            
+            <div class="screener-filter">
+                <button class="filter-btn active" data-screener-filter="all">All</button>
+                {% if screener_data.comparison.skills_gained %}
+                <button class="filter-btn" data-screener-filter="skills_gained">Skills Gained ({{ screener_data.comparison.skills_gained|length }})</button>
+                {% endif %}
+                {% if screener_data.comparison.skills_lost %}
+                <button class="filter-btn" data-screener-filter="skills_fluctuating">Skills Fluctuating ({{ screener_data.comparison.skills_lost|length }})</button>
+                {% endif %}
+                {% if screener_data.comparison.skills_maintained_strong %}
+                <button class="filter-btn" data-screener-filter="skills_maintained">Skills Maintained ({{ screener_data.comparison.skills_maintained_strong|length }})</button>
+                {% endif %}
+                {% if screener_data.current_support_skills %}
+                <button class="filter-btn" data-screener-filter="current_support">Current Support Areas ({{ screener_data.current_support_skills|length }})</button>
+                {% endif %}
+            </div>
+
+            {% if screener_data.comparison %}
+            <!-- Skills Comparison (only if re-screener exists) -->
+            <div class="screener-comparison">
+                <p class="comparison-subtitle">
+                    Comparison: <strong>{{ screener_data.comparison.previous_session_date|date:"M d, Y" }}</strong> → 
+                    <strong>Most Recent</strong>
+                </p>
+
+                {% if screener_data.comparison.skills_gained %}
+                <div class="skill-category skills-gained" data-category="skills_gained">
+                    <h4>✓ Skills Gained</h4>
+                    <ul class="skill-list">
+                        {% for skill in screener_data.comparison.skills_gained %}
+                        <li><span class="skill-indicator skill-indicator--gained">✓</span> {{ skill }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+                {% if screener_data.comparison.skills_lost %}
+                <div class="skill-category skills-fluctuating" data-category="skills_fluctuating">
+                    <h4>⚠ Skills Showing Fluctuation</h4>
+                    <ul class="skill-list">
+                        {% for skill in screener_data.comparison.skills_lost %}
+                        <li><span class="skill-indicator skill-indicator--fluctuating">⚠</span> {{ skill }}</li>
+                        {% endfor %}
+                    </ul>
+                    <p class="skill-note">These areas showed strong skills previously but may need renewed support.</p>
+                </div>
+                {% endif %}
+
+                {% if screener_data.comparison.skills_maintained_strong %}
+                <div class="skill-category skills-maintained" data-category="skills_maintained">
+                    <h4>✓ Skills Maintained</h4>
+                    <ul class="skill-list">
+                        {% for skill in screener_data.comparison.skills_maintained_strong %}
+                        <li><span class="skill-indicator skill-indicator--maintained">✓</span> {{ skill }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            <!-- Current Support Areas -->
+            {% if screener_data.current_support_skills %}
+            <div class="screener-current" data-category="current_support">
+                <h4>📌 Current Support Areas</h4>
+                <ul class="skill-list skill-list--support">
+                    {% for skill in screener_data.current_support_skills %}
+                    <li><span class="skill-indicator skill-indicator--support"></span> {{ skill }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+        {% endif %}
+    </div>
+{% else %}
+    <div class="dashboard-empty">
+        <p>No learners available for analytics.</p>
+    </div>
+{% endif %}
+
+
 
 <script src="{% static 'js/learner_dashboard.js' %}"></script>
+<script>
+// Target filter functionality
+document.addEventListener("DOMContentLoaded", () => {
+    const filterButtons = document.querySelectorAll('.targets-filter .filter-btn');
+    const targetItems = document.querySelectorAll('.target-item');
+    
+    filterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const filter = button.dataset.filter;
+            
+            if (filter === 'all') {
+                // Clicking "All" - activate All, deactivate others, show all items
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                targetItems.forEach(item => item.style.display = 'flex');
+            } else {
+                // Clicking a specific filter
+                const allButton = document.querySelector('.targets-filter .filter-btn[data-filter="all"]');
+                
+                // Toggle this button's active state
+                button.classList.toggle('active');
+                
+                // Deactivate "All" button
+                if (allButton) {
+                    allButton.classList.remove('active');
+                }
+                
+                // Get all active filters (excluding "all")
+                const activeFilters = Array.from(filterButtons)
+                    .filter(btn => btn.classList.contains('active') && btn.dataset.filter !== 'all')
+                    .map(btn => btn.dataset.filter);
+                
+                // If no filters are active, activate "All"
+                if (activeFilters.length === 0) {
+                    if (allButton) {
+                        allButton.classList.add('active');
+                    }
+                    targetItems.forEach(item => item.style.display = 'flex');
+                } else {
+                    // Show/hide items based on active filters
+                    targetItems.forEach(item => {
+                        if (activeFilters.includes(item.dataset.status)) {
+                            item.style.display = 'flex';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                }
+            }
+        });
+    });
+    
+    // Section visibility control with buttons
+    const sectionFilterButtons = document.querySelectorAll('.section-filter .filter-btn');
+    const allSections = document.querySelectorAll('[data-section]');
+    
+    sectionFilterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const filter = button.dataset.sectionFilter;
+            
+            if (filter === 'all') {
+                // Clicking "All" - activate All, deactivate others, show all sections
+                sectionFilterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                allSections.forEach(section => section.style.display = 'block');
+            } else {
+                // Clicking a specific filter
+                const allButton = document.querySelector('.section-filter .filter-btn[data-section-filter="all"]');
+                
+                // Toggle this button's active state
+                button.classList.toggle('active');
+                
+                // Deactivate "All" button
+                if (allButton) {
+                    allButton.classList.remove('active');
+                }
+                
+                // Get all active filters (excluding "all")
+                const activeFilters = Array.from(sectionFilterButtons)
+                    .filter(btn => btn.classList.contains('active') && btn.dataset.sectionFilter !== 'all')
+                    .map(btn => btn.dataset.sectionFilter);
+                
+                // If no filters are active, activate "All"
+                if (activeFilters.length === 0) {
+                    if (allButton) {
+                        allButton.classList.add('active');
+                    }
+                    allSections.forEach(section => section.style.display = 'block');
+                } else {
+                    // Show/hide sections based on active filters
+                    allSections.forEach(section => {
+                        if (activeFilters.includes(section.dataset.section)) {
+                            section.style.display = 'block';
+                        } else {
+                            section.style.display = 'none';
+                        }
+                    });
+                }
+            }
+        });
+    });
+    
+    // Print functionality
+    const printButton = document.getElementById('print-dashboard');
+    if (printButton) {
+        printButton.addEventListener('click', () => {
+            window.print();
+        });
+    }
+    
+    // Screener filter functionality
+    const screenerFilterButtons = document.querySelectorAll('.screener-filter .filter-btn');
+    const screenerCategories = document.querySelectorAll('[data-category]');
+    
+    screenerFilterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const filter = button.dataset.screenerFilter;
+            
+            if (filter === 'all') {
+                // Clicking "All" - activate All, deactivate others, show all categories
+                screenerFilterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                screenerCategories.forEach(category => category.style.display = 'block');
+            } else {
+                // Clicking a specific filter
+                const allButton = document.querySelector('.screener-filter .filter-btn[data-screener-filter="all"]');
+                
+                // Toggle this button's active state
+                button.classList.toggle('active');
+                
+                // Deactivate "All" button
+                if (allButton) {
+                    allButton.classList.remove('active');
+                }
+                
+                // Get all active filters (excluding "all")
+                const activeFilters = Array.from(screenerFilterButtons)
+                    .filter(btn => btn.classList.contains('active') && btn.dataset.screenerFilter !== 'all')
+                    .map(btn => btn.dataset.screenerFilter);
+                
+                // If no filters are active, activate "All"
+                if (activeFilters.length === 0) {
+                    if (allButton) {
+                        allButton.classList.add('active');
+                    }
+                    screenerCategories.forEach(category => category.style.display = 'block');
+                } else {
+                    // Show/hide categories based on active filters
+                    screenerCategories.forEach(category => {
+                        if (activeFilters.includes(category.dataset.category)) {
+                            category.style.display = 'block';
+                        } else {
+                            category.style.display = 'none';
+                        }
+                    });
+                }
+            }
+        });
+    });
+});
+</script>
 {% endblock %}
