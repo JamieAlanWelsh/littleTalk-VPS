@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         ${sampleOptions}
                     </select>
                     <p class="sample-target-hint">Replace placeholders like x% and x weeks to make it SMART.</p>
-                    <input type="text" id="new-target-text" placeholder="Enter target" maxlength="255">
+                    <textarea id="new-target-text" placeholder="Enter target" maxlength="255" rows="5"></textarea>
                     <div class="modal-buttons">
                         <button class="btn-cancel" onclick="document.getElementById('new-target-modal').remove();">Cancel</button>
                         <button class="btn-save" onclick="saveNewTarget();">Add Target</button>
@@ -306,14 +306,13 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="target-card ${statusClass}" data-target-id="${target.id}" data-status="${target.status}">
                 <div class="target-content">
                     <span class="target-text">${escapeHtml(target.text)}</span>
-                    <input
-                        type="text"
+                    <textarea
                         class="target-text-input"
                         data-target-id="${target.id}"
-                        value="${escapeHtml(target.text)}"
                         maxlength="255"
                         aria-label="Edit target"
-                    />
+                        rows="3"
+                    >${escapeHtml(target.text)}</textarea>
                     <select class="target-status-dropdown" data-target-id="${target.id}">
                         <option value="---" ${target.status === '---' ? 'selected' : ''}>----</option>
                         <option value="achieved" ${target.status === 'achieved' ? 'selected' : ''}>Achieved</option>

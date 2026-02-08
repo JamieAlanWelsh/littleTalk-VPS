@@ -322,6 +322,10 @@
     font-size: 14px;
     color: var(--font-color);
     background-color: white;
+    resize: vertical;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .target-status-dropdown {
@@ -485,7 +489,8 @@
     font-size: 12px;
 }
 
-.new-target-modal-content input {
+.new-target-modal-content input,
+.new-target-modal-content textarea {
     width: 100%;
     padding: 10px 14px;
     border: 1px solid #ddd;
@@ -493,6 +498,14 @@
     margin-bottom: 20px;
     font-family: var(--font-outfit);
     box-sizing: border-box;
+}
+
+.new-target-modal-content textarea {
+    resize: vertical;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    min-height: 120px;
 }
 
 .modal-buttons {

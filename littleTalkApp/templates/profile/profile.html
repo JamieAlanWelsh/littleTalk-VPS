@@ -99,14 +99,13 @@
                             <div class="target-card target-status-{{ target.status }}" data-target-id="{{ target.id }}" data-status="{{ target.status }}">
                                 <div class="target-content">
                                     <span class="target-text">{{ target.text }}</span>
-                                    <input
-                                        type="text"
+                                    <textarea
                                         class="target-text-input"
                                         data-target-id="{{ target.id }}"
-                                        value="{{ target.text }}"
                                         maxlength="255"
                                         aria-label="Edit target"
-                                    />
+                                        rows="3"
+                                    >{{ target.text }}</textarea>
                                     <select class="target-status-dropdown" data-target-id="{{ target.id }}">
                                         <option value="---" {% if target.status == '---' %}selected{% endif %}>----</option>
                                         <option value="achieved" {% if target.status == 'achieved' %}selected{% endif %}>Achieved</option>
