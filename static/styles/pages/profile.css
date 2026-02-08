@@ -397,6 +397,10 @@
     display: block;
 }
 
+.profile-card--targets.edit-mode .target-status-dropdown {
+    display: none;
+}
+
 .button-secondary {
     padding: 10px 20px;
     border: 1px solid #ccc;

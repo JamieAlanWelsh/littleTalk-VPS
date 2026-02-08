@@ -4,57 +4,62 @@
 window.SMART_SAMPLES = [
     {
         group: 'Sentence Building (Colourful Semantics)',
-        label: 'SVO sentences with adult support',
-        text: 'To achieve SVO sentences in x% of opportunities with adult support within x weeks.'
-    },
-    {
-        group: 'Sentence Building (Colourful Semantics)',
-        label: 'Describe a scene using key words',
-        text: 'To describe a scene using at least [who + doing + what] in x% of opportunities within x weeks.'
+        label: 'SVOL sentences with adult support',
+        text: 'To use [SV,SVO,SVOL] sentences (independently/with adult support) x% of the time, in x weeks.'
     },
     {
         group: 'Receptive Language (Think and Find)',
-        label: 'Follow simple directions',
-        text: 'To follow one-step directions (e.g., “get your shoes”) with no more than one prompt in x% of opportunities within x weeks.'
+        label: 'Follow simple instructions',
+        text: 'To follow one step instructions (independently/with adult support) x% of of the time, in x weeks.'
     },
     {
         group: 'Receptive Language (Think and Find)',
-        label: 'Follow multi-step directions',
-        text: 'To follow two-step directions (e.g., “put your shoes on and wait by the door”) with no more than one prompt in x% of opportunities within x weeks.'
+        label: 'Follow multi-step instructions',
+        text: 'To follow two-step instructions (independently/with adult support) x% of the time, in x weeks.'
     },
     {
         group: 'Concepts (Concept Quest)',
         label: 'Size concepts',
-        text: 'To identify size concepts (big/small, long/short, tall/short) with x% accuracy within x weeks.'
+        text: 'To identify size concepts (big/small, long/short, tall/short) (independently/with adult support) x% of the time, in x weeks.'
     },
     {
         group: 'Categorisation',
         label: 'Group items into categories',
-        text: 'To group items into a category (e.g., animals/foods/clothing) with x% accuracy within x weeks.'
+        text: 'To (independently/with adult support) group items into x amount of categories x% of the time, in x weeks.'
     },
     {
         group: 'Story Train (Sequencing)',
-        label: 'Order events with time words',
-        text: 'To sequence 3-step picture stories and use time words (first/next/then) in x% of opportunities within x weeks.'
+        label: 'Order events',
+        text: 'To (independently/with adult support) sequence 3 step stories x% of the time, in x weeks.'
     },
     {
-        group: 'Attention & Listening',
-        label: 'Attend for 5 minutes',
-        text: 'To attend to an adult-led activity for 5 minutes with no more than one redirection in x of x sessions within x weeks.'
-    },
-    {
-        group: 'Expressive Language',
-        label: 'Use 2+ word sentences',
-        text: 'To use 2+ word sentences spontaneously in x% of opportunities within x weeks.'
+        group: 'Story Train (Sequencing)',
+        label: 'Using temporal adverbs in sentences',
+        text: 'To (independently/with adult support) use temporal adverbs (first, next, then) when describing 3 step stories x% of the time, in x weeks.'
     },
     {
         group: 'Expressive Language',
-        label: 'Answer who/where questions',
-        text: 'To answer “who/where” questions with x% accuracy across x sessions within x weeks.'
+        label: 'Develop simple sentences',
+        text: 'To (develop/expand) simple sentences (independently/with adult support) x% of the time in x weeks.'
+    },
+    {  
+        group: 'Expressive Language',
+        label: 'Using verbs sentences',
+        text: 'To (independently/with adult support) use appropriate verbs in SV sentences with pictorial aids x% of the time, in x weeks.'
+    },
+    {  
+        group: 'Expressive Language',
+        label: 'Develop vocabulary',
+        text: 'To develop x number of topic related words, with adult support, in x weeks.'
+    },
+    {
+        group: 'Expressive Language',
+        label: 'Answer who/what/where questions',
+        text: 'To answer “who/what/where” questions x% of the time (independently/with adult support) x% of the time, in x weeks.'
     },
     {
         group: 'Expressive Language',
         label: 'Retell events in order',
-        text: 'To retell a simple event in logical order with at least 3 details in x% of opportunities within x weeks.'
+        text: 'To (independently/with adult support) describe a simple event in the correct order x% of the time, in x weeks.'
     }
 ];
