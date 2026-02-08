@@ -1599,6 +1599,9 @@ def school_dashboard(request):
         return redirect("profile")
     profile = request.user.profile
     school = profile.get_current_school(request)
+    available_schools = profile.schools.all().order_by("name")
+    show_school_switcher = available_schools.count() > 1
+    current_school_id = school.id if school else None
 
     if request.method == "POST":
         if "user_id" in request.POST and "new_role" in request.POST:
@@ -1744,6 +1747,9 @@ def school_dashboard(request):
             "can_invite_staff": can_invite_staff,
             "current_user_is_admin_or_manager": can_invite_staff,
             "join_requests": join_requests,
+            "available_schools": available_schools,
+            "show_school_switcher": show_school_switcher,
+            "current_school_id": current_school_id,
         },
     )
 

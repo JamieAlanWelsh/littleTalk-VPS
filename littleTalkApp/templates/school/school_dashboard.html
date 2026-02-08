@@ -7,6 +7,23 @@
 
 <div class="container-box container--dash">
     <div class="logbook-header">
+        {% if show_school_switcher %}
+            <form method="post" action="{% url 'select_school' %}" class="form-inline">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{% url 'school_dashboard' %}">
+                <label class="header-label" for="school-select">School:</label>
+                <select id="school-select" name="school_id" class="select" onchange="this.form.submit()">
+                    {% for school in available_schools %}
+                        <option value="{{ school.id }}" {% if school.id == current_school_id %}selected{% endif %}>
+                            {{ school.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <noscript>
+                    <button type="submit" class="btn btn--white">Switch</button>
+                </noscript>
+            </form>
+        {% endif %}
         {% if can_invite_staff %}
             <a href="{% url 'invite_staff' %}" class="btn btn--yellow">+ Invite Staff</a>
             <a href="{% url 'invite_audit_trail' %}" class="btn btn--white">Audit Trail</a>
