@@ -38,6 +38,10 @@ body {
     /* gap: 1rem; */
 }
 
+.header-right {
+    gap: 0.75rem;
+}
+
 .header-center {
     position: absolute;
     left: 50%;
@@ -72,7 +76,7 @@ body {
 
 .login-button {
     color: var(--font-color);
-    padding: 0.75rem 1.5rem;
+    padding: 0.75rem 1rem;
     border: none;
     border-radius: var(--border-radius);
     font-size: 1rem;
@@ -327,6 +331,11 @@ body {
 
 .testimonials-section {
     --testimonial-inline-pad: 1.25rem;
+    --testimonial-gap: 1.5rem;
+    --testimonial-card-width: 28.125rem;
+    --testimonial-card-mobile-width: 78%;
+    --testimonial-card-mobile-max: 20rem;
+    --testimonial-avatar-size: 3.9rem;
     padding-left: var(--testimonial-inline-pad);
     padding-right: var(--testimonial-inline-pad);
     overflow-x: hidden;
@@ -342,7 +351,7 @@ body {
 
 .testimonial-rail {
     display: flex;
-    gap: 1.5rem;
+    gap: var(--testimonial-gap);
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     padding: 0.5rem 0.25rem 1rem;
@@ -356,9 +365,9 @@ body {
 }
 
 .testimonial-card {
-    flex: 0 0 500px;
-    max-width: 500px;
-    min-height: 20rem;
+    flex: 0 0 var(--testimonial-card-width);
+    max-width: var(--testimonial-card-width);
+    min-height: 19rem;
     display: flex;
     flex-direction: column;
     background-color: white;
@@ -368,7 +377,26 @@ body {
     scroll-snap-align: start;
 }
 
-@media (min-width: 769px) {
+@media (max-width: 1024px) {
+    .testimonial-rail {
+        gap: 1rem;
+        padding-left: 0;
+        padding-right: 0;
+        padding-bottom: 0.5rem;
+        scroll-snap-type: x mandatory;
+        scroll-padding-left: 50%;
+        scroll-padding-right: 50%;
+    }
+
+    .testimonial-card {
+        flex: 0 0 var(--testimonial-card-mobile-width);
+        max-width: var(--testimonial-card-mobile-max);
+        min-height: auto;
+        scroll-snap-align: center;
+    }
+}
+
+@media (min-width: 1025px) {
     .testimonial-rail {
         scroll-snap-type: none;
     }
@@ -387,8 +415,8 @@ body {
 }
 
 .testimonial-avatar {
-    width: 3.9rem;
-    height: 3.9rem;
+    width: var(--testimonial-avatar-size);
+    height: var(--testimonial-avatar-size);
     border-radius: 50%;
     background-color: var(--accent-color);
     display: flex;
@@ -425,7 +453,7 @@ body {
     margin: 0;
     font-size: 1.125rem;
     line-height: 1.5;
-    font-weight: 600;
+    /* font-weight: 600; */
 }
 
 .testimonial-scroll-btn {
@@ -448,6 +476,11 @@ body {
 .testimonial-scroll-btn:hover {
     background-color: var(--font-color);
     color: white;
+}
+
+.testimonial-scroll-btn:focus-visible {
+    outline: 2px solid var(--font-color);
+    outline-offset: 2px;
 }
 
 .testimonial-controls {
@@ -796,26 +829,6 @@ body {
     .split-list {
         font-size: 0.9rem;
         padding-left: 1rem;
-    }
-
-    .testimonial-rail-shell {
-        display: block;
-    }
-
-    .testimonial-rail {
-        gap: 1rem;
-        padding-left: 0;
-        padding-right: 0;
-        padding-bottom: 0.5rem;
-        scroll-padding-left: 50%;
-        scroll-padding-right: 50%;
-    }
-
-    .testimonial-card {
-        flex: 0 0 calc(100% - 2rem);
-        max-width: 34.32rem;
-        min-height: 25rem;
-        scroll-snap-align: center;
     }
 
     .content-split-image .small-img {
