@@ -16,7 +16,7 @@ LANDING_TESTIMONIALS = [
             "The impact has been incredible. Our students want to go on Chatterdillo, they find it fun, "
             "engaging, and it has made a real difference in their progress."
         ),
-        "name": "Corrine",
+        "name": "Corrine Mitcham",
         "role": "SENDCo",
         "occupation": "South View Primary School",
         "image": None,

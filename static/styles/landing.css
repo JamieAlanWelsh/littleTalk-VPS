@@ -211,7 +211,7 @@ body {
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    gap: 6rem; /* gap only applies between image + text now */
+    gap: 5rem; /* gap only applies between image + text now */
 }
 
 /* helper to reverse image + text order */
@@ -231,7 +231,7 @@ body {
 
 .content-split-image img {
     width: 100%;
-    max-width: 500px;
+    max-width: 550px;
     height: auto;
     border-radius: 1rem;
     object-fit: cover;
