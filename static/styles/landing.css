@@ -321,6 +321,119 @@ body {
     line-height: 1.6;
 }
 
+.testimonials-section .content-split-header {
+    margin-bottom: 2rem;
+}
+
+.testimonial-rail-shell {
+    display: block;
+}
+
+.testimonial-rail {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding: 0.5rem 0.25rem 1rem;
+    width: 100%;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.testimonial-rail::-webkit-scrollbar {
+    display: none;
+}
+
+.testimonial-card {
+    flex: 0 0 360px;
+    max-width: 360px;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border-radius: var(--border-radius) var(--border-radius) var(--border-radius) 0;
+    box-shadow: var(--box-shadow);
+    padding: 1.25rem;
+    scroll-snap-align: start;
+}
+
+.testimonial-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: auto;
+    padding-top: 1rem;
+}
+
+.testimonial-avatar {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background-color: var(--accent-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.testimonial-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.testimonial-initials {
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+.testimonial-name {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+
+.testimonial-role {
+    margin: 0.2rem 0 0;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.testimonial-quote {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.testimonial-scroll-btn {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    border: none;
+    background-color: white;
+    color: var(--font-color);
+    box-shadow: var(--box-shadow);
+    cursor: pointer;
+    font-size: 1.6rem;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.testimonial-scroll-btn:hover {
+    background-color: var(--font-color);
+    color: white;
+}
+
+.testimonial-controls {
+    margin-top: 0.5rem;
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+}
+
 .talk-team-subtitle {
     max-width: 860px;
     margin: 0 auto;
@@ -655,6 +768,20 @@ body {
     .split-list {
         font-size: 0.9rem;
         padding-left: 1rem;
+    }
+
+    .testimonial-rail-shell {
+        display: block;
+    }
+
+    .testimonial-rail {
+        gap: 1rem;
+        padding-bottom: 0.5rem;
+    }
+
+    .testimonial-card {
+        flex: 0 0 85%;
+        max-width: 85%;
     }
 
     .content-split-image .small-img {

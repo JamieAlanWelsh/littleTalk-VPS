@@ -96,7 +96,65 @@ def home(request):
     request.hide_sidebar = True
     if request.user.is_authenticated:
         return redirect("/practise/")
-    return render(request, "landing.html")
+
+    landing_testimonials = [
+        {
+            "quote": (
+                "We introduced Chatterdillo to support children identified with speech and language "
+                "needs and the impact has been incredible. Our students want to go on Chatterdillo, "
+                "they find it fun, engaging, and it has made a real difference in their progress."
+            ),
+            "name": "Corrine",
+            "role": "SENDCo",
+            "occupation": "South View Primary School",
+            "image": None,
+        },
+        {
+            "quote": (
+                "Using the app for just 10 minutes a day with my 2 year old has made a real "
+                "difference. His motivation to talk and engage has grown massively and it has "
+                "become a fun part of our day."
+            ),
+            "name": "Danni",
+            "role": "Parent",
+            "occupation": "Home Learning",
+            "image": None,
+        },
+        {
+            "quote": "This is a huge need in our work and a great help for parents.",
+            "name": "Jeremy",
+            "role": "CEO",
+            "occupation": "Talkback - Autism Support",
+            "image": None,
+        },
+        {
+            "quote": "I had begun to lose hope that my son would ever be interested in talking.",
+            "name": "Grace",
+            "role": "Parent",
+            "occupation": "Home Learning",
+            "image": None,
+        },
+        {
+            "quote": "It's engaging, family-friendly and easy to navigate.",
+            "name": "Amelia",
+            "role": "Speech and Language Therapist",
+            "occupation": "Independent Practitioner",
+            "image": None,
+        },
+    ]
+
+    for testimonial in landing_testimonials:
+        name_parts = testimonial["name"].split()
+        initials = "".join(part[0] for part in name_parts[:2]).upper()
+        testimonial["initials"] = initials
+
+    return render(
+        request,
+        "landing.html",
+        {
+            "testimonials": landing_testimonials,
+        },
+    )
 
 
 @check_honeypot

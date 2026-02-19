@@ -117,48 +117,36 @@
         </div>
     </div>
 </div>
-<div class="content-split reduce-padding-bottom">
+<div class="content-split testimonials-section" style="padding-left: 0; padding-right: 0;">
     <div class="content-split-header">
         <h2 class="split-heading">
             Chatter from Our Community
         </h2>
     </div>
-    <div class="content-split-main">
-        <div class="content-split-text">
-            <p class="split-body"><strong>
-                We introduced Chatterdillo to support children identified with speech and language needs and the impact has been incredible! Our students WANT to go on Chatterdillo, they find it fun, engaging, and it’s made a real difference in their progress! It’s so user-friendly and the support from the Chatterdillo team is fantastic. I would absolutely recommend it to other schools, it’s a fantastic resource for classroom and SEND support.
-            </strong></p>
-            <p class="split-body">
-                Corrine,<br>SENDCo - South View Primary School
-            </p>
+    <div class="testimonial-rail-shell">
+        <div class="testimonial-rail" id="testimonial-rail">
+            {% for testimonial in testimonials %}
+                <article class="testimonial-card">
+                    <p class="testimonial-quote">“{{ testimonial.quote }}”</p>
+                    <div class="testimonial-card-header">
+                        <div class="testimonial-avatar" aria-hidden="true">
+                            {% if testimonial.image %}
+                                <img src="{% static testimonial.image %}" alt="{{ testimonial.name }}">
+                            {% else %}
+                                <span class="testimonial-initials">{{ testimonial.initials }}</span>
+                            {% endif %}
+                        </div>
+                        <div class="testimonial-meta">
+                            <h3 class="testimonial-name">{{ testimonial.name }}</h3>
+                            <p class="testimonial-role">{{ testimonial.role }} · {{ testimonial.occupation }}</p>
+                        </div>
+                    </div>
+                </article>
+            {% endfor %}
         </div>
-        <div class="content-split-text">
-            <p class="split-body"><strong>
-                Using the app for just 10 minutes a day with my 2 year old has made a real difference. He is much more interested in trying to speak, even if the words aren’t always clear yet. We’ve seen some early successes, but most importantly, his motivation to talk and engage has grown massively. He loves the interactive activities and he always laughs at the voice on the app while trying his best to copy it. It’s become a fun part of our day.
-            </strong></p>
-            <p class="split-body">
-                Danni, Parent
-            </p>
-        </div>
-    </div>
-</div>
-{% comment %} more testimonials {% endcomment %}
-<div class="content-bar yellow reduce-padding-top">
-    <div class="content-items">
-        <div class="content-item">
-            {% comment %} <img src="{% static 'images/landing/arlo_butterfly.png' %}" alt="Evidence-based" class="content-icon"> {% endcomment %}
-            <h3 class="content-title--small">"This is a huge need in our work and a great help for parents"</h3>
-            <p class="content-text">Jeremy, CEO of Talkback - Autism Support</p>
-        </div>
-        <div class="content-item">
-            {% comment %} <img src="{% static 'images/landing/arlo_book.png' %}" alt="Evidence-based" class="content-icon"> {% endcomment %}
-            <h3 class="content-title--small">"I had begun to lose hope that my son would ever be interested in talking"</h3>
-            <p class="content-text">Grace, Parent</p>
-        </div>
-        <div class="content-item">
-            {% comment %} <img src="{% static 'images/landing/arlo_talking.png' %}" alt="Evidence-based" class="content-icon"> {% endcomment %}
-            <h3 class="content-title--small">"It's engaging, family-friendly and easy to navigate"</h3>
-            <p class="content-text">Amelia, Speech and Language Therapist</p>
+        <div class="testimonial-controls">
+            <button type="button" class="testimonial-scroll-btn" data-scroll-direction="left" aria-label="Scroll testimonials left">&#8249;</button>
+            <button type="button" class="testimonial-scroll-btn" data-scroll-direction="right" aria-label="Scroll testimonials right">&#8250;</button>
         </div>
     </div>
 </div>
@@ -186,4 +174,123 @@
 
 {% block extra_scripts %}
 <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const rail = document.getElementById('testimonial-rail');
+        if (!rail) {
+            return;
+        }
+
+        const controls = document.querySelectorAll('.testimonial-scroll-btn');
+        const originalCards = Array.from(rail.querySelectorAll('.testimonial-card'));
+
+        if (!originalCards.length) {
+            return;
+        }
+
+        const cloneCard = (card) => {
+            const clone = card.cloneNode(true);
+            clone.setAttribute('aria-hidden', 'true');
+            return clone;
+        };
+
+        const prependClones = originalCards.map(cloneCard);
+        const appendClones = originalCards.map(cloneCard);
+
+        prependClones.slice().reverse().forEach((clone) => {
+            rail.insertBefore(clone, rail.firstChild);
+        });
+
+        appendClones.forEach((clone) => {
+            rail.appendChild(clone);
+        });
+
+        const getGap = () => {
+            const railStyle = window.getComputedStyle(rail);
+            return parseFloat(railStyle.columnGap || railStyle.gap || '0') || 0;
+        };
+
+        const getSetSpan = () => {
+            if (!appendClones.length || !originalCards.length) {
+                return 0;
+            }
+            return appendClones[0].offsetLeft - originalCards[0].offsetLeft;
+        };
+
+        const getMiddleStart = () => {
+            if (!originalCards.length) {
+                return 0;
+            }
+            return originalCards[0].offsetLeft;
+        };
+
+        const scrollToMiddle = () => {
+            rail.scrollLeft = getMiddleStart();
+        };
+
+        scrollToMiddle();
+
+        let isNormalizing = false;
+        const normalizeAtHardEdges = () => {
+            if (isNormalizing) {
+                return;
+            }
+
+            const setSpan = getSetSpan();
+            if (!setSpan) {
+                return;
+            }
+
+            const minScroll = 0;
+            const maxScroll = rail.scrollWidth - rail.clientWidth;
+            const edgeBuffer = 2;
+
+            if (rail.scrollLeft <= minScroll + edgeBuffer || rail.scrollLeft >= maxScroll - edgeBuffer) {
+                isNormalizing = true;
+                if (rail.scrollLeft <= minScroll + edgeBuffer) {
+                    rail.scrollLeft += setSpan;
+                } else {
+                    rail.scrollLeft -= setSpan;
+                }
+                isNormalizing = false;
+            }
+        };
+
+        rail.addEventListener('scroll', () => {
+            window.requestAnimationFrame(normalizeAtHardEdges);
+        }, { passive: true });
+
+        controls.forEach((button) => {
+            button.addEventListener('click', () => {
+                const setSpan = getSetSpan();
+                const middleStart = getMiddleStart();
+                const edgeBuffer = 2;
+                const maxScroll = rail.scrollWidth - rail.clientWidth;
+                const direction = button.dataset.scrollDirection;
+
+                if (setSpan) {
+                    if (direction === 'left' && rail.scrollLeft <= middleStart + edgeBuffer) {
+                        rail.scrollLeft += setSpan;
+                    }
+                    if (direction === 'right' && rail.scrollLeft >= maxScroll - setSpan - edgeBuffer) {
+                        rail.scrollLeft -= setSpan;
+                    }
+                }
+
+                const gap = getGap();
+                const firstCard = originalCards[0];
+                const scrollAmount = firstCard ? firstCard.offsetWidth + gap : 360;
+
+                rail.scrollBy({
+                    left: direction === 'left' ? -scrollAmount : scrollAmount,
+                    behavior: 'smooth',
+                });
+            });
+        });
+
+        window.addEventListener('resize', () => {
+            scrollToMiddle();
+        });
+    });
+</script>
 {% endblock %}
