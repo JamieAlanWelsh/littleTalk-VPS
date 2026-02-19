@@ -117,11 +117,12 @@
         </div>
     </div>
 </div>
-<div class="content-split testimonials-section" style="padding-left: 0; padding-right: 0;">
+<div class="content-split testimonials-section">
     <div class="content-split-header">
         <h2 class="split-heading">
-            Chatter from Our Community
+            Chatter from the Dillo Community
         </h2>
+        <p class="split-body">How our community is currently using the platform to help with speech and language communication needs in schools and at home.</p>
     </div>
     <div class="testimonial-rail-shell">
         <div class="testimonial-rail" id="testimonial-rail">
@@ -224,11 +225,37 @@
             return originalCards[0].offsetLeft;
         };
 
-        const scrollToMiddle = () => {
-            rail.scrollLeft = getMiddleStart();
+        const getInitialScroll = () => {
+            const middleStart = getMiddleStart();
+            const firstCard = originalCards[0];
+
+            if (!firstCard) {
+                return middleStart;
+            }
+
+            const gap = getGap();
+            const cardWidth = firstCard.offsetWidth;
+            const cardSpan = cardWidth + gap;
+            const isDesktop = window.matchMedia('(min-width: 769px)').matches;
+            const maxScroll = rail.scrollWidth - rail.clientWidth;
+
+            if (!isDesktop) {
+                const centeredSingleCardScroll = middleStart - ((rail.clientWidth - cardWidth) / 2);
+                return Math.min(Math.max(centeredSingleCardScroll, 0), maxScroll);
+            }
+
+            const pairWidth = (cardWidth * 2) + gap;
+            const secondCardTargetLeft = (rail.clientWidth - pairWidth) / 2;
+            const centeredPairScroll = middleStart + cardSpan - secondCardTargetLeft;
+
+            return Math.min(Math.max(centeredPairScroll, 0), maxScroll);
         };
 
-        scrollToMiddle();
+        const scrollToInitial = () => {
+            rail.scrollLeft = getInitialScroll();
+        };
+
+        scrollToInitial();
 
         let isNormalizing = false;
         const normalizeAtHardEdges = () => {
@@ -263,13 +290,13 @@
         controls.forEach((button) => {
             button.addEventListener('click', () => {
                 const setSpan = getSetSpan();
-                const middleStart = getMiddleStart();
+                const initialScroll = getInitialScroll();
                 const edgeBuffer = 2;
                 const maxScroll = rail.scrollWidth - rail.clientWidth;
                 const direction = button.dataset.scrollDirection;
 
                 if (setSpan) {
-                    if (direction === 'left' && rail.scrollLeft <= middleStart + edgeBuffer) {
+                    if (direction === 'left' && rail.scrollLeft <= initialScroll + edgeBuffer) {
                         rail.scrollLeft += setSpan;
                     }
                     if (direction === 'right' && rail.scrollLeft >= maxScroll - setSpan - edgeBuffer) {
@@ -289,7 +316,7 @@
         });
 
         window.addEventListener('resize', () => {
-            scrollToMiddle();
+            scrollToInitial();
         });
     });
 </script>
