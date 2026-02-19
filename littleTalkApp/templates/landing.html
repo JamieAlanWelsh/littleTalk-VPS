@@ -2,6 +2,10 @@
 {% extends "landing_base.html" %}
 {% load static %}
 
+{% block extra_head %}
+<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
 <div class="character-wrapper">
     <!-- Left Character -->
@@ -158,6 +162,19 @@
         </div>
     </div>
 </div>
+{% comment %} Talk to our team section {% endcomment %}
+<div class="content-split white talk-team-section">
+    <div class="content-split-header">
+        <h2 class="split-heading">Talk to our team</h2>
+        <p class="split-body talk-team-subtitle">Book a quick call and we’ll help you get started with the right setup for your school, team, or family.</p>
+    </div>
+    <div class="talk-team-widget-wrapper desktop-only">
+        <div class="calendly-inline-widget" data-url="{{ calendly_url }}" style="min-width:320px;height:700px;"></div>
+    </div>
+    <div class="talk-team-mobile-cta mobile-only">
+        <a href="{{ calendly_url }}" class="cta-button main-button" target="_blank" rel="noopener noreferrer">Talk to our team</a>
+    </div>
+</div>
 {% comment %} final call to action footer {% endcomment %}
 <div class="footer-cta">
     <h1 class="footer-heading">Let’s Build Language Skills Together!</h1>
@@ -168,4 +185,8 @@
     </div>
 </div>
 
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://assets.calendly.com/assets/external/widget.js" async></script>
 {% endblock %}

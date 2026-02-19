@@ -321,6 +321,37 @@ body {
     line-height: 1.6;
 }
 
+.desktop-only {
+    display: block;
+}
+
+.mobile-only {
+    display: none;
+}
+
+.talk-team-section {
+    padding-top: 3rem;
+}
+
+.talk-team-subtitle {
+    max-width: 860px;
+    margin: 0 auto;
+}
+
+.talk-team-widget-wrapper {
+    margin: 0 auto;
+    max-width: 920px;
+}
+
+.talk-team-widget-wrapper .calendly-inline-widget {
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+.talk-team-mobile-cta {
+    text-align: center;
+}
+
 .footer-cta {
     text-align: center;
     padding: 3.5rem 1rem;
@@ -678,6 +709,22 @@ body {
     .landing-subtitle {
         font-size: 1rem;
         margin-bottom: 30px;
+    }
+
+    .desktop-only {
+        display: none;
+    }
+
+    .mobile-only {
+        display: block;
+    }
+
+    .talk-team-section {
+        padding-top: 2rem;
+    }
+
+    .talk-team-subtitle {
+        margin-bottom: 1.5rem;
     }
 }
 
