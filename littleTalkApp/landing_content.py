@@ -11,6 +11,19 @@ LANDING_TESTIMONIALS = [
     },
     {
         "quote": (
+            "To another school or trust considering Chatterdillo, I would say: why wouldn't you? "
+            "It has saved staff countless hours in planning and preparation, and the way it has helped "
+            "children engage and want to come to sessions every day has been pivotal for us. Half "
+            "the battle with any intervention is encouraging children to take part, and Chatterdillo "
+            "has transformed that."
+        ),
+        "name": "Stephanie Awbery",
+        "role": "SEND manager",
+        "occupation": "Peterborough Diocese Education Trust",
+        "image": None,
+    },
+    {
+        "quote": (
             "We reached out to Chatterdillo hoping to increase access to SALT for children who "
             "were unable to access NHS services due to the change in referral criteria in Lincolnshire. "
             "The impact has been incredible. Our students want to go on Chatterdillo, they find it fun, "
