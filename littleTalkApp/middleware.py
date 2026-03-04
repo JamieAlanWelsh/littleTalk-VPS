@@ -20,6 +20,7 @@ class AccessControlMiddleware(MiddlewareMixin):
             reverse("login"),
             reverse("logout"),
             reverse("profile"),
+            reverse("select_school"),
             reverse("select_learner"),
             reverse("subscribe"),
             reverse("license_expired"),
@@ -47,11 +48,24 @@ class AccessControlMiddleware(MiddlewareMixin):
 
         # --- School Staff Logic (per-school roles) ---
         # Determine selected/current school then check the role for that school.
-        school = (
-            profile.get_current_school(request)
-            if hasattr(profile, "get_current_school")
-            else profile.school
+        has_multiple_schools = (
+            hasattr(profile, "has_multiple_schools") and profile.has_multiple_schools()
         )
+
+        if has_multiple_schools:
+            selected_id = request.session.get("selected_school_id")
+            if not selected_id:
+                return None
+            school = profile.schools.filter(id=selected_id).first()
+            if not school:
+                return None
+        else:
+            school = (
+                profile.get_current_school(request)
+                if hasattr(profile, "get_current_school")
+                else profile.school
+            )
+
         if school:
             role_for = profile.get_role_for_school(school)
             # Check staff-like roles for this school (include legacy 'manager')
@@ -92,6 +106,7 @@ class SchoolSelectionMiddleware:
         # Skip middleware for these paths
         skip_urls = {
             'select_school',
+            'license_expired',
             'logout',
             'static',
             'media',
