@@ -40,19 +40,6 @@ def can_edit_or_delete_log(user, log_entry):
         # Ignore if relation isn't available for any reason
         pass
 
-    # Fallback to legacy FK comparison for backwards compatibility
-    try:
-        if (
-            user.profile.school is not None
-            and log_entry.user.profile.school is not None
-            and user.profile.school == log_entry.user.profile.school
-        ):
-            role_for = user.profile.get_role_for_school(user.profile.school)
-            if role_for in [Role.ADMIN, Role.TEAM_MANAGER]:
-                return True
-    except Exception:
-        pass
-
     return False
 
 

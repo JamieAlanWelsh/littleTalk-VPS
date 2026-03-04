@@ -64,7 +64,7 @@ class AccessControlMiddleware(MiddlewareMixin):
             school = (
                 profile.get_current_school(request)
                 if hasattr(profile, "get_current_school")
-                else profile.school
+                else None
             )
 
         if school:
@@ -139,7 +139,7 @@ class RoleSchoolBlockMiddleware:
     """
     Blocks users from accessing the app if:
     - user.profile.role != "parent"
-    - AND user.profile.school is None
+    - AND user.profile has no associated schools
     """
 
     def __init__(self, get_response):
@@ -151,11 +151,9 @@ class RoleSchoolBlockMiddleware:
         if user.is_authenticated:
             profile = getattr(user, "profile", None)
             if profile:
-                # If this user is staff (non-parent) and has no associated school
-                # (neither legacy FK nor any M2M schools), block access.
-                if profile.role != Role.PARENT and not (
-                    profile.school or profile.schools.exists()
-                ):
+                # If this user is staff (non-parent) and has no associated
+                # schools, block access.
+                if profile.role != Role.PARENT and not profile.schools.exists():
                     # 1) show forbidden
                     return HttpResponseForbidden(
                         "Your account is not configured for access. Please contact support for assistance by emailing support@chatterdillo.com"

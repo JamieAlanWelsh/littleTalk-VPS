@@ -131,7 +131,7 @@ def school_signup(request):
             school = School.objects.create(name=school_name, created_by=user)
 
             # Link profile
-            profile = Profile.objects.create(user=user, first_name=full_name, school=school)
+            profile = Profile.objects.create(user=user, first_name=full_name)
             # Ensure new M2M relation includes this school for the profile
             try:
                 profile.schools.add(school)
@@ -1562,9 +1562,7 @@ def accept_invite(request, token):
             user.email_hash = hash_email(email)
             user.save()
 
-            profile = Profile.objects.create(
-                user=user, first_name=full_name, school=invite.school
-            )
+            profile = Profile.objects.create(user=user, first_name=full_name)
             # ensure M2M mapping is created and create a SchoolMembership
             try:
                 profile.schools.add(invite.school)
@@ -1977,10 +1975,6 @@ def add_learner_via_pac(request):
                     profile = request.user.profile
                     if learner.school:
                         profile.schools.add(learner.school)
-                        # Keep legacy FK in sync if it isn't set yet
-                        if not profile.school:
-                            profile.school = learner.school
-                            profile.save()
                 except Exception:
                     # Don't block the primary flow if M2M linking fails
                     pass

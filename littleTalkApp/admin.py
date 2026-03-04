@@ -17,7 +17,7 @@ class SchoolMembershipInline(admin.TabularInline):
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ("user_email", "first_name", "legacy_school", "schools_with_roles", "legacy_role")
+    list_display = ("user_email", "first_name", "schools_with_roles", "legacy_role")
     list_filter = ("role", "schools", "user__date_joined")
     search_fields = ("user__username", "user__email_encrypted", "first_name")
     autocomplete_fields = ("user",)
@@ -29,9 +29,9 @@ class ProfileAdmin(admin.ModelAdmin):
         ("User Info", {
             "fields": ("user", "first_name", "opted_in")
         }),
-        ("Legacy Fields (for migration)", {
-            "fields": ("school", "role"),
-            "description": "These are legacy single-school fields. Use School Memberships below for multiple schools."
+        ("Role", {
+            "fields": ("role",),
+            "description": "Profile role fallback. Per-school roles are managed in School Memberships below."
         }),
         ("Multiple Schools", {
             "fields": ("schools",),
@@ -39,11 +39,6 @@ class ProfileAdmin(admin.ModelAdmin):
         }),
     )
 
-    def legacy_school(self, obj):
-        """Display the legacy single school FK"""
-        return obj.school.name if obj.school else "—"
-    legacy_school.short_description = "Legacy School"
-    
     def legacy_role(self, obj):
         """Display the legacy role field"""
         return obj.get_role_display() if obj.role else "—"

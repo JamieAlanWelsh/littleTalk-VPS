@@ -83,10 +83,7 @@ class Profile(models.Model):
     school = models.ForeignKey(
         School, on_delete=models.SET_NULL, null=True, blank=True, related_name="users"
     )
-    # Support multiple schools per user. Keep the legacy `school` FK for
-    # backward-compatibility and a smooth migration path. New code should
-    # prefer `get_current_school()` which will choose a session-selected
-    # school, then the legacy FK, then the first school on the M2M.
+    # Support multiple schools per user via M2M relation.
     schools = models.ManyToManyField(School, blank=True, related_name="profiles")
     role = models.CharField(max_length=20, choices=Role.CHOICES, default=Role.PARENT)
 
@@ -112,16 +109,11 @@ class Profile(models.Model):
         """
         Return the active/selected school for this profile.
 
-        Preference order:
-         1. If a request is provided and `request.session['selected_school_id']`
-            refers to a school that this profile is associated with, return it.
-         2. The first school in the `schools` ManyToMany relation, if any.
-         3. The legacy `school` FK (keeps existing behaviour until we've migrated).
-         4. None
-
-        This helper allows minimal changes to call sites: replace
-        `request.user.profile.school` with `request.user.profile.get_current_school(request)`
-        when supporting multiple schools is required.
+          Preference order:
+            1. If a request is provided and `request.session['selected_school_id']`
+                refers to a school that this profile is associated with, return it.
+            2. The first school in the `schools` ManyToMany relation, if any.
+            3. None
         """
         # return None if parent
         if self.is_parent():
@@ -148,11 +140,7 @@ class Profile(models.Model):
         if first:
             return first
 
-        # 3) Legacy FK
-        if self.school:
-            return self.school
-
-        # 4) Nothing available
+        # 3) Nothing available
         return None
 
     def get_role_for_school(self, school):
