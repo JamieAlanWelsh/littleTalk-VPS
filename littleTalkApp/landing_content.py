@@ -23,6 +23,19 @@ LANDING_TESTIMONIALS = [
     },
     {
         "quote": (
+            "To another school or trust considering Chatterdillo, I would say: why wouldn't you? "
+            "It has saved staff countless hours in planning and preparation, and the way it has helped "
+            "children engage and want to come to sessions every day has been pivotal for us. Half "
+            "the battle with any intervention is encouraging children to take part, and Chatterdillo "
+            "has transformed that."
+        ),
+        "name": "Stephanie Awbery",
+        "role": "SEND manager",
+        "occupation": "Peterborough Diocese Education Trust",
+        "image": None,
+    },
+    {
+        "quote": (
             "Using the app for just 10 minutes a day with my 2 year old has made a real "
             "difference. His motivation to talk and engage has grown massively and it has "
             "become a fun part of our day."
