@@ -106,7 +106,7 @@
                     </li>
                     {% if request.user.profile.role != 'parent' %}
                         <li class="sidebar-school">
-                            <a href="{% url 'school_dashboard' %}">
+                            <a href="{% url 'school' %}">
                                 <img src="{% static 'icons/school.png' %}" alt="School" class="sidebar-icon">
                                 <span>School</span>
                             </a>

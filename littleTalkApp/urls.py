@@ -40,11 +40,11 @@ urlpatterns = [
     path('profile/edit_learner/confirm_delete_learner/<uuid:learner_uuid>/', views.confirm_delete_learner, name='confirm_delete_learner'),
 
     # Cohorts
-    path('cohorts/', views.cohort_list, name='cohort_list'),
-    path('cohorts/new/', views.cohort_create, name='cohort_create'),
+    path('school/cohorts/', views.cohort_list, name='cohort_list'),
+    path('school/cohorts/new/', views.cohort_create, name='cohort_create'),
     path('select-school/', views.select_school, name='select_school'),
-    path('cohorts/<int:cohort_id>/edit/', views.cohort_edit, name='cohort_edit'),
-    path('cohorts/<int:cohort_id>/delete/', views.cohort_delete, name='cohort_delete'),
+    path('school/cohorts/<int:cohort_id>/edit/', views.cohort_edit, name='cohort_edit'),
+    path('school/cohorts/<int:cohort_id>/delete/', views.cohort_delete, name='cohort_delete'),
 
     # Logbook
     path('logbook/', views.logbook, name='logbook'),
@@ -64,7 +64,7 @@ urlpatterns = [
     path('school-signup/', views.school_signup, name='school_signup'),
     path('school/invite-staff/', views.invite_staff, name='invite_staff'),
     path('accept-invite/<uuid:token>/', views.accept_invite, name='accept_invite'),
-    path('school/dashboard/', views.school_dashboard, name='school_dashboard'),
+    path('school/', views.school_dashboard, name='school'),
     path('request-join-school/', views.request_join_school, name='request_join_school'),
     path('school/invite-audit/', views.invite_audit_trail, name='invite_audit_trail'),
 

@@ -1251,7 +1251,7 @@ def invite_staff(request):
     if not (
         profile.is_admin_for_school(school) or profile.is_manager_for_school(school)
     ):
-        return redirect("school_dashboard")
+        return redirect("school")
 
     if request.method == "POST":
         form = StaffInviteForm(request.POST, school=school, user=request.user)
@@ -1623,7 +1623,7 @@ def school_dashboard(request):
             # Verify the target profile is associated with this school
             if not (target_profile.schools.filter(id=school.id).exists()):
                 messages.error(request, "This user is not associated with this school. Please notify support")
-                return redirect("school_dashboard")
+                return redirect("school")
 
             # Get the target user's current role for this school
             target_current_role = target_profile.get_role_for_school(school)
@@ -1653,7 +1653,7 @@ def school_dashboard(request):
                 messages.success(request, f"{target_profile.first_name}'s role updated")
             else:
                 messages.error(request, "Invalid role selected.")
-            return redirect("school_dashboard")
+            return redirect("school")
 
         elif "resend_invite" in request.POST:
             invite_id = request.POST.get("invite_id")
@@ -1664,7 +1664,7 @@ def school_dashboard(request):
             # Send invite again
             send_invite_email(invite, school, request)
             messages.success(request, f"Invite resent to {invite.email}.")
-            return redirect("school_dashboard")
+            return redirect("school")
 
         elif "withdraw_invite" in request.POST:
             invite_id = request.POST.get("invite_id")
@@ -1675,7 +1675,7 @@ def school_dashboard(request):
             invite.withdrawn = True
             invite.save()
             messages.success(request, f"Invite to {invite.email} withdrawn.")
-            return redirect("school_dashboard")
+            return redirect("school")
 
         elif (
             "approve_join_request" in request.POST
@@ -1709,7 +1709,7 @@ def school_dashboard(request):
             join_request.resolved_by = request.user
             join_request.resolved_at = timezone.now()
             join_request.save()
-            return redirect("school_dashboard")
+            return redirect("school")
 
     # Only show profiles associated with this school that are staff-like roles.
     # Parent accounts may be associated with a school when creating learners;
@@ -1786,7 +1786,7 @@ def invite_audit_trail(request):
     if not (
         request.user.profile.is_admin_for_school(school) or request.user.profile.is_manager_for_school(school)
     ):
-        return redirect("school_dashboard")
+        return redirect("school")
 
 
     invites = (

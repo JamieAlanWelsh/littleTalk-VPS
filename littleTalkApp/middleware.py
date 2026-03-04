@@ -20,6 +20,7 @@ class AccessControlMiddleware(MiddlewareMixin):
             reverse("login"),
             reverse("logout"),
             reverse("profile"),
+            reverse("school"),
             reverse("select_school"),
             reverse("select_learner"),
             reverse("subscribe"),

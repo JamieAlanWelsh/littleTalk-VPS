@@ -10,7 +10,7 @@
         {% if show_school_switcher %}
             <form method="post" action="{% url 'select_school' %}" class="form-inline">
                 {% csrf_token %}
-                <input type="hidden" name="next" value="{% url 'school_dashboard' %}">
+                <input type="hidden" name="next" value="{% url 'school' %}">
                 <label class="header-label" for="school-select">School:</label>
                 <select id="school-select" name="school_id" class="select" onchange="this.form.submit()">
                     {% for school in available_schools %}
