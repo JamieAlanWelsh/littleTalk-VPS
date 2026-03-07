@@ -164,9 +164,10 @@ body {
 .content-bar-heading {
     width: 100%;
     text-align: center;
-    font-size: 2rem;
+    font-size: 2.5rem;
     font-weight: 700;
     color: var(--font-color);
+    margin-top: 0;
     margin-bottom: 4rem;
 }
 
@@ -251,9 +252,10 @@ body {
 }
 
 .split-heading {
-    font-size: 2rem;
+    font-size: 2.5rem;
     font-weight: 700;
-    margin-bottom: 1rem;
+    margin-top: 0;
+    margin-bottom: 2rem;
     color: var(--font-color);
     line-height: 1.4;
 }
