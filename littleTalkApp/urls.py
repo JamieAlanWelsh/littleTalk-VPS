@@ -2,29 +2,32 @@ from django.urls import path
 from django.contrib.auth import views as auth_views
 from . import views
 from .views import UpdateLearnerExpAPIView
+from .views_modules import assessment as assessment_views
+from .views_modules import public as public_views
+from .views_modules import subscription as subscription_views
 
 urlpatterns = [
     # Landing content
-    path('', views.home, name='home'),
-    path('exercise/<str:game_name>/', views.game_description, name='game_description'),
+    path('', public_views.home, name='home'),
+    path('exercise/<str:game_name>/', public_views.game_description, name='game_description'),
     path('practise/', views.practise, name='practise'),
-    path('tips/', views.tips, name='tips'),
-    path('method/', views.method, name='method'),
-    path('about/', views.about, name='about'),
-    path('terms/', views.terms_and_conditions, name='terms'),
-    path('privacy/', views.privacy_policy, name='privacy'),
-    path('data-policy/', views.data_policy, name='data_policy'),
+    path('tips/', public_views.tips, name='tips'),
+    path('method/', public_views.method, name='method'),
+    path('about/', public_views.about, name='about'),
+    path('terms/', public_views.terms_and_conditions, name='terms'),
+    path('privacy/', public_views.privacy_policy, name='privacy'),
+    path('data-policy/', public_views.data_policy, name='data_policy'),
 
     # Support
-    path('support/', views.support, name='support'),
-    path('support/send-email/', views.send_support_email, name='send_support_email'),
+    path('support/', public_views.support, name='support'),
+    path('support/send-email/', public_views.send_support_email, name='send_support_email'),
 
     # Assessment
-    path('screener/', views.screener, name='screener'),
-    path('screener/start/', views.start_assessment, name='start_assessment'),
-    path('screener/save-all/', views.save_all_assessment_answers, name='save_all_assessment_answers'),
-    path('screener/save/', views.save_assessment, name='save_assessment'),
-    path('screener/summary/', views.assessment_summary, name='assessment_summary'),
+    path('screener/', assessment_views.screener, name='screener'),
+    path('screener/start/', assessment_views.start_assessment, name='start_assessment'),
+    path('screener/save-all/', assessment_views.save_all_assessment_answers, name='save_all_assessment_answers'),
+    path('screener/save/', assessment_views.save_assessment, name='save_assessment'),
+    path('screener/summary/', assessment_views.assessment_summary, name='assessment_summary'),
 
     # Login and logout URLs
     path('login/', views.CustomLoginView.as_view(), name='login'),
@@ -78,14 +81,14 @@ urlpatterns = [
     path('add-learner/pac', views.add_learner_via_pac, name='add_pac_learner'),
 
     # Subcription routes
-    path('subscribe/', views.subscribe, name='subscribe'),
-    path('license-expired/', views.license_expired, name='license_expired'),
+    path('subscribe/', subscription_views.subscribe, name='subscribe'),
+    path('license-expired/', subscription_views.license_expired, name='license_expired'),
 
     # Stripe Webhook to activate and manage subscription
-    path('webhooks/stripe/', views.stripe_webhook, name='stripe_webhook'),
-    path('subscribe/checkout/', views.create_checkout_session, name='create_checkout_session'),
-    path('subscribe/success/', views.subscribe_success, name='subscribe_success'),
-    path('subscribe/manage/', views.manage_subscription, name='manage_subscription'),
+    path('webhooks/stripe/', subscription_views.stripe_webhook, name='stripe_webhook'),
+    path('subscribe/checkout/', subscription_views.create_checkout_session, name='create_checkout_session'),
+    path('subscribe/success/', subscription_views.subscribe_success, name='subscribe_success'),
+    path('subscribe/manage/', subscription_views.manage_subscription, name='manage_subscription'),
 
     # API endpoints
     path('api/learners/<uuid:learner_uuid>/update-exp/', UpdateLearnerExpAPIView.as_view(), name='update_learner_exp'),
