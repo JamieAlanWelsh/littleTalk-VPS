@@ -103,7 +103,7 @@ def log_entry_detail(request, entry_id):
     if not can_edit_or_delete_log(request.user, log_entry):
         return redirect("logbook")
 
-    return render(request, "logbook/log_entry_detail.html", {"log_entry": log_entry})
+    return render(request, "logbooks/log_entry_detail.html", {"log_entry": log_entry})
 
 
 @login_required

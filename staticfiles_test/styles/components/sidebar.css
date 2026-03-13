@@ -1,0 +1,231 @@
+/* Sidebar */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 220px;
+    height: 100vh;
+    /* padding: 30px 10px 10px; */
+    padding: 20px;
+    background-color: var(--sidebar-color);
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    z-index: 1000; /* Ensures sidebar is on top of other content */
+}
+
+.sidebar-logo {
+    width: 100%;
+    text-align: left;
+    margin-bottom: 30px;
+    margin-top: 10px;
+}
+
+.sidebar-logo img {
+    width: 160px;
+    height: auto;
+}
+
+.sidebar-menu {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-menu li {
+    margin-bottom: 15px;
+}
+
+.sidebar-menu a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: var(--font-color);
+    font-family: var(--font-outfit);
+    font-size: 20px;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: var(--border-radius-light);
+    transition: background 0.3s ease-in-out;
+}
+
+.sidebar-menu a:hover {
+    background: rgba(0, 0, 0, 0.073);
+}
+
+.sidebar-icon {
+    width: 40px;
+    height: 40px;
+    margin-right: 20px; /* Space between icon and text */
+}
+
+/* More Dropdown Menu */
+.sidebar-more {
+    position: relative;
+    margin-top: auto; /* Push to bottom of sidebar */
+}
+
+.more-trigger {
+    cursor: pointer;
+}
+
+.more-dropdown {
+    display: none;
+    position: absolute;
+    left: calc(100% - 5px);
+    bottom: 0;
+    background-color: white;
+    border-radius: var(--border-radius-light);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    min-width: 180px;
+    z-index: 1001;
+    overflow: hidden;
+}
+
+.sidebar-more:hover .more-dropdown,
+.more-dropdown:hover {
+    display: block;
+}
+
+.more-dropdown .dropdown-item {
+    display: block;
+    padding: 15px 20px;
+    color: var(--font-color);
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background-color 0.2s;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    cursor: pointer;
+    font-family: var(--font-outfit);
+}
+
+.more-dropdown .dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.more-dropdown .dropdown-item:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.more-dropdown .dropdown-item span {
+    margin-left: 0;
+}
+
+/* Responsive Sidebar - Mobile View */
+@media (max-width: 1080px) {
+    .layout {
+        flex-direction: column;
+    }
+
+    .layout.with-sidebar .main-content {
+        margin-left: 0;
+        margin-bottom: 120px;
+    }
+
+    .main-content {
+        justify-content: center;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: 110px;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        top: auto;
+        background-color: var(--sidebar-color);
+        box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        padding: 0;
+        padding-top: 20px;
+    }
+
+    .sidebar-logo {
+        display: none; /* Hide logo on mobile */
+    }
+
+    .sidebar-menu {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+    .sidebar-menu li {
+        flex-grow: 1;
+        text-align: center;
+        margin-bottom: 0;
+    }
+
+    .sidebar-menu a {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 0;
+        font-size: 14px; /* Smaller text for mobile */
+        margin-bottom: 10px;
+    }
+
+    .sidebar-icon {
+        width: 70px;
+        height: 70px;
+        margin-right: 0; /* Remove extra spacing */
+        margin-bottom: 5px; /* Add space between icon and text */
+    }
+
+    /* Mobile More Dropdown */
+    .more-dropdown {
+        left: auto;
+        right: 0;
+        bottom: 100%;
+        margin-left: 0;
+        margin-bottom: 10px;
+    }
+}
+
+@media (max-width: 600px) {
+    .sidebar {
+        height: 80px;
+    }
+
+    .sidebar-school,
+    .sidebar-screener,
+    .sidebar-dashboard {
+        display: none !important;
+    }
+
+    .sidebar-icon {
+        width: 50px;
+        height: 50px;
+        margin-right: 0; /* Remove extra spacing */
+        margin-bottom: 5px; /* Add space between icon and text */
+    }
+
+    .sidebar-menu a {
+        font-size: 13px;
+    }
+
+    /* Mobile More Dropdown - Small screens */
+    .more-dropdown {
+        min-width: 150px;
+    }
+
+    .more-dropdown .dropdown-item {
+        padding: 12px 15px;
+        font-size: 14px;
+    }
+}
