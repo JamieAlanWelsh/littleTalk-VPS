@@ -6,8 +6,8 @@ from django.shortcuts import redirect, render
 from honeypot.decorators import check_honeypot
 
 from littleTalkApp.decorators import valid_game_required
-from littleTalkApp.game_data import GAME_DESCRIPTIONS
-from littleTalkApp.landing_content import get_landing_testimonials
+from littleTalkApp.content.game_descriptions import GAME_DESCRIPTIONS
+from littleTalkApp.content.testimonials import get_landing_testimonials
 
 
 def home(request):

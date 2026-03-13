@@ -1,4 +1,4 @@
-from .game_data import GAME_DESCRIPTIONS
+from littleTalkApp.content.game_descriptions import GAME_DESCRIPTIONS
 
 colourful_semantics_title = GAME_DESCRIPTIONS['colourful_semantics']['title']
 think_and_find_title = GAME_DESCRIPTIONS['think_and_find']['title']

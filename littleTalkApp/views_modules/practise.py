@@ -1,8 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
-from littleTalkApp.assessment_qs import RECOMMENDATIONS
-from littleTalkApp.game_data import GAME_DESCRIPTIONS
+from littleTalkApp.content.assessments import RECOMMENDATIONS
+from littleTalkApp.content.game_descriptions import GAME_DESCRIPTIONS
 from littleTalkApp.models import Learner
 
 

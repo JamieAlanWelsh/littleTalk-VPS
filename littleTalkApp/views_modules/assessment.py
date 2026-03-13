@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 
-from littleTalkApp.assessment_qs import QUESTIONS
+from littleTalkApp.content.assessments import QUESTIONS
 from littleTalkApp.models import Cohort, Learner, LearnerAssessmentAnswer
 
 
