@@ -4,7 +4,7 @@ from .views_modules import api as api_views
 from .views_modules import auth as auth_app_views
 from .views_modules import assessment as assessment_views
 from .views_modules import dashboard as dashboard_views
-from .views_modules import gameplay as gameplay_views
+from .views_modules import practise as practise_views
 from .views_modules import logbook as logbook_views
 from .views_modules import parent_access as parent_access_views
 from .views_modules import profile as profile_views
@@ -17,7 +17,7 @@ urlpatterns = [
     # Landing content
     path('', public_views.home, name='home'),
     path('exercise/<str:game_name>/', public_views.game_description, name='game_description'),
-    path('practise/', gameplay_views.practise, name='practise'),
+    path('practise/', practise_views.practise, name='practise'),
     path('tips/', public_views.tips, name='tips'),
     path('method/', public_views.method, name='method'),
     path('about/', public_views.about, name='about'),
@@ -38,8 +38,6 @@ urlpatterns = [
 
     # Login and logout URLs
     path('login/', auth_app_views.CustomLoginView.as_view(), name='login'),
-    # path('logout/', views.custom_logout_view, name='logout'),
-    # path('register/', views.register, name='register'),
     path('account-setup/', auth_app_views.account_setup_view, name='account_setup'),
 
     # Profile and adding learners

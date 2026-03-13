@@ -9,7 +9,7 @@ from littleTalkApp.views_modules.api import *
 from littleTalkApp.views_modules.auth import *
 from littleTalkApp.views_modules.assessment import *
 from littleTalkApp.views_modules.dashboard import *
-from littleTalkApp.views_modules.gameplay import *
+from littleTalkApp.views_modules.practise import *
 from littleTalkApp.views_modules.logbook import *
 from littleTalkApp.views_modules.parent_access import *
 from littleTalkApp.views_modules.profile import *
