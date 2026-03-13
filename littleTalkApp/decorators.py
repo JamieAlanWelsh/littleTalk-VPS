@@ -2,7 +2,7 @@ from django.http import Http404
 from functools import wraps
 
 # Use your actual game list / lookup
-from .content.game_descriptions import GAME_DESCRIPTIONS
+from .content import GAME_DESCRIPTIONS
 
 def valid_game_required(view_func):
     @wraps(view_func)
