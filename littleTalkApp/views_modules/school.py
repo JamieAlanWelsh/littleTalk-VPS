@@ -1,7 +1,7 @@
 import uuid
 
 from django.contrib import messages
-from django.contrib.auth import get_user_model, login
+from django.contrib.auth import authenticate, get_user_model, login
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
@@ -9,8 +9,14 @@ from django.utils import timezone
 
 from honeypot.decorators import check_honeypot
 
-from littleTalkApp.forms import AcceptInviteForm, JoinRequestForm, SchoolSignupForm, StaffInviteForm
-from littleTalkApp.models import JoinRequest, Profile, Role, School, SchoolMembership, StaffInvite
+from littleTalkApp.forms import (
+    AcceptInviteForm,
+    CohortForm,
+    JoinRequestForm,
+    SchoolSignupForm,
+    StaffInviteForm,
+)
+from littleTalkApp.models import Cohort, JoinRequest, Profile, Role, School, SchoolMembership, StaffInvite
 from littleTalkApp.utilites import hash_email, send_invite_email, send_school_welcome_email
 
 
@@ -357,6 +363,104 @@ def invite_audit_trail(request):
             "now": timezone.now(),
         },
     )
+
+
+@login_required
+def cohort_list(request):
+    school = request.user.profile.get_current_school(request)
+    if not (
+        request.user.profile.is_admin_for_school(school)
+        or request.user.profile.is_manager_for_school(school)
+    ):
+        return redirect("profile")
+
+    cohorts = Cohort.objects.filter(school=school).order_by("name")
+    return render(
+        request,
+        "school/cohorts/cohort_list.html",
+        {
+            "cohorts": cohorts,
+            "can_edit_cohorts": request.user.profile.is_admin_for_school(school)
+            or request.user.profile.is_manager_for_school(school),
+        },
+    )
+
+
+@login_required
+def cohort_create(request):
+    school = request.user.profile.get_current_school(request)
+    if not (
+        request.user.profile.is_admin_for_school(school)
+        or request.user.profile.is_manager_for_school(school)
+    ):
+        return redirect("profile")
+
+    if request.method == "POST":
+        form = CohortForm(request.POST)
+        if form.is_valid():
+            cohort = form.save(commit=False)
+            cohort.school = school
+            cohort.save()
+            return redirect("cohort_list")
+    else:
+        form = CohortForm()
+
+    return render(
+        request, "school/cohorts/cohort_form.html", {"form": form, "is_editing": False}
+    )
+
+
+@login_required
+def cohort_edit(request, cohort_id):
+    school = request.user.profile.get_current_school(request)
+    if not (
+        request.user.profile.is_admin_for_school(school)
+        or request.user.profile.is_manager_for_school(school)
+    ):
+        return redirect("cohort_list")
+
+    cohort = get_object_or_404(Cohort, id=cohort_id, school=school)
+
+    if request.method == "POST":
+        form = CohortForm(request.POST, instance=cohort)
+        if form.is_valid():
+            form.save()
+            return redirect("cohort_list")
+    else:
+        form = CohortForm(instance=cohort)
+
+    return render(
+        request, "school/cohorts/cohort_form.html", {"form": form, "is_editing": True}
+    )
+
+
+@login_required
+def cohort_delete(request, cohort_id):
+    school = request.user.profile.get_current_school(request)
+    if not (
+        request.user.profile.is_admin_for_school(school)
+        or request.user.profile.is_manager_for_school(school)
+    ):
+        return redirect("cohort_list")
+
+    cohort = get_object_or_404(Cohort, id=cohort_id, school=school)
+
+    if request.method == "POST":
+        password = request.POST.get("password")
+        user = authenticate(username=request.user.username, password=password)
+
+        if user is not None:
+            cohort.delete()
+            return redirect("cohort_list")
+
+        error_message = "Incorrect password. Please try again."
+        return render(
+            request,
+            "school/cohorts/cohort_confirm_delete.html",
+            {"cohort": cohort, "error_message": error_message},
+        )
+
+    return render(request, "school/cohorts/cohort_confirm_delete.html", {"cohort": cohort})
 
 
 @login_required
