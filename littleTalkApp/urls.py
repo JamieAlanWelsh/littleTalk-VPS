@@ -1,16 +1,23 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
-from . import views
-from .views import UpdateLearnerExpAPIView
+from .views_modules import api as api_views
+from .views_modules import auth as auth_app_views
 from .views_modules import assessment as assessment_views
+from .views_modules import dashboard as dashboard_views
+from .views_modules import gameplay as gameplay_views
+from .views_modules import logbook as logbook_views
+from .views_modules import parent_access as parent_access_views
+from .views_modules import profile as profile_views
 from .views_modules import public as public_views
+from .views_modules import school as school_views
+from .views_modules import settings_views as settings_app_views
 from .views_modules import subscription as subscription_views
 
 urlpatterns = [
     # Landing content
     path('', public_views.home, name='home'),
     path('exercise/<str:game_name>/', public_views.game_description, name='game_description'),
-    path('practise/', views.practise, name='practise'),
+    path('practise/', gameplay_views.practise, name='practise'),
     path('tips/', public_views.tips, name='tips'),
     path('method/', public_views.method, name='method'),
     path('about/', public_views.about, name='about'),
@@ -30,55 +37,55 @@ urlpatterns = [
     path('screener/summary/', assessment_views.assessment_summary, name='assessment_summary'),
 
     # Login and logout URLs
-    path('login/', views.CustomLoginView.as_view(), name='login'),
+    path('login/', auth_app_views.CustomLoginView.as_view(), name='login'),
     # path('logout/', views.custom_logout_view, name='logout'),
     # path('register/', views.register, name='register'),
-    path('account-setup/', views.account_setup_view, name='account_setup'),
+    path('account-setup/', auth_app_views.account_setup_view, name='account_setup'),
 
     # Profile and adding learners
-    path('profile/', views.profile, name='profile'),
-    path('add-learner/', views.add_learner, name='add_learner'),
-    path('select-learner/', views.select_learner, name='select_learner'),
-    path('profile/edit_learner/<uuid:learner_uuid>/', views.edit_learner, name='edit_learner'),
-    path('profile/edit_learner/confirm_delete_learner/<uuid:learner_uuid>/', views.confirm_delete_learner, name='confirm_delete_learner'),
+    path('profile/', profile_views.profile, name='profile'),
+    path('add-learner/', profile_views.add_learner, name='add_learner'),
+    path('select-learner/', profile_views.select_learner, name='select_learner'),
+    path('profile/edit_learner/<uuid:learner_uuid>/', profile_views.edit_learner, name='edit_learner'),
+    path('profile/edit_learner/confirm_delete_learner/<uuid:learner_uuid>/', profile_views.confirm_delete_learner, name='confirm_delete_learner'),
 
     # Cohorts
-    path('school/cohorts/', views.cohort_list, name='cohort_list'),
-    path('school/cohorts/new/', views.cohort_create, name='cohort_create'),
-    path('select-school/', views.select_school, name='select_school'),
-    path('school/cohorts/<int:cohort_id>/edit/', views.cohort_edit, name='cohort_edit'),
-    path('school/cohorts/<int:cohort_id>/delete/', views.cohort_delete, name='cohort_delete'),
+    path('school/cohorts/', profile_views.cohort_list, name='cohort_list'),
+    path('school/cohorts/new/', profile_views.cohort_create, name='cohort_create'),
+    path('select-school/', school_views.select_school, name='select_school'),
+    path('school/cohorts/<int:cohort_id>/edit/', profile_views.cohort_edit, name='cohort_edit'),
+    path('school/cohorts/<int:cohort_id>/delete/', profile_views.cohort_delete, name='cohort_delete'),
 
     # Logbook
-    path('logbook/', views.logbook, name='logbook'),
-    path('logbook/new/', views.new_log_entry, name='new_log_entry'),
-    path('logbook/<int:entry_id>/', views.log_entry_detail, name='log_entry_detail'),
-    path("logbook/edit/<int:entry_id>/", views.edit_log_entry, name="edit_log_entry"),
-    path('logbook/delete/<int:entry_id>/', views.delete_log_entry, name='delete_log_entry'), 
-    path("logbook/summary/<uuid:learner_uuid>/", views.generate_summary, name="generate_summary"),
+    path('logbook/', logbook_views.logbook, name='logbook'),
+    path('logbook/new/', logbook_views.new_log_entry, name='new_log_entry'),
+    path('logbook/<int:entry_id>/', logbook_views.log_entry_detail, name='log_entry_detail'),
+    path("logbook/edit/<int:entry_id>/", logbook_views.edit_log_entry, name="edit_log_entry"),
+    path('logbook/delete/<int:entry_id>/', logbook_views.delete_log_entry, name='delete_log_entry'), 
+    path("logbook/summary/<uuid:learner_uuid>/", logbook_views.generate_summary, name="generate_summary"),
 
     # Settings
-    path('settings/', views.settings_view, name='settings'),
-    path('settings/change-user-details/', views.change_user_details, name='change_user_details'),
-    path('settings/change-password/', views.change_password, name='change_password'),
+    path('settings/', settings_app_views.settings_view, name='settings'),
+    path('settings/change-user-details/', settings_app_views.change_user_details, name='change_user_details'),
+    path('settings/change-password/', settings_app_views.change_password, name='change_password'),
     path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
 
     # School
-    path('school-signup/', views.school_signup, name='school_signup'),
-    path('school/invite-staff/', views.invite_staff, name='invite_staff'),
-    path('accept-invite/<uuid:token>/', views.accept_invite, name='accept_invite'),
-    path('school/', views.school_dashboard, name='school'),
-    path('request-join-school/', views.request_join_school, name='request_join_school'),
-    path('school/invite-audit/', views.invite_audit_trail, name='invite_audit_trail'),
+    path('school-signup/', school_views.school_signup, name='school_signup'),
+    path('school/invite-staff/', school_views.invite_staff, name='invite_staff'),
+    path('accept-invite/<uuid:token>/', school_views.accept_invite, name='accept_invite'),
+    path('school/', school_views.school_dashboard, name='school'),
+    path('request-join-school/', school_views.request_join_school, name='request_join_school'),
+    path('school/invite-audit/', school_views.invite_audit_trail, name='invite_audit_trail'),
 
     # Generate parent token
-    path('profile/parent-token/<uuid:learner_uuid>/', views.view_parent_token, name='view_parent_token'),
-    path('profile/generate-token/<uuid:learner_uuid>/', views.generate_parent_token, name='generate_parent_token'),
-    path('profile/parent-token/<uuid:learner_uuid>/email/', views.email_parent_token, name='email_parent_token'),
+    path('profile/parent-token/<uuid:learner_uuid>/', parent_access_views.view_parent_token, name='view_parent_token'),
+    path('profile/generate-token/<uuid:learner_uuid>/', parent_access_views.generate_parent_token, name='generate_parent_token'),
+    path('profile/parent-token/<uuid:learner_uuid>/email/', parent_access_views.email_parent_token, name='email_parent_token'),
 
     # Parent
-    path('parent-signup/', views.parent_signup_view, name='parent_signup'),
-    path('add-learner/pac', views.add_learner_via_pac, name='add_pac_learner'),
+    path('parent-signup/', parent_access_views.parent_signup_view, name='parent_signup'),
+    path('add-learner/pac', parent_access_views.add_learner_via_pac, name='add_pac_learner'),
 
     # Subcription routes
     path('subscribe/', subscription_views.subscribe, name='subscribe'),
@@ -91,12 +98,12 @@ urlpatterns = [
     path('subscribe/manage/', subscription_views.manage_subscription, name='manage_subscription'),
 
     # API endpoints
-    path('api/learners/<uuid:learner_uuid>/update-exp/', UpdateLearnerExpAPIView.as_view(), name='update_learner_exp'),
-    path('api/selected-learner/', views.get_selected_learner, name='get_selected_learner'),
-    path('api/targets/', views.create_target, name='create_target'),
-    path('api/targets/<int:target_id>/', views.target_detail, name='target_detail'),
+    path('api/learners/<uuid:learner_uuid>/update-exp/', api_views.UpdateLearnerExpAPIView.as_view(), name='update_learner_exp'),
+    path('api/selected-learner/', api_views.get_selected_learner, name='get_selected_learner'),
+    path('api/targets/', api_views.create_target, name='create_target'),
+    path('api/targets/<int:target_id>/', api_views.target_detail, name='target_detail'),
 
     # Dashboard
-    path('dashboard/learner/', views.learner_dashboard, name='learner_dashboard'),
-    path('api/dashboard/progress-data/', views.learner_progress_data, name='learner_progress_data'),
+    path('dashboard/learner/', dashboard_views.learner_dashboard, name='learner_dashboard'),
+    path('api/dashboard/progress-data/', dashboard_views.learner_progress_data, name='learner_progress_data'),
 ]
