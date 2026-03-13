@@ -48,7 +48,7 @@ def view_parent_token(request, learner_uuid):
 
     return render(
         request,
-        "parent_token/view_token.html",
+        "parent_access/view_token.html",
         {
             "learner": learner,
             "token": token,
@@ -130,7 +130,7 @@ def parent_signup_view(request):
 
     return render(
         request,
-        "parent/parent_signup.html",
+        "parent_access/parent_signup.html",
         {
             "form": form,
             "standalone": not prefill_code,
@@ -170,4 +170,4 @@ def add_learner_via_pac(request):
     else:
         form = ParentAccessCodeForm()
 
-    return render(request, "parent/add_learner_via_pac.html", {"form": form})
+    return render(request, "parent_access/add_learner_via_pac.html", {"form": form})

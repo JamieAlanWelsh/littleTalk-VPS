@@ -28,4 +28,4 @@ def practise(request):
         "game_descriptions": GAME_DESCRIPTIONS,
     }
 
-    return render(request, "practise.html", context)
+    return render(request, "practise/practise.html", context)

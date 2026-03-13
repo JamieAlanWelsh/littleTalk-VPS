@@ -13,7 +13,7 @@ def settings_view(request):
 
     return render(
         request,
-        "settings.html",
+        "settings_views/settings.html",
         {"user_form": user_form, "password_form": password_form},
     )
 
@@ -36,7 +36,7 @@ def change_user_details(request):
 
     return render(
         request,
-        "settings.html",
+        "settings_views/settings.html",
         {"user_form": user_form, "password_form": password_form},
     )
 
@@ -60,7 +60,7 @@ def change_password(request):
 
         return render(
             request,
-            "settings.html",
+            "settings_views/settings.html",
             {"user_form": user_form, "password_form": password_form},
         )
 
@@ -68,6 +68,6 @@ def change_password(request):
     password_form = PasswordUpdateForm(user=request.user)
     return render(
         request,
-        "settings.html",
+        "settings_views/settings.html",
         {"user_form": user_form, "password_form": password_form},
     )

@@ -15,12 +15,12 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 
 def subscribe(request):
     request.hide_sidebar = True
-    return render(request, "lockout/subscribe.html")
+    return render(request, "subscription/subscribe.html")
 
 
 def license_expired(request):
     request.hide_sidebar = True
-    return render(request, "lockout/license_expired.html")
+    return render(request, "subscription/license_expired.html")
 
 
 @login_required
@@ -80,7 +80,7 @@ def subscribe_success(request):
     messages.info(
         request, "Subscription activated successfully. Welcome to the community!"
     )
-    return render(request, "subscribe/success.html")
+    return render(request, "subscription/success.html")
 
 
 @login_required

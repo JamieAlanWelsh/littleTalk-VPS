@@ -206,7 +206,7 @@ def cohort_list(request):
     cohorts = Cohort.objects.filter(school=school).order_by("name")
     return render(
         request,
-        "cohorts/cohort_list.html",
+        "profile/cohorts/cohort_list.html",
         {
             "cohorts": cohorts,
             "can_edit_cohorts": request.user.profile.is_admin_for_school(school)
@@ -235,7 +235,7 @@ def cohort_create(request):
         form = CohortForm()
 
     return render(
-        request, "cohorts/cohort_form.html", {"form": form, "is_editing": False}
+        request, "profile/cohorts/cohort_form.html", {"form": form, "is_editing": False}
     )
 
 
@@ -259,7 +259,7 @@ def cohort_edit(request, cohort_id):
         form = CohortForm(instance=cohort)
 
     return render(
-        request, "cohorts/cohort_form.html", {"form": form, "is_editing": True}
+        request, "profile/cohorts/cohort_form.html", {"form": form, "is_editing": True}
     )
 
 
@@ -285,8 +285,8 @@ def cohort_delete(request, cohort_id):
         error_message = "Incorrect password. Please try again."
         return render(
             request,
-            "cohorts/cohort_confirm_delete.html",
+            "profile/cohorts/cohort_confirm_delete.html",
             {"cohort": cohort, "error_message": error_message},
         )
 
-    return render(request, "cohorts/cohort_confirm_delete.html", {"cohort": cohort})
+    return render(request, "profile/cohorts/cohort_confirm_delete.html", {"cohort": cohort})

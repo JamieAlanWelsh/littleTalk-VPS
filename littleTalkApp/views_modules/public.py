@@ -17,7 +17,7 @@ def home(request):
 
     return render(
         request,
-        "landing.html",
+        "public/landing.html",
         {
             "testimonials": get_landing_testimonials(),
         },
@@ -29,7 +29,7 @@ def game_description(request, game_name):
     game = GAME_DESCRIPTIONS.get(game_name, None)
     return render(
         request,
-        "game_description.html",
+        "public/game_description.html",
         {
             "game": game,
             "game_descriptions": GAME_DESCRIPTIONS,
@@ -40,7 +40,7 @@ def game_description(request, game_name):
 
 def support(request):
     request.hide_sidebar = True
-    return render(request, "support.html", {})
+    return render(request, "public/support.html", {})
 
 
 @check_honeypot
@@ -69,30 +69,30 @@ def send_support_email(request):
 
 
 def tips(request):
-    return render(request, "tips.html", {})
+    return render(request, "public/tips.html", {})
 
 
 def method(request):
     context = {
         "game_descriptions": GAME_DESCRIPTIONS,
     }
-    return render(request, "method.html", context)
+    return render(request, "public/method.html", context)
 
 
 def about(request):
-    return render(request, "about.html")
+    return render(request, "public/about.html")
 
 
 def terms_and_conditions(request):
     request.hide_sidebar = True
-    return render(request, "legal/terms.html")
+    return render(request, "public/legal/terms.html")
 
 
 def privacy_policy(request):
     request.hide_sidebar = True
-    return render(request, "legal/privacy.html")
+    return render(request, "public/legal/privacy.html")
 
 
 def data_policy(request):
     request.hide_sidebar = True
-    return render(request, "legal/data-policy.html")
+    return render(request, "public/legal/data-policy.html")

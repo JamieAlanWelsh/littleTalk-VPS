@@ -56,7 +56,7 @@ def school_signup(request):
     else:
         form = SchoolSignupForm()
 
-    return render(request, "registration/school_signup.html", {"form": form})
+    return render(request, "school/school_signup.html", {"form": form})
 
 
 @check_honeypot

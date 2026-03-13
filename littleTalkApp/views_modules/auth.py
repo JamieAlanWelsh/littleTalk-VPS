@@ -5,7 +5,7 @@ from littleTalkApp.forms import CustomAuthenticationForm
 
 
 class CustomLoginView(LoginView):
-    template_name = "registration/login.html"
+    template_name = "auth/login.html"
     redirect_authenticated_user = True
     authentication_form = CustomAuthenticationForm
 
@@ -16,4 +16,4 @@ class CustomLoginView(LoginView):
 
 def account_setup_view(request):
     request.hide_sidebar = True
-    return render(request, "registration/account_setup.html")
+    return render(request, "auth/account_setup.html")
