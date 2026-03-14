@@ -39,9 +39,9 @@ class AssessmentTypicalFlowTests(BaseFlowTestMixin, TestCase):
             content_type="application/json",
         )
         self.assertEqual(save_all_response.status_code, 200)
-
-        save_response = self.client.get(reverse("save_assessment"), follow=True)
-        self.assertEqual(save_response.status_code, 200)
+        self.assertEqual(
+            save_all_response.json().get("redirect_url"), reverse("assessment_summary")
+        )
 
         self.assertGreater(LearnerAssessmentAnswer.objects.filter(learner=learner).count(), 0)
 

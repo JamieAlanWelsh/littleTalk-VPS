@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
+from django.urls import reverse
 
 from littleTalkApp.content import QUESTIONS
 from littleTalkApp.models import Cohort, Learner, LearnerAssessmentAnswer
@@ -131,9 +132,11 @@ def start_assessment(request):
 
 @login_required
 def save_all_assessment_answers(request):
-    """JSON API (POST): persists the submitted assessment answers to the session and
-    marks the assessment as complete. Returns a JSON redirect URL pointing to the
-    save endpoint so the client can finalise and store results.
+    """JSON API (POST): persists submitted screener answers directly to the database.
+
+    Uses the currently selected learner from session state, saves answers via
+    save_assessment_for_learner, clears any temporary assessment session keys,
+    and returns a JSON redirect URL to the summary page.
     """
 
     if request.method != "POST":
@@ -144,10 +147,29 @@ def save_all_assessment_answers(request):
     except json.JSONDecodeError:
         return JsonResponse({"error": "Invalid JSON"}, status=400)
 
-    request.session["assessment_answers"] = data
-    request.session["assessment_complete"] = True
+    selected_learner_id = request.session.get("selected_learner_id")
+    selected_learner = None
+    if selected_learner_id:
+        selected_learner = Learner.objects.filter(id=selected_learner_id).first()
 
-    return JsonResponse({"redirect_url": "/screener/save/"})
+    if not selected_learner:
+        return JsonResponse({"error": "No learner selected"}, status=400)
+
+    if not isinstance(data, dict) or not data:
+        return JsonResponse({"error": "No answers provided"}, status=400)
+
+    assessment_session_id = request.session.get("assessment_session_id")
+    save_assessment_for_learner(
+        selected_learner, data, session_id=assessment_session_id
+    )
+
+    request.session.pop("assessment_answers", None)
+    request.session.pop("assessment_complete", None)
+    request.session.pop("current_question_index", None)
+    request.session.pop("previous_question_id", None)
+    request.session.pop("assessment_session_id", None)
+
+    return JsonResponse({"redirect_url": reverse("assessment_summary")})
 
 
 @login_required
@@ -372,38 +394,3 @@ def assessment_summary(request):
         context,
     )
 
-
-@login_required
-def save_assessment(request):
-    """Saves the in-progress assessment from the session to the database.
-
-    Reads answers stored in the session by save_all_assessment_answers, delegates
-    persistence to save_assessment_for_learner, clears all assessment session keys,
-    then redirects to assessment_summary.
-    """
-
-    selected_learner_id = request.session.get("selected_learner_id")
-
-    if selected_learner_id:
-        selected_learner = Learner.objects.filter(id=selected_learner_id).first()
-    else:
-        selected_learner = None
-
-    answers = request.session.get("assessment_answers", {})
-    assessment_session_id = request.session.get("assessment_session_id")
-
-    if not answers:
-        return redirect("start_assessment")
-
-    if selected_learner:
-        save_assessment_for_learner(
-            selected_learner, answers, session_id=assessment_session_id
-        )
-
-    request.session.pop("assessment_answers", None)
-    request.session.pop("assessment_complete", None)
-    request.session.pop("current_question_index", None)
-    request.session.pop("previous_question_id", None)
-    request.session.pop("assessment_session_id", None)
-
-    return redirect("assessment_summary")

@@ -67,7 +67,6 @@ class UrlContractsTests(TestCase):
             "screener",
             "start_assessment",
             "save_all_assessment_answers",
-            "save_assessment",
             "assessment_summary",
             "login",
             "account_setup",

@@ -33,7 +33,6 @@ urlpatterns = [
     path('screener/', assessment_views.screener, name='screener'),
     path('screener/start/', assessment_views.start_assessment, name='start_assessment'),
     path('screener/save-all/', assessment_views.save_all_assessment_answers, name='save_all_assessment_answers'),
-    path('screener/save/', assessment_views.save_assessment, name='save_assessment'),
     path('screener/summary/', assessment_views.assessment_summary, name='assessment_summary'),
 
     # Login and logout URLs
