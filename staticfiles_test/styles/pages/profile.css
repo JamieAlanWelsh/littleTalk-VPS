@@ -1,0 +1,555 @@
+/* -----------------------------
+   Layout
+------------------------------ */
+
+.profile-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 50px auto;
+    max-width: 800px;
+}
+
+/* Not sure this is doing anything */
+.left-column {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: sticky;
+    top: 20px;
+}
+
+.right-column {
+    width: 55%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* -----------------------------
+    Cohort Filter (inside learners list)
+------------------------------ */
+
+.section-filter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    color: var(--font-color);
+    font-size: 14px;
+}
+
+.section-filter__label {
+    margin: 0;
+    font-weight: 600;
+    color: var(--font-color);
+}
+
+.section-filter__select {
+    width: auto;
+    min-width: 200px;
+    margin-bottom: 0;
+    font-size: 14px;
+}
+
+.learners-list .profile-card__header {
+    padding: 20px 20px 10px 20px;
+}
+
+.profile-card--details .profile-card__header {
+    padding-top: 20px;
+}
+
+/* -----------------------------
+   Learner List & Buttons
+------------------------------ */
+
+.profile-card {
+    background-color: var(--accent-color);
+    border-radius: var(--border-radius-light);
+    box-shadow: var(--box-shadow);
+}
+
+.profile-card--padded {
+    padding: 20px;
+}
+
+.profile-card--details {
+    padding: 0 20px;
+}
+
+.learners-list {
+    flex-grow: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    max-height: 76vh;
+}
+
+.learners-list ul {
+    list-style-type: none;
+    padding: 0 15px;
+    margin: 0;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+/* Custom scrollbar styling */
+.learners-list ul::-webkit-scrollbar {
+    width: 8px;
+}
+
+.learners-list ul::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: var(--border-radius-light);
+}
+
+.learners-list ul::-webkit-scrollbar-thumb {
+    background: var(--font-color);
+    border-radius: var(--border-radius-light);
+    opacity: 0.5;
+}
+
+.learners-list ul::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.learner-item {
+    margin-bottom: 15px;
+}
+
+.learner-button,
+.add-learner-btn a {
+    width: 100%;
+    border-radius: var(--border-radius-light);
+    font-family: var(--font-outfit);
+    font-size: 18px;
+    font-weight: 600;
+    box-shadow: var(--box-shadow);
+    letter-spacing: 0.5px;
+    padding: 25px;
+    text-align: left;
+    display: block;
+    cursor: pointer;
+    background-color: white;
+    color: var(--font-color);
+    border: 1px solid #ccc;;
+    transition: background-color 0.3s, color 0.3s, transform 0.2s;
+}
+
+.learner-button.selected {
+    background-color: var(--font-color);
+    color: white;
+}
+
+.add-learner-btn a {
+    width: 270px;
+    background-color: var(--yellow-button-color);
+    text-decoration: none;
+}
+
+.add-learner-btn a:hover {
+    background-color: white;
+    color: var(--yellow-button-hover);
+    border: 1.5px solid var(--yellow-button-hover);
+}
+
+/* -----------------------------
+   Right Column Content Blocks
+------------------------------ */
+
+.profile-card--details h3,
+.profile-card--details p {
+    color: var(--font-color);
+}
+
+/* -----------------------------
+   Custom Button Contexts
+------------------------------ */
+
+/* .edit-learner-btn {
+    margin-top: 0;
+} */
+
+.edit-learner-btn a {
+    display: block;
+    font-weight: 600;
+    font-family: var(--font-outfit);
+    padding: 10px 20px;
+    text-decoration: none;
+    background-color: white;
+    color: var(--font-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.edit-learner-btn a:hover {
+    background-color: var(--font-color);
+    color: white;
+}
+
+/* -----------------------------
+   make the layout a row layout on mobile
+------------------------------ */
+
+@media (max-width: 800px) {
+    .profile-container {
+        flex-direction: column;
+        align-items: stretch;
+        margin-bottom: 20px;
+    }
+    .right-column {
+        order: 1;
+        width: 100%;
+        margin-bottom: 24px;
+    }
+    .left-column {
+        order: 2;
+        width: 100%;
+        max-height: none;
+    }
+}
+
+/* Targets Section */
+
+.profile-card--targets {
+    padding: 20px;
+}
+
+.profile-card__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.212);
+}
+
+.profile-card__title {
+    color: var(--font-color);
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+
+.targets-container {
+    min-height: 60px;
+    margin-bottom: 15px;
+    max-height: 25vh;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.targets-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.targets-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: var(--border-radius-light);
+}
+
+.targets-container::-webkit-scrollbar-thumb {
+    background: var(--font-color);
+    border-radius: var(--border-radius-light);
+    opacity: 0.5;
+}
+
+.targets-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.target-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    border-left: 4px solid #ddd;
+    background-color: white;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+/* Target status colors */
+.target-status---- {
+    border-left-color: #ddd;
+    background-color: #f9f9f9;
+}
+
+.target-status-achieved {
+    border-left-color: var(--target-green);
+    background-color: #e8f5e9;
+}
+
+.target-status-not_achieved {
+    border-left-color: var(--target-red);
+    background-color: #ffebee;
+}
+
+.target-status-ongoing {
+    border-left-color: var(--target-orange);
+    background-color: #fff3e0;
+}
+
+.target-content {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex: 1;
+    min-width: 0;
+}
+
+.target-text {
+    color: var(--font-color);
+    font-weight: 500;
+    word-break: break-word;
+    flex: 1;
+}
+
+.target-text-input {
+    display: none;
+    flex: 1;
+    min-width: 0;
+    padding: 6px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: var(--font-outfit);
+    font-size: 14px;
+    color: var(--font-color);
+    background-color: white;
+    resize: vertical;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.target-status-dropdown {
+    padding: 6px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    color: var(--font-color);
+    font-family: var(--font-outfit);
+    font-size: 14px;
+    cursor: pointer;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    white-space: nowrap;
+}
+
+.target-status-dropdown:focus {
+    outline: none;
+    border-color: var(--font-color);
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+}
+
+.target-delete-btn {
+    background-color: transparent;
+    border: none;
+    color: #f44336;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 10px;
+    width: 30px;
+    height: 30px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.target-delete-btn:hover {
+    background-color: #ffebee;
+    color: #d32f2f;
+}
+
+.no-targets-message {
+    color: #999;
+    text-align: center;
+    padding: 20px;
+    font-size: 14px;
+}
+
+.filter-empty-message {
+    color: #999;
+    text-align: center;
+    padding: 10px 0 20px;
+    font-size: 14px;
+}
+
+.targets-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.profile-card--targets.edit-mode .target-delete-btn {
+    display: flex;
+}
+
+.profile-card--targets.edit-mode .target-text {
+    display: none;
+}
+
+.profile-card--targets.edit-mode .target-text-input {
+    display: block;
+}
+
+.profile-card--targets.edit-mode .target-status-dropdown {
+    display: none;
+}
+
+.button-secondary {
+    padding: 10px 20px;
+    border: 1px solid #ccc;
+    border-radius: var(--border-radius);
+    background-color: white;
+    color: var(--font-color);
+    font-family: var(--font-outfit);
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+    box-shadow: var(--box-shadow);
+}
+
+.button-secondary:hover {
+    background-color: var(--font-color);
+    color: white;
+    border-color: var(--font-color);
+}
+
+/* New Target Input Modal */
+.new-target-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.new-target-modal.show {
+    display: flex;
+}
+
+.new-target-modal-content {
+    background-color: white;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    width: 90%;
+}
+
+.new-target-modal-content h4 {
+    margin: 0 0 20px 0;
+    color: var(--font-color);
+}
+
+.sample-target-label {
+    display: block;
+    font-weight: 600;
+    color: var(--font-color);
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.sample-target-select {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    font-family: var(--font-outfit);
+    background-color: white;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.sample-target-select:focus {
+    outline: none;
+    border-color: var(--font-color);
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+}
+
+.sample-target-hint {
+    margin: 0 0 12px 0;
+    color: #777;
+    font-size: 12px;
+}
+
+.new-target-modal-content input,
+.new-target-modal-content textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-family: var(--font-outfit);
+    box-sizing: border-box;
+}
+
+.new-target-modal-content textarea {
+    resize: vertical;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    min-height: 120px;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.modal-buttons button {
+    padding: 10px 20px;
+    border: 1px solid #ccc;
+    border-radius: var(--border-radius);
+    font-family: var(--font-outfit);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.modal-buttons .btn-save {
+    background-color: var(--yellow-button-color);
+    color: var(--font-color);
+    /* border-color: #4caf50; */
+}
+
+.modal-buttons .btn-save:hover {
+    background-color: white;
+    color: var(--yellow-button-hover);
+    border: 1.5px solid var(--yellow-button-hover);
+}
+
+.modal-buttons .btn-cancel {
+    background-color: white;
+    color: var(--font-color);
+}
+
+.modal-buttons .btn-cancel:hover {
+    background-color: var(--font-color);
+    color: white;
+}
+
+/* Practice Button
+------------------------------ */
+
+/* .practice-button-container {
+    text-align: center;
+    margin-top: 40px;
+} */

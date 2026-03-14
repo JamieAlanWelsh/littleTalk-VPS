@@ -1,0 +1,38 @@
+.message-container {
+    position: fixed;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1100;
+    width: auto;
+    max-width: 90%;
+    transition: top 0.4s ease;
+}
+
+.message-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--font-color);
+    background-color: white;
+    border-radius: var(--border-radius-light);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+    transition: all 0.3s ease;
+}
+
+/* Optional fade-in */
+.message-container.show {
+    top: 20px;
+}
+
+/* Close button */
+.message-close {
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-left: 20px;
+    color: var(--font-color);
+}

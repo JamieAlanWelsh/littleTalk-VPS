@@ -1,0 +1,62 @@
+/* Choice List Component for selectable radio cards */
+.choice-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.choice-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    background-color: white;
+    border: 1.5px solid #ccc;
+    border-radius: var(--border-radius-light);
+    box-shadow: var(--box-shadow);
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.25s ease, border-color 0.25s ease, transform 0.15s ease;
+    font-family: var(--font-roboto);
+}
+
+.choice-item:hover {
+    border-color: var(--font-color);
+    transform: translateY(-2px);
+}
+
+.choice-item input[type="radio"] {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    accent-color: var(--yellow-button-color);
+    margin: 0;
+}
+
+.choice-item__title {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: var(--font-color);
+}
+
+/* Selected state highlight (modern browsers) */
+.choice-item:has(input[type="radio"]:checked) {
+    background-color: var(--yellow-button-color);
+    border-color: var(--yellow-button-hover);
+}
+
+/* Fallback: underline text if :has not supported */
+.choice-item input[type="radio"]:checked + .choice-item__title {
+    text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+    .choice-item {
+        padding: 12px 14px;
+        gap: 12px;
+    }
+    .choice-item__title {
+        font-size: 0.95rem;
+    }
+}

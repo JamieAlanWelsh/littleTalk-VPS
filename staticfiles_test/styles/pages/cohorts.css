@@ -1,0 +1,43 @@
+.cohort-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 20px;
+  }
+  
+  .cohort-card {
+    background-color: #fff;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  }
+  
+  .cohort-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .cohort-title {
+    margin: 0;
+    font-weight: bold;
+  }
+  
+  .cohort-description {
+    margin-top: 10px;
+    color: var(--font-muted, #666);
+  }
+  
+  .cohort-actions a {
+    margin-left: 10px;
+    font-weight: 500;
+    text-decoration: none;
+  }
+  
+  .link--edit {
+    color: var(--accent-color, #007bff);
+  }
+  
+  .link--delete {
+    color: var(--danger-color, #cc0000);
+  }

@@ -1,0 +1,82 @@
+/* Screener Page Styling - Similar to Account Setup */
+
+.screener-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 85vh;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.error-message {
+    color: var(--button-red);
+    font-size: 1.1rem;
+    margin-top: 20px;
+}
+
+.screener-back-button {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+}
+
+/* Responsive Design */
+@media (max-width: 900px) {
+    .screener-container {
+        min-height: auto;
+        padding: 30px 15px;
+        margin: 15px;
+    }
+
+    .screener-card-row {
+        gap: 20px;
+        margin-top: 30px;
+    }
+
+    .screener-card-inner {
+        padding: 20px 15px;
+        width: 220px;
+        min-height: 120px;
+    }
+
+    .screener-card-inner h2 {
+        font-size: 1.1rem;
+    }
+
+    .screener-card-inner p {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .screener-container {
+        padding: 20px 10px;
+        margin: 10px;
+    }
+
+    .screener-card-row {
+        gap: 15px;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 25px;
+    }
+
+    .screener-card-inner {
+        padding: 15px 10px;
+        width: 100%;
+        max-width: 200px;
+        min-height: 110px;
+    }
+
+    .screener-card-inner h2 {
+        font-size: 1rem;
+        margin: 5px 0;
+    }
+
+    .screener-card-inner p {
+        font-size: 0.8rem;
+        margin-top: 8px;
+    }
+}
