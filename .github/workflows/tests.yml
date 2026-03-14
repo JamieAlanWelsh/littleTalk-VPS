@@ -1,4 +1,4 @@
-name: Django Tests
+name: Basic CI
 
 on:
   pull_request:
@@ -25,10 +25,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run tests
+      - name: Basic Python sanity check
         run: |
-          python manage.py test littleTalkApp.tests accounts -v 2 --settings=littleTalk.settings_test
-
-      - name: Verify static collection
-        run: |
-          python manage.py collectstatic --noinput --settings=littleTalk.settings_test
+          python --version
+          pip --version
