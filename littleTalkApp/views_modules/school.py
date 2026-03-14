@@ -20,6 +20,120 @@ from littleTalkApp.models import Cohort, JoinRequest, Profile, Role, School, Sch
 from littleTalkApp.utilites import hash_email, send_invite_email, send_school_welcome_email
 
 
+def _handle_school_role_update(request, profile, school):
+    user_id = request.POST.get("user_id")
+    new_role = request.POST.get("new_role")
+
+    target_profile = get_object_or_404(Profile, user__id=user_id)
+
+    if not target_profile.schools.filter(id=school.id).exists():
+        messages.error(
+            request,
+            "This user is not associated with this school. Please notify support",
+        )
+        return redirect("school")
+
+    target_current_role = target_profile.get_role_for_school(school)
+
+    if target_profile.user == request.user:
+        messages.error(request, "You cannot change your own role.")
+    elif profile.is_manager_for_school(school) and target_current_role == Role.ADMIN:
+        messages.error(request, "Only admins can edit the roles of other admins.")
+    elif profile.is_manager_for_school(school) and new_role == Role.ADMIN:
+        messages.error(request, "Only admins can assign the admin role.")
+    elif new_role in dict(Role.CHOICES).keys():
+        try:
+            membership = target_profile.memberships.filter(school=school).first()
+            if membership:
+                membership.role = new_role
+                membership.save()
+            else:
+                target_profile.schools.add(school)
+                SchoolMembership.objects.create(
+                    profile=target_profile,
+                    school=school,
+                    role=new_role,
+                    is_active=True,
+                )
+        except Exception:
+            target_profile.role = new_role
+            target_profile.save()
+        messages.success(request, f"{target_profile.first_name}'s role updated")
+    else:
+        messages.error(request, "Invalid role selected.")
+    return redirect("school")
+
+
+def _handle_school_invite_resend(request, school):
+    invite_id = request.POST.get("invite_id")
+    invite = get_object_or_404(
+        StaffInvite, id=invite_id, school=school, used=False, withdrawn=False
+    )
+
+    send_invite_email(invite, school, request)
+    messages.success(request, f"Invite resent to {invite.email}.")
+    return redirect("school")
+
+
+def _handle_school_invite_withdrawal(request, school):
+    invite_id = request.POST.get("invite_id")
+    invite = get_object_or_404(
+        StaffInvite, id=invite_id, school=school, used=False, withdrawn=False
+    )
+
+    invite.withdrawn = True
+    invite.save()
+    messages.success(request, f"Invite to {invite.email} withdrawn.")
+    return redirect("school")
+
+
+def _handle_school_join_request_action(request, school):
+    join_request_id = request.POST.get("join_request_id")
+    join_request = get_object_or_404(
+        JoinRequest, id=join_request_id, school=school, status="pending"
+    )
+
+    if "approve_join_request" in request.POST:
+        invite = StaffInvite.objects.create(
+            email=join_request.email,
+            role="staff",
+            school=school,
+            sent_by=request.user,
+        )
+        send_invite_email(invite, school, request)
+        join_request.status = "accepted"
+        messages.success(
+            request,
+            f"Join request from {join_request.full_name} approved and invite sent.",
+        )
+    else:
+        join_request.status = "rejected"
+        messages.info(
+            request, f"Join request from {join_request.full_name} was rejected."
+        )
+
+    join_request.resolved_by = request.user
+    join_request.resolved_at = timezone.now()
+    join_request.save()
+    return redirect("school")
+
+
+def _handle_school_dashboard_post(request, profile, school):
+    if "user_id" in request.POST and "new_role" in request.POST:
+        return _handle_school_role_update(request, profile, school)
+
+    if "resend_invite" in request.POST:
+        return _handle_school_invite_resend(request, school)
+
+    if "withdraw_invite" in request.POST:
+        return _handle_school_invite_withdrawal(request, school)
+
+    if "approve_join_request" in request.POST or "reject_join_request" in request.POST:
+        return _handle_school_join_request_action(request, school)
+
+    return None
+
+
 @check_honeypot
 def school_signup(request):
     """Renders school/school_signup.html — onboarding form for a new school admin.
@@ -208,99 +322,9 @@ def school_dashboard(request):
     current_school_id = school.id if school else None
 
     if request.method == "POST":
-        if "user_id" in request.POST and "new_role" in request.POST:
-            user_id = request.POST.get("user_id")
-            new_role = request.POST.get("new_role")
-
-            target_profile = get_object_or_404(Profile, user__id=user_id)
-
-            if not (target_profile.schools.filter(id=school.id).exists()):
-                messages.error(request, "This user is not associated with this school. Please notify support")
-                return redirect("school")
-
-            target_current_role = target_profile.get_role_for_school(school)
-
-            if target_profile.user == request.user:
-                messages.error(request, "You cannot change your own role.")
-            elif profile.is_manager_for_school(school) and target_current_role == Role.ADMIN:
-                messages.error(request, "Only admins can edit the roles of other admins.")
-            elif profile.is_manager_for_school(school) and new_role == Role.ADMIN:
-                messages.error(request, "Only admins can assign the admin role.")
-            elif new_role in dict(Role.CHOICES).keys():
-                try:
-                    membership = target_profile.memberships.filter(school=school).first()
-                    if membership:
-                        membership.role = new_role
-                        membership.save()
-                    else:
-                        target_profile.schools.add(school)
-                        SchoolMembership.objects.create(
-                            profile=target_profile,
-                            school=school,
-                            role=new_role,
-                            is_active=True,
-                        )
-                except Exception:
-                    target_profile.role = new_role
-                    target_profile.save()
-                messages.success(request, f"{target_profile.first_name}'s role updated")
-            else:
-                messages.error(request, "Invalid role selected.")
-            return redirect("school")
-
-        elif "resend_invite" in request.POST:
-            invite_id = request.POST.get("invite_id")
-            invite = get_object_or_404(
-                StaffInvite, id=invite_id, school=school, used=False, withdrawn=False
-            )
-
-            send_invite_email(invite, school, request)
-            messages.success(request, f"Invite resent to {invite.email}.")
-            return redirect("school")
-
-        elif "withdraw_invite" in request.POST:
-            invite_id = request.POST.get("invite_id")
-            invite = get_object_or_404(
-                StaffInvite, id=invite_id, school=school, used=False, withdrawn=False
-            )
-
-            invite.withdrawn = True
-            invite.save()
-            messages.success(request, f"Invite to {invite.email} withdrawn.")
-            return redirect("school")
-
-        elif (
-            "approve_join_request" in request.POST
-            or "reject_join_request" in request.POST
-        ):
-            join_request_id = request.POST.get("join_request_id")
-            join_request = get_object_or_404(
-                JoinRequest, id=join_request_id, school=school, status="pending"
-            )
-
-            if "approve_join_request" in request.POST:
-                invite = StaffInvite.objects.create(
-                    email=join_request.email,
-                    role="staff",
-                    school=school,
-                    sent_by=request.user,
-                )
-                send_invite_email(invite, school, request)
-                join_request.status = "accepted"
-                messages.success(
-                    request,
-                    f"Join request from {join_request.full_name} approved and invite sent.",
-                )
-            else:
-                join_request.status = "rejected"
-                messages.info(
-                    request, f"Join request from {join_request.full_name} was rejected."
-                )
-
-            join_request.resolved_by = request.user
-            join_request.resolved_at = timezone.now()
-            join_request.save()
-            return redirect("school")
+        post_response = _handle_school_dashboard_post(request, profile, school)
+        if post_response:
+            return post_response
 
     raw_profiles = (
         Profile.objects.filter(Q(schools=school)).select_related("user").distinct()

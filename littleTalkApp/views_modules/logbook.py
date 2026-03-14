@@ -109,7 +109,6 @@ def new_log_entry(request):
 
 
 @login_required
-@login_required
 def log_entry_detail(request, entry_id):
     """Renders logbook/log_entry_detail.html — the detail view for a single log entry.
 
