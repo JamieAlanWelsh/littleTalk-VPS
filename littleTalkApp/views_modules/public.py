@@ -89,7 +89,7 @@ def send_support_email(request):
 
 
 def tips(request):
-    """Renders public/tips.html — a static tips and best-practice page."""
+    """Renders public/tips.html — a static tips and best-practise page."""
 
     return render(request, "public/tips.html", {})
 

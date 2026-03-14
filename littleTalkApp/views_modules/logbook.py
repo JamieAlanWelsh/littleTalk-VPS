@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 
 from littleTalkApp.forms import LogEntryForm
 from littleTalkApp.models import Cohort, Learner, LogEntry, Role
-from littleTalkApp.utilites import can_edit_or_delete_log
+from littleTalkApp.utilities import can_edit_or_delete_log
 
 
 @login_required

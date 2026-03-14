@@ -12,7 +12,7 @@ from littleTalkApp.forms import (
     UserRegistrationForm,
 )
 from littleTalkApp.models import Learner, ParentAccessToken, School
-from littleTalkApp.utilites import hash_email
+from littleTalkApp.utilities import hash_email
 
 
 class FormValidationTests(TestCase):

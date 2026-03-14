@@ -17,7 +17,7 @@ from littleTalkApp.forms import (
     StaffInviteForm,
 )
 from littleTalkApp.models import Cohort, JoinRequest, Profile, Role, School, SchoolMembership, StaffInvite
-from littleTalkApp.utilites import hash_email, send_invite_email, send_school_welcome_email
+from littleTalkApp.utilities import hash_email, send_invite_email, send_school_welcome_email
 
 
 def _handle_school_role_update(request, profile, school):

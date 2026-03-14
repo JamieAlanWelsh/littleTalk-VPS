@@ -7,7 +7,7 @@ from django.utils import timezone
 from accounts.models import User
 from littleTalkApp.models import Learner, ParentAccessToken, Role
 from littleTalkApp.tests.base import BaseFlowTestMixin
-from littleTalkApp.utilites import hash_email
+from littleTalkApp.utilities import hash_email
 
 
 class ParentAccessFlowTests(BaseFlowTestMixin, TestCase):

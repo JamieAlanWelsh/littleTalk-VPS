@@ -6,7 +6,7 @@ from django.utils import timezone
 
 from littleTalkApp.models import JoinRequest, Profile, Role, School, SchoolMembership, StaffInvite
 from littleTalkApp.tests.base import BaseFlowTestMixin
-from littleTalkApp.utilites import hash_email
+from littleTalkApp.utilities import hash_email
 
 
 class SchoolTypicalFlowTests(BaseFlowTestMixin, TestCase):

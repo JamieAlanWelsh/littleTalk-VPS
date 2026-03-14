@@ -9,7 +9,7 @@ from honeypot.decorators import check_honeypot
 
 from littleTalkApp.forms import ParentAccessCodeForm, ParentSignupForm
 from littleTalkApp.models import Learner, ParentAccessToken, ParentProfile, Profile, Role
-from littleTalkApp.utilites import hash_email, send_parent_access_email, send_parent_welcome_email
+from littleTalkApp.utilities import hash_email, send_parent_access_email, send_parent_welcome_email
 
 
 @login_required

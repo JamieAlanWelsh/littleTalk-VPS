@@ -8,7 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 import stripe
 
-from littleTalkApp.utilites import hash_email
+from littleTalkApp.utilities import hash_email
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 

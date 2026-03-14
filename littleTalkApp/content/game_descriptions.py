@@ -17,7 +17,7 @@ GAME_DESCRIPTIONS = {
             'title': 'Think and Find',
             'target': 'General Concepts',
             'quote': '"Linking items to concepts helps children structure their thoughts and enhances memory and retrieval capabilities" (Anderson & Freebody, 1981).',
-            'description': "Think and Find is a matching activity that helps children learn new words and practice important thinking skills. It encourages children to develop conceptual thinking by matching pictures based on characteristics, improving their ability to notice details and make connections. This supports language growth, memory, and decision-making. It also serves as a natural path to categoristaion.",
+            'description': "Think and Find is a matching activity that helps children learn new words and practise important thinking skills. It encourages children to develop conceptual thinking by matching pictures based on characteristics, improving their ability to notice details and make connections. This supports language growth, memory, and decision-making. It also serves as a natural path to categoristaion.",
             'youtube_video_id': 'wUCTDhj-1kw',
             'bullet1': """Point to / find an object - "Can you point to the lorry?""",
             'bullet2': """Match pictures and objects - “Can you find a car like this?”""",
