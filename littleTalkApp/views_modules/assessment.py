@@ -97,25 +97,18 @@ def screener(request):
 def start_assessment(request):
     """Renders assessment/assessment_form.html — initialises a new assessment session.
 
-    Clears any previous assessment state from the session, assigns a fresh UUID for
-    the session, and renders the first question in the screener questionnaire.
+    Assigns a fresh session UUID used to group answers in the database and
+    renders the first question in the screener questionnaire.
     """
 
     request.hide_sidebar = True
 
     assessment_session_id = uuid.uuid4()
 
-    request.session["assessment_answers"] = []
-    request.session["assessment_complete"] = False
-    request.session["current_question_index"] = 1
-    request.session["previous_question_id"] = None
     request.session["assessment_session_id"] = str(assessment_session_id)
 
     first_question = QUESTIONS[0]
     total_questions = len(QUESTIONS)
-
-    request.session["current_question_index"] = 1
-    request.session["previous_question_id"] = None
 
     return render(
         request,
@@ -135,7 +128,7 @@ def save_all_assessment_answers(request):
     """JSON API (POST): persists submitted screener answers directly to the database.
 
     Uses the currently selected learner from session state, saves answers via
-    save_assessment_for_learner, clears any temporary assessment session keys,
+    save_assessment_for_learner, clears the active assessment session UUID,
     and returns a JSON redirect URL to the summary page.
     """
 
@@ -163,10 +156,6 @@ def save_all_assessment_answers(request):
         selected_learner, data, session_id=assessment_session_id
     )
 
-    request.session.pop("assessment_answers", None)
-    request.session.pop("assessment_complete", None)
-    request.session.pop("current_question_index", None)
-    request.session.pop("previous_question_id", None)
     request.session.pop("assessment_session_id", None)
 
     return JsonResponse({"redirect_url": reverse("assessment_summary")})
