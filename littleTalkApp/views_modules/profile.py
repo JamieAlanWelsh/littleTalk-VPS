@@ -11,6 +11,14 @@ from littleTalkApp.models import Cohort, Learner, LogEntry, Role
 
 @login_required
 def profile(request):
+    """Renders profile/profile.html — the main account page.
+
+    Shows the learner list for the current user (scoped to their school or, for
+    parents, to their linked learners). Handles cohort filtering and keeps the
+    selected learner at the top of the list. Also surfaces trial/subscription
+    state for parent accounts.
+    """
+
     profile_obj = request.user.profile
 
     on_trial = False
@@ -76,6 +84,13 @@ def profile(request):
 
 @login_required
 def add_learner(request):
+    """Renders profile/add_learner.html — form to create a new learner record.
+
+    On POST, saves the learner, assigns them to the user's school (if applicable)
+    or the parent's profile, sets them as the selected learner in the session,
+    and redirects to the profile page.
+    """
+
     if request.method == "POST":
         form = LearnerForm(request.POST, user=request.user)
         if form.is_valid():
@@ -101,6 +116,12 @@ def add_learner(request):
 
 @login_required
 def select_learner(request):
+    """Stores the chosen learner ID in the session and redirects back to the profile page.
+
+    Intended to be called via a POST form on the profile page when the user switches
+    between learners.
+    """
+
     if request.method == "POST":
         learner_id = request.POST.get("learner_id")
         if learner_id:
@@ -110,6 +131,14 @@ def select_learner(request):
 
 @login_required
 def edit_learner(request, learner_uuid):
+    """Renders profile/edit_learner.html — edit a learner's details.
+
+    A 'remove' POST action redirects to the confirm-delete flow instead.
+    School-assigned learners belonging to a parent cannot be edited here.
+    Respects role-based delete permissions when determining if the delete
+    button should be shown.
+    """
+
     learner = get_object_or_404(Learner, learner_uuid=learner_uuid, deleted=False)
 
     if request.user.profile.is_parent() and learner.school_id:
@@ -146,6 +175,13 @@ def edit_learner(request, learner_uuid):
 
 @login_required
 def confirm_delete_learner(request, learner_uuid):
+    """Renders profile/confirm_delete_learner.html — password-confirmed learner deletion.
+
+    Requires the user to re-enter their password before the learner is soft-deleted.
+    Also soft-deletes related log entries. Clears the selected learner from the session
+    and redirects to the profile page on success.
+    """
+
     learner = get_object_or_404(Learner, learner_uuid=learner_uuid, deleted=False)
 
     if request.user.profile.is_parent() and learner.school_id:

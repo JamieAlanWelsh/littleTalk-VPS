@@ -14,6 +14,12 @@ from littleTalkApp.utilites import hash_email, send_parent_access_email, send_pa
 
 @login_required
 def generate_parent_token(request, learner_uuid):
+    """Generates or regenerates a ParentAccessToken for a learner.
+
+    Creates a token if one does not exist; regenerates it if it has expired or
+    the 'force' query param is set. Redirects to the view_parent_token page.
+    """
+
     school = request.user.profile.get_current_school(request)
     learner = get_object_or_404(Learner, learner_uuid=learner_uuid, school=school)
 
@@ -34,6 +40,11 @@ def generate_parent_token(request, learner_uuid):
 
 @login_required
 def view_parent_token(request, learner_uuid):
+    """Renders parent_access/view_token.html — shows the current access token and
+    shareable signup link for a learner. Auto-regenerates the token if it has expired.
+    Only accessible to non-parent (school staff) accounts.
+    """
+
     if request.user.profile.is_parent():
         return redirect("profile")
     learner = get_object_or_404(
@@ -59,6 +70,12 @@ def view_parent_token(request, learner_uuid):
 
 @login_required
 def email_parent_token(request, learner_uuid):
+    """Handles a POST request to email the parent signup link to a given address.
+
+    Sends the link via send_parent_access_email and redirects back to the
+    view_parent_token page. Only processes POST requests.
+    """
+
     if request.method == "POST":
         learner = get_object_or_404(
             Learner,
@@ -79,6 +96,14 @@ def email_parent_token(request, learner_uuid):
 
 @check_honeypot
 def parent_signup_view(request):
+    """Renders parent_access/parent_signup.html — self-registration page for parents.
+
+    Accepts an optional 'code' query param to pre-fill the access code field. On
+    successful sign-up, creates the user, profile, and ParentProfile, links the
+    learner if a valid access token was used, then logs the user in.
+    Protected by a honeypot field to deter bots.
+    """
+
     request.hide_sidebar = True
     prefill_code = request.GET.get("code", "").strip()
 
@@ -140,6 +165,11 @@ def parent_signup_view(request):
 
 @login_required
 def add_learner_via_pac(request):
+    """Renders parent_access/add_learner_via_pac.html — lets a logged-in parent link
+    an additional learner to their account by entering a valid Parent Access Code.
+    Only accessible to users with the parent role.
+    """
+
     if not hasattr(request.user, "profile") or request.user.profile.role != Role.PARENT:
         messages.error(request, "Only parent accounts can add learners via PAC.")
         return redirect("add_learner")

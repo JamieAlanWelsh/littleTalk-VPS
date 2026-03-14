@@ -9,6 +9,12 @@ from littleTalkApp.utilites import can_edit_or_delete_log
 
 @login_required
 def logbook(request):
+    """Renders logbook/logbook.html — the main log entry list page.
+
+    Admins and managers see all school log entries; other staff see only their own.
+    Results can be filtered by learner or cohort via GET params.
+    """
+
     selected_learner_id = request.GET.get("learner")
     selected_cohort_id = request.GET.get("cohort")
     user = request.user
@@ -58,6 +64,12 @@ def logbook(request):
 
 @login_required
 def new_log_entry(request):
+    """Renders logbook/new_log_entry.html — form to create a new log entry.
+
+    On POST, validates and saves the entry, attaching the current user's school
+    and role. Pre-populates the learner field from the session if one is selected.
+    """
+
     selected_learner_id = request.session.get("selected_learner_id")
 
     if request.method == "POST":
@@ -97,17 +109,30 @@ def new_log_entry(request):
 
 
 @login_required
+@login_required
 def log_entry_detail(request, entry_id):
+    """Renders logbook/log_entry_detail.html — the detail view for a single log entry.
+
+    Redirects to the logbook list if the user does not have edit/delete permissions
+    for this entry.
+    """
+
     log_entry = get_object_or_404(LogEntry, id=entry_id, deleted=False)
 
     if not can_edit_or_delete_log(request.user, log_entry):
         return redirect("logbook")
 
-    return render(request, "logbooks/log_entry_detail.html", {"log_entry": log_entry})
+    return render(request, "logbook/log_entry_detail.html", {"log_entry": log_entry})
 
 
 @login_required
 def edit_log_entry(request, entry_id):
+    """Renders logbook/new_log_entry.html (in edit mode) — edit an existing log entry.
+
+    Only the original author or an admin/manager may edit an entry. On successful
+    POST the user is redirected back to the log entry detail page.
+    """
+
     log_entry = get_object_or_404(LogEntry, id=entry_id, deleted=False)
 
     if not can_edit_or_delete_log(request.user, log_entry):
@@ -132,6 +157,12 @@ def edit_log_entry(request, entry_id):
 
 @login_required
 def delete_log_entry(request, entry_id):
+    """JSON API (POST): soft-deletes a log entry by setting its deleted flag.
+
+    Returns JSON {success: true} on success or an error payload if the method
+    is wrong or the user is unauthorised.
+    """
+
     if request.method != "POST":
         return JsonResponse({"success": False, "error": "Invalid method"}, status=405)
 
@@ -147,6 +178,12 @@ def delete_log_entry(request, entry_id):
 
 @login_required
 def generate_summary(request, learner_uuid):
+    """Renders logbook/log_summary.html — a printable summary of log entries for a learner.
+
+    Admins and managers see all entries for the learner; other staff see only their
+    own entries. Scoped to the user's current school.
+    """
+
     school = request.user.profile.get_current_school(request)
     learner = get_object_or_404(Learner, learner_uuid=learner_uuid, school=school)
 

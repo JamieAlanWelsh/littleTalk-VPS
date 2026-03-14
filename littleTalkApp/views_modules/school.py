@@ -22,6 +22,13 @@ from littleTalkApp.utilites import hash_email, send_invite_email, send_school_we
 
 @check_honeypot
 def school_signup(request):
+    """Renders school/school_signup.html — onboarding form for a new school admin.
+
+    Creates the user account, school, profile, and SchoolMembership records, sends
+    a welcome email, logs the user in, and redirects to the profile page.
+    Protected by a honeypot field to deter bots.
+    """
+
     request.hide_sidebar = True
     if request.method == "POST":
         form = SchoolSignupForm(request.POST)
@@ -67,6 +74,15 @@ def school_signup(request):
 
 @check_honeypot
 def accept_invite(request, token):
+    """Renders school/accept_invite.html — staff registration via a single-use invite token.
+
+    Validates that the token exists, is unused, not withdrawn, and not expired.
+    Redirects to '/' for any invalid token. On successful sign-up, creates the
+    user, profile, and SchoolMembership, marks the invite as used, and logs the
+    user in. Also invalidates any duplicate pending invites for the same email.
+    Protected by a honeypot field.
+    """
+
     request.hide_sidebar = True
 
     try:
@@ -135,6 +151,12 @@ def accept_invite(request, token):
 
 @login_required
 def invite_staff(request):
+    """Renders school/invite_staff.html — form for admins/managers to invite a new staff member.
+
+    Creates a StaffInvite record and sends the invite email. Only accessible to
+    admins and managers of the current school.
+    """
+
     profile = request.user.profile
     school = profile.get_current_school(request)
 
@@ -169,6 +191,14 @@ def invite_staff(request):
 
 @login_required
 def school_dashboard(request):
+    """Renders school/school_dashboard.html — the school management hub.
+
+    Handles role changes, invite resends/withdrawals, and join request
+    approvals/rejections via POST. On GET, displays the full staff list, pending
+    invites, and pending join requests. Shows a school switcher when the user
+    belongs to multiple schools. Not accessible to parent accounts.
+    """
+
     if request.user.profile.is_parent():
         return redirect("profile")
     profile = request.user.profile
@@ -318,6 +348,11 @@ def school_dashboard(request):
 
 @check_honeypot
 def request_join_school(request):
+    """Renders school/request_join_school.html — public form for someone to request
+    access to a school without having received an invite. Admins review requests
+    in the school dashboard. Protected by a honeypot field.
+    """
+
     request.hide_sidebar = True
     if request.method == "POST":
         form = JoinRequestForm(request.POST)
@@ -336,6 +371,10 @@ def request_join_school(request):
 
 @login_required
 def invite_audit_trail(request):
+    """Renders school/invite_audit_trail.html — shows the 50 most recent invites and
+    join requests for the current school. Only accessible to admins and managers.
+    """
+
     school = request.user.profile.get_current_school(request)
     if not (
         request.user.profile.is_admin_for_school(school)
@@ -367,6 +406,10 @@ def invite_audit_trail(request):
 
 @login_required
 def cohort_list(request):
+    """Renders school/cohorts/cohort_list.html — lists all cohorts for the current school.
+    Only accessible to admins and managers.
+    """
+
     school = request.user.profile.get_current_school(request)
     if not (
         request.user.profile.is_admin_for_school(school)
@@ -388,6 +431,10 @@ def cohort_list(request):
 
 @login_required
 def cohort_create(request):
+    """Renders school/cohorts/cohort_form.html — form to create a new cohort.
+    Only accessible to admins and managers of the current school.
+    """
+
     school = request.user.profile.get_current_school(request)
     if not (
         request.user.profile.is_admin_for_school(school)
@@ -412,6 +459,10 @@ def cohort_create(request):
 
 @login_required
 def cohort_edit(request, cohort_id):
+    """Renders school/cohorts/cohort_form.html (in edit mode) — edit an existing cohort.
+    Only accessible to admins and managers of the current school.
+    """
+
     school = request.user.profile.get_current_school(request)
     if not (
         request.user.profile.is_admin_for_school(school)
@@ -436,6 +487,12 @@ def cohort_edit(request, cohort_id):
 
 @login_required
 def cohort_delete(request, cohort_id):
+    """Renders school/cohorts/cohort_confirm_delete.html — password-confirmed cohort deletion.
+
+    Requires re-entry of the user's password before the cohort is permanently deleted.
+    Only accessible to admins and managers of the current school.
+    """
+
     school = request.user.profile.get_current_school(request)
     if not (
         request.user.profile.is_admin_for_school(school)
@@ -465,6 +522,12 @@ def cohort_delete(request, cohort_id):
 
 @login_required
 def select_school(request):
+    """Renders school/select_school.html — lets users who belong to multiple schools
+    pick their active school for the session. Single-school users are redirected
+    immediately to the profile page without seeing the selection screen.
+    Not accessible to parent accounts.
+    """
+
     request.hide_sidebar = True
     profile = request.user.profile
 

@@ -8,6 +8,11 @@ from littleTalkApp.forms import PasswordUpdateForm, UserUpdateForm
 
 @login_required
 def settings_view(request):
+    """Renders settings_views/settings.html — the account settings page.
+
+    Displays both the user-details form and the change-password form.
+    """
+
     user_form = UserUpdateForm(instance=request.user)
     password_form = PasswordUpdateForm(user=request.user)
 
@@ -20,6 +25,13 @@ def settings_view(request):
 
 @login_required
 def change_user_details(request):
+    """Handles POST from the user-details form on the settings page.
+
+    On success, saves the updated user details and redirects back to settings
+    with a success message. On validation failure, re-renders the settings page
+    with error feedback.
+    """
+
     if request.method == "POST":
         user_form = UserUpdateForm(request.POST, instance=request.user)
         password_form = PasswordUpdateForm(user=request.user)
@@ -43,6 +55,13 @@ def change_user_details(request):
 
 @login_required
 def change_password(request):
+    """Handles POST from the change-password form on the settings page.
+
+    Validates the new password, updates it, and calls update_session_auth_hash so
+    the user is not logged out. On success, redirects to the settings page.
+    Always re-renders settings_views/settings.html on GET or validation failure.
+    """
+
     if request.method == "POST":
         user_form = UserUpdateForm(instance=request.user)
         password_form = PasswordUpdateForm(request.user, request.POST)

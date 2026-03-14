@@ -15,6 +15,12 @@ from littleTalkApp.views_modules.assessment import get_screener_comparison_data
 
 @login_required
 def learner_dashboard(request):
+    """Renders dashboard/learner_dashboard.html — the main staff-facing learner overview.
+
+    Displays exercise session counts, target progress, and screener comparison data for
+    the currently selected learner at the user's school. Not accessible to parent accounts.
+    """
+
     profile = request.user.profile
 
     if profile.is_parent():
@@ -152,6 +158,13 @@ def learner_dashboard(request):
 
 @login_required
 def learner_progress_data(request):
+    """JSON API: returns time-series progress data for a given learner.
+
+    Accepts query params: learner_uuid, date_range (days or 'all'), exercise_id,
+    and a comma-separated metrics list (exp, exercises, accuracy, difficulty).
+    Used to populate the progress chart on the learner dashboard.
+    """
+
     profile = request.user.profile
     learner_uuid = request.GET.get("learner_uuid")
 

@@ -19,6 +19,12 @@ logger = logging.getLogger(__name__)
 
 
 class CanUpdateLearnerPermission(BasePermission):
+    """Custom DRF permission that allows updates only to learners the user owns.
+
+    Parents may only update their own learners. School staff (staff/manager/admin)
+    may only update learners belonging to their currently selected school.
+    """
+
     def has_object_permission(self, request, view, obj):
         user = request.user
         profile = getattr(user, "profile", None)
@@ -38,6 +44,11 @@ class CanUpdateLearnerPermission(BasePermission):
 
 
 class UpdateLearnerExpAPIView(APIView):
+    """API endpoint (POST /api/learners/<learner_uuid>/update-exp/) that increments a
+    learner's XP and exercise count after completing a game session. Accepts a nonce
+    to prevent duplicate submissions. Optionally records a full ExerciseSession record.
+    """
+
     authentication_classes = [SessionAuthentication]
     permission_classes = [IsAuthenticated, CanUpdateLearnerPermission]
 
@@ -88,6 +99,10 @@ class UpdateLearnerExpAPIView(APIView):
 
 
 def get_selected_learner(request):
+    """JSON API: returns the UUID, CSRF token, and CS level of the learner currently
+    stored in the session. Returns 401 if unauthenticated or 400 if no learner is selected.
+    """
+
     if not request.user.is_authenticated:
         return JsonResponse({"error": "Authentication required"}, status=401)
 
@@ -108,6 +123,11 @@ def get_selected_learner(request):
 
 @login_required
 def create_target(request):
+    """JSON API (POST): creates a new Target for a learner identified by learner_uuid
+    in the request body. Enforces ownership checks for both parent and school-staff users.
+    Returns the created target data with HTTP 201 on success.
+    """
+
     if request.method != "POST":
         return JsonResponse({"error": "Method not allowed"}, status=405)
 
@@ -152,6 +172,11 @@ def create_target(request):
 
 @login_required
 def target_detail(request, target_id):
+    """JSON API (GET / PATCH / DELETE) for a single Target by ID. GET returns the
+    target data; PATCH updates text and/or status; DELETE removes the record.
+    Enforces ownership checks for parents and school-staff users.
+    """
+
     from littleTalkApp.models import Target
 
     target = get_object_or_404(Target, id=target_id)

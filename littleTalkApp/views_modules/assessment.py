@@ -13,6 +13,13 @@ from littleTalkApp.models import Cohort, Learner, LearnerAssessmentAnswer
 
 @login_required
 def screener(request):
+    """Renders assessment/screener.html — the main screener overview page.
+
+    Lists all learners accessible to the current user (filtered by school or parent
+    relationship) and shows whether each one has a completed screener on record,
+    along with the date of the most recent screener.
+    """
+
     from django.db.models import Count
 
     profile = request.user.profile
@@ -87,6 +94,12 @@ def screener(request):
 
 @login_required
 def start_assessment(request):
+    """Renders assessment/assessment_form.html — initialises a new assessment session.
+
+    Clears any previous assessment state from the session, assigns a fresh UUID for
+    the session, and renders the first question in the screener questionnaire.
+    """
+
     request.hide_sidebar = True
 
     assessment_session_id = uuid.uuid4()
@@ -118,6 +131,11 @@ def start_assessment(request):
 
 @login_required
 def save_all_assessment_answers(request):
+    """JSON API (POST): persists the submitted assessment answers to the session and
+    marks the assessment as complete. Returns a JSON redirect URL pointing to the
+    save endpoint so the client can finalise and store results.
+    """
+
     if request.method != "POST":
         return JsonResponse({"error": "Invalid request"}, status=400)
 
@@ -134,6 +152,13 @@ def save_all_assessment_answers(request):
 
 @login_required
 def save_assessment_for_learner(learner, answers, session_id=None):
+    """Helper: persists a completed set of assessment answers for a learner.
+
+    Creates a LearnerAssessmentAnswer record for each question, then recalculates
+    the learner's strong-skill count (assessment1) and recommendation level based
+    on the highest complexity question answered "Yes". Not a request-handling view.
+    """
+
     if learner.recommendation_level is not None:
         learner.assessment2 = learner.recommendation_level
 
@@ -186,6 +211,11 @@ def save_assessment_for_learner(learner, answers, session_id=None):
 
 
 def get_screener_comparison_data(learner):
+    """Helper: builds a comparison dict between the learner's two most recent screener
+    sessions. Returns None if the learner has fewer than two sessions. Used by both
+    assessment_summary and the learner dashboard to show skill progression over time.
+    """
+
     if not learner:
         return None
 
@@ -280,6 +310,13 @@ def get_screener_comparison_data(learner):
 
 @login_required
 def assessment_summary(request):
+    """Renders assessment/summary.html — the results page after completing a screener.
+
+    Reads the most recent screener session for the currently selected learner and
+    categorises skills as strong or needing support. Also includes comparison data
+    against the previous session if one exists.
+    """
+
     answers = []
     learner = None
     comparison_data = None
@@ -338,6 +375,13 @@ def assessment_summary(request):
 
 @login_required
 def save_assessment(request):
+    """Saves the in-progress assessment from the session to the database.
+
+    Reads answers stored in the session by save_all_assessment_answers, delegates
+    persistence to save_assessment_for_learner, clears all assessment session keys,
+    then redirects to assessment_summary.
+    """
+
     selected_learner_id = request.session.get("selected_learner_id")
 
     if selected_learner_id:

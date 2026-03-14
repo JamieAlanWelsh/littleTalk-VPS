@@ -7,6 +7,13 @@ from littleTalkApp.models import Learner
 
 @login_required
 def practise(request):
+    """Renders practise/practise.html — the main game selection page.
+
+    Reads the currently selected learner from the session and, if a recommendation
+    level has been set, surfaces the appropriate game recommendation alongside all
+    available game descriptions.
+    """
+
     selected_learner_id = request.session.get("selected_learner_id")
     learner_selected = False
     selected_learner = None

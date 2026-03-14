@@ -14,17 +14,29 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
 def subscribe(request):
+    """Renders subscription/subscribe.html — the subscription plan information page.
+    Accessible without login so prospective users can review pricing.
+    """
+
     request.hide_sidebar = True
     return render(request, "subscription/subscribe.html")
 
 
 def license_expired(request):
+    """Renders subscription/license_expired.html — shown when a parent's subscription
+    or free trial has lapsed and they need to renew to continue.
+    """
+
     request.hide_sidebar = True
     return render(request, "subscription/license_expired.html")
 
 
 @login_required
 def create_checkout_session(request):
+    """Creates a Stripe Checkout session for the parent subscription plan and
+    redirects the user to the Stripe-hosted payment page.
+    """
+
     checkout_session = stripe.checkout.Session.create(
         customer_email=request.user.email_encrypted,
         payment_method_types=["card"],
@@ -44,6 +56,13 @@ def create_checkout_session(request):
 
 @csrf_exempt
 def stripe_webhook(request):
+    """Handles incoming Stripe webhook events. CSRF is intentionally disabled as
+    Stripe signs requests with a signature header instead.
+
+    On a 'checkout.session.completed' event, looks up the user by email hash and
+    marks their ParentProfile as subscribed, storing the Stripe customer ID.
+    """
+
     payload = request.body
     sig_header = request.META["HTTP_STRIPE_SIGNATURE"]
     endpoint_secret = settings.STRIPE_WEBHOOK_SECRET
@@ -77,6 +96,10 @@ def stripe_webhook(request):
 
 @login_required
 def subscribe_success(request):
+    """Renders subscription/success.html — the post-payment confirmation page shown
+    after a Stripe Checkout session completes successfully.
+    """
+
     messages.info(
         request, "Subscription activated successfully. Welcome to the community!"
     )
@@ -85,6 +108,11 @@ def subscribe_success(request):
 
 @login_required
 def manage_subscription(request):
+    """Creates a Stripe Billing Portal session and redirects the user to manage
+    their subscription (update payment method, cancel, etc.). Redirects to the
+    subscribe page if no Stripe customer ID is on record.
+    """
+
     user = request.user
     profile = user.profile
     parent_profile = getattr(profile, "parent_profile", None)
