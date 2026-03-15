@@ -14,40 +14,52 @@
     </div>
 <!-- Learner Selected -->
 {% else %}
-    {% comment %} <h1>What would you like to work on today?</h1> {% endcomment %}
-    {% comment %} <h2>Practising with: {{ selected_learner.name }}</h2> {% endcomment %}
-    {% if recommendation %}
-        <div class="recommendation-box">
-            <div class="recommendation-content">
-                <div class="recommendation-text">
-                    <h2 class="heading-left">{{ selected_learner.name }}'s recommended exercises:</h2>
-                    <div class="skills-list">
-                        <ul>
-                            {% for ex in recommendation.exercises %}
-                            <li>{{ ex }}</li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                    <p>
-                        Your focus should be <strong>{{ recommendation.focus }}.</strong>
-                        {% if recommendation.nextlevel %}
-                        Once you feel confident with that exercise, try starting <strong>{{ recommendation.nextlevel }}</strong>.
-                        {% endif %}
-                    </p>
-                </div>
-                <div class="recommendation-mascot">
-                    <img src="{% static 'images/landing/arlo_butterfly.png' %}" alt="Arlo playing with a butterfly">
-                </div>
-            </div>
-            <div class="recommendation-info no-print" style="margin-top: 16px; padding: 12px; background: #f0f3ff; border-radius: 8px; display: flex; gap: 8px; align-items: flex-start;">
-                <span style="font-weight: 600; color: #0066cc;">i</span>
-                <div>
-                    <p style="margin: 0; font-size: 0.95rem;">If an exercise feels too difficult, don't panic, just keep working on the earlier ones to strengthen your foundation.</p>
-                </div>
-            </div>
+    <div class="learner-context-bar">
+        <div class="learner-context-avatar" aria-hidden="true">
+            <img src="{% static 'images/landing/arlo_butterfly.png' %}" alt="">
         </div>
-        {% else %}
-        <div class="recommendation-box">
+        <p class="learner-context-text">practising with: <strong>{{ selected_learner.name }}</strong></p>
+        <p class="learner-context-stage">Stage {{ recommended_stage_number }}</p>
+        <a href="{% url 'profile' %}" class="learner-context-change">Change Learner</a>
+    </div>
+
+    {% if recommendation %}
+        <section class="recommendation-box">
+            <div class="recommendation-header-row">
+                <p class="recommendation-header-label">SUGGESTED FOR TODAY</p>
+                <a href="#" class="recommendation-text-action">Why this ?</a>
+            </div>
+            {% if recommended_exercise_card %}
+                <div class="exercise-widget exercise-widget--recommended recommendation-card">
+                    <div class="exercise-image">
+                        <img src="{% static recommended_exercise_card.icon %}" alt="{{ recommended_exercise_card.title }} icon">
+                    </div>
+                    <div class="exercise-details">
+                        <div class="exercise-title">
+                            <h3>{{ recommended_exercise_card.title }} - {{ recommended_exercise_card.target }}</h3>
+                        </div>
+                        <p><strong>Develops ability to:</strong></p>
+                        <div class="skills-list">
+                            <ul>
+                                <li>{{ recommended_exercise_card.bullet1 }}</li>
+                                <li>{{ recommended_exercise_card.bullet2 }}</li>
+                                <li>{{ recommended_exercise_card.bullet3 }}</li>
+                            </ul>
+                        </div>
+                        <div class="exercise-buttons">
+                            <a href="{% static recommended_exercise_card.start_path %}" class="btn btn--green btn--small btn--short">START</a>
+                            <a href="{% url 'game_description' recommended_exercise_card.key %}" class="btn btn--white btn--small btn--short">Tutorial</a>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            <div class="recommendation-footer-actions">
+                <a href="#" class="recommendation-text-action">Too hard?</a>
+                <a href="#" class="recommendation-text-action">Too easy?</a>
+            </div>
+        </section>
+    {% else %}
+        <div class="recommendation-box recommendation-box--fallback">
             <div class="recommendation-content">
                 <div class="recommendation-text">
                     <h2 class="heading-left">Need a hand choosing exercises?</h2>
@@ -65,158 +77,57 @@
             </div>
         </div>
     {% endif %}
-      
-    {% comment %} COLOURFUL SEMANTICS {% endcomment %}
-    {% with game=game_descriptions.colourful_semantics %}
-    <div class="exercise-widget">
-        <div class="exercise-image">
-            <img src="{% static 'icons/colour_semantics_icon_bg.png' %}" alt="Sentence Building">
-        </div>
-        <div class="exercise-details">
-            <div class="exercise-title">
-                <h3>{{ game.title }} - {{ game.target }}</h3>
-            </div>
-            <p><strong>Develops ability to:</strong></p>
-            <div class="skills-list">
-                <ul>
-                    <li>{{ game.bullet1 }}</li>
-                    <li>{{ game.bullet2 }}</li>
-                    <li>{{ game.bullet3 }}</li>
-                </ul>
-            </div>
-            {% comment %} <p>Difficulty: {{ selected_learner.assessment2 }}/6</p> {% endcomment %}
-            <!-- Buttons Wrapper -->
-            <div class="exercise-buttons">
-                <a href="{% static 'exercises/colourful_semantics/index.html' %}" class="btn btn--green btn--small btn--short">START</a>
-                <a href="{% url 'game_description' 'colourful_semantics' %}" class="btn btn--white btn--small btn--short">Tutorial</a>
-            </div>
-        </div>
-    </div>
-    {% endwith %}
 
-    {% comment %} THINK & FIND {% endcomment %}
-    {% with game=game_descriptions.think_and_find %}
-    <div class="exercise-widget">
-        <div class="exercise-image">
-            <img src="{% static 'icons/think_and_find_icon.png' %}" alt="Sentence Building">
-        </div>
-        <div class="exercise-details">
-            <div class="exercise-title">
-                <h3>{{ game.title }} - {{ game.target }}</h3>
-            </div>
-            {% if selected_learner.assessment1 < 0 %}
-                <p>This exercise will be unlocked as you progress.</p>
-                <a class="button exercise-btn locked-btn">Locked</a>
-            {% else %}
-                <p><strong>Develops ability to:</strong></p>
-                <div class="skills-list">
-                    <ul>
-                        <li>{{ game.bullet1 }}</li>
-                        <li>{{ game.bullet2 }}</li>
-                        <li>{{ game.bullet3 }}</li>
-                    </ul>
-                </div>
-                <div class="exercise-buttons">
-                    <a href="{% static 'exercises/think_and_find/index.html' %}" class="btn btn--green btn--small btn--short">START</a>
-                    <a href="{% url 'game_description' 'think_and_find' %}" class="btn btn--white btn--small btn--short">Tutorial</a>
-                </div>
-            {% endif %}
-        </div>
-    </div>
-    {% endwith %}
+    <section class="stage-tabs" aria-label="Stage tabs">
+        {% for stage in stage_library %}
+            <button
+                type="button"
+                class="stage-tab {% if stage.number == active_stage_number %}stage-tab--active{% endif %} {% if stage.number == recommended_stage_number %}stage-tab--recommended{% endif %}"
+                data-stage-tab="{{ stage.number }}"
+            >
+                Stage {{ stage.number }}
+            </button>
+        {% endfor %}
+    </section>
 
-    {% comment %} CONCEPT QUEST {% endcomment %}
-    {% with game=game_descriptions.concept_quest %}
-    <div class="exercise-widget">
-        <div class="exercise-image">
-            <img src="{% static 'icons/concept_quest_icon.png' %}" alt="Sentence Building">
-        </div>
-        <div class="exercise-details">
-            <div class="exercise-title">
-                <h3>{{ game.title }} - {{ game.target }}</h3>
-            </div>
-            {% if selected_learner.assessment1 < 0 %}
-                <p>This exercise will be unlocked as you progress.</p>
-                <a class="button exercise-btn locked-btn">Locked</a>
-            {% else %}
-                <p><strong>Develops ability to:</strong></p>
-                <div class="skills-list">
-                    <ul>
-                        <li>{{ game.bullet1 }}</li>
-                        <li>{{ game.bullet2 }}</li>
-                        <li>{{ game.bullet3 }}</li>
-                    </ul>
-                </div>
-                <div class="exercise-buttons">
-                    <a href="{% static 'exercises/concept_quest/index.html' %}" class="btn btn--green btn--small btn--short">START</a>
-                    <a href="{% url 'game_description' 'concept_quest' %}" class="btn btn--white btn--small btn--short">Tutorial</a>
-                </div>
-            {% endif %}
-        </div>
-    </div>
-    {% endwith %}
+    <section class="stage-library-wrap">
+        {% for stage in stage_library %}
+            <div
+                class="stage-library {% if stage.number == active_stage_number %}stage-library--active{% endif %}"
+                data-stage-content="{{ stage.number }}"
+            >
+                {% for card in stage.exercise_cards %}
+                    <article class="exercise-widget {% if card.key == recommended_exercise_key %}exercise-widget--glow{% endif %}">
+                        {% if card.key == recommended_exercise_key %}
+                            <span class="good-match-badge">GOOD MATCH</span>
+                        {% endif %}
 
-    {% comment %} CATEGORISATAION {% endcomment %}
-    {% with game=game_descriptions.categorisation %}
-    <div class="exercise-widget">
-        <div class="exercise-image">
-            <img src="{% static 'icons/categorisation_icon.png' %}" alt="Sentence Building">
-        </div>
-        <div class="exercise-details">
-            <div class="exercise-title">
-                <h3>{{ game.title }} - {{ game.target }}</h3>
+                        <div class="exercise-image">
+                            <img src="{% static card.icon %}" alt="{{ card.title }} icon">
+                        </div>
+                        <div class="exercise-details">
+                            <div class="exercise-title">
+                                <h3>{{ card.title }} - {{ card.target }}</h3>
+                            </div>
+                            <p><strong>Develops ability to:</strong></p>
+                            <div class="skills-list">
+                                <ul>
+                                    <li>{{ card.bullet1 }}</li>
+                                    <li>{{ card.bullet2 }}</li>
+                                    <li>{{ card.bullet3 }}</li>
+                                </ul>
+                            </div>
+                            <div class="exercise-buttons">
+                                <a href="{% static card.start_path %}" class="btn btn--green btn--small btn--short">START</a>
+                                <a href="{% url 'game_description' card.key %}" class="btn btn--white btn--small btn--short">Tutorial</a>
+                            </div>
+                        </div>
+                    </article>
+                {% endfor %}
             </div>
-            {% if selected_learner.assessment1 < 0 %}
-                <p>This exercise will be unlocked as you progress.</p>
-                <a class="button exercise-btn locked-btn">Locked</a>
-            {% else %}
-                <p><strong>Develops ability to:</strong></p>
-                <div class="skills-list">
-                    <ul>
-                        <li>{{ game.bullet1 }}</li>
-                        <li>{{ game.bullet2 }}</li>
-                        <li>{{ game.bullet3 }}</li>
-                    </ul>
-                </div>
-                <div class="exercise-buttons">
-                    <a href="{% static 'exercises/categorisation/index.html' %}" class="btn btn--green btn--small btn--short">START</a>
-                    <a href="{% url 'game_description' 'categorisation' %}" class="btn btn--white btn--small btn--short">Tutorial</a>
-                </div>
-            {% endif %}
-        </div>
-    </div>
-    {% endwith %}
+        {% endfor %}
+    </section>
 
-    {% comment %} STORY TRAIN {% endcomment %}
-    {% with game=game_descriptions.story_train %}
-    <div class="exercise-widget">
-        <div class="exercise-image">
-            <img src="{% static 'icons/story_train_icon.png' %}" alt="Sentence Building">
-        </div>
-        <div class="exercise-details">
-            <div class="exercise-title">
-                <h3>{{ game.title }} - {{ game.target }}</h3>
-            </div>
-            {% if selected_learner.assessment1 < 0 %}
-                <p>This exercise will be unlocked as you progress.</p>
-                <a class="button exercise-btn locked-btn">Locked</a>
-            {% else %}
-                <p><strong>Develops ability to:</strong></p>
-                <div class="skills-list">
-                    <ul>
-                        <li>{{ game.bullet1 }}</li>
-                        <li>{{ game.bullet2 }}</li>
-                        <li>{{ game.bullet3 }}</li>
-                    </ul>
-                </div>
-                <div class="exercise-buttons">
-                    <a href="{% static 'exercises/story_train/index.html' %}" class="btn btn--green btn--small btn--short">START</a>
-                    <a href="{% url 'game_description' 'story_train' %}" class="btn btn--white btn--small btn--short">Tutorial</a>
-                </div>
-            {% endif %}
-        </div>
-    </div>
-    {% endwith %}
-
-{% endif %}
+    <script src="{% static 'js/practise.js' %}"></script>
+    {% endif %}
 {% endblock %}
