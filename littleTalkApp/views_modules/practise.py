@@ -104,9 +104,6 @@ def practise(request):
                 recommended_stage_number = RECOMMENDATION_LEVEL_TO_STAGE.get(level)
                 recommended_exercise_key = title_to_key.get(recommendation.get("focus"))
 
-    if recommended_stage_number is None:
-        recommended_stage_number = default_stage_number
-
     active_stage_number = recommended_stage_number or default_stage_number
     recommended_exercise_card = exercise_cards_by_key.get(recommended_exercise_key)
 

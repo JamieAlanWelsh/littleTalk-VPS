@@ -106,8 +106,37 @@
     margin: 0 8px;
 }
 
-.recommendation-box--fallback {
-    padding: 24px;
+.recommendation-fallback-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 12px 8px 8px;
+}
+
+.recommendation-fallback-image {
+    flex: 0 0 auto;
+    width: 90px;
+}
+
+.recommendation-fallback-image img {
+    width: 90px;
+    height: auto;
+}
+
+.recommendation-fallback-content {
+    flex: 1;
+    text-align: left;
+}
+
+.recommendation-fallback-content h3 {
+    margin: 0 0 6px;
+    font-family: var(--font-outfit);
+}
+
+.recommendation-fallback-content p {
+    margin: 0 0 14px;
+    color: var(--font-color);
+    font-size: 0.95rem;
 }
 
 .recommendation-content {
