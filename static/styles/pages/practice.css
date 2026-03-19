@@ -115,11 +115,11 @@
 
 .recommendation-fallback-image {
     flex: 0 0 auto;
-    width: 90px;
+    width: 110px;
 }
 
 .recommendation-fallback-image img {
-    width: 90px;
+    width: 110px;
     height: auto;
 }
 
@@ -137,19 +137,6 @@
     margin: 0 0 14px;
     color: var(--font-color);
     font-size: 0.95rem;
-}
-
-.recommendation-content {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    gap: 20px;
-    align-items: center;
-}
-
-.recommendation-mascot img {
-    width: 120px;
-    height: auto;
 }
 
 .recommendation-card {
@@ -291,16 +278,6 @@
 }
 
 /* -----------------------------
-   Game Description
------------------------------- */
-
-.description-button-wrapper {
-    margin-top: 40px;
-    margin-bottom: 30px;
-    text-align: center;
-}
-
-/* -----------------------------
    Mobile Adjustability
 ------------------------------ */
 
@@ -327,10 +304,6 @@
 
     .stage-tab {
         flex: 0 0 auto;
-    }
-
-    .recommendation-mascot {
-        display: none;
     }
 
     .exercise-widget {
