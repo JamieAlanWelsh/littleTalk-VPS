@@ -1,0 +1,103 @@
+.main-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Inner content gets centered within the main-content area */
+.main-content-inner {
+    width: 100%;
+}
+
+.layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Only apply sidebar offset when the sidebar exists */
+.layout.with-sidebar .main-content {
+    margin-left: 240px;
+    flex: 1;
+}
+
+.container-box {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: var(--accent-color);
+    border: 1px solid #ccc;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    position: relative;
+    text-align: left;
+}
+
+.container--white {
+    background-color: white;
+}
+
+/* adds extra padding to top */
+.pt-70 {
+    padding-top: 80px;
+}
+
+.pb-70 {
+    padding-bottom: 80px;
+}
+
+.container--wide {
+    max-width: 800px;
+}
+
+.container--dash {
+    max-width: 1000px;
+}
+
+.container--short {
+    max-width: 500px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.container--edgy {
+    border-radius: var(--border-radius-light);
+}
+
+.marginsupperlower-30 {
+    margin: 30px auto;
+}
+
+.mt-20 {
+    margin-top: 20px;
+}
+
+.mb-10 {
+    margin-bottom: 10px;
+}
+
+.mb-20 {
+    margin-bottom: 20px;
+}
+
+.mb-30 {
+    margin-bottom: 30px;
+}
+
+.mb-40 {
+    margin-bottom: 40px;
+}
+
+@media (max-width: 800px) {
+
+    .page-heading-with-logo {
+        margin-top: 70px;
+    }
+    
+    .container-box {
+        margin-top: 0;
+    }
+}

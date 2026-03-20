@@ -12,7 +12,7 @@ from .models import LogEntry
 import re
 from django.core.exceptions import ValidationError
 from datetime import date
-from .utilites import hash_email
+from .utilities import hash_email
 
 User = get_user_model()
 

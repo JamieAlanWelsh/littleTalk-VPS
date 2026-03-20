@@ -1,0 +1,163 @@
+/* -----------------------------
+   Recommendation Widget
+------------------------------ */
+
+.recommendation-box {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--accent-color);
+    border-radius: var(--border-radius-light);
+    box-shadow: var(--box-shadow);
+    margin: 40px auto;
+    padding: 30px;
+    max-width: 600px;
+    text-align: left;
+}
+
+.recommendation-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: center;
+}
+
+.recommendation-mascot img {
+    width: 150px;
+    margin-right: 20px;
+    height: auto;
+    /* max-width: 100%; */
+}
+
+/* -----------------------------
+   Exercise Widgets
+------------------------------ */
+
+.exercise-widget {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    background-color: var(--accent-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    margin: 50px auto;
+    padding: 20px;
+    max-width: 600px;
+}
+
+.exercise-image img {
+    width: 80px;
+    height: 80px;
+    border: 1.5px solid #ccc;
+    border-radius: var(--border-radius-light);
+    margin-right: 20px;
+    box-shadow: var(--box-shadow);
+}
+
+.exercise-details {
+    flex: 1;
+    text-align: left;
+}
+
+.exercise-details h3 {
+    margin: 0;
+    font-family: var(--font-outfit);
+}
+
+.exercise-details p {
+    margin: 10px 0;
+    color: var(--font-color);
+}
+
+.skills-list {
+    margin: 10px 0;
+    padding-left: 1.2rem;
+}
+
+.skills-list ul {
+    list-style-type: disc;
+    padding-left: 1rem;
+    margin: 0;
+}
+
+.skills-list li {
+    margin-bottom: 0.4rem;
+    line-height: 1.2;
+    color: #333;
+}
+
+.exercise-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+/* -----------------------------
+   Game Description
+------------------------------ */
+
+.description-button-wrapper {
+    margin-top: 40px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+/* -----------------------------
+   Mobile Adjustability
+------------------------------ */
+
+@media (max-width: 600px) {
+    .recommendation-mascot {
+        display: none;
+    }
+
+    /* -----------------------------
+    exercise image goes top right insteaad
+    ------------------------------ */   
+
+    .exercise-widget {
+        flex-direction: column;
+        position: relative;
+        align-items: flex-start;
+    }
+
+    .exercise-image {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        width: 60px; /* Reduce image size for small screens */
+        height: 60px;
+    }
+
+    .exercise-image img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .exercise-details {
+        width: 100%;
+    }
+
+    .exercise-title {
+        margin-right: 90px; /* Add spacing so image doesn't overlap text */
+    }
+
+    .recommendation-box {
+        margin-top: 0;
+    }
+}
+
+/* -----------------------------
+   Expired locked button
+------------------------------ */
+
+/* .locked-btn {
+    pointer-events: none;
+    background-color: #FF9292;
+}
+
+.locked-btn:hover {
+    background-color: #FF9292;
+} */
