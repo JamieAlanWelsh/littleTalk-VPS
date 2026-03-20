@@ -10,3 +10,9 @@ db.sqlite3
 .vscode/
 .DS_Store
 Thumbs.db
+
+# Node / frontend dependencies and local caches
+node_modules/
+.npm/
+.pnpm-store/
+.vite/
