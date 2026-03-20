@@ -106,6 +106,8 @@ def home(request):
         },
     )
 
+def hi_from_react(request):
+    return render(request, "hello_from_react.html")
 
 @check_honeypot
 def school_signup(request):

@@ -1,0 +1,5 @@
+{
+  "extends": "@tsconfig/vite-react",
+  "include": ["frontend/src/**/*"],
+  "exclude": ["**/*.spec.ts"]
+}

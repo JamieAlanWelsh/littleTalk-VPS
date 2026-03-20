@@ -1,0 +1,14 @@
+{% load django_vite %}
+<html>
+  <head>
+    <title>Getting Started with Django and Vite</title>
+    {% vite_hmr_client %}
+    {% vite_asset 'frontend/src/style.css' %}
+  </head>
+  <body>
+    <div id="root"></div>
+    <p class="text-center text-red">(and Tailwind)</p>
+    {% vite_react_refresh %}
+    {% vite_asset 'frontend/src/exercises/hello.tsx' %}
+  </body>
+</html>

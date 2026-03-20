@@ -96,4 +96,6 @@ urlpatterns = [
     # Dashboard
     path('dashboard/learner/', views.learner_dashboard, name='learner_dashboard'),
     path('api/dashboard/progress-data/', views.learner_progress_data, name='learner_progress_data'),
+
+    path('hello-from-react/', views.hi_from_react, name='hi_from_react'),
 ]
