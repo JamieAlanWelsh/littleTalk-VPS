@@ -12,6 +12,7 @@ from .views_modules import public as public_views
 from .views_modules import school as school_views
 from .views_modules import settings_views as settings_app_views
 from .views_modules import subscription as subscription_views
+from . import views
 
 urlpatterns = [
     # Landing content

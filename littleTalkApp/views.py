@@ -6,6 +6,7 @@ routing behavior now lives in domain-oriented modules under
 """
 
 from importlib import import_module
+from django.shortcuts import render
 
 VIEW_MODULES = [
 	"littleTalkApp.views_modules.api",
