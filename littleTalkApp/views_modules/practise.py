@@ -8,7 +8,7 @@ from littleTalkApp.models import Learner
 PRACTISE_STAGES = {
     1: {
         "label": "Stage 1 - Foundations",
-        "exercises": ["colourful_semantics", "think_and_find"],
+        "exercises": ["colourful_semantics", "think_and_find", "react_test"],
     },
     2: {
         "label": "Stage 2 - Building Language",
@@ -54,6 +54,7 @@ def practise(request):
         "concept_quest": "icons/concept_quest_icon.png",
         "categorisation": "icons/categorisation_icon.png",
         "story_train": "icons/story_train_icon.png",
+        "react_test": "icons/think_and_find_icon.png",
     }
 
     title_to_key = {
@@ -80,7 +81,7 @@ def practise(request):
                 "bullet2": game_data.get("bullet2", ""),
                 "bullet3": game_data.get("bullet3", ""),
                 "icon": exercise_icon_map.get(exercise_key, ""),
-                "start_path": f"exercises/{exercise_key}/index.html",
+                "start_path": game_data.get("start_path") or f"exercises/{exercise_key}/index.html",
             }
             exercise_cards.append(card_payload)
             exercise_cards_by_key[exercise_key] = card_payload

@@ -67,5 +67,15 @@ GAME_DESCRIPTIONS = {
             'learninglevel1': "No need to select a learning level for this exercise, just click start and go for it!",
             'learninglevel2': "",
             'static_name': 'categorisation',
-        }
+        },
+        'react_test': {
+            'exercise_complexity': 0,
+            'title': 'Multiple Choice (React)',
+            'target': 'Sandbox Exercise',
+            'bullet1': 'Answer questions and get instant feedback',
+            'bullet2': 'See your score at the end of the exercise',
+            'bullet3': 'Built with React — no Godot required',
+            'start_path': 'react:multiple_choice',
+            'static_name': 'react_test',
+        },
     }

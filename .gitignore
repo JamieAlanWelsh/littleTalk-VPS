@@ -1,6 +1,8 @@
 littleTalk/settings.py
 littletalkvenv/
 __pycache__/
+node_modules/
+static/js/dist/
 *.py[cod]
 *.pyc
 *.pyo

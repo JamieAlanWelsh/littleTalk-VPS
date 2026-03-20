@@ -118,8 +118,12 @@
                                 </ul>
                             </div>
                             <div class="exercise-buttons">
-                                <a href="{% static card.start_path %}" class="btn btn--green btn--small btn--short">START</a>
-                                <a href="{% url 'game_description' card.key %}" class="btn btn--white btn--small btn--short">Tutorial</a>
+                                {% if card.start_path|slice:":6" == "react:" %}
+                                    <button type="button" class="btn btn--green btn--small btn--short" data-react-exercise="{{ card.start_path|slice:'6:' }}">START</button>
+                                {% else %}
+                                    <a href="{% static card.start_path %}" class="btn btn--green btn--small btn--short">START</a>
+                                    <a href="{% url 'game_description' card.key %}" class="btn btn--white btn--small btn--short">Tutorial</a>
+                                {% endif %}
                             </div>
                         </div>
                     </article>
@@ -128,6 +132,16 @@
         {% endfor %}
     </section>
 
+    <div id="exercise-root" hidden></div>
+
+    <script>
+        window.__EXERCISE_CONFIG__ = {
+            learnerUuid: "{% if selected_learner %}{{ selected_learner.learner_uuid }}{% endif %}",
+            csrfToken: "{{ csrf_token }}"
+        };
+    </script>
+
+    <script type="module" src="{% static 'js/dist/multiple_choice.js' %}"></script>
     <script src="{% static 'js/practise.js' %}"></script>
     {% endif %}
 {% endblock %}
