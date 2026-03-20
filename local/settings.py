@@ -190,3 +190,9 @@ STRIPE_PARENT_PRICE_ID = "price_1RtSAiL44mGM9HHxUScSlpdA"
 STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET")
 if not STRIPE_WEBHOOK_SECRET:
     raise ValueError("Missing STRIPE_WEBHOOK_SECRET environment variable")
+
+DJANGO_VITE = {
+   "default": {
+    "dev_mode": True
+  }
+}
