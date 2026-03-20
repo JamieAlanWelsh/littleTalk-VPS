@@ -6,7 +6,6 @@ routing behavior now lives in domain-oriented modules under
 """
 
 from importlib import import_module
-from django.shortcuts import render
 
 VIEW_MODULES = [
 	"littleTalkApp.views_modules.api",
@@ -21,6 +20,7 @@ VIEW_MODULES = [
 	"littleTalkApp.views_modules.school",
 	"littleTalkApp.views_modules.settings_views",
 	"littleTalkApp.views_modules.subscription",
+	"littleTalkApp.views_modules.react_test",
 ]
 
 __all__ = []
@@ -34,6 +34,3 @@ for module_path in VIEW_MODULES:
 		globals()[name] = getattr(module, name)
 		if name not in __all__:
 			__all__.append(name)
-
-def hi_from_react(request):
-    return render(request, "hello_from_react.html")

@@ -12,6 +12,7 @@ from .views_modules import public as public_views
 from .views_modules import school as school_views
 from .views_modules import settings_views as settings_app_views
 from .views_modules import subscription as subscription_views
+from .views_modules import react_test as react_test_views
 from . import views
 
 urlpatterns = [
@@ -106,5 +107,5 @@ urlpatterns = [
     path('api/dashboard/progress-data/', dashboard_views.learner_progress_data, name='learner_progress_data'),
 
     # React test view
-    path('hello-from-react/', views.hi_from_react, name='hi_from_react'),
+    path('hello-from-react/', react_test_views.hi_from_react, name='hi_from_react'),
 ]
