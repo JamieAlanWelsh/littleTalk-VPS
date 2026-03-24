@@ -1,0 +1,333 @@
+/**
+ * Exercise Framework Styles
+ *
+ * Stylesheet for the reusable React exercise framework components.
+ * Uses CSS variables defined in the app's variables.css for consistency.
+ */
+
+/* Container and Layout */
+.exercise-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 2rem;
+  background-color: var(--accent-color);
+  border-radius: var(--border-radius-light);
+  box-shadow: var(--box-shadow);
+  font-family: var(--font-roboto);
+  color: var(--font-color);
+}
+
+.exercise-header {
+  text-align: center;
+}
+
+.exercise-title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--font-color);
+}
+
+.exercise-instructions {
+  font-size: 1rem;
+  line-height: var(--line-height);
+  color: var(--font-color);
+  margin-bottom: 1rem;
+}
+
+/* Prompt Area */
+.exercise-prompt-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: var(--border-radius-light);
+  border: 2px solid var(--accent-color-dark);
+  min-height: 80px;
+}
+
+/* Sentence/Prompt Block */
+.sentence-block {
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-align: center;
+  padding: 1rem;
+  color: var(--font-color);
+  line-height: var(--line-height);
+}
+
+.sentence-block.instruction {
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--font-color);
+}
+
+.sentence-block.feedback {
+  font-size: 1.1rem;
+  margin: 1rem 0;
+  padding: 1rem;
+  border-radius: var(--border-radius-light);
+}
+
+.sentence-block.feedback.correct {
+  background-color: rgba(51, 218, 115, 0.2);
+  color: var(--target-green);
+  border: 2px solid var(--target-green);
+}
+
+.sentence-block.feedback.incorrect {
+  background-color: rgba(244, 67, 54, 0.2);
+  color: var(--target-red);
+  border: 2px solid var(--target-red);
+}
+
+/* Answer Grid */
+.exercise-answer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1rem;
+  padding: 1.5rem;
+  background-color: transparent;
+  justify-items: center;
+}
+
+/* Icon Block */
+.icon-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  background-color: white;
+  border: 3px solid var(--border-grey);
+  border-radius: var(--border-radius-light);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  text-align: center;
+  min-height: 160px;
+  justify-content: center;
+}
+
+.icon-block:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-color: var(--accent-color-dark);
+}
+
+.icon-block.interactive {
+  background-color: #f9f9f9;
+  border-color: var(--accent-color-dark);
+}
+
+.icon-block.selected {
+  background-color: var(--accent-color);
+  border-color: var(--button-green);
+  border-width: 3px;
+  box-shadow: 0 0 0 3px rgba(51, 218, 115, 0.2);
+}
+
+.icon-block.correct {
+  background-color: rgba(51, 218, 115, 0.1);
+  border-color: var(--target-green);
+  border-width: 3px;
+}
+
+.icon-block.incorrect {
+  background-color: rgba(244, 67, 54, 0.1);
+  border-color: var(--target-red);
+  border-width: 3px;
+}
+
+.icon-block.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: #f0f0f0;
+}
+
+.icon-block-image {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  margin-bottom: 0.5rem;
+}
+
+.icon-block-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--font-color);
+  word-wrap: break-word;
+  max-width: 100%;
+}
+
+/* Feedback and Result Area */
+.exercise-feedback {
+  padding: 1rem;
+  border-radius: var(--border-radius-light);
+  text-align: center;
+  font-weight: 500;
+  margin: 1rem 0;
+}
+
+.exercise-feedback.correct {
+  background-color: rgba(51, 218, 115, 0.15);
+  color: var(--target-green);
+  border: 2px solid var(--target-green);
+}
+
+.exercise-feedback.incorrect {
+  background-color: rgba(244, 67, 54, 0.15);
+  color: var(--target-red);
+  border: 2px solid var(--target-red);
+}
+
+/* Progress Indicator */
+.exercise-progress {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 0;
+  font-size: 0.95rem;
+  color: var(--font-color);
+}
+
+.progress-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--border-grey);
+  transition: background-color 0.2s ease-in-out;
+}
+
+.progress-dot.completed {
+  background-color: var(--target-green);
+}
+
+.progress-dot.current {
+  background-color: var(--button-green);
+}
+
+/* Button Styles */
+.exercise-button-group {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 1rem 0;
+}
+
+.exercise-button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  box-shadow: var(--box-shadow);
+  font-family: var(--font-roboto);
+}
+
+.exercise-button.primary {
+  background-color: var(--button-green);
+  color: white;
+}
+
+.exercise-button.primary:hover {
+  background-color: var(--button-hover);
+  transform: translateY(-2px);
+}
+
+.exercise-button.primary:disabled {
+  background-color: var(--border-grey);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.exercise-button.secondary {
+  background-color: var(--yellow-button-color);
+  color: var(--font-color);
+}
+
+.exercise-button.secondary:hover {
+  background-color: var(--yellow-button-hover);
+  transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .exercise-container {
+    padding: 1.5rem;
+    gap: 1.5rem;
+  }
+
+  .exercise-answer-grid {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 0.75rem;
+    padding: 1rem;
+  }
+
+  .icon-block {
+    min-height: 140px;
+    padding: 0.75rem;
+  }
+
+  .icon-block-image {
+    width: 70px;
+    height: 70px;
+  }
+
+  .exercise-title {
+    font-size: 1.4rem;
+  }
+
+  .sentence-block {
+    font-size: 1.1rem;
+  }
+
+  .exercise-button-group {
+    flex-direction: column;
+  }
+
+  .exercise-button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .exercise-container {
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .exercise-answer-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+    padding: 0.75rem;
+  }
+
+  .icon-block {
+    min-height: 120px;
+    padding: 0.5rem;
+  }
+
+  .icon-block-image {
+    width: 60px;
+    height: 60px;
+  }
+
+  .exercise-title {
+    font-size: 1.2rem;
+  }
+
+  .sentence-block {
+    font-size: 1rem;
+  }
+
+  .sentence-block.instruction {
+    font-size: 0.9rem;
+  }
+}
