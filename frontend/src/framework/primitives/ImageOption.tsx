@@ -1,7 +1,7 @@
 /**
  * ImageOption Component
  *
- * Displays a picture/icon card with optional label.
+ * Displays an icon card.
  * Supports interactive states: default, selected, correct, incorrect, disabled.
  */
 
@@ -24,9 +24,7 @@ export const ImageOption: React.FC<ImageOptionProps> = ({
   onClick,
 }) => {
   const handleClick = () => {
-    if (!isDisabled && isCorrect !== false) {
-      onClick(block.id);
-    }
+    if (isCorrect !== false) onClick(block.id);
   };
 
   // Determine state classes
@@ -54,9 +52,6 @@ export const ImageOption: React.FC<ImageOptionProps> = ({
         alt={block.altText || block.label || 'Icon option'}
         className="icon-block-image"
       />
-      {block.label && (
-        <span className="icon-block-label">{block.label}</span>
-      )}
     </button>
   );
 };

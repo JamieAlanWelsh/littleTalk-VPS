@@ -3,3 +3,13 @@
 @import './variables.css';
 /* Import exercise framework styles */
 @import './framework/framework.css';
+
+body.exercise-page {
+	margin: 0;
+	padding: 20px;
+	min-height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: var(--background-color);
+}

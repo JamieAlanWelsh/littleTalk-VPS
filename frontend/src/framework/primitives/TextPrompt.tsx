@@ -11,16 +11,17 @@ import type { SentenceBlock as SentenceBlockType } from '../../lib/types';
 interface TextPromptProps {
   block: SentenceBlockType;
   isCorrect?: boolean | null;
+  className?: string;
 }
 
-export const TextPrompt: React.FC<TextPromptProps> = ({ block, isCorrect }) => {
+export const TextPrompt: React.FC<TextPromptProps> = ({ block, isCorrect, className = '' }) => {
   const roleClass = block.role ? `${block.role}` : '';
   const feedbackClass = block.role === 'feedback' && isCorrect !== null
     ? isCorrect ? 'correct' : 'incorrect'
     : '';
 
   return (
-    <div className={`sentence-block ${roleClass} ${feedbackClass}`}>
+    <div className={`sentence-block ${roleClass} ${feedbackClass} ${className}`.trim()}>
       {block.text}
     </div>
   );

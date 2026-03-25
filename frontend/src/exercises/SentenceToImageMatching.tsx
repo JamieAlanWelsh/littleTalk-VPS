@@ -5,10 +5,11 @@
  * Users read a sentence and click the matching icon/picture.
  */
 
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import type { MatchingExercisePayload, ExerciseState } from '../lib/types';
 import ExerciseLayout from '../framework/layouts/ExerciseLayout';
-import { TextPrompt, ImageOption } from '../framework/primitives';
+import { ImageOption } from '../framework/primitives';
+import { ZonePrompt, ZoneInteractables, ZoneActions, type ZoneAction } from '../framework/zones';
 
 interface SentenceToImageMatchingProps {
   payload: MatchingExercisePayload;
@@ -28,14 +29,8 @@ export const SentenceToImageMatching: React.FC<SentenceToImageMatchingProps> = (
     totalPairs: payload.pairs.length,
   });
 
-  // Get the current prompt and its correct answers
-  const currentPrompt = useMemo(() => {
-    return payload.prompts[state.currentPromptIndex];
-  }, [payload.prompts, state.currentPromptIndex]);
-
-  const currentPair = useMemo(() => {
-    return payload.pairs.find(pair => pair.promptId === currentPrompt.id);
-  }, [payload.pairs, currentPrompt]);
+  const currentPrompt = payload.prompts[state.currentPromptIndex];
+  const currentPair = payload.pairs.find(pair => pair.promptId === currentPrompt.id);
 
   // Check if an icon is the correct answer
   const isCorrectAnswer = (iconId: string): boolean => {
@@ -93,7 +88,6 @@ export const SentenceToImageMatching: React.FC<SentenceToImageMatchingProps> = (
     }));
   };
 
-  const progressLabel = `${state.completedPairs}/${state.totalPairs} correct`;
   let feedbackMessage = '';
   let feedbackType: 'correct' | 'incorrect' | undefined = undefined;
 
@@ -107,46 +101,48 @@ export const SentenceToImageMatching: React.FC<SentenceToImageMatchingProps> = (
     }
   }
 
+  const actions: ZoneAction[] = [
+    ...(!state.showingFeedback
+      ? [{ label: 'Check Answer', variant: 'primary' as const, onClick: handleSubmitAnswer, disabled: state.selectedIconIds.length === 0 }]
+      : []),
+    ...(state.showingFeedback && !state.isCorrect
+      ? [{ label: 'Try Again', variant: 'secondary' as const, onClick: handleRetry }]
+      : []),
+    ...(state.showingFeedback
+      ? [{ label: 'Next', variant: 'primary' as const, onClick: handleNext }]
+      : []),
+  ];
+
   return (
     <ExerciseLayout
-      title={payload.title}
-      instructions={payload.instructions}
-      progressLabel={progressLabel}
       feedbackMessage={feedbackMessage}
       feedbackType={feedbackType}
-      showSubmitButton={!state.showingFeedback}
-      showRetryButton={state.showingFeedback && !state.isCorrect}
-      showNextButton={state.showingFeedback}
-      submitButtonDisabled={state.selectedIconIds.length === 0}
-      submitButtonLabel="Check Answer"
-      onSubmit={handleSubmitAnswer}
-      onRetry={handleRetry}
-      onNext={handleNext}
+      prompt={
+        <ZonePrompt
+          title={payload.title}
+          instruction={currentPrompt.text}
+        />
+      }
     >
-      {/* Prompt Section */}
-      <div className="exercise-prompt-area">
-        <TextPrompt block={currentPrompt} isCorrect={state.isCorrect} />
-      </div>
-
-      {/* Answer Options */}
-      <div className="exercise-answer-grid">
+      <ZoneInteractables>
         {payload.icons.map(icon => (
           <ImageOption
             key={icon.id}
             block={icon}
             isSelected={state.selectedIconIds.includes(icon.id)}
             isCorrect={
-              state.showingFeedback && state.selectedIconIds.includes(icon.id)
-                ? isCorrectAnswer(icon.id)
-                : state.showingFeedback && isCorrectAnswer(icon.id)
-                ? true
+              !state.showingFeedback ? null
+                : isCorrectAnswer(icon.id) ? true
+                : state.selectedIconIds.includes(icon.id) ? false
                 : null
             }
             isDisabled={state.showingFeedback && !state.selectedIconIds.includes(icon.id)}
             onClick={handleSelectIcon}
           />
         ))}
-      </div>
+      </ZoneInteractables>
+
+      <ZoneActions actions={actions} />
     </ExerciseLayout>
   );
 };

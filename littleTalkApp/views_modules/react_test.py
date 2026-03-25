@@ -12,66 +12,51 @@ def sentence_matching_example(request):
     Renders a sentence-to-picture matching exercise with fixture data.
     """
     
+    # Sample icons from static/icons folder
+    # Using actual PNG assets instead of SVG
+    sample_icons = [
+        {"id": "icon-1", "imageUrl": "/static/icons/house.png", "label": "House"},
+        {"id": "icon-2", "imageUrl": "/static/icons/help.png", "label": "Help"},
+        {"id": "icon-3", "imageUrl": "/static/icons/children.png", "label": "Children"},
+        {"id": "icon-4", "imageUrl": "/static/icons/diary.png", "label": "Diary"},
+        {"id": "icon-5", "imageUrl": "/static/icons/graph.png", "label": "Graph"},
+    ]
+    
     # Fixture data for the sentence-to-picture matching exercise
     exercise_payload = {
         "exerciseId": "sentence-matching-example",
-        "title": "Match the Sentence to the Picture",
-        "instructions": "Read the sentence, then click on the matching picture.",
+        "title": "Match the picture to the concept",
+        "instructions": '\"Can you show me which icon is a house?\"',
         "prompts": [
             {
                 "id": "prompt-1",
-                "text": "Click the picture of a frog",
+                "text": "\"Can you show me which icon is a house?\"",
                 "role": "prompt"
             },
             {
                 "id": "prompt-2",
-                "text": "Click the picture of a cat",
+                "text": "\"Can you point to the help icon?\"",
                 "role": "prompt"
             },
             {
                 "id": "prompt-3",
-                "text": "Click the picture of a bird",
+                "text": "\"Which one is the children icon?\"",
                 "role": "prompt"
             },
         ],
-        "icons": [
-            {
-                "id": "icon-frog",
-                "imageUrl": "/static/images/frog.svg",
-                "label": "Frog",
-                "altText": "A green frog"
-            },
-            {
-                "id": "icon-cat",
-                "imageUrl": "/static/images/cat.svg",
-                "label": "Cat",
-                "altText": "An orange cat"
-            },
-            {
-                "id": "icon-bird",
-                "imageUrl": "/static/images/bird.svg",
-                "label": "Bird",
-                "altText": "A blue bird"
-            },
-            {
-                "id": "icon-dog",
-                "imageUrl": "/static/images/dog.svg",
-                "label": "Dog",
-                "altText": "A brown dog"
-            },
-        ],
+        "icons": sample_icons,
         "pairs": [
             {
                 "promptId": "prompt-1",
-                "correctIconIds": ["icon-frog"]
+                "correctIconIds": ["icon-1"]
             },
             {
                 "promptId": "prompt-2",
-                "correctIconIds": ["icon-cat"]
+                "correctIconIds": ["icon-2"]
             },
             {
                 "promptId": "prompt-3",
-                "correctIconIds": ["icon-bird"]
+                "correctIconIds": ["icon-3"]
             },
         ],
         "showFeedback": True,
