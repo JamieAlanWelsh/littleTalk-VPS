@@ -7,6 +7,7 @@
 body.exercise-page {
 	margin: 0;
 	padding: 20px;
+	padding-bottom: 140px;
 	min-height: 100vh;
 	display: flex;
 	align-items: center;

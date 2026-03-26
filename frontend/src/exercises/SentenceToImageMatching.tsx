@@ -88,35 +88,37 @@ export const SentenceToImageMatching: React.FC<SentenceToImageMatchingProps> = (
     }));
   };
 
-  let feedbackMessage = '';
-  let feedbackType: 'correct' | 'incorrect' | undefined = undefined;
+  const feedbackMessage = !state.showingFeedback ? ''
+    : state.isCorrect ? "Great! That's correct!"
+    : "Not quite. Try again!";
 
-  if (state.showingFeedback) {
-    if (state.isCorrect) {
-      feedbackMessage = 'Great! That\'s correct!';
-      feedbackType = 'correct';
-    } else {
-      feedbackMessage = 'Not quite. Try again!';
-      feedbackType = 'incorrect';
-    }
-  }
+  const primaryAction: ZoneAction = !state.showingFeedback
+    ? {
+        label: 'Check',
+        variant: 'primary',
+        onClick: handleSubmitAnswer,
+        disabled: state.selectedIconIds.length === 0,
+      }
+    : state.isCorrect
+    ? {
+        label: 'Continue',
+        variant: 'primary',
+        onClick: handleNext,
+      }
+    : {
+        label: 'Try Again',
+        variant: 'secondary',
+        onClick: handleRetry,
+      };
 
-  const actions: ZoneAction[] = [
-    ...(!state.showingFeedback
-      ? [{ label: 'Check Answer', variant: 'primary' as const, onClick: handleSubmitAnswer, disabled: state.selectedIconIds.length === 0 }]
-      : []),
-    ...(state.showingFeedback && !state.isCorrect
-      ? [{ label: 'Try Again', variant: 'secondary' as const, onClick: handleRetry }]
-      : []),
-    ...(state.showingFeedback
-      ? [{ label: 'Next', variant: 'primary' as const, onClick: handleNext }]
-      : []),
-  ];
+  const footerTone = !state.showingFeedback
+    ? 'neutral'
+    : state.isCorrect
+    ? 'correct'
+    : 'incorrect';
 
   return (
     <ExerciseLayout
-      feedbackMessage={feedbackMessage}
-      feedbackType={feedbackType}
       prompt={
         <ZonePrompt
           title={payload.title}
@@ -142,7 +144,12 @@ export const SentenceToImageMatching: React.FC<SentenceToImageMatchingProps> = (
         ))}
       </ZoneInteractables>
 
-      <ZoneActions actions={actions} />
+      <ZoneActions
+        onSkip={handleNext}
+        primaryAction={primaryAction}
+        feedbackMessage={state.showingFeedback ? feedbackMessage : undefined}
+        tone={footerTone}
+      />
     </ExerciseLayout>
   );
 };

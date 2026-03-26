@@ -15,16 +15,38 @@ export interface ZoneAction {
   onClick: () => void;
 }
 
+type ZoneActionsTone = 'neutral' | 'correct' | 'incorrect';
+
 interface ZoneActionsProps {
-  actions: ZoneAction[];
+  primaryAction: ZoneAction;
+  onSkip: () => void;
+  feedbackMessage?: string;
+  tone?: ZoneActionsTone;
 }
 
-export const ZoneActions: React.FC<ZoneActionsProps> = ({ actions }) => {
+export const ZoneActions: React.FC<ZoneActionsProps> = ({
+  primaryAction,
+  onSkip,
+  feedbackMessage,
+  tone = 'neutral',
+}) => {
+  const toneClass = tone === 'neutral' ? '' : `exercise-zone-actions--${tone}`;
+
   return (
-    <div className="exercise-zone-actions">
-      {actions.map((action, index) => (
-        <ExerciseActionButton key={index} {...action} />
-      ))}
+    <div className={`exercise-zone-actions ${toneClass}`.trim()}>
+      <div className="exercise-zone-actions-content">
+        <div className="exercise-zone-actions-left">
+          {feedbackMessage ? (
+            <p className="exercise-zone-actions-message">{feedbackMessage}</p>
+          ) : (
+            <ExerciseActionButton label="Skip" variant="secondary" onClick={onSkip} />
+          )}
+        </div>
+
+        <div className="exercise-zone-actions-right">
+          <ExerciseActionButton {...primaryAction} />
+        </div>
+      </div>
     </div>
   );
 };

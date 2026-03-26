@@ -6,26 +6,17 @@
  */
 
 import React from 'react';
-import { TextPrompt } from '../primitives';
 
 interface ZonePromptProps {
   title: string;
   instruction: string;
 }
 
-export const ZonePrompt: React.FC<ZonePromptProps> = ({ title, instruction }) => {
-  return (
-    <div className="exercise-zone exercise-zone-prompt">
-      <TextPrompt
-        block={{ id: 'zone-prompt-title', text: title, role: 'prompt' }}
-        className="zone-prompt-title"
-      />
-      <TextPrompt
-        block={{ id: 'zone-prompt-instruction', text: instruction, role: 'instruction' }}
-        className="zone-prompt-instruction"
-      />
-    </div>
-  );
-};
+export const ZonePrompt: React.FC<ZonePromptProps> = ({ title, instruction }) => (
+  <div className="exercise-zone exercise-zone-prompt">
+    <div className="zone-prompt-title">{title}</div>
+    <div className="zone-prompt-instruction">{instruction}</div>
+  </div>
+);
 
 export default ZonePrompt;

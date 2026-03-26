@@ -11,17 +11,13 @@
 import React, { type ReactNode } from 'react';
 
 interface ExerciseLayoutProps {
-  children: ReactNode; // The exercise-specific content (zones, options, etc.)
-  prompt?: ReactNode;  // Optional prompt zone rendered above the main card
-  feedbackMessage?: string;
-  feedbackType?: 'correct' | 'incorrect';
+  children: ReactNode;
+  prompt?: ReactNode;
 }
 
 export const ExerciseLayout: React.FC<ExerciseLayoutProps> = ({
   children,
   prompt,
-  feedbackMessage,
-  feedbackType,
 }) => {
   return (
     <div className="exercise-layout-wrapper">
@@ -33,11 +29,6 @@ export const ExerciseLayout: React.FC<ExerciseLayoutProps> = ({
 
       <div className="exercise-container">
         {children}
-        {feedbackMessage && (
-          <div className={`exercise-feedback ${feedbackType || ''}`}>
-            {feedbackMessage}
-          </div>
-        )}
       </div>
     </div>
   );
