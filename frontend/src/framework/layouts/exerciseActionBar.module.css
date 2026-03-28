@@ -1,0 +1,52 @@
+.exerciseZoneActions {
+  background-color: var(--accent-color);
+  box-shadow: 0 -4px 14px rgba(0, 0, 0, 0.08);
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  width: 100%;
+  padding: 1rem 1.25rem calc(1rem + env(safe-area-inset-bottom));
+}
+
+.exerciseZoneActionsContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: nowrap;
+  width: min(100%, 1000px);
+  margin: 0 auto;
+}
+
+.exerciseZoneActionsCorrect {
+  background-color: #ccf0de;
+}
+
+.exerciseZoneActionsIncorrect {
+  background-color: #f6dadd;
+}
+
+.exerciseZoneActionsLeft,
+.exerciseZoneActionsRight {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.exerciseZoneActionsLeft {
+  justify-content: flex-start;
+}
+
+.exerciseZoneActionsRight {
+  justify-content: flex-end;
+}
+
+.exerciseZoneActionsMessage {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--font-color);
+}

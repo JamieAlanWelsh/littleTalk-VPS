@@ -7,6 +7,14 @@
 
 import type { MatchingExercisePayload } from './types';
 
+export function getDataExercisePayload(rootElement: HTMLElement): any {
+  const payloadJson = rootElement.getAttribute('data-exercise-payload');
+  if (!payloadJson) {
+    throw new Error('Missing data-exercise-payload attribute on root element');
+  }
+  return JSON.parse(payloadJson);
+}
+
 /**
  * Parses the exercise payload from the root element's data attributes.
  * @param rootElement The DOM element where the exercise is mounted

@@ -5,7 +5,7 @@
  * Intended for actions like Check Answer, Try Again, Next, Continue.
  */
 
-import React from 'react';
+import styles from './ExerciseActionButton.module.css';
 
 type ExerciseActionButtonVariant = 'primary' | 'secondary';
 
@@ -22,9 +22,11 @@ export const ExerciseActionButton: React.FC<ExerciseActionButtonProps> = ({
   disabled = false,
   onClick,
 }) => {
+  const variantClass = variant === 'secondary' ? styles.secondary : styles.primary;
+
   return (
     <button
-      className={`exercise-button ${variant}`}
+      className={`${styles.button} ${variantClass}`}
       onClick={onClick}
       disabled={disabled}
       type="button"

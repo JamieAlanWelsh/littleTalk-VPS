@@ -6,6 +6,8 @@
  * of new exercises using reusable blocks.
  */
 
+import { z } from 'zod';
+
 /**
  * SentenceBlock: A text-based prompt or label for the user.
  * Used to display instructions, prompts, feedback text, etc.
@@ -51,6 +53,50 @@ export interface MatchingExercisePayload {
   allowRetry?: boolean; // Default: true
 }
 
+
+/**
+ * These objects are common between the Django backend and React frontend, so need to
+ * define them in a shared types file to ensure consistency and type safety across the stack.
+ * Here is fine for now though
+ */
+
+export const QuestionSchema = z.object({
+  id: z.string(),
+  prompt: z.string(),
+  correctIconIds: z.array(z.string()),
+});
+
+export type Question = z.infer<typeof QuestionSchema>;
+
+export const PictureSchema = z.object({
+  id: z.string(),
+  imageUrl: z.string(),
+  label: z.string(),
+  altText: z.string().optional(),
+});
+
+export type Picture = z.infer<typeof PictureSchema>;
+
+export const MatchingExercisePayload2Schema = z.object({
+  questions: z.array(QuestionSchema),
+  pictures: z.array(PictureSchema),
+});
+
+export type MatchingExercisePayload2 = z.infer<typeof MatchingExercisePayload2Schema>;
+
+
+// state types
+export interface ExerciseState2 {
+  currentQuestionIndex: number;
+}
+
+export interface QuestionState {
+  selectedIconIds: string[];
+  answerState: AnswerState;
+}
+
+export type AnswerState = 'notAnswered' | 'correct' | 'incorrect';
+
 /**
  * ExerciseState: Tracks the interactive state of an exercise.
  * Used by exercise shells and components to manage UI state.
@@ -62,18 +108,4 @@ export interface ExerciseState {
   showingFeedback: boolean;
   completedPairs: number; // Count of correct pairs matched so far
   totalPairs: number;
-}
-
-/**
- * ExerciseContextProps: Passed to exercise container/shell components.
- * Provides the exercise definition, current state, and handlers.
- */
-export interface ExerciseContextProps {
-  payload: MatchingExercisePayload;
-  state: ExerciseState;
-  onSelectIcon: (iconId: string) => void;
-  onSubmitAnswer: () => void;
-  onRetry: () => void;
-  onNext: () => void;
-  onComplete: () => void;
 }

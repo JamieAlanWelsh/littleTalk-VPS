@@ -8,29 +8,67 @@
  * and feedback/progress indicators internally.
  */
 
-import React, { type ReactNode } from 'react';
+import { type ReactNode } from 'react';
+import styles from './exerciseLayout.module.css';
+import ExerciseActionBar from './ExerciseActionBar';
+import type { AnswerState } from '../../lib/types';
+
+const correctFeedbackMessages = [
+    "Great job! That's correct.",
+    "Well done! You got it right.",
+];
+
+const incorrectFeedbackMessages = [
+    "Not quite, try again!",
+    "Almost there, give it another shot!",
+];
+
 
 interface ExerciseLayoutProps {
+  title: string;
+  instruction: string;
+  actionBarPhase: AnswerState;
+  onCheckAnswer: () => void;
+  onTryAgain: () => void;
+  onContinue: () => void;
   children: ReactNode;
-  prompt?: ReactNode;
 }
 
-export const ExerciseLayout: React.FC<ExerciseLayoutProps> = ({
+export const ExerciseLayout = ({
   children,
-  prompt,
-}) => {
-  return (
-    <div className="exercise-layout-wrapper">
-      {prompt && (
-        <div className="exercise-prompt-card">
-          {prompt}
-        </div>
-      )}
+  title,
+  instruction,
+  actionBarPhase,
+  onCheckAnswer,
+  onTryAgain,
+  onContinue,
+}: ExerciseLayoutProps) => {
+  const feedbackMessage = actionBarPhase === 'correct'
+    ? correctFeedbackMessages[Math.floor(Math.random() * correctFeedbackMessages.length)]
+    : actionBarPhase === 'incorrect'
+      ? incorrectFeedbackMessages[Math.floor(Math.random() * incorrectFeedbackMessages.length)]
+      : '';
 
-      <div className="exercise-container">
-        {children}
+  return (
+    <>
+      <div className={styles.exerciseLayoutWrapper}>
+        <div className={styles.exercisePromptCard}>
+          <h2 style={{ fontSize: 'var(--text-large)', fontWeight: 'bold', paddingBottom: '2rem' }}>{title}</h2>
+          <p>{instruction}</p>
+        </div>
+
+        <div className={styles.exerciseContainer}>
+          {children}
+        </div>
+        <ExerciseActionBar
+          actionBarPhase={actionBarPhase}
+          feedbackMessage={feedbackMessage}
+          onCheckAnswer={onCheckAnswer}
+          onTryAgain={onTryAgain}
+          onContinue={onContinue}
+        />
       </div>
-    </div>
+    </>
   );
 };
 

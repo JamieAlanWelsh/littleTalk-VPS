@@ -5,34 +5,32 @@
  * Loads exercise configuration from the mount element's data attributes.
  */
 
-import 'vite/modulepreload-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import '../style.css';
-import SentenceToImageMatching from './SentenceToImageMatching';
-import { parseExercisePayload } from '../lib/bootstrap';
+import SentenceToImageMatching2 from './SentenceToImageMatching2';
+import { getDataExercisePayload } from '../lib/bootstrap';
+import { MatchingExercisePayload2Schema } from '../lib/types';
 
-const rootElement = document.getElementById('exercise-root');
+const mountElement = document.getElementById('exercise-root');
 
-if (!rootElement) {
+if (!mountElement) {
   console.error('Root element #exercise-root not found');
+  document.body.innerHTML = `<div style="padding: 2rem; color: red;">Error loading exercise: 'Root element #exercise-root not found'</div>`;
 } else {
   try {
-    const payload = parseExercisePayload(rootElement);
+    const payload = MatchingExercisePayload2Schema.parse(getDataExercisePayload(mountElement));
 
-    const root = ReactDOM.createRoot(rootElement);
+    const root = ReactDOM.createRoot(mountElement);
     root.render(
       <React.StrictMode>
-        <SentenceToImageMatching
+        <SentenceToImageMatching2
           payload={payload}
-          onComplete={(completedPairs) => {
-            console.log(`Exercise completed: ${completedPairs}/${payload.pairs.length} correct`);
-          }}
         />
       </React.StrictMode>
     );
   } catch (error) {
     console.error('Failed to initialize exercise:', error);
-    rootElement.innerHTML = `<div style="padding: 2rem; color: red;">Error loading exercise: ${error instanceof Error ? error.message : String(error)}</div>`;
+    mountElement.innerHTML = `<div style="padding: 2rem; color: red;">Error loading exercise: ${error instanceof Error ? error.message : String(error)}</div>`;
   }
 }
