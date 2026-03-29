@@ -5,21 +5,21 @@
  * Intended for actions like Check Answer, Try Again, Next, Continue.
  */
 
-import styles from './ExerciseActionButton.module.css';
+import styles from './Button.module.css';
 
-interface ExerciseActionButtonProps {
+interface ButtonProps {
   label: string;
   variant?: 'primary' | 'secondary';
   disabled?: boolean;
   onClick: () => void;
 }
 
-export const ExerciseActionButton = ({
+export const Button = ({
   label,
   variant = 'primary',
   disabled = false,
   onClick,
-}: ExerciseActionButtonProps) => {
+}: ButtonProps) => {
   const variantClass = variant === 'secondary' ? styles.secondary : styles.primary;
 
   return (
@@ -34,4 +34,4 @@ export const ExerciseActionButton = ({
   );
 };
 
-export default ExerciseActionButton;
+export default Button;

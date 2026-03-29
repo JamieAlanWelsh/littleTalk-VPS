@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import type { AnswerState } from '../../lib/types';
-import { ExerciseActionButton } from '../primitives';
 import styles from './exerciseActionBar.module.css';
+import Button from '../Button/Button';
 
 interface ExerciseActionBar {
     actionBarPhase: AnswerState;
@@ -25,7 +25,7 @@ export default ({
     switch (actionBarPhase) {
         case 'notAnswered':
             rightContent = (
-                <ExerciseActionButton label="Check Answer" onClick={onCheckAnswer} />
+                <Button label="Check Answer" onClick={onCheckAnswer} />
             );
             break;
         case 'correct':
@@ -34,7 +34,7 @@ export default ({
                 <p className={styles.exerciseZoneActionsMessage}>{feedbackMessage}</p>
             );
             rightContent = (
-                <ExerciseActionButton label="Continue" onClick={onContinue} />
+                <Button label="Continue" onClick={onContinue} />
             );
             break;
         case 'incorrect':
@@ -42,7 +42,7 @@ export default ({
             leftContent = (
                 <>
                     <p className={styles.exerciseZoneActionsMessage}>{feedbackMessage}</p>
-                    <ExerciseActionButton label="Try Again" onClick={onTryAgain} variant="secondary" />
+                    <Button label="Try Again" onClick={onTryAgain} variant="secondary" />
                 </>
             );
             break;

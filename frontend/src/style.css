@@ -1,15 +1,13 @@
 /* Import app-wide CSS variables */
-@import './variables.css';
-/* Import exercise framework styles */
-@import './framework/framework.css';
+@import "./variables.css";
 
 body.exercise-page {
-	margin: 0;
-	padding: 20px;
-	padding-bottom: 140px;
-	min-height: 100vh;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	background-color: var(--background-color);
+  margin: 0;
+  padding: 20px;
+  padding-bottom: 140px;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--background-color);
 }

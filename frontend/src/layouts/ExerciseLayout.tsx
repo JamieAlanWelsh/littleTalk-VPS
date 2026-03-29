@@ -10,8 +10,8 @@
 
 import { type ReactNode } from 'react';
 import styles from './exerciseLayout.module.css';
-import ExerciseActionBar from './ExerciseActionBar';
-import type { AnswerState } from '../../lib/types';
+import ExerciseActionBar from '../components/ExerciseActionBar/ExerciseActionBar';
+import type { AnswerState } from '../lib/types';
 
 const correctFeedbackMessages = [
     "Great job! That's correct.",
