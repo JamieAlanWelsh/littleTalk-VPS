@@ -17,6 +17,8 @@ node_modules/
 .pnpm-store/
 .vite/
 
+*.css.d.ts
+
 cat >> .gitignore << EOF
 
 # Django static files (regenerated)
