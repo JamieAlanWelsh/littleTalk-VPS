@@ -8,7 +8,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import '../style.css';
-import SentenceToImageMatching2 from './SentenceToImageMatching2';
+import SentenceToImageMatching from './SentenceToImageMatching';
 import { getDataExercisePayload } from '../lib/bootstrap';
 import { MatchingExercisePayload2Schema } from '../lib/types';
 
@@ -24,7 +24,7 @@ if (!mountElement) {
     const root = ReactDOM.createRoot(mountElement);
     root.render(
       <React.StrictMode>
-        <SentenceToImageMatching2
+        <SentenceToImageMatching
           payload={payload}
         />
       </React.StrictMode>

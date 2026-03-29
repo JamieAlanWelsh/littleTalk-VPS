@@ -5,153 +5,90 @@
  * Users read a sentence and click the matching icon/picture.
  */
 
-import React, { useState } from 'react';
-import type { MatchingExercisePayload, ExerciseState } from '../lib/types';
+import { useState } from 'react';
+import type { MatchingExercisePayload2, QuestionState } from '../lib/types';
 import ExerciseLayout from '../framework/layouts/ExerciseLayout';
 import { ImageOption } from '../framework/primitives';
-import { ZonePrompt, ZoneInteractables, ZoneActions, type ZoneAction } from '../framework/zones';
 
-interface SentenceToImageMatchingProps {
-  payload: MatchingExercisePayload;
-  onComplete?: (completedPairs: number) => void;
+const EXERCISE_METADATA = {
+  title: 'Match the picture to the concept',
+  instruction: 'Read the sentence and click the picture that best matches it.',
+};
+
+interface SentenceToImageMatchingExerciseProps {
+  payload: MatchingExercisePayload2;
 }
 
-export const SentenceToImageMatching: React.FC<SentenceToImageMatchingProps> = ({
-  payload,
-  onComplete,
-}) => {
-  const [state, setState] = useState<ExerciseState>({
-    currentPromptIndex: 0,
+export const SentenceToImageMatchingExercise = ({
+  payload
+}: SentenceToImageMatchingExerciseProps) => {
+  const [questionState, setQuestionState] = useState<QuestionState>({
     selectedIconIds: [],
-    isCorrect: null,
-    showingFeedback: false,
-    completedPairs: 0,
-    totalPairs: payload.pairs.length,
+    answerState: 'notAnswered',
   });
+  const [currentQuestionStateIndex, setCurrentQuestionStateIndex] = useState<number>(0);
 
-  const currentPrompt = payload.prompts[state.currentPromptIndex];
-  const currentPair = payload.pairs.find(pair => pair.promptId === currentPrompt.id);
+  const onCheckAnswer = () => {
+    if (questionState.selectedIconIds.length === 0) return;
 
-  // Check if an icon is the correct answer
-  const isCorrectAnswer = (iconId: string): boolean => {
-    return currentPair?.correctIconIds.includes(iconId) ?? false;
-  };
-
-  // Handle icon selection
-  const handleSelectIcon = (iconId: string) => {
-    if (state.showingFeedback) return; // Prevent changes after feedback
-    setState(prev => ({
-      ...prev,
-      selectedIconIds: [iconId], // Single selection for simplicity
-    }));
-  };
-
-  // Submit the answer
-  const handleSubmitAnswer = () => {
-    if (state.selectedIconIds.length === 0) return;
-
-    const selectedIconId = state.selectedIconIds[0];
-    const isAnswerCorrect = isCorrectAnswer(selectedIconId);
-
-    setState(prev => ({
-      ...prev,
-      isCorrect: isAnswerCorrect,
-      showingFeedback: true,
-    }));
-  };
-
-  // Move to next prompt
-  const handleNext = () => {
-    if (state.currentPromptIndex < payload.pairs.length - 1) {
-      setState(prev => ({
+    if (payload.questions[currentQuestionStateIndex].correctIconIds.every(id => questionState.selectedIconIds.includes(id))) {
+      setQuestionState(prev => ({
         ...prev,
-        currentPromptIndex: prev.currentPromptIndex + 1,
-        selectedIconIds: [],
-        isCorrect: null,
-        showingFeedback: false,
-        completedPairs: state.isCorrect ? prev.completedPairs + 1 : prev.completedPairs,
+        answerState: 'correct',
       }));
     } else {
-      // Exercise complete
-      const finalCompleted = state.isCorrect ? state.completedPairs + 1 : state.completedPairs;
-      onComplete?.(finalCompleted);
+      setQuestionState(prev => ({
+        ...prev,
+        answerState: 'incorrect',
+      }));
     }
-  };
+  }
 
-  // Retry current prompt
-  const handleRetry = () => {
-    setState(prev => ({
-      ...prev,
+  const onContinue = () => {
+    if (currentQuestionStateIndex === payload.questions.length - 1) {
+      // Exercise complete - could trigger a callback here
+      alert('Exercise complete!');
+    } else {
+      setCurrentQuestionStateIndex(prev => prev + 1);
+      setQuestionState({
+        selectedIconIds: [],
+        answerState: 'notAnswered',
+      });
+    }
+  }
+
+  const onTryAgain = () => {
+    setQuestionState({
       selectedIconIds: [],
-      isCorrect: null,
-      showingFeedback: false,
-    }));
-  };
-
-  const feedbackMessage = !state.showingFeedback ? ''
-    : state.isCorrect ? "Great! That's correct!"
-    : "Not quite. Try again!";
-
-  const primaryAction: ZoneAction = !state.showingFeedback
-    ? {
-        label: 'Check',
-        variant: 'primary',
-        onClick: handleSubmitAnswer,
-        disabled: state.selectedIconIds.length === 0,
-      }
-    : state.isCorrect
-    ? {
-        label: 'Continue',
-        variant: 'primary',
-        onClick: handleNext,
-      }
-    : {
-        label: 'Try Again',
-        variant: 'secondary',
-        onClick: handleRetry,
-      };
-
-  const footerTone = !state.showingFeedback
-    ? 'neutral'
-    : state.isCorrect
-    ? 'correct'
-    : 'incorrect';
+      answerState: 'notAnswered',
+    });
+  }
 
   return (
     <ExerciseLayout
-      prompt={
-        <ZonePrompt
-          title={payload.title}
-          instruction={currentPrompt.text}
-        />
-      }
+      title={EXERCISE_METADATA.title}
+      instruction={payload.questions[currentQuestionStateIndex].prompt}
+      actionBarPhase={questionState.answerState}
+      onCheckAnswer={onCheckAnswer}
+      onTryAgain={onTryAgain}
+      onContinue={onContinue}
     >
-      <ZoneInteractables>
-        {payload.icons.map(icon => (
+        {payload.pictures.map(picture => (
           <ImageOption
-            key={icon.id}
-            block={icon}
-            isSelected={state.selectedIconIds.includes(icon.id)}
-            isCorrect={
-              !state.showingFeedback ? null
-                : isCorrectAnswer(icon.id) ? true
-                : state.selectedIconIds.includes(icon.id) ? false
-                : null
-            }
-            isDisabled={state.showingFeedback && !state.selectedIconIds.includes(icon.id)}
-            onClick={handleSelectIcon}
+            image={picture}
+            isCorrect={questionState.answerState === 'correct' ? true : questionState.answerState === 'incorrect' ? false : null}
+            isSelected={questionState.selectedIconIds.includes(picture.id)}
+            isDisabled={questionState.answerState !== 'notAnswered' && !questionState.selectedIconIds.includes(picture.id)}
+            onClick={() => (
+              setQuestionState(prev => ({
+                ...prev,
+                selectedIconIds: [picture.id],
+              }))
+            )}
           />
         ))}
-      </ZoneInteractables>
-
-      <ZoneActions
-        onSkip={handleNext}
-        primaryAction={primaryAction}
-        feedbackMessage={state.showingFeedback ? feedbackMessage : undefined}
-        tone={footerTone}
-      />
     </ExerciseLayout>
-  );
-};
+  )
+}
 
-export default SentenceToImageMatching;
+export default SentenceToImageMatchingExercise;

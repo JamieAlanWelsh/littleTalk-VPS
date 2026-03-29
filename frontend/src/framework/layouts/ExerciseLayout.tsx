@@ -23,7 +23,6 @@ const incorrectFeedbackMessages = [
     "Almost there, give it another shot!",
 ];
 
-
 interface ExerciseLayoutProps {
   title: string;
   instruction: string;
@@ -58,7 +57,9 @@ export const ExerciseLayout = ({
         </div>
 
         <div className={styles.exerciseContainer}>
-          {children}
+          <div className={`${styles.exerciseZone} ${styles.exerciseZoneInteractive}`}>
+            {children}
+          </div>
         </div>
         <ExerciseActionBar
           actionBarPhase={actionBarPhase}

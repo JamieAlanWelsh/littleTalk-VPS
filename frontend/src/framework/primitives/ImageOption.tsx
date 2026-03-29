@@ -5,34 +5,32 @@
  * Supports interactive states: default, selected, correct, incorrect, disabled.
  */
 
-import React from 'react';
-import type { IconBlock as IconBlockType } from '../../lib/types';
+import type { Picture } from '../../lib/types';
 
 interface ImageOptionProps {
-  block: IconBlockType;
+  image: Picture;
+  isCorrect: boolean | null;
   isSelected: boolean;
-  isCorrect?: boolean | null;
   isDisabled?: boolean;
-  onClick: (iconId: string) => void;
+  onClick: () => void;
 }
 
-export const ImageOption: React.FC<ImageOptionProps> = ({
-  block,
-  isSelected,
+export const ImageOption = ({
+  image,
   isCorrect,
+  isSelected,
   isDisabled = false,
   onClick,
-}) => {
-  const handleClick = () => {
-    if (isCorrect !== false) onClick(block.id);
-  };
+}: ImageOptionProps) => {
 
   // Determine state classes
   let stateClass = '';
   if (isDisabled) {
     stateClass = 'disabled';
-  } else if (isCorrect !== null) {
-    stateClass = isCorrect ? 'correct' : 'incorrect';
+  } else if (isCorrect === true) {
+    stateClass = 'correct';
+  } else if (isCorrect === false) {
+    stateClass = 'incorrect';
   } else if (isSelected) {
     stateClass = 'selected';
   } else {
@@ -42,14 +40,14 @@ export const ImageOption: React.FC<ImageOptionProps> = ({
   return (
     <button
       className={`icon-block ${stateClass}`}
-      onClick={handleClick}
+      onClick={onClick}
       disabled={isDisabled}
-      aria-label={block.label || block.altText || `Option ${block.id}`}
+      aria-label={image.label || image.altText || `Option ${image.id}`}
       type="button"
     >
       <img
-        src={block.imageUrl}
-        alt={block.altText || block.label || 'Icon option'}
+        src={image.imageUrl}
+        alt={image.altText || image.label || 'Icon option'}
         className="icon-block-image"
       />
     </button>

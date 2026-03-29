@@ -7,21 +7,19 @@
 
 import styles from './ExerciseActionButton.module.css';
 
-type ExerciseActionButtonVariant = 'primary' | 'secondary';
-
 interface ExerciseActionButtonProps {
   label: string;
-  variant?: ExerciseActionButtonVariant;
+  variant?: 'primary' | 'secondary';
   disabled?: boolean;
   onClick: () => void;
 }
 
-export const ExerciseActionButton: React.FC<ExerciseActionButtonProps> = ({
+export const ExerciseActionButton = ({
   label,
   variant = 'primary',
   disabled = false,
   onClick,
-}) => {
+}: ExerciseActionButtonProps) => {
   const variantClass = variant === 'secondary' ? styles.secondary : styles.primary;
 
   return (

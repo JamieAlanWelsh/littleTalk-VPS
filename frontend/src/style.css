@@ -1,4 +1,3 @@
-@import 'tailwindcss';
 /* Import app-wide CSS variables */
 @import './variables.css';
 /* Import exercise framework styles */
