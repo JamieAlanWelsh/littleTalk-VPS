@@ -57,6 +57,23 @@
     display: block;
 }
 
+/* Shared inline form validation message style used across templates. */
+.error-message {
+    display: block;
+    margin: -10px 0 14px;
+    padding: 10px 12px;
+    border: 1px solid #f4b8b8;
+    border-radius: 10px;
+    background: linear-gradient(180deg, #fff9f9 0%, #fff2f2 100%);
+    color: #fd6969;
+    font-family: var(--font-outfit);
+    font-size: 0.94rem;
+    font-weight: 600;
+    line-height: 1.35;
+    text-align: left;
+    box-sizing: border-box;
+}
+
 /* -----------------------------
    Checkbox Groups
 ------------------------------ */

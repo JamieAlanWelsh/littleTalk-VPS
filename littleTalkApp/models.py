@@ -32,6 +32,31 @@ class School(models.Model):
         )
 
 
+class SchoolLicenseCode(models.Model):
+    code = models.CharField(max_length=64, unique=True)
+    is_active = models.BooleanField(default=True)
+    used_at = models.DateTimeField(null=True, blank=True)
+    used_by_school = models.ForeignKey(
+        School,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="redeemed_license_codes",
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        indexes = [models.Index(fields=["code", "is_active"])]
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return self.code
+
+    @property
+    def is_used(self):
+        return self.used_at is not None
+
+
 class Role:
     ADMIN = "admin"
     TEAM_MANAGER = "team_manager"

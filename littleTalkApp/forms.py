@@ -6,6 +6,7 @@ from .models import StaffInvite
 from .models import Role
 from .models import JoinRequest
 from .models import School
+from .models import SchoolLicenseCode
 from .models import ParentAccessToken
 from django.contrib.auth.forms import AuthenticationForm
 from .models import LogEntry
@@ -22,6 +23,7 @@ class SchoolSignupForm(forms.Form):
     email = forms.EmailField(label="Email")
     password = forms.CharField(widget=forms.PasswordInput(), label="Password")
     school_name = forms.CharField(label="School name", max_length=255)
+    license_code = forms.CharField(label="License code", max_length=64, required=False)
 
     def clean_email(self):
         email = self.cleaned_data["email"].lower()
@@ -30,6 +32,19 @@ class SchoolSignupForm(forms.Form):
         if email_hash and get_user_model().objects.filter(email_hash=email_hash).exists():
             raise forms.ValidationError("An account with this email already exists.")
         return email
+
+    def clean_license_code(self):
+        code = (self.cleaned_data.get("license_code") or "").strip().upper()
+        if not code:
+            return None
+
+        license_code = SchoolLicenseCode.objects.filter(
+            code__iexact=code,
+            is_active=True,
+        ).first()
+        if not license_code:
+            raise forms.ValidationError("That license code is invalid or inactive.")
+        return license_code
 
 
 def no_emoji_validator(value):

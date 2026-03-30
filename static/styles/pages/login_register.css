@@ -23,11 +23,6 @@
     text-align: center;
 }
 
-.error-message {
-    color: var(--button-red);
-    text-align: center;
-}
-
 .logo-container {
     position: absolute;
     top: 20px;

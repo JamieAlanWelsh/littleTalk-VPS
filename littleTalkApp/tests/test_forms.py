@@ -11,7 +11,7 @@ from littleTalkApp.forms import (
     SchoolSignupForm,
     UserRegistrationForm,
 )
-from littleTalkApp.models import Learner, ParentAccessToken, School
+from littleTalkApp.models import Learner, ParentAccessToken, School, SchoolLicenseCode
 from littleTalkApp.utilities import hash_email
 
 
@@ -37,6 +37,67 @@ class FormValidationTests(TestCase):
 
         self.assertFalse(form.is_valid())
         self.assertIn("email", form.errors)
+
+    def test_school_signup_form_accepts_blank_license_code(self):
+        form = SchoolSignupForm(
+            data={
+                "full_name": "Test User",
+                "email": "new@example.com",
+                "password": "password123",
+                "school_name": "Test School",
+                "license_code": "",
+            }
+        )
+
+        self.assertTrue(form.is_valid())
+        self.assertIsNone(form.cleaned_data["license_code"])
+
+    def test_school_signup_form_rejects_invalid_license_code(self):
+        form = SchoolSignupForm(
+            data={
+                "full_name": "Test User",
+                "email": "new2@example.com",
+                "password": "password123",
+                "school_name": "Test School",
+                "license_code": "NOT-A-CODE",
+            }
+        )
+
+        self.assertFalse(form.is_valid())
+        self.assertIn("license_code", form.errors)
+
+    def test_school_signup_form_returns_license_code_object_when_valid(self):
+        code = SchoolLicenseCode.objects.create(code="SCHOOL90")
+        form = SchoolSignupForm(
+            data={
+                "full_name": "Test User",
+                "email": "new3@example.com",
+                "password": "password123",
+                "school_name": "Test School",
+                "license_code": "school90",
+            }
+        )
+
+        self.assertTrue(form.is_valid())
+        self.assertEqual(form.cleaned_data["license_code"], code)
+
+    def test_school_signup_form_accepts_active_code_even_if_previously_marked_used(self):
+        code = SchoolLicenseCode.objects.create(
+            code="SCHOOL90-USED",
+            used_at=timezone.now(),
+        )
+        form = SchoolSignupForm(
+            data={
+                "full_name": "Test User",
+                "email": "new4@example.com",
+                "password": "password123",
+                "school_name": "Test School",
+                "license_code": "school90-used",
+            }
+        )
+
+        self.assertTrue(form.is_valid())
+        self.assertEqual(form.cleaned_data["license_code"], code)
 
     def test_user_registration_rejects_emoji_name(self):
         form = UserRegistrationForm(

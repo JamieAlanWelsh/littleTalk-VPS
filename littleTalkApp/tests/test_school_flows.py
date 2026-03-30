@@ -1,15 +1,116 @@
 from datetime import timedelta
 
+from django.core import mail
 from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
 
-from littleTalkApp.models import JoinRequest, Profile, Role, School, SchoolMembership, StaffInvite
+from littleTalkApp.models import (
+    JoinRequest,
+    Profile,
+    Role,
+    School,
+    SchoolLicenseCode,
+    SchoolMembership,
+    StaffInvite,
+)
 from littleTalkApp.tests.base import BaseFlowTestMixin
 from littleTalkApp.utilities import hash_email
 
 
 class SchoolTypicalFlowTests(BaseFlowTestMixin, TestCase):
+    def test_school_signup_with_license_code_grants_90_day_license(self):
+        code = SchoolLicenseCode.objects.create(code="SCHOOL90")
+
+        response = self.client.post(
+            reverse("school_signup"),
+            {
+                "full_name": "Licensed Admin",
+                "email": "licensed-admin@example.com",
+                "password": "strongpass123",
+                "school_name": "Licensed School",
+                "license_code": "school90",
+                "contact_info": "",
+            },
+            follow=True,
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        school = School.objects.get(name="Licensed School")
+        self.assertTrue(school.is_licensed)
+        self.assertIsNotNone(school.license_expires_at)
+        self.assertGreaterEqual(school.license_expires_at, timezone.now() + timedelta(days=89))
+        self.assertLessEqual(school.license_expires_at, timezone.now() + timedelta(days=91))
+
+        code.refresh_from_db()
+        self.assertIsNone(code.used_at)
+        self.assertIsNone(code.used_by_school)
+
+    def test_school_signup_license_code_can_be_reused_when_active(self):
+        SchoolLicenseCode.objects.create(code="SHARED90", is_active=True)
+
+        first = self.client.post(
+            reverse("school_signup"),
+            {
+                "full_name": "Admin One",
+                "email": "admin-one@example.com",
+                "password": "strongpass123",
+                "school_name": "School One",
+                "license_code": "shared90",
+                "contact_info": "",
+            },
+            follow=True,
+        )
+        self.assertEqual(first.status_code, 200)
+
+        self.client.logout()
+
+        second = self.client.post(
+            reverse("school_signup"),
+            {
+                "full_name": "Admin Two",
+                "email": "admin-two@example.com",
+                "password": "strongpass123",
+                "school_name": "School Two",
+                "license_code": "SHARED90",
+                "contact_info": "",
+            },
+            follow=True,
+        )
+        self.assertEqual(second.status_code, 200)
+
+        self.assertTrue(School.objects.get(name="School One").is_licensed)
+        self.assertTrue(School.objects.get(name="School Two").is_licensed)
+
+    def test_school_signup_sends_support_notification_email(self):
+        response = self.client.post(
+            reverse("school_signup"),
+            {
+                "full_name": "New Admin",
+                "email": "new-admin@example.com",
+                "password": "strongpass123",
+                "school_name": "New School",
+                "license_code": "",
+                "contact_info": "",
+            },
+            follow=True,
+        )
+
+        self.assertEqual(response.status_code, 200)
+        support_messages = [
+            message
+            for message in mail.outbox
+            if "support@chatterdillo.com" in message.to
+            and message.subject == "New School Signup - Chatterdillo"
+        ]
+
+        self.assertEqual(len(support_messages), 1)
+        self.assertIn("School: New School", support_messages[0].body)
+        self.assertIn("Admin name: New Admin", support_messages[0].body)
+        self.assertIn("Admin email: new-admin@example.com", support_messages[0].body)
+        self.assertIn("License code used: none", support_messages[0].body)
+
     def test_accept_invite_creates_user_and_membership(self):
         admin_user, _, school = self.create_staff_user_with_school(username="admin_user", role=Role.ADMIN)
         invite = StaffInvite.objects.create(

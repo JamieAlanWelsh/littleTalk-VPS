@@ -1,8 +1,11 @@
 import uuid
+from datetime import timedelta
 
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate, get_user_model, login
 from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
@@ -16,7 +19,15 @@ from littleTalkApp.forms import (
     SchoolSignupForm,
     StaffInviteForm,
 )
-from littleTalkApp.models import Cohort, JoinRequest, Profile, Role, School, SchoolMembership, StaffInvite
+from littleTalkApp.models import (
+    Cohort,
+    JoinRequest,
+    Profile,
+    Role,
+    School,
+    SchoolMembership,
+    StaffInvite,
+)
 from littleTalkApp.utilities import hash_email, send_invite_email, send_school_welcome_email
 
 
@@ -151,6 +162,7 @@ def school_signup(request):
             password = form.cleaned_data["password"]
             full_name = form.cleaned_data["full_name"]
             school_name = form.cleaned_data["school_name"]
+            license_code = form.cleaned_data.get("license_code")
 
             user = get_user_model().objects.create_user(
                 username=str(uuid.uuid4()), password=password
@@ -160,6 +172,11 @@ def school_signup(request):
             user.save()
 
             school = School.objects.create(name=school_name, created_by=user)
+
+            if license_code:
+                school.is_licensed = True
+                school.license_expires_at = timezone.now() + timedelta(days=90)
+                school.save(update_fields=["is_licensed", "license_expires_at"])
 
             profile = Profile.objects.create(user=user, first_name=full_name)
             try:
@@ -176,6 +193,21 @@ def school_signup(request):
                 pass
 
             send_school_welcome_email(school, user)
+
+            signup_notice = (
+                "New school sign-up submitted:\n\n"
+                f"School: {school_name}\n"
+                f"Admin name: {full_name}\n"
+                f"Admin email: {email}\n"
+                f"License code used: {license_code.code if license_code else 'none'}\n"
+            )
+            send_mail(
+                subject="New School Signup - Chatterdillo",
+                message=signup_notice,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=["support@chatterdillo.com"],
+                fail_silently=True,
+            )
 
             login(request, user)
 
