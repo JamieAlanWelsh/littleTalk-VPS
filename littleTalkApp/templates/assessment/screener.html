@@ -5,6 +5,7 @@
 
 {% block content %}
 <div class="screener-container">
+    {% if selected_learner %}
     <h1>Screener</h1>
     
     {% if learners %}
@@ -36,7 +37,6 @@
         </div>
     {% endif %}
     
-    {% if selected_learner %}
         <!-- <strong><p>Selected Learner: </strong>{{ selected_learner.name }}</p>
         {% if last_screener_date %}
             <p><strong>Last Screener:</strong> {{ last_screener_date|date:"M d, Y" }}</p>
@@ -73,6 +73,8 @@
         <div class="screener-back-button">
             <a href="{% url 'profile' %}" class="btn btn--white btn--small">Back to Profile</a>
         </div>
+    {% else %}
+        {% include "includes/learner_selection_required.html" with heading="Welcome to screener" %}
     {% endif %}
 </div>
 

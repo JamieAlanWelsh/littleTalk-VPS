@@ -1,0 +1,6 @@
+<h1>{{ heading|default:"Learner selection required" }}</h1>
+<div class="container-box container--short">
+    <p>This area needs an active learner before you can continue.</p>
+    <p>Please add or select a learner in your profile, then come back.</p>
+    <a href="{% url 'profile' %}" class="btn btn--white btn--full">{{ button_text|default:'Go to Learner Selection' }}</a>
+</div>

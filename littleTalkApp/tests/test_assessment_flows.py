@@ -22,15 +22,15 @@ class AssessmentTypicalFlowTests(BaseFlowTestMixin, TestCase):
         self.client.force_login(user)
         self.set_selected_school(school.id)
 
+        session = self.client.session
+        session["selected_learner_id"] = learner.id
+        session.save()
+
         screener_response = self.client.get(reverse("screener"))
         self.assertEqual(screener_response.status_code, 200)
 
         start_response = self.client.get(reverse("start_assessment"))
         self.assertEqual(start_response.status_code, 200)
-
-        session = self.client.session
-        session["selected_learner_id"] = learner.id
-        session.save()
 
         answers_payload = {"1": "Yes", "2": "No", "3": "Yes"}
         save_all_response = self.client.post(
@@ -47,3 +47,50 @@ class AssessmentTypicalFlowTests(BaseFlowTestMixin, TestCase):
 
         summary_response = self.client.get(reverse("assessment_summary"))
         self.assertEqual(summary_response.status_code, 200)
+
+
+class LearnerSelectionRequiredFlowTests(BaseFlowTestMixin, TestCase):
+    def test_start_assessment_redirects_to_profile_when_no_selected_learner(self):
+        user, _, school = self.create_staff_user_with_school(username="no_selection_staff", role=Role.STAFF)
+
+        self.client.force_login(user)
+        self.set_selected_school(school.id)
+
+        response = self.client.get(reverse("start_assessment"), follow=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.request["PATH_INFO"], reverse("profile"))
+        self.assertContains(
+            response,
+            "Please add or select a learner in your profile before starting a screener.",
+        )
+
+    def test_screener_shows_shared_prompt_when_no_selected_or_available_learner(self):
+        user, _, school = self.create_staff_user_with_school(username="empty_screener_staff", role=Role.STAFF)
+
+        self.client.force_login(user)
+        self.set_selected_school(school.id)
+
+        response = self.client.get(reverse("screener"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Welcome to screener")
+        self.assertContains(response, "Go to Learner Selection")
+
+    def test_dashboard_shows_shared_prompt_when_no_selected_learner(self):
+        user, _, school = self.create_staff_user_with_school(username="dash_prompt_staff", role=Role.STAFF)
+        Learner.objects.create(
+            user=user,
+            school=school,
+            name="Learner Not Selected",
+            date_of_birth=timezone.now().date() - timedelta(days=365 * 7),
+        )
+
+        self.client.force_login(user)
+        self.set_selected_school(school.id)
+
+        response = self.client.get(reverse("learner_dashboard"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Welcome to the progress dashboard")
+        self.assertContains(response, "Go to Learner Selection")
