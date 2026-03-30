@@ -71,6 +71,29 @@
                     </a>
                 </div>
 
+                {% if sidebar_school_switcher_enabled %}
+                    <form method="post" action="{% url 'select_school' %}" class="sidebar-school-switcher">
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                        <label for="sidebar-school-select">School</label>
+                        <select
+                            id="sidebar-school-select"
+                            name="school_id"
+                            class="select"
+                            onchange="this.form.submit()"
+                        >
+                            {% for school in sidebar_school_switcher_options %}
+                                <option value="{{ school.id }}" {% if school.id == sidebar_current_school_id %}selected{% endif %}>
+                                    {{ school.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <noscript>
+                            <button type="submit" class="btn btn--white btn--small">Switch</button>
+                        </noscript>
+                    </form>
+                {% endif %}
+
                 <ul class="sidebar-menu">
                     <li>
                         <a href="{% url 'home' %}">
@@ -94,7 +117,7 @@
                     <li class="sidebar-dashboard">
                         <a href="{% url 'learner_dashboard' %}{% if selected_learner %}?learner={{ selected_learner.learner_uuid }}{% endif %}">
                             <img src="{% static 'icons/graph.png' %}" alt="Dashboard" class="sidebar-icon">
-                            <span>Dashboard</span>
+                            <span>Progress</span>
                         </a>
                     </li>
                     {% endif %}
@@ -104,7 +127,7 @@
                             <span>Logbook</span>
                         </a>
                     </li>
-                    {% if request.user.profile.role != 'parent' %}
+                    {% if can_access_school_management %}
                         <li class="sidebar-school">
                             <a href="{% url 'school' %}">
                                 <img src="{% static 'icons/school.png' %}" alt="School" class="sidebar-icon">

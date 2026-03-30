@@ -2,95 +2,127 @@
 {% block title %}Chatterdillo | Audit Trail{% endblock %}
 {% block content %}
 
-<h1>Invite & Join Request History</h1>
+<h1>{{ school_name }} – Audit Trail</h1>
 
-<div class="container-box container--dash pt-70">
-    <!-- Back -->
-    <a href="{% url 'school' %}" class="back-arrow">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon">
-            <line x1="19" y1="12" x2="5" y2="12"></line>
-            <polyline points="12 19 5 12 12 5"></polyline>
-        </svg>
-    </a>
+<div class="container-box container--dash">
+    <div class="dashboard-header school-mgmt-header">
+        <div class="header-learner-section">
+            <p class="section-note" style="margin: 0;">
+                Review historical invite and join-request activity for this school.
+            </p>
+            <div class="school-mgmt-stats">
+                <span class="status-badge status-badge--neutral">{{ invites|length }} invite records</span>
+                <span class="status-badge status-badge--neutral">{{ join_requests|length }} join-request records</span>
+            </div>
+        </div>
 
-    <h3>Staff Invites</h3>
-    <div class="table-wrapper">
-        <table class="dashboard-table">
-            <thead>
-                <tr>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Sent By</th>
-                    <th>Sent</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for invite in invites %}
-                    <tr>
-                        <td title="{{ invite.email }}">{{ invite.email }}</td>
-                        <td title="{{ invite.role|capfirst }}">{{ invite.role|capfirst }}</td>
-                        <td title="{{ invite.sent_by.get_full_name|default:invite.sent_by.username }}">
-                            {{ invite.sent_by.get_full_name|default:invite.sent_by.username }}
-                        </td>
-                        <td title="{{ invite.created_at|date:'M j, Y H:i' }}">{{ invite.created_at|date:"M j, Y" }}</td>
-                        <td>
-                            {% if invite.used %}
-                                Accepted
-                            {% elif invite.withdrawn %}
-                                Withdrawn
-                            {% elif invite.expires_at and invite.expires_at < now %}
-                                Expired
-                            {% else %}
-                                Pending
-                            {% endif %}
-                        </td>
-                    </tr>
-                {% empty %}
-                    <tr><td colspan="5">No staff invites yet.</td></tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="school-mgmt-actions">
+            <a href="{% url 'school' %}" class="btn btn--white btn--small">Back</a>
+        </div>
     </div>
 
-    <h3 style="margin-top: 2em;">Join Requests</h3>
-    <div class="table-wrapper">
-        <table class="dashboard-table">
-            <thead>
-                <tr>
-                    <th>Email</th>
-                    <th>Full Name</th>
-                    <th>Requested</th>
-                    <th>Resolved By</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for req in join_requests %}
+    <div class="dashboard-section">
+        <div class="section-header">
+            <div class="section-header-title">
+                <h3>Staff Invites</h3>
+                <p class="section-note">Most recent 50 invites sent for this school.</p>
+            </div>
+            <span class="status-badge status-badge--neutral">{{ invites|length }} records</span>
+        </div>
+
+        <div class="table-wrapper">
+            <table class="dashboard-table">
+                <thead>
                     <tr>
-                        <td title="{{ req.email }}">{{ req.email }}</td>
-                        <td title="{{ req.full_name }}">{{ req.full_name }}</td>
-                        <td title="{{ req.created_at|date:'M j, Y H:i' }}">{{ req.created_at|date:"M j, Y" }}</td>
-                        <td 
-                            {% if req.resolved_by %}
-                                title="{{ req.resolved_by.get_full_name|default:req.resolved_by.username }}"
-                            {% endif %}
-                        >
-                            {% if req.resolved_by %}
-                                {{ req.resolved_by.get_full_name|default:req.resolved_by.username }}
-                            {% else %}
-                                —
-                            {% endif %}
-                        </td>
-                        <td>
-                            {{ req.status|capfirst }}
-                        </td>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Sent By</th>
+                        <th>Sent</th>
+                        <th>Status</th>
                     </tr>
-                {% empty %}
-                    <tr><td colspan="5">No join requests yet.</td></tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {% for invite in invites %}
+                        <tr>
+                            <td title="{{ invite.email }}">{{ invite.email }}</td>
+                            <td title="{{ invite.role|capfirst }}">{{ invite.role|capfirst }}</td>
+                            <td title="{{ invite.sent_by.get_full_name|default:invite.sent_by.username }}">
+                                {{ invite.sent_by.get_full_name|default:invite.sent_by.username }}
+                            </td>
+                            <td title="{{ invite.created_at|date:'M j, Y H:i' }}">{{ invite.created_at|date:"M j, Y" }}</td>
+                            <td>
+                                {% if invite.used %}
+                                    <span class="status-badge status-badge--success">Accepted</span>
+                                {% elif invite.withdrawn %}
+                                    <span class="status-badge status-badge--danger">Cancelled</span>
+                                {% elif invite.expires_at and invite.expires_at < now %}
+                                    <span class="status-badge status-badge--danger">Expired</span>
+                                {% else %}
+                                    <span class="status-badge status-badge--warning">Pending</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr><td colspan="5" class="school-mgmt-empty">No staff invites yet.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="dashboard-section">
+        <div class="section-header">
+            <div class="section-header-title">
+                <h3>Join Requests</h3>
+                <p class="section-note">Most recent 50 requests to join this school and their outcomes.</p>
+            </div>
+            <span class="status-badge status-badge--neutral">{{ join_requests|length }} records</span>
+        </div>
+
+        <div class="table-wrapper">
+            <table class="dashboard-table">
+                <thead>
+                    <tr>
+                        <th>Email</th>
+                        <th>Full Name</th>
+                        <th>Requested</th>
+                        <th>Resolved By</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for req in join_requests %}
+                        <tr>
+                            <td title="{{ req.email }}">{{ req.email }}</td>
+                            <td title="{{ req.full_name }}">{{ req.full_name }}</td>
+                            <td title="{{ req.created_at|date:'M j, Y H:i' }}">{{ req.created_at|date:"M j, Y" }}</td>
+                            <td
+                                {% if req.resolved_by %}
+                                    title="{{ req.resolved_by.get_full_name|default:req.resolved_by.username }}"
+                                {% endif %}
+                            >
+                                {% if req.resolved_by %}
+                                    {{ req.resolved_by.get_full_name|default:req.resolved_by.username }}
+                                {% else %}
+                                    —
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if req.status == 'accepted' %}
+                                    <span class="status-badge status-badge--success">Accepted</span>
+                                {% elif req.status == 'rejected' %}
+                                    <span class="status-badge status-badge--danger">Rejected</span>
+                                {% else %}
+                                    <span class="status-badge status-badge--warning">{{ req.status|capfirst }}</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr><td colspan="5" class="school-mgmt-empty">No join requests yet.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 {% endblock %}

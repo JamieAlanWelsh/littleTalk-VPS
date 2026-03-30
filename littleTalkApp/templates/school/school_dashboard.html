@@ -3,158 +3,243 @@
 {% load static %}
 
 {% block content %}
-<h1>{{ school_name }} – Staff Dashboard</h1>
+<h1>{{ school_name }} – School Manager</h1>
 
 <div class="container-box container--dash">
-    <div class="logbook-header">
-        {% if show_school_switcher %}
-            <form method="post" action="{% url 'select_school' %}" class="form-inline">
-                {% csrf_token %}
-                <input type="hidden" name="next" value="{% url 'school' %}">
-                <label class="header-label" for="school-select">School:</label>
-                <select id="school-select" name="school_id" class="select" onchange="this.form.submit()">
-                    {% for school in available_schools %}
-                        <option value="{{ school.id }}" {% if school.id == current_school_id %}selected{% endif %}>
-                            {{ school.name }}
-                        </option>
-                    {% endfor %}
-                </select>
-                <noscript>
-                    <button type="submit" class="btn btn--white">Switch</button>
-                </noscript>
-            </form>
-        {% endif %}
-        {% if can_invite_staff %}
-            <a href="{% url 'invite_staff' %}" class="btn btn--yellow">+ Invite Staff</a>
-            <a href="{% url 'invite_audit_trail' %}" class="btn btn--white">Audit Trail</a>
-            <a href="{% url 'cohort_list' %}" class="btn btn--white">Manage Cohorts</a>
-        {% endif %}
-    </div>
-    
-    <h3>Staff Members</h3>
-    <div class="table-wrapper">
-        <table class="dashboard-table">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Last Login</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in staff_profiles %}
-                    {% with profile=item.profile role=item.role %}
-                    <tr>
-                        <td title="{{ profile.first_name }}">{{ profile.first_name }}</td>
-                        <td title="{{ profile.user.email_encrypted }}">{{ profile.user.email_encrypted }}</td>
-                        <td title="{{ role|capfirst }}">
-                            {% if current_user_is_admin_or_manager %}
-                                {% if profile.user != request.user %}
-                                    <form method="post" style="margin: 0;">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="user_id" value="{{ profile.user.id }}">
-                                        <select name="new_role" onchange="this.form.submit()">
-                                            {% for value, label in role_choices %}
-                                                {% if current_user_is_admin_or_manager or value != 'admin' %}
-                                                    <option value="{{ value }}" {% if role == value %}selected{% endif %}>
-                                                        {{ label }}
-                                                    </option>
-                                                {% endif %}
-                                            {% endfor %}
-                                        </select>
-                                    </form>
-                                {% else %}
-                                    {{ role|capfirst }}
-                                {% endif %}
-                            {% else %}
-                                {{ role|capfirst }}
-                            {% endif %}
-                        </td>
-                        <td title="{{ profile.user.last_login|default:"Never" }}">
-                            {{ profile.user.last_login|default:"Never" }}
-                        </td>
-                    </tr>
-                    {% endwith %}
-                {% endfor %}
-            </tbody>
-        </table>
+    <div class="dashboard-header school-mgmt-header">
+        <div class="header-learner-section">
+            <p class="section-note" style="margin: 0;">
+                Use this page to keep your school team list accurate and process incoming access requests. This is an admin/team manager view.
+            </p>
+            <div class="school-mgmt-stats">
+                <span class="status-badge status-badge--neutral">{{ staff_profiles|length }} staff members</span>
+                <span class="status-badge status-badge--warning">{{ join_requests|length }} join requests</span>
+                <span class="status-badge status-badge--info">{{ invites|length }} pending invites</span>
+            </div>
+        </div>
+
+        <div class="school-mgmt-actions">
+            <div class="school-mgmt-tools" aria-label="Management tools">
+                <p class="school-mgmt-tools-label">Management Tools</p>
+                <div class="school-mgmt-tools-grid">
+                    <a href="{% url 'invite_staff' %}" class="school-mgmt-tool-link">
+                        <span class="school-mgmt-tool-glyph">I</span>
+                        <span class="school-mgmt-tool-copy">
+                            <strong>Invite Staff</strong>
+                            <span>Send a new invitation email</span>
+                        </span>
+                    </a>
+                    {% if current_user_is_admin %}
+                        <a href="{% url 'update_school_name' %}" class="school-mgmt-tool-link">
+                            <span class="school-mgmt-tool-glyph">U</span>
+                            <span class="school-mgmt-tool-copy">
+                                <strong>Update Name</strong>
+                                <span>Rename this school</span>
+                            </span>
+                        </a>
+                    {% else %}
+                        <span class="school-mgmt-tool-link school-mgmt-tool-link--disabled" aria-disabled="true" title="Only admins can update school name.">
+                            <span class="school-mgmt-tool-glyph">U</span>
+                            <span class="school-mgmt-tool-copy">
+                                <strong>Update Name</strong>
+                                <span>Admin access required</span>
+                            </span>
+                        </span>
+                    {% endif %}
+                    <a href="{% url 'cohort_list' %}" class="school-mgmt-tool-link">
+                        <span class="school-mgmt-tool-glyph">C</span>
+                        <span class="school-mgmt-tool-copy">
+                            <strong>Manage Cohorts</strong>
+                            <span>Organise learners into groups</span>
+                        </span>
+                    </a>
+                    <a href="{% url 'invite_audit_trail' %}" class="school-mgmt-tool-link">
+                        <span class="school-mgmt-tool-glyph">A</span>
+                        <span class="school-mgmt-tool-copy">
+                            <strong>Audit Trail</strong>
+                            <span>Review invite and join history</span>
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 
-    {% if can_invite_staff %}
-        <h3 style="margin-top: 2em;">Pending Join Requests</h3>
+    <div class="dashboard-section">
+        <div class="section-header">
+            <div class="section-header-title">
+                <h3>Staff Members</h3>
+                <p class="section-note">Review active school members and update roles where needed.</p>
+            </div>
+            <div class="section-header-actions">
+                <span class="status-badge status-badge--neutral">{{ staff_profiles|length }} active</span>
+            </div>
+        </div>
+
         <div class="table-wrapper">
             <table class="dashboard-table">
                 <thead>
                     <tr>
                         <th>Name</th>
                         <th>Email</th>
-                        <th>Requested</th>
-                        {% if can_invite_staff %}
-                            <th>Actions</th>
-                        {% endif %}
+                        <th>Role</th>
+                        <th>Last Login</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for request in join_requests %}
+                    {% for item in staff_profiles %}
+                        {% with profile=item.profile role=item.role %}
                         <tr>
-                            <td title="{{ request.full_name }}">{{ request.full_name }}</td>
-                            <td title="{{ request.email }}">{{ request.email }}</td>
-                            <td title="{{ request.created_at|date:'M j, Y H:i' }}">{{ request.created_at|date:"M j, Y" }}</td>
-                            {% if can_invite_staff %}
-                                <td>
-                                    <form method="post" style="display:inline;">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="join_request_id" value="{{ request.id }}">
-                                        <button type="submit" name="approve_join_request" class="btn btn--invisible btn--table">Approve</button>
-                                        <button type="submit" name="reject_join_request" class="btn btn--invisible btn--table">Reject</button>
-                                    </form>
-                                </td>
-                            {% endif %}
+                            <td title="{{ profile.first_name }}">{{ profile.first_name }}</td>
+                            <td title="{{ profile.user.email_encrypted }}">{{ profile.user.email_encrypted }}</td>
+                            <td title="{{ role|capfirst }}">
+                                {% if current_user_is_admin_or_manager %}
+                                    {% if profile.user != request.user %}
+                                        <form method="post" style="margin: 0;">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="user_id" value="{{ profile.user.id }}">
+                                            <select name="new_role" onchange="this.form.submit()" aria-label="Change role for {{ profile.first_name }}">
+                                                {% for value, label in role_choices %}
+                                                    {% if current_user_is_admin_or_manager or value != 'admin' %}
+                                                        <option value="{{ value }}" {% if role == value %}selected{% endif %}>
+                                                            {{ label }}
+                                                        </option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </form>
+                                    {% else %}
+                                        {{ role|capfirst }}
+                                    {% endif %}
+                                {% else %}
+                                    {{ role|capfirst }}
+                                {% endif %}
+                            </td>
+                            <td title="{{ profile.user.last_login|default:'Never' }}">
+                                {{ profile.user.last_login|default:"Never" }}
+                            </td>
                         </tr>
+                        {% endwith %}
                     {% empty %}
-                        <tr><td colspan="4">No pending join requests.</td></tr>
+                        <tr>
+                            <td colspan="4" class="school-mgmt-empty">No staff members found for this school.</td>
+                        </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
+    </div>
+
+    {% if can_invite_staff %}
+        <div class="dashboard-section">
+            <div class="section-header">
+                <div class="section-header-title">
+                    <h3>Pending Join Requests</h3>
+                    <p class="section-note">Teachers who requested access without an invite. Approve to send an invite or reject to close the request.</p>
+                </div>
+                <span class="status-badge status-badge--warning">{{ join_requests|length }} pending</span>
+            </div>
+
+            <div class="table-wrapper">
+                <table class="dashboard-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Requested</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for join_req in join_requests %}
+                            <tr>
+                                <td title="{{ join_req.full_name }}">{{ join_req.full_name }}</td>
+                                <td title="{{ join_req.email }}">{{ join_req.email }}</td>
+                                <td title="{{ join_req.created_at|date:'M j, Y H:i' }}">{{ join_req.created_at|date:"M j, Y" }}</td>
+                                <td>
+                                    <span class="status-badge status-badge--warning">Pending</span>
+                                </td>
+                                <td>
+                                    <form method="post" style="display:inline;" class="school-mgmt-inline-actions">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="join_request_id" value="{{ join_req.id }}">
+                                        <button type="submit" name="approve_join_request" class="btn btn--invisible btn--table">Approve</button>
+                                        <button
+                                            type="submit"
+                                            name="reject_join_request"
+                                            class="btn btn--invisible btn--table"
+                                            onclick="return confirm('Reject this join request?')"
+                                        >
+                                            Reject
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="5" class="school-mgmt-empty">No pending join requests right now.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     {% endif %}
 
-    <h3 style="margin-top: 2em;">Pending Invites</h3>
-    <div class="table-wrapper">
-        <table class="dashboard-table">
-            <thead>
-                <tr>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Sent</th>
-                    {% if can_invite_staff %}
-                        <th>Actions</th>
-                    {% endif %}
-                </tr>
-            </thead>
-            <tbody>
-                {% for invite in invites %}
+    <div class="dashboard-section">
+        <div class="section-header">
+            <div class="section-header-title">
+                <h3>Pending Invites</h3>
+                <p class="section-note">Recently sent invites awaiting acceptance. Use Audit Trail to review full invite and join history.</p>
+            </div>
+            <span class="status-badge status-badge--info">{{ invites|length }} pending</span>
+        </div>
+
+        <div class="table-wrapper">
+            <table class="dashboard-table">
+                <thead>
                     <tr>
-                        <td title="{{ invite.email }}">{{ invite.email }}</td>
-                        <td title="{{ invite.role|capfirst }}">{{ invite.role|capfirst }}</td>
-                        <td title="{{ invite.created_at|date:'M j, Y H:i' }}">{{ invite.created_at|date:"M j, Y" }}</td>
-                        {% if can_invite_staff %}
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Sent</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for invite in invites %}
+                        <tr>
+                            <td title="{{ invite.email }}">{{ invite.email }}</td>
+                            <td title="{{ invite.role|capfirst }}">{{ invite.role|capfirst }}</td>
+                            <td title="{{ invite.created_at|date:'M j, Y H:i' }}">{{ invite.created_at|date:"M j, Y" }}</td>
                             <td>
-                                <form method="post" style="display:inline;">
+                                <span class="status-badge status-badge--info">Awaiting Response</span>
+                            </td>
+                            <td>
+                                <form method="post" style="display:inline;" class="school-mgmt-inline-actions">
                                     {% csrf_token %}
                                     <input type="hidden" name="invite_id" value="{{ invite.id }}">
                                     <button type="submit" name="resend_invite" class="btn btn--invisible btn--table">Resend</button>
-                                    <button type="submit" name="withdraw_invite" class="btn btn--invisible btn--table">Withdraw</button>
+                                    <button
+                                        type="submit"
+                                        name="withdraw_invite"
+                                        class="btn btn--invisible btn--table"
+                                        onclick="return confirm('Withdraw this pending invite?')"
+                                    >
+                                        Cancel
+                                    </button>
                                 </form>
                             </td>
-                        {% endif %}
-                    </tr>
-                {% empty %}
-                    <tr><td colspan="4">No pending invites.</td></tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="5" class="school-mgmt-empty">No pending invites right now.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 

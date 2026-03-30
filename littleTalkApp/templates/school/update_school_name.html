@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Chatterdillo | Update School Name{% endblock %}
+
+{% block content %}
+<h1>Update School Name</h1>
+
+<div class="container-box container--short">
+    <form method="post" class="form-stack">
+        {% csrf_token %}
+        <label for="school_name" class="label">School Name</label>
+        <input
+            id="school_name"
+            type="text"
+            name="school_name"
+            class="input"
+            value="{{ school.name }}"
+            maxlength="255"
+            required
+        >
+
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button type="submit" class="btn btn--yellow">Save</button>
+            <a href="{% url 'school' %}" class="btn btn--white">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

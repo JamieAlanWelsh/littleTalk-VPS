@@ -31,6 +31,12 @@ from littleTalkApp.models import (
 from littleTalkApp.utilities import hash_email, send_invite_email, send_school_welcome_email
 
 
+def _can_manage_school(profile, school):
+    return school and (
+        profile.is_admin_for_school(school) or profile.is_manager_for_school(school)
+    )
+
+
 def _handle_school_role_update(request, profile, school):
     user_id = request.POST.get("user_id")
     new_role = request.POST.get("new_role")
@@ -130,6 +136,13 @@ def _handle_school_join_request_action(request, school):
 
 
 def _handle_school_dashboard_post(request, profile, school):
+    if not _can_manage_school(profile, school):
+        messages.error(
+            request,
+            "School management is available to admins and team managers only.",
+        )
+        return redirect("profile")
+
     if "user_id" in request.POST and "new_role" in request.POST:
         return _handle_school_role_update(request, profile, school)
 
@@ -336,6 +349,38 @@ def invite_staff(request):
 
 
 @login_required
+def update_school_name(request):
+    """Renders school/update_school_name.html — lets admins rename the current school.
+
+    Only admins for the selected school may update the school name.
+    """
+
+    profile = request.user.profile
+    school = profile.get_current_school(request)
+
+    if not school:
+        messages.error(request, "No school is currently selected.")
+        return redirect("profile")
+
+    if not profile.is_admin_for_school(school):
+        messages.error(request, "Only admins can update the school name.")
+        return redirect("school")
+
+    if request.method == "POST":
+        new_name = (request.POST.get("school_name") or "").strip()
+        if not new_name:
+            messages.error(request, "School name cannot be empty.")
+            return render(request, "school/update_school_name.html", {"school": school})
+
+        school.name = new_name
+        school.save(update_fields=["name"])
+        messages.success(request, "School name updated.")
+        return redirect("school")
+
+    return render(request, "school/update_school_name.html", {"school": school})
+
+
+@login_required
 def school_dashboard(request):
     """Renders school/school_dashboard.html — the school management hub.
 
@@ -347,11 +392,19 @@ def school_dashboard(request):
 
     if request.user.profile.is_parent():
         return redirect("profile")
+
     profile = request.user.profile
     school = profile.get_current_school(request)
-    available_schools = profile.schools.all().order_by("name")
-    show_school_switcher = available_schools.count() > 1
-    current_school_id = school.id if school else None
+    if not school:
+        messages.error(request, "No school is currently selected.")
+        return redirect("profile")
+
+    if not _can_manage_school(profile, school):
+        messages.error(
+            request,
+            "School management is available to admins and team managers only.",
+        )
+        return redirect("profile")
 
     if request.method == "POST":
         post_response = _handle_school_dashboard_post(request, profile, school)
@@ -374,9 +427,7 @@ def school_dashboard(request):
         school=school, used=False, withdrawn=False
     ).order_by("-created_at")[:10]
 
-    can_invite_staff = profile.is_admin_for_school(school) or profile.is_manager_for_school(
-        school
-    )
+    can_invite_staff = _can_manage_school(profile, school)
     join_requests = []
     if can_invite_staff:
         join_requests = JoinRequest.objects.filter(
@@ -393,11 +444,9 @@ def school_dashboard(request):
             "school": school,
             "role_choices": Role.CHOICES,
             "can_invite_staff": can_invite_staff,
+            "current_user_is_admin": profile.is_admin_for_school(school),
             "current_user_is_admin_or_manager": can_invite_staff,
             "join_requests": join_requests,
-            "available_schools": available_schools,
-            "show_school_switcher": show_school_switcher,
-            "current_school_id": current_school_id,
         },
     )
 
@@ -455,6 +504,7 @@ def invite_audit_trail(request):
         {
             "invites": invites,
             "join_requests": join_requests,
+            "school_name": school.name,
             "now": timezone.now(),
         },
     )
