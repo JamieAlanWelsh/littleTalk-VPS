@@ -32,6 +32,16 @@ def license_expired(request):
 
 
 @login_required
+def access_restricted(request):
+    """Renders subscription/access_restricted.html — shown when a staff account
+    has no active school membership and cannot access school-scoped features.
+    """
+
+    request.hide_sidebar = True
+    return render(request, "subscription/access_restricted.html")
+
+
+@login_required
 def create_checkout_session(request):
     """Creates a Stripe Checkout session for the parent subscription plan and
     redirects the user to the Stripe-hosted payment page.

@@ -94,12 +94,55 @@ class ProfileModelTests(TestCase):
 
         self.assertEqual(self.profile.get_role_for_school(self.school_a), Role.TEAM_MANAGER)
 
+    def test_get_role_for_school_returns_none_for_inactive_membership(self):
+        SchoolMembership.objects.create(
+            profile=self.profile,
+            school=self.school_a,
+            role=Role.TEAM_MANAGER,
+            is_active=False,
+        )
+
+        self.assertIsNone(self.profile.get_role_for_school(self.school_a))
+
+    def test_get_current_school_ignores_inactive_selected_school(self):
+        SchoolMembership.objects.create(
+            profile=self.profile,
+            school=self.school_a,
+            role=Role.STAFF,
+            is_active=False,
+        )
+        SchoolMembership.objects.create(
+            profile=self.profile,
+            school=self.school_b,
+            role=Role.STAFF,
+            is_active=True,
+        )
+        request = RequestFactory().get("/")
+        request.session = {"selected_school_id": self.school_a.id}
+
+        self.assertEqual(self.profile.get_current_school(request), self.school_b)
+
     def test_select_school_requires_membership(self):
         request = RequestFactory().get("/")
         request.session = {}
         foreign_school = School.objects.create(name="Foreign School")
 
         success = self.profile.select_school(foreign_school.id, request=request)
+
+        self.assertFalse(success)
+        self.assertNotIn("selected_school_id", request.session)
+
+    def test_select_school_rejects_inactive_membership(self):
+        SchoolMembership.objects.create(
+            profile=self.profile,
+            school=self.school_a,
+            role=Role.STAFF,
+            is_active=False,
+        )
+        request = RequestFactory().get("/")
+        request.session = {}
+
+        success = self.profile.select_school(self.school_a.id, request=request)
 
         self.assertFalse(success)
         self.assertNotIn("selected_school_id", request.session)

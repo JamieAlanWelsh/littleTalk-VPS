@@ -26,8 +26,8 @@ def can_edit_or_delete_log(user, log_entry):
     # If both users are associated with any overlapping schools and
     # the acting user is admin/manager, allow edit/delete
     try:
-        user_schools = set(user.profile.schools.all())
-        entry_schools = set(log_entry.user.profile.schools.all())
+        user_schools = set(user.profile.get_accessible_schools())
+        entry_schools = set(log_entry.user.profile.get_accessible_schools())
         overlap = user_schools & entry_schools
         if overlap:
             # If the acting user is admin/manager for any overlapping school, allow

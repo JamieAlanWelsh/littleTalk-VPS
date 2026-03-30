@@ -135,6 +135,50 @@ def _handle_school_join_request_action(request, school):
     return redirect("school")
 
 
+def _handle_school_membership_status_update(request, profile, school):
+    user_id = request.POST.get("user_id")
+    target_profile = get_object_or_404(Profile, user__id=user_id)
+
+    membership = target_profile.memberships.filter(school=school).first()
+    if not membership:
+        messages.error(request, "Membership not found for this school.")
+        return redirect("school")
+
+    if target_profile.user == request.user and "deactivate_membership" in request.POST:
+        messages.error(request, "You cannot deactivate your own membership.")
+        return redirect("school")
+
+    target_role = membership.role
+    if profile.is_manager_for_school(school) and target_role == Role.ADMIN:
+        messages.error(request, "Only admins can manage admin membership status.")
+        return redirect("school")
+
+    should_activate = "activate_membership" in request.POST
+    should_deactivate = "deactivate_membership" in request.POST
+    if not (should_activate or should_deactivate):
+        return None
+
+    if should_deactivate and target_role == Role.ADMIN and membership.is_active:
+        active_admins = SchoolMembership.objects.filter(
+            school=school,
+            role=Role.ADMIN,
+            is_active=True,
+        ).count()
+        if active_admins <= 1:
+            messages.error(request, "You must keep at least one active admin.")
+            return redirect("school")
+
+    membership.is_active = should_activate
+    membership.save(update_fields=["is_active", "updated_at"])
+
+    state_label = "activated" if should_activate else "deactivated"
+    messages.success(
+        request,
+        f"{target_profile.first_name}'s school membership was {state_label}.",
+    )
+    return redirect("school")
+
+
 def _handle_school_dashboard_post(request, profile, school):
     if not _can_manage_school(profile, school):
         messages.error(
@@ -154,6 +198,9 @@ def _handle_school_dashboard_post(request, profile, school):
 
     if "approve_join_request" in request.POST or "reject_join_request" in request.POST:
         return _handle_school_join_request_action(request, school)
+
+    if "activate_membership" in request.POST or "deactivate_membership" in request.POST:
+        return _handle_school_membership_status_update(request, profile, school)
 
     return None
 
@@ -411,17 +458,44 @@ def school_dashboard(request):
         if post_response:
             return post_response
 
-    raw_profiles = (
-        Profile.objects.filter(Q(schools=school)).select_related("user").distinct()
+    memberships = (
+        SchoolMembership.objects.filter(school=school)
+        .select_related("profile", "profile__user")
+        .order_by("profile__first_name")
     )
+
     staff_profiles = []
-    for profile_item in raw_profiles:
-        try:
-            role_for = profile_item.get_role_for_school(school)
-        except Exception:
-            role_for = profile_item.role
-        if role_for != Role.PARENT:
-            staff_profiles.append({"profile": profile_item, "role": role_for})
+    if memberships.exists():
+        for membership in memberships:
+            profile_item = membership.profile
+            role_for = membership.role or profile_item.role
+            if role_for != Role.PARENT:
+                staff_profiles.append(
+                    {
+                        "profile": profile_item,
+                        "role": role_for,
+                        "is_active": membership.is_active,
+                    }
+                )
+    else:
+        raw_profiles = (
+            Profile.objects.filter(Q(schools=school)).select_related("user").distinct()
+        )
+        for profile_item in raw_profiles:
+            try:
+                role_for = profile_item.get_role_for_school(school)
+            except Exception:
+                role_for = profile_item.role
+            if role_for != Role.PARENT:
+                staff_profiles.append(
+                    {
+                        "profile": profile_item,
+                        "role": role_for,
+                        "is_active": True,
+                    }
+                )
+
+    active_staff_count = sum(1 for item in staff_profiles if item["is_active"])
 
     invites = StaffInvite.objects.filter(
         school=school, used=False, withdrawn=False
@@ -447,6 +521,7 @@ def school_dashboard(request):
             "current_user_is_admin": profile.is_admin_for_school(school),
             "current_user_is_admin_or_manager": can_invite_staff,
             "join_requests": join_requests,
+            "active_staff_count": active_staff_count,
         },
     )
 
@@ -640,8 +715,10 @@ def select_school(request):
     if profile.is_parent():
         return redirect("profile")
 
+    accessible_schools = profile.get_accessible_schools().order_by("name")
+
     if not profile.has_multiple_schools():
-        school = profile.schools.first()
+        school = accessible_schools.first()
         if school:
             request.session["selected_school_id"] = school.id
         return redirect("profile")
@@ -655,7 +732,7 @@ def select_school(request):
                 return redirect(next_url)
         messages.error(request, "Please select a valid school.")
 
-    schools = profile.schools.all()
+    schools = accessible_schools
     return render(
         request,
         "school/select_school.html",

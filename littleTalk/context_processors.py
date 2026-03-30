@@ -19,7 +19,7 @@ def layout_context(request):
                 )
             )
             if not profile.is_parent():
-                schools = list(profile.schools.all().order_by("name"))
+                schools = list(profile.get_accessible_schools().order_by("name"))
                 if len(schools) > 1:
                     sidebar_school_switcher_enabled = True
                     sidebar_school_switcher_options = schools

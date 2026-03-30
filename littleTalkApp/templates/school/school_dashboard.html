@@ -72,7 +72,7 @@
                 <p class="section-note">Review active school members and update roles where needed.</p>
             </div>
             <div class="section-header-actions">
-                <span class="status-badge status-badge--neutral">{{ staff_profiles|length }} active</span>
+                <span class="status-badge status-badge--neutral">{{ active_staff_count }} active</span>
             </div>
         </div>
 
@@ -83,7 +83,8 @@
                         <th>Name</th>
                         <th>Email</th>
                         <th>Role</th>
-                        <th>Last Login</th>
+                        <th>Status</th>
+                        <th>Access</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -115,14 +116,42 @@
                                     {{ role|capfirst }}
                                 {% endif %}
                             </td>
-                            <td title="{{ profile.user.last_login|default:'Never' }}">
-                                {{ profile.user.last_login|default:"Never" }}
+                            <td>
+                                {% if item.is_active %}
+                                    <span class="status-badge status-badge--success">Active</span>
+                                {% else %}
+                                    <span class="status-badge status-badge--danger">Inactive</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if current_user_is_admin_or_manager and profile.user != request.user %}
+                                    <form method="post" style="margin: 0;">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="user_id" value="{{ profile.user.id }}">
+                                        {% if item.is_active %}
+                                            <button
+                                                type="submit"
+                                                name="deactivate_membership"
+                                                class="btn btn--invisible btn--table"
+                                                onclick="return confirm('Deactivate this school member? They will lose school access until reactivated.')"
+                                            >
+                                                Deactivate
+                                            </button>
+                                        {% else %}
+                                            <button type="submit" name="activate_membership" class="btn btn--invisible btn--table">
+                                                Reactivate
+                                            </button>
+                                        {% endif %}
+                                    </form>
+                                {% else %}
+                                    -
+                                {% endif %}
                             </td>
                         </tr>
                         {% endwith %}
                     {% empty %}
                         <tr>
-                            <td colspan="4" class="school-mgmt-empty">No staff members found for this school.</td>
+                            <td colspan="5" class="school-mgmt-empty">No staff members found for this school.</td>
                         </tr>
                     {% endfor %}
                 </tbody>

@@ -356,6 +356,75 @@ class SchoolTypicalFlowTests(BaseFlowTestMixin, TestCase):
         updated_membership = SchoolMembership.objects.get(profile=staff_profile, school=school)
         self.assertEqual(updated_membership.role, Role.TEAM_MANAGER)
 
+    def test_admin_can_deactivate_and_reactivate_staff_membership(self):
+        admin_user, _, school = self.create_staff_user_with_school(
+            username="admin_membership_toggle",
+            role=Role.ADMIN,
+        )
+        staff_user, staff_profile, _ = self.create_staff_user_with_school(
+            username="staff_membership_toggle",
+            role=Role.STAFF,
+        )
+
+        staff_profile.schools.add(school)
+        SchoolMembership.objects.update_or_create(
+            profile=staff_profile,
+            school=school,
+            defaults={"role": Role.STAFF, "is_active": True},
+        )
+
+        self.client.force_login(admin_user)
+        self.set_selected_school(school.id)
+
+        deactivate_response = self.client.post(
+            reverse("school"),
+            {"user_id": staff_user.id, "deactivate_membership": "1"},
+            follow=True,
+        )
+        self.assertEqual(deactivate_response.status_code, 200)
+        self.assertContains(deactivate_response, "membership was deactivated")
+        self.assertFalse(
+            SchoolMembership.objects.get(profile=staff_profile, school=school).is_active
+        )
+
+        reactivate_response = self.client.post(
+            reverse("school"),
+            {"user_id": staff_user.id, "activate_membership": "1"},
+            follow=True,
+        )
+        self.assertEqual(reactivate_response.status_code, 200)
+        self.assertContains(reactivate_response, "membership was activated")
+        self.assertTrue(
+            SchoolMembership.objects.get(profile=staff_profile, school=school).is_active
+        )
+
+    def test_admin_cannot_deactivate_own_membership(self):
+        admin_user, admin_profile, school = self.create_staff_user_with_school(
+            username="sole_admin",
+            role=Role.ADMIN,
+        )
+
+        SchoolMembership.objects.update_or_create(
+            profile=admin_profile,
+            school=school,
+            defaults={"role": Role.ADMIN, "is_active": True},
+        )
+
+        self.client.force_login(admin_user)
+        self.set_selected_school(school.id)
+
+        response = self.client.post(
+            reverse("school"),
+            {"user_id": admin_user.id, "deactivate_membership": "1"},
+            follow=True,
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "You cannot deactivate your own membership.")
+        self.assertTrue(
+            SchoolMembership.objects.get(profile=admin_profile, school=school).is_active
+        )
+
 
 class JoinRequestFlowTests(BaseFlowTestMixin, TestCase):
     def test_request_join_school_creates_pending_request(self):

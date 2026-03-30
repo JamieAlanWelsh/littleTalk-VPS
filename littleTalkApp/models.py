@@ -130,6 +130,34 @@ class Profile(models.Model):
     def is_parent(self):
         return self.role == Role.PARENT
 
+    def get_accessible_schools(self):
+        """Return schools this profile can actively access.
+
+        If explicit SchoolMembership rows exist, only active memberships count.
+        For legacy records without memberships, fall back to the schools M2M.
+        """
+        if self.is_parent():
+            return School.objects.none()
+
+        membership_qs = self.memberships.select_related("school")
+        if membership_qs.exists():
+            return School.objects.filter(
+                memberships__profile=self,
+                memberships__is_active=True,
+            ).distinct()
+
+        return self.schools.all()
+
+    def has_active_membership_for_school(self, school):
+        if not school or self.is_parent():
+            return False
+
+        membership_qs = self.memberships.filter(school=school)
+        if membership_qs.exists():
+            return membership_qs.filter(is_active=True).exists()
+
+        return self.schools.filter(id=school.id).exists()
+
     def get_current_school(self, request=None):
         """
         Return the active/selected school for this profile.
@@ -151,7 +179,7 @@ class Profile(models.Model):
                 if selected_id:
                     try:
                         # Prefer schools on the M2M relation
-                        school = self.schools.filter(id=selected_id).first()
+                        school = self.get_accessible_schools().filter(id=selected_id).first()
                         if school:
                             return school
                     except Exception:
@@ -161,7 +189,7 @@ class Profile(models.Model):
                 pass
         
         # 2) First M2M school, if any
-        first = self.schools.first()
+        first = self.get_accessible_schools().first()
         if first:
             return first
 
@@ -180,9 +208,12 @@ class Profile(models.Model):
             return self.role
 
         try:
-            membership = self.memberships.filter(school=school).first()
-            if membership and membership.role:
-                return membership.role
+            membership_qs = self.memberships.filter(school=school)
+            if membership_qs.exists():
+                membership = membership_qs.filter(is_active=True).first()
+                if membership and membership.role:
+                    return membership.role
+                return None
         except Exception:
             # Defensive: if membership relation unavailable, fall back
             pass
@@ -202,7 +233,7 @@ class Profile(models.Model):
     
     def has_multiple_schools(self):
         """Return True if this profile has access to multiple schools."""
-        return self.schools.count() > 1
+        return self.get_accessible_schools().count() > 1
 
     def select_school(self, school_id, request=None):
         """
@@ -213,7 +244,7 @@ class Profile(models.Model):
             return False
         
         # Verify the school exists and this profile has access
-        school = self.schools.filter(id=school_id).first()
+        school = self.get_accessible_schools().filter(id=school_id).first()
         if not school:
             return False
             

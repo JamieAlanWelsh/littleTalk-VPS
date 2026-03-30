@@ -1,7 +1,6 @@
 from django.shortcuts import redirect
 from django.urls import reverse, resolve
 from django.utils.deprecation import MiddlewareMixin
-from django.http import HttpResponseForbidden
 from .models import Role
 
 
@@ -28,6 +27,7 @@ class AccessControlMiddleware(MiddlewareMixin):
             reverse("settings"),
             reverse("logbook"),
             reverse("support"),
+            reverse("access_restricted"),
         ]
 
         if any(path.startswith(ap) for ap in allowed_paths):
@@ -53,11 +53,17 @@ class AccessControlMiddleware(MiddlewareMixin):
             hasattr(profile, "has_multiple_schools") and profile.has_multiple_schools()
         )
 
+        accessible_schools = (
+            profile.get_accessible_schools()
+            if hasattr(profile, "get_accessible_schools")
+            else profile.schools.all()
+        )
+
         if has_multiple_schools:
             selected_id = request.session.get("selected_school_id")
             if not selected_id:
                 return None
-            school = profile.schools.filter(id=selected_id).first()
+            school = accessible_schools.filter(id=selected_id).first()
             if not school:
                 return None
         else:
@@ -108,6 +114,7 @@ class SchoolSelectionMiddleware:
         skip_urls = {
             'select_school',
             'license_expired',
+            'access_restricted',
             'logout',
             'static',
             'media',
@@ -129,7 +136,7 @@ class SchoolSelectionMiddleware:
                 return True
                 
             # Or if selected school isn't valid for this user
-            if not profile.schools.filter(id=selected_id).exists():
+            if not profile.get_accessible_schools().filter(id=selected_id).exists():
                 return True
                 
         return False
@@ -148,17 +155,20 @@ class RoleSchoolBlockMiddleware:
     def __call__(self, request):
         user = request.user
 
+        try:
+            url_name = resolve(request.path_info).url_name
+        except Exception:
+            url_name = ""
+
+        if url_name in {"access_restricted", "logout", "support"}:
+            return self.get_response(request)
+
         if user.is_authenticated:
             profile = getattr(user, "profile", None)
             if profile:
                 # If this user is staff (non-parent) and has no associated
                 # schools, block access.
-                if profile.role != Role.PARENT and not profile.schools.exists():
-                    # 1) show forbidden
-                    return HttpResponseForbidden(
-                        "Your account is not configured for access. Please contact support for assistance by emailing support@chatterdillo.com"
-                    )
-                    # 2) or redirect to a support/contact page
-                    # return redirect(reverse("account_help"))
+                if profile.role != Role.PARENT and not profile.get_accessible_schools().exists():
+                    return redirect("access_restricted")
 
         return self.get_response(request)

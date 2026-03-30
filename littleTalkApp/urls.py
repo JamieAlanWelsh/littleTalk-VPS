@@ -88,6 +88,7 @@ urlpatterns = [
     # Subcription routes
     path('subscribe/', subscription_views.subscribe, name='subscribe'),
     path('license-expired/', subscription_views.license_expired, name='license_expired'),
+    path('access-restricted/', subscription_views.access_restricted, name='access_restricted'),
 
     # Stripe Webhook to activate and manage subscription
     path('webhooks/stripe/', subscription_views.stripe_webhook, name='stripe_webhook'),
