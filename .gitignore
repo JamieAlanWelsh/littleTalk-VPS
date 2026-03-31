@@ -1,5 +1,7 @@
 littleTalk/settings.py
 littletalkvenv/
+staticfiles/
+staticfiles_test/
 __pycache__/
 *.py[cod]
 *.pyc
