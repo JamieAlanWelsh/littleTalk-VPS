@@ -10,8 +10,8 @@
 
 import { type ReactNode } from 'react';
 import styles from './exerciseLayout.module.css';
-import ExerciseActionBar from '../components/ExerciseActionBar/ExerciseActionBar';
-import type { AnswerState } from '../lib/types';
+import ExerciseActionBar from '../../components/ExerciseActionBar/ExerciseActionBar';
+import type { AnswerState } from '../../lib/types';
 
 const correctFeedbackMessages = [
     "Great job! That's correct.",
@@ -27,6 +27,7 @@ interface ExerciseLayoutProps {
   title: string;
   instruction: string;
   actionBarPhase: AnswerState;
+  progress: number;
   onCheckAnswer: () => void;
   onTryAgain: () => void;
   onContinue: () => void;
@@ -38,6 +39,7 @@ export const ExerciseLayout = ({
   title,
   instruction,
   actionBarPhase,
+  progress,
   onCheckAnswer,
   onTryAgain,
   onContinue,
@@ -51,16 +53,25 @@ export const ExerciseLayout = ({
   return (
     <>
       <div className={styles.exerciseLayoutWrapper}>
+        {/* progress bar */}
+        <div className={styles.progressBarContainer}>
+          <div className={styles.progressBarFill} style={{ width: `${progress * 100}%` }}></div>
+        </div>
+
+        {/* question */}
         <div className={styles.exercisePromptCard}>
           <h2 style={{ fontSize: 'var(--text-large)', fontWeight: 'bold', paddingBottom: '2rem' }}>{title}</h2>
           <p>{instruction}</p>
         </div>
 
+        {/* answer */}
         <div className={styles.exerciseContainer}>
           <div className={`${styles.exerciseZone} ${styles.exerciseZoneInteractive}`}>
             {children}
           </div>
         </div>
+
+        {/* action bar */}
         <ExerciseActionBar
           actionBarPhase={actionBarPhase}
           feedbackMessage={feedbackMessage}

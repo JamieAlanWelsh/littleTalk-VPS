@@ -7,8 +7,9 @@
 
 import { useState } from "react";
 import type { MatchingExercisePayload2, QuestionState } from "../lib/types";
-import ExerciseLayout from "../layouts/ExerciseLayout";
+import ExerciseLayout from "../layouts/exerciseLayout/ExerciseLayout";
 import { ImageOption } from "../components/ImageOption";
+import { ExerciseEndscreen } from "../layouts/exerciseEndscreen/ExerciseEndscreen";
 
 const EXERCISE_METADATA = {
   title: "Match the picture to the concept",
@@ -28,6 +29,8 @@ export const SentenceToImageMatchingExercise = ({
   });
   const [currentQuestionStateIndex, setCurrentQuestionStateIndex] =
     useState<number>(0);
+
+  const progress = currentQuestionStateIndex / payload.questions.length;
 
   const onCheckAnswer = () => {
     if (questionState.selectedIconIds.length === 0) return;
@@ -70,38 +73,48 @@ export const SentenceToImageMatchingExercise = ({
   };
 
   return (
-    <ExerciseLayout
-      title={EXERCISE_METADATA.title}
-      instruction={payload.questions[currentQuestionStateIndex].prompt}
-      actionBarPhase={questionState.answerState}
-      onCheckAnswer={onCheckAnswer}
-      onTryAgain={onTryAgain}
-      onContinue={onContinue}
-    >
-      {payload.pictures.map((picture) => (
-        <ImageOption
-          image={picture}
-          isCorrect={
-            questionState.answerState === "correct"
-              ? true
-              : questionState.answerState === "incorrect"
-                ? false
-                : null
-          }
-          isSelected={questionState.selectedIconIds.includes(picture.id)}
-          isDisabled={
-            questionState.answerState !== "notAnswered" &&
-            !questionState.selectedIconIds.includes(picture.id)
-          }
-          onClick={() =>
-            setQuestionState((prev) => ({
-              ...prev,
-              selectedIconIds: [picture.id],
-            }))
-          }
+    <>
+      {currentQuestionStateIndex + 1 === payload.questions.length ? (
+        <ExerciseEndscreen
+          expGained={500}
+          onReturnHome={() => alert("would go home")}
         />
-      ))}
-    </ExerciseLayout>
+      ) : (
+        <ExerciseLayout
+          title={EXERCISE_METADATA.title}
+          instruction={payload.questions[currentQuestionStateIndex].prompt}
+          actionBarPhase={questionState.answerState}
+          progress={progress}
+          onCheckAnswer={onCheckAnswer}
+          onTryAgain={onTryAgain}
+          onContinue={onContinue}
+        >
+          {payload.pictures.map((picture) => (
+            <ImageOption
+              image={picture}
+              isCorrect={
+                questionState.answerState === "correct"
+                  ? true
+                  : questionState.answerState === "incorrect"
+                    ? false
+                    : null
+              }
+              isSelected={questionState.selectedIconIds.includes(picture.id)}
+              isDisabled={
+                questionState.answerState !== "notAnswered" &&
+                !questionState.selectedIconIds.includes(picture.id)
+              }
+              onClick={() =>
+                setQuestionState((prev) => ({
+                  ...prev,
+                  selectedIconIds: [picture.id],
+                }))
+              }
+            />
+          ))}
+        </ExerciseLayout>
+      )}
+    </>
   );
 };
 

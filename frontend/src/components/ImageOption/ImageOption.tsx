@@ -4,8 +4,8 @@
  * Displays an icon card.
  * Supports interactive states: default, selected, correct, incorrect, disabled.
  */
-
-import type { Picture } from '../../lib/types';
+import styles from "./ImageOption.module.css";
+import type { Picture } from "../../lib/types";
 
 interface ImageOptionProps {
   image: Picture;
@@ -22,24 +22,28 @@ export const ImageOption = ({
   isDisabled = false,
   onClick,
 }: ImageOptionProps) => {
-
   // Determine state classes
-  let stateClass = '';
+  let stateClass:
+    | "disabled"
+    | "correct"
+    | "incorrect"
+    | "selected"
+    | "interactive" = "interactive";
   if (isDisabled) {
-    stateClass = 'disabled';
+    stateClass = "disabled";
   } else if (isCorrect === true) {
-    stateClass = 'correct';
+    stateClass = "correct";
   } else if (isCorrect === false) {
-    stateClass = 'incorrect';
+    stateClass = "incorrect";
   } else if (isSelected) {
-    stateClass = 'selected';
+    stateClass = "selected";
   } else {
-    stateClass = 'interactive';
+    stateClass = "interactive";
   }
 
   return (
     <button
-      className={`icon-block ${stateClass}`}
+      className={`${styles["icon-block"]} ${styles[stateClass]}`}
       onClick={onClick}
       disabled={isDisabled}
       aria-label={image.label || image.altText || `Option ${image.id}`}
@@ -47,8 +51,8 @@ export const ImageOption = ({
     >
       <img
         src={image.imageUrl}
-        alt={image.altText || image.label || 'Icon option'}
-        className="icon-block-image"
+        alt={image.altText || image.label || "Icon option"}
+        className={styles["icon-block-image"]}
       />
     </button>
   );

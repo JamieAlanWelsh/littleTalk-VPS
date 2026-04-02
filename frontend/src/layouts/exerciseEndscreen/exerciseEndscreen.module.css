@@ -1,0 +1,70 @@
+/* exerciseEndscreen.module.css */
+
+.endscreenContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  width: 100%;
+  max-width: 600px;
+  padding: 2rem;
+  background-color: var(--accent-color);
+  border-radius: var(--border-radius-light);
+  box-shadow: var(--box-shadow);
+  font-family: var(--font-roboto);
+  color: var(--font-color);
+}
+
+.congratsMessage {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: var(--font-color);
+  margin: 0;
+  text-align: center;
+}
+
+.logoContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.logo {
+  max-width: 200px;
+  height: auto;
+  border-radius: var(--border-radius-light);
+}
+
+.expSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.5rem;
+  background-color: rgba(255, 228, 119, 0.2);
+  border-radius: var(--border-radius-light);
+  width: 100%;
+}
+
+.expLabel {
+  font-size: var(--text-medium);
+  color: var(--font-color);
+  margin: 0;
+  font-weight: 500;
+}
+
+.expAmount {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--yellow-button-color);
+  margin: 0;
+}
+
+.buttonContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
