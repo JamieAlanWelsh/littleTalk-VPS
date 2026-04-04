@@ -12,7 +12,9 @@ import { useState, type ReactNode } from 'react';
 import { TypeAnimation } from 'react-type-animation';
 import styles from './exerciseLayout.module.css';
 import ExerciseActionBar from '../../components/ExerciseActionBar/ExerciseActionBar';
+import { ExerciseSettings } from '../exerciseSettings/ExerciseSettings';
 import type { AnswerState } from '../../lib/types';
+import type { ExerciseSettingsConfig } from '../exerciseSettings/types';
 
 const correctFeedbackMessages = [
     "Great job! That's correct.",
@@ -32,6 +34,7 @@ interface ExerciseLayoutProps {
   onTryAgain: () => void;
   onContinue: () => void;
   onSkip: () => void;
+  settings?: ExerciseSettingsConfig;
   children: ReactNode;
 }
 
@@ -44,8 +47,10 @@ export const ExerciseLayout = ({
   onTryAgain,
   onContinue,
   onSkip,
+  settings,
 }: ExerciseLayoutProps) => {
   const [showExitConfirm, setShowExitConfirm] = useState(false);
+  const [showSettings, setShowSettings] = useState(!!settings);
 
   const feedbackMessage = actionBarPhase === 'correct'
     ? correctFeedbackMessages[Math.floor(Math.random() * correctFeedbackMessages.length)]
@@ -70,7 +75,12 @@ export const ExerciseLayout = ({
               <div className={styles.progressBarInner}>
                 <div className={styles.progressBarFill} style={{ width: `${progress * 100}%` }}></div>
               </div>
-              <button className={styles.navButton} aria-label="Settings">⚙</button>
+              <button
+                className={styles.navButton}
+                aria-label="Settings"
+                onClick={() => settings && setShowSettings(true)}
+                style={{ opacity: settings ? 1 : 0.3, cursor: settings ? 'pointer' : 'default' }}
+              >⚙</button>
             </>
           )}
         </div>
@@ -106,6 +116,15 @@ export const ExerciseLayout = ({
           onSkip={onSkip}
         />
       </div>
+
+      {/* settings overlay */}
+      {settings && (
+        <ExerciseSettings
+          isOpen={showSettings}
+          onClose={() => setShowSettings(false)}
+          {...settings}
+        />
+      )}
     </>
   );
 };

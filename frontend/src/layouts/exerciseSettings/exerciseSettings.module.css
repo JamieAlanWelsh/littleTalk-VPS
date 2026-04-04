@@ -1,0 +1,143 @@
+/* exerciseSettings.module.css */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background-color: var(--font-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.25rem;
+  overflow-y: auto;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: min(100%, 700px);
+  font-family: var(--font-roboto);
+}
+
+/* Zone 1: Title */
+.titleCard {
+  background-color: var(--accent-color);
+  border-radius: 20px;
+  box-shadow: var(--box-shadow);
+  padding: 1.5rem 2rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--font-color);
+  margin: 0 0 0.4rem;
+}
+
+.subtitle {
+  font-size: var(--text-medium);
+  color: var(--font-color);
+  margin: 0;
+  opacity: 0.8;
+}
+
+/* Zone 2: Options sections */
+.sectionCard {
+  background-color: var(--accent-color);
+  border-radius: 20px;
+  box-shadow: var(--box-shadow);
+  padding: 1.5rem 2rem;
+}
+
+.sectionTitle {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--font-color);
+  margin: 0 0 1rem;
+}
+
+.optionsList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 0;
+  margin: 0;
+}
+
+.option {
+  padding: 0.8rem 1.2rem;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-grey);
+  background-color: white;
+  color: var(--font-color);
+  font-size: var(--text-medium);
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.option:hover {
+  background-color: #f5f5f5;
+}
+
+.optionSelected {
+  background-color: var(--yellow-button-color);
+  font-weight: 600;
+}
+
+/* Zone 3: Action buttons */
+.actionsCard {
+  background-color: var(--accent-color);
+  border-radius: 20px;
+  box-shadow: var(--box-shadow);
+  padding: 1.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.cancelButton,
+.confirmButton,
+.tutorialButton {
+  width: 100%;
+  padding: 0.9rem 1.5rem;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-grey);
+  font-size: var(--text-medium);
+  font-weight: 700;
+  font-family: var(--font-roboto);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  box-shadow: var(--box-shadow);
+}
+
+.cancelButton {
+  background-color: white;
+  color: var(--font-color);
+}
+
+.cancelButton:hover {
+  background-color: #f5f5f5;
+  transform: translateY(-2px);
+}
+
+.confirmButton {
+  background-color: var(--button-green);
+  color: white;
+}
+
+.confirmButton:hover {
+  background-color: var(--button-hover);
+  transform: translateY(-2px);
+}
+
+.tutorialButton {
+  background-color: white;
+  color: var(--font-color);
+}
+
+.tutorialButton:hover {
+  background-color: var(--yellow-button-color);
+  transform: translateY(-2px);
+}

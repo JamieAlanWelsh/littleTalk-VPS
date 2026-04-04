@@ -29,8 +29,8 @@
   --font-roboto: 'Roboto', sans-serif;
   --font-outfit: 'Outfit', sans-serif;
   --line-height: 1.5;
-  --text-small:  0.875rem;  /* 14px */
-  --text-medium: 1rem;      /* 16px */
+  --text-small:  1rem;
+  --text-medium: 1.25rem;
   --text-large:  1.6em;
   
   /* Status Colors */

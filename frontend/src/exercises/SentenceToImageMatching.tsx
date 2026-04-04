@@ -10,6 +10,7 @@ import type { MatchingExercisePayload2, QuestionState } from "../lib/types";
 import ExerciseLayout from "../layouts/exerciseLayout/ExerciseLayout";
 import { ImageOption } from "../components/ImageOption";
 import { ExerciseEndscreen } from "../layouts/exerciseEndscreen/ExerciseEndscreen";
+import type { ExerciseSettingsConfig } from "../layouts/exerciseSettings/types";
 
 const EXERCISE_METADATA = {
   title: "Match the picture to the concept",
@@ -37,6 +38,31 @@ export const SentenceToImageMatchingExercise = ({
     selectedIconIds: [],
     answerState: "notAnswered",
   });
+  const [numOptions, setNumOptions] = useState(String(payload.pictures.length));
+
+  const visiblePictures = payload.pictures.slice(0, parseInt(numOptions));
+
+  // Settings configuration for this exercise
+  // Would be good to find a consistent way to pass in exercise-specific settings
+  const settingsConfig: ExerciseSettingsConfig = {
+    title: "Exercise Settings",
+    subtitle: "Adjust the difficulty before starting.",
+    sections: [
+      {
+        title: "Number of options:",
+        options: Array.from({ length: payload.pictures.length }, (_, i) => ({
+          id: String(i + 1),
+          label: `${i + 1} option${i + 1 > 1 ? 's' : ''}`,
+        })),
+        selectedId: numOptions,
+        onSelect: setNumOptions,
+      },
+    ],
+    onConfirm: () => {
+      setRemainingQuestions([...shuffledQuestions]);
+      resetQuestionState();
+    },
+  };
 
   const progress = (shuffledQuestions.length - remainingQuestions.length) / shuffledQuestions.length;
   const currentQuestion = remainingQuestions[0];
@@ -85,8 +111,9 @@ export const SentenceToImageMatchingExercise = ({
           onTryAgain={onTryAgain}
           onContinue={onContinue}
           onSkip={onSkip}
+          settings={settingsConfig}
         >
-          {payload.pictures.map((picture) => (
+          {visiblePictures.map((picture) => (
             <ImageOption
               image={picture}
               isCorrect={
