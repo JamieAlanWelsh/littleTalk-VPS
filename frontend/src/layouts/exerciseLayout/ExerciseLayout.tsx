@@ -51,12 +51,14 @@ export const ExerciseLayout = ({
 
   return (
     <>
-      <div className={styles.exerciseLayoutWrapper}>
-        {/* progress bar */}
-        <div className={styles.progressBarContainer}>
+      {/* progress bar - fixed header */}
+      <div className={styles.progressBarContainer}>
+        <div className={styles.progressBarInner}>
           <div className={styles.progressBarFill} style={{ width: `${progress * 100}%` }}></div>
         </div>
+      </div>
 
+      <div className={styles.exerciseLayoutWrapper}>
         {/* question */}
         <div className={styles.exercisePromptCard}>
           <h2 style={{ fontSize: 'var(--text-large)', fontWeight: 'bold' }}>

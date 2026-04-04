@@ -25,7 +25,7 @@ export default ({
     switch (actionBarPhase) {
         case 'notAnswered':
             rightContent = (
-                <Button label="Check Answer" onClick={onCheckAnswer} />
+                <Button label="Check" onClick={onCheckAnswer} />
             );
             break;
         case 'correct':

@@ -1,6 +1,5 @@
 .exerciseZoneActions {
   background-color: var(--accent-color);
-  box-shadow: 0 -4px 14px rgba(0, 0, 0, 0.08);
   position: fixed;
   left: 0;
   right: 0;

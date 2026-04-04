@@ -2,15 +2,16 @@
 .exerciseLayoutWrapper {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 2.5rem;
   width: 50vw;
+  padding-top: 3.5rem;
 }
 
 .exercisePromptCard,
 .exerciseContainer {
   box-sizing: border-box;
   background-color: var(--accent-color);
-  border-radius: var(--border-radius-light);
+  border-radius: 20px;
   box-shadow: var(--box-shadow);
   font-family: var(--font-roboto);
   color: var(--font-color);
@@ -44,11 +45,22 @@
 }
 
 .progressBarContainer {
-  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  padding: 1.5rem 1.25rem;
+}
+
+.progressBarInner {
+  width: min(100%, 1000px);
+  margin: 0 auto;
   height: 16px;
   background-color: #E8EEF7;
   border-radius: var(--border-radius-light);
-  box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--box-shadow);
+  overflow: hidden;
 }
 
 .progressBarFill {
