@@ -61,7 +61,7 @@ export const ExerciseLayout = ({
       <div className={styles.exerciseLayoutWrapper}>
         {/* question */}
         <div className={styles.exercisePromptCard}>
-          <h2 style={{ fontSize: 'var(--text-large)', fontWeight: 'bold' }}>
+          <h2 style={{ fontSize: 'var(--text-large)', fontWeight: 'bold', color: 'var(--font-color)' }}>
             <TypeAnimation
               key={instruction}
               sequence={[instruction]}

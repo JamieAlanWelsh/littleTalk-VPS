@@ -3,8 +3,10 @@
   display: flex;
   flex-direction: column;
   gap: 2.5rem;
-  width: 50vw;
-  padding-top: 3.5rem;
+  width: min(100%, 1000px);
+  margin: 0 auto;
+  padding: 0 1.25rem;
+  box-sizing: border-box;
 }
 
 .exercisePromptCard,
@@ -19,7 +21,7 @@
 }
 
 .exercisePromptCard {
-  padding: 1rem 1.5rem;
+  padding: 1.3rem 1.5rem;
   background-color: var(--yellow-button-color);
   text-align: center;
 }
@@ -72,8 +74,9 @@
 
 .exerciseZoneInteractive {
   background-color: transparent;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 1rem;
   padding: 0;
 }
