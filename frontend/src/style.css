@@ -43,3 +43,7 @@ body.exercise-page {
   justify-content: center;
   background-color: var(--background-color);
 }
+
+body.exercise-page #exercise-root {
+  width: min(100%, 1000px);
+}
