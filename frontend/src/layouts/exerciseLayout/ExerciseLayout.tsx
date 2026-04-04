@@ -24,7 +24,6 @@ const incorrectFeedbackMessages = [
 ];
 
 interface ExerciseLayoutProps {
-  title: string;
   instruction: string;
   actionBarPhase: AnswerState;
   progress: number;
@@ -36,7 +35,6 @@ interface ExerciseLayoutProps {
 
 export const ExerciseLayout = ({
   children,
-  title,
   instruction,
   actionBarPhase,
   progress,
@@ -60,8 +58,7 @@ export const ExerciseLayout = ({
 
         {/* question */}
         <div className={styles.exercisePromptCard}>
-          <h2 style={{ fontSize: 'var(--text-large)', fontWeight: 'bold', paddingBottom: '2rem' }}>{title}</h2>
-          <p>{instruction}</p>
+          <h2 style={{ fontSize: 'var(--text-large)', fontWeight: 'bold' }}>{instruction}</h2>
         </div>
 
         {/* answer */}

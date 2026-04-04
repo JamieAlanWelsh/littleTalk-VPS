@@ -81,7 +81,6 @@ export const SentenceToImageMatchingExercise = ({
         />
       ) : (
         <ExerciseLayout
-          title={EXERCISE_METADATA.title}
           instruction={payload.questions[currentQuestionStateIndex].prompt}
           actionBarPhase={questionState.answerState}
           progress={progress}

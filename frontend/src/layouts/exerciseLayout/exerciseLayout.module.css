@@ -19,6 +19,8 @@
 
 .exercisePromptCard {
   padding: 1rem 1.5rem;
+  background-color: var(--yellow-button-color);
+  text-align: center;
 }
 
 .exerciseContainer {
