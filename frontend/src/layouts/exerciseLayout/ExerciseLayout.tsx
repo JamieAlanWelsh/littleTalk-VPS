@@ -9,6 +9,7 @@
  */
 
 import { type ReactNode } from 'react';
+import { TypeAnimation } from 'react-type-animation';
 import styles from './exerciseLayout.module.css';
 import ExerciseActionBar from '../../components/ExerciseActionBar/ExerciseActionBar';
 import type { AnswerState } from '../../lib/types';
@@ -58,7 +59,14 @@ export const ExerciseLayout = ({
 
         {/* question */}
         <div className={styles.exercisePromptCard}>
-          <h2 style={{ fontSize: 'var(--text-large)', fontWeight: 'bold' }}>{instruction}</h2>
+          <h2 style={{ fontSize: 'var(--text-large)', fontWeight: 'bold' }}>
+            <TypeAnimation
+              key={instruction}
+              sequence={[instruction]}
+              speed={60}
+              cursor={false}
+            />
+          </h2>
         </div>
 
         {/* answer */}
