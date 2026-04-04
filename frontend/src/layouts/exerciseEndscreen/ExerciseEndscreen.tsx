@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import styles from "./exerciseEndscreen.module.css";
 import { Button } from "../../components/Button/Button";
 import { useConfetti } from "../../hooks/useConfetti";
+import { useAudio } from "../../hooks/useAudio";
 
 interface ExerciseEndscreenProps {
   expGained: number;
@@ -21,10 +22,12 @@ export const ExerciseEndscreen = ({
   onRepeat,
 }: ExerciseEndscreenProps) => {
   const { triggerConfetti } = useConfetti();
+  const { play } = useAudio();
 
   useEffect(() => {
     triggerConfetti();
-  }, [triggerConfetti]);
+    play('/static/audio/exercise_complete.wav');
+  }, []);
 
   return (
     <div className={styles.endscreenContainer}>

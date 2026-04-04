@@ -8,11 +8,12 @@
  * and feedback/progress indicators internally.
  */
 
-import { useState, type ReactNode } from 'react';
+import { useState, useEffect, type ReactNode } from 'react';
 import { TypeAnimation } from 'react-type-animation';
 import styles from './exerciseLayout.module.css';
 import ExerciseActionBar from '../../components/ExerciseActionBar/ExerciseActionBar';
 import { ExerciseSettings } from '../exerciseSettings/ExerciseSettings';
+import { useAudio } from '../../hooks/useAudio';
 import type { AnswerState } from '../../lib/types';
 import type { ExerciseSettingsConfig } from '../exerciseSettings/types';
 
@@ -53,6 +54,12 @@ export const ExerciseLayout = ({
 }: ExerciseLayoutProps) => {
   const [showExitConfirm, setShowExitConfirm] = useState(false);
   const [showSettings, setShowSettings] = useState(!!(settings && openSettingsOnMount));
+  const { play } = useAudio();
+
+  useEffect(() => {
+    if (actionBarPhase === 'correct') play('/static/audio/correct.wav');
+    else if (actionBarPhase === 'incorrect') play('/static/audio/incorrect.wav');
+  }, [actionBarPhase]);
 
   const feedbackMessage = actionBarPhase === 'correct'
     ? correctFeedbackMessages[Math.floor(Math.random() * correctFeedbackMessages.length)]
