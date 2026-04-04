@@ -9,6 +9,7 @@ interface ExerciseActionBar {
     onCheckAnswer: () => void;
     onTryAgain: () => void;
     onContinue: () => void;
+    onSkip: () => void;
 }
 
 export default ({
@@ -17,6 +18,7 @@ export default ({
     onCheckAnswer,
     onTryAgain,
     onContinue,
+    onSkip,
 }: ExerciseActionBar) => {
     let toneClass = '';
     let leftContent: ReactNode = null;
@@ -24,8 +26,11 @@ export default ({
 
     switch (actionBarPhase) {
         case 'notAnswered':
+            leftContent = (
+                <Button label="Skip" onClick={onSkip} variant="secondary" />
+            );
             rightContent = (
-                <Button label="Check" onClick={onCheckAnswer} />
+                <Button label="CHECK" onClick={onCheckAnswer} />
             );
             break;
         case 'correct':
@@ -40,10 +45,10 @@ export default ({
         case 'incorrect':
             toneClass = styles.exerciseZoneActionsIncorrect;
             leftContent = (
-                <>
-                    <p className={styles.exerciseZoneActionsMessage}>{feedbackMessage}</p>
-                    <Button label="Try Again" onClick={onTryAgain} variant="secondary" />
-                </>
+                <p className={styles.exerciseZoneActionsMessage}>{feedbackMessage}</p>
+            );
+            rightContent = (
+                <Button label="Try Again" onClick={onTryAgain} variant="secondary" />
             );
             break;
         default: {

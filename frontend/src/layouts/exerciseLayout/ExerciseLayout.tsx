@@ -31,6 +31,7 @@ interface ExerciseLayoutProps {
   onCheckAnswer: () => void;
   onTryAgain: () => void;
   onContinue: () => void;
+  onSkip: () => void;
   children: ReactNode;
 }
 
@@ -42,6 +43,7 @@ export const ExerciseLayout = ({
   onCheckAnswer,
   onTryAgain,
   onContinue,
+  onSkip,
 }: ExerciseLayoutProps) => {
   const feedbackMessage = actionBarPhase === 'correct'
     ? correctFeedbackMessages[Math.floor(Math.random() * correctFeedbackMessages.length)]
@@ -85,6 +87,7 @@ export const ExerciseLayout = ({
           onCheckAnswer={onCheckAnswer}
           onTryAgain={onTryAgain}
           onContinue={onContinue}
+          onSkip={onSkip}
         />
       </div>
     </>

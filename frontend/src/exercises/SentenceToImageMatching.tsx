@@ -5,7 +5,7 @@
  * Users read a sentence and click the matching icon/picture.
  */
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import type { MatchingExercisePayload2, QuestionState } from "../lib/types";
 import ExerciseLayout from "../layouts/exerciseLayout/ExerciseLayout";
 import { ImageOption } from "../components/ImageOption";
@@ -23,70 +23,69 @@ interface SentenceToImageMatchingExerciseProps {
 export const SentenceToImageMatchingExercise = ({
   payload,
 }: SentenceToImageMatchingExerciseProps) => {
+  const shuffledQuestions = useMemo(() => {
+    const arr = [...payload.questions];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }, []);
+
+  const [remainingQuestions, setRemainingQuestions] = useState(() => [...shuffledQuestions]);
   const [questionState, setQuestionState] = useState<QuestionState>({
     selectedIconIds: [],
     answerState: "notAnswered",
   });
-  const [currentQuestionStateIndex, setCurrentQuestionStateIndex] =
-    useState<number>(0);
 
-  const progress = currentQuestionStateIndex / payload.questions.length;
+  const progress = (shuffledQuestions.length - remainingQuestions.length) / shuffledQuestions.length;
+  const currentQuestion = remainingQuestions[0];
+
+  const resetQuestionState = () =>
+    setQuestionState({ selectedIconIds: [], answerState: "notAnswered" });
 
   const onCheckAnswer = () => {
     if (questionState.selectedIconIds.length === 0) return;
-
-    if (
-      payload.questions[currentQuestionStateIndex].correctIconIds.every((id) =>
-        questionState.selectedIconIds.includes(id),
-      )
-    ) {
-      setQuestionState((prev) => ({
-        ...prev,
-        answerState: "correct",
-      }));
-    } else {
-      setQuestionState((prev) => ({
-        ...prev,
-        answerState: "incorrect",
-      }));
-    }
+    const isCorrect = currentQuestion.correctIconIds.every((id) =>
+      questionState.selectedIconIds.includes(id),
+    );
+    setQuestionState((prev) => ({
+      ...prev,
+      answerState: isCorrect ? "correct" : "incorrect",
+    }));
   };
 
   const onContinue = () => {
-    if (currentQuestionStateIndex === payload.questions.length - 1) {
-      // Exercise complete - could trigger a callback here
-      alert("Exercise complete!");
-    } else {
-      setCurrentQuestionStateIndex((prev) => prev + 1);
-      setQuestionState({
-        selectedIconIds: [],
-        answerState: "notAnswered",
-      });
-    }
+    setRemainingQuestions((prev) => prev.slice(1));
+    resetQuestionState();
   };
 
-  const onTryAgain = () => {
-    setQuestionState({
-      selectedIconIds: [],
-      answerState: "notAnswered",
+  const onTryAgain = () => resetQuestionState();
+
+  const onSkip = () => {
+    setRemainingQuestions((prev) => {
+      const [first, ...rest] = prev;
+      return [...rest, first];
     });
+    resetQuestionState();
   };
 
   return (
     <>
-      {currentQuestionStateIndex + 1 === payload.questions.length ? (
+      {remainingQuestions.length === 0 ? (
         <ExerciseEndscreen
           expGained={500}
           onReturnHome={() => alert("would go home")}
         />
       ) : (
         <ExerciseLayout
-          instruction={payload.questions[currentQuestionStateIndex].prompt}
+          instruction={currentQuestion.prompt}
           actionBarPhase={questionState.answerState}
           progress={progress}
           onCheckAnswer={onCheckAnswer}
           onTryAgain={onTryAgain}
           onContinue={onContinue}
+          onSkip={onSkip}
         >
           {payload.pictures.map((picture) => (
             <ImageOption
