@@ -35,6 +35,20 @@
   max-width: 200px;
   height: auto;
   border-radius: var(--border-radius-light);
+  animation: joyBounce 0.7s cubic-bezier(0.36, 0.07, 0.19, 0.97) infinite alternate;
+  transform-origin: bottom center;
+}
+
+@keyframes joyBounce {
+  0% {
+    transform: translateY(0) rotate(-4deg) scale(1);
+  }
+  50% {
+    transform: translateY(-18px) rotate(0deg) scale(1.06);
+  }
+  100% {
+    transform: translateY(-8px) rotate(4deg) scale(1.03);
+  }
 }
 
 .expSection {
@@ -65,6 +79,8 @@
 .buttonContainer {
   width: 100%;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
   margin-top: 1rem;
 }

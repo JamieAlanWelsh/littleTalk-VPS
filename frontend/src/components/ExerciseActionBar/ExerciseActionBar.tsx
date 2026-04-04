@@ -30,7 +30,7 @@ export default ({
                 <Button label="Skip" onClick={onSkip} variant="secondary" />
             );
             rightContent = (
-                <Button label="CHECK" onClick={onCheckAnswer} />
+                <Button label="Check" onClick={onCheckAnswer} />
             );
             break;
         case 'correct':

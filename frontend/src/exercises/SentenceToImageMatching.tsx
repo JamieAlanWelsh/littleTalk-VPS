@@ -75,7 +75,6 @@ export const SentenceToImageMatchingExercise = ({
       {remainingQuestions.length === 0 ? (
         <ExerciseEndscreen
           expGained={500}
-          onReturnHome={() => alert("would go home")}
         />
       ) : (
         <ExerciseLayout
