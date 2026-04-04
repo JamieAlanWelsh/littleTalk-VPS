@@ -8,7 +8,7 @@
  * and feedback/progress indicators internally.
  */
 
-import { type ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import { TypeAnimation } from 'react-type-animation';
 import styles from './exerciseLayout.module.css';
 import ExerciseActionBar from '../../components/ExerciseActionBar/ExerciseActionBar';
@@ -45,6 +45,8 @@ export const ExerciseLayout = ({
   onContinue,
   onSkip,
 }: ExerciseLayoutProps) => {
+  const [showExitConfirm, setShowExitConfirm] = useState(false);
+
   const feedbackMessage = actionBarPhase === 'correct'
     ? correctFeedbackMessages[Math.floor(Math.random() * correctFeedbackMessages.length)]
     : actionBarPhase === 'incorrect'
@@ -55,8 +57,22 @@ export const ExerciseLayout = ({
     <>
       {/* progress bar - fixed header */}
       <div className={styles.progressBarContainer}>
-        <div className={styles.progressBarInner}>
-          <div className={styles.progressBarFill} style={{ width: `${progress * 100}%` }}></div>
+        <div className={styles.progressBarRow}>
+          {showExitConfirm ? (
+            <div className={styles.exitConfirm}>
+              <span className={styles.exitConfirmText}>Return to practice? Progress will be lost.</span>
+              <button className={styles.exitConfirmYes} onClick={() => { window.location.href = '/practise/'; }}>Yes, exit</button>
+              <button className={styles.exitConfirmNo} onClick={() => setShowExitConfirm(false)}>Cancel</button>
+            </div>
+          ) : (
+            <>
+              <button className={styles.navButton} onClick={() => setShowExitConfirm(true)} aria-label="Exit exercise">✕</button>
+              <div className={styles.progressBarInner}>
+                <div className={styles.progressBarFill} style={{ width: `${progress * 100}%` }}></div>
+              </div>
+              <button className={styles.navButton} aria-label="Settings">⚙</button>
+            </>
+          )}
         </div>
       </div>
 
