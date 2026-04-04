@@ -35,6 +35,7 @@ interface ExerciseLayoutProps {
   onContinue: () => void;
   onSkip: () => void;
   settings?: ExerciseSettingsConfig;
+  openSettingsOnMount?: boolean;
   children: ReactNode;
 }
 
@@ -48,9 +49,10 @@ export const ExerciseLayout = ({
   onContinue,
   onSkip,
   settings,
+  openSettingsOnMount = true,
 }: ExerciseLayoutProps) => {
   const [showExitConfirm, setShowExitConfirm] = useState(false);
-  const [showSettings, setShowSettings] = useState(!!settings);
+  const [showSettings, setShowSettings] = useState(!!(settings && openSettingsOnMount));
 
   const feedbackMessage = actionBarPhase === 'correct'
     ? correctFeedbackMessages[Math.floor(Math.random() * correctFeedbackMessages.length)]

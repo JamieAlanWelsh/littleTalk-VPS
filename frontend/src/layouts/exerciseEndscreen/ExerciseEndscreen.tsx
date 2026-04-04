@@ -13,10 +13,12 @@ import { useConfetti } from "../../hooks/useConfetti";
 
 interface ExerciseEndscreenProps {
   expGained: number;
+  onRepeat: () => void;
 }
 
 export const ExerciseEndscreen = ({
   expGained,
+  onRepeat,
 }: ExerciseEndscreenProps) => {
   const { triggerConfetti } = useConfetti();
 
@@ -49,7 +51,7 @@ export const ExerciseEndscreen = ({
         <Button
           label="Repeat Exercise"
           variant="secondary"
-          onClick={() => window.location.reload()}
+          onClick={onRepeat}
         />
         <Button
           label="Return to Home"

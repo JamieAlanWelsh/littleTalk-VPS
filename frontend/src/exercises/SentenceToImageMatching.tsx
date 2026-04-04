@@ -5,7 +5,7 @@
  * Users read a sentence and click the matching icon/picture.
  */
 
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import type { MatchingExercisePayload2, QuestionState } from "../lib/types";
 import ExerciseLayout from "../layouts/exerciseLayout/ExerciseLayout";
 import { ImageOption } from "../components/ImageOption";
@@ -24,20 +24,22 @@ interface SentenceToImageMatchingExerciseProps {
 export const SentenceToImageMatchingExercise = ({
   payload,
 }: SentenceToImageMatchingExerciseProps) => {
-  const shuffledQuestions = useMemo(() => {
-    const arr = [...payload.questions];
-    for (let i = arr.length - 1; i > 0; i--) {
+  const shuffle = <T,>(arr: T[]): T[] => {
+    const result = [...arr];
+    for (let i = result.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [arr[i], arr[j]] = [arr[j], arr[i]];
+      [result[i], result[j]] = [result[j], result[i]];
     }
-    return arr;
-  }, []);
+    return result;
+  };
 
+  const [shuffledQuestions, setShuffledQuestions] = useState(() => shuffle(payload.questions));
   const [remainingQuestions, setRemainingQuestions] = useState(() => [...shuffledQuestions]);
   const [questionState, setQuestionState] = useState<QuestionState>({
     selectedIconIds: [],
     answerState: "notAnswered",
   });
+  const [hasConfirmedSettings, setHasConfirmedSettings] = useState(false);
   const [numOptions, setNumOptions] = useState(String(payload.pictures.length));
 
   const visiblePictures = payload.pictures.slice(0, parseInt(numOptions));
@@ -59,7 +61,10 @@ export const SentenceToImageMatchingExercise = ({
       },
     ],
     onConfirm: () => {
-      setRemainingQuestions([...shuffledQuestions]);
+      const reshuffled = shuffle(payload.questions);
+      setHasConfirmedSettings(true);
+      setShuffledQuestions(reshuffled);
+      setRemainingQuestions([...reshuffled]);
       resetQuestionState();
     },
   };
@@ -101,6 +106,12 @@ export const SentenceToImageMatchingExercise = ({
       {remainingQuestions.length === 0 ? (
         <ExerciseEndscreen
           expGained={500}
+          onRepeat={() => {
+            const reshuffled = shuffle(payload.questions);
+            setShuffledQuestions(reshuffled);
+            setRemainingQuestions([...reshuffled]);
+            resetQuestionState();
+          }}
         />
       ) : (
         <ExerciseLayout
@@ -112,6 +123,7 @@ export const SentenceToImageMatchingExercise = ({
           onContinue={onContinue}
           onSkip={onSkip}
           settings={settingsConfig}
+          openSettingsOnMount={!hasConfirmedSettings}
         >
           {visiblePictures.map((picture) => (
             <ImageOption
