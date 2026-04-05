@@ -14,7 +14,7 @@ import ExerciseActionBar from "../../components/ExerciseActionBar/ExerciseAction
 import type { AnswerState, Question } from "../../lib/types";
 import { useExerciseTracking, useSubmitExerciseResult } from "../../hooks";
 import ExerciseEndscreen from "../exerciseEndscreen/ExerciseEndscreen";
-import { TypeAnimation } from 'react-type-animation';
+import { TypeAnimation } from "react-type-animation";
 
 const correctFeedbackMessages = [
   "Great job! That's correct.",
@@ -53,6 +53,7 @@ export const ExerciseLayout = ({
 
   const progress = currentQuestionStateIndex / questions.length;
   const isComplete = currentQuestionStateIndex === questions.length;
+  const isLastQuestion = currentQuestionStateIndex === questions.length - 1;
 
   const feedbackMessage =
     actionBarPhase === "correct"
@@ -82,13 +83,17 @@ export const ExerciseLayout = ({
   };
 
   const onContinue = () => {
-    if (currentQuestionStateIndex === questions.length - 1) {
-      console.log("Exercise complete! Submitting results...");
+    setCurrentQuestionStateIndex((prev) => prev + 1);
+    if (isLastQuestion) {
       submitExerciseResults();
     } else {
-      setCurrentQuestionStateIndex((prev) => prev + 1);
       onResetQuestion();
     }
+  };
+
+  const onSkip = () => {
+    tracking.incrementSkips();
+    onContinue();
   };
 
   const onTryAgain = () => {
@@ -107,16 +112,25 @@ export const ExerciseLayout = ({
           {/* progress bar - fixed header */}
           <div className={styles.progressBarContainer}>
             <div className={styles.progressBarInner}>
-              <div className={styles.progressBarFill} style={{ width: `${progress * 100}%` }}></div>
+              <div
+                className={styles.progressBarFill}
+                style={{ width: `${progress * 100}%` }}
+              ></div>
             </div>
           </div>
 
           {/* question */}
           <div className={styles.exercisePromptCard}>
-            <h2 style={{ fontSize: 'var(--text-large)', fontWeight: 'bold', color: 'var(--font-color)' }}>
+            <h2
+              style={{
+                fontSize: "var(--text-large)",
+                fontWeight: "bold",
+                color: "var(--font-color)",
+              }}
+            >
               <TypeAnimation
-                key={title}
-                sequence={[title]}
+                key={questions[currentQuestionStateIndex].id} // Reset animation on question change
+                sequence={[questions[currentQuestionStateIndex].prompt]}
                 speed={60}
                 cursor={false}
               />
@@ -145,6 +159,7 @@ export const ExerciseLayout = ({
               onTryAgain();
             }}
             onContinue={onContinue}
+            onSkip={onSkip}
           />
         </div>
       )}
