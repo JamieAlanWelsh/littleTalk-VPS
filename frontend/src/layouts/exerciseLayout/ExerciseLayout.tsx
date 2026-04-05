@@ -11,6 +11,7 @@
 import { useState, type ReactNode } from "react";
 import styles from "./exerciseLayout.module.css";
 import ExerciseActionBar from "../../components/ExerciseActionBar/ExerciseActionBar";
+import SessionExitConfirmation from "../../components/SessionExitConfirmation/SessionExitConfirmation";
 import type { AnswerState, Question } from "../../lib/types";
 import { useExerciseTracking, useSubmitExerciseResult } from "../../hooks";
 import ExerciseEndscreen from "../exerciseEndscreen/ExerciseEndscreen";
@@ -28,7 +29,6 @@ const incorrectFeedbackMessages = [
 
 interface ExerciseLayoutProps {
   exerciseId: string;
-  title: string;
   actionBarPhase: AnswerState;
   questions: Question[];
   tracking: ReturnType<typeof useExerciseTracking>;
@@ -39,7 +39,6 @@ interface ExerciseLayoutProps {
 
 export const ExerciseLayout = ({
   exerciseId,
-  title,
   actionBarPhase,
   questions,
   tracking,
@@ -49,6 +48,7 @@ export const ExerciseLayout = ({
 }: ExerciseLayoutProps) => {
   const [currentQuestionStateIndex, setCurrentQuestionStateIndex] =
     useState<number>(0);
+  const [showExitConfirmation, setShowExitConfirmation] = useState(false);
   const submitExerciseMutation = useSubmitExerciseResult();
 
   const progress = currentQuestionStateIndex / questions.length;
@@ -100,6 +100,11 @@ export const ExerciseLayout = ({
     onResetQuestion();
   };
 
+  const handleEndSession = () => {
+    // Navigate back or handle session end
+    window.location.href = "/practise/";
+  };
+
   return (
     <>
       {isComplete ? (
@@ -117,6 +122,16 @@ export const ExerciseLayout = ({
                 style={{ width: `${progress * 100}%` }}
               ></div>
             </div>
+            <button
+              className={styles.exitButton}
+              onClick={() => {
+                setShowExitConfirmation(true);
+              }}
+              title="Exit exercise"
+              type="button"
+            >
+              ✕
+            </button>
           </div>
 
           {/* question */}
@@ -163,6 +178,13 @@ export const ExerciseLayout = ({
           />
         </div>
       )}
+      <SessionExitConfirmation
+        isOpen={showExitConfirmation}
+        onKeepLearning={() => {
+          setShowExitConfirmation(false);
+        }}
+        onEndSession={handleEndSession}
+      />
     </>
   );
 };

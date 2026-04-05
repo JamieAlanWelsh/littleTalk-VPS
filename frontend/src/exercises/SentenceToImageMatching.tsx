@@ -65,7 +65,6 @@ export const SentenceToImageMatchingExercise = ({
     <>
       <ExerciseLayout
         exerciseId={EXERCISE_METADATA.id}
-        title={EXERCISE_METADATA.title}
         actionBarPhase={questionState.answerState}
         questions={payload.questions}
         tracking={tracking}
