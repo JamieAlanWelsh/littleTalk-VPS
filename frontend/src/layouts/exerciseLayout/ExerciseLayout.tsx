@@ -136,10 +136,14 @@ export const ExerciseLayout = ({
           <ExerciseActionBar
             actionBarPhase={actionBarPhase}
             feedbackMessage={feedbackMessage}
-            onCheckAnswer={() =>
-              onCheckAnswer(questions[currentQuestionStateIndex])
-            }
-            onTryAgain={onTryAgain}
+            onCheckAnswer={() => {
+              tracking.incrementAttempt(currentQuestionStateIndex);
+              onCheckAnswer(questions[currentQuestionStateIndex]);
+            }}
+            onTryAgain={() => {
+              tracking.incrementIncorrectAnswers();
+              onTryAgain();
+            }}
             onContinue={onContinue}
           />
         </div>

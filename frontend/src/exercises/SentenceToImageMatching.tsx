@@ -42,13 +42,11 @@ export const SentenceToImageMatchingExercise = ({
         questionState.selectedIconIds.includes(id),
       )
     ) {
-      tracking.incrementAttempt(payload.questions.indexOf(question));
       setQuestionState((prev) => ({
         ...prev,
         answerState: "correct",
       }));
     } else {
-      tracking.incrementIncorrectAnswers();
       setQuestionState((prev) => ({
         ...prev,
         answerState: "incorrect",
