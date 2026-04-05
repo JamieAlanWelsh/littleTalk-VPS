@@ -24,7 +24,11 @@ export const SessionExitConfirmation = ({
     <Modal isOpen={isOpen} onClose={onKeepLearning}>
       <div className={styles.container}>
         {/* Mascot Icon */}
-        <div className={styles.mascotIcon}>🦉</div>
+        <img
+          src="/static/images/landing/arlo_waving.png"
+          alt="Arlo celebrating"
+          className={styles.mascotIcon}
+        />
 
         {/* Message */}
         <h2 className={styles.title}>Exit session?</h2>
