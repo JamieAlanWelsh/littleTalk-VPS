@@ -10,7 +10,7 @@
 </head>
 <body class="exercise-page">
     <!-- Exercise mount point -->
-    <div id="exercise-root" data-exercise-payload="{{ exercise_payload_json|escape }}"></div>
+    <div id="exercise-root" data-learner-uuid="{{ learner_uuid }}" data-exercise-payload="{{ exercise_payload_json|escape }}"></div>
 
     <!-- React Fast Refresh for development -->
     {% vite_react_refresh %}

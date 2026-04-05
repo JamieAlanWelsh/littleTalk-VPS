@@ -9,7 +9,7 @@
 import { useEffect } from "react";
 import styles from "./exerciseEndscreen.module.css";
 import { Button } from "../../components/Button/Button";
-import { useConfetti } from "../../hooks/useConfetti";
+import { useConfetti } from "../../hooks";
 
 interface ExerciseEndscreenProps {
   expGained: number;

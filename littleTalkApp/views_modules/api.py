@@ -13,7 +13,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from littleTalkApp.models import ExerciseSession, Learner
-from littleTalkApp.serializers import LearnerExpUpdateInputSerializer, LearnerExpUpdateSerializer
+from littleTalkApp.serializers import SubmitExerciseSerializer, LearnerExpUpdateSerializer
 
 logger = logging.getLogger(__name__)
 
@@ -43,8 +43,8 @@ class CanUpdateLearnerPermission(BasePermission):
         return False
 
 
-class UpdateLearnerExpAPIView(APIView):
-    """API endpoint (POST /api/learners/<learner_uuid>/update-exp/) that increments a
+class SubmitExerciseView(APIView):
+    """API endpoint (POST /api/learners/<learner_uuid>/submit-exercise/) that increments a
     learner's XP and exercise count after completing a game session. Accepts a nonce
     to prevent duplicate submissions. Optionally records a full ExerciseSession record.
     """
@@ -56,7 +56,7 @@ class UpdateLearnerExpAPIView(APIView):
         learner = get_object_or_404(Learner, learner_uuid=learner_uuid)
         self.check_object_permissions(request, learner)
 
-        input_serializer = LearnerExpUpdateInputSerializer(data=request.data)
+        input_serializer = SubmitExerciseSerializer(data=request.data)
         if not input_serializer.is_valid():
             return Response(input_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -98,7 +98,7 @@ class UpdateLearnerExpAPIView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-def get_selected_learner(request):
+def get_current_session_learner_context(request):
     """JSON API: returns the UUID, CSRF token, and CS level of the learner currently
     stored in the session. Returns 401 if unauthenticated or 400 if no learner is selected.
     """

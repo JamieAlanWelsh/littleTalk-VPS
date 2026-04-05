@@ -97,8 +97,8 @@ urlpatterns = [
     path('subscribe/manage/', subscription_views.manage_subscription, name='manage_subscription'),
 
     # API endpoints
-    path('api/learners/<uuid:learner_uuid>/update-exp/', api_views.UpdateLearnerExpAPIView.as_view(), name='update_learner_exp'),
-    path('api/selected-learner/', api_views.get_selected_learner, name='get_selected_learner'),
+    path('api/learners/<uuid:learner_uuid>/submit-exercise/', api_views.SubmitExerciseView.as_view(), name='submit_exercise'),
+    path('api/selected-learner/', api_views.get_current_session_learner_context, name='get_current_session_learner_context'),
     path('api/targets/', api_views.create_target, name='create_target'),
     path('api/targets/<int:target_id>/', api_views.target_detail, name='target_detail'),
 
