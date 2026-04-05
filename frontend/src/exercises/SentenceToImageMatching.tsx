@@ -6,13 +6,17 @@
  */
 
 import { useState } from "react";
-import type { MatchingExercisePayload2, QuestionState } from "../lib/types";
+import type {
+  MatchingExercisePayload2,
+  Question,
+  QuestionState,
+} from "../lib/types";
 import ExerciseLayout from "../layouts/exerciseLayout/ExerciseLayout";
 import { ImageOption } from "../components/ImageOption";
-import { ExerciseEndscreen } from "../layouts/exerciseEndscreen/ExerciseEndscreen";
-import { useSubmitExerciseResult } from "../hooks";
+import { useExerciseTracking } from "../hooks";
 
 const EXERCISE_METADATA = {
+  id: "sentence-to-image-matching",
   title: "Match the picture to the concept",
   instruction: "Read the sentence and click the picture that best matches it.",
 };
@@ -28,25 +32,23 @@ export const SentenceToImageMatchingExercise = ({
     selectedIconIds: [],
     answerState: "notAnswered",
   });
-  const [currentQuestionStateIndex, setCurrentQuestionStateIndex] =
-    useState<number>(0);
-  const submitExerciseMutation = useSubmitExerciseResult();
+  const tracking = useExerciseTracking(payload.questions.length);
 
-  const progress = currentQuestionStateIndex / payload.questions.length;
-
-  const onCheckAnswer = () => {
+  const onCheckAnswer = (question: Question) => {
     if (questionState.selectedIconIds.length === 0) return;
 
     if (
-      payload.questions[currentQuestionStateIndex].correctIconIds.every((id) =>
+      question.correctIconIds.every((id) =>
         questionState.selectedIconIds.includes(id),
       )
     ) {
+      tracking.incrementAttempt(payload.questions.indexOf(question));
       setQuestionState((prev) => ({
         ...prev,
         answerState: "correct",
       }));
     } else {
+      tracking.incrementIncorrectAnswers();
       setQuestionState((prev) => ({
         ...prev,
         answerState: "incorrect",
@@ -54,44 +56,7 @@ export const SentenceToImageMatchingExercise = ({
     }
   };
 
-  const onContinue = () => {
-    if (currentQuestionStateIndex === payload.questions.length - 1) {
-      // Exercise complete - submit results to backend
-      const now = new Date();
-      const completedAt = new Date(now.getTime() + 5 * 60000); // 5 minutes later for demo
-
-      submitExerciseMutation.mutate(
-        {
-          nonce: `${Date.now()}-${Math.random()}`,
-          exp: 10,
-          totalExercises: 1,
-          exerciseId: "matching-exercise",
-          difficultySelected: "medium",
-          startedAt: now.toISOString(),
-          completedAt: completedAt.toISOString(),
-          totalQuestions: payload.questions.length,
-          incorrectAnswers: 0,
-          attemptsPerQuestion: Array(payload.questions.length).fill(1),
-        },
-        {
-          onSuccess: () => {
-            console.log("Exercise result submitted successfully");
-          },
-          onError: (error) => {
-            console.error("Failed to submit exercise result:", error);
-          },
-        },
-      );
-    } else {
-      setCurrentQuestionStateIndex((prev) => prev + 1);
-      setQuestionState({
-        selectedIconIds: [],
-        answerState: "notAnswered",
-      });
-    }
-  };
-
-  const onTryAgain = () => {
+  const onResetAnswer = () => {
     setQuestionState({
       selectedIconIds: [],
       answerState: "notAnswered",
@@ -100,45 +65,39 @@ export const SentenceToImageMatchingExercise = ({
 
   return (
     <>
-      {currentQuestionStateIndex === payload.questions.length ? (
-        <ExerciseEndscreen
-          expGained={500}
-          onReturnHome={() => alert("would go home")}
-        />
-      ) : (
-        <ExerciseLayout
-          instruction={payload.questions[currentQuestionStateIndex].prompt}
-          actionBarPhase={questionState.answerState}
-          progress={progress}
-          onCheckAnswer={onCheckAnswer}
-          onTryAgain={onTryAgain}
-          onContinue={onContinue}
-        >
-          {payload.pictures.map((picture) => (
-            <ImageOption
-              image={picture}
-              isCorrect={
-                questionState.answerState === "correct"
-                  ? true
-                  : questionState.answerState === "incorrect"
-                    ? false
-                    : null
-              }
-              isSelected={questionState.selectedIconIds.includes(picture.id)}
-              isDisabled={
-                questionState.answerState !== "notAnswered" &&
-                !questionState.selectedIconIds.includes(picture.id)
-              }
-              onClick={() =>
-                setQuestionState((prev) => ({
-                  ...prev,
-                  selectedIconIds: [picture.id],
-                }))
-              }
-            />
-          ))}
-        </ExerciseLayout>
-      )}
+      <ExerciseLayout
+        exerciseId={EXERCISE_METADATA.id}
+        title={EXERCISE_METADATA.title}
+        actionBarPhase={questionState.answerState}
+        questions={payload.questions}
+        tracking={tracking}
+        onCheckAnswer={onCheckAnswer}
+        onResetQuestion={onResetAnswer}
+      >
+        {payload.pictures.map((picture) => (
+          <ImageOption
+            image={picture}
+            isCorrect={
+              questionState.answerState === "correct"
+                ? true
+                : questionState.answerState === "incorrect"
+                  ? false
+                  : null
+            }
+            isSelected={questionState.selectedIconIds.includes(picture.id)}
+            isDisabled={
+              questionState.answerState !== "notAnswered" &&
+              !questionState.selectedIconIds.includes(picture.id)
+            }
+            onClick={() =>
+              setQuestionState((prev) => ({
+                ...prev,
+                selectedIconIds: [picture.id],
+              }))
+            }
+          />
+        ))}
+      </ExerciseLayout>
     </>
   );
 };
