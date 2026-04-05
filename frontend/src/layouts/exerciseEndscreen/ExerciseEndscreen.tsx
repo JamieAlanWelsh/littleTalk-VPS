@@ -31,11 +31,11 @@ export const ExerciseEndscreen = ({
       {/* Congratulations message */}
       <h1 className={styles.congratsMessage}>Good Job!</h1>
 
-      {/* Chatterdillo logo */}
+      {/* Celebrating mascot */}
       <div className={styles.logoContainer}>
         <img
-          src="/static/images/chatterdillo_logo_official.png"
-          alt="Chatterdillo mascot"
+          src="/static/images/arlo_celebrating.png"
+          alt="Arlo celebrating"
           className={styles.logo}
         />
       </div>
@@ -46,8 +46,13 @@ export const ExerciseEndscreen = ({
         <p className={styles.expAmount}>+{expGained} XP</p>
       </div>
 
-      {/* Return home button */}
+      {/* Action buttons */}
       <div className={styles.buttonContainer}>
+        <Button
+          label="Repeat Exercise"
+          variant="secondary"
+          onClick={() => window.location.reload()}
+        />
         <Button
           label="Return to Home"
           variant="primary"

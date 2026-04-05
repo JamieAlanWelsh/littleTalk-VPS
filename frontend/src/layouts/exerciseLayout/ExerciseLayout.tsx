@@ -108,10 +108,7 @@ export const ExerciseLayout = ({
   return (
     <>
       {isComplete ? (
-        <ExerciseEndscreen
-          expGained={500}
-          onReturnHome={() => alert("would go home")}
-        />
+        <ExerciseEndscreen expGained={500} onReturnHome={handleEndSession} />
       ) : (
         <div className={styles.exerciseLayoutWrapper}>
           {/* progress bar - fixed header */}
