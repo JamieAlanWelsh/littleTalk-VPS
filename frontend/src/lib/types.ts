@@ -6,7 +6,7 @@
  * of new exercises using reusable blocks.
  */
 
-import { z } from 'zod';
+import { z } from "zod";
 
 /**
  * SentenceBlock: A text-based prompt or label for the user.
@@ -15,7 +15,7 @@ import { z } from 'zod';
 export interface SentenceBlock {
   id: string;
   text: string;
-  role?: 'prompt' | 'instruction' | 'feedback' | 'result'; // semantic hint for styling
+  role?: "prompt" | "instruction" | "feedback" | "result"; // semantic hint for styling
 }
 
 /**
@@ -53,7 +53,6 @@ export interface MatchingExercisePayload {
   allowRetry?: boolean; // Default: true
 }
 
-
 /**
  * These objects are common between the Django backend and React frontend, so need to
  * define them in a shared types file to ensure consistency and type safety across the stack.
@@ -82,8 +81,9 @@ export const MatchingExercisePayload2Schema = z.object({
   pictures: z.array(PictureSchema),
 });
 
-export type MatchingExercisePayload2 = z.infer<typeof MatchingExercisePayload2Schema>;
-
+export type MatchingExercisePayload2 = z.infer<
+  typeof MatchingExercisePayload2Schema
+>;
 
 // state types
 export interface ExerciseState2 {
@@ -95,7 +95,14 @@ export interface QuestionState {
   answerState: AnswerState;
 }
 
-export type AnswerState = 'notAnswered' | 'correct' | 'incorrect';
+export type AnswerState = "notAnswered" | "correct" | "incorrect";
+
+/**
+ * SentenceMatchingOptions: Configuration options for the Sentence Matching exercise.
+ */
+export interface SentenceMatchingOptions {
+  numberOfOptions: number;
+}
 
 /**
  * ExerciseState: Tracks the interactive state of an exercise.

@@ -5,26 +5,30 @@
  * Intended for actions like Check Answer, Try Again, Next, Continue.
  */
 
-import styles from './Button.module.css';
+import styles from "./Button.module.css";
 
 interface ButtonProps {
   label: string;
-  variant?: 'primary' | 'secondary';
+  variant?: "primary" | "secondary";
+  width?: string | number;
   disabled?: boolean;
   onClick: () => void;
 }
 
 export const Button = ({
   label,
-  variant = 'primary',
+  variant = "primary",
   disabled = false,
+  width,
   onClick,
 }: ButtonProps) => {
-  const variantClass = variant === 'secondary' ? styles.secondary : styles.primary;
+  const variantClass =
+    variant === "secondary" ? styles.secondary : styles.primary;
 
   return (
     <button
       className={`${styles.button} ${variantClass}`}
+      style={{ width: width }}
       onClick={onClick}
       disabled={disabled}
       type="button"

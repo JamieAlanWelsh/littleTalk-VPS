@@ -1,12 +1,13 @@
 import json
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 from littleTalkApp.models import Learner
 
 def hi_from_react(request):
     """Original proof-of-concept React route."""
     return render(request, "hello_from_react.html")
 
-
+@login_required
 def sentence_matching_example(request):
     """
     Example exercise using the React framework.
