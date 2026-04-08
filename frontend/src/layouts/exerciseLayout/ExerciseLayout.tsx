@@ -27,25 +27,27 @@ const incorrectFeedbackMessages = [
   "Almost there, give it another shot!",
 ];
 
-interface ExerciseLayoutProps {
+interface ExerciseLayoutProps<AnswerType> {
   exerciseId: string;
   actionBarPhase: AnswerState;
   questions: Question[];
+  answers: AnswerType[]; // Optional, for exercises that want to pass pre-processed answer data
   tracking: ReturnType<typeof useExerciseTracking>;
   onCheckAnswer: (question: Question) => void;
   onResetQuestion: () => void;
-  children: ReactNode;
+  children: (currentAnswer: AnswerType) => React.ReactNode;
 }
 
-export const ExerciseLayout = ({
+export const ExerciseLayout = <AnswerType,>({
   exerciseId,
   actionBarPhase,
   questions,
+  answers,
   tracking,
   onCheckAnswer,
   onResetQuestion,
   children,
-}: ExerciseLayoutProps) => {
+}: ExerciseLayoutProps<AnswerType>) => {
   const [currentQuestionStateIndex, setCurrentQuestionStateIndex] =
     useState<number>(0);
   const [showExitConfirmation, setShowExitConfirmation] = useState(false);
@@ -101,7 +103,6 @@ export const ExerciseLayout = ({
   };
 
   const handleEndSession = () => {
-    // Navigate back or handle session end
     window.location.href = "/practise/";
   };
 
@@ -154,7 +155,7 @@ export const ExerciseLayout = ({
             <div
               className={`${styles.exerciseZone} ${styles.exerciseZoneInteractive}`}
             >
-              {children}
+              {children(answers[currentQuestionStateIndex])}
             </div>
           </div>
 
