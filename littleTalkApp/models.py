@@ -512,3 +512,62 @@ class Target(models.Model):
 
     def __str__(self):
         return f"{self.learner.name} - {self.text} ({self.status})"
+
+
+# =============================================================================
+# Skolon integration models
+# =============================================================================
+
+class SkolonSyncCursor(models.Model):
+    """Persists the versionTag returned by Skolon per entity type.
+    Passed back on the next API call to receive only changes since the last sync.
+    """
+
+    class EntityType(models.TextChoices):
+        USER = 'user', 'User'
+        SCHOOL = 'school', 'School'
+        GROUP = 'group', 'Group'
+        LICENSE = 'license', 'License'
+
+    entity_type = models.CharField(max_length=20, choices=EntityType.choices, unique=True)
+    version_tag = models.CharField(max_length=255, blank=True, null=True)
+    last_synced_at = models.DateTimeField(null=True, blank=True)
+
+    def __str__(self):
+        return f"SkolonSyncCursor({self.entity_type}: {self.version_tag})"
+
+
+class SkolonOrg(models.Model):
+    """Maps a Skolon school to a local School record."""
+
+    skolon_id = models.CharField(max_length=255, unique=True)
+    school = models.OneToOneField(
+        School, on_delete=models.SET_NULL, null=True, blank=True, related_name='skolon_org'
+    )
+    name = models.CharField(max_length=255)
+    organisation_number = models.CharField(max_length=100, blank=True, null=True)
+    is_deleted = models.BooleanField(default=False)
+    synced_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"SkolonOrg({self.skolon_id}: {self.name})"
+
+
+class SkolonUser(models.Model):
+    """Maps a Skolon user to a local accounts.User via external_id."""
+
+    skolon_id = models.CharField(max_length=255, unique=True)
+    external_id = models.CharField(max_length=255, db_index=True)
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True,
+        related_name='skolon_user'
+    )
+    skolon_org = models.ForeignKey(
+        SkolonOrg, on_delete=models.SET_NULL, null=True, blank=True, related_name='skolon_users'
+    )
+    role = models.CharField(max_length=50, blank=True, null=True)
+    is_deleted = models.BooleanField(default=False)
+    synced_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"SkolonUser({self.skolon_id}: {self.external_id})"
