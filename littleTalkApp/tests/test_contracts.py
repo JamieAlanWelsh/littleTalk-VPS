@@ -25,6 +25,9 @@ class ImportContractsTests(TestCase):
             "littleTalkApp.views_modules.school",
             "littleTalkApp.views_modules.settings_views",
             "littleTalkApp.views_modules.subscription",
+            "littleTalkApp.views_modules.skolon",
+            "littleTalkApp.integrations.skolon_client",
+            "littleTalkApp.integrations.skolon_sync",
         ]
 
         for module_name in module_names:
@@ -113,6 +116,11 @@ class UrlContractsTests(TestCase):
             "target_detail",
             "learner_dashboard",
             "learner_progress_data",
+            "skolon_webhook",
+            "skolon_remove_user",
+            "skolon_remove_class",
+            "sso_callback",
+            "sso_launch",
         ]
 
         for name in names:
