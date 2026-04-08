@@ -166,10 +166,10 @@ def sync_licenses(client) -> List[Dict]:
     Sync Skolon licenses and update school-level access.
 
     Logic:
-    - For each active, non-expired license find the linked Skolon users.
-    - Trace each user → SkolonOrg → School.
-    - Mark those schools as licensed with the latest expiry across all their
-      active licenses. None expiry = perpetual (takes precedence).
+    - For each license, resolve the affected school via `schoolId` (school-level
+      license) and/or via the `users[]` array (per-user licenses).
+    - Mark schools as licensed with the latest expiry across all their active
+      licenses. A None expiry = perpetual (takes precedence over any date).
     - Schools that appear in the batch but have no active licenses are revoked.
     - Schools with no Skolon licenses at all are untouched.
     """
@@ -189,20 +189,34 @@ def sync_licenses(client) -> List[Dict]:
         expiry = _parse_expiry(lic.get("expirationDate"))
         is_expired = expiry is not None and expiry <= now
 
+        # Collect all school PKs this license applies to.
+        # Try the direct schoolId on the license first (school-level licenses
+        # may have an empty users list until individuals are assigned).
+        school_pks_for_lic: set = set()
+
+        direct_school_id = lic.get("schoolId")
+        if direct_school_id:
+            org = (
+                SkolonOrg.objects.filter(skolon_id=direct_school_id)
+                .select_related("school")
+                .first()
+            )
+            if org and org.school:
+                school_pks_for_lic.add(org.school.pk)
+
         for u in lic.get("users", []):
             uid = u.get("id")
             if not uid:
                 continue
-
             skolon_user = (
                 SkolonUser.objects.filter(skolon_id=uid, is_deleted=False)
                 .select_related("skolon_org__school")
                 .first()
             )
-            if not skolon_user or not skolon_user.skolon_org or not skolon_user.skolon_org.school:
-                continue
+            if skolon_user and skolon_user.skolon_org and skolon_user.skolon_org.school:
+                school_pks_for_lic.add(skolon_user.skolon_org.school.pk)
 
-            school_pk = skolon_user.skolon_org.school.pk
+        for school_pk in school_pks_for_lic:
             seen_school_pks.add(school_pk)
 
             if not is_deleted and not is_expired:
