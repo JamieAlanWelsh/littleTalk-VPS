@@ -19,8 +19,8 @@
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   text-align: center;
-  width: 250px;
-  height: 250px;
+  width: 150px;
+  height: 150px;
   justify-content: center;
   flex-shrink: 0;
 }
@@ -59,14 +59,14 @@
 }
 
 .icon-block-image {
-  width: 104px;
-  height: 104px;
+  width: 90px;
+  height: 90px;
   object-fit: contain;
   margin-bottom: 0;
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
+@media (max-width: 800px) {
   .icon-block {
     width: 100px;
     height: 100px;

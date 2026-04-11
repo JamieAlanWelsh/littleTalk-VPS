@@ -2,7 +2,7 @@
 .exerciseLayoutWrapper {
   display: flex;
   flex-direction: column;
-  gap: 2.5rem;
+  gap: 1.25rem;
   width: min(100%, 1000px);
   margin: 0 auto;
   padding: 0 1.25rem;
@@ -21,7 +21,7 @@
 }
 
 .exercisePromptCard {
-  padding: 1.3rem 1.5rem;
+  padding: 1rem 1rem;
   background-color: var(--yellow-button-color);
   text-align: center;
 }
@@ -47,12 +47,10 @@
 }
 
 .progressBarContainer {
-  position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 20;
-  padding: 1.5rem 1.25rem;
   display: flex;
   align-items: center;
   justify-content: center;
