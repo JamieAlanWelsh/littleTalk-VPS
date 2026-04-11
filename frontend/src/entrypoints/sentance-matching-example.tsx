@@ -9,10 +9,10 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "../style.css";
-import SentenceToImageMatching from "../exercises/sentanceMatching/SentenceToImageMatching";
+import SentenceToImageMatching from "../exercises/sentenceMatching/SentenceToImageMatching";
 import { loadExerciseDataFromJSON } from "../lib/bootstrap";
 import { LearnerContextProvider } from "../contexts/LearnerContext";
-import exerciseData from "../exercises/sentanceMatching/exerciseData.json";
+import exerciseData from "../exercises/sentenceMatching/exerciseData.json";
 
 // Create a QueryClient instance
 const queryClient = new QueryClient();
