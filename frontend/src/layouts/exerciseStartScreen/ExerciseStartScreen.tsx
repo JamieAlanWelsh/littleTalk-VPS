@@ -7,7 +7,7 @@
  * Zone 3: Action Buttons (fixed)
  */
 
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import Button from "../../components/Button/Button";
 import styles from "./ExerciseStartScreen.module.css";
 

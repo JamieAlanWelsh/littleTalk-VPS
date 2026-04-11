@@ -5,7 +5,7 @@
  * Receives filtered questions and pictures from the parent component.
  */
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import type {
   Question,
   QuestionState,

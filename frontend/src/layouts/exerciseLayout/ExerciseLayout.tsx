@@ -35,7 +35,7 @@ interface ExerciseLayoutProps<AnswerType> {
   tracking: ReturnType<typeof useExerciseTracking>;
   onCheckAnswer: (question: Question) => void;
   onResetQuestion: () => void;
-  children: (currentAnswer: AnswerType) => React.ReactNode;
+  children: (currentAnswer: AnswerType) => ReactNode;
 }
 
 export const ExerciseLayout = <AnswerType,>({
