@@ -16,3 +16,18 @@ node_modules/
 .npm/
 .pnpm-store/
 .vite/
+
+*.css.d.ts
+
+cat >> .gitignore << EOF
+
+# Django static files (regenerated)
+staticfiles/
+static/admin/
+
+# package-lock.json (if not using Node)
+package-lock.json
+
+# IDE/workspace
+.vscode/settings.json
+EOF

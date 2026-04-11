@@ -108,7 +108,7 @@ class UrlContractsTests(TestCase):
             "subscribe_success",
             "manage_subscription",
             "update_learner_exp",
-            "get_selected_learner",
+            "get_current_session_learner_context",
             "create_target",
             "target_detail",
             "learner_dashboard",

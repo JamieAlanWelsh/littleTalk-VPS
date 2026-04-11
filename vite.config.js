@@ -5,18 +5,22 @@ import tailwindcss from '@tailwindcss/vite'
 
 // Define all exercise entry points
 const exercises = [
+  // Legacy Godot exercises to be migrated
   // 'colourful-semantics',
   // 'think-and-find',
   // 'concept-quest',
   // 'categorisation',
   // 'story-train',
-  'hello'
+  
+  // React exercise entries
+  'hello', // Proof of concept
+  'sentence-matching-example', // Framework example exercise
 ]
 
 // Create input object for multiple entry points
 const input = {}
 exercises.forEach(exercise => {
-  input[exercise] = path.resolve(__dirname, `frontend/src/exercises/${exercise}.jsx`)
+  input[exercise] = path.resolve(__dirname, `frontend/src/exercises/${exercise}.tsx`)
 })
 
 export default defineConfig({

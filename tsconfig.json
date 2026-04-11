@@ -1,5 +1,8 @@
 {
   "extends": "@tsconfig/vite-react",
   "include": ["frontend/src/**/*"],
-  "exclude": ["**/*.spec.ts"]
+  "exclude": ["**/*.spec.ts"],
+  "compilerOptions": {
+    "plugins": [{ "name": "typescript-plugin-css-modules" }]
+  }
 }

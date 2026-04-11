@@ -162,7 +162,7 @@ STATICFILES_DIRS = (
 )
 
 # Required by django-vite for manifest path resolution
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, './')
 
 LOGIN_REDIRECT_URL = '/profile/'
 LOGOUT_REDIRECT_URL = '/'
@@ -231,31 +231,6 @@ CSRF_COOKIE_SECURE = not DEBUG
 
 # Exempt webhook from SSL redirect
 SECURE_REDIRECT_EXEMPT = [r'^webhooks/stripe/$']
-
-# Logging
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'file': {
-            'level': 'INFO',
-            'class': 'logging.FileHandler',
-            'filename': 'django.log',
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['file'],
-            'level': 'INFO',
-            'propagate': True,
-        },
-        'littleTalkApp.views': {
-            'handlers': ['file'],
-            'level': 'INFO',
-            'propagate': False,
-        },
-    },
-}
 
 DJANGO_VITE = {
    "default": {
