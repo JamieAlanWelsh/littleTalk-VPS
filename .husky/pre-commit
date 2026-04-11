@@ -14,8 +14,16 @@ npx prettier --write $FRONTEND_FILES
 echo "Re-staging formatted files..."
 echo "$FRONTEND_FILES" | xargs git add
 
-echo "Running eslint on staged frontend files..."
-npx eslint $FRONTEND_FILES
+# Filter to only JS/TS files for eslint (not CSS)
+JS_TS_FILES=$(echo "$STAGED_FILES" | grep "^frontend/src" | grep -E "\.(ts|tsx|js|jsx)$" || true)
+
+if [ -z "$JS_TS_FILES" ]; then
+  echo "Pre-commit checks passed"
+  exit 0
+fi
+
+echo "Running eslint on staged JS/TS files..."
+npx eslint $JS_TS_FILES
 
 if [ $? -ne 0 ]; then
   echo "ESLint found errors. Please fix them before committing."
