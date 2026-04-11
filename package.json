@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "concurrently \"tcm frontend/src --watch\" \"vite --host\"",
     "build": "tcm frontend/src && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prepare": "husky"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.96.2",
@@ -34,6 +35,7 @@
     "eslint": "^10.2.0",
     "eslint-plugin-react": "^7.37.5",
     "globals": "^17.4.0",
+    "husky": "^9.1.7",
     "jiti": "^2.6.1",
     "prettier": "^3.8.1",
     "typed-css-modules": "^0.9.1",

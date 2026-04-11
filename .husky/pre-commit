@@ -1,0 +1,26 @@
+# Get list of staged files
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM)
+
+# Filter to only frontend files
+FRONTEND_FILES=$(echo "$STAGED_FILES" | grep "^frontend/src" | grep -E "\.(ts|tsx|js|jsx|css)$" || true)
+
+if [ -z "$FRONTEND_FILES" ]; then
+  exit 0
+fi
+
+echo "Running prettier on staged frontend files..."
+npx prettier --write $FRONTEND_FILES
+
+echo "Re-staging formatted files..."
+echo "$FRONTEND_FILES" | xargs git add
+
+echo "Running eslint on staged frontend files..."
+npx eslint $FRONTEND_FILES
+
+if [ $? -ne 0 ]; then
+  echo "ESLint found errors. Please fix them before committing."
+  exit 1
+fi
+
+echo "Pre-commit checks passed"
+exit 0
