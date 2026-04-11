@@ -162,7 +162,7 @@ STATICFILES_DIRS = (
 )
 
 # Required by django-vite for manifest path resolution
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, './')
 
 LOGIN_REDIRECT_URL = '/profile/'
 LOGOUT_REDIRECT_URL = '/'
