@@ -8,7 +8,7 @@
  * and feedback/progress indicators internally.
  */
 
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import styles from "./exerciseLayout.module.css";
 import ExerciseActionBar from "../../components/ExerciseActionBar/ExerciseActionBar";
 import SessionExitConfirmation from "../../components/SessionExitConfirmation/SessionExitConfirmation";
@@ -16,6 +16,7 @@ import type { AnswerState, Question } from "../../lib/types";
 import { useExerciseTracking, useSubmitExerciseResult } from "../../hooks";
 import ExerciseEndscreen from "../exerciseEndscreen/ExerciseEndscreen";
 import { TypeAnimation } from "react-type-animation";
+import { useAudio } from "../../hooks/useAudio";
 
 const correctFeedbackMessages = [
   "Great job! That's correct.",
@@ -56,6 +57,14 @@ export const ExerciseLayout = <AnswerType,>({
   const progress = currentQuestionStateIndex / questions.length;
   const isComplete = currentQuestionStateIndex === questions.length;
   const isLastQuestion = currentQuestionStateIndex === questions.length - 1;
+
+  const { play } = useAudio();
+
+  useEffect(() => {
+    if (actionBarPhase === "correct") play("/static/audio/correct.wav");
+    else if (actionBarPhase === "incorrect")
+      play("/static/audio/incorrect.wav");
+  }, [actionBarPhase]);
 
   const feedbackMessage =
     actionBarPhase === "correct"
