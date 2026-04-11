@@ -44,4 +44,3 @@ if (!mountElement) {
     mountElement.innerHTML = `<div style="padding: 2rem; color: red;">Error loading exercise: ${error instanceof Error ? error.message : String(error)}</div>`;
   }
 }
-

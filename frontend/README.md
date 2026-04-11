@@ -65,11 +65,13 @@ The framework is built around typed payloads that Django provides via template d
 ## Development
 
 ### Install dependencies
+
 ```bash
 npm install
 ```
 
 ### Start dev server
+
 ```bash
 npm run dev
 ```
@@ -77,11 +79,13 @@ npm run dev
 Runs on http://localhost:5173 with hot module replacement and React Fast Refresh.
 
 ### Build for production
+
 ```bash
 npm run build
 ```
 
 Outputs separate bundles to `/workspace/static/js/exercises/`:
+
 - `hello-bundle.js` (proof of concept)
 - `sentence-matching-example-bundle.js` (framework example)
 - `css/sentence-matching-example.css` (styles per exercise)
@@ -156,10 +160,10 @@ Add to `vite.config.js` exercises array:
 
 ```javascript
 const exercises = [
-  'hello',
-  'sentence-matching-example',
-  'my-exercise',  // Add here
-]
+  "hello",
+  "sentence-matching-example",
+  "my-exercise", // Add here
+];
 ```
 
 ### 4. Build
@@ -189,7 +193,7 @@ def my_exercise(request):
         "showFeedback": True,
         "allowRetry": True
     }
-    
+
     context = {
         "exercise_payload_json": json.dumps(exercise_payload)
     }
@@ -204,18 +208,22 @@ Create `littleTalkApp/templates/exercises/my_exercise.html`:
 {% load django_vite %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Exercise</title>
-    {% vite_hmr_client %}
-    {% vite_asset 'frontend/src/style.css' %}
-</head>
-<body style="margin: 0; padding: 20px; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
-    <div id="exercise-root" data-exercise-payload='{{ exercise_payload_json|escapejs }}'></div>
-    {% vite_react_refresh %}
-    {% vite_asset 'frontend/src/exercises/my-exercise.tsx' %}
-</body>
+    {% vite_hmr_client %} {% vite_asset 'frontend/src/style.css' %}
+  </head>
+  <body
+    style="margin: 0; padding: 20px; min-height: 100vh; display: flex; align-items: center; justify-content: center;"
+  >
+    <div
+      id="exercise-root"
+      data-exercise-payload="{{ exercise_payload_json|escapejs }}"
+    ></div>
+    {% vite_react_refresh %} {% vite_asset
+    'frontend/src/exercises/my-exercise.tsx' %}
+  </body>
 </html>
 ```
 
@@ -233,7 +241,7 @@ The framework uses CSS custom properties (variables) for consistent styling acro
 
 ```css
 :root {
-  --button-green: #33DA73;
+  --button-green: #33da73;
   --target-red: #f44336;
   --border-radius: 30px;
   /* ... more variables */
@@ -251,6 +259,7 @@ Framework components use Tailwind for utility classes and custom CSS for framewo
 3. Test interaction: click options, submit answers, verify feedback states
 
 ### Example Route
+
 - **Sentence Matching Example**: `http://localhost:8000/exercise-framework/sentence-matching/`
 
 ## CSS Classes

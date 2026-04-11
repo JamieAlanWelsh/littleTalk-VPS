@@ -35,7 +35,7 @@ export const ExerciseEndscreen = ({
       <div className={styles.logoContainer}>
         <img
           src="/static/images/arlo_celebrating.png"
-          alt="Arlo celebrating"
+          alt="Arlo is celebrating"
           className={styles.logo}
         />
       </div>
