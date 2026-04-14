@@ -1,0 +1,51 @@
+/* SessionSettingsConfirmation.module.css */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  text-align: center;
+}
+
+.mascotIcon {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  animation: bounce 1s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.title {
+  font-size: var(--text-large);
+  font-weight: 700;
+  color: var(--font-color);
+  margin: 0;
+  font-family: var(--font-roboto);
+}
+
+.message {
+  font-size: var(--text-medium);
+  color: var(--font-color);
+  margin: 0;
+  line-height: var(--line-height);
+  font-family: var(--font-roboto);
+}
+
+.buttonGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  margin-top: 1rem;
+  align-items: center;
+}

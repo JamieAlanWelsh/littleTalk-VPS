@@ -12,6 +12,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import styles from "./exerciseLayout.module.css";
 import ExerciseActionBar from "../../components/ExerciseActionBar/ExerciseActionBar";
 import SessionExitConfirmation from "../../components/SessionExitConfirmation/SessionExitConfirmation";
+import SessionSettingsConfirmation from "../../components/SessionSettingsConfirmation/SessionSettingsConfirmation";
 import type { AnswerState, Question } from "../../lib/types";
 import { useExerciseTracking, useSubmitExerciseResult } from "../../hooks";
 import ExerciseEndscreen from "../exerciseEndscreen/ExerciseEndscreen";
@@ -36,6 +37,7 @@ interface ExerciseLayoutProps<AnswerType> {
   tracking: ReturnType<typeof useExerciseTracking>;
   onCheckAnswer: (question: Question) => void;
   onResetQuestion: () => void;
+  onSettingsRequested?: () => void;
   children: (currentAnswer: AnswerType) => ReactNode;
 }
 
@@ -47,11 +49,14 @@ export const ExerciseLayout = <AnswerType,>({
   tracking,
   onCheckAnswer,
   onResetQuestion,
+  onSettingsRequested,
   children,
 }: ExerciseLayoutProps<AnswerType>) => {
   const [currentQuestionStateIndex, setCurrentQuestionStateIndex] =
     useState<number>(0);
   const [showExitConfirmation, setShowExitConfirmation] = useState(false);
+  const [showSettingsConfirmation, setShowSettingsConfirmation] =
+    useState(false);
   const submitExerciseMutation = useSubmitExerciseResult();
 
   const progress = currentQuestionStateIndex / questions.length;
@@ -123,6 +128,16 @@ export const ExerciseLayout = <AnswerType,>({
         <div className={styles.exerciseLayoutWrapper}>
           {/* progress bar - fixed header */}
           <div className={styles.progressBarContainer}>
+            {onSettingsRequested && (
+              <button
+                className={styles.settingsButton}
+                onClick={() => setShowSettingsConfirmation(true)}
+                title="Exercise settings"
+                type="button"
+              >
+                ⚙
+              </button>
+            )}
             <div className={styles.progressBarInner}>
               <div
                 className={styles.progressBarFill}
@@ -192,6 +207,16 @@ export const ExerciseLayout = <AnswerType,>({
         }}
         onEndSession={handleEndSession}
       />
+      {onSettingsRequested && (
+        <SessionSettingsConfirmation
+          isOpen={showSettingsConfirmation}
+          onCancel={() => setShowSettingsConfirmation(false)}
+          onGoToSettings={() => {
+            setShowSettingsConfirmation(false);
+            onSettingsRequested();
+          }}
+        />
+      )}
     </>
   );
 };

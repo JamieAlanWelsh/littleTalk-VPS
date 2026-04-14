@@ -76,7 +76,8 @@
   transition: width 0.3s ease;
 }
 
-.exitButton {
+.exitButton,
+.settingsButton {
   width: 44px;
   height: 44px;
   min-width: 44px;
@@ -97,13 +98,15 @@
   flex-shrink: 0;
 }
 
-.exitButton:hover {
+.exitButton:hover,
+.settingsButton:hover {
   background-color: #f5f5f5;
   border-color: var(--font-color);
   transform: scale(1.1);
 }
 
-.exitButton:active {
+.exitButton:active,
+.settingsButton:active {
   transform: scale(0.95);
 }
 

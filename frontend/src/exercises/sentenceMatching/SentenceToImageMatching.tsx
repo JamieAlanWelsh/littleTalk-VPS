@@ -49,7 +49,11 @@ export const SentenceToImageMatchingExercise = ({
       <SentenceMatchingStartScreen onSetOptions={setOptions} />
     </ExerciseStartScreen>
   ) : (
-    <SentenceToImageMatchingGame payload={payload} options={options} />
+    <SentenceToImageMatchingGame
+      payload={payload}
+      options={options}
+      onSettingsRequested={() => setHasStarted(false)}
+    />
   );
 };
 
