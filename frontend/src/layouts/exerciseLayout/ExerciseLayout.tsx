@@ -11,8 +11,7 @@
 import { useEffect, useState, type ReactNode } from "react";
 import styles from "./exerciseLayout.module.css";
 import ExerciseActionBar from "../../components/ExerciseActionBar/ExerciseActionBar";
-import SessionExitConfirmation from "../../components/SessionExitConfirmation/SessionExitConfirmation";
-import SessionSettingsConfirmation from "../../components/SessionSettingsConfirmation/SessionSettingsConfirmation";
+import ConfirmationModal from "../../components/ConfirmationModal/ConfirmationModal";
 import type { AnswerState, Question } from "../../lib/types";
 import { useExerciseTracking, useSubmitExerciseResult } from "../../hooks";
 import ExerciseEndscreen from "../exerciseEndscreen/ExerciseEndscreen";
@@ -200,18 +199,26 @@ export const ExerciseLayout = <AnswerType,>({
           />
         </div>
       )}
-      <SessionExitConfirmation
+      <ConfirmationModal
         isOpen={showExitConfirmation}
-        onKeepLearning={() => {
+        title="Exit session?"
+        text="You'll lose your progress if you quit now."
+        onConfirmButtonText="Exit"
+        onCancelButtonText="Keep going"
+        onCancel={() => {
           setShowExitConfirmation(false);
         }}
-        onEndSession={handleEndSession}
+        onConfirm={handleEndSession}
       />
       {onSettingsRequested && (
-        <SessionSettingsConfirmation
+        <ConfirmationModal
           isOpen={showSettingsConfirmation}
+          title="Change settings?"
+          text="Are you sure you want to return to settings? Your current progress will be reset."
+          onConfirmButtonText="Change"
+          onCancelButtonText="Keep current"
           onCancel={() => setShowSettingsConfirmation(false)}
-          onGoToSettings={() => {
+          onConfirm={() => {
             setShowSettingsConfirmation(false);
             onSettingsRequested();
           }}
