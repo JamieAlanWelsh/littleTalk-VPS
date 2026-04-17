@@ -1,5 +1,5 @@
 /**
- * SessionExitConfirmation Modal
+ * ConfirmationModal
  *
  * Appears when user attempts to exit the exercise.
  * Shows a warning about losing progress and offers options to continue or exit.
@@ -7,21 +7,29 @@
 
 import Modal from "../Modal/Modal";
 import Button from "../Button/Button";
-import styles from "./SessionExitConfirmation.module.css";
+import styles from "./ConfirmationModal.module.css";
 
-interface SessionExitConfirmationProps {
+interface ConfirmationModalProps {
   isOpen: boolean;
-  onKeepLearning: () => void;
-  onEndSession: () => void;
+  title: string;
+  text: string;
+  onConfirmButtonText: string;
+  onCancelButtonText: string;
+  onCancel: () => void;
+  onConfirm: () => void;
 }
 
-export const SessionExitConfirmation = ({
+export const ConfirmationModal = ({
   isOpen,
-  onKeepLearning,
-  onEndSession,
-}: SessionExitConfirmationProps) => {
+  onCancel,
+  onConfirm,
+  title,
+  text,
+  onConfirmButtonText,
+  onCancelButtonText,
+}: ConfirmationModalProps) => {
   return (
-    <Modal isOpen={isOpen} onClose={onKeepLearning}>
+    <Modal isOpen={isOpen} onClose={onCancel}>
       <div className={styles.container}>
         {/* Mascot Icon */}
         <img
@@ -31,23 +39,23 @@ export const SessionExitConfirmation = ({
         />
 
         {/* Message */}
-        <h2 className={styles.title}>Exit session?</h2>
+        <h2 className={styles.title}>{title}</h2>
         <p className={styles.message}>
-          You'll lose your progress if you quit now
+          {text}
         </p>
 
         {/* Buttons */}
         <div className={styles.buttonGroup}>
           <Button
-            label="Keep going"
+            label={onCancelButtonText}
             variant="primary"
-            onClick={onKeepLearning}
+            onClick={onCancel}
           />
-          <Button label="Exit" variant="secondary" onClick={onEndSession} />
+          <Button label={onConfirmButtonText} variant="secondary" onClick={onConfirm} />
         </div>
       </div>
     </Modal>
   );
 };
 
-export default SessionExitConfirmation;
+export default ConfirmationModal;

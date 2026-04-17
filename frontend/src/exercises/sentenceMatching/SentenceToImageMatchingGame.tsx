@@ -26,6 +26,7 @@ const EXERCISE_METADATA = {
 interface SentenceToImageMatchingGameProps {
   payload: MatchingExercisePayload2;
   options: SentenceMatchingOptions;
+  onSettingsRequested?: () => void;
 }
 interface SentaceToImageMatchingAnswer {
   options: Picture[];
@@ -34,6 +35,7 @@ interface SentaceToImageMatchingAnswer {
 export const SentenceToImageMatchingGame = ({
   payload,
   options,
+  onSettingsRequested,
 }: SentenceToImageMatchingGameProps) => {
   const [questionState, setQuestionState] = useState<QuestionState>({
     selectedIconIds: [],
@@ -98,6 +100,7 @@ export const SentenceToImageMatchingGame = ({
       tracking={tracking}
       onCheckAnswer={onCheckAnswer}
       onResetQuestion={onResetAnswer}
+      onSettingsRequested={onSettingsRequested}
     >
       {(currentAnswer: SentaceToImageMatchingAnswer) => (
         <>

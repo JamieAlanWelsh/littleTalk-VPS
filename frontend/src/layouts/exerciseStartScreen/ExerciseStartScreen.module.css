@@ -61,6 +61,15 @@
   list-style: none;
 }
 
+.optionsList button {
+  box-shadow: none;
+}
+
+.optionsList button:active {
+  background-color: var(--yellow-button-hover);
+  transform: translateY(0);
+}
+
 /* Zone 3: Action Buttons */
 .buttonsContainer {
   display: flex;
