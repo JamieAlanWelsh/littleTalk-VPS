@@ -27,3 +27,46 @@ Thumbs.db
 
 # IDE
 .vscode/
+
+littleTalk/settings.py
+littletalkvenv/
+__pycache__/
+*.py[cod]
+*.pyc
+*.pyo
+*.log
+db.sqlite3
+.env
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Node / frontend dependencies and local caches
+node_modules/
+.npm/
+.pnpm-store/
+.vite/
+
+*.css.d.ts
+
+# Frontend build artifacts (bundles, maps, etc.)
+static/js/*.js
+static/js/*.js.map
+static/js/exercises/*.js
+static/js/exercises/*.js.map
+static/js/**/*.js
+static/js/**/*.js.map
+static/js/exercises/manifest.json
+
+cat >> .gitignore << EOF
+
+# Django static files (regenerated)
+staticfiles/
+static/admin/
+
+# package-lock.json (if not using Node)
+package-lock.json
+
+# IDE/workspace
+.vscode/settings.json
+EOF
