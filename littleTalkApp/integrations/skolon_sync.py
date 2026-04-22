@@ -26,6 +26,30 @@ from littleTalkApp.models import (
 logger = logging.getLogger(__name__)
 
 
+def _get_user_school_id(user: Dict) -> Optional[str]:
+    """Return the first school id from the live Skolon user payload."""
+    schools = user.get("schools") or []
+    if isinstance(schools, list):
+        for school in schools:
+            if isinstance(school, dict) and school.get("id"):
+                return school["id"]
+    return user.get("schoolId") or user.get("school_id")
+
+
+def _get_user_role(user: Dict) -> Optional[str]:
+    """Return the role-like field Skolon currently sends for users."""
+    return user.get("userType") or user.get("role") or user.get("type")
+
+
+def _get_license_school_id(lic: Dict) -> Optional[str]:
+    """Return the school id from the live Skolon license payload."""
+    return (
+        lic.get("ownerSchoolId")
+        or lic.get("schoolId")
+        or lic.get("school_id")
+    )
+
+
 # ---------------------------------------------------------------------------
 # Cursor helpers
 # ---------------------------------------------------------------------------
@@ -109,7 +133,7 @@ def sync_users(client) -> List[Dict]:
 
         # Prefer externalId; fall back to Skolon's own id.
         external_id = user.get("externalId") or skolon_id
-        school_id = user.get("schoolId")
+        school_id = _get_user_school_id(user)
         org = (
             SkolonOrg.objects.filter(skolon_id=school_id).first()
             if school_id
@@ -121,7 +145,7 @@ def sync_users(client) -> List[Dict]:
             defaults={
                 "external_id": external_id,
                 "skolon_org": org,
-                "role": user.get("role") or user.get("type"),
+                "role": _get_user_role(user),
                 "is_deleted": user.get("isDeleted", False),
             },
         )
@@ -194,7 +218,7 @@ def sync_licenses(client) -> List[Dict]:
         # may have an empty users list until individuals are assigned).
         school_pks_for_lic: set = set()
 
-        direct_school_id = lic.get("schoolId")
+        direct_school_id = _get_license_school_id(lic)
         if direct_school_id:
             org = (
                 SkolonOrg.objects.filter(skolon_id=direct_school_id)
