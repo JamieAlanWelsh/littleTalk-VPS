@@ -15,7 +15,7 @@ import SentenceMatchingStartScreen from "./SentenceMatchingSettingsScreen";
 import SentenceToImageMatchingGame from "./SentenceToImageMatchingGame";
 
 const EXERCISE_METADATA = {
-  setupTitle: "Think & Find Setup",
+  setupTitle: "Sentence Matching Setup",
   setupSubtitle: "What would you like to work on today?",
 };
 

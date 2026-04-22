@@ -1,27 +1,59 @@
 {
-  "_index-4s5Lynzv.js": {
-    "file": "assets/index-4s5Lynzv.js",
-    "name": "index"
-  },
-  "frontend/src/exercises/hello.tsx": {
-    "file": "hello-bundle.js",
-    "name": "hello",
-    "src": "frontend/src/exercises/hello.tsx",
-    "isEntry": true,
-    "imports": [
-      "_index-4s5Lynzv.js"
+  "_style-Bonl_34Z.js": {
+    "file": "assets/style-Bonl_34Z.js",
+    "name": "style",
+    "css": [
+      "css/style.css"
     ]
   },
-  "frontend/src/exercises/sentence-matching-example.tsx": {
-    "file": "sentence-matching-example-bundle.js",
-    "name": "sentence-matching-example",
-    "src": "frontend/src/exercises/sentence-matching-example.tsx",
-    "isEntry": true,
+  "_style.css": {
+    "file": "css/style.css",
+    "src": "_style.css"
+  },
+  "_types-BY5tWW5H.js": {
+    "file": "assets/types-BY5tWW5H.js",
+    "name": "types",
     "imports": [
-      "_index-4s5Lynzv.js"
+      "_style-Bonl_34Z.js"
     ],
     "css": [
-      "css/sentence-matching-example.css"
+      "css/types.css"
+    ]
+  },
+  "_types.css": {
+    "file": "css/types.css",
+    "src": "_types.css"
+  },
+  "frontend/src/entrypoints/hello.tsx": {
+    "file": "hello-bundle.js",
+    "name": "hello",
+    "src": "frontend/src/entrypoints/hello.tsx",
+    "isEntry": true,
+    "imports": [
+      "_style-Bonl_34Z.js"
+    ]
+  },
+  "frontend/src/entrypoints/sentence-matching-example.tsx": {
+    "file": "sentence-matching-example-bundle.js",
+    "name": "sentence-matching-example",
+    "src": "frontend/src/entrypoints/sentence-matching-example.tsx",
+    "isEntry": true,
+    "imports": [
+      "_style-Bonl_34Z.js",
+      "_types-BY5tWW5H.js"
+    ]
+  },
+  "frontend/src/entrypoints/think-and-find.tsx": {
+    "file": "think-and-find-bundle.js",
+    "name": "think-and-find",
+    "src": "frontend/src/entrypoints/think-and-find.tsx",
+    "isEntry": true,
+    "imports": [
+      "_style-Bonl_34Z.js",
+      "_types-BY5tWW5H.js"
+    ],
+    "css": [
+      "css/think-and-find.css"
     ]
   }
 }

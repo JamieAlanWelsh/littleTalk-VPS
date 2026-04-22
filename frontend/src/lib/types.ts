@@ -85,6 +85,31 @@ export type MatchingExercisePayload2 = z.infer<
   typeof MatchingExercisePayload2Schema
 >;
 
+export const ThinkAndFindItemSchema = z.object({
+  id: z.string(),
+  imageUrl: z.string(),
+  label: z.string(),
+  prompt: z.string(),
+  altText: z.string().optional(),
+});
+
+export type ThinkAndFindItem = z.infer<typeof ThinkAndFindItemSchema>;
+
+export const ThinkAndFindSetSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  items: z.array(ThinkAndFindItemSchema).min(1),
+});
+
+export type ThinkAndFindSet = z.infer<typeof ThinkAndFindSetSchema>;
+
+export const ThinkAndFindPayloadSchema = z.object({
+  rounds: z.number().int().positive().optional(),
+  imageSets: z.array(ThinkAndFindSetSchema).min(1),
+});
+
+export type ThinkAndFindPayload = z.infer<typeof ThinkAndFindPayloadSchema>;
+
 // state types
 export interface ExerciseState2 {
   currentQuestionIndex: number;
