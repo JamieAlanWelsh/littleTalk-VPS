@@ -23,6 +23,7 @@ from littleTalkApp.models import (
     SkolonSyncCursor,
     SkolonUser,
 )
+from littleTalkApp.integrations.skolon_sync import sync_licenses, sync_users
 from littleTalkApp.tests.base import BaseFlowTestMixin
 
 User = get_user_model()
@@ -231,6 +232,64 @@ class SkolonLicenseSyncAccessTests(TestCase, BaseFlowTestMixin):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.request["PATH_INFO"], reverse("license_expired"))
+
+
+class SkolonSyncPayloadMappingTests(TestCase):
+    def test_sync_users_links_org_from_nested_schools_payload(self):
+        school = School.objects.create(name="Chatterdillo School")
+        org = SkolonOrg.objects.create(
+            skolon_id="school-live-1",
+            name="Chatterdillo School",
+            school=school,
+        )
+
+        client = MagicMock()
+        client.get_users.return_value = {
+            "users": [
+                {
+                    "id": "user-live-1",
+                    "userType": "TEACHER",
+                    "schools": [{"id": "school-live-1", "uuid": "school-uuid-1"}],
+                    "externalIdentifiers": [],
+                    "isDeleted": False,
+                }
+            ],
+            "versionTag": "vt-user-1",
+        }
+
+        sync_users(client)
+
+        skolon_user = SkolonUser.objects.get(skolon_id="user-live-1")
+        self.assertEqual(skolon_user.skolon_org, org)
+        self.assertEqual(skolon_user.role, "TEACHER")
+
+    def test_sync_licenses_licenses_school_from_owner_school_id(self):
+        school = School.objects.create(name="Chatterdillo School", is_licensed=False)
+        SkolonOrg.objects.create(
+            skolon_id="school-live-1",
+            name="Chatterdillo School",
+            school=school,
+        )
+
+        client = MagicMock()
+        client.get_licenses.return_value = {
+            "licenses": [
+                {
+                    "id": "license-live-1",
+                    "isDeleted": False,
+                    "users": [],
+                    "ownerSchoolId": "school-live-1",
+                    "expirationDate": None,
+                }
+            ],
+            "versionTag": "vt-license-1",
+        }
+
+        sync_licenses(client)
+
+        school.refresh_from_db()
+        self.assertTrue(school.is_licensed)
+        self.assertIsNone(school.license_expires_at)
 
 
 # ---------------------------------------------------------------------------
