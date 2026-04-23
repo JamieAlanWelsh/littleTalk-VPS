@@ -10,8 +10,8 @@
     "file": "css/style.css",
     "src": "_style.css"
   },
-  "_types-BY5tWW5H.js": {
-    "file": "assets/types-BY5tWW5H.js",
+  "_types-D3_47YGQ.js": {
+    "file": "assets/types-D3_47YGQ.js",
     "name": "types",
     "imports": [
       "_style-Bonl_34Z.js"
@@ -23,6 +23,19 @@
   "_types.css": {
     "file": "css/types.css",
     "src": "_types.css"
+  },
+  "frontend/src/entrypoints/concept-quest.tsx": {
+    "file": "concept-quest-bundle.js",
+    "name": "concept-quest",
+    "src": "frontend/src/entrypoints/concept-quest.tsx",
+    "isEntry": true,
+    "imports": [
+      "_style-Bonl_34Z.js",
+      "_types-D3_47YGQ.js"
+    ],
+    "css": [
+      "css/concept-quest.css"
+    ]
   },
   "frontend/src/entrypoints/hello.tsx": {
     "file": "hello-bundle.js",
@@ -40,7 +53,7 @@
     "isEntry": true,
     "imports": [
       "_style-Bonl_34Z.js",
-      "_types-BY5tWW5H.js"
+      "_types-D3_47YGQ.js"
     ]
   },
   "frontend/src/entrypoints/think-and-find.tsx": {
@@ -50,7 +63,7 @@
     "isEntry": true,
     "imports": [
       "_style-Bonl_34Z.js",
-      "_types-BY5tWW5H.js"
+      "_types-D3_47YGQ.js"
     ],
     "css": [
       "css/think-and-find.css"

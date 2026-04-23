@@ -1,0 +1,78 @@
+.settingsPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.settingsGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.settingsHeading {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.settingsHint {
+  margin: 0;
+  color: #4b5563;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.selectionGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.selectionGridCompact {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.optionsGrid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.25rem;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.optionsGrid button {
+  width: clamp(180px, 24vw, 280px);
+  height: clamp(180px, 24vw, 280px);
+  padding: 1.25rem;
+}
+
+.optionsGrid img {
+  width: clamp(130px, 20vw, 220px);
+  height: clamp(130px, 20vw, 220px);
+}
+
+@media (max-width: 640px) {
+  .selectionGrid,
+  .selectionGridCompact {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .optionsGrid {
+    gap: 0.75rem;
+  }
+
+  .optionsGrid button {
+    width: clamp(130px, 40vw, 180px);
+    height: clamp(130px, 40vw, 180px);
+  }
+
+  .optionsGrid img {
+    width: clamp(90px, 28vw, 130px);
+    height: clamp(90px, 28vw, 130px);
+  }
+}

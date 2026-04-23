@@ -38,5 +38,14 @@ def think_and_find(request):
     return render(request, "exercises/think_and_find.html", context)
 
 
+@login_required
+def concept_quest(request):
+    """React-based Concept Quest exercise demo."""
+    context = {
+        "learner_uuid": _get_session_learner_uuid(request),
+    }
+    return render(request, "exercises/concept_quest.html", context)
+
+
 def colourful_semantics(request):
     return render(request, "exercises/colourful_semantics.html")

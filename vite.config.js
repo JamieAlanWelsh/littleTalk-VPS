@@ -8,6 +8,7 @@ const exercises = [
   'hello',
   'sentence-matching-example',
   'think-and-find',
+  'concept-quest',
 ]
 
 // Create input object for multiple entry points

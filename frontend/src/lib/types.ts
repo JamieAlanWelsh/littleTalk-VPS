@@ -110,6 +110,57 @@ export const ThinkAndFindPayloadSchema = z.object({
 
 export type ThinkAndFindPayload = z.infer<typeof ThinkAndFindPayloadSchema>;
 
+export const ConceptQuestConceptSchema = z.enum([
+  "big",
+  "small",
+  "short",
+  "long",
+  "tall",
+]);
+
+export type ConceptQuestConcept = z.infer<typeof ConceptQuestConceptSchema>;
+
+export const ConceptQuestComplexitySchema = z.union([
+  z.literal(1),
+  z.literal(2),
+  z.literal(3),
+]);
+
+export type ConceptQuestComplexity = z.infer<
+  typeof ConceptQuestComplexitySchema
+>;
+
+export const ConceptQuestItemSchema = z.object({
+  id: z.string(),
+  imageUrl: z.string(),
+  label: z.string(),
+  altText: z.string().optional(),
+});
+
+export type ConceptQuestItem = z.infer<typeof ConceptQuestItemSchema>;
+
+export const ConceptQuestSetSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  subject: z.string(),
+  supportedConcepts: z.array(ConceptQuestConceptSchema).min(1),
+  items: z.array(ConceptQuestItemSchema).min(4),
+});
+
+export type ConceptQuestSet = z.infer<typeof ConceptQuestSetSchema>;
+
+export const ConceptQuestPayloadSchema = z.object({
+  rounds: z.number().int().positive().optional(),
+  imageSets: z.array(ConceptQuestSetSchema).min(1),
+});
+
+export type ConceptQuestPayload = z.infer<typeof ConceptQuestPayloadSchema>;
+
+export interface ConceptQuestOptions {
+  concepts: ConceptQuestConcept[];
+  complexity: ConceptQuestComplexity;
+}
+
 // state types
 export interface ExerciseState2 {
   currentQuestionIndex: number;
