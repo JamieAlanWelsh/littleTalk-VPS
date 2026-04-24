@@ -1,0 +1,21 @@
+{% load django_vite %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categorisation Exercise</title>
+    {% vite_hmr_client %}
+    {% vite_asset 'frontend/src/style.css' %}
+</head>
+<body class="exercise-page">
+    <!-- Exercise mount point -->
+    <div id="exercise-root" data-learner-uuid="{{ learner_uuid }}"></div>
+
+    <!-- React Fast Refresh for development -->
+    {% vite_react_refresh %}
+    
+    <!-- Exercise entry point -->
+    {% vite_asset 'frontend/src/entrypoints/categorisation-example.tsx' %}
+</body>
+</html>

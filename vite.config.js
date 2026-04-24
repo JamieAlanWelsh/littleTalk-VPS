@@ -9,7 +9,7 @@ const exercises = [
   // 'colourful-semantics',
   // 'think-and-find',
   // 'concept-quest',
-  // 'categorisation',
+  'categorisation',
   // 'story-train',
   
   // React exercise entries
