@@ -25,6 +25,8 @@ from littleTalkApp.models import (
 
 logger = logging.getLogger(__name__)
 
+SYNCED_SKOLON_ROLES = {"TEACHER"}
+
 
 def _get_user_school_id(user: Dict) -> Optional[str]:
     """Return the first school id from the live Skolon user payload."""
@@ -41,6 +43,10 @@ def _get_user_role(user: Dict) -> Optional[str]:
     return user.get("userType") or user.get("role") or user.get("type")
 
 
+def _normalise_skolon_role(role: Optional[str]) -> str:
+    return (role or "").strip().upper()
+
+
 def _get_license_school_id(lic: Dict) -> Optional[str]:
     """Return the school id from the live Skolon license payload."""
     return (
@@ -48,6 +54,22 @@ def _get_license_school_id(lic: Dict) -> Optional[str]:
         or lic.get("schoolId")
         or lic.get("school_id")
     )
+
+
+def _ensure_local_school_for_org(org: Optional[SkolonOrg]) -> Optional[School]:
+    """Create the local School on first active license, not during raw school sync."""
+    if org is None or org.is_deleted:
+        return None
+    if org.school is None:
+        local_school = School.objects.create(name=org.name or org.skolon_id)
+        org.school = local_school
+        org.save(update_fields=["school"])
+        logger.info(
+            "Created local School '%s' for licensed Skolon org %s",
+            local_school.name,
+            org.skolon_id,
+        )
+    return org.school
 
 
 # ---------------------------------------------------------------------------
@@ -79,7 +101,7 @@ def _save_cursor(entity_type: str, version_tag: Optional[str]):
 def sync_schools(client) -> List[Dict]:
     """
     Upsert SkolonOrg records from the Skolon schools endpoint.
-    If an org has no linked local School yet (and isn't deleted), one is created.
+    Local School creation is deferred until an active license is present.
     """
     cursor = _get_cursor(SkolonSyncCursor.EntityType.SCHOOL)
     result = client.get_schools(version_tag=cursor)
@@ -101,17 +123,6 @@ def sync_schools(client) -> List[Dict]:
             },
         )
 
-        # Auto-create a local School if none is linked yet and the org is active.
-        if not is_deleted and org.school is None:
-            local_school = School.objects.create(name=school.get("name", skolon_id))
-            org.school = local_school
-            org.save(update_fields=["school"])
-            logger.info(
-                "Created local School '%s' for Skolon org %s",
-                local_school.name,
-                skolon_id,
-            )
-
     _save_cursor(SkolonSyncCursor.EntityType.SCHOOL, result.get("versionTag"))
     logger.info("School sync complete: %s records processed.", len(schools))
     return schools
@@ -119,7 +130,7 @@ def sync_schools(client) -> List[Dict]:
 
 def sync_users(client) -> List[Dict]:
     """
-    Upsert SkolonUser records, linking each to its SkolonOrg via schoolId.
+    Upsert teacher-only SkolonUser records, linking them to licensed local schools.
     Deleted users are flagged; their local User link is left intact for auditing.
     """
     cursor = _get_cursor(SkolonSyncCursor.EntityType.USER)
@@ -131,6 +142,10 @@ def sync_users(client) -> List[Dict]:
         if not skolon_id:
             continue
 
+        role = _normalise_skolon_role(_get_user_role(user))
+        if role not in SYNCED_SKOLON_ROLES:
+            continue
+
         # Prefer externalId; fall back to Skolon's own id.
         external_id = user.get("externalId") or skolon_id
         school_id = _get_user_school_id(user)
@@ -139,13 +154,20 @@ def sync_users(client) -> List[Dict]:
             if school_id
             else None
         )
+        if org is None or org.school is None:
+            logger.info(
+                "Skipping Skolon user %s because school %s has no licensed local School yet.",
+                skolon_id,
+                school_id,
+            )
+            continue
 
         SkolonUser.objects.update_or_create(
             skolon_id=skolon_id,
             defaults={
                 "external_id": external_id,
                 "skolon_org": org,
-                "role": _get_user_role(user),
+                "role": role,
                 "is_deleted": user.get("isDeleted", False),
             },
         )
@@ -189,9 +211,10 @@ def sync_licenses(client) -> List[Dict]:
     """
     Sync Skolon licenses and update school-level access.
 
-    Logic:
-    - For each license, resolve the affected school via `schoolId` (school-level
-      license) and/or via the `users[]` array (per-user licenses).
+        Logic:
+        - For school-targeted licenses, `ownerSchoolId` is authoritative.
+        - Only fall back to the `users[]` array when the payload provides no direct
+            school id to resolve.
     - Mark schools as licensed with the latest expiry across all their active
       licenses. A None expiry = perpetual (takes precedence over any date).
     - Schools that appear in the batch but have no active licenses are revoked.
@@ -214,8 +237,7 @@ def sync_licenses(client) -> List[Dict]:
         is_expired = expiry is not None and expiry <= now
 
         # Collect all school PKs this license applies to.
-        # Try the direct schoolId on the license first (school-level licenses
-        # may have an empty users list until individuals are assigned).
+        # School-targeted licenses should only affect the named school.
         school_pks_for_lic: set = set()
 
         direct_school_id = _get_license_school_id(lic)
@@ -225,20 +247,21 @@ def sync_licenses(client) -> List[Dict]:
                 .select_related("school")
                 .first()
             )
-            if org and org.school:
-                school_pks_for_lic.add(org.school.pk)
-
-        for u in lic.get("users", []):
-            uid = u.get("id")
-            if not uid:
-                continue
-            skolon_user = (
-                SkolonUser.objects.filter(skolon_id=uid, is_deleted=False)
-                .select_related("skolon_org__school")
-                .first()
-            )
-            if skolon_user and skolon_user.skolon_org and skolon_user.skolon_org.school:
-                school_pks_for_lic.add(skolon_user.skolon_org.school.pk)
+            school = _ensure_local_school_for_org(org) if not is_deleted and not is_expired else (org.school if org else None)
+            if school:
+                school_pks_for_lic.add(school.pk)
+        else:
+            for u in lic.get("users", []):
+                uid = u.get("id")
+                if not uid:
+                    continue
+                skolon_user = (
+                    SkolonUser.objects.filter(skolon_id=uid, is_deleted=False)
+                    .select_related("skolon_org__school")
+                    .first()
+                )
+                if skolon_user and skolon_user.skolon_org and skolon_user.skolon_org.school:
+                    school_pks_for_lic.add(skolon_user.skolon_org.school.pk)
 
         for school_pk in school_pks_for_lic:
             seen_school_pks.add(school_pk)
@@ -282,14 +305,14 @@ def sync_licenses(client) -> List[Dict]:
 def run_full_sync(client) -> Dict:
     """
     Run a complete sync in dependency order:
-    schools → users (need school links) → groups → licenses (need user links).
+    schools → licenses → users → groups.
     """
     logger.info("Starting full Skolon sync...")
     results = {
         "schools": sync_schools(client),
+        "licenses": sync_licenses(client),
         "users": sync_users(client),
         "groups": sync_groups(client),
-        "licenses": sync_licenses(client),
     }
     logger.info(
         "Full sync complete: %s schools, %s users, %s groups, %s licenses.",

@@ -23,7 +23,7 @@ from littleTalkApp.models import (
     SkolonSyncCursor,
     SkolonUser,
 )
-from littleTalkApp.integrations.skolon_sync import sync_licenses, sync_users
+from littleTalkApp.integrations.skolon_sync import sync_licenses, sync_schools, sync_users
 from littleTalkApp.tests.base import BaseFlowTestMixin
 
 User = get_user_model()
@@ -73,9 +73,13 @@ class SkolonWebhookTests(TestCase):
         )
         self.assertEqual(response.status_code, 400)
 
+    @patch("littleTalkApp.views_modules.skolon.sync_users")
     @patch("littleTalkApp.views_modules.skolon.sync_licenses")
-    def test_license_entity_calls_sync_licenses(self, mock_sync):
+    @patch("littleTalkApp.views_modules.skolon.sync_schools")
+    def test_license_entity_calls_sync_licenses(self, mock_schools, mock_sync, mock_users):
+        mock_schools.return_value = []
         mock_sync.return_value = []
+        mock_users.return_value = []
         response = self._post({"entities": ["license"]})
         self.assertEqual(response.status_code, 200)
         mock_sync.assert_called_once()
@@ -90,9 +94,13 @@ class SkolonWebhookTests(TestCase):
         mock_users.assert_called_once()
         mock_schools.assert_called_once()
 
+    @patch("littleTalkApp.views_modules.skolon.sync_users")
     @patch("littleTalkApp.views_modules.skolon.sync_licenses")
-    def test_sync_exception_does_not_crash_webhook(self, mock_sync):
+    @patch("littleTalkApp.views_modules.skolon.sync_schools")
+    def test_sync_exception_does_not_crash_webhook(self, mock_schools, mock_sync, mock_users):
+        mock_schools.return_value = []
         mock_sync.side_effect = Exception("Skolon API down")
+        mock_users.return_value = []
         response = self._post({"entities": ["license"]})
         # Must still return 200 — Skolon expects a quick acknowledgement
         self.assertEqual(response.status_code, 200)
@@ -100,6 +108,20 @@ class SkolonWebhookTests(TestCase):
     def test_unknown_entity_ignored_gracefully(self):
         response = self._post({"entities": ["unknown_entity"]})
         self.assertEqual(response.status_code, 200)
+
+    @patch("littleTalkApp.views_modules.skolon.sync_users")
+    @patch("littleTalkApp.views_modules.skolon.sync_licenses")
+    @patch("littleTalkApp.views_modules.skolon.sync_schools")
+    def test_license_webhook_runs_school_license_then_user(self, mock_schools, mock_licenses, mock_users):
+        call_order = []
+        mock_schools.side_effect = lambda client: call_order.append("school") or []
+        mock_licenses.side_effect = lambda client: call_order.append("license") or []
+        mock_users.side_effect = lambda client: call_order.append("user") or []
+
+        response = self._post({"entities": ["license"]})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(call_order, ["school", "license", "user"])
 
 
 # ---------------------------------------------------------------------------
@@ -235,6 +257,26 @@ class SkolonLicenseSyncAccessTests(TestCase, BaseFlowTestMixin):
 
 
 class SkolonSyncPayloadMappingTests(TestCase):
+    def test_sync_schools_defers_local_school_creation_until_license(self):
+        client = MagicMock()
+        client.get_schools.return_value = {
+            "schools": [
+                {
+                    "id": "school-live-1",
+                    "name": "Chatterdillo School",
+                    "organizationNumber": None,
+                    "isDeleted": False,
+                }
+            ],
+            "versionTag": "vt-school-1",
+        }
+
+        sync_schools(client)
+
+        org = SkolonOrg.objects.get(skolon_id="school-live-1")
+        self.assertEqual(org.name, "Chatterdillo School")
+        self.assertIsNone(org.school)
+
     def test_sync_users_links_org_from_nested_schools_payload(self):
         school = School.objects.create(name="Chatterdillo School")
         org = SkolonOrg.objects.create(
@@ -263,12 +305,60 @@ class SkolonSyncPayloadMappingTests(TestCase):
         self.assertEqual(skolon_user.skolon_org, org)
         self.assertEqual(skolon_user.role, "TEACHER")
 
-    def test_sync_licenses_licenses_school_from_owner_school_id(self):
-        school = School.objects.create(name="Chatterdillo School", is_licensed=False)
+    def test_sync_users_skips_student_payload(self):
+        school = School.objects.create(name="Chatterdillo School")
         SkolonOrg.objects.create(
             skolon_id="school-live-1",
             name="Chatterdillo School",
             school=school,
+        )
+
+        client = MagicMock()
+        client.get_users.return_value = {
+            "users": [
+                {
+                    "id": "student-live-1",
+                    "userType": "STUDENT",
+                    "schools": [{"id": "school-live-1", "uuid": "school-uuid-1"}],
+                    "isDeleted": False,
+                }
+            ],
+            "versionTag": "vt-user-2",
+        }
+
+        sync_users(client)
+
+        self.assertFalse(SkolonUser.objects.filter(skolon_id="student-live-1").exists())
+
+    def test_sync_users_skips_teacher_without_licensed_local_school(self):
+        SkolonOrg.objects.create(
+            skolon_id="school-live-1",
+            name="Chatterdillo School",
+            school=None,
+        )
+
+        client = MagicMock()
+        client.get_users.return_value = {
+            "users": [
+                {
+                    "id": "teacher-live-1",
+                    "userType": "TEACHER",
+                    "schools": [{"id": "school-live-1", "uuid": "school-uuid-1"}],
+                    "isDeleted": False,
+                }
+            ],
+            "versionTag": "vt-user-3",
+        }
+
+        sync_users(client)
+
+        self.assertFalse(SkolonUser.objects.filter(skolon_id="teacher-live-1").exists())
+
+    def test_sync_licenses_creates_school_from_owner_school_id_and_licenses_it(self):
+        org = SkolonOrg.objects.create(
+            skolon_id="school-live-1",
+            name="Chatterdillo School",
+            school=None,
         )
 
         client = MagicMock()
@@ -287,9 +377,53 @@ class SkolonSyncPayloadMappingTests(TestCase):
 
         sync_licenses(client)
 
+        org.refresh_from_db()
+        school = org.school
+        self.assertIsNotNone(school)
         school.refresh_from_db()
         self.assertTrue(school.is_licensed)
         self.assertIsNone(school.license_expires_at)
+
+    def test_sync_licenses_does_not_widen_school_license_via_user_list(self):
+        licensed_school = School.objects.create(name="Licensed School", is_licensed=False)
+        licensed_org = SkolonOrg.objects.create(
+            skolon_id="school-live-1",
+            name="Licensed School",
+            school=licensed_school,
+        )
+        other_school = School.objects.create(name="Other School", is_licensed=False)
+        other_org = SkolonOrg.objects.create(
+            skolon_id="school-live-2",
+            name="Other School",
+            school=other_school,
+        )
+        SkolonUser.objects.create(
+            skolon_id="teacher-other-1",
+            external_id="teacher-other-1",
+            skolon_org=other_org,
+            role="TEACHER",
+        )
+
+        client = MagicMock()
+        client.get_licenses.return_value = {
+            "licenses": [
+                {
+                    "id": "license-live-2",
+                    "isDeleted": False,
+                    "ownerSchoolId": licensed_org.skolon_id,
+                    "users": [{"id": "teacher-other-1", "uuid": "teacher-other-uuid"}],
+                    "expirationDate": None,
+                }
+            ],
+            "versionTag": "vt-license-2",
+        }
+
+        sync_licenses(client)
+
+        licensed_school.refresh_from_db()
+        other_school.refresh_from_db()
+        self.assertTrue(licensed_school.is_licensed)
+        self.assertFalse(other_school.is_licensed)
 
 
 # ---------------------------------------------------------------------------
@@ -321,6 +455,7 @@ class SkolonSSOCallbackTests(TestCase, BaseFlowTestMixin):
             external_id="ext-sso-1",
             user=local_user,
             skolon_org=org,
+            role="TEACHER",
         )
 
         mock_tm.exchange_code_for_token.return_value = "fake-access-token"
@@ -364,22 +499,75 @@ class SkolonSSOCallbackTests(TestCase, BaseFlowTestMixin):
             int(self.client.session["_auth_user_id"]), skolon_user.user.pk
         )
 
-    @patch("littleTalkApp.views_modules.skolon.sync_users")
+    @patch("littleTalkApp.views_modules.skolon._run_skolon_syncs")
     @patch("littleTalkApp.views_modules.skolon.token_manager")
     @patch("littleTalkApp.views_modules.skolon.api_client")
     def test_sso_triggers_sync_when_skolon_user_not_found(
         self, mock_api, mock_tm, mock_sync
     ):
-        """If userId isn't in DB yet, sync_users is called to pull fresh data."""
+        """If userId isn't in DB yet, an ordered catch-up sync is triggered."""
         mock_tm.exchange_code_for_token.return_value = "fake-access-token"
         mock_api.get_user_session.return_value = {"userId": "sku-unknown"}
-        # sync_users creates nothing — simulates user not in Skolon partner data
+        # catch-up sync creates nothing — simulates user not in Skolon partner data
         mock_sync.return_value = []
 
         response = self._get({"code": "some-code"})
 
         mock_sync.assert_called_once()
         # No user found even after sync → redirect to login
+        self.assertRedirects(response, reverse("login"), fetch_redirect_response=False)
+
+    @patch("littleTalkApp.views_modules.skolon._run_skolon_syncs")
+    @patch("littleTalkApp.views_modules.skolon.token_manager")
+    @patch("littleTalkApp.views_modules.skolon.api_client")
+    def test_sso_triggers_catchup_when_school_not_licensed_yet(self, mock_api, mock_tm, mock_sync):
+        school = School.objects.create(name="Retry School", is_licensed=False)
+        org = SkolonOrg.objects.create(skolon_id="org-retry", name="Retry School", school=school)
+        local_user = User.objects.create_user(username="retry-user")
+        local_user.set_unusable_password()
+        local_user.save()
+        SkolonUser.objects.create(
+            skolon_id="sku-retry-1",
+            external_id="ext-retry-1",
+            user=local_user,
+            skolon_org=org,
+            role="TEACHER",
+        )
+
+        def make_school_licensed(_entities):
+            school.is_licensed = True
+            school.save(update_fields=["is_licensed"])
+            return ["school", "license", "user"]
+
+        mock_sync.side_effect = make_school_licensed
+        mock_tm.exchange_code_for_token.return_value = "fake-access-token"
+        mock_api.get_user_session.return_value = {"userId": "sku-retry-1"}
+
+        response = self._get({"code": "auth-code-retry"})
+
+        mock_sync.assert_called_once_with(["school", "license", "user"])
+        self.assertRedirects(response, "/profile/", fetch_redirect_response=False)
+
+    @patch("littleTalkApp.views_modules.skolon._run_skolon_syncs")
+    @patch("littleTalkApp.views_modules.skolon.token_manager")
+    @patch("littleTalkApp.views_modules.skolon.api_client")
+    def test_sso_rejects_student_role_even_if_record_exists(self, mock_api, mock_tm, mock_sync):
+        school = School.objects.create(name="Student School", is_licensed=True)
+        org = SkolonOrg.objects.create(skolon_id="org-student", name="Student School", school=school)
+        SkolonUser.objects.create(
+            skolon_id="sku-student-1",
+            external_id="ext-student-1",
+            user=None,
+            skolon_org=org,
+            role="STUDENT",
+        )
+
+        mock_sync.return_value = []
+        mock_tm.exchange_code_for_token.return_value = "fake-access-token"
+        mock_api.get_user_session.return_value = {"userId": "sku-student-1"}
+
+        response = self._get({"code": "auth-code-student"})
+
         self.assertRedirects(response, reverse("login"), fetch_redirect_response=False)
 
 
@@ -418,22 +606,25 @@ class SkolonSSOLicenseGateTests(TestCase, BaseFlowTestMixin):
         mock_tm.exchange_code_for_token.return_value = "fake-token"
         mock_api.get_user_session.return_value = {"userId": skolon_id}
 
+    @patch("littleTalkApp.views_modules.skolon._run_skolon_syncs")
     @patch("littleTalkApp.views_modules.skolon.token_manager")
     @patch("littleTalkApp.views_modules.skolon.api_client")
-    def test_sso_denied_when_no_license(self, mock_api, mock_tm):
+    def test_sso_denied_when_no_license(self, mock_api, mock_tm, mock_sync):
         """School with no valid license is denied at callback."""
         school = School.objects.create(name="Lic Gate School", is_licensed=False)
         org = SkolonOrg.objects.create(skolon_id="org-lg", name="Lic Gate School", school=school)
         SkolonUser.objects.create(skolon_id="sku-lg-1", external_id="ext-lg-1", role="teacher", skolon_org=org)
 
+        mock_sync.return_value = []
         self._make_user_and_session_mocks(mock_api, mock_tm, "sku-lg-1")
 
         response = self._get({"code": "c"})
         self.assertRedirects(response, reverse("login"), fetch_redirect_response=False)
 
+    @patch("littleTalkApp.views_modules.skolon._run_skolon_syncs")
     @patch("littleTalkApp.views_modules.skolon.token_manager")
     @patch("littleTalkApp.views_modules.skolon.api_client")
-    def test_sso_denied_when_license_expired(self, mock_api, mock_tm):
+    def test_sso_denied_when_license_expired(self, mock_api, mock_tm, mock_sync):
         """School whose license has expired is denied at callback."""
         school = School.objects.create(
             name="Expired School",
@@ -443,6 +634,7 @@ class SkolonSSOLicenseGateTests(TestCase, BaseFlowTestMixin):
         org = SkolonOrg.objects.create(skolon_id="org-exp", name="Expired School", school=school)
         SkolonUser.objects.create(skolon_id="sku-exp-1", external_id="ext-exp-1", role="teacher", skolon_org=org)
 
+        mock_sync.return_value = []
         self._make_user_and_session_mocks(mock_api, mock_tm, "sku-exp-1")
 
         response = self._get({"code": "c"})

@@ -38,6 +38,9 @@ logger = logging.getLogger(__name__)
 
 User = get_user_model()
 
+SKOLON_SYNC_ORDER = ("school", "license", "user", "group")
+ALLOWED_SKOLON_SSO_ROLES = {"TEACHER"}
+
 # ---------------------------------------------------------------------------
 # Main data-edits webhook
 # ---------------------------------------------------------------------------
@@ -51,6 +54,44 @@ def _get_sync_fn(entity):
         "group": sync_groups,
         "license": sync_licenses,
     }.get(entity)
+
+
+def _get_ordered_skolon_entities(entities):
+    requested = {entity for entity in (entities or []) if _get_sync_fn(entity)}
+    if "user" in requested or "license" in requested:
+        requested.add("school")
+    if "license" in requested:
+        requested.add("user")
+    return [entity for entity in SKOLON_SYNC_ORDER if entity in requested]
+
+
+def _run_skolon_syncs(entities):
+    ordered_entities = _get_ordered_skolon_entities(entities)
+    for entity in ordered_entities:
+        sync_fn = _get_sync_fn(entity)
+        if sync_fn:
+            sync_fn(api_client)
+    return ordered_entities
+
+
+def _load_skolon_user(skolon_user_id):
+    return (
+        SkolonUser.objects.select_related("user", "skolon_org__school")
+        .filter(skolon_id=skolon_user_id, is_deleted=False)
+        .first()
+    )
+
+
+def _needs_skolon_access_refresh(skolon_user_obj):
+    if skolon_user_obj is None:
+        return True
+    if skolon_user_obj.skolon_org is None or skolon_user_obj.skolon_org.school is None:
+        return True
+    return not skolon_user_obj.skolon_org.school.has_valid_license()
+
+
+def _is_allowed_skolon_sso_role(skolon_role: str) -> bool:
+    return (skolon_role or "").strip().upper() in ALLOWED_SKOLON_SSO_ROLES
 
 
 @csrf_exempt
@@ -78,17 +119,19 @@ def skolon_webhook(request):
         entities or "(none)",
     )
 
-    for entity in entities:
-        sync_fn = _get_sync_fn(entity)
-        if sync_fn:
-            try:
-                sync_fn(api_client)
-            except Exception:
-                logger.exception(
-                    "Skolon webhook: sync failed for entity '%s'.", entity
-                )
-        else:
-            logger.warning("Skolon webhook: unknown entity type '%s' — skipped.", entity)
+    ordered_entities = _get_ordered_skolon_entities(entities)
+    unknown_entities = [entity for entity in entities if entity not in ordered_entities and not _get_sync_fn(entity)]
+
+    for entity in ordered_entities:
+        try:
+            _get_sync_fn(entity)(api_client)
+        except Exception:
+            logger.exception(
+                "Skolon webhook: sync failed for entity '%s'.", entity
+            )
+
+    for entity in unknown_entities:
+        logger.warning("Skolon webhook: unknown entity type '%s' — skipped.", entity)
 
     return JsonResponse({"received": True}, status=200)
 
@@ -254,6 +297,9 @@ def _provision_local_user(skolon_user_obj: SkolonUser) -> "get_user_model()":
     """
     User = get_user_model()
 
+    if not _is_allowed_skolon_sso_role(skolon_user_obj.role or ""):
+        raise ValueError("Only TEACHER Skolon users can be provisioned locally.")
+
     local_role = _map_skolon_role(skolon_user_obj.role or "")
     school = (
         skolon_user_obj.skolon_org.school
@@ -329,22 +375,15 @@ def sso_callback(request):
             return redirect("login")
 
         # Step 3: find the SkolonUser row (may need a fresh sync)
-        skolon_user_obj = (
-            SkolonUser.objects.select_related("user", "skolon_org__school")
-            .filter(skolon_id=skolon_user_id, is_deleted=False)
-            .first()
-        )
+        skolon_user_obj = _load_skolon_user(skolon_user_id)
 
-        if skolon_user_obj is None:
+        if _needs_skolon_access_refresh(skolon_user_obj):
             logger.info(
-                "SkolonUser %s not found locally — triggering user sync.", skolon_user_id
+                "Skolon user %s requires a catch-up sync before access can be evaluated.",
+                skolon_user_id,
             )
-            sync_users(api_client)
-            skolon_user_obj = (
-                SkolonUser.objects.select_related("user", "skolon_org__school")
-                .filter(skolon_id=skolon_user_id, is_deleted=False)
-                .first()
-            )
+            _run_skolon_syncs(["school", "license", "user"])
+            skolon_user_obj = _load_skolon_user(skolon_user_id)
 
         if skolon_user_obj is None:
             logger.error(
@@ -355,6 +394,18 @@ def sso_callback(request):
             messages.error(
                 request,
                 "Your Skolon account could not be matched. Please contact support.",
+            )
+            return redirect("login")
+
+        if not _is_allowed_skolon_sso_role(skolon_user_obj.role or ""):
+            logger.warning(
+                "Skolon SSO: user %s has unsupported role %s.",
+                skolon_user_id,
+                skolon_user_obj.role,
+            )
+            messages.error(
+                request,
+                "Your Skolon account is not eligible for Chatterdillo access.",
             )
             return redirect("login")
 
