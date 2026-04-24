@@ -12,7 +12,7 @@ the existing AccessControlMiddleware access gates work without any changes.
 
 import logging
 from datetime import datetime, timezone as dt_timezone
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple
 
 from django.utils import timezone as django_tz
 
@@ -56,10 +56,10 @@ def _get_license_school_id(lic: Dict) -> Optional[str]:
     )
 
 
-def _ensure_local_school_for_org(org: Optional[SkolonOrg]) -> Optional[School]:
+def _ensure_local_school_for_org(org: Optional[SkolonOrg]) -> Tuple[Optional[School], bool]:
     """Create the local School on first active license, not during raw school sync."""
     if org is None or org.is_deleted:
-        return None
+        return None, False
     if org.school is None:
         local_school = School.objects.create(name=org.name or org.skolon_id)
         org.school = local_school
@@ -69,7 +69,8 @@ def _ensure_local_school_for_org(org: Optional[SkolonOrg]) -> Optional[School]:
             local_school.name,
             org.skolon_id,
         )
-    return org.school
+        return local_school, True
+    return org.school, False
 
 
 # ---------------------------------------------------------------------------
@@ -98,7 +99,7 @@ def _save_cursor(entity_type: str, version_tag: Optional[str]):
 # Individual sync functions
 # ---------------------------------------------------------------------------
 
-def sync_schools(client) -> List[Dict]:
+def sync_schools(client) -> Dict[str, object]:
     """
     Upsert SkolonOrg records from the Skolon schools endpoint.
     Local School creation is deferred until an active license is present.
@@ -106,6 +107,8 @@ def sync_schools(client) -> List[Dict]:
     cursor = _get_cursor(SkolonSyncCursor.EntityType.SCHOOL)
     result = client.get_schools(version_tag=cursor)
     schools = result["schools"]
+    created_count = 0
+    updated_count = 0
 
     for school in schools:
         skolon_id = school.get("id")
@@ -114,7 +117,7 @@ def sync_schools(client) -> List[Dict]:
 
         is_deleted = school.get("isDeleted", False)
 
-        org, _ = SkolonOrg.objects.update_or_create(
+        org, created = SkolonOrg.objects.update_or_create(
             skolon_id=skolon_id,
             defaults={
                 "name": school.get("name", ""),
@@ -122,13 +125,29 @@ def sync_schools(client) -> List[Dict]:
                 "is_deleted": is_deleted,
             },
         )
+        if created:
+            created_count += 1
+        else:
+            updated_count += 1
 
     _save_cursor(SkolonSyncCursor.EntityType.SCHOOL, result.get("versionTag"))
-    logger.info("School sync complete: %s records processed.", len(schools))
-    return schools
+    stats = {
+        "fetched": len(schools),
+        "orgs_created": created_count,
+        "orgs_updated": updated_count,
+        "local_schools_created": 0,
+    }
+    logger.info(
+        "School sync complete: fetched=%s orgs_created=%s orgs_updated=%s local_schools_created=%s",
+        stats["fetched"],
+        stats["orgs_created"],
+        stats["orgs_updated"],
+        stats["local_schools_created"],
+    )
+    return {"items": schools, "stats": stats}
 
 
-def sync_users(client) -> List[Dict]:
+def sync_users(client) -> Dict[str, object]:
     """
     Upsert teacher-only SkolonUser records, linking them to licensed local schools.
     Deleted users are flagged; their local User link is left intact for auditing.
@@ -136,6 +155,11 @@ def sync_users(client) -> List[Dict]:
     cursor = _get_cursor(SkolonSyncCursor.EntityType.USER)
     result = client.get_users(version_tag=cursor)
     users = result["users"]
+    eligible_count = 0
+    created_count = 0
+    updated_count = 0
+    skipped_non_teacher = 0
+    skipped_unlicensed_school = 0
 
     for user in users:
         skolon_id = user.get("id")
@@ -144,7 +168,10 @@ def sync_users(client) -> List[Dict]:
 
         role = _normalise_skolon_role(_get_user_role(user))
         if role not in SYNCED_SKOLON_ROLES:
+            skipped_non_teacher += 1
             continue
+
+        eligible_count += 1
 
         # Prefer externalId; fall back to Skolon's own id.
         external_id = user.get("externalId") or skolon_id
@@ -160,9 +187,10 @@ def sync_users(client) -> List[Dict]:
                 skolon_id,
                 school_id,
             )
+            skipped_unlicensed_school += 1
             continue
 
-        SkolonUser.objects.update_or_create(
+        skolon_user, created = SkolonUser.objects.update_or_create(
             skolon_id=skolon_id,
             defaults={
                 "external_id": external_id,
@@ -171,13 +199,35 @@ def sync_users(client) -> List[Dict]:
                 "is_deleted": user.get("isDeleted", False),
             },
         )
+        if created:
+            created_count += 1
+        else:
+            updated_count += 1
 
     _save_cursor(SkolonSyncCursor.EntityType.USER, result.get("versionTag"))
-    logger.info("User sync complete: %s records processed.", len(users))
-    return users
+    stats = {
+        "fetched": len(users),
+        "eligible": eligible_count,
+        "created": created_count,
+        "updated": updated_count,
+        "skipped_non_teacher": skipped_non_teacher,
+        "skipped_unlicensed_school": skipped_unlicensed_school,
+        "applied": created_count + updated_count,
+    }
+    logger.info(
+        "User sync complete: fetched=%s eligible=%s applied=%s created=%s updated=%s skipped_non_teacher=%s skipped_unlicensed_school=%s",
+        stats["fetched"],
+        stats["eligible"],
+        stats["applied"],
+        stats["created"],
+        stats["updated"],
+        stats["skipped_non_teacher"],
+        stats["skipped_unlicensed_school"],
+    )
+    return {"items": users, "stats": stats}
 
 
-def sync_groups(client) -> List[Dict]:
+def sync_groups(client) -> Dict[str, object]:
     """
     Fetch Skolon groups and advance the cursor.
     Cohort mapping is a future step — groups are logged but not yet written to DB.
@@ -187,11 +237,14 @@ def sync_groups(client) -> List[Dict]:
     groups = result["groups"]
 
     _save_cursor(SkolonSyncCursor.EntityType.GROUP, result.get("versionTag"))
+    stats = {
+        "fetched": len(groups),
+    }
     logger.info(
-        "Group sync complete: %s records received (cohort mapping pending).",
-        len(groups),
+        "Group sync complete: fetched=%s (cohort mapping pending).",
+        stats["fetched"],
     )
-    return groups
+    return {"items": groups, "stats": stats}
 
 
 def _parse_expiry(expiration_date: Optional[str]) -> Optional[datetime]:
@@ -207,7 +260,7 @@ def _parse_expiry(expiration_date: Optional[str]) -> Optional[datetime]:
         return None
 
 
-def sync_licenses(client) -> List[Dict]:
+def sync_licenses(client) -> Dict[str, object]:
     """
     Sync Skolon licenses and update school-level access.
 
@@ -230,6 +283,9 @@ def sync_licenses(client) -> List[Dict]:
     school_expiry: Dict[int, Optional[datetime]] = {}
     # all school pks seen in this batch (active or not)
     seen_school_pks = set()
+    local_schools_created = 0
+    direct_school_hits = 0
+    fallback_user_school_hits = 0
 
     for lic in licenses:
         is_deleted = lic.get("isDeleted", False)
@@ -247,9 +303,16 @@ def sync_licenses(client) -> List[Dict]:
                 .select_related("school")
                 .first()
             )
-            school = _ensure_local_school_for_org(org) if not is_deleted and not is_expired else (org.school if org else None)
+            school, school_created = (
+                _ensure_local_school_for_org(org)
+                if not is_deleted and not is_expired
+                else ((org.school if org else None), False)
+            )
+            if school_created:
+                local_schools_created += 1
             if school:
                 school_pks_for_lic.add(school.pk)
+                direct_school_hits += 1
         else:
             for u in lic.get("users", []):
                 uid = u.get("id")
@@ -262,6 +325,7 @@ def sync_licenses(client) -> List[Dict]:
                 )
                 if skolon_user and skolon_user.skolon_org and skolon_user.skolon_org.school:
                     school_pks_for_lic.add(skolon_user.skolon_org.school.pk)
+                    fallback_user_school_hits += 1
 
         for school_pk in school_pks_for_lic:
             seen_school_pks.add(school_pk)
@@ -294,15 +358,33 @@ def sync_licenses(client) -> List[Dict]:
             logger.info("Revoked license for school pk=%s", school_pk)
 
     _save_cursor(SkolonSyncCursor.EntityType.LICENSE, result.get("versionTag"))
-    logger.info("License sync complete: %s records processed.", len(licenses))
-    return licenses
+    stats = {
+        "fetched": len(licenses),
+        "active": sum(1 for lic in licenses if not lic.get("isDeleted", False)),
+        "schools_licensed": len(school_expiry),
+        "schools_revoked": len(seen_school_pks - set(school_expiry.keys())),
+        "local_schools_created": local_schools_created,
+        "direct_school_hits": direct_school_hits,
+        "fallback_user_school_hits": fallback_user_school_hits,
+    }
+    logger.info(
+        "License sync complete: fetched=%s active=%s schools_licensed=%s schools_revoked=%s local_schools_created=%s direct_school_hits=%s fallback_user_school_hits=%s",
+        stats["fetched"],
+        stats["active"],
+        stats["schools_licensed"],
+        stats["schools_revoked"],
+        stats["local_schools_created"],
+        stats["direct_school_hits"],
+        stats["fallback_user_school_hits"],
+    )
+    return {"items": licenses, "stats": stats}
 
 
 # ---------------------------------------------------------------------------
 # Full sync
 # ---------------------------------------------------------------------------
 
-def run_full_sync(client) -> Dict:
+def run_full_sync(client) -> Dict[str, Dict[str, object]]:
     """
     Run a complete sync in dependency order:
     schools → licenses → users → groups.
@@ -315,10 +397,13 @@ def run_full_sync(client) -> Dict:
         "groups": sync_groups(client),
     }
     logger.info(
-        "Full sync complete: %s schools, %s users, %s groups, %s licenses.",
-        len(results["schools"]),
-        len(results["users"]),
-        len(results["groups"]),
-        len(results["licenses"]),
+        "Full sync complete: schools fetched=%s orgs_created=%s; licenses fetched=%s schools_licensed=%s; users fetched=%s applied=%s; groups fetched=%s.",
+        results["schools"]["stats"]["fetched"],
+        results["schools"]["stats"]["orgs_created"],
+        results["licenses"]["stats"]["fetched"],
+        results["licenses"]["stats"]["schools_licensed"],
+        results["users"]["stats"]["fetched"],
+        results["users"]["stats"]["applied"],
+        results["groups"]["stats"]["fetched"],
     )
     return results

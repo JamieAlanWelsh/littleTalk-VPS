@@ -37,6 +37,13 @@ ENTITY_MAP = {
 class Command(BaseCommand):
     help = "Sync data from Skolon (schools, users, groups, licenses)."
 
+    def _format_stats(self, stats):
+        return "\n".join(f"  - {key}: {value}" for key, value in stats.items())
+
+    def _format_entity_summary(self, entity, stats):
+        title = entity.replace("_", " ").title()
+        return f"{title}:\n{self._format_stats(stats)}"
+
     def _reset_cursors(self, entities):
         if not entities:
             return
@@ -85,19 +92,23 @@ class Command(BaseCommand):
 
         if entity:
             self.stdout.write(f"Syncing Skolon entity: {entity}...")
-            records = ENTITY_MAP[entity](api_client)
+            result = ENTITY_MAP[entity](api_client)
             self.stdout.write(
-                self.style.SUCCESS(f"Done. {len(records)} {entity} records processed.")
+                self.style.SUCCESS(
+                    f"Done.\n{self._format_entity_summary(entity, result['stats'])}"
+                )
             )
         else:
             self.stdout.write("Running full Skolon sync...")
             results = run_full_sync(api_client)
+            sections = [
+                self._format_entity_summary("schools", results["schools"]["stats"]),
+                self._format_entity_summary("licenses", results["licenses"]["stats"]),
+                self._format_entity_summary("users", results["users"]["stats"]),
+                self._format_entity_summary("groups", results["groups"]["stats"]),
+            ]
             self.stdout.write(
                 self.style.SUCCESS(
-                    "Full sync complete: "
-                    f"{len(results['schools'])} schools, "
-                    f"{len(results['users'])} users, "
-                    f"{len(results['groups'])} groups, "
-                    f"{len(results['licenses'])} licenses."
+                    "Full sync complete.\n\n" + "\n\n".join(sections)
                 )
             )
