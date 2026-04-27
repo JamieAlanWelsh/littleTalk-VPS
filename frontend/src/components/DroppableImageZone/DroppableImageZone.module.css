@@ -1,13 +1,25 @@
 .zone {
-    width: 8.5rem;
+    width: 6.875rem;
     aspect-ratio: 1 / 1;
-    border-radius: 16px;
+    border-radius: 1rem;
     background: #d4d4d8;
     border: 2px dashed transparent;
     transition:
         border-color 120ms ease,
         background-color 120ms ease;
-    overflow: hidden;
+    overflow: visible;
+}
+
+@media (max-width: 800px) {
+    .zone {
+        width: 6.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .zone {
+        width: 7.5rem;
+    }
 }
 
 .active {

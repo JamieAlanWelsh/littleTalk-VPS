@@ -9,6 +9,7 @@ import { z } from "zod";
 
 export interface CategorisationOptions {
     selectedCategoryIds: string[];
+    itemsPerCategory: number;
 }
 
 export const CategorisationItemSchema = z.object({

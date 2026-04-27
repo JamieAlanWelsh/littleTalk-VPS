@@ -19,6 +19,14 @@ const EXERCISE_METADATA = {
     setupSubtitle: "Get ready to group items into categories",
 };
 
+/**
+ * Select random items from an array
+ */
+const selectRandomItems = <T,>(items: T[], count: number): T[] => {
+    const shuffled = [...items].sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, count);
+};
+
 interface CategorisationExerciseProps {
     payload: CategorisationExercisePayload;
 }
@@ -27,16 +35,16 @@ export const CategorisationExercise = ({
     payload,
 }: CategorisationExerciseProps) => {
     const [hasStarted, setHasStarted] = useState(false);
-    const availableCategoryIds = Object.keys(payload.categories);
+    const categories = Object.keys(payload.categories);
     const [options, setOptions] = useState<CategorisationOptions>({
-        selectedCategoryIds: availableCategoryIds.slice(0, 2),
+        selectedCategoryIds: categories.slice(0, 2),
+        itemsPerCategory: 2,
     });
 
     const handleStartExercise = () => {
         setHasStarted(true);
     };
 
-    // Show setup screen until exercise is started
     return !hasStarted ? (
         <ExerciseStartScreen
             title={EXERCISE_METADATA.setupTitle}
@@ -53,7 +61,18 @@ export const CategorisationExercise = ({
             />
         </ExerciseStartScreen>
     ) : (
-        <CategorisationGame payload={payload} options={options} />
+        <CategorisationGame
+            categories={Object.fromEntries(
+                Object.entries(payload.categories)
+                    .filter(([categoryId]) =>
+                        options.selectedCategoryIds.includes(categoryId),
+                    )
+                    .map(([categoryId, items]) => [
+                        categoryId,
+                        selectRandomItems(items, options.itemsPerCategory),
+                    ]),
+            )}
+        />
     );
 };
 

@@ -5,15 +5,17 @@ import styles from "./PoolTray.module.css";
 interface PoolTrayProps {
     id: string;
     itemIds: string[];
-    title?: string;
     renderItem?: (itemId: string) => React.ReactNode;
+    itemsById?: Record<string, { label?: string }>;
 }
+
+const ITEMS_PER_VIEW = 5;
 
 export const PoolTray = ({
     id,
     itemIds,
-    title = "Options",
     renderItem,
+    itemsById = {},
 }: PoolTrayProps) => {
     const { isDropTarget, ref } = useDroppable({
         id,
@@ -21,22 +23,35 @@ export const PoolTray = ({
         collisionPriority: CollisionPriority.Low,
     });
 
+    const visibleItems = itemIds.slice(0, ITEMS_PER_VIEW);
+
     return (
         <section className={styles.tray}>
-            <h3 className={styles.title}>{title}</h3>
             <div
                 className={`${styles.dropZone} ${isDropTarget ? styles.active : ""}`.trim()}
                 ref={ref}
             >
                 {itemIds.length > 0 ? (
-                    <div className={styles.items}>
-                        {itemIds.map((itemId) =>
-                            renderItem ? (
-                                renderItem(itemId)
-                            ) : (
-                                <span key={itemId}>{itemId}</span>
-                            ),
-                        )}
+                    <div className={styles.itemsContainer}>
+                        <div className={styles.items} key={`items`}>
+                            {visibleItems.map((itemId) =>
+                                renderItem ? (
+                                    <div
+                                        key={itemId}
+                                        className={styles.itemWrapper}
+                                    >
+                                        {renderItem(itemId)}
+                                        {itemsById[itemId]?.label && (
+                                            <p className={styles.itemLabel}>
+                                                {itemsById[itemId].label}
+                                            </p>
+                                        )}
+                                    </div>
+                                ) : (
+                                    <span key={itemId}>{itemId}</span>
+                                ),
+                            )}
+                        </div>
                     </div>
                 ) : (
                     <p className={styles.emptyState}>
