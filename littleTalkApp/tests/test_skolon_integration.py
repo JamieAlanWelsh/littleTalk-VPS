@@ -7,7 +7,7 @@ Tests for the Skolon integration:
 
 import json
 from datetime import timedelta
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock, call, patch
 
 from django.contrib.auth import get_user_model
 from django.test import TestCase
@@ -556,7 +556,13 @@ class SkolonSSOCallbackTests(TestCase, BaseFlowTestMixin):
 
         response = self._get({"code": "some-code"})
 
-        mock_sync.assert_called_once()
+        mock_sync.assert_has_calls(
+            [
+                call(["school", "license", "user"]),
+                call(["user"]),
+            ]
+        )
+        self.assertEqual(mock_sync.call_count, 2)
         # No user found even after sync → redirect to login
         self.assertRedirects(response, reverse("login"), fetch_redirect_response=False)
 

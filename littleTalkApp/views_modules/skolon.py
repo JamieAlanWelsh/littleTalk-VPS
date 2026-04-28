@@ -32,7 +32,15 @@ from littleTalkApp.integrations.skolon_sync import (
     sync_schools,
     sync_users,
 )
-from littleTalkApp.models import Profile, Role, School, SchoolMembership, SkolonOrg, SkolonUser
+from littleTalkApp.models import (
+    Profile,
+    Role,
+    School,
+    SchoolMembership,
+    SkolonOrg,
+    SkolonSyncCursor,
+    SkolonUser,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -383,6 +391,17 @@ def sso_callback(request):
                 skolon_user_id,
             )
             _run_skolon_syncs(["school", "license", "user"])
+            skolon_user_obj = _load_skolon_user(skolon_user_id)
+
+        if skolon_user_obj is None:
+            logger.info(
+                "Skolon user %s still missing after ordered catch-up; resetting USER cursor and retrying user sync.",
+                skolon_user_id,
+            )
+            SkolonSyncCursor.objects.filter(
+                entity_type=SkolonSyncCursor.EntityType.USER
+            ).delete()
+            _run_skolon_syncs(["user"])
             skolon_user_obj = _load_skolon_user(skolon_user_id)
 
         if skolon_user_obj is None:
