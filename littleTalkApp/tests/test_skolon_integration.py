@@ -24,7 +24,6 @@ from littleTalkApp.models import (
     SkolonUser,
 )
 from littleTalkApp.integrations.skolon_sync import sync_licenses, sync_schools, sync_users
-from littleTalkApp.integrations.skolon_sync import sync_licenses, sync_users
 from littleTalkApp.tests.base import BaseFlowTestMixin
 
 User = get_user_model()
