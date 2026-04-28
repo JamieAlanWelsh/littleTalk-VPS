@@ -425,6 +425,49 @@ class SkolonSyncPayloadMappingTests(TestCase):
         self.assertTrue(licensed_school.is_licensed)
         self.assertFalse(other_school.is_licensed)
 
+    def test_sync_licenses_full_refresh_revokes_missing_managed_school(self):
+        school = School.objects.create(name="Chatterdillo School", is_licensed=True)
+        SkolonOrg.objects.create(
+            skolon_id="school-live-1",
+            name="Chatterdillo School",
+            school=school,
+        )
+
+        client = MagicMock()
+        client.get_licenses.return_value = {
+            "licenses": [],
+            "versionTag": "vt-license-revoke",
+        }
+
+        sync_licenses(client)
+
+        school.refresh_from_db()
+        self.assertFalse(school.is_licensed)
+        self.assertIsNone(school.license_expires_at)
+
+    def test_sync_licenses_incremental_keeps_unseen_managed_school_untouched(self):
+        school = School.objects.create(name="Chatterdillo School", is_licensed=True)
+        SkolonOrg.objects.create(
+            skolon_id="school-live-1",
+            name="Chatterdillo School",
+            school=school,
+        )
+        SkolonSyncCursor.objects.create(
+            entity_type=SkolonSyncCursor.EntityType.LICENSE,
+            version_tag="existing-license-cursor",
+        )
+
+        client = MagicMock()
+        client.get_licenses.return_value = {
+            "licenses": [],
+            "versionTag": "vt-license-incremental",
+        }
+
+        sync_licenses(client)
+
+        school.refresh_from_db()
+        self.assertTrue(school.is_licensed)
+
 
 # ---------------------------------------------------------------------------
 # SSO callback

@@ -274,6 +274,7 @@ def sync_licenses(client) -> Dict[str, object]:
     - Schools with no Skolon licenses at all are untouched.
     """
     cursor = _get_cursor(SkolonSyncCursor.EntityType.LICENSE)
+    is_full_refresh = cursor is None
     result = client.get_licenses(version_tag=cursor)
     licenses = result["licenses"]
 
@@ -338,8 +339,17 @@ def sync_licenses(client) -> Dict[str, object]:
                     if expiry is None or expiry > school_expiry[school_pk]:
                         school_expiry[school_pk] = expiry
 
-    # Apply outcomes only for schools that appeared in this sync batch.
-    for school_pk in seen_school_pks:
+    # Incremental sync keeps current conservative behavior: only schools seen in
+    # this batch are changed. Full refresh is authoritative and revokes any
+    # managed school absent from active licenses.
+    if is_full_refresh:
+        school_pks_to_apply = set(
+            SkolonOrg.objects.filter(school__isnull=False).values_list("school_id", flat=True)
+        )
+    else:
+        school_pks_to_apply = seen_school_pks
+
+    for school_pk in school_pks_to_apply:
         if school_pk in school_expiry:
             School.objects.filter(pk=school_pk).update(
                 is_licensed=True,
@@ -358,14 +368,16 @@ def sync_licenses(client) -> Dict[str, object]:
             logger.info("Revoked license for school pk=%s", school_pk)
 
     _save_cursor(SkolonSyncCursor.EntityType.LICENSE, result.get("versionTag"))
+    revoked_school_pks = set(school_pks_to_apply) - set(school_expiry.keys())
     stats = {
         "fetched": len(licenses),
         "active": sum(1 for lic in licenses if not lic.get("isDeleted", False)),
         "schools_licensed": len(school_expiry),
-        "schools_revoked": len(seen_school_pks - set(school_expiry.keys())),
+        "schools_revoked": len(revoked_school_pks),
         "local_schools_created": local_schools_created,
         "direct_school_hits": direct_school_hits,
         "fallback_user_school_hits": fallback_user_school_hits,
+        "full_refresh": is_full_refresh,
     }
     logger.info(
         "License sync complete: fetched=%s active=%s schools_licensed=%s schools_revoked=%s local_schools_created=%s direct_school_hits=%s fallback_user_school_hits=%s",
