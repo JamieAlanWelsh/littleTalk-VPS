@@ -19,6 +19,15 @@ node_modules/
 
 *.css.d.ts
 
+# Frontend build artifacts (bundles, maps, etc.)
+static/js/*.js
+static/js/*.js.map
+static/js/exercises/*.js
+static/js/exercises/*.js.map
+static/js/**/*.js
+static/js/**/*.js.map
+static/js/exercises/manifest.json
+
 cat >> .gitignore << EOF
 
 # Django static files (regenerated)
@@ -31,3 +40,4 @@ package-lock.json
 # IDE/workspace
 .vscode/settings.json
 EOF
+

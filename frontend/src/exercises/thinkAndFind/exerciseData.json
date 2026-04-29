@@ -1,0 +1,149 @@
+{
+  "rounds": 5,
+  "imageSets": [
+    {
+      "id": "elephant",
+      "name": "Elephants",
+      "items": [
+        {
+          "id": "elephant-blue-ears",
+          "imageUrl": "/static/exercise_assets/think_and_find/elephant/elephant_earsblue.png",
+          "label": "Elephant with blue ears",
+          "prompt": "Find the elephant with blue ears.",
+          "altText": "An elephant with bright blue ears"
+        },
+        {
+          "id": "elephant-green-tracksuit",
+          "imageUrl": "/static/exercise_assets/think_and_find/elephant/elephant_greentracksuit.png",
+          "label": "Elephant in a green tracksuit",
+          "prompt": "Find the elephant in a green tracksuit.",
+          "altText": "An elephant wearing a green tracksuit"
+        },
+        {
+          "id": "elephant-red-hoodie",
+          "imageUrl": "/static/exercise_assets/think_and_find/elephant/elephant_redhoodie.png",
+          "label": "Elephant in a red hoodie",
+          "prompt": "Find the elephant in a red hoodie.",
+          "altText": "An elephant wearing a red hoodie"
+        },
+        {
+          "id": "elephant-striped-jumper",
+          "imageUrl": "/static/exercise_assets/think_and_find/elephant/elephant_stripejumper.png",
+          "label": "Elephant in a striped jumper",
+          "prompt": "Find the elephant in a striped jumper.",
+          "altText": "An elephant wearing a striped jumper"
+        },
+        {
+          "id": "elephant-suit-and-tie",
+          "imageUrl": "/static/exercise_assets/think_and_find/elephant/elephant_suitandtie.png",
+          "label": "Elephant in a suit and tie",
+          "prompt": "Find the elephant in a suit and tie.",
+          "altText": "An elephant in formal clothes with a tie"
+        },
+        {
+          "id": "elephant-yellow-hat",
+          "imageUrl": "/static/exercise_assets/think_and_find/elephant/elephant_yellowhat.png",
+          "label": "Elephant with a yellow hat",
+          "prompt": "Find the elephant with a yellow hat.",
+          "altText": "An elephant wearing a yellow hat"
+        }
+      ]
+    },
+    {
+      "id": "cat",
+      "name": "Cats",
+      "items": [
+        {
+          "id": "cat-blue-hoodie",
+          "imageUrl": "/static/exercise_assets/think_and_find/cat/cat_bluehoodie.png",
+          "label": "Cat in a blue hoodie",
+          "prompt": "Find the cat in a blue hoodie.",
+          "altText": "A cat wearing a blue hoodie"
+        },
+        {
+          "id": "cat-glasses",
+          "imageUrl": "/static/exercise_assets/think_and_find/cat/cat_glasses.png",
+          "label": "Cat with glasses",
+          "prompt": "Find the cat with glasses.",
+          "altText": "A cat wearing glasses"
+        },
+        {
+          "id": "cat-grey",
+          "imageUrl": "/static/exercise_assets/think_and_find/cat/cat_grey.png",
+          "label": "Grey cat",
+          "prompt": "Find the grey cat.",
+          "altText": "A plain grey cat"
+        },
+        {
+          "id": "cat-no-glasses",
+          "imageUrl": "/static/exercise_assets/think_and_find/cat/cat_noglasses.png",
+          "label": "Cat without glasses",
+          "prompt": "Find the cat without glasses.",
+          "altText": "A cat not wearing glasses"
+        },
+        {
+          "id": "cat-purple-stripes",
+          "imageUrl": "/static/exercise_assets/think_and_find/cat/cat_purplestripes.png",
+          "label": "Cat with purple stripes",
+          "prompt": "Find the cat with purple stripes.",
+          "altText": "A cat with purple stripes on its outfit"
+        },
+        {
+          "id": "cat-suit-and-tie",
+          "imageUrl": "/static/exercise_assets/think_and_find/cat/cat_suitandtie.png",
+          "label": "Cat in a suit and tie",
+          "prompt": "Find the cat in a suit and tie.",
+          "altText": "A cat dressed in a suit and tie"
+        }
+      ]
+    },
+    {
+      "id": "boy",
+      "name": "Boys",
+      "items": [
+        {
+          "id": "boy-blonde",
+          "imageUrl": "/static/exercise_assets/think_and_find/boy/boy_blonde.png",
+          "label": "Blonde boy",
+          "prompt": "Find the blonde boy.",
+          "altText": "A blonde boy"
+        },
+        {
+          "id": "boy-blue-hoodie",
+          "imageUrl": "/static/exercise_assets/think_and_find/boy/boy_bluehoodie.png",
+          "label": "Boy in a blue hoodie",
+          "prompt": "Find the boy in a blue hoodie.",
+          "altText": "A boy wearing a blue hoodie"
+        },
+        {
+          "id": "boy-dungarees",
+          "imageUrl": "/static/exercise_assets/think_and_find/boy/boy_dungarees.png",
+          "label": "Boy in dungarees",
+          "prompt": "Find the boy in dungarees.",
+          "altText": "A boy wearing dungarees"
+        },
+        {
+          "id": "boy-glasses",
+          "imageUrl": "/static/exercise_assets/think_and_find/boy/boy_glasses.png",
+          "label": "Boy with glasses",
+          "prompt": "Find the boy with glasses.",
+          "altText": "A boy wearing glasses"
+        },
+        {
+          "id": "boy-purple-jacket",
+          "imageUrl": "/static/exercise_assets/think_and_find/boy/boy_purplejacket.png",
+          "label": "Boy in a purple jacket",
+          "prompt": "Find the boy in a purple jacket.",
+          "altText": "A boy wearing a purple jacket"
+        },
+        {
+          "id": "boy-rainbow-top",
+          "imageUrl": "/static/exercise_assets/think_and_find/boy/boy_rainbow.png",
+          "label": "Boy in a rainbow top",
+          "prompt": "Find the boy in a rainbow top.",
+          "altText": "A boy wearing a rainbow top"
+        }
+      ]
+    }
+  ]
+}

@@ -15,7 +15,7 @@ import SentenceMatchingStartScreen from "./SentenceMatchingSettingsScreen";
 import SentenceToImageMatchingGame from "./SentenceToImageMatchingGame";
 
 const EXERCISE_METADATA = {
-  setupTitle: "Think & Find Setup",
+  setupTitle: "Sentence Matching Setup",
   setupSubtitle: "What would you like to work on today?",
 };
 
@@ -49,7 +49,11 @@ export const SentenceToImageMatchingExercise = ({
       <SentenceMatchingStartScreen onSetOptions={setOptions} />
     </ExerciseStartScreen>
   ) : (
-    <SentenceToImageMatchingGame payload={payload} options={options} />
+    <SentenceToImageMatchingGame
+      payload={payload}
+      options={options}
+      onSettingsRequested={() => setHasStarted(false)}
+    />
   );
 };
 
