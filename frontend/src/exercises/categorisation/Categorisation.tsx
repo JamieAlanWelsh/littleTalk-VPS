@@ -72,6 +72,7 @@ export const CategorisationExercise = ({
                         selectRandomItems(items, options.itemsPerCategory),
                     ]),
             )}
+            onSettingsRequested={() => setHasStarted(false)}
         />
     );
 };

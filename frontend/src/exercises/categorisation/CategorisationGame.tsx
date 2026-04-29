@@ -21,6 +21,12 @@ import type { QuestionState } from "../../lib/types";
 
 interface CategorisationGameProps {
     categories: Record<CategoryId, CategorisationItem[]>;
+    onSettingsRequested?: () => void;
+}
+
+interface CategorisationAnswer {
+    boardState: BoardState;
+    itemsById: Record<string, CategorisationItem>;
 }
 
 const EXERCISE_METADATA = {
@@ -29,7 +35,10 @@ const EXERCISE_METADATA = {
     instruction: 'Modelling Tip: "Hmmm, is a banana something we eat?"',
 };
 
-export const CategorisationGame = ({ categories }: CategorisationGameProps) => {
+export const CategorisationGame = ({
+    categories,
+    onSettingsRequested,
+}: CategorisationGameProps) => {
     const itemsById = Object.fromEntries(
         Object.values(categories)
             .flat()
@@ -94,6 +103,13 @@ export const CategorisationGame = ({ categories }: CategorisationGameProps) => {
         return correctnessMap;
     };
 
+    const answers: CategorisationAnswer[] = [
+        {
+            boardState,
+            itemsById,
+        },
+    ];
+
     const onCheckAnswer = () => {
         // Check if all items are placed in correct categories
         const allCorrect = Object.entries(categories).every(
@@ -117,7 +133,7 @@ export const CategorisationGame = ({ categories }: CategorisationGameProps) => {
     };
 
     return (
-        <ExerciseLayout
+        <ExerciseLayout<CategorisationAnswer>
             exerciseId={EXERCISE_METADATA.id}
             actionBarPhase={questionState.answerState}
             questions={[
@@ -127,21 +143,25 @@ export const CategorisationGame = ({ categories }: CategorisationGameProps) => {
                     correctIconIds: ["1"],
                 },
             ]}
+            answers={answers}
             tracking={tracking}
             onCheckAnswer={onCheckAnswer}
             onResetQuestion={onResetQuestion}
+            onSettingsRequested={onSettingsRequested}
         >
-            <CategorisationBoard
-                boardState={boardState}
-                itemsById={itemsById}
-                onDragEnd={handleDragEnd}
-                itemCorrectnessMap={
-                    questionState.answerState !== "notAnswered"
-                        ? getItemCorrectnessMap()
-                        : {}
-                }
-                showFeedback={questionState.answerState !== "notAnswered"}
-            />
+            {(currentAnswer: CategorisationAnswer) => (
+                <CategorisationBoard
+                    boardState={currentAnswer.boardState}
+                    itemsById={currentAnswer.itemsById}
+                    onDragEnd={handleDragEnd}
+                    itemCorrectnessMap={
+                        questionState.answerState !== "notAnswered"
+                            ? getItemCorrectnessMap()
+                            : {}
+                    }
+                    showFeedback={questionState.answerState !== "notAnswered"}
+                />
+            )}
         </ExerciseLayout>
     );
 };
