@@ -1,4 +1,5 @@
 import { useDraggable } from "@dnd-kit/react";
+import type { PointerEventHandler } from "react";
 import type { Picture } from "../../lib/types";
 import { ImageOption } from "../ImageOption";
 
@@ -9,6 +10,8 @@ interface DraggableImageProps {
     isSelected: boolean;
     isDisabled?: boolean;
     onClick: () => void;
+    onPointerEnter?: PointerEventHandler<HTMLButtonElement>;
+    onPointerDown?: PointerEventHandler<HTMLButtonElement>;
 }
 
 export const DraggableImage = ({
@@ -18,6 +21,8 @@ export const DraggableImage = ({
     isSelected,
     isDisabled = false,
     onClick,
+    onPointerEnter,
+    onPointerDown,
 }: DraggableImageProps) => {
     const { ref } = useDraggable({
         id,
@@ -31,6 +36,8 @@ export const DraggableImage = ({
             isSelected={isSelected}
             isDisabled={isDisabled}
             onClick={onClick}
+            onPointerEnter={onPointerEnter}
+            onPointerDown={onPointerDown}
             ref={ref}
         />
     );

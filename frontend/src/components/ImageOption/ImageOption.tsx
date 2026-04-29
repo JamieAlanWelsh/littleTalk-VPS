@@ -15,49 +15,68 @@ interface ImageOptionProps {
     isSelected: boolean;
     isDisabled?: boolean;
     onClick: () => void;
+    onPointerEnter?: React.PointerEventHandler<HTMLButtonElement>;
+    onPointerDown?: React.PointerEventHandler<HTMLButtonElement>;
 }
 
 export const ImageOption = React.forwardRef<
     HTMLButtonElement,
     ImageOptionProps
->(({ image, isCorrect, isSelected, isDisabled = false, onClick }, ref) => {
-    // Determine state classes
-    let stateClass:
-        | "disabled"
-        | "correct"
-        | "incorrect"
-        | "selected"
-        | "interactive" = "interactive";
-    if (isDisabled) {
-        stateClass = "disabled";
-    } else if (isCorrect === true) {
-        stateClass = "correct";
-    } else if (isCorrect === false) {
-        stateClass = "incorrect";
-    } else if (isSelected) {
-        stateClass = "selected";
-    } else {
-        stateClass = "interactive";
-    }
+>(
+    (
+        {
+            image,
+            isCorrect,
+            isSelected,
+            isDisabled = false,
+            onClick,
+            onPointerEnter,
+            onPointerDown,
+        },
+        ref,
+    ) => {
+        // Determine state classes
+        let stateClass:
+            | "disabled"
+            | "correct"
+            | "incorrect"
+            | "selected"
+            | "interactive" = "interactive";
+        if (isDisabled) {
+            stateClass = "disabled";
+        } else if (isCorrect === true) {
+            stateClass = "correct";
+        } else if (isCorrect === false) {
+            stateClass = "incorrect";
+        } else if (isSelected) {
+            stateClass = "selected";
+        } else {
+            stateClass = "interactive";
+        }
 
-    return (
-        <button
-            className={`${styles["icon-block"]} ${styles[stateClass]}`}
-            onClick={onClick}
-            disabled={isDisabled}
-            aria-label={image.label || image.altText || `Option ${image.id}`}
-            type="button"
-            ref={ref}
-        >
-            <img
-                src={image.imageUrl}
-                alt={image.altText || image.label || "Icon option"}
-                className={styles["icon-block-image"]}
-                style={{ pointerEvents: "none" }}
-            />
-        </button>
-    );
-});
+        return (
+            <button
+                className={`${styles["icon-block"]} ${styles[stateClass]}`}
+                onClick={onClick}
+                onPointerEnter={onPointerEnter}
+                onPointerDown={onPointerDown}
+                disabled={isDisabled}
+                aria-label={
+                    image.label || image.altText || `Option ${image.id}`
+                }
+                type="button"
+                ref={ref}
+            >
+                <img
+                    src={image.imageUrl}
+                    alt={image.altText || image.label || "Icon option"}
+                    className={styles["icon-block-image"]}
+                    style={{ pointerEvents: "none" }}
+                />
+            </button>
+        );
+    },
+);
 
 ImageOption.displayName = "ImageOption";
 

@@ -1,506 +1,588 @@
 {
-  "instruction": "Move words into the matching category",
+  "instruction": "Move words into matching category",
   "modellingTip": "Hmmm, is a banana something we eat?",
   "categories": {
     "clothing": [
       {
         "id": "cap",
         "imageUrl": "/static/exercise_assets/categorisation/clothing/cap.png",
-        "label": "The cap"
+        "label": "Cap",
+        "sfxUrl": "/static/exercise_assets/categorisation/clothing/cap.wav"
       },
       {
         "id": "clothes",
         "imageUrl": "/static/exercise_assets/categorisation/clothing/clothes.png",
-        "label": "The clothes"
+        "label": "Clothes"
       },
       {
         "id": "dress",
         "imageUrl": "/static/exercise_assets/categorisation/clothing/dress.png",
-        "label": "The dress"
+        "label": "Dress",
+        "sfxUrl": "/static/exercise_assets/categorisation/clothing/dress.wav"
       },
       {
         "id": "gloves",
         "imageUrl": "/static/exercise_assets/categorisation/clothing/gloves.png",
-        "label": "The gloves"
+        "label": "Gloves",
+        "sfxUrl": "/static/exercise_assets/categorisation/clothing/gloves.wav"
       },
       {
         "id": "hat",
         "imageUrl": "/static/exercise_assets/categorisation/clothing/hat.png",
-        "label": "The hat"
+        "label": "Hat",
+        "sfxUrl": "/static/exercise_assets/categorisation/clothing/hat.wav"
       },
       {
         "id": "jumper",
         "imageUrl": "/static/exercise_assets/categorisation/clothing/jumper.png",
-        "label": "The jumper"
+        "label": "Jumper",
+        "sfxUrl": "/static/exercise_assets/categorisation/clothing/jumper.wav"
       },
       {
         "id": "scarf",
         "imageUrl": "/static/exercise_assets/categorisation/clothing/scarf.png",
-        "label": "The scarf"
+        "label": "Scarf",
+        "sfxUrl": "/static/exercise_assets/categorisation/clothing/scarf.wav"
       },
       {
         "id": "shoes",
         "imageUrl": "/static/exercise_assets/categorisation/clothing/shoes.png",
-        "label": "The shoes"
+        "label": "Shoes",
+        "sfxUrl": "/static/exercise_assets/categorisation/clothing/shoes.wav"
       },
       {
         "id": "shorts",
         "imageUrl": "/static/exercise_assets/categorisation/clothing/shorts.png",
-        "label": "The shorts"
+        "label": "Shorts",
+        "sfxUrl": "/static/exercise_assets/categorisation/clothing/shorts.wav"
       },
       {
         "id": "socks",
         "imageUrl": "/static/exercise_assets/categorisation/clothing/socks.png",
-        "label": "The socks"
+        "label": "Socks",
+        "sfxUrl": "/static/exercise_assets/categorisation/clothing/socks.wav"
       },
       {
         "id": "trousers",
         "imageUrl": "/static/exercise_assets/categorisation/clothing/trousers.png",
-        "label": "The trousers"
+        "label": "Trousers",
+        "sfxUrl": "/static/exercise_assets/categorisation/clothing/trousers.wav"
       },
       {
         "id": "tshirt",
         "imageUrl": "/static/exercise_assets/categorisation/clothing/tshirt.png",
-        "label": "The tshirt"
+        "label": "Tshirt",
+        "sfxUrl": "/static/exercise_assets/categorisation/clothing/tshirt.wav"
       }
     ],
     "farmyard-animals": [
       {
         "id": "chick",
         "imageUrl": "/static/exercise_assets/categorisation/farmyard-animals/chick.png",
-        "label": "The chick"
+        "label": "Chick",
+        "sfxUrl": "/static/exercise_assets/categorisation/farmyard-animals/chick.wav"
       },
       {
         "id": "chicken",
         "imageUrl": "/static/exercise_assets/categorisation/farmyard-animals/chicken.png",
-        "label": "The chicken"
+        "label": "Chicken"
       },
       {
         "id": "cow",
         "imageUrl": "/static/exercise_assets/categorisation/farmyard-animals/cow.png",
-        "label": "The cow"
+        "label": "Cow",
+        "sfxUrl": "/static/exercise_assets/categorisation/farmyard-animals/cow.wav"
       },
       {
         "id": "dog",
         "imageUrl": "/static/exercise_assets/categorisation/farmyard-animals/dog.png",
-        "label": "The dog"
+        "label": "Dog",
+        "sfxUrl": "/static/exercise_assets/categorisation/farmyard-animals/dog.wav"
       },
       {
         "id": "donkey",
         "imageUrl": "/static/exercise_assets/categorisation/farmyard-animals/donkey.png",
-        "label": "The donkey"
+        "label": "Donkey",
+        "sfxUrl": "/static/exercise_assets/categorisation/farmyard-animals/donkey.wav"
       },
       {
         "id": "farm",
         "imageUrl": "/static/exercise_assets/categorisation/farmyard-animals/farm.png",
-        "label": "The farm"
+        "label": "Farm"
       },
       {
         "id": "goat",
         "imageUrl": "/static/exercise_assets/categorisation/farmyard-animals/goat.png",
-        "label": "The goat"
+        "label": "Goat",
+        "sfxUrl": "/static/exercise_assets/categorisation/farmyard-animals/goat.wav"
       },
       {
         "id": "horse",
         "imageUrl": "/static/exercise_assets/categorisation/farmyard-animals/horse.png",
-        "label": "The horse"
+        "label": "Horse",
+        "sfxUrl": "/static/exercise_assets/categorisation/farmyard-animals/horse.wav"
       },
       {
         "id": "pig",
         "imageUrl": "/static/exercise_assets/categorisation/farmyard-animals/pig.png",
-        "label": "The pig"
+        "label": "Pig",
+        "sfxUrl": "/static/exercise_assets/categorisation/farmyard-animals/pig.wav"
       },
       {
         "id": "rabbit",
         "imageUrl": "/static/exercise_assets/categorisation/farmyard-animals/rabbit.png",
-        "label": "The rabbit"
+        "label": "Rabbit",
+        "sfxUrl": "/static/exercise_assets/categorisation/farmyard-animals/rabbit.wav"
       },
       {
         "id": "sheep",
         "imageUrl": "/static/exercise_assets/categorisation/farmyard-animals/sheep.png",
-        "label": "The sheep"
+        "label": "Sheep",
+        "sfxUrl": "/static/exercise_assets/categorisation/farmyard-animals/sheep.wav"
       }
     ],
     "fruits": [
       {
         "id": "apple",
         "imageUrl": "/static/exercise_assets/categorisation/fruits/apple.png",
-        "label": "The apple"
+        "label": "Apple",
+        "sfxUrl": "/static/exercise_assets/categorisation/fruits/apple.wav"
       },
       {
         "id": "banana",
         "imageUrl": "/static/exercise_assets/categorisation/fruits/banana.png",
-        "label": "The banana"
+        "label": "Banana",
+        "sfxUrl": "/static/exercise_assets/categorisation/fruits/banana.wav"
       },
       {
         "id": "cherry",
         "imageUrl": "/static/exercise_assets/categorisation/fruits/cherry.png",
-        "label": "The cherry"
+        "label": "Cherry",
+        "sfxUrl": "/static/exercise_assets/categorisation/fruits/cherry.wav"
       },
       {
         "id": "fruit",
         "imageUrl": "/static/exercise_assets/categorisation/fruits/fruit.png",
-        "label": "The fruit"
+        "label": "Fruit"
       },
       {
         "id": "grapes",
         "imageUrl": "/static/exercise_assets/categorisation/fruits/grapes.png",
-        "label": "The grapes"
+        "label": "Grapes",
+        "sfxUrl": "/static/exercise_assets/categorisation/fruits/grapes.wav"
       },
       {
         "id": "lemon",
         "imageUrl": "/static/exercise_assets/categorisation/fruits/lemon.png",
-        "label": "The lemon"
+        "label": "Lemon",
+        "sfxUrl": "/static/exercise_assets/categorisation/fruits/lemon.wav"
       },
       {
         "id": "orange",
         "imageUrl": "/static/exercise_assets/categorisation/fruits/orange.png",
-        "label": "The orange"
+        "label": "Orange",
+        "sfxUrl": "/static/exercise_assets/categorisation/fruits/orange.wav"
       },
       {
         "id": "peach",
         "imageUrl": "/static/exercise_assets/categorisation/fruits/peach.png",
-        "label": "The peach"
+        "label": "Peach",
+        "sfxUrl": "/static/exercise_assets/categorisation/fruits/peach.wav"
       },
       {
         "id": "pear",
         "imageUrl": "/static/exercise_assets/categorisation/fruits/pear.png",
-        "label": "The pear"
+        "label": "Pear",
+        "sfxUrl": "/static/exercise_assets/categorisation/fruits/pear.wav"
       },
       {
         "id": "pineapple",
         "imageUrl": "/static/exercise_assets/categorisation/fruits/pineapple.png",
-        "label": "The pineapple"
+        "label": "Pineapple",
+        "sfxUrl": "/static/exercise_assets/categorisation/fruits/pineapple.wav"
       },
       {
         "id": "watermelon",
         "imageUrl": "/static/exercise_assets/categorisation/fruits/watermelon.png",
-        "label": "The watermelon"
+        "label": "Watermelon",
+        "sfxUrl": "/static/exercise_assets/categorisation/fruits/watermelon.wav"
       }
     ],
     "space-astronomy": [
       {
         "id": "alien",
         "imageUrl": "/static/exercise_assets/categorisation/space-astronomy/alien.png",
-        "label": "The alien"
+        "label": "Alien",
+        "sfxUrl": "/static/exercise_assets/categorisation/space-astronomy/alien.wav"
       },
       {
         "id": "asteroid",
         "imageUrl": "/static/exercise_assets/categorisation/space-astronomy/asteroid.png",
-        "label": "The asteroid"
+        "label": "Asteroid",
+        "sfxUrl": "/static/exercise_assets/categorisation/space-astronomy/asteroid.wav"
       },
       {
         "id": "astronaut",
         "imageUrl": "/static/exercise_assets/categorisation/space-astronomy/astronaut.png",
-        "label": "The astronaut"
+        "label": "Astronaut",
+        "sfxUrl": "/static/exercise_assets/categorisation/space-astronomy/astronaut.wav"
       },
       {
         "id": "galaxy",
         "imageUrl": "/static/exercise_assets/categorisation/space-astronomy/galaxy.png",
-        "label": "The galaxy"
+        "label": "Galaxy",
+        "sfxUrl": "/static/exercise_assets/categorisation/space-astronomy/galaxy.wav"
       },
       {
         "id": "moon",
         "imageUrl": "/static/exercise_assets/categorisation/space-astronomy/moon.png",
-        "label": "The moon"
+        "label": "Moon",
+        "sfxUrl": "/static/exercise_assets/categorisation/space-astronomy/moon.wav"
       },
       {
         "id": "planets",
         "imageUrl": "/static/exercise_assets/categorisation/space-astronomy/planets.png",
-        "label": "The planets"
+        "label": "Planets",
+        "sfxUrl": "/static/exercise_assets/categorisation/space-astronomy/planets.wav"
       },
       {
         "id": "rocket",
         "imageUrl": "/static/exercise_assets/categorisation/space-astronomy/rocket.png",
-        "label": "The rocket"
+        "label": "Rocket",
+        "sfxUrl": "/static/exercise_assets/categorisation/space-astronomy/rocket.wav"
       },
       {
         "id": "space",
         "imageUrl": "/static/exercise_assets/categorisation/space-astronomy/space.png",
-        "label": "The space"
+        "label": "Space"
       },
       {
         "id": "stars",
         "imageUrl": "/static/exercise_assets/categorisation/space-astronomy/stars.png",
-        "label": "The stars"
+        "label": "Stars",
+        "sfxUrl": "/static/exercise_assets/categorisation/space-astronomy/stars.wav"
       },
       {
         "id": "sun",
         "imageUrl": "/static/exercise_assets/categorisation/space-astronomy/sun.png",
-        "label": "The sun"
+        "label": "Sun",
+        "sfxUrl": "/static/exercise_assets/categorisation/space-astronomy/sun.wav"
       },
       {
         "id": "ufo",
         "imageUrl": "/static/exercise_assets/categorisation/space-astronomy/ufo.png",
-        "label": "The ufo"
+        "label": "Ufo",
+        "sfxUrl": "/static/exercise_assets/categorisation/space-astronomy/ufo.wav"
       }
     ],
     "toys-sports": [
       {
         "id": "ball",
         "imageUrl": "/static/exercise_assets/categorisation/toys-sports/ball.png",
-        "label": "The ball"
+        "label": "Ball",
+        "sfxUrl": "/static/exercise_assets/categorisation/toys-sports/ball.wav"
       },
       {
         "id": "blocks",
         "imageUrl": "/static/exercise_assets/categorisation/toys-sports/blocks.png",
-        "label": "The blocks"
+        "label": "Blocks",
+        "sfxUrl": "/static/exercise_assets/categorisation/toys-sports/blocks.wav"
       },
       {
         "id": "doll",
         "imageUrl": "/static/exercise_assets/categorisation/toys-sports/doll.png",
-        "label": "The doll"
+        "label": "Doll",
+        "sfxUrl": "/static/exercise_assets/categorisation/toys-sports/doll.wav"
       },
       {
         "id": "lego",
         "imageUrl": "/static/exercise_assets/categorisation/toys-sports/lego.png",
-        "label": "The lego"
+        "label": "Lego",
+        "sfxUrl": "/static/exercise_assets/categorisation/toys-sports/lego.wav"
       },
       {
         "id": "rocking_horse",
         "imageUrl": "/static/exercise_assets/categorisation/toys-sports/rocking_horse.png",
-        "label": "The rocking horse"
+        "label": "Rocking Horse",
+        "sfxUrl": "/static/exercise_assets/categorisation/toys-sports/rocking_horse.wav"
       },
       {
         "id": "teddy_bear",
         "imageUrl": "/static/exercise_assets/categorisation/toys-sports/teddy_bear.png",
-        "label": "The teddy bear"
+        "label": "Teddy Bear",
+        "sfxUrl": "/static/exercise_assets/categorisation/toys-sports/teddy_bear.wav"
       },
       {
         "id": "toybox",
         "imageUrl": "/static/exercise_assets/categorisation/toys-sports/toybox.png",
-        "label": "The toybox"
+        "label": "Toybox"
       },
       {
         "id": "videogames",
         "imageUrl": "/static/exercise_assets/categorisation/toys-sports/videogames.png",
-        "label": "The videogames"
+        "label": "Videogames",
+        "sfxUrl": "/static/exercise_assets/categorisation/toys-sports/videogames.wav"
       }
     ],
     "vegetables": [
       {
         "id": "aubergine",
         "imageUrl": "/static/exercise_assets/categorisation/vegetables/aubergine.png",
-        "label": "The aubergine"
+        "label": "Aubergine"
       },
       {
         "id": "broccoli",
         "imageUrl": "/static/exercise_assets/categorisation/vegetables/broccoli.png",
-        "label": "The broccoli"
+        "label": "Broccoli",
+        "sfxUrl": "/static/exercise_assets/categorisation/vegetables/broccoli.wav"
       },
       {
         "id": "carrot",
         "imageUrl": "/static/exercise_assets/categorisation/vegetables/carrot.png",
-        "label": "The carrot"
+        "label": "Carrot",
+        "sfxUrl": "/static/exercise_assets/categorisation/vegetables/carrot.wav"
       },
       {
         "id": "chilli",
         "imageUrl": "/static/exercise_assets/categorisation/vegetables/chilli.png",
-        "label": "The chilli"
+        "label": "Chilli",
+        "sfxUrl": "/static/exercise_assets/categorisation/vegetables/chilli.wav"
       },
       {
         "id": "cucumber",
         "imageUrl": "/static/exercise_assets/categorisation/vegetables/cucumber.png",
-        "label": "The cucumber"
+        "label": "Cucumber",
+        "sfxUrl": "/static/exercise_assets/categorisation/vegetables/cucumber.wav"
       },
       {
         "id": "garlic",
         "imageUrl": "/static/exercise_assets/categorisation/vegetables/garlic.png",
-        "label": "The garlic"
+        "label": "Garlic",
+        "sfxUrl": "/static/exercise_assets/categorisation/vegetables/garlic.wav"
       },
       {
         "id": "mushroom",
         "imageUrl": "/static/exercise_assets/categorisation/vegetables/mushroom.png",
-        "label": "The mushroom"
+        "label": "Mushroom",
+        "sfxUrl": "/static/exercise_assets/categorisation/vegetables/mushroom.wav"
       },
       {
         "id": "onion",
         "imageUrl": "/static/exercise_assets/categorisation/vegetables/onion.png",
-        "label": "The onion"
+        "label": "Onion",
+        "sfxUrl": "/static/exercise_assets/categorisation/vegetables/onion.wav"
       },
       {
         "id": "onion_flaticon",
         "imageUrl": "/static/exercise_assets/categorisation/vegetables/onion_flaticon.png",
-        "label": "The onion flaticon"
+        "label": "Onion Flaticon"
       },
       {
         "id": "peas",
         "imageUrl": "/static/exercise_assets/categorisation/vegetables/peas.png",
-        "label": "The peas"
+        "label": "Peas",
+        "sfxUrl": "/static/exercise_assets/categorisation/vegetables/peas.wav"
       },
       {
         "id": "pepper",
         "imageUrl": "/static/exercise_assets/categorisation/vegetables/pepper.png",
-        "label": "The pepper"
+        "label": "Pepper"
       },
       {
         "id": "potato",
         "imageUrl": "/static/exercise_assets/categorisation/vegetables/potato.png",
-        "label": "The potato"
+        "label": "Potato",
+        "sfxUrl": "/static/exercise_assets/categorisation/vegetables/potato.wav"
       },
       {
         "id": "pumpkin",
         "imageUrl": "/static/exercise_assets/categorisation/vegetables/pumpkin.png",
-        "label": "The pumpkin"
+        "label": "Pumpkin",
+        "sfxUrl": "/static/exercise_assets/categorisation/vegetables/pumpkin.wav"
       },
       {
         "id": "sweetcorn",
         "imageUrl": "/static/exercise_assets/categorisation/vegetables/sweetcorn.png",
-        "label": "The sweetcorn"
+        "label": "Sweetcorn",
+        "sfxUrl": "/static/exercise_assets/categorisation/vegetables/sweetcorn.wav"
       },
       {
         "id": "tomato",
         "imageUrl": "/static/exercise_assets/categorisation/vegetables/tomato.png",
-        "label": "The tomato"
+        "label": "Tomato",
+        "sfxUrl": "/static/exercise_assets/categorisation/vegetables/tomato.wav"
       },
       {
         "id": "turnip",
         "imageUrl": "/static/exercise_assets/categorisation/vegetables/turnip.png",
-        "label": "The turnip"
+        "label": "Turnip",
+        "sfxUrl": "/static/exercise_assets/categorisation/vegetables/turnip.wav"
       },
       {
         "id": "vegetables_flaticon",
         "imageUrl": "/static/exercise_assets/categorisation/vegetables/vegetables_flaticon.png",
-        "label": "The vegetables flaticon"
+        "label": "Vegetables Flaticon"
       }
     ],
     "vehicles": [
       {
         "id": "ambulance",
         "imageUrl": "/static/exercise_assets/categorisation/vehicles/ambulance.png",
-        "label": "The ambulance"
+        "label": "Ambulance",
+        "sfxUrl": "/static/exercise_assets/categorisation/vehicles/ambulance.wav"
       },
       {
         "id": "boat",
         "imageUrl": "/static/exercise_assets/categorisation/vehicles/boat.png",
-        "label": "The boat"
+        "label": "Boat",
+        "sfxUrl": "/static/exercise_assets/categorisation/vehicles/boat.wav"
       },
       {
         "id": "bus",
         "imageUrl": "/static/exercise_assets/categorisation/vehicles/bus.png",
-        "label": "The bus"
+        "label": "Bus",
+        "sfxUrl": "/static/exercise_assets/categorisation/vehicles/bus.wav"
       },
       {
         "id": "car",
         "imageUrl": "/static/exercise_assets/categorisation/vehicles/car.png",
-        "label": "The car"
+        "label": "Car",
+        "sfxUrl": "/static/exercise_assets/categorisation/vehicles/car.wav"
       },
       {
         "id": "car_flaticon",
         "imageUrl": "/static/exercise_assets/categorisation/vehicles/car_flaticon.png",
-        "label": "The car flaticon"
+        "label": "Car Flaticon"
       },
       {
         "id": "fire_engine",
         "imageUrl": "/static/exercise_assets/categorisation/vehicles/fire_engine.png",
-        "label": "The fire engine"
+        "label": "Fire Engine",
+        "sfxUrl": "/static/exercise_assets/categorisation/vehicles/fire_engine.wav"
       },
       {
         "id": "helicopter",
         "imageUrl": "/static/exercise_assets/categorisation/vehicles/helicopter.png",
-        "label": "The helicopter"
+        "label": "Helicopter",
+        "sfxUrl": "/static/exercise_assets/categorisation/vehicles/helicopter.wav"
       },
       {
         "id": "motorbike",
         "imageUrl": "/static/exercise_assets/categorisation/vehicles/motorbike.png",
-        "label": "The motorbike"
+        "label": "Motorbike",
+        "sfxUrl": "/static/exercise_assets/categorisation/vehicles/motorbike.wav"
       },
       {
         "id": "plane",
         "imageUrl": "/static/exercise_assets/categorisation/vehicles/plane.png",
-        "label": "The plane"
+        "label": "Plane",
+        "sfxUrl": "/static/exercise_assets/categorisation/vehicles/plane.wav"
       },
       {
         "id": "police_car",
         "imageUrl": "/static/exercise_assets/categorisation/vehicles/police_car.png",
-        "label": "The police car"
+        "label": "Police Car",
+        "sfxUrl": "/static/exercise_assets/categorisation/vehicles/police_car.wav"
       },
       {
         "id": "transportation_flaticon",
         "imageUrl": "/static/exercise_assets/categorisation/vehicles/transportation_flaticon.png",
-        "label": "The transportation flaticon"
+        "label": "Transportation Flaticon"
       },
       {
         "id": "truck",
         "imageUrl": "/static/exercise_assets/categorisation/vehicles/truck.png",
-        "label": "The truck"
+        "label": "Truck",
+        "sfxUrl": "/static/exercise_assets/categorisation/vehicles/truck.wav"
       },
       {
         "id": "van",
         "imageUrl": "/static/exercise_assets/categorisation/vehicles/van.png",
-        "label": "The van"
+        "label": "Van",
+        "sfxUrl": "/static/exercise_assets/categorisation/vehicles/van.wav"
       }
     ],
     "zoo-animals": [
       {
         "id": "bear",
         "imageUrl": "/static/exercise_assets/categorisation/zoo-animals/bear.png",
-        "label": "The bear"
+        "label": "Bear",
+        "sfxUrl": "/static/exercise_assets/categorisation/zoo-animals/bear.wav"
       },
       {
         "id": "crocodile",
         "imageUrl": "/static/exercise_assets/categorisation/zoo-animals/crocodile.png",
-        "label": "The crocodile"
+        "label": "Crocodile",
+        "sfxUrl": "/static/exercise_assets/categorisation/zoo-animals/crocodile.wav"
       },
       {
         "id": "elephant",
         "imageUrl": "/static/exercise_assets/categorisation/zoo-animals/elephant.png",
-        "label": "The elephant"
+        "label": "Elephant",
+        "sfxUrl": "/static/exercise_assets/categorisation/zoo-animals/elephant.wav"
       },
       {
         "id": "giraffe",
         "imageUrl": "/static/exercise_assets/categorisation/zoo-animals/giraffe.png",
-        "label": "The giraffe"
+        "label": "Giraffe"
       },
       {
         "id": "hippo",
         "imageUrl": "/static/exercise_assets/categorisation/zoo-animals/hippo.png",
-        "label": "The hippo"
+        "label": "Hippo",
+        "sfxUrl": "/static/exercise_assets/categorisation/zoo-animals/hippo.wav"
       },
       {
         "id": "kangaroo",
         "imageUrl": "/static/exercise_assets/categorisation/zoo-animals/kangaroo.png",
-        "label": "The kangaroo"
+        "label": "Kangaroo",
+        "sfxUrl": "/static/exercise_assets/categorisation/zoo-animals/kangaroo.wav"
       },
       {
         "id": "lion",
         "imageUrl": "/static/exercise_assets/categorisation/zoo-animals/lion.png",
-        "label": "The lion"
+        "label": "Lion",
+        "sfxUrl": "/static/exercise_assets/categorisation/zoo-animals/lion.wav"
       },
       {
         "id": "monkey",
         "imageUrl": "/static/exercise_assets/categorisation/zoo-animals/monkey.png",
-        "label": "The monkey"
+        "label": "Monkey",
+        "sfxUrl": "/static/exercise_assets/categorisation/zoo-animals/monkey.wav"
       },
       {
         "id": "penguin",
         "imageUrl": "/static/exercise_assets/categorisation/zoo-animals/penguin.png",
-        "label": "The penguin"
+        "label": "Penguin",
+        "sfxUrl": "/static/exercise_assets/categorisation/zoo-animals/penguin.wav"
       },
       {
         "id": "savannah_flaticon",
         "imageUrl": "/static/exercise_assets/categorisation/zoo-animals/savannah_flaticon.png",
-        "label": "The savannah flaticon"
+        "label": "Savannah Flaticon"
       },
       {
         "id": "tiger",
         "imageUrl": "/static/exercise_assets/categorisation/zoo-animals/tiger.png",
-        "label": "The tiger"
+        "label": "Tiger",
+        "sfxUrl": "/static/exercise_assets/categorisation/zoo-animals/tiger.wav"
       },
       {
         "id": "toucan",
         "imageUrl": "/static/exercise_assets/categorisation/zoo-animals/toucan.png",
-        "label": "The toucan"
+        "label": "Toucan",
+        "sfxUrl": "/static/exercise_assets/categorisation/zoo-animals/toucan.wav"
       },
       {
         "id": "zebra",
         "imageUrl": "/static/exercise_assets/categorisation/zoo-animals/zebra.png",
-        "label": "The zebra"
+        "label": "Zebra",
+        "sfxUrl": "/static/exercise_assets/categorisation/zoo-animals/zebra.wav"
       },
       {
         "id": "zoo",
         "imageUrl": "/static/exercise_assets/categorisation/zoo-animals/zoo.png",
-        "label": "The zoo"
+        "label": "Zoo"
       }
     ]
   }

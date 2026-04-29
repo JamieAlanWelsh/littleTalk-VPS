@@ -8,6 +8,7 @@ import { DragDropProvider } from "@dnd-kit/react";
 import { CategoryBox } from "../../components/CategoryBox/CategoryBox";
 import { DraggableImage } from "../../components/DraggableImage/DraggableImage";
 import { PoolTray } from "../../components/PoolTray/PoolTray";
+import useAudio from "../../hooks/useAudio";
 import type { CategorisationItem } from "./types";
 import type { BoardState } from "./boardUtils";
 
@@ -34,16 +35,37 @@ export const CategorisationBoard = ({
     itemCorrectnessMap = {},
     showFeedback = false,
 }: CategorisationBoardProps) => {
+    const { play } = useAudio();
+
+    const playItemSfx = (item: CategorisationItem) => {
+        if (!item.sfxUrl) {
+            return;
+        }
+
+        play(item.sfxUrl);
+    };
+
     const renderImage = (itemId: string) => {
+        const item = itemsById[itemId];
         const isCorrect = showFeedback ? itemCorrectnessMap[itemId] : null;
         return (
             <DraggableImage
                 key={itemId}
                 id={itemId}
-                image={itemsById[itemId]}
+                image={item}
                 isCorrect={isCorrect}
                 isSelected={false}
                 onClick={() => {}}
+                onPointerEnter={(event) => {
+                    if (event.pointerType === "mouse") {
+                        playItemSfx(item);
+                    }
+                }}
+                onPointerDown={(event) => {
+                    if (event.pointerType !== "mouse") {
+                        playItemSfx(item);
+                    }
+                }}
             />
         );
     };

@@ -16,6 +16,7 @@ export const CategorisationItemSchema = z.object({
     id: z.string(),
     imageUrl: z.string(),
     label: z.string(),
+    sfxUrl: z.string().optional(),
 });
 
 export type CategorisationItem = z.infer<typeof CategorisationItemSchema>;
