@@ -55,7 +55,7 @@ export const PoolTray = ({
                     </div>
                 ) : (
                     <p className={styles.emptyState}>
-                        Drag items back here to return them to the tray.
+                        All done? Tap ‘Check’ to see how you did!
                     </p>
                 )}
             </div>

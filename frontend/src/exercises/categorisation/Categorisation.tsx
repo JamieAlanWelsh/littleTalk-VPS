@@ -16,7 +16,7 @@ import CategorisationGame from "./CategorisationGame";
 
 const EXERCISE_METADATA = {
     setupTitle: "Categorisation Setup",
-    setupSubtitle: "Get ready to group items into categories",
+    setupSubtitle: "Select categories and number of items to practice with.",
 };
 
 /**
