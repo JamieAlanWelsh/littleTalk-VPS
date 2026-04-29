@@ -11,7 +11,6 @@ interface DraggableImageProps {
     isDisabled?: boolean;
     onClick: () => void;
     onPointerEnter?: PointerEventHandler<HTMLButtonElement>;
-    onPointerDown?: PointerEventHandler<HTMLButtonElement>;
 }
 
 export const DraggableImage = ({
@@ -22,7 +21,6 @@ export const DraggableImage = ({
     isDisabled = false,
     onClick,
     onPointerEnter,
-    onPointerDown,
 }: DraggableImageProps) => {
     const { ref } = useDraggable({
         id,
@@ -37,7 +35,6 @@ export const DraggableImage = ({
             isDisabled={isDisabled}
             onClick={onClick}
             onPointerEnter={onPointerEnter}
-            onPointerDown={onPointerDown}
             ref={ref}
         />
     );

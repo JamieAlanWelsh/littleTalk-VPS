@@ -23,6 +23,7 @@
     height: 6.875rem;
     justify-content: center;
     flex-shrink: 0;
+    touch-action: none;
 }
 
 .icon-block:hover {

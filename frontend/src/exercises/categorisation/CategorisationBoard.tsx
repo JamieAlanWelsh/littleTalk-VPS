@@ -4,7 +4,12 @@
  */
 
 import type { DragEndEvent } from "@dnd-kit/abstract";
-import { DragDropProvider } from "@dnd-kit/react";
+import { PointerActivationConstraints } from "@dnd-kit/dom";
+import {
+    DragDropProvider,
+    KeyboardSensor,
+    PointerSensor,
+} from "@dnd-kit/react";
 import { CategoryBox } from "../../components/CategoryBox/CategoryBox";
 import { DraggableImage } from "../../components/DraggableImage/DraggableImage";
 import { PoolTray } from "../../components/PoolTray/PoolTray";
@@ -36,6 +41,14 @@ export const CategorisationBoard = ({
     showFeedback = false,
 }: CategorisationBoardProps) => {
     const { play } = useAudio();
+    const sensors = [
+        PointerSensor.configure({
+            activationConstraints: [
+                new PointerActivationConstraints.Distance({ value: 1 }),
+            ],
+        }),
+        KeyboardSensor,
+    ];
 
     const playItemSfx = (item: CategorisationItem) => {
         if (!item.sfxUrl) {
@@ -55,14 +68,11 @@ export const CategorisationBoard = ({
                 image={item}
                 isCorrect={isCorrect}
                 isSelected={false}
-                onClick={() => {}}
+                onClick={() => {
+                    playItemSfx(item);
+                }}
                 onPointerEnter={(event) => {
                     if (event.pointerType === "mouse") {
-                        playItemSfx(item);
-                    }
-                }}
-                onPointerDown={(event) => {
-                    if (event.pointerType !== "mouse") {
                         playItemSfx(item);
                     }
                 }}
@@ -77,7 +87,7 @@ export const CategorisationBoard = ({
                 gap: "1.5rem",
             }}
         >
-            <DragDropProvider onDragEnd={onDragEnd}>
+            <DragDropProvider sensors={sensors} onDragEnd={onDragEnd}>
                 <div
                     style={{
                         display: "flex",

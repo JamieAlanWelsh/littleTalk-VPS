@@ -8,6 +8,7 @@
         border-color 120ms ease,
         background-color 120ms ease;
     overflow: visible;
+    touch-action: none;
 }
 
 @media (max-width: 800px) {

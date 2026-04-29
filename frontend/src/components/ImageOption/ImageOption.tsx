@@ -1,4 +1,3 @@
-/* eslint-disable no-useless-assignment */
 /**
  * ImageOption Component
  *
@@ -16,7 +15,6 @@ interface ImageOptionProps {
     isDisabled?: boolean;
     onClick: () => void;
     onPointerEnter?: React.PointerEventHandler<HTMLButtonElement>;
-    onPointerDown?: React.PointerEventHandler<HTMLButtonElement>;
 }
 
 export const ImageOption = React.forwardRef<
@@ -31,7 +29,6 @@ export const ImageOption = React.forwardRef<
             isDisabled = false,
             onClick,
             onPointerEnter,
-            onPointerDown,
         },
         ref,
     ) => {
@@ -59,7 +56,6 @@ export const ImageOption = React.forwardRef<
                 className={`${styles["icon-block"]} ${styles[stateClass]}`}
                 onClick={onClick}
                 onPointerEnter={onPointerEnter}
-                onPointerDown={onPointerDown}
                 disabled={isDisabled}
                 aria-label={
                     image.label || image.altText || `Option ${image.id}`
