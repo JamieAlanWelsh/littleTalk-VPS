@@ -17,6 +17,7 @@ import type {
 import ExerciseLayout from "../../layouts/exerciseLayout/ExerciseLayout";
 import { ImageOption } from "../../components/ImageOption";
 import { useExerciseTracking } from "../../hooks";
+import { shuffleArray } from "../../utils/shuffleArray";
 import styles from "./thinkAndFind.module.css";
 
 const EXERCISE_ID = "think-and-find";
@@ -32,20 +33,6 @@ interface ThinkAndFindAnswer {
   correctIconId: string;
 }
 
-const shuffleArray = <T,>(items: T[]) => {
-  const shuffled = [...items];
-
-  for (let index = shuffled.length - 1; index > 0; index -= 1) {
-    const swapIndex = Math.floor(Math.random() * (index + 1));
-    [shuffled[index], shuffled[swapIndex]] = [
-      shuffled[swapIndex],
-      shuffled[index],
-    ];
-  }
-
-  return shuffled;
-};
-
 const toPicture = (item: ThinkAndFindItem): Picture => ({
   id: item.id,
   imageUrl: item.imageUrl,
@@ -57,24 +44,13 @@ const buildRounds = (
   payload: ThinkAndFindPayload,
   numberOfOptions: number,
 ): { questions: Question[]; answers: ThinkAndFindAnswer[] } => {
-  const roundsToPlay = payload.rounds ?? 5;
-  const availableSets = payload.imageSets.filter(
-    (imageSet) => imageSet.items.length > 0,
-  );
-
-  if (availableSets.length === 0) {
-    return { questions: [], answers: [] };
-  }
-
   const questions: Question[] = [];
   const answers: ThinkAndFindAnswer[] = [];
 
-  for (let roundIndex = 0; roundIndex < roundsToPlay; roundIndex += 1) {
+  for (let roundIndex = 0; roundIndex < payload.rounds; roundIndex += 1) {
     const imageSet =
-      availableSets[Math.floor(Math.random() * availableSets.length)];
-    const maxOptions = Math.min(6, imageSet.items.length);
-    const optionCount = Math.max(2, Math.min(numberOfOptions, maxOptions));
-    const optionItems = shuffleArray(imageSet.items).slice(0, optionCount);
+      payload.imageSets[Math.floor(Math.random() * payload.imageSets.length)];
+    const optionItems = shuffleArray(imageSet.items).slice(0, numberOfOptions);
     const targetItem =
       optionItems[Math.floor(Math.random() * optionItems.length)];
 
@@ -137,7 +113,7 @@ export const ThinkAndFindGame = ({
   };
 
   if (gameData.questions.length === 0) {
-    return <p>Unable to load any Think &amp; Find image sets.</p>;
+    return <p>Unable to load any Think and Find image sets.</p>;
   }
 
   return (

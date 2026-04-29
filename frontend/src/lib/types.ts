@@ -104,8 +104,8 @@ export const ThinkAndFindSetSchema = z.object({
 export type ThinkAndFindSet = z.infer<typeof ThinkAndFindSetSchema>;
 
 export const ThinkAndFindPayloadSchema = z.object({
-  rounds: z.number().int().positive().optional(),
-  imageSets: z.array(ThinkAndFindSetSchema).min(1),
+  rounds: z.number().int().positive(),
+  imageSets: z.array(ThinkAndFindSetSchema).min(4),
 });
 
 export type ThinkAndFindPayload = z.infer<typeof ThinkAndFindPayloadSchema>;
@@ -150,8 +150,8 @@ export const ConceptQuestSetSchema = z.object({
 export type ConceptQuestSet = z.infer<typeof ConceptQuestSetSchema>;
 
 export const ConceptQuestPayloadSchema = z.object({
-  rounds: z.number().int().positive().optional(),
-  imageSets: z.array(ConceptQuestSetSchema).min(1),
+  rounds: z.number().int().positive(),
+  imageSets: z.array(ConceptQuestSetSchema).min(4),
 });
 
 export type ConceptQuestPayload = z.infer<typeof ConceptQuestPayloadSchema>;

@@ -17,6 +17,7 @@ import type {
 import { ImageOption } from "../../components/ImageOption";
 import { useExerciseTracking } from "../../hooks";
 import ExerciseLayout from "../../layouts/exerciseLayout/ExerciseLayout";
+import { shuffleArray } from "../../utils/shuffleArray";
 import styles from "./conceptQuest.module.css";
 
 const EXERCISE_ID = "concept-quest";
@@ -39,20 +40,6 @@ interface ConceptQuestAnswer {
   options: Picture[];
   correctIconId: string;
 }
-
-const shuffleArray = <T,>(items: T[]) => {
-  const shuffled = [...items];
-
-  for (let index = shuffled.length - 1; index > 0; index -= 1) {
-    const swapIndex = Math.floor(Math.random() * (index + 1));
-    [shuffled[index], shuffled[swapIndex]] = [
-      shuffled[swapIndex],
-      shuffled[index],
-    ];
-  }
-
-  return shuffled;
-};
 
 const isLowEndConcept = (concept: ConceptQuestConcept) =>
   concept === "small" || concept === "short";
@@ -77,14 +64,11 @@ const buildRounds = (
   payload: ConceptQuestPayload,
   options: ConceptQuestOptions,
 ): { questions: Question[]; answers: ConceptQuestAnswer[] } => {
-  const roundsToPlay = payload.rounds ?? 5;
   const optionCount = getOptionCount(options.complexity);
-  const compatibleSets = payload.imageSets.filter(
-    (imageSet) =>
-      imageSet.items.length >= optionCount &&
-      imageSet.supportedConcepts.some((concept) =>
-        options.concepts.includes(concept),
-      ),
+  const compatibleSets = payload.imageSets.filter((imageSet) =>
+    imageSet.supportedConcepts.some((concept) =>
+      options.concepts.includes(concept),
+    ),
   );
 
   if (compatibleSets.length === 0) {
@@ -94,7 +78,7 @@ const buildRounds = (
   const questions: Question[] = [];
   const answers: ConceptQuestAnswer[] = [];
 
-  for (let roundIndex = 0; roundIndex < roundsToPlay; roundIndex += 1) {
+  for (let roundIndex = 0; roundIndex < payload.rounds; roundIndex += 1) {
     const imageSet =
       compatibleSets[Math.floor(Math.random() * compatibleSets.length)];
     const availableConcepts = imageSet.supportedConcepts.filter((concept) =>
