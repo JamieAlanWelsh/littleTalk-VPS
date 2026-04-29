@@ -15,6 +15,7 @@ import settingsStyles from "./CategorisationSettingsScreen.module.css";
 const MAX_SELECTED_CATEGORIES = 4;
 const DEFAULT_SELECTED_CATEGORY_COUNT = 2;
 const DEFAULT_ITEMS_PER_CATEGORY = 2;
+const MAX_ITEMS_PER_CATEGORY = 6;
 
 interface CategorisationSettingsScreenProps {
     payload: CategorisationExercisePayload;
@@ -65,9 +66,9 @@ export const CategorisationSettingsScreen = ({
         ),
     );
 
-    const maxItemsPerCategory = getMaxItemsPerCategory(
-        selectedCategoryIds,
-        payload.categories,
+    const maxItemsPerCategory = Math.min(
+        MAX_ITEMS_PER_CATEGORY,
+        getMaxItemsPerCategory(selectedCategoryIds, payload.categories),
     );
 
     useEffect(() => {
