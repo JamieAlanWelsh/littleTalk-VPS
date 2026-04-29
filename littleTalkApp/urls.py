@@ -109,4 +109,6 @@ urlpatterns = [
     # React test view
     path('hello-from-react/', react_test_views.hi_from_react, name='hi_from_react'),
     path('exercise-framework/sentence-matching/', react_test_views.sentence_matching_example, name='sentence_matching_example'),
+    path('exercise-framework/think-and-find/', react_test_views.think_and_find, name='think_and_find'),
+    path('exercise-framework/concept-quest/', react_test_views.concept_quest, name='concept_quest'),
 ]
