@@ -153,9 +153,9 @@
         "label": "The lemon"
       },
       {
-        "id": "orange_flaticon",
-        "imageUrl": "/static/exercise_assets/categorisation/fruits/orange_flaticon.png",
-        "label": "The orange flaticon"
+        "id": "orange",
+        "imageUrl": "/static/exercise_assets/categorisation/fruits/orange.png",
+        "label": "The orange"
       },
       {
         "id": "peach",
@@ -237,14 +237,9 @@
     ],
     "toys-sports": [
       {
-        "id": "basketball",
-        "imageUrl": "/static/exercise_assets/categorisation/toys-sports/basketball.png",
-        "label": "The basketball"
-      },
-      {
-        "id": "beach-ball",
-        "imageUrl": "/static/exercise_assets/categorisation/toys-sports/beach-ball.png",
-        "label": "The beach-ball"
+        "id": "ball",
+        "imageUrl": "/static/exercise_assets/categorisation/toys-sports/ball.png",
+        "label": "The ball"
       },
       {
         "id": "blocks",
@@ -267,19 +262,9 @@
         "label": "The rocking horse"
       },
       {
-        "id": "soccer-ball-variant",
-        "imageUrl": "/static/exercise_assets/categorisation/toys-sports/soccer-ball-variant.png",
-        "label": "The soccer-ball-variant"
-      },
-      {
         "id": "teddy_bear",
         "imageUrl": "/static/exercise_assets/categorisation/toys-sports/teddy_bear.png",
         "label": "The teddy bear"
-      },
-      {
-        "id": "tennis_ball",
-        "imageUrl": "/static/exercise_assets/categorisation/toys-sports/tennis_ball.png",
-        "label": "The tennis ball"
       },
       {
         "id": "toybox",
@@ -416,9 +401,9 @@
         "label": "The helicopter"
       },
       {
-        "id": "motorcycle",
-        "imageUrl": "/static/exercise_assets/categorisation/vehicles/motorcycle.png",
-        "label": "The motorcycle"
+        "id": "motorbike",
+        "imageUrl": "/static/exercise_assets/categorisation/vehicles/motorbike.png",
+        "label": "The motorbike"
       },
       {
         "id": "plane",
