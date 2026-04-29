@@ -295,7 +295,7 @@ def _map_skolon_role(skolon_role: str) -> str:
         return Role.ADMIN
     if "manager" in role:
         return Role.TEAM_MANAGER
-    return Role.STAFF
+    return Role.TEAM_MANAGER
 
 
 def _provision_local_user(skolon_user_obj: SkolonUser) -> "get_user_model()":
