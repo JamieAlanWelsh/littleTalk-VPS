@@ -467,12 +467,6 @@
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/sandcastle.wav"
     },
     {
-      "id": "what-chair-2",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/chair.png",
-      "label": "the chair",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/chair.wav"
-    },
-    {
       "id": "what-on-path",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/path.png",
       "label": "on the path",
@@ -521,12 +515,6 @@
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/dinner.wav"
     },
     {
-      "id": "what-on-path-2",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/path.png",
-      "label": "on the path",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/path.wav"
-    },
-    {
       "id": "what-apple",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/apple.png",
       "label": "the apple",
@@ -543,24 +531,6 @@
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/ice_cream.png",
       "label": "the ice cream",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/ice_cream.wav"
-    },
-    {
-      "id": "what-bed-2",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/bed.png",
-      "label": "the bed",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/bed.wav"
-    },
-    {
-      "id": "what-chair-3",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/chair.png",
-      "label": "the chair",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/chair.wav"
-    },
-    {
-      "id": "what-on-path-3",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/path.png",
-      "label": "on the path",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/path.wav"
     }
   ],
   "where": [
@@ -725,12 +695,6 @@
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/classroom.png",
       "label": "at school",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/classroom.wav"
-    },
-    {
-      "id": "where-garden-2",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/garden.png",
-      "label": "in the garden",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/garden.wav"
     },
     {
       "id": "where-bedroom",
