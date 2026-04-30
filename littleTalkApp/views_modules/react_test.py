@@ -65,5 +65,9 @@ def concept_quest(request):
     return render(request, "exercises/concept_quest.html", context)
 
 
+@login_required
 def colourful_semantics(request):
-    return render(request, "exercises/colourful_semantics.html")
+    context = {
+        "learner_uuid": _get_session_learner_uuid(request),
+    }
+    return render(request, "exercises/colourful_semantics.html", context)

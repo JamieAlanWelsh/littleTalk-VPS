@@ -13,6 +13,7 @@ const exercises = [
   'think-and-find',
   'concept-quest',
   'categorisation',
+  'colourful-semantics',
 ]
 
 // Create input object for multiple entry points
