@@ -37,7 +37,8 @@ interface ExerciseLayoutProps<AnswerType> {
     onCheckAnswer: (question: Question) => void;
     onResetQuestion: () => void;
     onSettingsRequested?: () => void;
-    children: ReactNode | ((currentAnswer: AnswerType) => ReactNode);
+    showSkip?: boolean;
+    children: ReactNode | ((currentAnswer: AnswerType, currentAnswerIndex: number) => ReactNode);
 }
 
 export const ExerciseLayout = <AnswerType,>({
@@ -49,6 +50,7 @@ export const ExerciseLayout = <AnswerType,>({
     onCheckAnswer,
     onResetQuestion,
     onSettingsRequested,
+    showSkip = true,
     children,
 }: ExerciseLayoutProps<AnswerType>) => {
     const [currentQuestionStateIndex, setCurrentQuestionStateIndex] =
@@ -189,8 +191,9 @@ export const ExerciseLayout = <AnswerType,>({
                                 ? (
                                       children as (
                                           currentAnswer: AnswerType,
+                                          currentAnswerIndex: number,
                                       ) => ReactNode
-                                  )(answers[currentQuestionStateIndex])
+                                  )(answers[currentQuestionStateIndex], currentQuestionStateIndex)
                                 : (children as ReactNode)}
                         </div>
                     </div>
@@ -199,6 +202,7 @@ export const ExerciseLayout = <AnswerType,>({
                     <ExerciseActionBar
                         actionBarPhase={actionBarPhase}
                         feedbackMessage={feedbackMessage}
+                        showSkip={showSkip}
                         onCheckAnswer={() => {
                             tracking.incrementAttempt(
                                 currentQuestionStateIndex,

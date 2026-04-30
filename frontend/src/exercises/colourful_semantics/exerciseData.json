@@ -702,5 +702,85 @@
       "label": "in the bedroom",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/bedroom.wav"
     }
+  ],
+  "scenes": [
+    {
+      "id": "blowing-bubbles",
+      "title": "Build a sentence that matches the picture",
+      "instruction": "Drag the matching word into each coloured block, then press Check.",
+      "modellingTip": "Use the picture to talk through who is there, what they are doing, what they have, and where they are.",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/blowing_bubbles.webp",
+      "targetImageAlt": "A girl blowing bubbles at the park.",
+      "steps": [
+        {
+          "id": "blowing-bubbles-who",
+          "slot": "who",
+          "title": "who",
+          "prompt": "Who is in the picture?",
+          "color": "#ff9d2e",
+          "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/who.png",
+          "levelIconAlt": "Who level icon",
+          "correctOptionId": "who-girl",
+          "optionIds": [
+            "who-girl",
+            "who-boy",
+            "who-lady",
+            "who-dog",
+            "who-cat"
+          ]
+        },
+        {
+          "id": "blowing-bubbles-doing",
+          "slot": "doing",
+          "title": "doing",
+          "prompt": "What is she doing?",
+          "color": "#f4e986",
+          "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/what_doing.png",
+          "levelIconAlt": "Doing level icon",
+          "correctOptionId": "doing-blowing",
+          "optionIds": [
+            "doing-blowing",
+            "doing-running",
+            "doing-jumping",
+            "doing-looking",
+            "doing-playing"
+          ]
+        },
+        {
+          "id": "blowing-bubbles-what",
+          "slot": "what",
+          "title": "what",
+          "prompt": "What is she blowing?",
+          "color": "#8fe2b3",
+          "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/what.png",
+          "levelIconAlt": "What level icon",
+          "correctOptionId": "what-bubbles",
+          "optionIds": [
+            "what-bubbles",
+            "what-ball",
+            "what-book",
+            "what-flower",
+            "what-toys"
+          ]
+        },
+        {
+          "id": "blowing-bubbles-where",
+          "slot": "where",
+          "title": "where",
+          "prompt": "Where is she?",
+          "color": "#9fc5ff",
+          "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/where.png",
+          "levelIconAlt": "Where level icon",
+          "correctOptionId": "where-park",
+          "optionIds": [
+            "where-park",
+            "where-beach",
+            "where-garden",
+            "where-school",
+            "where-home"
+          ]
+        }
+      ]
+    }
   ]
 }
