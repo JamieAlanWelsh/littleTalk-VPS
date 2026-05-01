@@ -1,0 +1,87 @@
+.board {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+}
+
+.slotsCard,
+.trayCard {
+    background: #ffffffde;
+    border-radius: 1.5rem;
+    border: 1px solid var(--border-grey);
+    padding: 1.25rem;
+}
+
+.slotsCard {
+    display: flex;
+    justify-content: center;
+}
+
+.slotsGrid {
+    width: 100%;
+    max-width: 26rem;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.slotGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.slotLabel {
+    margin: 0;
+    color: #2c233f;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.slotZone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 7rem;
+}
+
+.trayCard :global(.tray) {
+    background: transparent;
+    border: 0;
+    padding: 0;
+}
+
+.trayCard :global(.dropZone) {
+    min-height: 11.5rem;
+}
+
+.setTitle {
+    margin: 0;
+    text-align: center;
+    color: #2c233f;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+@media (max-width: 720px) {
+    .slotsGrid {
+        gap: 0.75rem;
+    }
+
+    .slotLabel {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 540px) {
+    .slotsGrid {
+        grid-template-columns: 1fr;
+        max-width: 12rem;
+    }
+
+    .slotZone {
+        min-height: auto;
+    }
+}
