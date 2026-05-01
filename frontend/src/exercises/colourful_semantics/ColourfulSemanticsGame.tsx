@@ -4,6 +4,7 @@ import { useExerciseTracking } from "../../hooks";
 import ExerciseLayout from "../../layouts/exerciseLayout/ExerciseLayout";
 import type { Question, QuestionState } from "../../lib/types";
 import ColourfulSemanticsBoard from "./ColourfulSemanticsBoard";
+import { configureScene } from "./configureScene";
 import {
     createBoardState,
     moveItem,
@@ -11,19 +12,24 @@ import {
 } from "./boardUtils";
 import type {
     ColourfulSemanticsOption,
+    ColourfulSemanticsOptions,
     ColourfulSemanticsPayload,
-    ColourfulSemanticsScene,
+    ConfiguredColourfulSemanticsScene,
 } from "./types";
 
 const EXERCISE_ID = "colourful-semantics";
 
 interface ColourfulSemanticsGameProps {
     onSettingsRequested?: () => void;
+    options: ColourfulSemanticsOptions;
     payload: ColourfulSemanticsPayload;
 }
 
 interface ColourfulSemanticsAnswer {
-    scene: ColourfulSemanticsScene;
+    sceneId: string;
+    presetId: ColourfulSemanticsOptions["presetId"];
+    numberOfOptions: number;
+    stepIds: string[];
 }
 
 const buildItemsById = (payload: ColourfulSemanticsPayload) =>
@@ -33,7 +39,7 @@ const buildItemsById = (payload: ColourfulSemanticsPayload) =>
             .map((item) => [item.id, item]),
     ) as Record<string, ColourfulSemanticsOption>;
 
-const buildQuestions = (scene: ColourfulSemanticsScene): Question[] =>
+const buildQuestions = (scene: ConfiguredColourfulSemanticsScene): Question[] =>
     scene.steps.map((step) => ({
         id: step.id,
         prompt: step.prompt,
@@ -47,7 +53,7 @@ const buildAffirmationPrompt = ({
 }: {
     lockedSelectionIds: Array<string | null>;
     itemsById: Record<string, ColourfulSemanticsOption>;
-    scene: ColourfulSemanticsScene;
+    scene: ConfiguredColourfulSemanticsScene;
 }) => {
     const sentence = scene.steps
         .map((_, stepIndex) => {
@@ -100,14 +106,28 @@ const buildCorrectnessMap = ({
 
 export const ColourfulSemanticsGame = ({
     onSettingsRequested,
+    options,
     payload,
 }: ColourfulSemanticsGameProps) => {
-    const scene = payload.scenes[0];
+    const scene = useMemo(
+        () =>
+            configureScene({
+                scene: payload.scenes[0],
+                options,
+            }),
+        [options, payload],
+    );
     const itemsById = useMemo(() => buildItemsById(payload), [payload]);
     const questions = useMemo(() => buildQuestions(scene), [scene]);
     const answers = useMemo(
-        () => questions.map(() => ({ scene })),
-        [questions, scene],
+        () =>
+            questions.map(() => ({
+                sceneId: scene.id,
+                presetId: options.presetId,
+                numberOfOptions: options.numberOfOptions,
+                stepIds: scene.steps.map((step) => step.id),
+            })),
+        [options.numberOfOptions, options.presetId, questions, scene],
     );
 
     const [lockedSelectionIds, setLockedSelectionIds] = useState<

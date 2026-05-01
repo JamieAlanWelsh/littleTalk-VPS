@@ -11,6 +11,23 @@ export type ColourfulSemanticsSlot = z.infer<
     typeof ColourfulSemanticsSlotSchema
 >;
 
+export const ColourfulSemanticsPresetIdSchema = z.enum([
+    "subject",
+    "verb",
+    "subject-verb",
+    "subject-verb-object",
+    "subject-verb-object-location",
+]);
+
+export type ColourfulSemanticsPresetId = z.infer<
+    typeof ColourfulSemanticsPresetIdSchema
+>;
+
+export interface ColourfulSemanticsOptions {
+    presetId: ColourfulSemanticsPresetId;
+    numberOfOptions: number;
+}
+
 export const ColourfulSemanticsOptionSchema = z.object({
     id: z.string(),
     imageUrl: z.string(),
@@ -40,6 +57,13 @@ export type ColourfulSemanticsStep = z.infer<
     typeof ColourfulSemanticsStepSchema
 >;
 
+export interface ConfiguredColourfulSemanticsStep extends Omit<
+    ColourfulSemanticsStep,
+    "optionIds"
+> {
+    optionIds: string[];
+}
+
 export const ColourfulSemanticsSceneSchema = z.object({
     id: z.string(),
     title: z.string(),
@@ -53,6 +77,13 @@ export const ColourfulSemanticsSceneSchema = z.object({
 export type ColourfulSemanticsScene = z.infer<
     typeof ColourfulSemanticsSceneSchema
 >;
+
+export interface ConfiguredColourfulSemanticsScene extends Omit<
+    ColourfulSemanticsScene,
+    "steps"
+> {
+    steps: ConfiguredColourfulSemanticsStep[];
+}
 
 export const ColourfulSemanticsPayloadSchema = z.object({
     who: z.array(ColourfulSemanticsOptionSchema).min(1),
