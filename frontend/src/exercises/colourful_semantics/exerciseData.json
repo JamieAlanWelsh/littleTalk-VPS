@@ -709,7 +709,7 @@
       "title": "Build a sentence that matches the picture",
       "instruction": "Drag the matching word into each coloured block, then press Check.",
       "modellingTip": "Use the picture to talk through who is there, what they are doing, what they have, and where they are.",
-      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/blowing_bubbles.webp",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/girl_blowing_bubbles_park.webp",
       "targetImageAlt": "A girl blowing bubbles at the park.",
       "steps": [
         {
