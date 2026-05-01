@@ -71,7 +71,13 @@ export const ColourfulSemanticsSceneSchema = z.object({
     modellingTip: z.string().optional(),
     targetImageUrl: z.string(),
     targetImageAlt: z.string(),
-    steps: z.array(ColourfulSemanticsStepSchema).length(4),
+    steps: z
+        .array(ColourfulSemanticsStepSchema)
+        .min(1)
+        .refine(
+            (steps) => new Set(steps.map((s) => s.slot)).size === steps.length,
+            { message: "Each slot must appear at most once per scene" },
+        ),
 });
 
 export type ColourfulSemanticsScene = z.infer<

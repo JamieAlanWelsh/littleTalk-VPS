@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { getMaxOptionsForPreset, getSlotsForPreset } from "./configureScene";
+import { getMaxOptionsAcrossScenes, getSlotsForPreset } from "./configureScene";
 import styles from "./ColourfulSemanticsSettingsScreen.module.css";
 import type {
     ColourfulSemanticsOptions,
@@ -40,10 +40,9 @@ export const ColourfulSemanticsSettingsScreen = ({
     payload,
     onSetOptions,
 }: ColourfulSemanticsSettingsScreenProps) => {
-    const scene = payload.scenes[0];
     const maxOptions = Math.min(
         5,
-        getMaxOptionsForPreset(scene, options.presetId),
+        getMaxOptionsAcrossScenes(payload.scenes, options.presetId),
     );
 
     useEffect(() => {

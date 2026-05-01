@@ -137,11 +137,25 @@
     /* opacity: 0.9; */
 }
 
+@keyframes traySlideIn {
+    from {
+        max-height: 0;
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+    to {
+        max-height: 18rem;
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 .tray {
     width: min(100%, 44rem);
     max-height: 18rem;
     opacity: 1;
     overflow: hidden;
+    animation: traySlideIn 300ms ease;
     transition:
         max-height 220ms ease,
         opacity 180ms ease,
