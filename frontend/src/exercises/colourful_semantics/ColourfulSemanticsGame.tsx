@@ -24,6 +24,7 @@ const EXERCISE_ID = "colourful-semantics";
 interface ColourfulSemanticsGameProps {
     onSettingsRequested?: () => void;
     onRoundComplete?: () => void;
+    onSkipRequested?: () => void;
     options: ColourfulSemanticsOptions;
     payload: ColourfulSemanticsPayload;
     scene: ColourfulSemanticsScene;
@@ -129,6 +130,7 @@ const buildCorrectnessMap = ({
 export const ColourfulSemanticsGame = ({
     onSettingsRequested,
     onRoundComplete,
+    onSkipRequested,
     options,
     payload,
     scene: rawScene,
@@ -252,7 +254,8 @@ export const ColourfulSemanticsGame = ({
                     : undefined
             }
             questions={questions}
-            showSkip={false}
+            showSkip={true}
+            onSkipRequested={onSkipRequested}
             tracking={tracking}
         >
             {(_, currentQuestionIndex) => {

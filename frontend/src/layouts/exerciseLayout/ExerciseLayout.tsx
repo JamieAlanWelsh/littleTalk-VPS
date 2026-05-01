@@ -43,6 +43,7 @@ interface ExerciseLayoutProps<AnswerType> {
     onSettingsRequested?: () => void;
     promptOverride?: string;
     showSkip?: boolean;
+    onSkipRequested?: () => void;
     /** 0–1 fraction already completed before this round starts. Default: 0. */
     progressBase?: number;
     /** Fraction of total that one round occupies. Default: 1. */
@@ -62,6 +63,7 @@ export const ExerciseLayout = <AnswerType,>({
     onSettingsRequested,
     promptOverride,
     showSkip = true,
+    onSkipRequested,
     progressBase = 0,
     progressScale = 1,
     children,
@@ -134,7 +136,11 @@ export const ExerciseLayout = <AnswerType,>({
 
     const onSkip = () => {
         tracking.incrementSkips();
-        onContinue();
+        if (onSkipRequested) {
+            onSkipRequested();
+        } else {
+            onContinue();
+        }
     };
 
     const onTryAgain = () => {
