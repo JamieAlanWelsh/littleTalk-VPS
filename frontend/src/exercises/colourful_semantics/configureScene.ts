@@ -35,6 +35,47 @@ export const getMaxOptionsForPreset = (
     );
 };
 
+/** Returns the slots authored in a specific scene. */
+export const getSceneSupportedSlots = (
+    scene: ColourfulSemanticsScene,
+): ColourfulSemanticsSlot[] => scene.steps.map((step) => step.slot);
+
+/**
+ * Minimum option count across ALL scenes for the given preset.
+ * Only counts steps that are relevant to the preset for each scene.
+ */
+export const getMaxOptionsAcrossScenes = (
+    scenes: ColourfulSemanticsScene[],
+    presetId: ColourfulSemanticsPresetId,
+): number => {
+    const presetSlots = getSlotsForPreset(presetId);
+    const perSceneLimits = scenes
+        .map((scene) =>
+            scene.steps.filter((step) => presetSlots.includes(step.slot)),
+        )
+        .filter((steps) => steps.length > 0)
+        .flatMap((steps) => steps.map((step) => step.optionIds.length));
+
+    if (perSceneLimits.length === 0) return 1;
+    return Math.min(...perSceneLimits);
+};
+
+/**
+ * Pick a random scene that is applicable to the given preset (has at least one
+ * matching slot).  Falls back to the full list if none match.
+ */
+export const pickRandomScene = (
+    scenes: ColourfulSemanticsScene[],
+    presetId: ColourfulSemanticsPresetId,
+): ColourfulSemanticsScene => {
+    const presetSlots = getSlotsForPreset(presetId);
+    const applicable = scenes.filter((scene) =>
+        scene.steps.some((step) => presetSlots.includes(step.slot)),
+    );
+    const pool = applicable.length > 0 ? applicable : scenes;
+    return pool[Math.floor(Math.random() * pool.length)];
+};
+
 const getConfiguredOptionIds = ({
     optionIds,
     correctOptionId,

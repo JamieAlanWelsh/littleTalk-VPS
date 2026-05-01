@@ -14,6 +14,7 @@ import type {
     ColourfulSemanticsOption,
     ColourfulSemanticsOptions,
     ColourfulSemanticsPayload,
+    ColourfulSemanticsScene,
     ConfiguredColourfulSemanticsScene,
 } from "./types";
 
@@ -21,8 +22,12 @@ const EXERCISE_ID = "colourful-semantics";
 
 interface ColourfulSemanticsGameProps {
     onSettingsRequested?: () => void;
+    onRoundComplete?: () => void;
     options: ColourfulSemanticsOptions;
     payload: ColourfulSemanticsPayload;
+    scene: ColourfulSemanticsScene;
+    progressBase?: number;
+    progressScale?: number;
 }
 
 interface ColourfulSemanticsAnswer {
@@ -106,16 +111,20 @@ const buildCorrectnessMap = ({
 
 export const ColourfulSemanticsGame = ({
     onSettingsRequested,
+    onRoundComplete,
     options,
     payload,
+    scene: rawScene,
+    progressBase,
+    progressScale,
 }: ColourfulSemanticsGameProps) => {
     const scene = useMemo(
         () =>
             configureScene({
-                scene: payload.scenes[0],
+                scene: rawScene,
                 options,
             }),
-        [options, payload],
+        [options, rawScene],
     );
     const itemsById = useMemo(() => buildItemsById(payload), [payload]);
     const questions = useMemo(() => buildQuestions(scene), [scene]);
@@ -198,6 +207,8 @@ export const ColourfulSemanticsGame = ({
             exerciseId={EXERCISE_ID}
             actionBarPhase={questionState.answerState}
             answers={answers}
+            progressBase={progressBase}
+            progressScale={progressScale}
             onCheckAnswer={onCheckAnswer}
             onBeforeContinue={({ isLastQuestion }) => {
                 if (
@@ -206,6 +217,11 @@ export const ColourfulSemanticsGame = ({
                     questionState.answerState === "correct"
                 ) {
                     setShowCompletionAffirmation(true);
+                    return "hold";
+                }
+
+                if (isLastQuestion && showCompletionAffirmation) {
+                    onRoundComplete?.();
                     return "hold";
                 }
 

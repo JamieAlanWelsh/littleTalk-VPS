@@ -43,6 +43,10 @@ interface ExerciseLayoutProps<AnswerType> {
     onSettingsRequested?: () => void;
     promptOverride?: string;
     showSkip?: boolean;
+    /** 0–1 fraction already completed before this round starts. Default: 0. */
+    progressBase?: number;
+    /** Fraction of total that one round occupies. Default: 1. */
+    progressScale?: number;
     children: ReactNode | ((currentAnswer: AnswerType, currentAnswerIndex: number) => ReactNode);
 }
 
@@ -58,6 +62,8 @@ export const ExerciseLayout = <AnswerType,>({
     onSettingsRequested,
     promptOverride,
     showSkip = true,
+    progressBase = 0,
+    progressScale = 1,
     children,
 }: ExerciseLayoutProps<AnswerType>) => {
     const [currentQuestionStateIndex, setCurrentQuestionStateIndex] =
@@ -67,7 +73,9 @@ export const ExerciseLayout = <AnswerType,>({
         useState(false);
     const submitExerciseMutation = useSubmitExerciseResult();
 
-    const progress = currentQuestionStateIndex / questions.length;
+    const progress =
+        progressBase +
+        progressScale * (currentQuestionStateIndex / questions.length);
     const isComplete = currentQuestionStateIndex === questions.length;
     const isLastQuestion = currentQuestionStateIndex === questions.length - 1;
 
