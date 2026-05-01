@@ -17,7 +17,6 @@ interface StoryTrainBoardProps {
     itemsById: Record<string, StoryTrainStep>;
     onDragEnd: (event: DragEndEvent) => void;
     itemCorrectnessMap?: Record<string, boolean>;
-    setTitle: string;
     showFeedback?: boolean;
 }
 
@@ -28,7 +27,6 @@ export const StoryTrainBoard = ({
     itemsById,
     onDragEnd,
     itemCorrectnessMap = {},
-    setTitle,
     showFeedback = false,
 }: StoryTrainBoardProps) => {
     const sensors = [
@@ -58,7 +56,6 @@ export const StoryTrainBoard = ({
 
     return (
         <div className={styles.board}>
-            <p className={styles.setTitle}>{setTitle}</p>
             <DragDropProvider sensors={sensors} onDragEnd={onDragEnd}>
                 <div className={styles.slotsCard}>
                     <div className={styles.slotsGrid}>
@@ -83,13 +80,11 @@ export const StoryTrainBoard = ({
                     </div>
                 </div>
 
-                <div className={styles.trayCard}>
-                    <PoolTray
-                        id="pool"
-                        itemIds={boardState.poolItemIds}
-                        renderItem={renderImage}
-                    />
-                </div>
+                <PoolTray
+                    id="pool"
+                    itemIds={boardState.poolItemIds}
+                    renderItem={renderImage}
+                />
             </DragDropProvider>
         </div>
     );
