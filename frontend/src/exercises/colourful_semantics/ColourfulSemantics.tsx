@@ -30,6 +30,7 @@ export const ColourfulSemanticsExercise = ({
     const [selectedScene, setSelectedScene] =
         useState<ColourfulSemanticsScene | null>(null);
     const [repetitionCount, setRepetitionCount] = useState(0);
+    const [skipToken, setSkipToken] = useState(0);
 
     const handleStart = () => {
         setRepetitionCount(0);
@@ -49,6 +50,17 @@ export const ColourfulSemanticsExercise = ({
         if (nextRep < TOTAL_REPETITIONS) {
             setSelectedScene(pickRandomScene(payload.scenes, options.presetId));
         }
+    };
+
+    const handleSkipTarget = () => {
+        setSelectedScene(
+            pickRandomScene(
+                payload.scenes,
+                options.presetId,
+                selectedScene?.id,
+            ),
+        );
+        setSkipToken((t) => t + 1);
     };
 
     const handleEndscreenReturn = () => {
@@ -85,9 +97,10 @@ export const ColourfulSemanticsExercise = ({
 
     return (
         <ColourfulSemanticsGame
-            key={repetitionCount}
+            key={`${repetitionCount}-${skipToken}`}
             onSettingsRequested={handleSettingsRequested}
             onRoundComplete={handleRoundComplete}
+            onSkipRequested={handleSkipTarget}
             options={options}
             payload={payload}
             scene={selectedScene!}

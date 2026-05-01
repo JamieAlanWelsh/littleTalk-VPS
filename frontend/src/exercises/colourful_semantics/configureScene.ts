@@ -67,13 +67,18 @@ export const getMaxOptionsAcrossScenes = (
 export const pickRandomScene = (
     scenes: ColourfulSemanticsScene[],
     presetId: ColourfulSemanticsPresetId,
+    excludeSceneId?: string,
 ): ColourfulSemanticsScene => {
     const presetSlots = getSlotsForPreset(presetId);
     const applicable = scenes.filter((scene) =>
         scene.steps.some((step) => presetSlots.includes(step.slot)),
     );
     const pool = applicable.length > 0 ? applicable : scenes;
-    return pool[Math.floor(Math.random() * pool.length)];
+    const preferred = excludeSceneId
+        ? pool.filter((s) => s.id !== excludeSceneId)
+        : pool;
+    const finalPool = preferred.length > 0 ? preferred : pool;
+    return finalPool[Math.floor(Math.random() * finalPool.length)];
 };
 
 const getConfiguredOptionIds = ({
