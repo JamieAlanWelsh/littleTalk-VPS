@@ -1,4 +1,4 @@
-import type { ColourfulSemanticsScene } from "./types";
+import type { ConfiguredColourfulSemanticsScene } from "./types";
 
 export type ItemId = string;
 
@@ -57,7 +57,7 @@ export const createBoardState = ({
     currentSelectionId,
     lockedSelectionIds,
 }: {
-    scene: ColourfulSemanticsScene;
+    scene: ConfiguredColourfulSemanticsScene;
     activeStepIndex: number;
     currentSelectionId: string | null;
     lockedSelectionIds: Array<string | null>;

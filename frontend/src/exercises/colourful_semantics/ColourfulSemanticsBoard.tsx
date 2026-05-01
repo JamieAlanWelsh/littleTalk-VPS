@@ -12,7 +12,7 @@ import useAudio from "../../hooks/useAudio";
 import styles from "./colourfulSemantics.module.css";
 import type {
     ColourfulSemanticsOption,
-    ColourfulSemanticsScene,
+    ConfiguredColourfulSemanticsScene,
 } from "./types";
 import type { SentenceBoardState } from "./boardUtils";
 import { getSlotId, POOL_ID } from "./boardUtils";
@@ -25,7 +25,7 @@ interface ColourfulSemanticsBoardProps {
     isReadOnly?: boolean;
     itemsById: Record<string, ColourfulSemanticsOption>;
     onDragEnd: (event: DragEndEvent) => void;
-    scene: ColourfulSemanticsScene;
+    scene: ConfiguredColourfulSemanticsScene;
     showAllSlotsVisible?: boolean;
     showFeedback?: boolean;
 }
