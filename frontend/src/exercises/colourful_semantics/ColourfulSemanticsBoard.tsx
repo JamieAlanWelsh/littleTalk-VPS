@@ -10,6 +10,7 @@ import { DroppableImageZone } from "../../components/DroppableImageZone/Droppabl
 import { PoolTray } from "../../components/PoolTray/PoolTray";
 import useAudio from "../../hooks/useAudio";
 import styles from "./colourfulSemantics.module.css";
+import { getIsPluralSubject, resolveOptionPresentation } from "./presentation";
 import type {
     ColourfulSemanticsOption,
     ConfiguredColourfulSemanticsScene,
@@ -78,6 +79,11 @@ export const ColourfulSemanticsBoard = ({
     showFeedback = false,
 }: ColourfulSemanticsBoardProps) => {
     const { play } = useAudio();
+    const isPluralSubject = getIsPluralSubject({
+        itemsById,
+        scene,
+        selectionIds: boardState.slotItemIds,
+    });
     const sensors = [
         PointerSensor.configure({
             activationConstraints: [
@@ -87,17 +93,35 @@ export const ColourfulSemanticsBoard = ({
         KeyboardSensor,
     ];
 
-    const playItemSfx = (item: ColourfulSemanticsOption) => {
-        if (!item.sfxUrl) {
+    const playItemSfx = (
+        item: ColourfulSemanticsOption,
+        slot: ConfiguredColourfulSemanticsScene["steps"][number]["slot"],
+    ) => {
+        const { sfxUrl } = resolveOptionPresentation({
+            item,
+            slot,
+            isPluralSubject,
+        });
+
+        if (!sfxUrl) {
             return;
         }
 
-        play(item.sfxUrl);
+        play(sfxUrl);
     };
 
-    const renderImage = (itemId: string, isLocked = false) => {
+    const renderImage = (
+        itemId: string,
+        slot: ConfiguredColourfulSemanticsScene["steps"][number]["slot"],
+        isLocked = false,
+    ) => {
         const item = itemsById[itemId];
         const isCorrect = showFeedback ? itemCorrectnessMap[itemId] : null;
+        const presentation = resolveOptionPresentation({
+            item,
+            slot,
+            isPluralSubject,
+        });
 
         return (
             <DraggableImage
@@ -106,19 +130,19 @@ export const ColourfulSemanticsBoard = ({
                 image={{
                     id: item.id,
                     imageUrl: item.imageUrl,
-                    label: item.label,
-                    sfxUrl: item.sfxUrl,
+                    label: presentation.label,
+                    sfxUrl: presentation.sfxUrl,
                 }}
                 isCorrect={isCorrect}
                 isSelected={false}
                 optionBackgroundColor={getOptionBackgroundColour(itemId)}
                 isBorderless={isLocked}
                 onClick={() => {
-                    playItemSfx(item);
+                    playItemSfx(item, slot);
                 }}
                 onPointerEnter={(event) => {
                     if (event.pointerType === "mouse") {
-                        playItemSfx(item);
+                        playItemSfx(item, slot);
                     }
                 }}
             />
@@ -154,8 +178,11 @@ export const ColourfulSemanticsBoard = ({
                             );
                             const slotTitle =
                                 isLocked && slotItemId
-                                    ? (itemsById[slotItemId]?.label ??
-                                      step.title)
+                                    ? (resolveOptionPresentation({
+                                          item: itemsById[slotItemId],
+                                          slot: step.slot,
+                                          isPluralSubject,
+                                      }).label ?? step.title)
                                     : step.title;
 
                             return (
@@ -181,6 +208,7 @@ export const ColourfulSemanticsBoard = ({
                                             {slotItemId
                                                 ? renderImage(
                                                       slotItemId,
+                                                      step.slot,
                                                       isLocked,
                                                   )
                                                 : renderPlaceholder(
@@ -202,8 +230,22 @@ export const ColourfulSemanticsBoard = ({
                     <PoolTray
                         id={POOL_ID}
                         itemIds={boardState.poolItemIds}
+                        getItemLabel={(itemId) =>
+                            resolveOptionPresentation({
+                                item: itemsById[itemId],
+                                slot:
+                                    scene.steps[activeStepIndex]?.slot ??
+                                    "doing",
+                                isPluralSubject,
+                            }).label
+                        }
                         itemsById={itemsById}
-                        renderItem={renderImage}
+                        renderItem={(itemId) =>
+                            renderImage(
+                                itemId,
+                                scene.steps[activeStepIndex]?.slot ?? "doing",
+                            )
+                        }
                     />
                 </div>
             </div>

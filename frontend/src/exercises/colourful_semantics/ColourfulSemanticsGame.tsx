@@ -5,6 +5,7 @@ import ExerciseLayout from "../../layouts/exerciseLayout/ExerciseLayout";
 import type { Question, QuestionState } from "../../lib/types";
 import ColourfulSemanticsBoard from "./ColourfulSemanticsBoard";
 import { configureScene } from "./configureScene";
+import { getIsPluralSubject, resolveOptionPresentation } from "./presentation";
 import {
     createBoardState,
     moveItem,
@@ -60,15 +61,31 @@ const buildAffirmationPrompt = ({
     itemsById: Record<string, ColourfulSemanticsOption>;
     scene: ConfiguredColourfulSemanticsScene;
 }) => {
+    const isPluralSubject = getIsPluralSubject({
+        itemsById,
+        scene,
+        selectionIds: lockedSelectionIds,
+    });
+
     const sentence = scene.steps
-        .map((_, stepIndex) => {
+        .map((step, stepIndex) => {
             const selectionId = lockedSelectionIds[stepIndex];
 
             if (!selectionId) {
                 return "";
             }
 
-            return itemsById[selectionId]?.label ?? "";
+            const item = itemsById[selectionId];
+
+            if (!item) {
+                return "";
+            }
+
+            return resolveOptionPresentation({
+                item,
+                slot: step.slot,
+                isPluralSubject,
+            }).label;
         })
         .filter(Boolean)
         .join(" ")

@@ -70,6 +70,7 @@
       "id": "who-children",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/children.png",
       "label": "The children",
+      "isPlural": true,
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/children.wav"
     },
     {
