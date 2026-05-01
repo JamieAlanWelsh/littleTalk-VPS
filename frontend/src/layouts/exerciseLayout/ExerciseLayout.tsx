@@ -36,7 +36,12 @@ interface ExerciseLayoutProps<AnswerType> {
     tracking: ReturnType<typeof useExerciseTracking>;
     onCheckAnswer: (question: Question) => void;
     onResetQuestion: () => void;
+    onBeforeContinue?: (params: {
+        currentQuestionIndex: number;
+        isLastQuestion: boolean;
+    }) => "proceed" | "hold";
     onSettingsRequested?: () => void;
+    promptOverride?: string;
     showSkip?: boolean;
     children: (
         currentAnswer: AnswerType,
@@ -52,7 +57,9 @@ export const ExerciseLayout = <AnswerType,>({
     tracking,
     onCheckAnswer,
     onResetQuestion,
+    onBeforeContinue,
     onSettingsRequested,
+    promptOverride,
     showSkip = true,
     children,
 }: ExerciseLayoutProps<AnswerType>) => {
@@ -103,6 +110,15 @@ export const ExerciseLayout = <AnswerType,>({
     };
 
     const onContinue = () => {
+        const continueDecision = onBeforeContinue?.({
+            currentQuestionIndex: currentQuestionStateIndex,
+            isLastQuestion,
+        });
+
+        if (continueDecision === "hold") {
+            return;
+        }
+
         setCurrentQuestionStateIndex((prev) => prev + 1);
         if (isLastQuestion) {
             submitExerciseResults();
@@ -175,9 +191,11 @@ export const ExerciseLayout = <AnswerType,>({
                             }}
                         >
                             <TypeAnimation
-                                key={questions[currentQuestionStateIndex].id} // Reset animation on question change
+                                key={`${questions[currentQuestionStateIndex].id}-${promptOverride ?? ""}`} // Reset animation on question or override prompt change
                                 sequence={[
-                                    questions[currentQuestionStateIndex].prompt,
+                                    promptOverride ??
+                                        questions[currentQuestionStateIndex]
+                                            .prompt,
                                 ]}
                                 speed={60}
                                 cursor={false}

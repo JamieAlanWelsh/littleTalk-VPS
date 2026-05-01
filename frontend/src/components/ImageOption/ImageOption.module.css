@@ -37,6 +37,20 @@
     border-color: var(--accent-color-dark);
 }
 
+.icon-block.withCustomBackground.interactive {
+    background-color: var(--option-bg-color);
+}
+
+.icon-block.borderless {
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.icon-block.borderless:hover {
+    border-color: transparent;
+    box-shadow: none;
+}
+
 .icon-block.selected {
     background-color: var(--accent-color);
     border-color: var(--button-green);

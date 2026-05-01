@@ -13,6 +13,8 @@ interface ImageOptionProps {
     isCorrect: boolean | null;
     isSelected: boolean;
     isDisabled?: boolean;
+    optionBackgroundColor?: string;
+    isBorderless?: boolean;
     onClick: () => void;
     onPointerEnter?: React.PointerEventHandler<HTMLButtonElement>;
 }
@@ -27,6 +29,8 @@ export const ImageOption = React.forwardRef<
             isCorrect,
             isSelected,
             isDisabled = false,
+            optionBackgroundColor,
+            isBorderless = false,
             onClick,
             onPointerEnter,
         },
@@ -53,7 +57,7 @@ export const ImageOption = React.forwardRef<
 
         return (
             <button
-                className={`${styles["icon-block"]} ${styles[stateClass]}`}
+                className={`${styles["icon-block"]} ${styles[stateClass]} ${optionBackgroundColor ? styles.withCustomBackground : ""} ${isBorderless ? styles.borderless : ""}`.trim()}
                 onClick={onClick}
                 onPointerEnter={onPointerEnter}
                 disabled={isDisabled}
@@ -62,6 +66,14 @@ export const ImageOption = React.forwardRef<
                 }
                 type="button"
                 ref={ref}
+                style={
+                    optionBackgroundColor
+                        ? {
+                              ["--option-bg-color" as string]:
+                                  optionBackgroundColor,
+                          }
+                        : undefined
+                }
             >
                 <img
                     src={image.imageUrl}
