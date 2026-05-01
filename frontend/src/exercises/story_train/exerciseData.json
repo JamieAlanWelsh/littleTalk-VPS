@@ -1,0 +1,88 @@
+{
+  "instruction": "Drag the pictures into the right order",
+  "modellingTip": "Modelling Tip: Use time words like first, next, and then while you talk through the story.",
+  "rounds": 3,
+  "sets": [
+    {
+      "id": "building",
+      "title": "Building the tower",
+      "steps": [
+        {
+          "id": "building-1",
+          "imageUrl": "/static/exercise_assets/story_train/building/building-1.webp",
+          "label": "Start the tower",
+          "altText": "A child beginning to stack blocks on a table.",
+          "order": 0
+        },
+        {
+          "id": "building-2",
+          "imageUrl": "/static/exercise_assets/story_train/building/building-2.webp",
+          "label": "Add more blocks",
+          "altText": "A child stacking more blocks to make the tower taller.",
+          "order": 1
+        },
+        {
+          "id": "building-3",
+          "imageUrl": "/static/exercise_assets/story_train/building/building-3.webp",
+          "label": "Finished tower",
+          "altText": "A child smiling with a tall tower of blocks.",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "id": "raincoat",
+      "title": "Putting on a raincoat",
+      "steps": [
+        {
+          "id": "rain-2",
+          "imageUrl": "/static/exercise_assets/story_train/raincoat/rain-2.webp",
+          "label": "Pick up the coat",
+          "altText": "A child holding a yellow raincoat before putting it on.",
+          "order": 0
+        },
+        {
+          "id": "rain-3",
+          "imageUrl": "/static/exercise_assets/story_train/raincoat/rain-3.webp",
+          "label": "Put the coat on",
+          "altText": "A child pulling on a yellow raincoat.",
+          "order": 1
+        },
+        {
+          "id": "rain-4",
+          "imageUrl": "/static/exercise_assets/story_train/raincoat/rain-4.webp",
+          "label": "Ready to go outside",
+          "altText": "A child wearing the raincoat and ready to go out.",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "id": "snowman",
+      "title": "Making a snowman",
+      "steps": [
+        {
+          "id": "snowman-1",
+          "imageUrl": "/static/exercise_assets/story_train/snowman/snowman-1.webp",
+          "label": "Start the snowman",
+          "altText": "A child beginning a snowman with the first snowball.",
+          "order": 0
+        },
+        {
+          "id": "snowman-2",
+          "imageUrl": "/static/exercise_assets/story_train/snowman/snowman-2.webp",
+          "label": "Build it up",
+          "altText": "A child adding another snowball to build the snowman.",
+          "order": 1
+        },
+        {
+          "id": "snowman-3",
+          "imageUrl": "/static/exercise_assets/story_train/snowman/snowman-3.webp",
+          "label": "Finished snowman",
+          "altText": "A child standing with a completed snowman.",
+          "order": 2
+        }
+      ]
+    }
+  ]
+}

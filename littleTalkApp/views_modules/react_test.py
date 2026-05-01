@@ -71,3 +71,11 @@ def colourful_semantics(request):
         "learner_uuid": _get_session_learner_uuid(request),
     }
     return render(request, "exercises/colourful_semantics.html", context)
+
+
+@login_required
+def story_train(request):
+    context = {
+        "learner_uuid": _get_session_learner_uuid(request),
+    }
+    return render(request, "exercises/story_train.html", context)
