@@ -33,6 +33,7 @@ export const ColourfulSemanticsOptionSchema = z.object({
     imageUrl: z.string(),
     label: z.string(),
     sfxUrl: z.string().optional(),
+    isPlural: z.boolean().optional(),
     pluralLabel: z.string().optional(),
     pluralSfxUrl: z.string().optional(),
 });

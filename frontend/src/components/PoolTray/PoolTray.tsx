@@ -5,6 +5,7 @@ import styles from "./PoolTray.module.css";
 interface PoolTrayProps {
     id: string;
     itemIds: string[];
+    getItemLabel?: (itemId: string) => string | undefined;
     renderItem?: (itemId: string) => React.ReactNode;
     itemsById?: Record<string, { label?: string }>;
 }
@@ -14,6 +15,7 @@ const ITEMS_PER_VIEW = 5;
 export const PoolTray = ({
     id,
     itemIds,
+    getItemLabel,
     renderItem,
     itemsById = {},
 }: PoolTrayProps) => {
@@ -41,9 +43,11 @@ export const PoolTray = ({
                                         className={styles.itemWrapper}
                                     >
                                         {renderItem(itemId)}
-                                        {itemsById[itemId]?.label && (
+                                        {(getItemLabel?.(itemId) ??
+                                            itemsById[itemId]?.label) && (
                                             <p className={styles.itemLabel}>
-                                                {itemsById[itemId].label}
+                                                {getItemLabel?.(itemId) ??
+                                                    itemsById[itemId]?.label}
                                             </p>
                                         )}
                                     </div>
