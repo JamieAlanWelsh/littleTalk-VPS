@@ -25,7 +25,7 @@ interface StoryTrainAnswer {
 const buildQuestions = (selectedSets: StoryTrainSet[]): Question[] =>
     selectedSets.map((storySet) => ({
         id: storySet.id,
-        prompt: "Drag the pictures into the right order",
+        prompt: storySet.title,
         correctIconIds: storySet.steps
             .slice()
             .sort((left, right) => left.order - right.order)
@@ -131,7 +131,6 @@ export const StoryTrainGame = ({ selectedSets }: StoryTrainGameProps) => {
             answers={answers}
             onCheckAnswer={onCheckAnswer}
             onResetQuestion={onResetQuestion}
-            promptOverride="Drag the pictures into the right order"
             questions={questions}
             tracking={tracking}
         >
@@ -147,7 +146,6 @@ export const StoryTrainGame = ({ selectedSets }: StoryTrainGameProps) => {
                     onDragEnd={(event) =>
                         handleDragEnd(currentQuestionIndex, event)
                     }
-                    setTitle={currentAnswer.set.title}
                     showFeedback={questionState.answerState !== "notAnswered"}
                 />
             )}

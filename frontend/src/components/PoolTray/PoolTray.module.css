@@ -17,7 +17,7 @@
 }
 
 .dropZone {
-    height: 10rem;
+    min-height: 10rem;
     border: 2px dashed transparent;
     border-radius: 16px;
     background: #f6f7fb;
