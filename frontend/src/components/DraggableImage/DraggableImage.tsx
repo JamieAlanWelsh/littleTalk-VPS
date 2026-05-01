@@ -9,6 +9,8 @@ interface DraggableImageProps {
     isCorrect: boolean | null;
     isSelected: boolean;
     isDisabled?: boolean;
+    optionBackgroundColor?: string;
+    isBorderless?: boolean;
     onClick: () => void;
     onPointerEnter?: PointerEventHandler<HTMLButtonElement>;
 }
@@ -19,6 +21,8 @@ export const DraggableImage = ({
     isCorrect,
     isSelected,
     isDisabled = false,
+    optionBackgroundColor,
+    isBorderless = false,
     onClick,
     onPointerEnter,
 }: DraggableImageProps) => {
@@ -33,6 +37,8 @@ export const DraggableImage = ({
             isCorrect={isCorrect}
             isSelected={isSelected}
             isDisabled={isDisabled}
+            optionBackgroundColor={optionBackgroundColor}
+            isBorderless={isBorderless}
             onClick={onClick}
             onPointerEnter={onPointerEnter}
             ref={ref}

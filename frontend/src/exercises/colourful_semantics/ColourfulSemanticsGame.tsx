@@ -36,33 +36,52 @@ const buildItemsById = (payload: ColourfulSemanticsPayload) =>
 const buildQuestions = (scene: ColourfulSemanticsScene): Question[] =>
     scene.steps.map((step) => ({
         id: step.id,
-        prompt: scene.title,
+        prompt: step.prompt,
         correctIconIds: [step.correctOptionId],
     }));
 
+const buildAffirmationPrompt = ({
+    lockedSelectionIds,
+    itemsById,
+    scene,
+}: {
+    lockedSelectionIds: Array<string | null>;
+    itemsById: Record<string, ColourfulSemanticsOption>;
+    scene: ColourfulSemanticsScene;
+}) => {
+    const sentence = scene.steps
+        .map((_, stepIndex) => {
+            const selectionId = lockedSelectionIds[stepIndex];
+
+            if (!selectionId) {
+                return "";
+            }
+
+            return itemsById[selectionId]?.label ?? "";
+        })
+        .filter(Boolean)
+        .join(" ")
+        .trim();
+
+    const sentenceWithPunctuation = /[.!?]$/.test(sentence)
+        ? sentence
+        : `${sentence}.`;
+
+    return sentence
+        ? `That's right! ${sentenceWithPunctuation}`
+        : "That's right!";
+};
+
 const buildCorrectnessMap = ({
     boardState,
-    lockedSelectionIds,
     questionState,
-    scene,
     activeStepIndex,
 }: {
     boardState: SentenceBoardState;
-    lockedSelectionIds: Array<string | null>;
     questionState: QuestionState;
-    scene: ColourfulSemanticsScene;
     activeStepIndex: number;
 }) => {
     const correctnessMap: Record<string, boolean> = {};
-
-    lockedSelectionIds.forEach((selectionId, stepIndex) => {
-        if (!selectionId) {
-            return;
-        }
-
-        correctnessMap[selectionId] =
-            selectionId === scene.steps[stepIndex].correctOptionId;
-    });
 
     const activeSelectionId = boardState.slotItemIds[activeStepIndex];
 
@@ -70,15 +89,11 @@ const buildCorrectnessMap = ({
         return correctnessMap;
     }
 
-    correctnessMap[activeSelectionId] =
-        questionState.answerState === "correct"
-            ? true
-            : questionState.answerState === "incorrect"
-              ? false
-              : activeSelectionId ===
-                  scene.steps[activeStepIndex].correctOptionId
-                ? true
-                : (correctnessMap[activeSelectionId] ?? false);
+    if (questionState.answerState === "correct") {
+        correctnessMap[activeSelectionId] = true;
+    } else if (questionState.answerState === "incorrect") {
+        correctnessMap[activeSelectionId] = false;
+    }
 
     return correctnessMap;
 };
@@ -102,7 +117,19 @@ export const ColourfulSemanticsGame = ({
         selectedIconIds: [],
         answerState: "notAnswered",
     });
+    const [showCompletionAffirmation, setShowCompletionAffirmation] =
+        useState(false);
     const tracking = useExerciseTracking(questions.length);
+
+    const completionAffirmationPrompt = useMemo(
+        () =>
+            buildAffirmationPrompt({
+                lockedSelectionIds,
+                itemsById,
+                scene,
+            }),
+        [lockedSelectionIds, itemsById, scene],
+    );
 
     const onCheckAnswer = (question: Question) => {
         const selectedIconId = questionState.selectedIconIds[0];
@@ -136,6 +163,10 @@ export const ColourfulSemanticsGame = ({
     };
 
     const onResetQuestion = () => {
+        if (showCompletionAffirmation) {
+            return;
+        }
+
         setQuestionState({
             selectedIconIds: [],
             answerState: "notAnswered",
@@ -148,23 +179,52 @@ export const ColourfulSemanticsGame = ({
             actionBarPhase={questionState.answerState}
             answers={answers}
             onCheckAnswer={onCheckAnswer}
+            onBeforeContinue={({ isLastQuestion }) => {
+                if (
+                    isLastQuestion &&
+                    !showCompletionAffirmation &&
+                    questionState.answerState === "correct"
+                ) {
+                    setShowCompletionAffirmation(true);
+                    return "hold";
+                }
+
+                return "proceed";
+            }}
             onResetQuestion={onResetQuestion}
             onSettingsRequested={onSettingsRequested}
+            promptOverride={
+                showCompletionAffirmation
+                    ? completionAffirmationPrompt
+                    : undefined
+            }
             questions={questions}
             showSkip={false}
             tracking={tracking}
         >
             {(_, currentQuestionIndex) => {
+                const isFinalAffirmationView =
+                    showCompletionAffirmation &&
+                    currentQuestionIndex === questions.length - 1;
                 const currentSelectionId =
                     questionState.selectedIconIds[0] ?? null;
-                const boardState = createBoardState({
-                    scene,
-                    activeStepIndex: currentQuestionIndex,
-                    currentSelectionId,
-                    lockedSelectionIds,
-                });
+                const boardState = isFinalAffirmationView
+                    ? {
+                          poolItemIds: [],
+                          slotItemIds: lockedSelectionIds,
+                      }
+                    : createBoardState({
+                          scene,
+                          activeStepIndex: currentQuestionIndex,
+                          currentSelectionId,
+                          lockedSelectionIds,
+                      });
 
                 const handleDragEnd = (event: DragEndEvent) => {
+                    if (isFinalAffirmationView) {
+                        return;
+                    }
+
                     if (questionState.answerState !== "notAnswered") {
                         return;
                     }
@@ -198,22 +258,25 @@ export const ColourfulSemanticsGame = ({
                     }));
                 };
 
-                const itemCorrectnessMap = buildCorrectnessMap({
-                    boardState,
-                    lockedSelectionIds,
-                    questionState,
-                    scene,
-                    activeStepIndex: currentQuestionIndex,
-                });
+                const itemCorrectnessMap = isFinalAffirmationView
+                    ? {}
+                    : buildCorrectnessMap({
+                          boardState,
+                          questionState,
+                          activeStepIndex: currentQuestionIndex,
+                      });
 
                 return (
                     <ColourfulSemanticsBoard
                         activeStepIndex={currentQuestionIndex}
                         boardState={boardState}
+                        hideTray={isFinalAffirmationView}
+                        isReadOnly={isFinalAffirmationView}
                         itemCorrectnessMap={itemCorrectnessMap}
                         itemsById={itemsById}
                         onDragEnd={handleDragEnd}
                         scene={scene}
+                        showAllSlotsVisible={isFinalAffirmationView}
                         showFeedback={
                             questionState.answerState !== "notAnswered"
                         }

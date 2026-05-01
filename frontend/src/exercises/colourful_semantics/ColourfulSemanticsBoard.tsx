@@ -20,24 +20,61 @@ import { getSlotId, POOL_ID } from "./boardUtils";
 interface ColourfulSemanticsBoardProps {
     activeStepIndex: number;
     boardState: SentenceBoardState;
+    hideTray?: boolean;
     itemCorrectnessMap?: Record<string, boolean>;
+    isReadOnly?: boolean;
     itemsById: Record<string, ColourfulSemanticsOption>;
     onDragEnd: (event: DragEndEvent) => void;
     scene: ColourfulSemanticsScene;
+    showAllSlotsVisible?: boolean;
     showFeedback?: boolean;
 }
 
-const renderPlaceholder = (slotTitle: string) => (
-    <span className={styles.placeholder}>Choose the {slotTitle} word</span>
+const renderPlaceholder = (levelIconUrl: string, levelIconAlt: string) => (
+    <img
+        src={levelIconUrl}
+        alt={levelIconAlt}
+        className={styles.placeholderIcon}
+    />
 );
+
+const getSlotColourClass = (slot: string) => {
+    switch (slot) {
+        case "who":
+            return styles.slotCardWho;
+        case "doing":
+            return styles.slotCardDoing;
+        case "what":
+            return styles.slotCardWhat;
+        case "where":
+            return styles.slotCardWhere;
+        default:
+            return "";
+    }
+};
+
+const SLOT_OPTION_BACKGROUND_COLOUR_BY_ID_PREFIX: Record<string, string> = {
+    who: "#FF9D2D",
+    doing: "#FFEA47",
+    what: "#38E87B",
+    where: "#5297FF",
+};
+
+const getOptionBackgroundColour = (itemId: string) => {
+    const [idPrefix] = itemId.split("-");
+    return SLOT_OPTION_BACKGROUND_COLOUR_BY_ID_PREFIX[idPrefix];
+};
 
 export const ColourfulSemanticsBoard = ({
     activeStepIndex,
     boardState,
+    hideTray = false,
     itemCorrectnessMap = {},
+    isReadOnly = false,
     itemsById,
     onDragEnd,
     scene,
+    showAllSlotsVisible = false,
     showFeedback = false,
 }: ColourfulSemanticsBoardProps) => {
     const { play } = useAudio();
@@ -58,7 +95,7 @@ export const ColourfulSemanticsBoard = ({
         play(item.sfxUrl);
     };
 
-    const renderImage = (itemId: string) => {
+    const renderImage = (itemId: string, isLocked = false) => {
         const item = itemsById[itemId];
         const isCorrect = showFeedback ? itemCorrectnessMap[itemId] : null;
 
@@ -74,6 +111,8 @@ export const ColourfulSemanticsBoard = ({
                 }}
                 isCorrect={isCorrect}
                 isSelected={false}
+                optionBackgroundColor={getOptionBackgroundColour(itemId)}
+                isBorderless={isLocked}
                 onClick={() => {
                     playItemSfx(item);
                 }}
@@ -102,59 +141,64 @@ export const ColourfulSemanticsBoard = ({
                         {scene.steps.map((step, stepIndex) => {
                             const slotItemId =
                                 boardState.slotItemIds[stepIndex];
-                            const slotStateClass =
-                                stepIndex < activeStepIndex
-                                    ? styles.slotCardLocked
-                                    : stepIndex === activeStepIndex
-                                      ? styles.slotCardActive
-                                      : styles.slotCardFuture;
+                            const isLocked =
+                                showAllSlotsVisible ||
+                                stepIndex < activeStepIndex;
+                            const slotStateClass = showAllSlotsVisible
+                                ? styles.slotCardVisible
+                                : stepIndex === activeStepIndex
+                                  ? styles.slotCardActive
+                                  : styles.slotCardMuted;
+                            const slotColourClass = getSlotColourClass(
+                                step.slot,
+                            );
+                            const slotTitle =
+                                isLocked && slotItemId
+                                    ? (itemsById[slotItemId]?.label ??
+                                      step.title)
+                                    : step.title;
 
                             return (
                                 <article
                                     key={step.id}
-                                    className={`${styles.slotCard} ${slotStateClass}`.trim()}
-                                    style={{ backgroundColor: step.color }}
+                                    className={`${styles.slotCard} ${slotColourClass} ${slotStateClass}`.trim()}
                                 >
                                     <div className={styles.slotHeader}>
-                                        <img
-                                            src={step.levelIconUrl}
-                                            alt={step.levelIconAlt}
-                                            className={styles.slotIcon}
-                                        />
                                         <p className={styles.slotTitle}>
-                                            {step.title}
-                                        </p>
-                                        <p className={styles.slotPrompt}>
-                                            {step.prompt}
+                                            {slotTitle}
                                         </p>
                                     </div>
 
                                     <div className={styles.slotDropZone}>
                                         <DroppableImageZone
                                             id={
+                                                !isReadOnly &&
                                                 stepIndex === activeStepIndex
                                                     ? getSlotId(stepIndex)
                                                     : `locked-slot:${stepIndex}`
                                             }
                                         >
                                             {slotItemId
-                                                ? renderImage(slotItemId)
-                                                : renderPlaceholder(step.title)}
+                                                ? renderImage(
+                                                      slotItemId,
+                                                      isLocked,
+                                                  )
+                                                : renderPlaceholder(
+                                                      step.levelIconUrl,
+                                                      step.levelIconAlt,
+                                                  )}
                                         </DroppableImageZone>
                                     </div>
-
-                                    {stepIndex < activeStepIndex && (
-                                        <p className={styles.lockedBadge}>
-                                            locked in
-                                        </p>
-                                    )}
                                 </article>
                             );
                         })}
                     </div>
                 </section>
 
-                <div className={styles.tray}>
+                <div
+                    className={`${styles.tray} ${hideTray ? styles.trayHidden : ""}`.trim()}
+                    aria-hidden={hideTray}
+                >
                     <PoolTray
                         id={POOL_ID}
                         itemIds={boardState.poolItemIds}

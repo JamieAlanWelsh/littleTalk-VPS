@@ -8,10 +8,10 @@
 .imageCard {
     width: min(100%, 39rem);
     background: #fdfdfd;
-    border: 2px solid rgba(97, 112, 145, 0.18);
+    border: 1px solid var(--border-grey);
     border-radius: 1.4rem;
     padding: 1rem;
-    box-shadow: 0 18px 40px rgba(50, 67, 109, 0.14);
+    /* box-shadow: var(--box-shadow); */
 }
 
 .targetImage {
@@ -24,11 +24,11 @@
 
 .sentencePanel {
     width: min(100%, 39rem);
-    background: rgba(255, 255, 255, 0.88);
-    border-radius: 1.4rem;
-    padding: 0.9rem;
-    box-shadow: 0 18px 34px rgba(50, 67, 109, 0.12);
-    border: 2px solid rgba(97, 112, 145, 0.14);
+    background: transparent;
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
+    border: 0;
 }
 
 .slots {
@@ -50,20 +50,43 @@
     transition:
         transform 120ms ease,
         border-color 120ms ease,
-        opacity 120ms ease;
+        opacity 120ms ease,
+        filter 120ms ease;
+}
+
+.slotCardWho {
+    background-color: #ff9d2d;
+}
+
+.slotCardDoing {
+    background-color: #ffea47;
+}
+
+.slotCardWhat {
+    background-color: #38e87b;
+}
+
+.slotCardWhere {
+    background-color: #5297ff;
 }
 
 .slotCardActive {
     border-color: rgba(43, 54, 79, 0.35);
     transform: translateY(-2px);
+    opacity: 1;
+    filter: saturate(1);
 }
 
-.slotCardLocked {
-    border-color: rgba(43, 54, 79, 0.22);
+.slotCardVisible {
+    border-color: rgba(43, 54, 79, 0.35);
+    opacity: 1;
+    filter: saturate(1);
 }
 
-.slotCardFuture {
-    opacity: 0.78;
+.slotCardMuted {
+    border-color: rgba(43, 54, 79, 0.2);
+    opacity: 0.46;
+    filter: saturate(0.82);
 }
 
 .slotHeader {
@@ -85,7 +108,6 @@
     color: #28324b;
     font-size: 1.05rem;
     font-weight: 700;
-    text-transform: lowercase;
 }
 
 .slotPrompt {
@@ -105,27 +127,31 @@
     background: rgba(255, 255, 255, 0.72);
 }
 
-.placeholder {
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: rgba(40, 50, 75, 0.6);
-    text-align: center;
-    padding: 0 0.5rem;
-}
-
-.lockedBadge {
-    margin: 0;
-    align-self: center;
-    padding: 0.25rem 0.6rem;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.72);
-    color: #2c3650;
-    font-size: 0.76rem;
-    font-weight: 700;
+.placeholderIcon {
+    width: 5rem;
+    height: 5rem;
+    object-fit: contain;
+    /* opacity: 0.9; */
 }
 
 .tray {
-    width: min(100%, 39rem);
+    width: min(100%, 44rem);
+    max-height: 18rem;
+    opacity: 1;
+    overflow: hidden;
+    transition:
+        max-height 220ms ease,
+        opacity 180ms ease,
+        margin 220ms ease,
+        transform 220ms ease;
+}
+
+.trayHidden {
+    max-height: 0;
+    opacity: 0;
+    margin-top: 0;
+    transform: translateY(-6px);
+    pointer-events: none;
 }
 
 @media (max-width: 760px) {
