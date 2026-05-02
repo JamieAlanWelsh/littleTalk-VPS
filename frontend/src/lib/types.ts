@@ -13,9 +13,9 @@ import { z } from "zod";
  * Used to display instructions, prompts, feedback text, etc.
  */
 export interface SentenceBlock {
-  id: string;
-  text: string;
-  role?: "prompt" | "instruction" | "feedback" | "result"; // semantic hint for styling
+    id: string;
+    text: string;
+    role?: "prompt" | "instruction" | "feedback" | "result"; // semantic hint for styling
 }
 
 /**
@@ -23,10 +23,11 @@ export interface SentenceBlock {
  * Can represent a picture/icon paired with a label.
  */
 export interface IconBlock {
-  id: string;
-  imageUrl: string; // Path relative to static assets or full URL
-  label?: string; // Optional display label below the icon
-  altText?: string; // Accessibility text
+    id: string;
+    imageUrl: string; // Path relative to static assets or full URL
+    label?: string; // Optional display label below the icon
+    altText?: string; // Accessibility text
+    sfxUrl?: string; // Optional sound effect path for icon interactions
 }
 
 /**
@@ -34,8 +35,8 @@ export interface IconBlock {
  * Used by matching-style exercises to define valid correct answers.
  */
 export interface MatchingPair {
-  promptId: string;
-  correctIconIds: string[]; // Array to support multiple correct answers if needed
+    promptId: string;
+    correctIconIds: string[]; // Array to support multiple correct answers if needed
 }
 
 /**
@@ -43,14 +44,14 @@ export interface MatchingPair {
  * Passed from Django to React via template data attributes.
  */
 export interface MatchingExercisePayload {
-  exerciseId: string;
-  title: string;
-  instructions: string;
-  prompts: SentenceBlock[]; // List of sentences/prompts
-  icons: IconBlock[]; // List of candidate pictures/icons
-  pairs: MatchingPair[]; // Mappings of prompts to correct icons
-  showFeedback?: boolean; // Default: true
-  allowRetry?: boolean; // Default: true
+    exerciseId: string;
+    title: string;
+    instructions: string;
+    prompts: SentenceBlock[]; // List of sentences/prompts
+    icons: IconBlock[]; // List of candidate pictures/icons
+    pairs: MatchingPair[]; // Mappings of prompts to correct icons
+    showFeedback?: boolean; // Default: true
+    allowRetry?: boolean; // Default: true
 }
 
 /**
@@ -60,29 +61,30 @@ export interface MatchingExercisePayload {
  */
 
 export const QuestionSchema = z.object({
-  id: z.string(),
-  prompt: z.string(),
-  correctIconIds: z.array(z.string()),
+    id: z.string(),
+    prompt: z.string(),
+    correctIconIds: z.array(z.string()),
 });
 
 export type Question = z.infer<typeof QuestionSchema>;
 
 export const PictureSchema = z.object({
-  id: z.string(),
-  imageUrl: z.string(),
-  label: z.string(),
-  altText: z.string().optional(),
+    id: z.string(),
+    imageUrl: z.string(),
+    label: z.string(),
+    altText: z.string().optional(),
+    sfxUrl: z.string().optional(),
 });
 
 export type Picture = z.infer<typeof PictureSchema>;
 
 export const MatchingExercisePayload2Schema = z.object({
-  questions: z.array(QuestionSchema),
-  pictures: z.array(PictureSchema),
+    questions: z.array(QuestionSchema),
+    pictures: z.array(PictureSchema),
 });
 
 export type MatchingExercisePayload2 = z.infer<
-  typeof MatchingExercisePayload2Schema
+    typeof MatchingExercisePayload2Schema
 >;
 
 export const ThinkAndFindItemSchema = z.object({
@@ -163,12 +165,12 @@ export interface ConceptQuestOptions {
 
 // state types
 export interface ExerciseState2 {
-  currentQuestionIndex: number;
+    currentQuestionIndex: number;
 }
 
 export interface QuestionState {
-  selectedIconIds: string[];
-  answerState: AnswerState;
+    selectedIconIds: string[];
+    answerState: AnswerState;
 }
 
 export type AnswerState = "notAnswered" | "correct" | "incorrect";
@@ -177,7 +179,7 @@ export type AnswerState = "notAnswered" | "correct" | "incorrect";
  * SentenceMatchingOptions: Configuration options for the Sentence Matching exercise.
  */
 export interface SentenceMatchingOptions {
-  numberOfOptions: number;
+    numberOfOptions: number;
 }
 
 /**
@@ -185,10 +187,10 @@ export interface SentenceMatchingOptions {
  * Used by exercise shells and components to manage UI state.
  */
 export interface ExerciseState {
-  currentPromptIndex: number;
-  selectedIconIds: string[]; // Icons selected by the user
-  isCorrect: boolean | null; // null = neutral/unanswered, true = correct, false = incorrect
-  showingFeedback: boolean;
-  completedPairs: number; // Count of correct pairs matched so far
-  totalPairs: number;
+    currentPromptIndex: number;
+    selectedIconIds: string[]; // Icons selected by the user
+    isCorrect: boolean | null; // null = neutral/unanswered, true = correct, false = incorrect
+    showingFeedback: boolean;
+    completedPairs: number; // Count of correct pairs matched so far
+    totalPairs: number;
 }

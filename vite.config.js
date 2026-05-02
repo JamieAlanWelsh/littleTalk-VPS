@@ -5,10 +5,14 @@ import tailwindcss from '@tailwindcss/vite'
 
 // Define all exercise entry points
 const exercises = [
+  // React exercise entries
+  'hello', // Proof of concept
+  'sentence-matching-example', // Framework example exercise
   'hello',
   'sentence-matching-example',
   'think-and-find',
   'concept-quest',
+  'categorisation',
 ]
 
 // Create input object for multiple entry points
