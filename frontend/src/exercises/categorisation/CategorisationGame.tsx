@@ -24,11 +24,6 @@ interface CategorisationGameProps {
     onSettingsRequested?: () => void;
 }
 
-interface CategorisationAnswer {
-    boardState: BoardState;
-    itemsById: Record<string, CategorisationItem>;
-}
-
 const EXERCISE_METADATA = {
     id: "categorisation",
     title: "Move the pictures into the matching category",
@@ -103,13 +98,6 @@ export const CategorisationGame = ({
         return correctnessMap;
     };
 
-    const answers: CategorisationAnswer[] = [
-        {
-            boardState,
-            itemsById,
-        },
-    ];
-
     const onCheckAnswer = () => {
         // Check if all items are placed in correct categories
         const allCorrect = Object.entries(categories).every(
@@ -133,7 +121,7 @@ export const CategorisationGame = ({
     };
 
     return (
-        <ExerciseLayout<CategorisationAnswer>
+        <ExerciseLayout
             exerciseId={EXERCISE_METADATA.id}
             actionBarPhase={questionState.answerState}
             questions={[
@@ -143,25 +131,22 @@ export const CategorisationGame = ({
                     correctIconIds: ["1"],
                 },
             ]}
-            answers={answers}
             tracking={tracking}
             onCheckAnswer={onCheckAnswer}
             onResetQuestion={onResetQuestion}
             onSettingsRequested={onSettingsRequested}
         >
-            {(currentAnswer: CategorisationAnswer) => (
-                <CategorisationBoard
-                    boardState={currentAnswer.boardState}
-                    itemsById={currentAnswer.itemsById}
-                    onDragEnd={handleDragEnd}
-                    itemCorrectnessMap={
-                        questionState.answerState !== "notAnswered"
-                            ? getItemCorrectnessMap()
-                            : {}
-                    }
-                    showFeedback={questionState.answerState !== "notAnswered"}
-                />
-            )}
+            <CategorisationBoard
+                boardState={boardState}
+                itemsById={itemsById}
+                onDragEnd={handleDragEnd}
+                itemCorrectnessMap={
+                    questionState.answerState !== "notAnswered"
+                        ? getItemCorrectnessMap()
+                        : {}
+                }
+                showFeedback={questionState.answerState !== "notAnswered"}
+            />
         </ExerciseLayout>
     );
 };
