@@ -1,0 +1,198 @@
+.board {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    align-items: center;
+}
+
+.imageCard {
+    width: min(100%, 39rem);
+    background: #fdfdfd;
+    border: 1px solid var(--border-grey);
+    border-radius: 1.4rem;
+    padding: 1rem;
+    /* box-shadow: var(--box-shadow); */
+}
+
+.targetImage {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    border-radius: 1rem;
+}
+
+.sentencePanel {
+    width: min(100%, 39rem);
+    background: transparent;
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
+    border: 0;
+}
+
+.slots {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+}
+
+.slotCard {
+    position: relative;
+    width: calc((100% - (0.75rem * 3)) / 4);
+    max-width: calc((100% - (0.75rem * 3)) / 4);
+    min-height: 10rem;
+    border-radius: 1.1rem;
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 0.75rem;
+    border: 3px solid transparent;
+    transition:
+        transform 120ms ease,
+        border-color 120ms ease,
+        opacity 120ms ease,
+        filter 120ms ease;
+}
+
+.slotCardWho {
+    background-color: #ff9d2d;
+}
+
+.slotCardDoing {
+    background-color: #ffea47;
+}
+
+.slotCardWhat {
+    background-color: #38e87b;
+}
+
+.slotCardWhere {
+    background-color: #5297ff;
+}
+
+.slotCardActive {
+    border-color: rgba(43, 54, 79, 0.35);
+    transform: translateY(-2px);
+    opacity: 1;
+    filter: saturate(1);
+}
+
+.slotCardVisible {
+    border-color: rgba(43, 54, 79, 0.35);
+    opacity: 1;
+    filter: saturate(1);
+}
+
+.slotCardMuted {
+    border-color: rgba(43, 54, 79, 0.2);
+    opacity: 0.46;
+    filter: saturate(0.82);
+}
+
+.slotHeader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.45rem;
+    text-align: center;
+}
+
+.slotIcon {
+    width: 3rem;
+    height: 3rem;
+    object-fit: contain;
+}
+
+.slotTitle {
+    margin: 0;
+    color: #28324b;
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+
+.slotPrompt {
+    margin: 0;
+    min-height: 2.5rem;
+    color: #3c4865;
+    font-size: 0.82rem;
+    line-height: 1.2;
+    text-align: center;
+}
+
+.slotDropZone :global(.zone) {
+    width: 100%;
+    min-height: 5.4rem;
+    aspect-ratio: auto;
+    border-radius: 0.95rem;
+    background: rgba(255, 255, 255, 0.72);
+}
+
+.placeholderIcon {
+    width: 5rem;
+    height: 5rem;
+    object-fit: contain;
+    /* opacity: 0.9; */
+}
+
+@keyframes traySlideIn {
+    from {
+        max-height: 0;
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+    to {
+        max-height: 18rem;
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.tray {
+    width: min(100%, 44rem);
+    max-height: 18rem;
+    opacity: 1;
+    overflow: hidden;
+    animation: traySlideIn 300ms ease;
+    transition:
+        max-height 220ms ease,
+        opacity 180ms ease,
+        margin 220ms ease,
+        transform 220ms ease;
+}
+
+.trayHidden {
+    max-height: 0;
+    opacity: 0;
+    margin-top: 0;
+    transform: translateY(-6px);
+    pointer-events: none;
+}
+
+@media (max-width: 760px) {
+    .slotCard {
+        width: calc((100% - 0.75rem) / 2);
+        max-width: calc((100% - 0.75rem) / 2);
+        min-height: 9.4rem;
+    }
+}
+
+@media (max-width: 520px) {
+    .imageCard,
+    .sentencePanel,
+    .tray {
+        width: 100%;
+    }
+
+    .slots {
+        gap: 0.65rem;
+    }
+
+    .slotCard {
+        width: calc((100% - 0.65rem) / 2);
+        max-width: calc((100% - 0.65rem) / 2);
+        padding: 0.65rem;
+    }
+}

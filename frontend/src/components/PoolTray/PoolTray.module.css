@@ -2,7 +2,8 @@
     background: #ffffff;
     border-radius: 20px;
     padding: 1rem;
-    box-shadow: 0 10px 24px rgba(33, 31, 56, 0.12);
+    border: 1px solid var(--border-grey);
+    /* box-shadow: var(--box-shadow); */
     display: flex;
     flex-direction: column;
     gap: 0.875rem;

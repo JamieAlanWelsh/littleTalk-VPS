@@ -36,8 +36,19 @@ interface ExerciseLayoutProps<AnswerType> {
     tracking: ReturnType<typeof useExerciseTracking>;
     onCheckAnswer: (question: Question) => void;
     onResetQuestion: () => void;
+    onBeforeContinue?: (params: {
+        currentQuestionIndex: number;
+        isLastQuestion: boolean;
+    }) => "proceed" | "hold";
     onSettingsRequested?: () => void;
-    children: ReactNode | ((currentAnswer: AnswerType) => ReactNode);
+    promptOverride?: string;
+    showSkip?: boolean;
+    onSkipRequested?: () => void;
+    /** 0–1 fraction already completed before this round starts. Default: 0. */
+    progressBase?: number;
+    /** Fraction of total that one round occupies. Default: 1. */
+    progressScale?: number;
+    children: ReactNode | ((currentAnswer: AnswerType, currentAnswerIndex: number) => ReactNode);
 }
 
 export const ExerciseLayout = <AnswerType,>({
@@ -48,7 +59,13 @@ export const ExerciseLayout = <AnswerType,>({
     tracking,
     onCheckAnswer,
     onResetQuestion,
+    onBeforeContinue,
     onSettingsRequested,
+    promptOverride,
+    showSkip = true,
+    onSkipRequested,
+    progressBase = 0,
+    progressScale = 1,
     children,
 }: ExerciseLayoutProps<AnswerType>) => {
     const [currentQuestionStateIndex, setCurrentQuestionStateIndex] =
@@ -58,7 +75,9 @@ export const ExerciseLayout = <AnswerType,>({
         useState(false);
     const submitExerciseMutation = useSubmitExerciseResult();
 
-    const progress = currentQuestionStateIndex / questions.length;
+    const progress =
+        progressBase +
+        progressScale * (currentQuestionStateIndex / questions.length);
     const isComplete = currentQuestionStateIndex === questions.length;
     const isLastQuestion = currentQuestionStateIndex === questions.length - 1;
 
@@ -98,6 +117,15 @@ export const ExerciseLayout = <AnswerType,>({
     };
 
     const onContinue = () => {
+        const continueDecision = onBeforeContinue?.({
+            currentQuestionIndex: currentQuestionStateIndex,
+            isLastQuestion,
+        });
+
+        if (continueDecision === "hold") {
+            return;
+        }
+
         setCurrentQuestionStateIndex((prev) => prev + 1);
         if (isLastQuestion) {
             submitExerciseResults();
@@ -108,7 +136,11 @@ export const ExerciseLayout = <AnswerType,>({
 
     const onSkip = () => {
         tracking.incrementSkips();
-        onContinue();
+        if (onSkipRequested) {
+            onSkipRequested();
+        } else {
+            onContinue();
+        }
     };
 
     const onTryAgain = () => {
@@ -170,9 +202,11 @@ export const ExerciseLayout = <AnswerType,>({
                             }}
                         >
                             <TypeAnimation
-                                key={questions[currentQuestionStateIndex].id} // Reset animation on question change
+                                key={`${questions[currentQuestionStateIndex].id}-${promptOverride ?? ""}`} // Reset animation on question or override prompt change
                                 sequence={[
-                                    questions[currentQuestionStateIndex].prompt,
+                                    promptOverride ??
+                                        questions[currentQuestionStateIndex]
+                                            .prompt,
                                 ]}
                                 speed={60}
                                 cursor={false}
@@ -189,8 +223,9 @@ export const ExerciseLayout = <AnswerType,>({
                                 ? (
                                       children as (
                                           currentAnswer: AnswerType,
+                                          currentAnswerIndex: number,
                                       ) => ReactNode
-                                  )(answers[currentQuestionStateIndex])
+                                  )(answers[currentQuestionStateIndex], currentQuestionStateIndex)
                                 : (children as ReactNode)}
                         </div>
                     </div>
@@ -199,6 +234,7 @@ export const ExerciseLayout = <AnswerType,>({
                     <ExerciseActionBar
                         actionBarPhase={actionBarPhase}
                         feedbackMessage={feedbackMessage}
+                        showSkip={showSkip}
                         onCheckAnswer={() => {
                             tracking.incrementAttempt(
                                 currentQuestionStateIndex,

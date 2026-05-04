@@ -112,4 +112,5 @@ urlpatterns = [
     path('exercise-framework/categorisation/', react_test_views.categorisation_example, name='categorisation_example'),
     path('exercise-framework/think-and-find/', react_test_views.think_and_find, name='think_and_find'),
     path('exercise-framework/concept-quest/', react_test_views.concept_quest, name='concept_quest'),
+    path('exercise-framework/colourful-semantics/', react_test_views.colourful_semantics, name='colourful_semantics'),
 ]

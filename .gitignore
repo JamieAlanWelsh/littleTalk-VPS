@@ -27,8 +27,7 @@ static/js/exercises/*.js.map
 static/js/**/*.js
 static/js/**/*.js.map
 static/js/exercises/manifest.json
-
-cat >> .gitignore << EOF
+static/js/exercises/css/
 
 # Django static files (regenerated)
 staticfiles/
