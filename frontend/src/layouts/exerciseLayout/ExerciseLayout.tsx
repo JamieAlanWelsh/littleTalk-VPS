@@ -32,7 +32,7 @@ interface ExerciseLayoutProps<AnswerType> {
     exerciseId: string;
     actionBarPhase: AnswerState;
     questions: Question[];
-    answers: AnswerType[]; // Optional, for exercises that want to pass pre-processed answer data
+    answers: AnswerType[];
     tracking: ReturnType<typeof useExerciseTracking>;
     onCheckAnswer: (question: Question) => void;
     onResetQuestion: () => void;

@@ -1,14 +1,15 @@
 import { useState } from "react";
 import ExerciseStartScreen from "../../layouts/exerciseStartScreen/ExerciseStartScreen";
-import ExerciseEndscreen from "../../layouts/exerciseEndscreen/ExerciseEndscreen";
 import ColourfulSemanticsSettingsScreen from "./ColourfulSemanticsSettingsScreen";
 import ColourfulSemanticsGame from "./ColourfulSemanticsGame";
-import { pickRandomScene } from "./configureScene";
+import { configureScene, pickRandomScene } from "./configureScene";
+import { buildSceneQuestions } from "./buildSceneQuestions";
 import type {
+    ColourfulSemanticsOption,
     ColourfulSemanticsOptions,
     ColourfulSemanticsPayload,
-    ColourfulSemanticsScene,
 } from "./types";
+import type { SceneQuestions } from "./buildSceneQuestions";
 
 const DEFAULT_OPTIONS: ColourfulSemanticsOptions = {
     presetId: "subject-verb-object-location",
@@ -16,6 +17,15 @@ const DEFAULT_OPTIONS: ColourfulSemanticsOptions = {
 };
 
 const TOTAL_REPETITIONS = 5;
+
+const buildItemsById = (
+    payload: ColourfulSemanticsPayload,
+): Record<string, ColourfulSemanticsOption> =>
+    Object.fromEntries(
+        [payload.who, payload.doing, payload.what, payload.where]
+            .flat()
+            .map((item) => [item.id, item]),
+    );
 
 interface ColourfulSemanticsExerciseProps {
     payload: ColourfulSemanticsPayload;
@@ -27,85 +37,52 @@ export const ColourfulSemanticsExercise = ({
     const [hasStarted, setHasStarted] = useState(false);
     const [options, setOptions] =
         useState<ColourfulSemanticsOptions>(DEFAULT_OPTIONS);
-    const [selectedScene, setSelectedScene] =
-        useState<ColourfulSemanticsScene | null>(null);
-    const [repetitionCount, setRepetitionCount] = useState(0);
-    const [skipToken, setSkipToken] = useState(0);
+    const [sceneQuestionsList, setSceneQuestionsList] = useState<
+        SceneQuestions[] | null
+    >(null);
 
     const handleStart = () => {
-        setRepetitionCount(0);
-        setSelectedScene(pickRandomScene(payload.scenes, options.presetId));
+        const itemsById = buildItemsById(payload);
+        const picked: SceneQuestions[] = [];
+        for (let i = 0; i < TOTAL_REPETITIONS; i++) {
+            const prevId = picked[i - 1]?.sceneId;
+            const raw = pickRandomScene(
+                payload.scenes,
+                options.presetId,
+                prevId,
+            );
+            const configured = configureScene({ scene: raw, options });
+            picked.push(buildSceneQuestions(configured, itemsById));
+        }
+        setSceneQuestionsList(picked);
         setHasStarted(true);
     };
 
     const handleSettingsRequested = () => {
-        setSelectedScene(null);
-        setRepetitionCount(0);
         setHasStarted(false);
+        setSceneQuestionsList(null);
     };
 
-    const handleRoundComplete = () => {
-        const nextRep = repetitionCount + 1;
-        setRepetitionCount(nextRep);
-        if (nextRep < TOTAL_REPETITIONS) {
-            setSelectedScene(pickRandomScene(payload.scenes, options.presetId));
-        }
-    };
-
-    const handleSkipTarget = () => {
-        setSelectedScene(
-            pickRandomScene(
-                payload.scenes,
-                options.presetId,
-                selectedScene?.id,
-            ),
-        );
-        setSkipToken((t) => t + 1);
-    };
-
-    const handleEndscreenReturn = () => {
-        window.location.href = "/practise/";
-    };
-
-    if (!hasStarted) {
-        return (
-            <ExerciseStartScreen
-                title="Colourful Semantics Setup"
-                subtitle="What would you like to work on today?"
-                onStart={handleStart}
-                onTutorial={() => {
-                    console.log("Tutorial requested");
-                }}
-            >
-                <ColourfulSemanticsSettingsScreen
-                    options={options}
-                    payload={payload}
-                    onSetOptions={setOptions}
-                />
-            </ExerciseStartScreen>
-        );
-    }
-
-    if (repetitionCount >= TOTAL_REPETITIONS) {
-        return (
-            <ExerciseEndscreen
-                expGained={TOTAL_REPETITIONS * 10}
-                onReturnHome={handleEndscreenReturn}
+    return !hasStarted || !sceneQuestionsList ? (
+        <ExerciseStartScreen
+            title="Colourful Semantics Setup"
+            subtitle="What would you like to work on today?"
+            onStart={handleStart}
+            onTutorial={() => {
+                console.log("Tutorial requested");
+            }}
+        >
+            <ColourfulSemanticsSettingsScreen
+                options={options}
+                payload={payload}
+                onSetOptions={setOptions}
             />
-        );
-    }
-
-    return (
+        </ExerciseStartScreen>
+    ) : (
         <ColourfulSemanticsGame
-            key={`${repetitionCount}-${skipToken}`}
             onSettingsRequested={handleSettingsRequested}
-            onRoundComplete={handleRoundComplete}
-            onSkipRequested={handleSkipTarget}
-            options={options}
+            sceneQuestionsList={sceneQuestionsList}
             payload={payload}
-            scene={selectedScene!}
-            progressBase={repetitionCount / TOTAL_REPETITIONS}
-            progressScale={1 / TOTAL_REPETITIONS}
         />
     );
 };
