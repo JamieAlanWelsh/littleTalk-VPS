@@ -31,9 +31,11 @@ export const ColourfulSemanticsExercise = ({
         useState<ColourfulSemanticsScene | null>(null);
     const [repetitionCount, setRepetitionCount] = useState(0);
     const [skipToken, setSkipToken] = useState(0);
+    const [usedSceneIds, setUsedSceneIds] = useState<string[]>([]);
 
     const handleStart = () => {
         setRepetitionCount(0);
+        setUsedSceneIds([]);
         setSelectedScene(pickRandomScene(payload.scenes, options.presetId));
         setHasStarted(true);
     };
@@ -41,24 +43,34 @@ export const ColourfulSemanticsExercise = ({
     const handleSettingsRequested = () => {
         setSelectedScene(null);
         setRepetitionCount(0);
+        setUsedSceneIds([]);
         setHasStarted(false);
     };
 
     const handleRoundComplete = () => {
         const nextRep = repetitionCount + 1;
+        const nextUsedSceneIds = selectedScene
+            ? [...usedSceneIds, selectedScene.id]
+            : usedSceneIds;
+        setUsedSceneIds(nextUsedSceneIds);
         setRepetitionCount(nextRep);
         if (nextRep < TOTAL_REPETITIONS) {
-            setSelectedScene(pickRandomScene(payload.scenes, options.presetId));
+            setSelectedScene(
+                pickRandomScene(
+                    payload.scenes,
+                    options.presetId,
+                    nextUsedSceneIds,
+                ),
+            );
         }
     };
 
     const handleSkipTarget = () => {
+        const excludeIds = selectedScene
+            ? [...usedSceneIds, selectedScene.id]
+            : usedSceneIds;
         setSelectedScene(
-            pickRandomScene(
-                payload.scenes,
-                options.presetId,
-                selectedScene?.id,
-            ),
+            pickRandomScene(payload.scenes, options.presetId, excludeIds),
         );
         setSkipToken((t) => t + 1);
     };
