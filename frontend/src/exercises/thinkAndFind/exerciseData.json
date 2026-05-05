@@ -144,6 +144,102 @@
           "altText": "A boy wearing a rainbow top"
         }
       ]
+    },
+    {
+      "id": "girl",
+      "name": "Girls",
+      "items": [
+        {
+          "id": "girl-buns",
+          "imageUrl": "/static/exercise_assets/think_and_find/girl/girl_buns.png",
+          "label": "Girl with hair buns",
+          "prompt": "Find the girl with hair buns.",
+          "altText": "A girl with hair in two buns"
+        },
+        {
+          "id": "girl-checkered-top",
+          "imageUrl": "/static/exercise_assets/think_and_find/girl/girl_checkeredtop.png",
+          "label": "Girl in a checkered top",
+          "prompt": "Find the girl in a checkered top.",
+          "altText": "A girl wearing a checkered top"
+        },
+        {
+          "id": "girl-pink-socks",
+          "imageUrl": "/static/exercise_assets/think_and_find/girl/girl_pinksockks.png",
+          "label": "Girl with pink socks",
+          "prompt": "Find the girl with pink socks.",
+          "altText": "A girl wearing pink socks"
+        },
+        {
+          "id": "girl-polka-dots",
+          "imageUrl": "/static/exercise_assets/think_and_find/girl/girl_polkadots.png",
+          "label": "Girl in polka dots",
+          "prompt": "Find the girl in polka dots.",
+          "altText": "A girl wearing a polka-dot outfit"
+        },
+        {
+          "id": "girl-purple-hair",
+          "imageUrl": "/static/exercise_assets/think_and_find/girl/girl_purplehair.png",
+          "label": "Girl with purple hair",
+          "prompt": "Find the girl with purple hair.",
+          "altText": "A girl with purple hair"
+        },
+        {
+          "id": "girl-yellow-dress",
+          "imageUrl": "/static/exercise_assets/think_and_find/girl/girl_yellowdress.png",
+          "label": "Girl in a yellow dress",
+          "prompt": "Find the girl in a yellow dress.",
+          "altText": "A girl wearing a yellow dress"
+        }
+      ]
+    },
+    {
+      "id": "monster",
+      "name": "Monsters",
+      "items": [
+        {
+          "id": "monster-brown-fur",
+          "imageUrl": "/static/exercise_assets/think_and_find/monster/monster_brownfur.png",
+          "label": "Monster with brown fur",
+          "prompt": "Find the monster with brown fur.",
+          "altText": "A furry brown monster"
+        },
+        {
+          "id": "monster-hairy-horns",
+          "imageUrl": "/static/exercise_assets/think_and_find/monster/monster_hairyhorns.png",
+          "label": "Monster with hairy horns",
+          "prompt": "Find the monster with hairy horns.",
+          "altText": "A monster with hairy horns"
+        },
+        {
+          "id": "monster-striped-arms",
+          "imageUrl": "/static/exercise_assets/think_and_find/monster/monster_stripeyarms.png",
+          "label": "Monster with striped arms",
+          "prompt": "Find the monster with striped arms.",
+          "altText": "A monster with striped arms"
+        },
+        {
+          "id": "monster-three-eyes",
+          "imageUrl": "/static/exercise_assets/think_and_find/monster/monster_threeeyes.png",
+          "label": "Three-eyed monster",
+          "prompt": "Find the monster with three eyes.",
+          "altText": "A monster with three eyes"
+        },
+        {
+          "id": "monster-two-eyes",
+          "imageUrl": "/static/exercise_assets/think_and_find/monster/monster_twoeyes.png",
+          "label": "Two-eyed monster",
+          "prompt": "Find the monster with two eyes.",
+          "altText": "A monster with two eyes"
+        },
+        {
+          "id": "monster-yellow",
+          "imageUrl": "/static/exercise_assets/think_and_find/monster/monster_yellow.png",
+          "label": "Yellow monster",
+          "prompt": "Find the yellow monster.",
+          "altText": "A bright yellow monster"
+        }
+      ]
     }
   ]
 }
