@@ -1,0 +1,63 @@
+{
+  "instruction": "Drag the character into the correct position.",
+  "modellingTip": "Model the full sentence: Put Arlo on the box.",
+  "rounds": 5,
+  "characters": [
+    {
+      "id": "arlo",
+      "name": "Arlo",
+      "imageUrl": "/static/exercise_assets/think_and_find/boy/boy_blonde.png",
+      "altText": "Arlo character"
+    },
+    {
+      "id": "maya",
+      "name": "Maya",
+      "imageUrl": "/static/exercise_assets/think_and_find/girl/girl_yellowdress.png",
+      "altText": "Maya character"
+    },
+    {
+      "id": "pip",
+      "name": "Pip",
+      "imageUrl": "/static/exercise_assets/think_and_find/cat/cat_grey.png",
+      "altText": "Pip character"
+    },
+    {
+      "id": "zed",
+      "name": "Zed",
+      "imageUrl": "/static/exercise_assets/think_and_find/monster/monster_yellow.png",
+      "altText": "Zed character"
+    },
+    {
+      "id": "nala",
+      "name": "Nala",
+      "imageUrl": "/static/exercise_assets/think_and_find/elephant/elephant_earsblue.png",
+      "altText": "Nala character"
+    }
+  ],
+  "objects": [
+    {
+      "id": "bookshelf",
+      "name": "bookshelf",
+      "imageUrl": "/static/exercise_assets/prepositions/bookshelf.png",
+      "altText": "A bookshelf"
+    },
+    {
+      "id": "box",
+      "name": "box",
+      "imageUrl": "/static/exercise_assets/prepositions/box.png",
+      "altText": "A box"
+    },
+    {
+      "id": "chair",
+      "name": "chair",
+      "imageUrl": "/static/exercise_assets/prepositions/chair.png",
+      "altText": "A chair"
+    },
+    {
+      "id": "table",
+      "name": "table",
+      "imageUrl": "/static/exercise_assets/prepositions/table.png",
+      "altText": "A table"
+    }
+  ]
+}
