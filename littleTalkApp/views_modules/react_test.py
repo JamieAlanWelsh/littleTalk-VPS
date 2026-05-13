@@ -79,3 +79,11 @@ def story_train(request):
         "learner_uuid": _get_session_learner_uuid(request),
     }
     return render(request, "exercises/story_train.html", context)
+
+
+@login_required
+def whats_in_the_bag(request):
+    context = {
+        "learner_uuid": _get_session_learner_uuid(request),
+    }
+    return render(request, "exercises/whats_in_the_bag.html", context)
