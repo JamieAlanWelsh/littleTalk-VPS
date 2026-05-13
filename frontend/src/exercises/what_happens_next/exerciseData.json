@@ -1,0 +1,43 @@
+{
+    "rounds": 3,
+    "options": [
+        {
+            "id": "fall-into-river",
+            "label": "He will fall into the river"
+        },
+        {
+            "id": "eat-the-cereal",
+            "label": "He will eat the cereal"
+        },
+        {
+            "id": "get-dressed-for-school",
+            "label": "He gets dressed for school"
+        }
+    ],
+    "scenes": [
+        {
+            "id": "boy-crossing-river",
+            "stepOneImageUrl": "/static/exercise_assets/what_happens_next/boy_crossing_river_step1.png",
+            "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/boy_crossing_river_step2.png",
+            "openingPrompt": "The boy is crossing the river. What will happen next?",
+            "completionPrompt": "That's right, the boy lost his balance and fell into the river!",
+            "correctOptionId": "fall-into-river"
+        },
+        {
+            "id": "boy-eating-cereal",
+            "stepOneImageUrl": "/static/exercise_assets/what_happens_next/boy_eating_cereal_step1.png",
+            "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/boy_eating_cereal_step2.png",
+            "openingPrompt": "The boy is pouring milk in his cereal. What will happen next?",
+            "completionPrompt": "That's right, the boy eats the cereal, yum!",
+            "correctOptionId": "eat-the-cereal"
+        },
+        {
+            "id": "boy-going-school",
+            "stepOneImageUrl": "/static/exercise_assets/what_happens_next/boy_going_school_step1.png",
+            "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/boy_going_school_step2.png",
+            "openingPrompt": "The boy just woke up for a school day. What will happen next?",
+            "completionPrompt": "That's right, the boy gets dressed, now he is ready to go to school!",
+            "correctOptionId": "get-dressed-for-school"
+        }
+    ]
+}

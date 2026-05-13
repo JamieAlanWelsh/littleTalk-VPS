@@ -87,3 +87,11 @@ def whats_in_the_bag(request):
         "learner_uuid": _get_session_learner_uuid(request),
     }
     return render(request, "exercises/whats_in_the_bag.html", context)
+
+
+@login_required
+def what_happens_next(request):
+    context = {
+        "learner_uuid": _get_session_learner_uuid(request),
+    }
+    return render(request, "exercises/what_happens_next.html", context)

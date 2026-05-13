@@ -13,6 +13,7 @@ const exercises = [
   'colourful-semantics',
   'story-train',
   'whats-in-the-bag',
+  'what-happens-next',
 ]
 
 // Create input object for multiple entry points
