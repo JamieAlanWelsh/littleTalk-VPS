@@ -92,12 +92,18 @@ export const WhatsInTheBagGame = ({
         answerState: "notAnswered",
     });
     const [isBagOpened, setIsBagOpened] = useState(false);
+    const [correctLabel, setCorrectLabel] = useState<string | null>(null);
 
     const gameData = useMemo(
         () => buildRounds(payload, options.numberOfOptions),
         [payload, options.numberOfOptions],
     );
     const tracking = useExerciseTracking(gameData.questions.length);
+
+    const idToLabelMap = useMemo(
+        () => new Map(payload.items.map((item) => [item.id, item.label])),
+        [payload.items],
+    );
 
     const onCheckAnswer = (question: Question) => {
         if (!isBagOpened || questionState.selectedIconIds.length === 0) {
@@ -113,6 +119,8 @@ export const WhatsInTheBagGame = ({
                 ...previousState,
                 answerState: "correct",
             }));
+            const correctId = question.correctIconIds[0];
+            setCorrectLabel(idToLabelMap.get(correctId) || null);
             return;
         }
 
@@ -128,13 +136,18 @@ export const WhatsInTheBagGame = ({
             answerState: "notAnswered",
         });
         setIsBagOpened(false);
+        setCorrectLabel(null);
     };
 
     if (gameData.questions.length === 0) {
         return <p>Unable to load any What&apos;s in the Bag rounds.</p>;
     }
 
-    const promptOverride = isBagOpened ? "What is it?" : "What's in the bag?";
+    const promptOverride = correctLabel
+        ? `That's right! It's a ${correctLabel}.`
+        : isBagOpened
+          ? "What is it?"
+          : "What's in the bag?";
     const disableCheck =
         !isBagOpened || questionState.selectedIconIds.length === 0;
 
