@@ -42,13 +42,19 @@ interface ExerciseLayoutProps<AnswerType> {
     }) => "proceed" | "hold";
     onSettingsRequested?: () => void;
     promptOverride?: string;
+    disableCheck?: boolean;
     showSkip?: boolean;
     onSkipRequested?: () => void;
     /** 0–1 fraction already completed before this round starts. Default: 0. */
     progressBase?: number;
     /** Fraction of total that one round occupies. Default: 1. */
     progressScale?: number;
-    children: ReactNode | ((currentAnswer: AnswerType, currentAnswerIndex: number) => ReactNode);
+    children:
+        | ReactNode
+        | ((
+              currentAnswer: AnswerType,
+              currentAnswerIndex: number,
+          ) => ReactNode);
 }
 
 export const ExerciseLayout = <AnswerType,>({
@@ -62,6 +68,7 @@ export const ExerciseLayout = <AnswerType,>({
     onBeforeContinue,
     onSettingsRequested,
     promptOverride,
+    disableCheck = false,
     showSkip = true,
     onSkipRequested,
     progressBase = 0,
@@ -225,7 +232,10 @@ export const ExerciseLayout = <AnswerType,>({
                                           currentAnswer: AnswerType,
                                           currentAnswerIndex: number,
                                       ) => ReactNode
-                                  )(answers[currentQuestionStateIndex], currentQuestionStateIndex)
+                                  )(
+                                      answers[currentQuestionStateIndex],
+                                      currentQuestionStateIndex,
+                                  )
                                 : (children as ReactNode)}
                         </div>
                     </div>
@@ -234,6 +244,7 @@ export const ExerciseLayout = <AnswerType,>({
                     <ExerciseActionBar
                         actionBarPhase={actionBarPhase}
                         feedbackMessage={feedbackMessage}
+                        disableCheck={disableCheck}
                         showSkip={showSkip}
                         onCheckAnswer={() => {
                             tracking.incrementAttempt(

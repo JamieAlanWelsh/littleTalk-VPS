@@ -1,0 +1,47 @@
+{
+  "rounds": 5,
+  "bagImages": {
+    "closedImageUrl": "/static/exercise_assets/whats_in_the_bag/bag/bag_closed.png",
+    "openImageUrl": "/static/exercise_assets/whats_in_the_bag/bag/bag_open.png",
+    "closedAltText": "A closed mystery bag",
+    "openAltText": "An open mystery bag"
+  },
+  "items": [
+    {
+      "id": "boat",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/boat.png",
+      "label": "Boat",
+      "altText": "A boat"
+    },
+    {
+      "id": "car",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/car.png",
+      "label": "Car",
+      "altText": "A car"
+    },
+    {
+      "id": "carrot",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/carrot.png",
+      "label": "Carrot",
+      "altText": "A carrot"
+    },
+    {
+      "id": "chicken",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/chicken.png",
+      "label": "Chicken",
+      "altText": "A chicken"
+    },
+    {
+      "id": "cow",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/cow.png",
+      "label": "Cow",
+      "altText": "A cow"
+    },
+    {
+      "id": "grapes",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/grapes.png",
+      "label": "Grapes",
+      "altText": "A bunch of grapes"
+    }
+  ]
+}
