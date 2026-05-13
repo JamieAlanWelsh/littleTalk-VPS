@@ -95,3 +95,11 @@ def what_happens_next(request):
         "learner_uuid": _get_session_learner_uuid(request),
     }
     return render(request, "exercises/what_happens_next.html", context)
+
+
+@login_required
+def in_the_know(request):
+    context = {
+        "learner_uuid": _get_session_learner_uuid(request),
+    }
+    return render(request, "exercises/in_the_know.html", context)
