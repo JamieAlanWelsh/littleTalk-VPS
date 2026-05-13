@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import Button from "../../components/Button/Button";
+import { TextOptionGroup } from "../../components/TextOptionGroup";
 import { useExerciseTracking } from "../../hooks";
 import ExerciseLayout from "../../layouts/exerciseLayout/ExerciseLayout";
 import type { Question, QuestionState } from "../../lib/types";
@@ -192,55 +192,21 @@ export const WhatsInTheBagGame = ({
                                 className={styles.revealedItemImage}
                             />
                         </div>
-
-                        <div
-                            className={`${styles.wordOptionsGrid} ${
-                                currentAnswer.wordOptions.length === 1
-                                    ? styles.wordOptionsGridOne
-                                    : currentAnswer.wordOptions.length === 2
-                                      ? styles.wordOptionsGridTwo
-                                      : styles.wordOptionsGridThree
-                            }`}
-                        >
-                            {currentAnswer.wordOptions.map((option) => {
-                                const isSelected =
-                                    questionState.selectedIconIds.includes(
-                                        option.id,
-                                    );
-                                const isDisabled =
-                                    questionState.answerState !==
-                                        "notAnswered" && !isSelected;
-
-                                return (
-                                    <Button
-                                        key={option.id}
-                                        label={option.label}
-                                        variant={
-                                            isSelected ? "primary" : "secondary"
-                                        }
-                                        width="100%"
-                                        disabled={isDisabled}
-                                        onClick={() => {
-                                            if (
-                                                questionState.answerState !==
-                                                "notAnswered"
-                                            ) {
-                                                return;
-                                            }
-
-                                            setQuestionState(
-                                                (previousState) => ({
-                                                    ...previousState,
-                                                    selectedIconIds: [
-                                                        option.id,
-                                                    ],
-                                                }),
-                                            );
-                                        }}
-                                    />
-                                );
-                            })}
-                        </div>
+                        <TextOptionGroup
+                            options={currentAnswer.wordOptions}
+                            selectedOptionId={
+                                questionState.selectedIconIds[0] ?? null
+                            }
+                            disabled={
+                                questionState.answerState !== "notAnswered"
+                            }
+                            onSelect={(optionId: string) => {
+                                setQuestionState((previousState) => ({
+                                    ...previousState,
+                                    selectedIconIds: [optionId],
+                                }));
+                            }}
+                        />
                     </div>
                 );
             }}
