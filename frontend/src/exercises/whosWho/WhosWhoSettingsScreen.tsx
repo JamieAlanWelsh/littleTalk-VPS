@@ -22,15 +22,11 @@ const PRONOUN_DETAILS: Record<
 
 interface WhosWhoSettingsScreenProps {
     options: WhosWhoSettings;
-    instruction: string;
-    modellingTip?: string;
     onSetOptions: (options: WhosWhoSettings) => void;
 }
 
 export const WhosWhoSettingsScreen = ({
     options,
-    instruction,
-    modellingTip,
     onSetOptions,
 }: WhosWhoSettingsScreenProps) => {
     const [selectedPronouns, setSelectedPronouns] = useState<WhosWhoPronoun[]>(
@@ -65,8 +61,6 @@ export const WhosWhoSettingsScreen = ({
 
     return (
         <div className={styles.container}>
-            <p className={styles.text}>{instruction}</p>
-
             <div className={styles.section}>
                 <p className={styles.sectionLabel}>Pronouns to practise</p>
                 <div className={styles.pronounsGrid}>
@@ -124,14 +118,8 @@ export const WhosWhoSettingsScreen = ({
                             </option>
                         ))}
                     </select>
-                    <p className={styles.helperText}>
-                        This is the total number of objects shown, including the
-                        correct one.
-                    </p>
                 </div>
             </div>
-
-            {modellingTip ? <p className={styles.tip}>{modellingTip}</p> : null}
         </div>
     );
 };

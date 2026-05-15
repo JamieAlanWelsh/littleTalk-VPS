@@ -5,11 +5,6 @@
     color: var(--font-color);
 }
 
-.text {
-    margin: 0;
-    font-size: 0.95rem;
-}
-
 .section {
     display: flex;
     flex-direction: column;
@@ -123,17 +118,6 @@
     outline: none;
     border-color: #5b8def;
     box-shadow: 0 0 0 3px rgba(91, 141, 239, 0.1);
-}
-
-.helperText {
-    margin: 0;
-    font-size: 0.8rem;
-    color: #6d6885;
-}
-
-.tip {
-    margin: 0;
-    font-weight: 700;
 }
 
 @media (max-width: 1024px) and (min-width: 769px) {

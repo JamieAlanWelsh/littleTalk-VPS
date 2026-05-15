@@ -103,8 +103,6 @@ export const WhosWho = ({ payload }: WhosWhoProps) => {
             >
                 <WhosWhoSettingsScreen
                     options={options}
-                    instruction={payload.instruction}
-                    modellingTip={payload.modellingTip}
                     onSetOptions={setOptions}
                 />
             </ExerciseStartScreen>
