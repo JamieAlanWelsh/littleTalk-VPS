@@ -1,0 +1,170 @@
+{
+  "instruction": "Give the right object to the correct person.",
+  "modellingTip": "Say the sentence out loud and point to who the pronoun means before you drag.",
+  "rounds": 5,
+  "items": [
+    {
+      "id": "item-hat",
+      "imageUrl": "/static/exercise_assets/whos_who/draggable_options/hat.png",
+      "label": "The Hat"
+    },
+    {
+      "id": "item-ball",
+      "imageUrl": "/static/exercise_assets/whos_who/draggable_options/ball.png",
+      "label": "The Ball"
+    },
+    {
+      "id": "item-orange",
+      "imageUrl": "/static/exercise_assets/whos_who/draggable_options/orange.png",
+      "label": "The Orange"
+    },
+    {
+      "id": "item-cap",
+      "imageUrl": "/static/exercise_assets/whos_who/draggable_options/cap.png",
+      "label": "The Cap"
+    },
+    {
+      "id": "item-dress",
+      "imageUrl": "/static/exercise_assets/whos_who/draggable_options/dress.png",
+      "label": "The Dress"
+    },
+    {
+      "id": "item-doll",
+      "imageUrl": "/static/exercise_assets/whos_who/draggable_options/doll.png",
+      "label": "The Doll"
+    },
+    {
+      "id": "item-lego",
+      "imageUrl": "/static/exercise_assets/whos_who/draggable_options/lego.png",
+      "label": "The Lego"
+    },
+    {
+      "id": "item-banana",
+      "imageUrl": "/static/exercise_assets/whos_who/draggable_options/banana.png",
+      "label": "The Banana"
+    },
+    {
+      "id": "item-toys",
+      "imageUrl": "/static/exercise_assets/whos_who/draggable_options/toys.png",
+      "label": "The Toys"
+    },
+    {
+      "id": "item-apple",
+      "imageUrl": "/static/exercise_assets/whos_who/draggable_options/apple.png",
+      "label": "The Apple"
+    },
+    {
+      "id": "item-scarf",
+      "imageUrl": "/static/exercise_assets/whos_who/draggable_options/scarf.png",
+      "label": "The Scarf"
+    },
+    {
+      "id": "item-teddy",
+      "imageUrl": "/static/exercise_assets/whos_who/draggable_options/teddy.png",
+      "label": "The Teddy"
+    }
+  ],
+  "targets": [
+    {
+      "id": "target-boy",
+      "images": {
+        "base": "/static/exercise_assets/whos_who/droppable_options/boy/boy_base.png",
+        "reaching": "/static/exercise_assets/whos_who/droppable_options/boy/boy_reaching.png",
+        "happy": "/static/exercise_assets/whos_who/droppable_options/boy/boy_happy.png"
+      },
+      "label": "Boy"
+    },
+    {
+      "id": "target-girl",
+      "images": {
+        "base": "/static/exercise_assets/whos_who/droppable_options/girl/girl_base.png",
+        "reaching": "/static/exercise_assets/whos_who/droppable_options/girl/girl_reaching.png",
+        "happy": "/static/exercise_assets/whos_who/droppable_options/girl/girl_happy.png"
+      },
+      "label": "Girl"
+    },
+    {
+      "id": "target-group",
+      "images": {
+        "base": "/static/exercise_assets/whos_who/droppable_options/group/group_boys_base.png",
+        "reaching": "/static/exercise_assets/whos_who/droppable_options/group/group_boys_reaching.png",
+        "happy": "/static/exercise_assets/whos_who/droppable_options/group/group_boys_happy.png"
+      },
+      "label": "Group"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "her-hat-girl",
+      "pronoun": "her",
+      "prompt": "Give the hat to her",
+      "draggableItemId": "item-hat",
+      "correctTargetId": "target-girl",
+      "targetIds": ["target-boy", "target-girl"],
+      "distractorItemIds": ["item-ball", "item-orange"]
+    },
+    {
+      "id": "him-ball-boy",
+      "pronoun": "him",
+      "prompt": "Give the ball to him",
+      "draggableItemId": "item-ball",
+      "correctTargetId": "target-boy",
+      "targetIds": ["target-boy", "target-girl"],
+      "distractorItemIds": ["item-hat", "item-dress"]
+    },
+    {
+      "id": "them-orange-group",
+      "pronoun": "them",
+      "prompt": "Give the orange to them",
+      "draggableItemId": "item-orange",
+      "correctTargetId": "target-group",
+      "targetIds": ["target-girl", "target-group"],
+      "distractorItemIds": ["item-doll", "item-apple"]
+    },
+    {
+      "id": "he-cap-boy",
+      "pronoun": "he",
+      "prompt": "He wants the cap. Give it to him",
+      "draggableItemId": "item-cap",
+      "correctTargetId": "target-boy",
+      "targetIds": ["target-boy", "target-group"],
+      "distractorItemIds": ["item-lego", "item-banana"]
+    },
+    {
+      "id": "she-dress-girl",
+      "pronoun": "she",
+      "prompt": "She wants the dress. Give it to her",
+      "draggableItemId": "item-dress",
+      "correctTargetId": "target-girl",
+      "targetIds": ["target-girl", "target-group"],
+      "distractorItemIds": ["item-cap", "item-toys"]
+    },
+    {
+      "id": "they-toys-group",
+      "pronoun": "they",
+      "prompt": "They want the toys. Give them the toys",
+      "draggableItemId": "item-toys",
+      "correctTargetId": "target-group",
+      "targetIds": ["target-boy", "target-group"],
+      "distractorItemIds": ["item-teddy", "item-hat"]
+    },
+    {
+      "id": "her-doll-girl",
+      "pronoun": "her",
+      "prompt": "Give the doll to her",
+      "draggableItemId": "item-doll",
+      "correctTargetId": "target-girl",
+      "targetIds": ["target-boy", "target-girl"],
+      "distractorItemIds": ["item-ball", "item-scarf"]
+    },
+    {
+      "id": "them-lego-group",
+      "pronoun": "them",
+      "prompt": "Give the lego to them",
+      "draggableItemId": "item-lego",
+      "correctTargetId": "target-group",
+      "targetIds": ["target-girl", "target-group"],
+      "distractorItemIds": ["item-orange", "item-apple"]
+    }
+  ]
+}

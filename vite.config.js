@@ -12,6 +12,7 @@ const exercises = [
   'categorisation',
   'colourful-semantics',
   'story-train',
+  'whos-who',
 ]
 
 // Create input object for multiple entry points
