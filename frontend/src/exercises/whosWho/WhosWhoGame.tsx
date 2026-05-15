@@ -4,15 +4,26 @@ import { useExerciseTracking } from "../../hooks";
 import ExerciseLayout from "../../layouts/exerciseLayout/ExerciseLayout";
 import type { Question, QuestionState } from "../../lib/types";
 import WhosWhoBoard from "./WhosWhoBoard";
-import type { WhosWhoItem, WhosWhoScenario, WhosWhoTarget } from "./types";
+import type {
+    WhosWhoChoiceCount,
+    WhosWhoItem,
+    WhosWhoScenario,
+    WhosWhoSettings,
+    WhosWhoTarget,
+} from "./types";
 import styles from "./WhosWhoGame.module.css";
 
 const EXERCISE_ID = "whos-who";
 
+interface SelectedScenario extends WhosWhoScenario {
+    selectionId: string;
+}
+
 interface WhosWhoGameProps {
-    selectedScenarios: WhosWhoScenario[];
+    selectedScenarios: SelectedScenario[];
     items: WhosWhoItem[];
     targets: WhosWhoTarget[];
+    settings: WhosWhoSettings;
     onSettingsRequested?: () => void;
 }
 
@@ -23,13 +34,25 @@ interface RoundState {
 }
 
 interface WhosWhoAnswer {
-    scenario: WhosWhoScenario;
+    scenario: SelectedScenario;
     trayItems: WhosWhoItem[];
     targets: WhosWhoTarget[];
 }
 
-const buildRoundState = (scenario: WhosWhoScenario): RoundState => ({
-    trayItemIds: [scenario.draggableItemId, ...scenario.distractorItemIds],
+const getScenarioTrayItemIds = (
+    scenario: WhosWhoScenario,
+    choiceCount: WhosWhoChoiceCount,
+) =>
+    [scenario.draggableItemId, ...scenario.distractorItemIds].slice(
+        0,
+        choiceCount,
+    );
+
+const buildRoundState = (
+    scenario: WhosWhoScenario,
+    choiceCount: WhosWhoChoiceCount,
+): RoundState => ({
+    trayItemIds: getScenarioTrayItemIds(scenario, choiceCount),
     placedItemId: null,
     placedTargetId: null,
 });
@@ -84,6 +107,7 @@ export const WhosWhoGame = ({
     selectedScenarios,
     items,
     targets,
+    settings,
     onSettingsRequested,
 }: WhosWhoGameProps) => {
     const itemById = useMemo(
@@ -98,7 +122,7 @@ export const WhosWhoGame = ({
     const questions = useMemo<Question[]>(
         () =>
             selectedScenarios.map((scenario) => ({
-                id: scenario.id,
+                id: scenario.selectionId,
                 prompt: scenario.prompt,
                 correctIconIds: [scenario.correctTargetId],
             })),
@@ -109,17 +133,17 @@ export const WhosWhoGame = ({
         () =>
             selectedScenarios.map((scenario) => ({
                 scenario,
-                trayItems: [
-                    scenario.draggableItemId,
-                    ...scenario.distractorItemIds,
-                ]
+                trayItems: getScenarioTrayItemIds(
+                    scenario,
+                    settings.choiceCount,
+                )
                     .map((itemId) => itemById[itemId])
                     .filter(Boolean),
                 targets: scenario.targetIds
                     .map((targetId) => targetById[targetId])
                     .filter(Boolean),
             })),
-        [itemById, selectedScenarios, targetById],
+        [itemById, selectedScenarios, settings.choiceCount, targetById],
     );
 
     const [questionState, setQuestionState] = useState<QuestionState>({
@@ -127,13 +151,17 @@ export const WhosWhoGame = ({
         answerState: "notAnswered",
     });
     const [roundStates, setRoundStates] = useState<RoundState[]>(() =>
-        selectedScenarios.map((scenario) => buildRoundState(scenario)),
+        selectedScenarios.map((scenario) =>
+            buildRoundState(scenario, settings.choiceCount),
+        ),
     );
 
     const tracking = useExerciseTracking(questions.length);
 
     const getScenarioIndex = (questionId: string) =>
-        selectedScenarios.findIndex((scenario) => scenario.id === questionId);
+        selectedScenarios.findIndex(
+            (scenario) => scenario.selectionId === questionId,
+        );
 
     const handleDragEnd = (roundIndex: number, event: DragEndEvent) => {
         if (questionState.answerState !== "notAnswered" || event.canceled) {
@@ -191,7 +219,9 @@ export const WhosWhoGame = ({
             answerState: "notAnswered",
         });
         setRoundStates(
-            selectedScenarios.map((scenario) => buildRoundState(scenario)),
+            selectedScenarios.map((scenario) =>
+                buildRoundState(scenario, settings.choiceCount),
+            ),
         );
     };
 

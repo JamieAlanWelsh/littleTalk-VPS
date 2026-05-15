@@ -11,6 +11,25 @@ export const WhosWhoPronounSchema = z.enum([
 
 export type WhosWhoPronoun = z.infer<typeof WhosWhoPronounSchema>;
 
+export const WhosWhoPronouns = WhosWhoPronounSchema.options;
+
+export const WhosWhoChoiceCountSchema = z.union([
+    z.literal(1),
+    z.literal(2),
+    z.literal(3),
+]);
+
+export type WhosWhoChoiceCount = z.infer<typeof WhosWhoChoiceCountSchema>;
+
+export const WhosWhoChoiceCounts = [1, 2, 3] as const;
+
+export const WhosWhoSettingsSchema = z.object({
+    choiceCount: WhosWhoChoiceCountSchema,
+    selectedPronouns: z.array(WhosWhoPronounSchema).min(1),
+});
+
+export type WhosWhoSettings = z.infer<typeof WhosWhoSettingsSchema>;
+
 export const WhosWhoItemSchema = z.object({
     id: z.string(),
     imageUrl: z.string(),
