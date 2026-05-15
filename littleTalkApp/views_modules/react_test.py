@@ -79,3 +79,11 @@ def story_train(request):
         "learner_uuid": _get_session_learner_uuid(request),
     }
     return render(request, "exercises/story_train.html", context)
+
+
+@login_required
+def whos_who(request):
+    context = {
+        "learner_uuid": _get_session_learner_uuid(request),
+    }
+    return render(request, "exercises/whos_who.html", context)

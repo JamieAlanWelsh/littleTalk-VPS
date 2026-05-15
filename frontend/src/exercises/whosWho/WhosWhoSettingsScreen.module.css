@@ -1,0 +1,21 @@
+.wrapper {
+    display: grid;
+    gap: 0.75rem;
+    color: var(--font-color);
+}
+
+.text {
+    margin: 0;
+}
+
+.list {
+    margin: 0;
+    padding-left: 1.25rem;
+    display: grid;
+    gap: 0.3rem;
+}
+
+.tip {
+    margin: 0;
+    font-weight: 700;
+}
