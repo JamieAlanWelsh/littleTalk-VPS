@@ -129,11 +129,6 @@ export const WhosWhoBoard = ({
 
                         return (
                             <div key={target.id} className={styles.targetCard}>
-                                <div className={styles.targetHeader}>
-                                    <p className={styles.targetLabel}>
-                                        {target.label}
-                                    </p>
-                                </div>
                                 <div
                                     className={`${styles.targetZone} ${targetResultClass}`.trim()}
                                 >

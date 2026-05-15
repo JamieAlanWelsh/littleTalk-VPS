@@ -1,6 +1,6 @@
 .wrapper {
     --droppable-zone-width: 14rem;
-    --droppable-zone-aspect-ratio: 8 / 11;
+    --droppable-zone-aspect-ratio: 1 / 1;
     --icon-block-width: 6.25rem;
     --icon-block-height: 6.25rem;
     --icon-block-img-width: 5rem;
@@ -21,19 +21,7 @@
 .targetCard {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
     align-items: center;
-}
-
-.targetHeader {
-    text-align: center;
-}
-
-.targetLabel {
-    margin: 0;
-    font-size: 1.05rem;
-    color: #2f2342;
-    font-weight: 700;
 }
 
 .targetZone {
