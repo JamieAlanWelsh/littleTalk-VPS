@@ -20,9 +20,17 @@ export const WhosWhoItemSchema = z.object({
 
 export type WhosWhoItem = z.infer<typeof WhosWhoItemSchema>;
 
+export const WhosWhoTargetImagesSchema = z.object({
+    base: z.string(),
+    reaching: z.string(),
+    happy: z.string(),
+});
+
+export type WhosWhoTargetImages = z.infer<typeof WhosWhoTargetImagesSchema>;
+
 export const WhosWhoTargetSchema = z.object({
     id: z.string(),
-    imageUrl: z.string(),
+    images: WhosWhoTargetImagesSchema,
     label: z.string(),
     altText: z.string().optional(),
 });

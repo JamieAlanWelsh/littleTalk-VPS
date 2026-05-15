@@ -67,17 +67,29 @@
   "targets": [
     {
       "id": "target-boy",
-      "imageUrl": "/static/exercise_assets/whos_who/droppable_options/boy/boy_base.png",
+      "images": {
+        "base": "/static/exercise_assets/whos_who/droppable_options/boy/boy_base.png",
+        "reaching": "/static/exercise_assets/whos_who/droppable_options/boy/boy_reaching.png",
+        "happy": "/static/exercise_assets/whos_who/droppable_options/boy/boy_happy.png"
+      },
       "label": "Boy"
     },
     {
       "id": "target-girl",
-      "imageUrl": "/static/exercise_assets/whos_who/droppable_options/girl/girl_base.png",
+      "images": {
+        "base": "/static/exercise_assets/whos_who/droppable_options/girl/girl_base.png",
+        "reaching": "/static/exercise_assets/whos_who/droppable_options/girl/girl_reaching.png",
+        "happy": "/static/exercise_assets/whos_who/droppable_options/girl/girl_happy.png"
+      },
       "label": "Girl"
     },
     {
       "id": "target-group",
-      "imageUrl": "/static/exercise_assets/whos_who/droppable_options/group/group_boys_base.png",
+      "images": {
+        "base": "/static/exercise_assets/whos_who/droppable_options/group/group_boys_base.png",
+        "reaching": "/static/exercise_assets/whos_who/droppable_options/group/group_boys_reaching.png",
+        "happy": "/static/exercise_assets/whos_who/droppable_options/group/group_boys_happy.png"
+      },
       "label": "Group"
     }
   ],

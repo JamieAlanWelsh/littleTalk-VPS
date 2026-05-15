@@ -1,6 +1,8 @@
 .wrapper {
     --droppable-zone-width: 14rem;
     --droppable-zone-aspect-ratio: 1 / 1;
+    --droppable-zone-bg: transparent;
+    --droppable-zone-active-bg: transparent;
     --icon-block-width: 6.25rem;
     --icon-block-height: 6.25rem;
     --icon-block-img-width: 5rem;
@@ -64,6 +66,7 @@
     --icon-block-img-width: 3.5rem;
     --icon-block-img-height: 3.5rem;
     --icon-block-padding: 0.25rem;
+    --icon-block-bg: transparent;
     pointer-events: auto;
 }
 

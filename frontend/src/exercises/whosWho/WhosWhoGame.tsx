@@ -190,6 +190,9 @@ export const WhosWhoGame = ({
             selectedIconIds: [],
             answerState: "notAnswered",
         });
+        setRoundStates(
+            selectedScenarios.map((scenario) => buildRoundState(scenario)),
+        );
     };
 
     return (

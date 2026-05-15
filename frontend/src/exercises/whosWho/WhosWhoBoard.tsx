@@ -5,6 +5,7 @@ import {
     KeyboardSensor,
     PointerSensor,
 } from "@dnd-kit/react";
+import { useState } from "react";
 import { DraggableImage } from "../../components/DraggableImage/DraggableImage";
 import { DroppableImageZone } from "../../components/DroppableImageZone/DroppableImageZone";
 import { PoolTray } from "../../components/PoolTray/PoolTray";
@@ -26,6 +27,8 @@ interface WhosWhoBoardProps {
     answerState: AnswerState;
     onDragEnd: (event: DragEndEvent) => void;
 }
+
+type TargetVisualState = "base" | "reaching" | "happy";
 
 const renderTrayItem = (
     itemId: string,
@@ -95,6 +98,30 @@ const renderAttachedItem = (
     );
 };
 
+const getTargetVisualState = ({
+    answerState,
+    isDragging,
+    isHoldingItem,
+}: {
+    answerState: AnswerState;
+    isDragging: boolean;
+    isHoldingItem: boolean;
+}): TargetVisualState => {
+    if (answerState === "correct" && isHoldingItem) {
+        return "happy";
+    }
+
+    if (isDragging) {
+        return "reaching";
+    }
+
+    if (isHoldingItem) {
+        return "reaching";
+    }
+
+    return "base";
+};
+
 export const WhosWhoBoard = ({
     scenario,
     targets,
@@ -103,6 +130,8 @@ export const WhosWhoBoard = ({
     answerState,
     onDragEnd,
 }: WhosWhoBoardProps) => {
+    const [isDragging, setIsDragging] = useState(false);
+
     const sensors = [
         PointerSensor.configure({
             activationConstraints: [
@@ -112,14 +141,36 @@ export const WhosWhoBoard = ({
         KeyboardSensor,
     ];
 
+    const handleDragStart = () => {
+        if (answerState !== "notAnswered") {
+            return;
+        }
+
+        setIsDragging(true);
+    };
+
+    const handleDragEnd = (event: DragEndEvent) => {
+        setIsDragging(false);
+        onDragEnd(event);
+    };
+
     return (
         <div className={styles.wrapper}>
-            <DragDropProvider sensors={sensors} onDragEnd={onDragEnd}>
+            <DragDropProvider
+                sensors={sensors}
+                onDragStart={handleDragStart}
+                onDragEnd={handleDragEnd}
+            >
                 <div className={styles.targetsRow}>
                     {targets.map((target) => {
                         const hasPlacedItem =
                             currentRoundState.placedTargetId === target.id &&
-                            currentRoundState.placedItemId;
+                            Boolean(currentRoundState.placedItemId);
+                        const targetVisualState = getTargetVisualState({
+                            answerState,
+                            isDragging,
+                            isHoldingItem: hasPlacedItem,
+                        });
                         const targetResultClass =
                             answerState === "correct" && hasPlacedItem
                                 ? styles.targetCorrect
@@ -138,7 +189,11 @@ export const WhosWhoBoard = ({
                                         <div className={styles.targetContent}>
                                             <img
                                                 className={styles.targetImage}
-                                                src={target.imageUrl}
+                                                src={
+                                                    target.images[
+                                                        targetVisualState
+                                                    ]
+                                                }
                                                 alt={
                                                     target.altText ??
                                                     target.label
