@@ -31,8 +31,8 @@ const GRID_ROWS = 4;
 const GRID_COLUMNS = 5;
 const CHARACTER_START: SpotOnGridLocation = { row: 3, col: 2 };
 const OBJECT_LOCATION: SpotOnGridLocation = { row: 1, col: 2 };
-const BETWEEN_LEFT_OBJECT: SpotOnGridLocation = { row: 2, col: 1 };
-const BETWEEN_RIGHT_OBJECT: SpotOnGridLocation = { row: 2, col: 3 };
+const BETWEEN_LEFT_OBJECT: SpotOnGridLocation = { row: 1, col: 1 };
+const BETWEEN_RIGHT_OBJECT: SpotOnGridLocation = { row: 1, col: 3 };
 
 const toCellId = ({ row, col }: SpotOnGridLocation) => `cell:${row}:${col}`;
 
@@ -95,7 +95,7 @@ const isLocationCorrect = (
         case "behind":
             return (
                 characterLocation.row === OBJECT_LOCATION.row &&
-                characterLocation.col === OBJECT_LOCATION.col - 1
+                characterLocation.col === OBJECT_LOCATION.col
             );
         case "in front of":
             return (

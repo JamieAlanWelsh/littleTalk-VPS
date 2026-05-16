@@ -15,20 +15,7 @@
 
 .gridCell {
     min-height: 5.25rem;
-}
-
-.gridCell :global(.zone) {
-    width: 100%;
-    height: 100%;
-    aspect-ratio: auto;
-    border-radius: 0.5rem;
-    background: transparent;
-    border: 1px dashed transparent;
-}
-
-.gridCell :global(.active) {
-    background: rgba(91, 141, 239, 0.08);
-    border-color: rgba(91, 141, 239, 0.35);
+    --droppable-zone-bg: rgba(0, 0, 0, 0.05);
 }
 
 .gridCell :global(.content) {
@@ -44,13 +31,14 @@
 }
 
 .objectImage {
-    inset: 0;
-    width: 100%;
-    height: 100%;
+    width: 20%;
+    height: 20%;
     object-fit: contain;
     pointer-events: none;
-    opacity: 0.9;
+    opacity: 0.8;
     z-index: 1;
+    position: absolute;
+    object-position: center;
 }
 
 .gridCell :global(.icon-block) {
