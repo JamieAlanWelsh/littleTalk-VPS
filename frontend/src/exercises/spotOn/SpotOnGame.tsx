@@ -69,10 +69,7 @@ const isLocationCorrect = (
                 characterLocation.col === OBJECT_LOCATION.col
             );
         case "under":
-            return (
-                characterLocation.row === OBJECT_LOCATION.row + 1 &&
-                characterLocation.col === OBJECT_LOCATION.col
-            );
+            return locationsEqual(characterLocation, OBJECT_LOCATION);
         case "next to":
             return (
                 (characterLocation.row === OBJECT_LOCATION.row &&

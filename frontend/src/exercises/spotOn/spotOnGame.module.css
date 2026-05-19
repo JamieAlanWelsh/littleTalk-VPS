@@ -23,6 +23,10 @@
     --icon-block-height: 9.3125rem;
     --icon-block-img-width: 9.4375rem;
     --icon-block-img-height: 9.4375rem;
+    --icon-block-bg: transparent;
+
+    --icon-block-interactive-bg: transparent;
+    --icon-block-disabled-bg: transparent;
 }
 
 .gridCell :global(.content) {
