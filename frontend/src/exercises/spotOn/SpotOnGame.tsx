@@ -27,12 +27,12 @@ const EXERCISE_METADATA = {
     id: "spot-on",
 };
 
-const GRID_ROWS = 4;
+const GRID_ROWS = 5;
 const GRID_COLUMNS = 5;
-const CHARACTER_START: SpotOnGridLocation = { row: 3, col: 2 };
-const OBJECT_LOCATION: SpotOnGridLocation = { row: 1, col: 2 };
-const BETWEEN_LEFT_OBJECT: SpotOnGridLocation = { row: 1, col: 1 };
-const BETWEEN_RIGHT_OBJECT: SpotOnGridLocation = { row: 1, col: 3 };
+const CHARACTER_START: SpotOnGridLocation = { row: 4, col: 2 };
+const OBJECT_LOCATION: SpotOnGridLocation = { row: 2, col: 2 };
+const BETWEEN_LEFT_OBJECT: SpotOnGridLocation = { row: 2, col: 1 };
+const BETWEEN_RIGHT_OBJECT: SpotOnGridLocation = { row: 2, col: 3 };
 
 const toCellId = ({ row, col }: SpotOnGridLocation) => `cell:${row}:${col}`;
 

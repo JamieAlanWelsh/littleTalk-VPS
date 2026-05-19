@@ -15,7 +15,9 @@
 
 .gridCell {
     min-height: 5.25rem;
-    --droppable-zone-bg: rgba(0, 0, 0, 0.05);
+    --droppable-zone-bg: transparent;
+    --droppable-zone-active-bg: rgba(91, 141, 239, 0.2);
+    --droppable-zone-active-border: #5b8def;
 }
 
 .gridCell :global(.content) {
