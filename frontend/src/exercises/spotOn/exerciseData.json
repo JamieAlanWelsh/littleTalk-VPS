@@ -5,58 +5,58 @@
   "characters": [
     {
       "id": "arlo",
-      "name": "Arlo",
-      "imageUrl": "/static/exercise_assets/think_and_find/boy/boy_blonde.png",
-      "altText": "Arlo character"
+      "name": "Arlo Armadillo",
+      "imageUrl": "/static/exercise_assets/prepositions/characters/arlo_armadillo.png",
+      "altText": "Arlo Armadillo character"
     },
     {
       "id": "maya",
-      "name": "Maya",
-      "imageUrl": "/static/exercise_assets/think_and_find/girl/girl_yellowdress.png",
-      "altText": "Maya character"
+      "name": "Humble Hedgehog",
+      "imageUrl": "/static/exercise_assets/prepositions/characters/humble_hedgehog.png",
+      "altText": "Humble Hedgehog character"
     },
     {
       "id": "pip",
-      "name": "Pip",
-      "imageUrl": "/static/exercise_assets/think_and_find/cat/cat_grey.png",
-      "altText": "Pip character"
+      "name": "Muddles Mole",
+      "imageUrl": "/static/exercise_assets/prepositions/characters/muddles_mole.png",
+      "altText": "Muddles Mole character"
     },
     {
       "id": "zed",
-      "name": "Zed",
-      "imageUrl": "/static/exercise_assets/think_and_find/monster/monster_yellow.png",
-      "altText": "Zed character"
+      "name": "Peppy Pigeon",
+      "imageUrl": "/static/exercise_assets/prepositions/characters/peppy_pigeon.png",
+      "altText": "Peppy Pigeon character"
     },
     {
       "id": "nala",
-      "name": "Nala",
-      "imageUrl": "/static/exercise_assets/think_and_find/elephant/elephant_earsblue.png",
-      "altText": "Nala character"
+      "name": "Resilient Red Panda",
+      "imageUrl": "/static/exercise_assets/prepositions/characters/resilient_red_panda.png",
+      "altText": "Resilient Red Panda character"
     }
   ],
   "objects": [
     {
       "id": "bookshelf",
       "name": "bookshelf",
-      "imageUrl": "/static/exercise_assets/prepositions/bookshelf.png",
+      "imageUrl": "/static/exercise_assets/prepositions/objects/bookshelf.png",
       "altText": "A bookshelf"
     },
     {
       "id": "box",
       "name": "box",
-      "imageUrl": "/static/exercise_assets/prepositions/box.png",
+      "imageUrl": "/static/exercise_assets/prepositions/objects/box.png",
       "altText": "A box"
     },
     {
       "id": "chair",
       "name": "chair",
-      "imageUrl": "/static/exercise_assets/prepositions/chair.png",
+      "imageUrl": "/static/exercise_assets/prepositions/objects/chair.png",
       "altText": "A chair"
     },
     {
       "id": "table",
       "name": "table",
-      "imageUrl": "/static/exercise_assets/prepositions/table.png",
+      "imageUrl": "/static/exercise_assets/prepositions/objects/table.png",
       "altText": "A table"
     }
   ]
