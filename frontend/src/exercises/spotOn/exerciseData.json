@@ -58,17 +58,53 @@
       "name": "table",
       "imageUrl": "/static/exercise_assets/prepositions/objects/table.png",
       "altText": "A table"
+    },
+    {
+      "id": "armchair",
+      "name": "armchair",
+      "imageUrl": "/static/exercise_assets/prepositions/objects/armchair.png",
+      "altText": "An armchair"
+    },
+    {
+      "id": "bed",
+      "name": "bed",
+      "imageUrl": "/static/exercise_assets/prepositions/objects/bed.png",
+      "altText": "A bed"
+    },
+    {
+      "id": "present",
+      "name": "present",
+      "imageUrl": "/static/exercise_assets/prepositions/objects/present.png",
+      "altText": "A present"
+    },
+    {
+      "id": "sofa",
+      "name": "sofa",
+      "imageUrl": "/static/exercise_assets/prepositions/objects/sofa.png",
+      "altText": "A sofa"
+    },
+    {
+      "id": "toybox",
+      "name": "toybox",
+      "imageUrl": "/static/exercise_assets/prepositions/objects/toybox.png",
+      "altText": "A toybox"
+    },
+    {
+      "id": "fridge",
+      "name": "fridge",
+      "imageUrl": "/static/exercise_assets/prepositions/objects/fridge.png",
+      "altText": "A fridge"
     }
   ],
   "objectsByPreposition": {
-    "in": ["box", "bookshelf"],
-    "on": ["box", "bookshelf", "chair", "table"],
-    "under": ["chair", "table"],
-    "next to": ["box", "bookshelf", "chair", "table"],
-    "above": ["box", "bookshelf", "chair", "table"],
-    "below": ["box", "bookshelf", "chair", "table"],
-    "between": ["box", "bookshelf", "table"],
-    "behind": ["box", "bookshelf"],
-    "in front of": ["box", "bookshelf"]
+    "in": ["box", "bookshelf", "present", "toybox", "fridge"],
+    "on": ["box", "bookshelf", "chair", "table", "armchair", "bed", "sofa", "toybox", "present"],
+    "under": ["chair", "table", "armchair", "bed", "sofa"],
+    "next to": ["box", "bookshelf", "chair", "table", "armchair", "toybox", "present", "fridge"],
+    "above": ["box", "bookshelf", "chair", "table", "armchair", "bed", "sofa", "toybox", "present", "fridge"],
+    "below": ["box", "bookshelf", "chair", "table", "armchair", "bed", "sofa", "toybox", "present", "fridge"],
+    "between": ["box", "bookshelf", "table", "present", "fridge"],
+    "behind": ["box", "bookshelf", "present", "toybox", "fridge"],
+    "in front of": ["box", "bookshelf", "present", "toybox", "fridge"]
   }
 }

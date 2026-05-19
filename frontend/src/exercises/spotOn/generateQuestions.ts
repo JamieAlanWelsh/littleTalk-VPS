@@ -69,9 +69,16 @@ export const generateSpotOnQuestions = (
         }
         const object = pickRandom(allowedObjects);
 
+        // Pluralize object name for 'between' prompt
+        let promptObjectName = object.name;
+        if (preposition === "between") {
+            promptObjectName = object.name.endsWith("s")
+                ? object.name
+                : object.name + "s";
+        }
         return {
             id: `spoton-${index + 1}-${preposition.replace(/\s+/g, "-")}`,
-            prompt: buildPrompt(character.name, preposition, object.name),
+            prompt: buildPrompt(character.name, preposition, promptObjectName),
             preposition,
             character,
             object,
