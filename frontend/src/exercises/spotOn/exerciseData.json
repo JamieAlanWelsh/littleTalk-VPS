@@ -100,7 +100,7 @@
     "in": ["box", "bookshelf", "present", "toybox", "fridge"],
     "on": ["box", "bookshelf", "chair", "table", "armchair", "bed", "sofa", "toybox", "present"],
     "under": ["chair", "table", "armchair", "bed", "sofa"],
-    "next to": ["box", "bookshelf", "chair", "table", "armchair", "toybox", "present", "fridge"],
+    "next to": ["box", "bookshelf", "table", "present", "fridge"],
     "above": ["box", "bookshelf", "chair", "table", "armchair", "bed", "sofa", "toybox", "present", "fridge"],
     "below": ["box", "bookshelf", "chair", "table", "armchair", "bed", "sofa", "toybox", "present", "fridge"],
     "between": ["box", "bookshelf", "table", "present", "fridge"],
