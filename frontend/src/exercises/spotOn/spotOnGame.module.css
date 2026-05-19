@@ -14,10 +14,15 @@
 }
 
 .gridCell {
-    min-height: 5.25rem;
+    min-height: 7.875rem;
     --droppable-zone-bg: transparent;
     --droppable-zone-active-bg: rgba(91, 141, 239, 0.2);
     --droppable-zone-active-border: #5b8def;
+    --droppable-zone-width: 9.3125rem;
+    --icon-block-width: 9.3125rem;
+    --icon-block-height: 9.3125rem;
+    --icon-block-img-width: 9.4375rem;
+    --icon-block-img-height: 9.4375rem;
 }
 
 .gridCell :global(.content) {
@@ -33,8 +38,8 @@
 }
 
 .objectImage {
-    width: 30%;
-    height: 30%;
+    width: 43%;
+    height: 43%;
     object-fit: contain;
     pointer-events: none;
     opacity: 0.8;
@@ -49,6 +54,6 @@
 
 @media (max-width: 768px) {
     .gridCell {
-        min-height: 4.5rem;
+        min-height: 6.75rem;
     }
 }

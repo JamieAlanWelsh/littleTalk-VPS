@@ -59,5 +59,16 @@
       "imageUrl": "/static/exercise_assets/prepositions/objects/table.png",
       "altText": "A table"
     }
-  ]
+  ],
+  "objectsByPreposition": {
+    "in": ["box", "bookshelf"],
+    "on": ["box", "bookshelf", "chair", "table"],
+    "under": ["chair", "table"],
+    "next to": ["box", "bookshelf", "chair", "table"],
+    "above": ["box", "bookshelf", "chair", "table"],
+    "below": ["box", "bookshelf", "chair", "table"],
+    "between": ["box", "bookshelf", "table"],
+    "behind": ["box", "bookshelf"],
+    "in front of": ["box", "bookshelf"]
+  }
 }

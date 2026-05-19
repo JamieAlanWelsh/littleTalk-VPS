@@ -81,10 +81,8 @@ const isLocationCorrect = (
                     characterLocation.col === OBJECT_LOCATION.col + 1)
             );
         case "above":
-            return (
-                characterLocation.row === OBJECT_LOCATION.row - 1 &&
-                characterLocation.col === OBJECT_LOCATION.col
-            );
+            // Top row (0), middle column (2) for 5x5 grid
+            return characterLocation.row === 0 && characterLocation.col === 2;
         case "below":
             return (
                 characterLocation.row === OBJECT_LOCATION.row + 1 &&

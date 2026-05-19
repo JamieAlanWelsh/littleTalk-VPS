@@ -56,7 +56,18 @@ export const generateSpotOnQuestions = (
 
     return prepositionSequence.map((preposition, index) => {
         const character = pickRandom(payload.characters);
-        const object = pickRandom(payload.objects);
+        // Filter objects by allowed IDs for this preposition
+        const allowedObjectIds =
+            payload.objectsByPreposition?.[preposition] || [];
+        const allowedObjects = payload.objects.filter((obj) =>
+            allowedObjectIds.includes(obj.id),
+        );
+        if (allowedObjects.length === 0) {
+            throw new Error(
+                `No allowed objects for preposition '${preposition}'. Check objectsByPreposition in exerciseData.json.`,
+            );
+        }
+        const object = pickRandom(allowedObjects);
 
         return {
             id: `spoton-${index + 1}-${preposition.replace(/\s+/g, "-")}`,
