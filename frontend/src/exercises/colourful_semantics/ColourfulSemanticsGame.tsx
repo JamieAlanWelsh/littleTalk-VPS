@@ -16,6 +16,7 @@ import type {
     ColourfulSemanticsOptions,
     ColourfulSemanticsPayload,
     ColourfulSemanticsScene,
+    ColourfulSemanticsVariantId,
     ConfiguredColourfulSemanticsScene,
 } from "./types";
 
@@ -28,12 +29,14 @@ interface ColourfulSemanticsGameProps {
     options: ColourfulSemanticsOptions;
     payload: ColourfulSemanticsPayload;
     scene: ColourfulSemanticsScene;
+    variantId: ColourfulSemanticsVariantId;
     progressBase?: number;
     progressScale?: number;
 }
 
 interface ColourfulSemanticsAnswer {
     sceneId: string;
+    variantId: ColourfulSemanticsVariantId;
     presetId: ColourfulSemanticsOptions["presetId"];
     numberOfOptions: number;
     stepIds: string[];
@@ -134,6 +137,7 @@ export const ColourfulSemanticsGame = ({
     options,
     payload,
     scene: rawScene,
+    variantId,
     progressBase,
     progressScale,
 }: ColourfulSemanticsGameProps) => {
@@ -151,11 +155,18 @@ export const ColourfulSemanticsGame = ({
         () =>
             questions.map(() => ({
                 sceneId: scene.id,
+                variantId,
                 presetId: options.presetId,
                 numberOfOptions: options.numberOfOptions,
                 stepIds: scene.steps.map((step) => step.id),
             })),
-        [options.numberOfOptions, options.presetId, questions, scene],
+        [
+            options.numberOfOptions,
+            options.presetId,
+            questions,
+            scene,
+            variantId,
+        ],
     );
 
     const [lockedSelectionIds, setLockedSelectionIds] = useState<

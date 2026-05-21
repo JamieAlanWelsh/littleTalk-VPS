@@ -23,6 +23,35 @@ export type ColourfulSemanticsPresetId = z.infer<
     typeof ColourfulSemanticsPresetIdSchema
 >;
 
+export const ColourfulSemanticsVariantIdSchema = z.enum([
+    "standard",
+    "early-years",
+]);
+
+export type ColourfulSemanticsVariantId = z.infer<
+    typeof ColourfulSemanticsVariantIdSchema
+>;
+
+export const ColourfulSemanticsVariantConfigSchema = z
+    .object({
+        id: ColourfulSemanticsVariantIdSchema,
+        allowedPresetIds: z.array(ColourfulSemanticsPresetIdSchema).min(1),
+        defaultPresetId: ColourfulSemanticsPresetIdSchema,
+        defaultNumberOfOptions: z.number().int().min(1).max(5),
+    })
+    .refine(
+        ({ allowedPresetIds, defaultPresetId }) =>
+            allowedPresetIds.includes(defaultPresetId),
+        {
+            message: "defaultPresetId must be included in allowedPresetIds",
+            path: ["defaultPresetId"],
+        },
+    );
+
+export type ColourfulSemanticsVariantConfig = z.infer<
+    typeof ColourfulSemanticsVariantConfigSchema
+>;
+
 export interface ColourfulSemanticsOptions {
     presetId: ColourfulSemanticsPresetId;
     numberOfOptions: number;
@@ -40,6 +69,17 @@ export const ColourfulSemanticsOptionSchema = z.object({
 
 export type ColourfulSemanticsOption = z.infer<
     typeof ColourfulSemanticsOptionSchema
+>;
+
+export const ColourfulSemanticsAssetPoolSchema = z.object({
+    who: z.array(ColourfulSemanticsOptionSchema).min(1),
+    doing: z.array(ColourfulSemanticsOptionSchema).min(1),
+    what: z.array(ColourfulSemanticsOptionSchema).min(1),
+    where: z.array(ColourfulSemanticsOptionSchema).min(1),
+});
+
+export type ColourfulSemanticsAssetPool = z.infer<
+    typeof ColourfulSemanticsAssetPoolSchema
 >;
 
 export const ColourfulSemanticsStepSchema = z.object({
@@ -92,13 +132,19 @@ export interface ConfiguredColourfulSemanticsScene extends Omit<
     steps: ConfiguredColourfulSemanticsStep[];
 }
 
-export const ColourfulSemanticsPayloadSchema = z.object({
-    who: z.array(ColourfulSemanticsOptionSchema).min(1),
-    doing: z.array(ColourfulSemanticsOptionSchema).min(1),
-    what: z.array(ColourfulSemanticsOptionSchema).min(1),
-    where: z.array(ColourfulSemanticsOptionSchema).min(1),
-    scenes: z.array(ColourfulSemanticsSceneSchema).min(1),
-});
+export const ColourfulSemanticsVariantPackSchema =
+    ColourfulSemanticsVariantConfigSchema.extend({
+        scenes: z.array(ColourfulSemanticsSceneSchema).min(1),
+    });
+
+export type ColourfulSemanticsVariantPack = z.infer<
+    typeof ColourfulSemanticsVariantPackSchema
+>;
+
+export const ColourfulSemanticsPayloadSchema =
+    ColourfulSemanticsAssetPoolSchema.extend({
+        scenes: z.array(ColourfulSemanticsSceneSchema).min(1),
+    });
 
 export type ColourfulSemanticsPayload = z.infer<
     typeof ColourfulSemanticsPayloadSchema

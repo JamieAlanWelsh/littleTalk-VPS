@@ -4,6 +4,7 @@ import type {
     ColourfulSemanticsPresetId,
     ColourfulSemanticsScene,
     ColourfulSemanticsSlot,
+    ColourfulSemanticsVariantConfig,
     ConfiguredColourfulSemanticsScene,
 } from "./types";
 
@@ -21,6 +22,36 @@ const PRESET_SLOTS: Record<
 export const getSlotsForPreset = (
     presetId: ColourfulSemanticsPresetId,
 ): ColourfulSemanticsSlot[] => PRESET_SLOTS[presetId];
+
+export const getDefaultOptionsForVariant = (
+    variant: ColourfulSemanticsVariantConfig,
+): ColourfulSemanticsOptions => ({
+    presetId: variant.defaultPresetId,
+    numberOfOptions: variant.defaultNumberOfOptions,
+});
+
+export const sanitizeOptionsForVariant = ({
+    options,
+    scenes,
+    variant,
+}: {
+    options: ColourfulSemanticsOptions;
+    scenes: ColourfulSemanticsScene[];
+    variant: ColourfulSemanticsVariantConfig;
+}): ColourfulSemanticsOptions => {
+    const presetId = variant.allowedPresetIds.includes(options.presetId)
+        ? options.presetId
+        : variant.defaultPresetId;
+    const maxOptions = Math.min(5, getMaxOptionsAcrossScenes(scenes, presetId));
+
+    return {
+        presetId,
+        numberOfOptions: Math.max(
+            1,
+            Math.min(options.numberOfOptions, maxOptions),
+        ),
+    };
+};
 
 export const getMaxOptionsForPreset = (
     scene: ColourfulSemanticsScene,

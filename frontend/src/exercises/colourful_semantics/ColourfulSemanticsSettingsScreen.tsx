@@ -6,6 +6,7 @@ import type {
     ColourfulSemanticsPayload,
     ColourfulSemanticsPresetId,
     ColourfulSemanticsSlot,
+    ColourfulSemanticsVariantConfig,
 } from "./types";
 
 const PRESET_OPTIONS: Array<{
@@ -32,14 +33,19 @@ const SLOT_COLOURS: Record<ColourfulSemanticsSlot, string> = {
 interface ColourfulSemanticsSettingsScreenProps {
     options: ColourfulSemanticsOptions;
     payload: ColourfulSemanticsPayload;
+    variant: ColourfulSemanticsVariantConfig;
     onSetOptions: (options: ColourfulSemanticsOptions) => void;
 }
 
 export const ColourfulSemanticsSettingsScreen = ({
     options,
     payload,
+    variant,
     onSetOptions,
 }: ColourfulSemanticsSettingsScreenProps) => {
+    const availablePresets = PRESET_OPTIONS.filter((preset) =>
+        variant.allowedPresetIds.includes(preset.id),
+    );
     const maxOptions = Math.min(
         5,
         getMaxOptionsAcrossScenes(payload.scenes, options.presetId),
@@ -61,7 +67,7 @@ export const ColourfulSemanticsSettingsScreen = ({
             <section className={styles.section}>
                 <h3 className={styles.sectionTitle}>Complexity Level</h3>
                 <div className={styles.presetList}>
-                    {PRESET_OPTIONS.map((preset) => {
+                    {availablePresets.map((preset) => {
                         const isSelected = preset.id === options.presetId;
                         const slots = getSlotsForPreset(preset.id);
 
