@@ -6,7 +6,8 @@
   "defaultPresetId": "subject-verb-object-location",
   "defaultNumberOfOptions": 5,
   "availableOptionalSlotIds": [
-    "to-who"
+    "to-who",
+    "when"
   ],
   "scenes": [
     {
@@ -101,6 +102,23 @@
             "where-school",
             "where-home"
           ]
+        },
+        {
+          "id": "blowing-bubbles-when",
+          "slot": "when",
+          "title": "when",
+          "prompt": "When?",
+          "color": "#b88163",
+          "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/when.png",
+          "levelIconAlt": "When level icon",
+          "optionIds": [
+            "when-in-morning",
+            "when-in-afternoon",
+            "when-in-evening",
+            "when-at-night",
+            "when-in-summer"
+          ],
+          "correctOptionId": "when-in-morning"
         }
       ]
     },
@@ -318,6 +336,23 @@
             "where-garden",
             "where-home"
           ]
+        },
+        {
+          "id": "children-digging-sandpit-when",
+          "slot": "when",
+          "title": "when",
+          "prompt": "When?",
+          "color": "#b88163",
+          "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/when.png",
+          "levelIconAlt": "When level icon",
+          "optionIds": [
+            "when-in-morning",
+            "when-in-afternoon",
+            "when-in-evening",
+            "when-at-night",
+            "when-in-summer"
+          ],
+          "correctOptionId": "when-in-afternoon"
         }
       ]
     },
@@ -413,6 +448,23 @@
             "where-cinema",
             "where-garden"
           ]
+        },
+        {
+          "id": "children-sitting-mat-school-when",
+          "slot": "when",
+          "title": "when",
+          "prompt": "When?",
+          "color": "#b88163",
+          "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/when.png",
+          "levelIconAlt": "When level icon",
+          "optionIds": [
+            "when-in-morning",
+            "when-in-afternoon",
+            "when-in-evening",
+            "when-at-night",
+            "when-in-summer"
+          ],
+          "correctOptionId": "when-in-morning"
         }
       ]
     },
@@ -552,6 +604,23 @@
             "to-who-dog"
           ],
           "correctOptionId": "to-who-girl"
+        },
+        {
+          "id": "boy-licking-icecream-when",
+          "slot": "when",
+          "title": "when",
+          "prompt": "When?",
+          "color": "#b88163",
+          "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/when.png",
+          "levelIconAlt": "When level icon",
+          "optionIds": [
+            "when-in-morning",
+            "when-in-afternoon",
+            "when-in-evening",
+            "when-at-night",
+            "when-in-summer"
+          ],
+          "correctOptionId": "when-in-summer"
         }
       ]
     }

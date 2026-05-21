@@ -736,7 +736,38 @@
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/dog.wav"
     }
   ],
-  "when": [],
+  "when": [
+    {
+      "id": "when-in-morning",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/park.png",
+      "label": "in the morning",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/park.wav"
+    },
+    {
+      "id": "when-in-afternoon",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/classroom.png",
+      "label": "in the afternoon",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/classroom.wav"
+    },
+    {
+      "id": "when-in-evening",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/house.png",
+      "label": "in the evening",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/house.wav"
+    },
+    {
+      "id": "when-at-night",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/bedroom.png",
+      "label": "at night",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/bedroom.wav"
+    },
+    {
+      "id": "when-in-summer",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/beach.png",
+      "label": "in summer",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/beach.wav"
+    }
+  ],
   "what-like": [],
   "how": []
 }
