@@ -48,8 +48,18 @@ export const ColourfulSemanticsExercise = ({
                 variant,
             });
 
+            const hasSameOptionalSlots =
+                currentOptions.enabledOptionalSlotIds.length ===
+                    nextOptions.enabledOptionalSlotIds.length &&
+                currentOptions.enabledOptionalSlotIds.every(
+                    (slotId, index) =>
+                        slotId === nextOptions.enabledOptionalSlotIds[index],
+                );
+
             return currentOptions.presetId === nextOptions.presetId &&
-                currentOptions.numberOfOptions === nextOptions.numberOfOptions
+                currentOptions.numberOfOptions ===
+                    nextOptions.numberOfOptions &&
+                hasSameOptionalSlots
                 ? currentOptions
                 : nextOptions;
         });
@@ -58,7 +68,7 @@ export const ColourfulSemanticsExercise = ({
     const handleStart = () => {
         setRepetitionCount(0);
         setUsedSceneIds([]);
-        setSelectedScene(pickRandomScene(payload.scenes, options.presetId));
+        setSelectedScene(pickRandomScene(payload.scenes, options, variant));
         setHasStarted(true);
     };
 
@@ -80,7 +90,8 @@ export const ColourfulSemanticsExercise = ({
             setSelectedScene(
                 pickRandomScene(
                     payload.scenes,
-                    options.presetId,
+                    options,
+                    variant,
                     nextUsedSceneIds,
                 ),
             );
@@ -92,7 +103,7 @@ export const ColourfulSemanticsExercise = ({
             ? [...usedSceneIds, selectedScene.id]
             : usedSceneIds;
         setSelectedScene(
-            pickRandomScene(payload.scenes, options.presetId, excludeIds),
+            pickRandomScene(payload.scenes, options, variant, excludeIds),
         );
         setSkipToken((t) => t + 1);
     };
@@ -107,7 +118,9 @@ export const ColourfulSemanticsExercise = ({
                 title={
                     variant.id === "early-years"
                         ? "Colourful Semantics Early Years Setup"
-                        : "Colourful Semantics Setup"
+                        : variant.id === "advanced"
+                          ? "Colourful Semantics Advanced Setup"
+                          : "Colourful Semantics Setup"
                 }
                 subtitle="What would you like to work on today?"
                 onStart={handleStart}
@@ -143,7 +156,7 @@ export const ColourfulSemanticsExercise = ({
             options={options}
             payload={payload}
             scene={selectedScene!}
-            variantId={variant.id}
+            variant={variant}
             progressBase={repetitionCount / TOTAL_REPETITIONS}
             progressScale={1 / TOTAL_REPETITIONS}
         />

@@ -1,4 +1,5 @@
 import sharedAssetPoolData from "./data/sharedAssetPool.json";
+import advancedVariantData from "./data/advancedVariant.json";
 import earlyYearsVariantData from "./data/earlyYearsVariant.json";
 import standardVariantData from "./data/standardVariant.json";
 import {
@@ -27,6 +28,7 @@ const getVariantPacks = (): Record<
     "early-years": ColourfulSemanticsVariantPackSchema.parse(
         earlyYearsVariantData,
     ),
+    advanced: ColourfulSemanticsVariantPackSchema.parse(advancedVariantData),
 });
 
 export const resolveColourfulSemanticsVariantId = (
@@ -48,6 +50,7 @@ const getVariantConfig = (
         allowedPresetIds: variantPack.allowedPresetIds,
         defaultPresetId: variantPack.defaultPresetId,
         defaultNumberOfOptions: variantPack.defaultNumberOfOptions,
+        availableOptionalSlotIds: variantPack.availableOptionalSlotIds,
     });
 
 export const getColourfulSemanticsVariantData = (

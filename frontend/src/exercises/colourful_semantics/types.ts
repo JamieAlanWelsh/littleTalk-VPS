@@ -1,11 +1,46 @@
 import { z } from "zod";
 
-export const ColourfulSemanticsSlotSchema = z.enum([
+export const COLOURFUL_SEMANTICS_BASE_SLOT_IDS = [
     "who",
     "doing",
     "what",
     "where",
-]);
+] as const;
+
+export const ColourfulSemanticsBaseSlotSchema = z.enum(
+    COLOURFUL_SEMANTICS_BASE_SLOT_IDS,
+);
+
+export type ColourfulSemanticsBaseSlot = z.infer<
+    typeof ColourfulSemanticsBaseSlotSchema
+>;
+
+export const COLOURFUL_SEMANTICS_OPTIONAL_SLOT_IDS = [
+    "to-who",
+    "when",
+    "what-like",
+    "how",
+] as const;
+
+export const ColourfulSemanticsOptionalSlotSchema = z.enum(
+    COLOURFUL_SEMANTICS_OPTIONAL_SLOT_IDS,
+);
+
+export type ColourfulSemanticsOptionalSlot = z.infer<
+    typeof ColourfulSemanticsOptionalSlotSchema
+>;
+
+export const COLOURFUL_SEMANTICS_SLOT_IDS = [
+    ...COLOURFUL_SEMANTICS_BASE_SLOT_IDS,
+    ...COLOURFUL_SEMANTICS_OPTIONAL_SLOT_IDS,
+] as const;
+
+export const COLOURFUL_SEMANTICS_ASSET_POOL_SLOT_IDS =
+    COLOURFUL_SEMANTICS_SLOT_IDS;
+
+export const ColourfulSemanticsSlotSchema = z.enum(
+    COLOURFUL_SEMANTICS_SLOT_IDS,
+);
 
 export type ColourfulSemanticsSlot = z.infer<
     typeof ColourfulSemanticsSlotSchema
@@ -26,6 +61,7 @@ export type ColourfulSemanticsPresetId = z.infer<
 export const ColourfulSemanticsVariantIdSchema = z.enum([
     "standard",
     "early-years",
+    "advanced",
 ]);
 
 export type ColourfulSemanticsVariantId = z.infer<
@@ -38,6 +74,9 @@ export const ColourfulSemanticsVariantConfigSchema = z
         allowedPresetIds: z.array(ColourfulSemanticsPresetIdSchema).min(1),
         defaultPresetId: ColourfulSemanticsPresetIdSchema,
         defaultNumberOfOptions: z.number().int().min(1).max(5),
+        availableOptionalSlotIds: z
+            .array(ColourfulSemanticsOptionalSlotSchema)
+            .default([]),
     })
     .refine(
         ({ allowedPresetIds, defaultPresetId }) =>
@@ -55,6 +94,7 @@ export type ColourfulSemanticsVariantConfig = z.infer<
 export interface ColourfulSemanticsOptions {
     presetId: ColourfulSemanticsPresetId;
     numberOfOptions: number;
+    enabledOptionalSlotIds: ColourfulSemanticsOptionalSlot[];
 }
 
 export const ColourfulSemanticsOptionSchema = z.object({
@@ -76,6 +116,10 @@ export const ColourfulSemanticsAssetPoolSchema = z.object({
     doing: z.array(ColourfulSemanticsOptionSchema).min(1),
     what: z.array(ColourfulSemanticsOptionSchema).min(1),
     where: z.array(ColourfulSemanticsOptionSchema).min(1),
+    "to-who": z.array(ColourfulSemanticsOptionSchema).default([]),
+    when: z.array(ColourfulSemanticsOptionSchema).default([]),
+    "what-like": z.array(ColourfulSemanticsOptionSchema).default([]),
+    how: z.array(ColourfulSemanticsOptionSchema).default([]),
 });
 
 export type ColourfulSemanticsAssetPool = z.infer<

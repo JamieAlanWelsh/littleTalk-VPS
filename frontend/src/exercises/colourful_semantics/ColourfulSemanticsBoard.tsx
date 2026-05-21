@@ -13,8 +13,10 @@ import styles from "./colourfulSemantics.module.css";
 import { getIsPluralSubject, resolveOptionPresentation } from "./presentation";
 import type {
     ColourfulSemanticsOption,
+    ColourfulSemanticsSlot,
     ConfiguredColourfulSemanticsScene,
 } from "./types";
+import { COLOURFUL_SEMANTICS_SLOT_IDS } from "./types";
 import type { SentenceBoardState } from "./boardUtils";
 import { getSlotId, POOL_ID } from "./boardUtils";
 
@@ -39,7 +41,7 @@ const renderPlaceholder = (levelIconUrl: string, levelIconAlt: string) => (
     />
 );
 
-const getSlotColourClass = (slot: string) => {
+const getSlotColourClass = (slot: ColourfulSemanticsSlot) => {
     switch (slot) {
         case "who":
             return styles.slotCardWho;
@@ -47,8 +49,16 @@ const getSlotColourClass = (slot: string) => {
             return styles.slotCardDoing;
         case "what":
             return styles.slotCardWhat;
+        case "to-who":
+            return styles.slotCardToWho;
         case "where":
             return styles.slotCardWhere;
+        case "when":
+            return styles.slotCardWhen;
+        case "what-like":
+            return styles.slotCardWhatLike;
+        case "how":
+            return styles.slotCardHow;
         default:
             return "";
     }
@@ -58,12 +68,21 @@ const SLOT_OPTION_BACKGROUND_COLOUR_BY_ID_PREFIX: Record<string, string> = {
     who: "#FF9D2D",
     doing: "#FFEA47",
     what: "#38E87B",
+    "to-who": "#FFFFFF",
     where: "#5297FF",
+    when: "#B88163",
+    "what-like": "#C75EFF",
+    how: "#FFBEE5",
 };
 
 const getOptionBackgroundColour = (itemId: string) => {
-    const [idPrefix] = itemId.split("-");
-    return SLOT_OPTION_BACKGROUND_COLOUR_BY_ID_PREFIX[idPrefix];
+    const matchingPrefix = [...COLOURFUL_SEMANTICS_SLOT_IDS]
+        .sort((left, right) => right.length - left.length)
+        .find((slotId) => itemId.startsWith(`${slotId}-`));
+
+    return matchingPrefix
+        ? SLOT_OPTION_BACKGROUND_COLOUR_BY_ID_PREFIX[matchingPrefix]
+        : "#FFFFFF";
 };
 
 export const ColourfulSemanticsBoard = ({

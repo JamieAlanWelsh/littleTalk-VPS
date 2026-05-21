@@ -703,5 +703,40 @@
       "label": "in the bedroom",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/bedroom.wav"
     }
-  ]
+  ],
+  "to-who": [
+    {
+      "id": "to-who-boy",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/boy.png",
+      "label": "to the boy",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/boy.wav"
+    },
+    {
+      "id": "to-who-girl",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/girl.png",
+      "label": "to the girl",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/girl.wav"
+    },
+    {
+      "id": "to-who-teacher",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/teacher.png",
+      "label": "to the teacher",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/teacher.wav"
+    },
+    {
+      "id": "to-who-children",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/children.png",
+      "label": "to the children",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/children.wav"
+    },
+    {
+      "id": "to-who-dog",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/dog.png",
+      "label": "to the dog",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/dog.wav"
+    }
+  ],
+  "when": [],
+  "what-like": [],
+  "how": []
 }

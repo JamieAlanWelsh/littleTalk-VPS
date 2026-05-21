@@ -1,0 +1,559 @@
+{
+  "id": "advanced",
+  "allowedPresetIds": [
+    "subject-verb-object-location"
+  ],
+  "defaultPresetId": "subject-verb-object-location",
+  "defaultNumberOfOptions": 5,
+  "availableOptionalSlotIds": [
+    "to-who"
+  ],
+  "scenes": [
+    {
+      "id": "blowing-bubbles",
+      "title": "Build a sentence that matches the picture",
+      "instruction": "Drag the matching word into each coloured block, then press Check.",
+      "modellingTip": "Use the picture to talk through who is there, what they are doing, what they have, and where they are.",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/girl_blowing_bubbles_park.webp",
+      "targetImageAlt": "A girl blowing bubbles at the park.",
+      "steps": [
+        {
+          "id": "blowing-bubbles-who",
+          "slot": "who",
+          "title": "who",
+          "prompt": "Who is in the picture?",
+          "color": "#ff9d2e",
+          "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/who.png",
+          "levelIconAlt": "Who level icon",
+          "correctOptionId": "who-girl",
+          "optionIds": [
+            "who-girl",
+            "who-boy",
+            "who-lady",
+            "who-dog",
+            "who-cat"
+          ]
+        },
+        {
+          "id": "blowing-bubbles-doing",
+          "slot": "doing",
+          "title": "doing",
+          "prompt": "What is she doing?",
+          "color": "#f4e986",
+          "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/what_doing.png",
+          "levelIconAlt": "Doing level icon",
+          "correctOptionId": "doing-blowing",
+          "optionIds": [
+            "doing-blowing",
+            "doing-running",
+            "doing-jumping",
+            "doing-looking",
+            "doing-playing"
+          ]
+        },
+        {
+          "id": "blowing-bubbles-what",
+          "slot": "what",
+          "title": "what",
+          "prompt": "What is she blowing?",
+          "color": "#8fe2b3",
+          "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/what.png",
+          "levelIconAlt": "What level icon",
+          "correctOptionId": "what-bubbles",
+          "optionIds": [
+            "what-bubbles",
+            "what-ball",
+            "what-book",
+            "what-flower",
+            "what-toys"
+          ]
+        },
+        {
+          "id": "blowing-bubbles-to-who",
+          "slot": "to-who",
+          "title": "to who",
+          "prompt": "To who?",
+          "color": "#ffffff",
+          "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/to_who.png",
+          "levelIconAlt": "To Who level icon",
+          "optionIds": [
+            "to-who-boy",
+            "to-who-girl",
+            "to-who-teacher",
+            "to-who-children",
+            "to-who-dog"
+          ],
+          "correctOptionId": "to-who-boy"
+        },
+        {
+          "id": "blowing-bubbles-where",
+          "slot": "where",
+          "title": "where",
+          "prompt": "Where is she?",
+          "color": "#9fc5ff",
+          "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/where.png",
+          "levelIconAlt": "Where level icon",
+          "correctOptionId": "where-park",
+          "optionIds": [
+            "where-park",
+            "where-beach",
+            "where-garden",
+            "where-school",
+            "where-home"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "boy-swimming-pool",
+      "title": "Build a sentence that matches the picture",
+      "instruction": "Drag the matching word into each coloured block, then press Check.",
+      "modellingTip": "Use the picture to talk through who is there, what they are doing, and where they are.",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/boy_swimming_blank_pool.webp",
+      "targetImageAlt": "A boy swimming at the swimming pool.",
+      "steps": [
+        {
+          "id": "boy-swimming-pool-who",
+          "slot": "who",
+          "title": "who",
+          "prompt": "Who is in the picture?",
+          "color": "#ff9d2e",
+          "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/who.png",
+          "levelIconAlt": "Who level icon",
+          "correctOptionId": "who-boy",
+          "optionIds": [
+            "who-boy",
+            "who-girl",
+            "who-man",
+            "who-dog",
+            "who-frog"
+          ]
+        },
+        {
+          "id": "boy-swimming-pool-doing",
+          "slot": "doing",
+          "title": "doing",
+          "prompt": "What is he doing?",
+          "color": "#f4e986",
+          "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/what_doing.png",
+          "levelIconAlt": "Doing level icon",
+          "correctOptionId": "doing-swimming",
+          "optionIds": [
+            "doing-swimming",
+            "doing-running",
+            "doing-jumping",
+            "doing-climbing",
+            "doing-eating"
+          ]
+        },
+        {
+          "id": "boy-swimming-pool-where",
+          "slot": "where",
+          "title": "where",
+          "prompt": "Where is he?",
+          "color": "#9fc5ff",
+          "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/where.png",
+          "levelIconAlt": "Where level icon",
+          "correctOptionId": "where-swimming-pool",
+          "optionIds": [
+            "where-swimming-pool",
+            "where-park",
+            "where-beach",
+            "where-home",
+            "where-garden"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "butterfly-sitting-flower",
+      "title": "Build a sentence that matches the picture",
+      "instruction": "Drag the matching word into each coloured block, then press Check.",
+      "modellingTip": "Use the picture to talk through who is there, what they are doing, and what they are on.",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/butterfly_sitting_flower_blank.webp",
+      "targetImageAlt": "A butterfly sitting on a flower.",
+      "steps": [
+        {
+          "id": "butterfly-sitting-flower-who",
+          "slot": "who",
+          "title": "who",
+          "prompt": "Who is in the picture?",
+          "color": "#ff9d2e",
+          "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/who.png",
+          "levelIconAlt": "Who level icon",
+          "correctOptionId": "who-butterfly",
+          "optionIds": [
+            "who-butterfly",
+            "who-cat",
+            "who-frog",
+            "who-dog",
+            "who-horse"
+          ]
+        },
+        {
+          "id": "butterfly-sitting-flower-doing",
+          "slot": "doing",
+          "title": "doing",
+          "prompt": "What is it doing?",
+          "color": "#f4e986",
+          "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/what_doing.png",
+          "levelIconAlt": "Doing level icon",
+          "correctOptionId": "doing-sitting",
+          "optionIds": [
+            "doing-sitting",
+            "doing-eating",
+            "doing-flying",
+            "doing-looking",
+            "doing-jumping"
+          ]
+        },
+        {
+          "id": "butterfly-sitting-flower-what",
+          "slot": "what",
+          "title": "what",
+          "prompt": "What is it sitting on?",
+          "color": "#8fe2b3",
+          "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/what.png",
+          "levelIconAlt": "What level icon",
+          "correctOptionId": "what-flower",
+          "optionIds": [
+            "what-flower",
+            "what-grass",
+            "what-lilypad",
+            "what-mat",
+            "what-car"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "children-digging-sandpit",
+      "title": "Build a sentence that matches the picture",
+      "instruction": "Drag the matching word into each coloured block, then press Check.",
+      "modellingTip": "Use the picture to talk through who is there, what they are doing, what they are digging in, and where they are.",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/children_digging_sand_sandpit.webp",
+      "targetImageAlt": "Children digging in sand at the sandpit.",
+      "steps": [
+        {
+          "id": "children-digging-sandpit-who",
+          "slot": "who",
+          "title": "who",
+          "prompt": "Who is in the picture?",
+          "color": "#ff9d2e",
+          "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/who.png",
+          "levelIconAlt": "Who level icon",
+          "correctOptionId": "who-children",
+          "optionIds": [
+            "who-children",
+            "who-boy",
+            "who-girl",
+            "who-man",
+            "who-dog"
+          ]
+        },
+        {
+          "id": "children-digging-sandpit-doing",
+          "slot": "doing",
+          "title": "doing",
+          "prompt": "What are they doing?",
+          "color": "#f4e986",
+          "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/what_doing.png",
+          "levelIconAlt": "Doing level icon",
+          "correctOptionId": "doing-digging",
+          "optionIds": [
+            "doing-digging",
+            "doing-running",
+            "doing-jumping",
+            "doing-eating",
+            "doing-sitting"
+          ]
+        },
+        {
+          "id": "children-digging-sandpit-what",
+          "slot": "what",
+          "title": "what",
+          "prompt": "What are they digging in?",
+          "color": "#8fe2b3",
+          "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/what.png",
+          "levelIconAlt": "What level icon",
+          "correctOptionId": "what-in-sand",
+          "optionIds": [
+            "what-in-sand",
+            "what-bucket",
+            "what-ball",
+            "what-grass",
+            "what-mat"
+          ]
+        },
+        {
+          "id": "children-digging-sandpit-to-who",
+          "slot": "to-who",
+          "title": "to who",
+          "prompt": "To who?",
+          "color": "#ffffff",
+          "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/to_who.png",
+          "levelIconAlt": "To Who level icon",
+          "optionIds": [
+            "to-who-boy",
+            "to-who-girl",
+            "to-who-teacher",
+            "to-who-children",
+            "to-who-dog"
+          ],
+          "correctOptionId": "to-who-teacher"
+        },
+        {
+          "id": "children-digging-sandpit-where",
+          "slot": "where",
+          "title": "where",
+          "prompt": "Where are they?",
+          "color": "#9fc5ff",
+          "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/where.png",
+          "levelIconAlt": "Where level icon",
+          "correctOptionId": "where-sandpit",
+          "optionIds": [
+            "where-sandpit",
+            "where-park",
+            "where-beach",
+            "where-garden",
+            "where-home"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "children-sitting-mat-school",
+      "title": "Build a sentence that matches the picture",
+      "instruction": "Drag the matching word into each coloured block, then press Check.",
+      "modellingTip": "Use the picture to talk through who is there, what they are doing, what they are sitting on, and where they are.",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/children_sitting_mat_school.webp",
+      "targetImageAlt": "Children sitting on a mat at school.",
+      "steps": [
+        {
+          "id": "children-sitting-mat-school-who",
+          "slot": "who",
+          "title": "who",
+          "prompt": "Who is in the picture?",
+          "color": "#ff9d2e",
+          "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/who.png",
+          "levelIconAlt": "Who level icon",
+          "correctOptionId": "who-children",
+          "optionIds": [
+            "who-children",
+            "who-boy",
+            "who-girl",
+            "who-man",
+            "who-dog"
+          ]
+        },
+        {
+          "id": "children-sitting-mat-school-doing",
+          "slot": "doing",
+          "title": "doing",
+          "prompt": "What are they doing?",
+          "color": "#f4e986",
+          "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/what_doing.png",
+          "levelIconAlt": "Doing level icon",
+          "correctOptionId": "doing-sitting",
+          "optionIds": [
+            "doing-sitting",
+            "doing-running",
+            "doing-jumping",
+            "doing-eating",
+            "doing-digging"
+          ]
+        },
+        {
+          "id": "children-sitting-mat-school-what",
+          "slot": "what",
+          "title": "what",
+          "prompt": "What are they sitting on?",
+          "color": "#8fe2b3",
+          "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/what.png",
+          "levelIconAlt": "What level icon",
+          "correctOptionId": "what-mat",
+          "optionIds": [
+            "what-mat",
+            "what-chair",
+            "what-ball",
+            "what-bed",
+            "what-toys"
+          ]
+        },
+        {
+          "id": "children-sitting-mat-school-to-who",
+          "slot": "to-who",
+          "title": "to who",
+          "prompt": "To who?",
+          "color": "#ffffff",
+          "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/to_who.png",
+          "levelIconAlt": "To Who level icon",
+          "optionIds": [
+            "to-who-boy",
+            "to-who-girl",
+            "to-who-teacher",
+            "to-who-children",
+            "to-who-dog"
+          ],
+          "correctOptionId": "to-who-teacher"
+        },
+        {
+          "id": "children-sitting-mat-school-where",
+          "slot": "where",
+          "title": "where",
+          "prompt": "Where are they?",
+          "color": "#9fc5ff",
+          "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/where.png",
+          "levelIconAlt": "Where level icon",
+          "correctOptionId": "where-school",
+          "optionIds": [
+            "where-school",
+            "where-home",
+            "where-park",
+            "where-cinema",
+            "where-garden"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dog-swimming-river",
+      "title": "Build a sentence that matches the picture",
+      "instruction": "Drag the matching word into each coloured block, then press Check.",
+      "modellingTip": "Use the picture to talk through who is there, what they are doing, and where they are.",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/dog_swimming_blank_river.webp",
+      "targetImageAlt": "A dog swimming in a river.",
+      "steps": [
+        {
+          "id": "dog-swimming-river-who",
+          "slot": "who",
+          "title": "who",
+          "prompt": "Who is in the picture?",
+          "color": "#ff9d2e",
+          "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/who.png",
+          "levelIconAlt": "Who level icon",
+          "correctOptionId": "who-dog",
+          "optionIds": [
+            "who-dog",
+            "who-cat",
+            "who-frog",
+            "who-boy",
+            "who-horse"
+          ]
+        },
+        {
+          "id": "dog-swimming-river-doing",
+          "slot": "doing",
+          "title": "doing",
+          "prompt": "What is it doing?",
+          "color": "#f4e986",
+          "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/what_doing.png",
+          "levelIconAlt": "Doing level icon",
+          "correctOptionId": "doing-swimming",
+          "optionIds": [
+            "doing-swimming",
+            "doing-running",
+            "doing-jumping",
+            "doing-eating",
+            "doing-sitting"
+          ]
+        },
+        {
+          "id": "dog-swimming-river-where",
+          "slot": "where",
+          "title": "where",
+          "prompt": "Where is it?",
+          "color": "#9fc5ff",
+          "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/where.png",
+          "levelIconAlt": "Where level icon",
+          "correctOptionId": "where-river",
+          "optionIds": [
+            "where-river",
+            "where-swimming-pool",
+            "where-beach",
+            "where-park",
+            "where-home"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "boy-licking-icecream",
+      "title": "Build a sentence that matches the picture",
+      "instruction": "Drag the matching word into each coloured block, then press Check.",
+      "modellingTip": "Use the picture to talk through who is there, what they are doing, and what they have.",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/boy_licking_icecream_blank.webp",
+      "targetImageAlt": "A boy licking an ice cream.",
+      "steps": [
+        {
+          "id": "boy-licking-icecream-who",
+          "slot": "who",
+          "title": "who",
+          "prompt": "Who is in the picture?",
+          "color": "#ff9d2e",
+          "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/who.png",
+          "levelIconAlt": "Who level icon",
+          "correctOptionId": "who-boy",
+          "optionIds": [
+            "who-boy",
+            "who-girl",
+            "who-man",
+            "who-dog",
+            "who-cat"
+          ]
+        },
+        {
+          "id": "boy-licking-icecream-doing",
+          "slot": "doing",
+          "title": "doing",
+          "prompt": "What is he doing?",
+          "color": "#f4e986",
+          "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/what_doing.png",
+          "levelIconAlt": "Doing level icon",
+          "correctOptionId": "doing-licking",
+          "optionIds": [
+            "doing-licking",
+            "doing-eating",
+            "doing-sitting",
+            "doing-running",
+            "doing-jumping"
+          ]
+        },
+        {
+          "id": "boy-licking-icecream-what",
+          "slot": "what",
+          "title": "what",
+          "prompt": "What does he have?",
+          "color": "#8fe2b3",
+          "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/what.png",
+          "levelIconAlt": "What level icon",
+          "correctOptionId": "what-ice-cream",
+          "optionIds": [
+            "what-ice-cream",
+            "what-pizza",
+            "what-ball",
+            "what-toys",
+            "what-flower"
+          ]
+        },
+        {
+          "id": "boy-licking-icecream-to-who",
+          "slot": "to-who",
+          "title": "to who",
+          "prompt": "To who?",
+          "color": "#ffffff",
+          "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/to_who.png",
+          "levelIconAlt": "To Who level icon",
+          "optionIds": [
+            "to-who-boy",
+            "to-who-girl",
+            "to-who-teacher",
+            "to-who-children",
+            "to-who-dog"
+          ],
+          "correctOptionId": "to-who-girl"
+        }
+      ]
+    }
+  ]
+}

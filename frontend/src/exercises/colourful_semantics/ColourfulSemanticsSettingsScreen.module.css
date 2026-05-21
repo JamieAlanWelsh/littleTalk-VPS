@@ -17,6 +17,13 @@
     font-weight: 700;
 }
 
+.sectionDescription {
+    margin: 0;
+    color: #5b6374;
+    font-size: 0.92rem;
+    line-height: 1.4;
+}
+
 .presetList {
     display: flex;
     flex-direction: column;
@@ -71,6 +78,43 @@
     border: 1px solid rgba(44, 35, 63, 0.08);
 }
 
+.optionalSlotList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+}
+
+.optionalSlotButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.75rem 0.95rem;
+    border: 2px solid #d0d7de;
+    border-radius: 1rem;
+    background-color: #fff;
+    color: #2c233f;
+    cursor: pointer;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+}
+
+.optionalSlotButton:hover {
+    border-color: #5b8def;
+    transform: translateY(-1px);
+}
+
+.optionalSlotButtonSelected {
+    border-color: #5b8def;
+    box-shadow: 0 0 0 3px rgba(91, 141, 239, 0.12);
+}
+
+.optionalSlotLabel {
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
 .optionsSelect {
     width: 100%;
     padding: 0.8rem 1rem;
@@ -112,5 +156,10 @@
 
     .slotChipRow {
         gap: 0.35rem;
+    }
+
+    .optionalSlotButton {
+        width: 100%;
+        justify-content: flex-start;
     }
 }
