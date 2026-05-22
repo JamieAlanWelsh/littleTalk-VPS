@@ -35,6 +35,7 @@ export const StoryTrainBoard = ({
     itemCorrectnessMap = {},
     showFeedback = false,
 }: StoryTrainBoardProps) => {
+    const isFourSlotBoard = boardState.slotItemIds.length === 4;
     const slotLabels = getSlotLabels(boardState.slotItemIds.length);
     const sensors = [
         PointerSensor.configure({
@@ -62,10 +63,14 @@ export const StoryTrainBoard = ({
     };
 
     return (
-        <div className={styles.board}>
+        <div
+            className={`${styles.board} ${isFourSlotBoard ? styles.boardFourSlots : ""}`}
+        >
             <DragDropProvider sensors={sensors} onDragEnd={onDragEnd}>
                 <div className={styles.slotsCard}>
-                    <div className={styles.slotsGrid}>
+                    <div
+                        className={`${styles.slotsGrid} ${isFourSlotBoard ? styles.slotsGridFour : ""}`}
+                    >
                         {slotLabels.map((label, slotIndex) => {
                             const itemId = boardState.slotItemIds[slotIndex];
 
