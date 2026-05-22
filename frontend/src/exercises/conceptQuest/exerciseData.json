@@ -152,6 +152,120 @@
           "altText": "the longest pencil"
         }
       ]
+    },
+    {
+      "id": "ruler",
+      "name": "Rulers",
+      "subject": "ruler",
+      "supportedConcepts": ["long", "short"],
+      "items": [
+        {
+          "id": "ruler-shortest",
+          "imageUrl": "/static/exercise_assets/concept_quest/ruler/ruler_shortest.png",
+          "label": "Shortest ruler",
+          "altText": "the shortest ruler"
+        },
+        {
+          "id": "ruler-second-shortest",
+          "imageUrl": "/static/exercise_assets/concept_quest/ruler/ruler_second_shortest.png",
+          "label": "Second shortest ruler",
+          "altText": "a ruler that is a little longer than the shortest ruler"
+        },
+        {
+          "id": "ruler-medium",
+          "imageUrl": "/static/exercise_assets/concept_quest/ruler/ruler_medium.png",
+          "label": "Medium ruler",
+          "altText": "a medium-length ruler"
+        },
+        {
+          "id": "ruler-second-longest",
+          "imageUrl": "/static/exercise_assets/concept_quest/ruler/ruler_second_longest.png",
+          "label": "Second longest ruler",
+          "altText": "a ruler that is almost the longest"
+        },
+        {
+          "id": "ruler-longest",
+          "imageUrl": "/static/exercise_assets/concept_quest/ruler/ruler_longest.png",
+          "label": "Longest ruler",
+          "altText": "the longest ruler"
+        }
+      ]
+    },
+    {
+      "id": "tower",
+      "name": "Towers",
+      "subject": "tower",
+      "supportedConcepts": ["tall", "short"],
+      "items": [
+        {
+          "id": "tower-shortest",
+          "imageUrl": "/static/exercise_assets/concept_quest/tower/tower_shortest.png",
+          "label": "Shortest tower",
+          "altText": "the shortest tower"
+        },
+        {
+          "id": "tower-second-shortest",
+          "imageUrl": "/static/exercise_assets/concept_quest/tower/tower_second_shortest.png",
+          "label": "Second shortest tower",
+          "altText": "a tower that is a little taller than the shortest tower"
+        },
+        {
+          "id": "tower-medium",
+          "imageUrl": "/static/exercise_assets/concept_quest/tower/tower_medium.png",
+          "label": "Medium tower",
+          "altText": "a medium-height tower"
+        },
+        {
+          "id": "tower-second-tallest",
+          "imageUrl": "/static/exercise_assets/concept_quest/tower/tower_second_tallest.png",
+          "label": "Second tallest tower",
+          "altText": "a tower that is almost the tallest"
+        },
+        {
+          "id": "tower-tallest",
+          "imageUrl": "/static/exercise_assets/concept_quest/tower/tower_tallest.png",
+          "label": "Tallest tower",
+          "altText": "the tallest tower"
+        }
+      ]
+    },
+    {
+      "id": "tree",
+      "name": "Trees",
+      "subject": "tree",
+      "supportedConcepts": ["tall", "short"],
+      "items": [
+        {
+          "id": "tree-shortest",
+          "imageUrl": "/static/exercise_assets/concept_quest/tree/tree_shortest.png",
+          "label": "Shortest tree",
+          "altText": "the shortest tree"
+        },
+        {
+          "id": "tree-second-shortest",
+          "imageUrl": "/static/exercise_assets/concept_quest/tree/tree_second_shortest.png",
+          "label": "Second shortest tree",
+          "altText": "a tree that is a little taller than the shortest tree"
+        },
+        {
+          "id": "tree-medium",
+          "imageUrl": "/static/exercise_assets/concept_quest/tree/tree_medium.png",
+          "label": "Medium tree",
+          "altText": "a medium-height tree"
+        },
+        {
+          "id": "tree-second-tallest",
+          "imageUrl": "/static/exercise_assets/concept_quest/tree/tree_second_tallest.png",
+          "label": "Second tallest tree",
+          "altText": "a tree that is almost the tallest"
+        },
+        {
+          "id": "tree-tallest",
+          "imageUrl": "/static/exercise_assets/concept_quest/tree/tree_tallest.png",
+          "label": "Tallest tree",
+          "altText": "the tallest tree"
+        }
+      ]
     }
   ]
 }
