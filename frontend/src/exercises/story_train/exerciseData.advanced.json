@@ -1,0 +1,109 @@
+{
+  "instruction": "Drag the pictures into the right order",
+  "modellingTip": "Modelling Tip: Use time words like first, next, then, and finally while you talk through the story.",
+  "rounds": 3,
+  "sets": [
+    {
+      "id": "banana",
+      "title": "Eating a banana",
+      "steps": [
+        {
+          "id": "banana-1",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/banana/banana-1.png",
+          "label": "Choose a banana",
+          "altText": "A child picks up a banana from a bowl of fruit.",
+          "order": 0
+        },
+        {
+          "id": "banana-2",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/banana/banana-2.png",
+          "label": "Peel the banana",
+          "altText": "A child peels the banana and smiles.",
+          "order": 1
+        },
+        {
+          "id": "banana-3",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/banana/banana-3.png",
+          "label": "Take a bite",
+          "altText": "A child starts to eat the peeled banana.",
+          "order": 2
+        },
+        {
+          "id": "banana-4",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/banana/banana-4.png",
+          "label": "Finished eating",
+          "altText": "A child looks pleased after eating the banana.",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "id": "chick",
+      "title": "A chick hatches",
+      "steps": [
+        {
+          "id": "chick-1",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/chick/chick-1.png",
+          "label": "Egg in the nest",
+          "altText": "An egg rests in a straw nest.",
+          "order": 0
+        },
+        {
+          "id": "chick-2",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/chick/chick-2.png",
+          "label": "The shell cracks",
+          "altText": "The egg starts to crack open in the nest.",
+          "order": 1
+        },
+        {
+          "id": "chick-3",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/chick/chick-3.png",
+          "label": "The chick appears",
+          "altText": "A yellow chick peeks out from the broken shell.",
+          "order": 2
+        },
+        {
+          "id": "chick-4",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/chick/chick-4.png",
+          "label": "The chick stands up",
+          "altText": "A newly hatched chick stands beside its broken shell.",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "id": "fire",
+      "title": "Toasting a marshmallow",
+      "steps": [
+        {
+          "id": "fire-1",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/fire/fire-1.png",
+          "label": "Collect sticks",
+          "altText": "A child carries sticks through the woods.",
+          "order": 0
+        },
+        {
+          "id": "fire-2",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/fire/fire-2.png",
+          "label": "Build the fire",
+          "altText": "A child and an adult place sticks onto a campfire.",
+          "order": 1
+        },
+        {
+          "id": "fire-3",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/fire/fire-3.png",
+          "label": "Toast the marshmallow",
+          "altText": "A child holds a marshmallow over the fire on a stick.",
+          "order": 2
+        },
+        {
+          "id": "fire-4",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/fire/fire-4.png",
+          "label": "Eat the marshmallow",
+          "altText": "A child eats the toasted marshmallow.",
+          "order": 3
+        }
+      ]
+    }
+  ]
+}

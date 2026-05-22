@@ -20,7 +20,13 @@ interface StoryTrainBoardProps {
     showFeedback?: boolean;
 }
 
-const SLOT_LABELS = ["First", "Next", "Then"];
+const getSlotLabels = (slotCount: number) => {
+    if (slotCount === 4) {
+        return ["First", "Next", "Then", "Finally"];
+    }
+
+    return ["First", "Next", "Then"];
+};
 
 export const StoryTrainBoard = ({
     boardState,
@@ -29,6 +35,7 @@ export const StoryTrainBoard = ({
     itemCorrectnessMap = {},
     showFeedback = false,
 }: StoryTrainBoardProps) => {
+    const slotLabels = getSlotLabels(boardState.slotItemIds.length);
     const sensors = [
         PointerSensor.configure({
             activationConstraints: [
@@ -59,7 +66,7 @@ export const StoryTrainBoard = ({
             <DragDropProvider sensors={sensors} onDragEnd={onDragEnd}>
                 <div className={styles.slotsCard}>
                     <div className={styles.slotsGrid}>
-                        {SLOT_LABELS.map((label, slotIndex) => {
+                        {slotLabels.map((label, slotIndex) => {
                             const itemId = boardState.slotItemIds[slotIndex];
 
                             return (
