@@ -164,7 +164,7 @@ export const WhatHappensNextGame = ({
                             <img
                                 src={imageUrl}
                                 alt={altText}
-                                className={styles.sceneImage}
+                                className={`${styles.sceneImage} ${showStepTwoImage ? styles.sceneImageFlip : ""}`}
                             />
                         </div>
                         <TextOptionGroup
