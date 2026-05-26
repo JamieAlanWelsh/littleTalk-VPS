@@ -12,6 +12,18 @@ interface StoryTrainProps {
     payload: StoryTrainExercisePayload;
 }
 
+const getTimeWords = (payload: StoryTrainExercisePayload) => {
+    const maxStepCount = Math.max(
+        ...payload.sets.map((storySet) => storySet.steps.length),
+    );
+
+    if (maxStepCount >= 4) {
+        return "first, next, then, and finally";
+    }
+
+    return "first, next, and then";
+};
+
 const shuffleSets = (sets: StoryTrainSet[]): StoryTrainSet[] => {
     const shuffled = [...sets];
 
@@ -27,6 +39,7 @@ const shuffleSets = (sets: StoryTrainSet[]): StoryTrainSet[] => {
 };
 
 export const StoryTrain = ({ payload }: StoryTrainProps) => {
+    const timeWords = getTimeWords(payload);
     const [selectedSets, setSelectedSets] = useState<StoryTrainSet[] | null>(
         null,
     );
@@ -52,12 +65,12 @@ export const StoryTrain = ({ payload }: StoryTrainProps) => {
                     }}
                 >
                     <p style={{ margin: 0 }}>
-                        Look at the three pictures and drag them into the order
-                        they happen.
+                        Look at the pictures and drag them into the order they
+                        happen.
                     </p>
                     <p style={{ margin: 0 }}>
-                        Use the time words first, next, and then to talk through
-                        each story.
+                        Use the time words {timeWords} to talk through each
+                        story.
                     </p>
                     {payload.modellingTip ? (
                         <p style={{ margin: 0, fontWeight: 700 }}>
