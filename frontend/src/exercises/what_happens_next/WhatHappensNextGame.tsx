@@ -28,6 +28,9 @@ const buildRounds = (
 ): { questions: Question[]; answers: WhatHappensNextAnswer[] } => {
     const roundsToPlay = Math.min(payload.rounds, payload.scenes.length);
     const selectedScenes = shuffleArray(payload.scenes).slice(0, roundsToPlay);
+    const optionById = new Map(
+        payload.options.map((option) => [option.id, option]),
+    );
 
     const questions: Question[] = selectedScenes.map((scene, index) => ({
         id: `${scene.id}-${index + 1}`,
@@ -35,10 +38,26 @@ const buildRounds = (
         correctIconIds: [scene.correctOptionId],
     }));
 
-    const answers: WhatHappensNextAnswer[] = selectedScenes.map((scene) => ({
-        scene,
-        options: payload.options,
-    }));
+    const answers: WhatHappensNextAnswer[] = selectedScenes.map((scene) => {
+        const correctOption = optionById.get(scene.correctOptionId);
+        if (!correctOption) {
+            return {
+                scene,
+                options: shuffleArray(payload.options).slice(0, 3),
+            };
+        }
+
+        const distractors = shuffleArray(
+            payload.options.filter(
+                (option) => option.id !== scene.correctOptionId,
+            ),
+        ).slice(0, 2);
+
+        return {
+            scene,
+            options: shuffleArray([correctOption, ...distractors]),
+        };
+    });
 
     return { questions, answers };
 };

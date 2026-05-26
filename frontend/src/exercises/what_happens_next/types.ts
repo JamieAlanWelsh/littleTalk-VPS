@@ -23,7 +23,7 @@ export type WhatHappensNextScene = z.infer<typeof WhatHappensNextSceneSchema>;
 export const WhatHappensNextPayloadSchema = z
     .object({
         rounds: z.number().int().positive(),
-        options: z.array(WhatHappensNextOptionSchema).length(3),
+        options: z.array(WhatHappensNextOptionSchema).min(3),
         scenes: z.array(WhatHappensNextSceneSchema).min(1),
     })
     .superRefine((payload, context) => {
