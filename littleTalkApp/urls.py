@@ -114,4 +114,5 @@ urlpatterns = [
     path('exercise-framework/concept-quest/', react_test_views.concept_quest, name='concept_quest'),
     path('exercise-framework/colourful-semantics/', react_test_views.colourful_semantics, name='colourful_semantics'),
     path('exercise-framework/story-train/', react_test_views.story_train, name='story_train'),
+    path('exercise-framework/whos-who/', react_test_views.whos_who, name='whos_who'),
 ]
