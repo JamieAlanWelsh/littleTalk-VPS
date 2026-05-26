@@ -88,79 +88,81 @@ export type MatchingExercisePayload2 = z.infer<
 >;
 
 export const ThinkAndFindItemSchema = z.object({
-  id: z.string(),
-  imageUrl: z.string(),
-  label: z.string(),
-  prompt: z.string(),
-  altText: z.string().optional(),
+    id: z.string(),
+    imageUrl: z.string(),
+    label: z.string(),
+    prompt: z.string(),
+    altText: z.string().optional(),
 });
 
 export type ThinkAndFindItem = z.infer<typeof ThinkAndFindItemSchema>;
 
 export const ThinkAndFindSetSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  items: z.array(ThinkAndFindItemSchema).min(1),
+    id: z.string(),
+    name: z.string(),
+    items: z.array(ThinkAndFindItemSchema).min(1),
 });
 
 export type ThinkAndFindSet = z.infer<typeof ThinkAndFindSetSchema>;
 
 export const ThinkAndFindPayloadSchema = z.object({
-  rounds: z.number().int().positive(),
-  imageSets: z.array(ThinkAndFindSetSchema).min(4),
+    rounds: z.number().int().positive(),
+    imageSets: z.array(ThinkAndFindSetSchema).min(4),
 });
 
 export type ThinkAndFindPayload = z.infer<typeof ThinkAndFindPayloadSchema>;
 
 export const ConceptQuestConceptSchema = z.enum([
-  "big",
-  "small",
-  "short",
-  "long",
-  "tall",
+    "big",
+    "small",
+    "short",
+    "long",
+    "tall",
 ]);
 
 export type ConceptQuestConcept = z.infer<typeof ConceptQuestConceptSchema>;
 
 export const ConceptQuestComplexitySchema = z.union([
-  z.literal(1),
-  z.literal(2),
-  z.literal(3),
+    z.literal(1),
+    z.literal(2),
+    z.literal(3),
+    z.literal(4),
+    z.literal(5),
 ]);
 
 export type ConceptQuestComplexity = z.infer<
-  typeof ConceptQuestComplexitySchema
+    typeof ConceptQuestComplexitySchema
 >;
 
 export const ConceptQuestItemSchema = z.object({
-  id: z.string(),
-  imageUrl: z.string(),
-  label: z.string(),
-  altText: z.string().optional(),
+    id: z.string(),
+    imageUrl: z.string(),
+    label: z.string(),
+    altText: z.string().optional(),
 });
 
 export type ConceptQuestItem = z.infer<typeof ConceptQuestItemSchema>;
 
 export const ConceptQuestSetSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  subject: z.string(),
-  supportedConcepts: z.array(ConceptQuestConceptSchema).min(1),
-  items: z.array(ConceptQuestItemSchema).min(4),
+    id: z.string(),
+    name: z.string(),
+    subject: z.string(),
+    supportedConcepts: z.array(ConceptQuestConceptSchema).min(1),
+    items: z.array(ConceptQuestItemSchema).min(4),
 });
 
 export type ConceptQuestSet = z.infer<typeof ConceptQuestSetSchema>;
 
 export const ConceptQuestPayloadSchema = z.object({
-  rounds: z.number().int().positive(),
-  imageSets: z.array(ConceptQuestSetSchema).min(4),
+    rounds: z.number().int().positive(),
+    imageSets: z.array(ConceptQuestSetSchema).min(4),
 });
 
 export type ConceptQuestPayload = z.infer<typeof ConceptQuestPayloadSchema>;
 
 export interface ConceptQuestOptions {
-  concepts: ConceptQuestConcept[];
-  complexity: ConceptQuestComplexity;
+    concepts: ConceptQuestConcept[];
+    complexities: ConceptQuestComplexity[];
 }
 
 // state types

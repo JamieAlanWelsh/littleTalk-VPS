@@ -117,4 +117,5 @@ urlpatterns = [
     path('exercise-framework/whats-in-the-bag/', react_test_views.whats_in_the_bag, name='whats_in_the_bag'),
     path('exercise-framework/what-happens-next/', react_test_views.what_happens_next, name='what_happens_next'),
     path('exercise-framework/in-the-know/', react_test_views.in_the_know, name='in_the_know'),
+    path('exercise-framework/whos-who/', react_test_views.whos_who, name='whos_who'),
 ]
