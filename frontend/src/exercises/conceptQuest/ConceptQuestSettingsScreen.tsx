@@ -4,118 +4,179 @@
  * Lets the user choose which concepts to practise and the prompt complexity.
  */
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ChangeEvent } from "react";
 import type {
-  ConceptQuestConcept,
-  ConceptQuestComplexity,
-  ConceptQuestOptions,
+    ConceptQuestConcept,
+    ConceptQuestComplexity,
+    ConceptQuestOptions,
 } from "../../lib/types";
-import Button from "../../components/Button/Button";
 import styles from "./conceptQuest.module.css";
 
 interface ConceptQuestSettingsScreenProps {
-  onSetOptions: (options: ConceptQuestOptions) => void;
+    onSetOptions: (options: ConceptQuestOptions) => void;
 }
 
 const CONCEPT_OPTIONS: Array<{ label: string; value: ConceptQuestConcept }> = [
-  { label: "Big", value: "big" },
-  { label: "Small", value: "small" },
-  { label: "Short", value: "short" },
-  { label: "Long", value: "long" },
-  { label: "Tall", value: "tall" },
+    { label: "Big", value: "big" },
+    { label: "Small", value: "small" },
+    { label: "Short", value: "short" },
+    { label: "Long", value: "long" },
+    { label: "Tall", value: "tall" },
 ];
 
 const COMPLEXITY_OPTIONS: Array<{
-  label: string;
-  value: ConceptQuestComplexity;
+    label: string;
+    value: ConceptQuestComplexity;
 }> = [
-  { label: "1", value: 1 },
-  { label: "2", value: 2 },
-  { label: "3", value: 3 },
+    { label: "positive e.g. big", value: 1 },
+    { label: "comparative e.g. bigger", value: 2 },
+    { label: "superlative e.g. biggest", value: 3 },
+    { label: "comparative+ e.g. bigger but not biggest", value: 4 },
+    { label: "descriptive e.g. almost biggest (hard)", value: 5 },
 ];
 
 const DEFAULT_CONCEPTS: ConceptQuestConcept[] = CONCEPT_OPTIONS.map(
-  (option) => option.value,
+    (option) => option.value,
 );
 
 export const ConceptQuestSettingsScreen = ({
-  onSetOptions,
+    onSetOptions,
 }: ConceptQuestSettingsScreenProps) => {
-  const [selectedConcepts, setSelectedConcepts] =
-    useState<ConceptQuestConcept[]>(DEFAULT_CONCEPTS);
-  const [selectedComplexity, setSelectedComplexity] =
-    useState<ConceptQuestComplexity>(1);
+    const [selectedConcepts, setSelectedConcepts] =
+        useState<ConceptQuestConcept[]>(DEFAULT_CONCEPTS);
+    const [allowMultipleComplexities, setAllowMultipleComplexities] =
+        useState(false);
+    const [selectedComplexities, setSelectedComplexities] = useState<
+        ConceptQuestComplexity[]
+    >([1]);
 
-  useEffect(() => {
-    onSetOptions({
-      concepts: selectedConcepts,
-      complexity: selectedComplexity,
-    });
-  }, [onSetOptions, selectedComplexity, selectedConcepts]);
+    useEffect(() => {
+        onSetOptions({
+            concepts: selectedConcepts,
+            complexities: selectedComplexities,
+        });
+    }, [onSetOptions, selectedComplexities, selectedConcepts]);
 
-  const toggleConcept = (concept: ConceptQuestConcept) => {
-    setSelectedConcepts((currentConcepts) => {
-      const isSelected = currentConcepts.includes(concept);
+    const toggleConcept = (concept: ConceptQuestConcept) => {
+        setSelectedConcepts((currentConcepts) => {
+            const isSelected = currentConcepts.includes(concept);
 
-      if (isSelected && currentConcepts.length === 1) {
-        return currentConcepts;
-      }
+            if (isSelected && currentConcepts.length === 1) {
+                return currentConcepts;
+            }
 
-      if (isSelected) {
-        return currentConcepts.filter((item) => item !== concept);
-      }
+            if (isSelected) {
+                return currentConcepts.filter((item) => item !== concept);
+            }
 
-      return CONCEPT_OPTIONS.map((option) => option.value).filter(
-        (item) => currentConcepts.includes(item) || item === concept,
-      );
-    });
-  };
+            return CONCEPT_OPTIONS.map((option) => option.value).filter(
+                (item) => currentConcepts.includes(item) || item === concept,
+            );
+        });
+    };
 
-  return (
-    <div className={styles.settingsPanel}>
-      <section className={styles.settingsGroup}>
-        <h3 className={styles.settingsHeading}>A. Concepts</h3>
-        <p className={styles.settingsHint}>
-          Select 1 or more: big, small, short, long, tall.
-        </p>
-        <div className={styles.selectionGrid}>
-          {CONCEPT_OPTIONS.map((option) => (
-            <Button
-              key={option.value}
-              label={option.label}
-              variant={
-                selectedConcepts.includes(option.value)
-                  ? "primary"
-                  : "secondary"
-              }
-              width={"100%"}
-              onClick={() => toggleConcept(option.value)}
-            />
-          ))}
+    const toggleComplexity = (complexity: ConceptQuestComplexity) => {
+        if (!allowMultipleComplexities) {
+            setSelectedComplexities([complexity]);
+            return;
+        }
+
+        setSelectedComplexities((currentComplexities) => {
+            const isSelected = currentComplexities.includes(complexity);
+
+            if (isSelected && currentComplexities.length === 1) {
+                return currentComplexities;
+            }
+
+            if (isSelected) {
+                return currentComplexities.filter(
+                    (item) => item !== complexity,
+                );
+            }
+
+            return COMPLEXITY_OPTIONS.map((option) => option.value).filter(
+                (item) =>
+                    currentComplexities.includes(item) || item === complexity,
+            );
+        });
+    };
+
+    const onMultipleComplexitiesToggle = (
+        event: ChangeEvent<HTMLInputElement>,
+    ) => {
+        const isEnabled = event.target.checked;
+        setAllowMultipleComplexities(isEnabled);
+
+        if (!isEnabled) {
+            setSelectedComplexities((currentComplexities) => [
+                currentComplexities[0],
+            ]);
+        }
+    };
+
+    return (
+        <div className={styles.container}>
+            <section className={styles.section}>
+                <p className={styles.sectionLabel}>
+                    Concepts (Select 1 or more)
+                </p>
+                <div className={styles.categoriesGrid}>
+                    {CONCEPT_OPTIONS.map((option) => {
+                        const isSelected = selectedConcepts.includes(
+                            option.value,
+                        );
+
+                        return (
+                            <button
+                                key={option.value}
+                                className={`${styles.categoryCard} ${
+                                    isSelected ? styles.selected : ""
+                                }`}
+                                onClick={() => toggleConcept(option.value)}
+                                type="button"
+                            >
+                                {option.label}
+                            </button>
+                        );
+                    })}
+                </div>
+            </section>
+
+            <section className={styles.section}>
+                <p className={styles.sectionLabel}>Concept complexities</p>
+                <label className={styles.complexityToggleRow}>
+                    <input
+                        type="checkbox"
+                        checked={allowMultipleComplexities}
+                        onChange={onMultipleComplexitiesToggle}
+                    />
+                    Select 1 or more
+                </label>
+                <div className={styles.categoriesGrid}>
+                    {COMPLEXITY_OPTIONS.map((option) => {
+                        const isSelected = selectedComplexities.includes(
+                            option.value,
+                        );
+
+                        return (
+                            <button
+                                key={option.value}
+                                className={`${styles.categoryCard} ${
+                                    isSelected ? styles.selected : ""
+                                }`}
+                                onClick={() => toggleComplexity(option.value)}
+                                type="button"
+                            >
+                                <span className={styles.cardTitle}>
+                                    {option.label}
+                                </span>
+                            </button>
+                        );
+                    })}
+                </div>
+            </section>
         </div>
-      </section>
-
-      <section className={styles.settingsGroup}>
-        <h3 className={styles.settingsHeading}>B. Concept Complexity</h3>
-        <p className={styles.settingsHint}>
-          Choose 1 level: 1 = big, 2 = bigger, 3 = biggest.
-        </p>
-        <div className={styles.selectionGridCompact}>
-          {COMPLEXITY_OPTIONS.map((option) => (
-            <Button
-              key={option.value}
-              label={option.label}
-              variant={
-                selectedComplexity === option.value ? "primary" : "secondary"
-              }
-              width={"100%"}
-              onClick={() => setSelectedComplexity(option.value)}
-            />
-          ))}
-        </div>
-      </section>
-    </div>
-  );
+    );
 };
 
 export default ConceptQuestSettingsScreen;
