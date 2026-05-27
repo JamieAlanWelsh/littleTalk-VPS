@@ -82,6 +82,11 @@ def story_train(request):
 
 
 @login_required
+def spot_on(request):
+    context = {
+        "learner_uuid": _get_session_learner_uuid(request),
+    }
+    return render(request, "exercises/spot_on.html", context)
 def whats_in_the_bag(request):
     context = {
         "learner_uuid": _get_session_learner_uuid(request),
@@ -103,7 +108,8 @@ def in_the_know(request):
         "learner_uuid": _get_session_learner_uuid(request),
     }
     return render(request, "exercises/in_the_know.html", context)
-  
+
+
 @login_required
 def whos_who(request):
     context = {

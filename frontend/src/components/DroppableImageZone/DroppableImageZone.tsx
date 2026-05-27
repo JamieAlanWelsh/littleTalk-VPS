@@ -4,11 +4,13 @@ import styles from "./DroppableImageZone.module.css";
 
 interface DroppableImageZoneProps {
     id: string;
+    className?: string;
     children?: React.ReactNode;
 }
 
 export const DroppableImageZone = ({
     id,
+    className,
     children,
 }: DroppableImageZoneProps) => {
     const { isDropTarget, ref } = useDroppable({
@@ -19,7 +21,7 @@ export const DroppableImageZone = ({
 
     return (
         <div
-            className={`${styles.zone} ${isDropTarget ? styles.active : ""}`.trim()}
+            className={`${styles.zone} ${className ?? ""} ${isDropTarget ? styles.active : ""}`.trim()}
             ref={ref}
         >
             <div className={styles.content}>{children}</div>

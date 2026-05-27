@@ -34,6 +34,7 @@
 }
 
 .icon-block.interactive {
+    background-color: var(--icon-block-interactive-bg, #f9f9f9);
     background-color: var(--icon-block-bg, #f9f9f9);
     border-color: var(--accent-color-dark);
 }
