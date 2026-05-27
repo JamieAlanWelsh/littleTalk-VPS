@@ -1,0 +1,259 @@
+{
+    "rounds": 5,
+    "options": [
+        {
+            "id": "pancake-falls",
+            "label": "the pancake falls on his head."
+        },
+        {
+            "id": "football-goes-away",
+            "label": "the football goes through the window"
+        },
+        {
+            "id": "boy-slips-on-wet-floor",
+            "label": "the boy slips and falls"
+        },
+        {
+            "id": "books-fall-down",
+            "label": "the boy drops the books"
+        },
+        {
+            "id": "paint-spills-everywhere",
+            "label": "the cat knocks over the paint"
+        },
+        {
+            "id": "dog-gets-muddy",
+            "label": "they get muddy"
+        },
+        {
+            "id": "dog-eats-sandwich",
+            "label": "the dog steals the sandwich"
+        },
+        {
+            "id": "friends-enjoy-picnic",
+            "label": "it starts to rain"
+        },
+        {
+            "id": "wave-washes-sandcastle",
+            "label": "the seagull steals her chips"
+        },
+        {
+            "id": "girl-enters-classroom",
+            "label": "the girl is invited to sit down"
+        },
+        {
+            "id": "balloon-flies-away",
+            "label": "the balloon flies away"
+        },
+        {
+            "id": "ice-cream-melts",
+            "label": "the ice cream melts"
+        },
+        {
+            "id": "kids-keep-playing",
+            "label": "the children invite him to play"
+        },
+        {
+            "id": "rabbit-runs-away",
+            "label": "the rabbit escapes"
+        },
+        {
+            "id": "runner-wins-race",
+            "label": "the boy trips and falls"
+        },
+        {
+            "id": "wave-knocks-sandcastle",
+            "label": "the wave knocks over the sandcastle"
+        },
+        {
+            "id": "tower-falls-down",
+            "label": "the tower falls over"
+        },
+        {
+            "id": "boy-starts-crying",
+            "label": "His friend comforts him."
+        }
+    ],
+    "scenes": [
+        {
+            "id": "boy-flipping-pancake",
+            "stepOneImageUrl": "/static/exercise_assets/what_happens_next/boy_flipping_pancake_1.webp",
+            "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/boy_flipping_pancake_2.webp",
+            "stepOneAltText": "boy flipping pancake scene step 1",
+            "stepTwoAltText": "boy flipping pancake scene step 2",
+            "openingPrompt": "The boy is flipping a pancake. What happens next?",
+            "completionPrompt": "The pancake fell on his head.",
+            "correctOptionId": "pancake-falls"
+        },
+        {
+            "id": "boy-kicking-football",
+            "stepOneImageUrl": "/static/exercise_assets/what_happens_next/boy_kicking_football_1.webp",
+            "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/boy_kicking_football_2.webp",
+            "stepOneAltText": "boy kicking football scene step 1",
+            "stepTwoAltText": "boy kicking football scene step 2",
+            "openingPrompt": "The boy is playing football in the garden. What happens next?",
+            "completionPrompt": "The boy accidentally smashed the window",
+            "correctOptionId": "football-goes-away"
+        },
+        {
+            "id": "boy-running-on-wet-floor",
+            "stepOneImageUrl": "/static/exercise_assets/what_happens_next/boy_running_on_wet_floor_1.webp",
+            "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/boy_running_on_wet_floor_2.webp",
+            "stepOneAltText": "boy running on wet floor scene step 1",
+            "stepTwoAltText": "boy running on wet floor scene step 2",
+            "openingPrompt": "The boy is running on a wet floor. What happens next?",
+            "completionPrompt": "The boy slipped and fell over.",
+            "correctOptionId": "boy-slips-on-wet-floor"
+        },
+        {
+            "id": "boy-with-books",
+            "stepOneImageUrl": "/static/exercise_assets/what_happens_next/boy_with_books_1.webp",
+            "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/boy_with_books_2.webp",
+            "stepOneAltText": "boy with books scene step 1",
+            "stepTwoAltText": "boy with books scene step 2",
+            "openingPrompt": "The boy is carrying a large stack of books. What happens next?",
+            "completionPrompt": "The boy dropped the books.",
+            "correctOptionId": "books-fall-down"
+        },
+        {
+            "id": "cat-with-paint",
+            "stepOneImageUrl": "/static/exercise_assets/what_happens_next/cat_with_paint_1_.webp",
+            "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/cat_with_paint_2.webp",
+            "stepOneAltText": "cat with paint scene step 1",
+            "stepTwoAltText": "cat with paint scene step 2",
+            "openingPrompt": "The cat is investigating the paint pot. What happens next?",
+            "completionPrompt": "The cat knocked the can over and made a mess",
+            "correctOptionId": "paint-spills-everywhere"
+        },
+        {
+            "id": "dog-in-muddy-puddle",
+            "stepOneImageUrl": "/static/exercise_assets/what_happens_next/dog_in_muddy_puddle_1.webp",
+            "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/dog_in_muddy_puddle_2.webp",
+            "stepOneAltText": "dog in muddy puddle scene step 1",
+            "stepTwoAltText": "dog in muddy puddle scene step 2",
+            "openingPrompt": "The dog is about to jump into a muddy puddle. What happens next?",
+            "completionPrompt": "The dog and the boy got covered in mud",
+            "correctOptionId": "dog-gets-muddy"
+        },
+        {
+            "id": "dog-looking-at-sandwich",
+            "stepOneImageUrl": "/static/exercise_assets/what_happens_next/dog_looking_at_sandwich_1.webp",
+            "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/dog_looking_at_sandwich_2.webp",
+            "stepOneAltText": "dog looking at sandwich scene step 1",
+            "stepTwoAltText": "dog looking at sandwich scene step 2",
+            "openingPrompt": "The boy is eating a delicious sandwich. What happens next?",
+            "completionPrompt": "The dog stole the boys sandwich",
+            "correctOptionId": "dog-eats-sandwich"
+        },
+        {
+            "id": "friends-at-picnic",
+            "stepOneImageUrl": "/static/exercise_assets/what_happens_next/friends_at_picnic_1.webp",
+            "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/friends_at_picnic_2.webp",
+            "stepOneAltText": "friends at picnic scene step 1",
+            "stepTwoAltText": "friends at picnic scene step 2",
+            "openingPrompt": "The children are having a picnic together in the park. What happens next?",
+            "completionPrompt": "It started raining and the children got wet",
+            "correctOptionId": "friends-enjoy-picnic"
+        },
+        {
+            "id": "girl-on-beach",
+            "stepOneImageUrl": "/static/exercise_assets/what_happens_next/girl_on_beach_1.webp",
+            "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/girl_on_beach_2.webp",
+            "stepOneAltText": "girl on beach scene step 1",
+            "stepTwoAltText": "girl on beach scene step 2",
+            "openingPrompt": "The girl is enjoying some chips on the beach. What happens next?",
+            "completionPrompt": "The seagull flew away with the girl's chips",
+            "correctOptionId": "wave-washes-sandcastle"
+        },
+        {
+            "id": "girl-walking-into-classroom",
+            "stepOneImageUrl": "/static/exercise_assets/what_happens_next/girl_walking_into_classroom_1.webp",
+            "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/girl_walking_into_classroom_2.webp",
+            "stepOneAltText": "girl walking into classroom scene step 1",
+            "stepTwoAltText": "girl walking into classroom scene step 2",
+            "openingPrompt": "The girl has nervously entered the classroom. What happens next?",
+            "completionPrompt": "The boy invited the girl to sit with him",
+            "correctOptionId": "girl-enters-classroom"
+        },
+        {
+            "id": "girl-with-balloon",
+            "stepOneImageUrl": "/static/exercise_assets/what_happens_next/girl_with_balloon_1.webp",
+            "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/girl_with_balloon_2.webp",
+            "stepOneAltText": "girl with balloon scene step 1",
+            "stepTwoAltText": "girl with balloon scene step 2",
+            "openingPrompt": "The girl is holding onto her balloon on a windy day. What happens next?",
+            "completionPrompt": "The girl lost her grip and the balloon flew away",
+            "correctOptionId": "balloon-flies-away"
+        },
+        {
+            "id": "ice-cream-melting",
+            "stepOneImageUrl": "/static/exercise_assets/what_happens_next/ice_cream_melting_1.webp",
+            "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/ice_cream_melting_2.webp",
+            "stepOneAltText": "ice cream melting scene step 1",
+            "stepTwoAltText": "ice cream melting scene step 2",
+            "openingPrompt": "The girl is eating an ice cream on a hot summers' day. What happens next?",
+            "completionPrompt": "The girl's ice cream melted",
+            "correctOptionId": "ice-cream-melts"
+        },
+        {
+            "id": "kids-playing-in-park",
+            "stepOneImageUrl": "/static/exercise_assets/what_happens_next/kids_playing_in_park_1.webp",
+            "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/kids_playing_in_park_2.webp",
+            "stepOneAltText": "kids playing in park scene step 1",
+            "stepTwoAltText": "kids playing in park scene step 2",
+            "openingPrompt": "The boy is watching the children play football in the park. What happens next?",
+            "completionPrompt": "The children invite the boy to play with them",
+            "correctOptionId": "kids-keep-playing"
+        },
+        {
+            "id": "rabbit-escaping",
+            "stepOneImageUrl": "/static/exercise_assets/what_happens_next/rabbit_escaping_1.webp",
+            "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/rabbit_escaping_2.webp",
+            "stepOneAltText": "rabbit escaping scene step 1",
+            "stepTwoAltText": "rabbit escaping scene step 2",
+            "openingPrompt": "The hutch door has been left open. What happens next?",
+            "completionPrompt": "The rabbit has escaped",
+            "correctOptionId": "rabbit-runs-away"
+        },
+        {
+            "id": "running-race",
+            "stepOneImageUrl": "/static/exercise_assets/what_happens_next/running_race_1.webp",
+            "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/running_race_2.webp",
+            "stepOneAltText": "running race scene step 1",
+            "stepTwoAltText": "running race scene step 2",
+            "openingPrompt": "The boys shoe lace has undone. What happens next?",
+            "completionPrompt": "The boy tripped and fell",
+            "correctOptionId": "runner-wins-race"
+        },
+        {
+            "id": "sandcastle-wave",
+            "stepOneImageUrl": "/static/exercise_assets/what_happens_next/sandcastle_wave_1.webp",
+            "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/sandcastle_wave_2.webp",
+            "stepOneAltText": "sandcastle wave scene step 1",
+            "stepTwoAltText": "sandcastle wave scene step 2",
+            "openingPrompt": "The girl has built a sandcastle and a wave is approaching the beach. What happens next?",
+            "completionPrompt": "The wave has knocked over the girl's sandcastle",
+            "correctOptionId": "wave-knocks-sandcastle"
+        },
+        {
+            "id": "tower-blocks-falling",
+            "stepOneImageUrl": "/static/exercise_assets/what_happens_next/tower_blocks_falling_1.webp",
+            "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/tower_blocks_falling_2.webp",
+            "stepOneAltText": "tower blocks falling scene step 1",
+            "stepTwoAltText": "tower blocks falling scene step 2",
+            "openingPrompt": "The boy is building a tall tower block. What happens next?",
+            "completionPrompt": "The boy's tower was too tall and fell over",
+            "correctOptionId": "tower-falls-down"
+        },
+        {
+            "id": "boy-crying",
+            "stepOneImageUrl": "/static/exercise_assets/what_happens_next/boy_crying_1.webp",
+            "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/boy_crying_2.webp",
+            "stepOneAltText": "boy crying scene step 1",
+            "stepTwoAltText": "boy crying scene step 2",
+            "openingPrompt": "The boy looks upset. What happens next?",
+            "completionPrompt": "His friend comforts him.",
+            "correctOptionId": "boy-starts-crying"
+        }
+    ]
+}

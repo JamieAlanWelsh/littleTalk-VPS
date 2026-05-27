@@ -1,0 +1,61 @@
+.roundStage {
+    display: grid;
+    gap: 1.25rem;
+    justify-items: center;
+    width: min(100%, 760px);
+    margin: 0 auto;
+}
+
+.sceneFrame {
+    width: min(100%, 560px);
+    border-radius: 1rem;
+    overflow: hidden;
+    border: 2px solid var(--border-color);
+    background: #ffffff;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+    transition:
+        transform 180ms ease,
+        box-shadow 180ms ease;
+}
+
+.sceneFrameRevealed {
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.18);
+    transform: translateY(-2px);
+}
+
+.sceneImage {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+}
+
+.sceneImageFlip {
+    animation: popBounce 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popBounce {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    60% {
+        opacity: 1;
+        transform: scale(1.08);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@media (max-width: 640px) {
+    .roundStage {
+        gap: 1rem;
+    }
+
+    .sceneFrame {
+        border-radius: 0.75rem;
+    }
+}

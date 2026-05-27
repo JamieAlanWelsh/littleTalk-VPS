@@ -7,6 +7,7 @@ interface ExerciseActionBar {
     actionBarPhase: AnswerState;
     feedbackMessage: string;
     showSkip?: boolean;
+    disableCheck?: boolean;
     onCheckAnswer: () => void;
     onTryAgain: () => void;
     onContinue: () => void;
@@ -17,6 +18,7 @@ const ExerciseActionBar = ({
     actionBarPhase,
     feedbackMessage,
     showSkip = true,
+    disableCheck = false,
     onCheckAnswer,
     onTryAgain,
     onContinue,
@@ -31,7 +33,13 @@ const ExerciseActionBar = ({
             leftContent = showSkip ? (
                 <Button label="Skip" onClick={onSkip} variant="secondary" />
             ) : null;
-            rightContent = <Button label="Check" onClick={onCheckAnswer} />;
+            rightContent = (
+                <Button
+                    label="Check"
+                    onClick={onCheckAnswer}
+                    disabled={disableCheck}
+                />
+            );
             break;
         case "correct":
             toneClass = styles.exerciseZoneActionsCorrect;

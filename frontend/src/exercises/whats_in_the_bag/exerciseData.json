@@ -1,0 +1,437 @@
+{
+  "rounds": 5,
+  "bagImages": {
+    "closedImageUrl": "/static/exercise_assets/whats_in_the_bag/bag/bag_closed.png",
+    "openImageUrl": "/static/exercise_assets/whats_in_the_bag/bag/bag_open.png",
+    "closedAltText": "A closed mystery bag",
+    "openAltText": "An open mystery bag"
+  },
+  "items": [
+    {
+      "id": "aeroplane",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/aeroplane.png",
+      "label": "Aeroplane",
+      "altText": "an aeroplane"
+    },
+    {
+      "id": "ambulance",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/ambulance.png",
+      "label": "Ambulance",
+      "altText": "an ambulance"
+    },
+    {
+      "id": "apple",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/apple.png",
+      "label": "Apple",
+      "altText": "an apple"
+    },
+    {
+      "id": "ball",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/ball.png",
+      "label": "Ball",
+      "altText": "a ball"
+    },
+    {
+      "id": "balloons",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/balloons.png",
+      "label": "Balloons",
+      "altText": "balloons"
+    },
+    {
+      "id": "banana",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/banana.png",
+      "label": "Banana",
+      "altText": "a banana"
+    },
+    {
+      "id": "bear",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/bear.png",
+      "label": "Bear",
+      "altText": "a bear"
+    },
+    {
+      "id": "bee",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/bee.png",
+      "label": "Bee",
+      "altText": "a bee"
+    },
+    {
+      "id": "bicycle",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/bicycle.png",
+      "label": "Bicycle",
+      "altText": "a bicycle"
+    },
+    {
+      "id": "blocks",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/blocks.png",
+      "label": "Blocks",
+      "altText": "blocks"
+    },
+    {
+      "id": "boat",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/boat.png",
+      "label": "Boat",
+      "altText": "a boat"
+    },
+    {
+      "id": "bus",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/bus.png",
+      "label": "Bus",
+      "altText": "a bus"
+    },
+    {
+      "id": "butterfly",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/butterfly.png",
+      "label": "Butterfly",
+      "altText": "a butterfly"
+    },
+    {
+      "id": "car",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/car.png",
+      "label": "Car",
+      "altText": "a car"
+    },
+    {
+      "id": "caterpillar",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/caterpillar.png",
+      "label": "Caterpillar",
+      "altText": "a caterpillar"
+    },
+    {
+      "id": "chick",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/chick.png",
+      "label": "Chick",
+      "altText": "a chick"
+    },
+    {
+      "id": "chicken",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/chicken.png",
+      "label": "Chicken",
+      "altText": "a chicken"
+    },
+    {
+      "id": "coloured_pencils",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/coloured_pencils.png",
+      "label": "Coloured Pencils",
+      "altText": "coloured pencils"
+    },
+    {
+      "id": "cow",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/cow.png",
+      "label": "Cow",
+      "altText": "a cow"
+    },
+    {
+      "id": "crayons",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/crayons.png",
+      "label": "Crayons",
+      "altText": "crayons"
+    },
+    {
+      "id": "dog",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/dog.png",
+      "label": "Dog",
+      "altText": "a dog"
+    },
+    {
+      "id": "doll",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/doll.png",
+      "label": "Doll",
+      "altText": "a doll"
+    },
+    {
+      "id": "dress",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/dress.png",
+      "label": "Dress",
+      "altText": "a dress"
+    },
+    {
+      "id": "duck",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/duck.png",
+      "label": "Duck",
+      "altText": "a duck"
+    },
+    {
+      "id": "elephant",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/elephant.png",
+      "label": "Elephant",
+      "altText": "an elephant"
+    },
+    {
+      "id": "fire_engine",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/fire_engine.png",
+      "label": "Fire Engine",
+      "altText": "a fire engine"
+    },
+    {
+      "id": "giraffe",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/giraffe.png",
+      "label": "Giraffe",
+      "altText": "a giraffe"
+    },
+    {
+      "id": "gloves",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/gloves.png",
+      "label": "Gloves",
+      "altText": "gloves"
+    },
+    {
+      "id": "glue_stick",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/glue_stick.png",
+      "label": "Glue Stick",
+      "altText": "a glue stick"
+    },
+    {
+      "id": "goat",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/goat.png",
+      "label": "Goat",
+      "altText": "a goat"
+    },
+    {
+      "id": "hand_gesture",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/hand-gesture.png",
+      "label": "Hand Gesture",
+      "altText": "a hand gesture"
+    },
+    {
+      "id": "hat",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/hat.png",
+      "label": "Hat",
+      "altText": "a hat"
+    },
+    {
+      "id": "helicopter",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/helicopter.png",
+      "label": "Helicopter",
+      "altText": "a helicopter"
+    },
+    {
+      "id": "highlighter",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/highlighter.png",
+      "label": "Highlighter",
+      "altText": "a highlighter"
+    },
+    {
+      "id": "horse",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/horse.png",
+      "label": "Horse",
+      "altText": "a horse"
+    },
+    {
+      "id": "jumper",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/jumper.png",
+      "label": "Jumper",
+      "altText": "a jumper"
+    },
+    {
+      "id": "kite",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/kite.png",
+      "label": "Kite",
+      "altText": "a kite"
+    },
+    {
+      "id": "ladybird",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/ladybird.png",
+      "label": "Ladybird",
+      "altText": "a ladybird"
+    },
+    {
+      "id": "lego",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/lego.png",
+      "label": "Lego",
+      "altText": "lego"
+    },
+    {
+      "id": "lion",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/lion.png",
+      "label": "Lion",
+      "altText": "a lion"
+    },
+    {
+      "id": "monkey",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/monkey.png",
+      "label": "Monkey",
+      "altText": "a monkey"
+    },
+    {
+      "id": "orange_flaticon",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/orange_flaticon.png",
+      "label": "Orange",
+      "altText": "an orange"
+    },
+    {
+      "id": "peach",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/peach.png",
+      "label": "Peach",
+      "altText": "a peach"
+    },
+    {
+      "id": "pear",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/pear.png",
+      "label": "Pear",
+      "altText": "a pear"
+    },
+    {
+      "id": "pen",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/pen.png",
+      "label": "Pen",
+      "altText": "a pen"
+    },
+    {
+      "id": "pencil_case",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/pencil_case.png",
+      "label": "Pencil Case",
+      "altText": "a pencil case"
+    },
+    {
+      "id": "pencil_sharpener",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/pencil_sharpener.png",
+      "label": "Pencil Sharpener",
+      "altText": "a pencil sharpener"
+    },
+    {
+      "id": "pencil",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/pencil.png",
+      "label": "Pencil",
+      "altText": "a pencil"
+    },
+    {
+      "id": "penguin",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/penguin.png",
+      "label": "Penguin",
+      "altText": "a penguin"
+    },
+    {
+      "id": "pig",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/pig.png",
+      "label": "Pig",
+      "altText": "a pig"
+    },
+    {
+      "id": "police_car",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/police_car.png",
+      "label": "Police Car",
+      "altText": "a police car"
+    },
+    {
+      "id": "puzzle",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/puzzle.png",
+      "label": "Puzzle",
+      "altText": "a puzzle"
+    },
+    {
+      "id": "pyjamas",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/pyjamas.png",
+      "label": "Pyjamas",
+      "altText": "pyjamas"
+    },
+    {
+      "id": "rabbit",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/rabbit.png",
+      "label": "Rabbit",
+      "altText": "a rabbit"
+    },
+    {
+      "id": "rubber",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/rubber.png",
+      "label": "Rubber",
+      "altText": "a rubber"
+    },
+    {
+      "id": "ruler",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/ruler.png",
+      "label": "Ruler",
+      "altText": "a ruler"
+    },
+    {
+      "id": "scissors",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/scissors.png",
+      "label": "Scissors",
+      "altText": "scissors"
+    },
+    {
+      "id": "sheep",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/sheep.png",
+      "label": "Sheep",
+      "altText": "a sheep"
+    },
+    {
+      "id": "shoes",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/shoes.png",
+      "label": "Shoes",
+      "altText": "shoes"
+    },
+    {
+      "id": "shorts",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/shorts.png",
+      "label": "Shorts",
+      "altText": "shorts"
+    },
+    {
+      "id": "snail",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/snail.png",
+      "label": "Snail",
+      "altText": "a snail"
+    },
+    {
+      "id": "snake",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/snake.png",
+      "label": "Snake",
+      "altText": "a snake"
+    },
+    {
+      "id": "socks",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/socks.png",
+      "label": "Socks",
+      "altText": "socks"
+    },
+    {
+      "id": "strawberry",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/strawberry.png",
+      "label": "Strawberry",
+      "altText": "a strawberry"
+    },
+    {
+      "id": "teddy_bear",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/teddy_bear.png",
+      "label": "Teddy Bear",
+      "altText": "a teddy bear"
+    },
+    {
+      "id": "tiger",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/tiger.png",
+      "label": "Tiger",
+      "altText": "a tiger"
+    },
+    {
+      "id": "toy_car",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/toy%20car.png",
+      "label": "Toy Car",
+      "altText": "a toy car"
+    },
+    {
+      "id": "toy_train",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/toy_train.png",
+      "label": "Toy Train",
+      "altText": "a toy train"
+    },
+    {
+      "id": "tractor",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/tractor.png",
+      "label": "Tractor",
+      "altText": "a tractor"
+    },
+    {
+      "id": "trousers",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/trousers.png",
+      "label": "Trousers",
+      "altText": "trousers"
+    },
+    {
+      "id": "tshirt",
+      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/tshirt.png",
+      "label": "T-Shirt",
+      "altText": "a t-shirt"
+    }
+  ]
+}

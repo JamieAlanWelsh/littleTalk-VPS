@@ -1,0 +1,43 @@
+{
+    "rounds": 10,
+    "options": [
+        {
+            "id": "receiving-a-gift",
+            "label": "Because she is receiving a gift"
+        },
+        {
+            "id": "her-birthday",
+            "label": "Her birthday"
+        },
+        {
+            "id": "giving-a-gift",
+            "label": "Because he's giving a gift"
+        }
+    ],
+    "scenes": [
+        {
+            "id": "birthday-girl-happy",
+            "stepOneImageUrl": "/static/exercise_assets/in_the_know/birthday_step1.png",
+            "stepTwoImageUrl": "/static/exercise_assets/in_the_know/birthday_step2.png",
+            "openingPrompt": "Why is the girl happy?",
+            "completionPrompt": "Thats right, because she is receiving a gift!",
+            "correctOptionId": "receiving-a-gift"
+        },
+        {
+            "id": "birthday-day-question",
+            "stepOneImageUrl": "/static/exercise_assets/in_the_know/birthday_step1.png",
+            "stepTwoImageUrl": "/static/exercise_assets/in_the_know/birthday_step2.png",
+            "openingPrompt": "What day is it today?",
+            "completionPrompt": "That's right, it's her Birthday!",
+            "correctOptionId": "her-birthday"
+        },
+        {
+            "id": "birthday-boy-smiling",
+            "stepOneImageUrl": "/static/exercise_assets/in_the_know/birthday_step1.png",
+            "stepTwoImageUrl": "/static/exercise_assets/in_the_know/birthday_step2.png",
+            "openingPrompt": "why is the boy smiling",
+            "completionPrompt": "That's right, he's giving her a gift",
+            "correctOptionId": "giving-a-gift"
+        }
+    ]
+}
