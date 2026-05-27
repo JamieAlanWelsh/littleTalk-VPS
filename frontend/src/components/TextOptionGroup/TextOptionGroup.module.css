@@ -1,0 +1,33 @@
+.textOptionsGrid {
+    display: grid;
+    width: 100%;
+    gap: 0.75rem;
+    justify-content: center;
+}
+
+.oneOption {
+    grid-template-columns: minmax(180px, 320px);
+    max-width: 320px;
+    margin: 0 auto;
+}
+
+.twoOptions {
+    grid-template-columns: minmax(180px, 320px);
+    max-width: 320px;
+    margin: 0 auto;
+}
+
+.threeOptions {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+@media (min-width: 640px) {
+    .twoOptions {
+        grid-template-columns: repeat(2, minmax(180px, 240px));
+        max-width: 520px;
+    }
+
+    .threeOptions {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}

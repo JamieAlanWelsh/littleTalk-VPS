@@ -115,4 +115,8 @@ urlpatterns = [
     path('exercise-framework/colourful-semantics/', react_test_views.colourful_semantics, name='colourful_semantics'),
     path('exercise-framework/story-train/', react_test_views.story_train, name='story_train'),
     path('exercise-framework/spot-on/', react_test_views.spot_on, name='spot_on'),
+    path('exercise-framework/whats-in-the-bag/', react_test_views.whats_in_the_bag, name='whats_in_the_bag'),
+    path('exercise-framework/what-happens-next/', react_test_views.what_happens_next, name='what_happens_next'),
+    path('exercise-framework/in-the-know/', react_test_views.in_the_know, name='in_the_know'),
+    path('exercise-framework/whos-who/', react_test_views.whos_who, name='whos_who'),
 ]

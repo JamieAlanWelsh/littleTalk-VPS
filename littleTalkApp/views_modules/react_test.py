@@ -87,3 +87,32 @@ def spot_on(request):
         "learner_uuid": _get_session_learner_uuid(request),
     }
     return render(request, "exercises/spot_on.html", context)
+def whats_in_the_bag(request):
+    context = {
+        "learner_uuid": _get_session_learner_uuid(request),
+    }
+    return render(request, "exercises/whats_in_the_bag.html", context)
+
+
+@login_required
+def what_happens_next(request):
+    context = {
+        "learner_uuid": _get_session_learner_uuid(request),
+    }
+    return render(request, "exercises/what_happens_next.html", context)
+
+
+@login_required
+def in_the_know(request):
+    context = {
+        "learner_uuid": _get_session_learner_uuid(request),
+    }
+    return render(request, "exercises/in_the_know.html", context)
+
+
+@login_required
+def whos_who(request):
+    context = {
+        "learner_uuid": _get_session_learner_uuid(request),
+    }
+    return render(request, "exercises/whos_who.html", context)
