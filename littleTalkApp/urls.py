@@ -13,7 +13,7 @@ from .views_modules import school as school_views
 from .views_modules import settings_views as settings_app_views
 from .views_modules import subscription as subscription_views
 from .views_modules import react_test as react_test_views
-from . import views
+from .views_modules import skolon as skolon_views
 
 urlpatterns = [
     # Landing content
@@ -40,6 +40,8 @@ urlpatterns = [
     # Login and logout URLs
     path('login/', auth_app_views.CustomLoginView.as_view(), name='login'),
     path('account-setup/', auth_app_views.account_setup_view, name='account_setup'),
+    path('sso/launch/', skolon_views.sso_launch, name='sso_launch'),
+    path('sso/callback/', skolon_views.sso_callback, name='sso_callback'),
 
     # Profile and adding learners
     path('profile/', profile_views.profile, name='profile'),
@@ -90,11 +92,16 @@ urlpatterns = [
     path('subscribe/', subscription_views.subscribe, name='subscribe'),
     path('license-expired/', subscription_views.license_expired, name='license_expired'),
 
-    # Stripe Webhook to activate and manage subscription
-    path('webhooks/stripe/', subscription_views.stripe_webhook, name='stripe_webhook'),
+    # Stripe Webhooks 
+    path('webhooks/stripe/', subscription_views.stripe_webhook, name='stripe_webhook'), # to activate and manage subscription
     path('subscribe/checkout/', subscription_views.create_checkout_session, name='create_checkout_session'),
     path('subscribe/success/', subscription_views.subscribe_success, name='subscribe_success'),
     path('subscribe/manage/', subscription_views.manage_subscription, name='manage_subscription'),
+
+    # Skolon webhooks
+    path('webhooks/skolon/', skolon_views.skolon_webhook, name='skolon_webhook'),
+    path('webhooks/skolon/remove-user/', skolon_views.skolon_remove_user, name='skolon_remove_user'),
+    path('webhooks/skolon/remove-class/', skolon_views.skolon_remove_class, name='skolon_remove_class'),
 
     # API endpoints
     path('api/learners/<uuid:learner_uuid>/submit-exercise/', api_views.SubmitExerciseView.as_view(), name='submit_exercise'),

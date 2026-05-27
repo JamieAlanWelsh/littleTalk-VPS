@@ -1,3 +1,33 @@
+# Django
+littleTalk/settings.py
+*.sqlite3
+.env
+media/
+staticfiles/
+staticfiles_test/
+
+# Python
+littletalkvenv/
+__pycache__/
+*.py[cod]
+*.pyc
+*.pyo
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+
 littleTalk/settings.py
 littletalkvenv/
 __pycache__/
@@ -39,4 +69,3 @@ package-lock.json
 # IDE/workspace
 .vscode/settings.json
 EOF
-

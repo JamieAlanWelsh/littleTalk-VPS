@@ -7,6 +7,8 @@ os.environ.setdefault("FIELD_ENCRYPTION_KEY", "jD6Y0ahM95M06WQ0fY5nq2WEYLRh3SeDs
 os.environ.setdefault("STRIPE_SECRET_KEY", "sk_test_mock")
 os.environ.setdefault("STRIPE_PUBLISHABLE_KEY", "pk_test_mock")
 os.environ.setdefault("STRIPE_WEBHOOK_SECRET", "whsec_test_mock")
+os.environ.setdefault("SKOLON_CLIENT_ID", "test-skolon-client-id")
+os.environ.setdefault("SKOLON_CLIENT_SECRET", "test-skolon-client-secret")
 
 from .settings import *  # noqa: F401,F403
 

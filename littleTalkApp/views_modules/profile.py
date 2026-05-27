@@ -92,7 +92,7 @@ def add_learner(request):
     """
 
     if request.method == "POST":
-        form = LearnerForm(request.POST, user=request.user)
+        form = LearnerForm(request.POST, user=request.user, request=request)
         if form.is_valid():
             learner = form.save(commit=False)
             learner.user = request.user
@@ -109,7 +109,7 @@ def add_learner(request):
 
             return redirect("profile")
     else:
-        form = LearnerForm(user=request.user)
+        form = LearnerForm(user=request.user, request=request)
 
     return render(request, "profile/add_learner.html", {"form": form})
 
@@ -148,12 +148,17 @@ def edit_learner(request, learner_uuid):
         if "remove" in request.POST:
             return redirect("confirm_delete_learner", learner_uuid=learner.learner_uuid)
 
-        form = LearnerForm(request.POST, instance=learner, user=request.user)
+        form = LearnerForm(
+            request.POST,
+            instance=learner,
+            user=request.user,
+            request=request,
+        )
         if form.is_valid():
             form.save()
             return redirect("profile")
     else:
-        form = LearnerForm(instance=learner, user=request.user)
+        form = LearnerForm(instance=learner, user=request.user, request=request)
 
     if learner.school_id:
         role_for = request.user.profile.get_role_for_school(learner.school)
