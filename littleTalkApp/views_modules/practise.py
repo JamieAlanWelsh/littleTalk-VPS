@@ -92,13 +92,13 @@ def practise(request):
 
     exercise_icon_map = {
         "colourful_semantics": "exercise_icons/colourful_semantics_icon.webp",
-        "colourful_semantics_early_sentence_building": "exercise_icons/colourful_semantics_icon.webp",
-        "colourful_semantics_advanced_sentence_building": "exercise_icons/colourful_semantics_icon.webp",
+        "colourful_semantics_early_sentence_building": "exercise_icons/colourful_semantics_early_icon.webp",
+        "colourful_semantics_advanced_sentence_building": "exercise_icons/colourful_semantics_advanced_icon.webp",
         "think_and_find": "exercise_icons/think_and_find_icon.webp",
         "concept_quest": "exercise_icons/concept_quest_icon.webp",
         "categorisation": "exercise_icons/categorisation_icon.webp",
         "story_train": "exercise_icons/story_train_icon.webp",
-        "story_train_advanced_sequencing": "exercise_icons/story_train_icon.webp",
+        "story_train_advanced_sequencing": "exercise_icons/story_train_advanced_icon.webp",
         "task_master_instructions": "exercise_icons/task_master_icon.webp",
         "spot_on": "exercise_icons/spot_on_icon.webp",
         "whos_who_pronouns": "exercise_icons/whos_who_icon.webp",
