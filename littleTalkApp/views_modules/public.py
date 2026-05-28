@@ -42,10 +42,18 @@ def game_description(request, game_name):
     game = GAME_DESCRIPTIONS.get(game_name, None)
     launch_route_names = {
         "colourful_semantics": "colourful_semantics",
+        "colourful_semantics_early_sentence_building": "colourful_semantics",
         "think_and_find": "think_and_find",
         "concept_quest": "concept_quest",
         "categorisation": "categorisation_example",
         "story_train": "story_train",
+        "spot_on": "spot_on",
+        "whos_who_pronouns": "whos_who",
+        "whats_in_the_bag_vocabulary_builder": "whats_in_the_bag",
+    }
+
+    launch_route_queries = {
+        "colourful_semantics_early_sentence_building": "variant=early-years",
     }
 
     route_name = launch_route_names.get(game_name)
@@ -53,6 +61,9 @@ def game_description(request, game_name):
         return redirect("practise")
 
     launch_url = reverse(route_name)
+    query = launch_route_queries.get(game_name)
+    if query:
+        launch_url = f"{launch_url}?{query}"
 
     return render(
         request,
