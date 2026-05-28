@@ -2,6 +2,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.shortcuts import redirect, render
+from django.urls import reverse
 
 from honeypot.decorators import check_honeypot
 
@@ -39,6 +40,20 @@ def game_description(request, game_name):
     """
 
     game = GAME_DESCRIPTIONS.get(game_name, None)
+    launch_route_names = {
+        "colourful_semantics": "colourful_semantics",
+        "think_and_find": "think_and_find",
+        "concept_quest": "concept_quest",
+        "categorisation": "categorisation_example",
+        "story_train": "story_train",
+    }
+
+    route_name = launch_route_names.get(game_name)
+    if not route_name:
+        return redirect("practise")
+
+    launch_url = reverse(route_name)
+
     return render(
         request,
         "public/game_description.html",
@@ -46,6 +61,7 @@ def game_description(request, game_name):
             "game": game,
             "game_descriptions": GAME_DESCRIPTIONS,
             "current_game_name": game_name,
+            "launch_url": launch_url,
         },
     )
 

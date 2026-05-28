@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+from django.urls import reverse
 
 from littleTalkApp.content import GAME_DESCRIPTIONS, RECOMMENDATIONS
 from littleTalkApp.models import Learner
@@ -26,6 +27,15 @@ RECOMMENDATION_LEVEL_TO_STAGE = {
     1: 1,
     2: 2,
     3: 3,
+}
+
+
+PRACTISE_EXERCISE_ROUTE_NAMES = {
+    "colourful_semantics": "colourful_semantics",
+    "think_and_find": "think_and_find",
+    "concept_quest": "concept_quest",
+    "categorisation": "categorisation_example",
+    "story_train": "story_train",
 }
 
 
@@ -80,7 +90,9 @@ def practise(request):
                 "bullet2": game_data.get("bullet2", ""),
                 "bullet3": game_data.get("bullet3", ""),
                 "icon": exercise_icon_map.get(exercise_key, ""),
-                "start_path": f"exercises/{exercise_key}/index.html",
+                "start_url": reverse(
+                    PRACTISE_EXERCISE_ROUTE_NAMES.get(exercise_key, "practise")
+                ),
             }
             exercise_cards.append(card_payload)
             exercise_cards_by_key[exercise_key] = card_payload

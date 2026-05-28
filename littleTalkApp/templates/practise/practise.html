@@ -47,7 +47,7 @@
                             </ul>
                         </div>
                         <div class="exercise-buttons">
-                            <a href="{% static recommended_exercise_card.start_path %}" class="btn btn--green btn--small btn--short">START</a>
+                            <a href="{{ recommended_exercise_card.start_url }}" class="btn btn--green btn--small btn--short">START</a>
                             <a href="{% url 'game_description' recommended_exercise_card.key %}" class="btn btn--white btn--small btn--short">Tutorial</a>
                         </div>
                     </div>
@@ -118,7 +118,7 @@
                                 </ul>
                             </div>
                             <div class="exercise-buttons">
-                                <a href="{% static card.start_path %}" class="btn btn--green btn--small btn--short">START</a>
+                                <a href="{{ card.start_url }}" class="btn btn--green btn--small btn--short">START</a>
                                 <a href="{% url 'game_description' card.key %}" class="btn btn--white btn--small btn--short">Tutorial</a>
                             </div>
                         </div>
