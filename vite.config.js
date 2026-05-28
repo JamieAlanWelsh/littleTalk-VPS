@@ -16,6 +16,7 @@ const exercises = [
   'what-happens-next',
   'in-the-know',
   'whos-who',
+  'spot-on',
 ]
 
 // Create input object for multiple entry points

@@ -87,6 +87,9 @@ def spot_on(request):
         "learner_uuid": _get_session_learner_uuid(request),
     }
     return render(request, "exercises/spot_on.html", context)
+
+
+@login_required
 def whats_in_the_bag(request):
     context = {
         "learner_uuid": _get_session_learner_uuid(request),
