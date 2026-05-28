@@ -3,9 +3,11 @@ import { getMaxOptionsAcrossScenes, getSlotsForPreset } from "./configureScene";
 import styles from "./ColourfulSemanticsSettingsScreen.module.css";
 import type {
     ColourfulSemanticsOptions,
+    ColourfulSemanticsOptionalSlot,
     ColourfulSemanticsPayload,
     ColourfulSemanticsPresetId,
     ColourfulSemanticsSlot,
+    ColourfulSemanticsVariantConfig,
 } from "./types";
 
 const PRESET_OPTIONS: Array<{
@@ -27,22 +29,39 @@ const SLOT_COLOURS: Record<ColourfulSemanticsSlot, string> = {
     doing: "#FFEA47",
     what: "#38E87B",
     where: "#5297FF",
+    "to-who": "#FFFFFF",
+    when: "#B88163",
+    "what-like": "#C75EFF",
+    how: "#FFBEE5",
+};
+
+const OPTIONAL_SLOT_LABELS: Record<ColourfulSemanticsOptionalSlot, string> = {
+    "to-who": "To Who",
+    when: "When",
+    "what-like": "What like?",
+    how: "How?",
 };
 
 interface ColourfulSemanticsSettingsScreenProps {
     options: ColourfulSemanticsOptions;
     payload: ColourfulSemanticsPayload;
+    variant: ColourfulSemanticsVariantConfig;
     onSetOptions: (options: ColourfulSemanticsOptions) => void;
 }
 
 export const ColourfulSemanticsSettingsScreen = ({
     options,
     payload,
+    variant,
     onSetOptions,
 }: ColourfulSemanticsSettingsScreenProps) => {
+    const availablePresets = PRESET_OPTIONS.filter((preset) =>
+        variant.allowedPresetIds.includes(preset.id),
+    );
+    const showPresetSelection = variant.id !== "advanced";
     const maxOptions = Math.min(
-        5,
-        getMaxOptionsAcrossScenes(payload.scenes, options.presetId),
+        variant.maxNumberOfOptions,
+        getMaxOptionsAcrossScenes(payload, payload.scenes, options, variant),
     );
 
     useEffect(() => {
@@ -59,44 +78,118 @@ export const ColourfulSemanticsSettingsScreen = ({
     return (
         <div className={styles.container}>
             <section className={styles.section}>
-                <h3 className={styles.sectionTitle}>Complexity Level</h3>
-                <div className={styles.presetList}>
-                    {PRESET_OPTIONS.map((preset) => {
-                        const isSelected = preset.id === options.presetId;
-                        const slots = getSlotsForPreset(preset.id);
+                {showPresetSelection ? (
+                    <>
+                        <h3 className={styles.sectionTitle}>
+                            Complexity Level
+                        </h3>
+                        <div className={styles.presetList}>
+                            {availablePresets.map((preset) => {
+                                const isSelected =
+                                    preset.id === options.presetId;
+                                const slots = getSlotsForPreset(preset.id);
 
-                        return (
-                            <button
-                                key={preset.id}
-                                className={`${styles.presetButton} ${isSelected ? styles.presetButtonSelected : ""}`.trim()}
-                                onClick={() =>
-                                    onSetOptions({
-                                        ...options,
-                                        presetId: preset.id,
-                                    })
-                                }
-                                type="button"
-                            >
-                                <span className={styles.presetLabel}>
-                                    {preset.label}
-                                </span>
-                                <span className={styles.slotChipRow}>
-                                    {slots.map((slot) => (
-                                        <span
-                                            key={slot}
-                                            className={styles.slotChip}
-                                            style={{
-                                                backgroundColor:
-                                                    SLOT_COLOURS[slot],
-                                            }}
-                                        />
-                                    ))}
-                                </span>
-                            </button>
-                        );
-                    })}
-                </div>
+                                return (
+                                    <button
+                                        key={preset.id}
+                                        className={`${styles.presetButton} ${isSelected ? styles.presetButtonSelected : ""}`.trim()}
+                                        onClick={() =>
+                                            onSetOptions({
+                                                ...options,
+                                                presetId: preset.id,
+                                            })
+                                        }
+                                        type="button"
+                                    >
+                                        <span className={styles.presetLabel}>
+                                            {preset.label}
+                                        </span>
+                                        <span className={styles.slotChipRow}>
+                                            {slots.map((slot) => (
+                                                <span
+                                                    key={slot}
+                                                    className={styles.slotChip}
+                                                    style={{
+                                                        backgroundColor:
+                                                            SLOT_COLOURS[slot],
+                                                    }}
+                                                />
+                                            ))}
+                                        </span>
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    </>
+                ) : (
+                    <>
+                        <h3 className={styles.sectionTitle}>
+                            Base Sentence Blocks
+                        </h3>
+                        <p className={styles.sectionDescription}>
+                            Advanced always includes the stage&apos;s authored
+                            base blocks up to location when it exists.
+                        </p>
+                        <div className={styles.slotChipRow}>
+                            {getSlotsForPreset(options.presetId).map((slot) => (
+                                <span
+                                    key={slot}
+                                    className={styles.slotChip}
+                                    style={{
+                                        backgroundColor: SLOT_COLOURS[slot],
+                                    }}
+                                />
+                            ))}
+                        </div>
+                    </>
+                )}
             </section>
+
+            {variant.availableOptionalSlotIds.length > 0 ? (
+                <section className={styles.section}>
+                    <h3 className={styles.sectionTitle}>Extra Levels</h3>
+                    <div className={styles.optionalSlotList}>
+                        {variant.availableOptionalSlotIds.map((slotId) => {
+                            const isSelected =
+                                options.enabledOptionalSlotIds.includes(slotId);
+
+                            return (
+                                <button
+                                    key={slotId}
+                                    className={`${styles.optionalSlotButton} ${isSelected ? styles.optionalSlotButtonSelected : ""}`.trim()}
+                                    onClick={() =>
+                                        onSetOptions({
+                                            ...options,
+                                            enabledOptionalSlotIds: isSelected
+                                                ? options.enabledOptionalSlotIds.filter(
+                                                      (enabledSlotId) =>
+                                                          enabledSlotId !==
+                                                          slotId,
+                                                  )
+                                                : [
+                                                      ...options.enabledOptionalSlotIds,
+                                                      slotId,
+                                                  ],
+                                        })
+                                    }
+                                    type="button"
+                                >
+                                    <span
+                                        className={styles.slotChip}
+                                        style={{
+                                            backgroundColor:
+                                                SLOT_COLOURS[slotId],
+                                        }}
+                                    />
+                                    <span className={styles.optionalSlotLabel}>
+                                        {OPTIONAL_SLOT_LABELS[slotId]}
+                                    </span>
+                                </button>
+                            );
+                        })}
+                    </div>
+                </section>
+            ) : null}
 
             <section className={styles.section}>
                 <h3 className={styles.sectionTitle}>Number of options:</h3>

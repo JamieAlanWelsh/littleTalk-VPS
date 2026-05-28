@@ -69,8 +69,24 @@
     background-color: #38e87b;
 }
 
+.slotCardToWho {
+    background-color: #ffffff;
+}
+
 .slotCardWhere {
     background-color: #5297ff;
+}
+
+.slotCardWhen {
+    background-color: #b88163;
+}
+
+.slotCardWhatLike {
+    background-color: #c75eff;
+}
+
+.slotCardHow {
+    background-color: #ffbee5;
 }
 
 .slotCardActive {

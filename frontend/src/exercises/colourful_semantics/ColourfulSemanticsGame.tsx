@@ -6,6 +6,7 @@ import type { Question, QuestionState } from "../../lib/types";
 import ColourfulSemanticsBoard from "./ColourfulSemanticsBoard";
 import { configureScene } from "./configureScene";
 import { getIsPluralSubject, resolveOptionPresentation } from "./presentation";
+import { COLOURFUL_SEMANTICS_ASSET_POOL_SLOT_IDS } from "./types";
 import {
     createBoardState,
     moveItem,
@@ -16,6 +17,8 @@ import type {
     ColourfulSemanticsOptions,
     ColourfulSemanticsPayload,
     ColourfulSemanticsScene,
+    ColourfulSemanticsVariantConfig,
+    ColourfulSemanticsVariantId,
     ConfiguredColourfulSemanticsScene,
 } from "./types";
 
@@ -28,12 +31,14 @@ interface ColourfulSemanticsGameProps {
     options: ColourfulSemanticsOptions;
     payload: ColourfulSemanticsPayload;
     scene: ColourfulSemanticsScene;
+    variant: ColourfulSemanticsVariantConfig;
     progressBase?: number;
     progressScale?: number;
 }
 
 interface ColourfulSemanticsAnswer {
     sceneId: string;
+    variantId: ColourfulSemanticsVariantId;
     presetId: ColourfulSemanticsOptions["presetId"];
     numberOfOptions: number;
     stepIds: string[];
@@ -41,9 +46,9 @@ interface ColourfulSemanticsAnswer {
 
 const buildItemsById = (payload: ColourfulSemanticsPayload) =>
     Object.fromEntries(
-        [payload.who, payload.doing, payload.what, payload.where]
-            .flat()
-            .map((item) => [item.id, item]),
+        COLOURFUL_SEMANTICS_ASSET_POOL_SLOT_IDS.flatMap((slotId) =>
+            payload[slotId].map((item) => [item.id, item] as const),
+        ),
     ) as Record<string, ColourfulSemanticsOption>;
 
 const buildQuestions = (scene: ConfiguredColourfulSemanticsScene): Question[] =>
@@ -134,16 +139,19 @@ export const ColourfulSemanticsGame = ({
     options,
     payload,
     scene: rawScene,
+    variant,
     progressBase,
     progressScale,
 }: ColourfulSemanticsGameProps) => {
     const scene = useMemo(
         () =>
             configureScene({
+                payload,
                 scene: rawScene,
                 options,
+                variant,
             }),
-        [options, rawScene],
+        [options, payload, rawScene, variant],
     );
     const itemsById = useMemo(() => buildItemsById(payload), [payload]);
     const questions = useMemo(() => buildQuestions(scene), [scene]);
@@ -151,11 +159,18 @@ export const ColourfulSemanticsGame = ({
         () =>
             questions.map(() => ({
                 sceneId: scene.id,
+                variantId: variant.id,
                 presetId: options.presetId,
                 numberOfOptions: options.numberOfOptions,
                 stepIds: scene.steps.map((step) => step.id),
             })),
-        [options.numberOfOptions, options.presetId, questions, scene],
+        [
+            options.numberOfOptions,
+            options.presetId,
+            questions,
+            scene,
+            variant.id,
+        ],
     );
 
     const [lockedSelectionIds, setLockedSelectionIds] = useState<

@@ -4,8 +4,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "../style.css";
 import { LearnerContextProvider } from "../contexts/LearnerContext";
 import ColourfulSemanticsExercise from "../exercises/colourful_semantics/ColourfulSemantics";
-import exerciseData from "../exercises/colourful_semantics/exerciseData.json";
-import { ColourfulSemanticsPayloadSchema } from "../exercises/colourful_semantics/types";
+import {
+    getColourfulSemanticsVariantData,
+    resolveColourfulSemanticsVariantId,
+} from "../exercises/colourful_semantics/variantData";
 
 const queryClient = new QueryClient();
 const mountElement = document.getElementById("exercise-root");
@@ -15,7 +17,11 @@ if (!mountElement) {
     document.body.innerHTML = `<div style="padding: 2rem; color: red;">Error loading exercise: 'Root element #exercise-root not found'</div>`;
 } else {
     try {
-        const payload = ColourfulSemanticsPayloadSchema.parse(exerciseData);
+        const variantId = resolveColourfulSemanticsVariantId(
+            new URLSearchParams(window.location.search).get("variant"),
+        );
+        const { payload, variant } =
+            getColourfulSemanticsVariantData(variantId);
         const learnerUUID =
             mountElement.getAttribute("data-learner-uuid") || null;
 
@@ -24,7 +30,10 @@ if (!mountElement) {
             <React.StrictMode>
                 <QueryClientProvider client={queryClient}>
                     <LearnerContextProvider learnerUUID={learnerUUID}>
-                        <ColourfulSemanticsExercise payload={payload} />
+                        <ColourfulSemanticsExercise
+                            payload={payload}
+                            variant={variant}
+                        />
                     </LearnerContextProvider>
                 </QueryClientProvider>
             </React.StrictMode>,
