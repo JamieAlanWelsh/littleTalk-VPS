@@ -14,7 +14,7 @@ import type {
 
 const PRESET_SLOTS: Record<
     ColourfulSemanticsPresetId,
-    ColourfulSemanticsSlot[]
+    ColourfulSemanticsBaseSlot[]
 > = {
     subject: ["who"],
     verb: ["doing"],
