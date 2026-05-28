@@ -113,15 +113,15 @@ urlpatterns = [
     path('dashboard/learner/', dashboard_views.learner_dashboard, name='learner_dashboard'),
     path('api/dashboard/progress-data/', dashboard_views.learner_progress_data, name='learner_progress_data'),
 
-    # React exercise framework views
-    path('exercise-framework/categorisation/', react_exercises_views.categorisation_example, name='categorisation_example'),
-    path('exercise-framework/think-and-find/', react_exercises_views.think_and_find, name='think_and_find'),
-    path('exercise-framework/concept-quest/', react_exercises_views.concept_quest, name='concept_quest'),
-    path('exercise-framework/colourful-semantics/', react_exercises_views.colourful_semantics, name='colourful_semantics'),
-    path('exercise-framework/story-train/', react_exercises_views.story_train, name='story_train'),
-    path('exercise-framework/spot-on/', react_exercises_views.spot_on, name='spot_on'),
-    path('exercise-framework/whats-in-the-bag/', react_exercises_views.whats_in_the_bag, name='whats_in_the_bag'),
-    path('exercise-framework/what-happens-next/', react_exercises_views.what_happens_next, name='what_happens_next'),
-    path('exercise-framework/in-the-know/', react_exercises_views.in_the_know, name='in_the_know'),
-    path('exercise-framework/whos-who/', react_exercises_views.whos_who, name='whos_who'),
+    # React exercise routes (canonical)
+    path('exercises/categorisation/', react_exercises_views.categorisation_example, name='categorisation_example'),
+    path('exercises/think-and-find/', react_exercises_views.think_and_find, name='think_and_find'),
+    path('exercises/concept-quest/', react_exercises_views.concept_quest, name='concept_quest'),
+    path('exercises/colourful-semantics/', react_exercises_views.colourful_semantics, name='colourful_semantics'),
+    path('exercises/story-train/', react_exercises_views.story_train, name='story_train'),
+    path('exercises/spot-on/', react_exercises_views.spot_on, name='spot_on'),
+    path('exercises/whats-in-the-bag/', react_exercises_views.whats_in_the_bag, name='whats_in_the_bag'),
+    path('exercises/what-happens-next/', react_exercises_views.what_happens_next, name='what_happens_next'),
+    path('exercises/in-the-know/', react_exercises_views.in_the_know, name='in_the_know'),
+    path('exercises/whos-who/', react_exercises_views.whos_who, name='whos_who'),
 ]
