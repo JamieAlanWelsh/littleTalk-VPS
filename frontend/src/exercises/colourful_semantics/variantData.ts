@@ -50,6 +50,7 @@ const getVariantConfig = (
         allowedPresetIds: variantPack.allowedPresetIds,
         defaultPresetId: variantPack.defaultPresetId,
         defaultNumberOfOptions: variantPack.defaultNumberOfOptions,
+        maxNumberOfOptions: variantPack.maxNumberOfOptions,
         availableOptionalSlotIds: variantPack.availableOptionalSlotIds,
     });
 

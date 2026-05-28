@@ -30,6 +30,7 @@ export const ColourfulSemanticsExercise = ({
     const [options, setOptions] = useState<ColourfulSemanticsOptions>(() =>
         sanitizeOptionsForVariant({
             options: getDefaultOptionsForVariant(variant),
+            payload,
             scenes: payload.scenes,
             variant,
         }),
@@ -44,6 +45,7 @@ export const ColourfulSemanticsExercise = ({
         setOptions((currentOptions) => {
             const nextOptions = sanitizeOptionsForVariant({
                 options: currentOptions,
+                payload,
                 scenes: payload.scenes,
                 variant,
             });

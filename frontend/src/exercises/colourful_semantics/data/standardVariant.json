@@ -26,14 +26,7 @@
           "color": "#ff9d2e",
           "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/who.png",
           "levelIconAlt": "Who level icon",
-          "correctOptionId": "who-girl",
-          "optionIds": [
-            "who-girl",
-            "who-boy",
-            "who-lady",
-            "who-dog",
-            "who-cat"
-          ]
+          "correctOptionId": "who-girl"
         },
         {
           "id": "blowing-bubbles-doing",
@@ -43,14 +36,7 @@
           "color": "#f4e986",
           "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/what_doing.png",
           "levelIconAlt": "Doing level icon",
-          "correctOptionId": "doing-blowing",
-          "optionIds": [
-            "doing-blowing",
-            "doing-running",
-            "doing-jumping",
-            "doing-looking",
-            "doing-playing"
-          ]
+          "correctOptionId": "doing-blowing"
         },
         {
           "id": "blowing-bubbles-what",
@@ -60,14 +46,7 @@
           "color": "#8fe2b3",
           "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/what.png",
           "levelIconAlt": "What level icon",
-          "correctOptionId": "what-bubbles",
-          "optionIds": [
-            "what-bubbles",
-            "what-ball",
-            "what-book",
-            "what-flower",
-            "what-toys"
-          ]
+          "correctOptionId": "what-bubbles"
         },
         {
           "id": "blowing-bubbles-where",
@@ -77,14 +56,7 @@
           "color": "#9fc5ff",
           "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/where.png",
           "levelIconAlt": "Where level icon",
-          "correctOptionId": "where-park",
-          "optionIds": [
-            "where-park",
-            "where-beach",
-            "where-garden",
-            "where-school",
-            "where-home"
-          ]
+          "correctOptionId": "where-park"
         }
       ]
     },
@@ -104,14 +76,7 @@
           "color": "#ff9d2e",
           "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/who.png",
           "levelIconAlt": "Who level icon",
-          "correctOptionId": "who-boy",
-          "optionIds": [
-            "who-boy",
-            "who-girl",
-            "who-man",
-            "who-dog",
-            "who-frog"
-          ]
+          "correctOptionId": "who-boy"
         },
         {
           "id": "boy-swimming-pool-doing",
@@ -121,14 +86,7 @@
           "color": "#f4e986",
           "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/what_doing.png",
           "levelIconAlt": "Doing level icon",
-          "correctOptionId": "doing-swimming",
-          "optionIds": [
-            "doing-swimming",
-            "doing-running",
-            "doing-jumping",
-            "doing-climbing",
-            "doing-eating"
-          ]
+          "correctOptionId": "doing-swimming"
         },
         {
           "id": "boy-swimming-pool-where",
@@ -138,14 +96,7 @@
           "color": "#9fc5ff",
           "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/where.png",
           "levelIconAlt": "Where level icon",
-          "correctOptionId": "where-swimming-pool",
-          "optionIds": [
-            "where-swimming-pool",
-            "where-park",
-            "where-beach",
-            "where-home",
-            "where-garden"
-          ]
+          "correctOptionId": "where-swimming-pool"
         }
       ]
     },
@@ -165,14 +116,7 @@
           "color": "#ff9d2e",
           "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/who.png",
           "levelIconAlt": "Who level icon",
-          "correctOptionId": "who-butterfly",
-          "optionIds": [
-            "who-butterfly",
-            "who-cat",
-            "who-frog",
-            "who-dog",
-            "who-horse"
-          ]
+          "correctOptionId": "who-butterfly"
         },
         {
           "id": "butterfly-sitting-flower-doing",
@@ -182,14 +126,7 @@
           "color": "#f4e986",
           "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/what_doing.png",
           "levelIconAlt": "Doing level icon",
-          "correctOptionId": "doing-sitting",
-          "optionIds": [
-            "doing-sitting",
-            "doing-eating",
-            "doing-flying",
-            "doing-looking",
-            "doing-jumping"
-          ]
+          "correctOptionId": "doing-sitting"
         },
         {
           "id": "butterfly-sitting-flower-what",
@@ -199,14 +136,7 @@
           "color": "#8fe2b3",
           "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/what.png",
           "levelIconAlt": "What level icon",
-          "correctOptionId": "what-flower",
-          "optionIds": [
-            "what-flower",
-            "what-grass",
-            "what-lilypad",
-            "what-mat",
-            "what-car"
-          ]
+          "correctOptionId": "what-flower"
         }
       ]
     },
@@ -226,14 +156,7 @@
           "color": "#ff9d2e",
           "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/who.png",
           "levelIconAlt": "Who level icon",
-          "correctOptionId": "who-children",
-          "optionIds": [
-            "who-children",
-            "who-boy",
-            "who-girl",
-            "who-man",
-            "who-dog"
-          ]
+          "correctOptionId": "who-children"
         },
         {
           "id": "children-digging-sandpit-doing",
@@ -243,14 +166,7 @@
           "color": "#f4e986",
           "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/what_doing.png",
           "levelIconAlt": "Doing level icon",
-          "correctOptionId": "doing-digging",
-          "optionIds": [
-            "doing-digging",
-            "doing-running",
-            "doing-jumping",
-            "doing-eating",
-            "doing-sitting"
-          ]
+          "correctOptionId": "doing-digging"
         },
         {
           "id": "children-digging-sandpit-what",
@@ -260,14 +176,7 @@
           "color": "#8fe2b3",
           "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/what.png",
           "levelIconAlt": "What level icon",
-          "correctOptionId": "what-in-sand",
-          "optionIds": [
-            "what-in-sand",
-            "what-bucket",
-            "what-ball",
-            "what-grass",
-            "what-mat"
-          ]
+          "correctOptionId": "what-in-sand"
         },
         {
           "id": "children-digging-sandpit-where",
@@ -277,14 +186,7 @@
           "color": "#9fc5ff",
           "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/where.png",
           "levelIconAlt": "Where level icon",
-          "correctOptionId": "where-sandpit",
-          "optionIds": [
-            "where-sandpit",
-            "where-park",
-            "where-beach",
-            "where-garden",
-            "where-home"
-          ]
+          "correctOptionId": "where-sandpit"
         }
       ]
     },
@@ -304,14 +206,7 @@
           "color": "#ff9d2e",
           "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/who.png",
           "levelIconAlt": "Who level icon",
-          "correctOptionId": "who-children",
-          "optionIds": [
-            "who-children",
-            "who-boy",
-            "who-girl",
-            "who-man",
-            "who-dog"
-          ]
+          "correctOptionId": "who-children"
         },
         {
           "id": "children-sitting-mat-school-doing",
@@ -321,14 +216,7 @@
           "color": "#f4e986",
           "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/what_doing.png",
           "levelIconAlt": "Doing level icon",
-          "correctOptionId": "doing-sitting",
-          "optionIds": [
-            "doing-sitting",
-            "doing-running",
-            "doing-jumping",
-            "doing-eating",
-            "doing-digging"
-          ]
+          "correctOptionId": "doing-sitting"
         },
         {
           "id": "children-sitting-mat-school-what",
@@ -338,14 +226,7 @@
           "color": "#8fe2b3",
           "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/what.png",
           "levelIconAlt": "What level icon",
-          "correctOptionId": "what-mat",
-          "optionIds": [
-            "what-mat",
-            "what-chair",
-            "what-ball",
-            "what-bed",
-            "what-toys"
-          ]
+          "correctOptionId": "what-mat"
         },
         {
           "id": "children-sitting-mat-school-where",
@@ -355,14 +236,7 @@
           "color": "#9fc5ff",
           "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/where.png",
           "levelIconAlt": "Where level icon",
-          "correctOptionId": "where-school",
-          "optionIds": [
-            "where-school",
-            "where-home",
-            "where-park",
-            "where-cinema",
-            "where-garden"
-          ]
+          "correctOptionId": "where-school"
         }
       ]
     },
@@ -382,14 +256,7 @@
           "color": "#ff9d2e",
           "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/who.png",
           "levelIconAlt": "Who level icon",
-          "correctOptionId": "who-dog",
-          "optionIds": [
-            "who-dog",
-            "who-cat",
-            "who-frog",
-            "who-boy",
-            "who-horse"
-          ]
+          "correctOptionId": "who-dog"
         },
         {
           "id": "dog-swimming-river-doing",
@@ -399,14 +266,7 @@
           "color": "#f4e986",
           "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/what_doing.png",
           "levelIconAlt": "Doing level icon",
-          "correctOptionId": "doing-swimming",
-          "optionIds": [
-            "doing-swimming",
-            "doing-running",
-            "doing-jumping",
-            "doing-eating",
-            "doing-sitting"
-          ]
+          "correctOptionId": "doing-swimming"
         },
         {
           "id": "dog-swimming-river-where",
@@ -416,14 +276,7 @@
           "color": "#9fc5ff",
           "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/where.png",
           "levelIconAlt": "Where level icon",
-          "correctOptionId": "where-river",
-          "optionIds": [
-            "where-river",
-            "where-swimming-pool",
-            "where-beach",
-            "where-park",
-            "where-home"
-          ]
+          "correctOptionId": "where-river"
         }
       ]
     },
@@ -443,14 +296,7 @@
           "color": "#ff9d2e",
           "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/who.png",
           "levelIconAlt": "Who level icon",
-          "correctOptionId": "who-boy",
-          "optionIds": [
-            "who-boy",
-            "who-girl",
-            "who-man",
-            "who-dog",
-            "who-cat"
-          ]
+          "correctOptionId": "who-boy"
         },
         {
           "id": "boy-licking-icecream-doing",
@@ -460,14 +306,7 @@
           "color": "#f4e986",
           "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/what_doing.png",
           "levelIconAlt": "Doing level icon",
-          "correctOptionId": "doing-licking",
-          "optionIds": [
-            "doing-licking",
-            "doing-eating",
-            "doing-sitting",
-            "doing-running",
-            "doing-jumping"
-          ]
+          "correctOptionId": "doing-licking"
         },
         {
           "id": "boy-licking-icecream-what",
@@ -477,14 +316,7 @@
           "color": "#8fe2b3",
           "levelIconUrl": "/static/exercise_assets/colourful_semantics/level_icons/what.png",
           "levelIconAlt": "What level icon",
-          "correctOptionId": "what-ice-cream",
-          "optionIds": [
-            "what-ice-cream",
-            "what-pizza",
-            "what-ball",
-            "what-toys",
-            "what-flower"
-          ]
+          "correctOptionId": "what-ice-cream"
         }
       ]
     }

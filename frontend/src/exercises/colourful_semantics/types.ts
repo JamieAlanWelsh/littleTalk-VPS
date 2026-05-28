@@ -74,6 +74,7 @@ export const ColourfulSemanticsVariantConfigSchema = z
         allowedPresetIds: z.array(ColourfulSemanticsPresetIdSchema).min(1),
         defaultPresetId: ColourfulSemanticsPresetIdSchema,
         defaultNumberOfOptions: z.number().int().min(1).max(5),
+        maxNumberOfOptions: z.number().int().min(1).max(5).default(5),
         availableOptionalSlotIds: z
             .array(ColourfulSemanticsOptionalSlotSchema)
             .default([]),
@@ -84,6 +85,15 @@ export const ColourfulSemanticsVariantConfigSchema = z
         {
             message: "defaultPresetId must be included in allowedPresetIds",
             path: ["defaultPresetId"],
+        },
+    )
+    .refine(
+        ({ defaultNumberOfOptions, maxNumberOfOptions }) =>
+            defaultNumberOfOptions <= maxNumberOfOptions,
+        {
+            message:
+                "defaultNumberOfOptions must be less than or equal to maxNumberOfOptions",
+            path: ["defaultNumberOfOptions"],
         },
     );
 
@@ -135,7 +145,6 @@ export const ColourfulSemanticsStepSchema = z.object({
     levelIconUrl: z.string(),
     levelIconAlt: z.string(),
     correctOptionId: z.string(),
-    optionIds: z.array(z.string()).min(2),
 });
 
 export type ColourfulSemanticsStep = z.infer<

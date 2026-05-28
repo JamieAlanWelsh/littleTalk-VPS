@@ -1,8 +1,10 @@
 import { shuffleArray } from "../../utils/shuffleArray";
 import type {
+    ColourfulSemanticsAssetPool,
     ColourfulSemanticsBaseSlot,
     ColourfulSemanticsOptions,
     ColourfulSemanticsOptionalSlot,
+    ColourfulSemanticsPayload,
     ColourfulSemanticsPresetId,
     ColourfulSemanticsScene,
     ColourfulSemanticsSlot,
@@ -117,10 +119,12 @@ export const getDefaultOptionsForVariant = (
 
 export const sanitizeOptionsForVariant = ({
     options,
+    payload,
     scenes,
     variant,
 }: {
     options: ColourfulSemanticsOptions;
+    payload: ColourfulSemanticsPayload;
     scenes: ColourfulSemanticsScene[];
     variant: ColourfulSemanticsVariantConfig;
 }): ColourfulSemanticsOptions => {
@@ -133,8 +137,9 @@ export const sanitizeOptionsForVariant = ({
             availableOptionalSlotIds.indexOf(slotId) === index,
     );
     const maxOptions = Math.min(
-        5,
+        variant.maxNumberOfOptions,
         getMaxOptionsAcrossScenes(
+            payload,
             scenes,
             {
                 ...options,
@@ -156,6 +161,7 @@ export const sanitizeOptionsForVariant = ({
 };
 
 export const getMaxOptionsForScene = (
+    assetPool: ColourfulSemanticsAssetPool,
     scene: ColourfulSemanticsScene,
     options: ColourfulSemanticsOptions,
     variant: ColourfulSemanticsVariantConfig,
@@ -173,7 +179,7 @@ export const getMaxOptionsForScene = (
     return Math.min(
         ...scene.steps
             .filter((step) => slots.includes(step.slot))
-            .map((step) => step.optionIds.length),
+            .map((step) => getOptionIdsForSlot(assetPool, step.slot).length),
     );
 };
 
@@ -187,6 +193,7 @@ export const getSceneSupportedSlots = (
  * Only counts steps that are relevant to the preset for each scene.
  */
 export const getMaxOptionsAcrossScenes = (
+    assetPool: ColourfulSemanticsAssetPool,
     scenes: ColourfulSemanticsScene[],
     options: ColourfulSemanticsOptions,
     variant: ColourfulSemanticsVariantConfig,
@@ -204,7 +211,11 @@ export const getMaxOptionsAcrossScenes = (
             );
         })
         .filter((steps) => steps.length > 0)
-        .flatMap((steps) => steps.map((step) => step.optionIds.length));
+        .flatMap((steps) =>
+            steps.map(
+                (step) => getOptionIdsForSlot(assetPool, step.slot).length,
+            ),
+        );
 
     if (perSceneLimits.length === 0) return 1;
     return Math.min(...perSceneLimits);
@@ -256,11 +267,44 @@ const getConfiguredOptionIds = ({
     return shuffleArray([correctOptionId, ...sampledDistractorIds]);
 };
 
+const getOptionIdsForSlot = (
+    assetPool: ColourfulSemanticsAssetPool,
+    slot: ColourfulSemanticsSlot,
+) => assetPool[slot].map((option) => option.id);
+
+const getStepOptionIds = ({
+    assetPool,
+    slot,
+    correctOptionId,
+    numberOfOptions,
+}: {
+    assetPool: ColourfulSemanticsAssetPool;
+    slot: ColourfulSemanticsSlot;
+    correctOptionId: string;
+    numberOfOptions: number;
+}) => {
+    const optionIds = getOptionIdsForSlot(assetPool, slot);
+
+    if (!optionIds.includes(correctOptionId)) {
+        throw new Error(
+            `Missing correct option "${correctOptionId}" in "${slot}" asset pool`,
+        );
+    }
+
+    return getConfiguredOptionIds({
+        optionIds,
+        correctOptionId,
+        numberOfOptions: Math.min(numberOfOptions, optionIds.length),
+    });
+};
+
 export const configureScene = ({
+    payload,
     scene,
     options,
     variant,
 }: {
+    payload: ColourfulSemanticsPayload;
     scene: ColourfulSemanticsScene;
     options: ColourfulSemanticsOptions;
     variant: ColourfulSemanticsVariantConfig;
@@ -279,13 +323,11 @@ export const configureScene = ({
             .filter((step) => step != null)
             .map((step) => ({
                 ...step,
-                optionIds: getConfiguredOptionIds({
-                    optionIds: step.optionIds,
+                optionIds: getStepOptionIds({
+                    assetPool: payload,
+                    slot: step.slot,
                     correctOptionId: step.correctOptionId,
-                    numberOfOptions: Math.min(
-                        options.numberOfOptions,
-                        step.optionIds.length,
-                    ),
+                    numberOfOptions: options.numberOfOptions,
                 }),
             })),
     };

@@ -60,8 +60,8 @@ export const ColourfulSemanticsSettingsScreen = ({
     );
     const showPresetSelection = variant.id !== "advanced";
     const maxOptions = Math.min(
-        5,
-        getMaxOptionsAcrossScenes(payload.scenes, options, variant),
+        variant.maxNumberOfOptions,
+        getMaxOptionsAcrossScenes(payload, payload.scenes, options, variant),
     );
 
     useEffect(() => {

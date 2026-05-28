@@ -146,11 +146,12 @@ export const ColourfulSemanticsGame = ({
     const scene = useMemo(
         () =>
             configureScene({
+                payload,
                 scene: rawScene,
                 options,
                 variant,
             }),
-        [options, rawScene, variant],
+        [options, payload, rawScene, variant],
     );
     const itemsById = useMemo(() => buildItemsById(payload), [payload]);
     const questions = useMemo(() => buildQuestions(scene), [scene]);
