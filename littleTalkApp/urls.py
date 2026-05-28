@@ -114,8 +114,6 @@ urlpatterns = [
     path('api/dashboard/progress-data/', dashboard_views.learner_progress_data, name='learner_progress_data'),
 
     # React exercise framework views
-    path('hello-from-react/', react_exercises_views.hi_from_react, name='hi_from_react'),
-    path('exercise-framework/sentence-matching/', react_exercises_views.sentence_matching_example, name='sentence_matching_example'),
     path('exercise-framework/categorisation/', react_exercises_views.categorisation_example, name='categorisation_example'),
     path('exercise-framework/think-and-find/', react_exercises_views.think_and_find, name='think_and_find'),
     path('exercise-framework/concept-quest/', react_exercises_views.concept_quest, name='concept_quest'),
