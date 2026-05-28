@@ -59,11 +59,11 @@ def practise(request):
     default_stage_number = stage_numbers[0] if stage_numbers else None
 
     exercise_icon_map = {
-        "colourful_semantics": "icons/colour_semantics_icon_bg.png",
-        "think_and_find": "icons/think_and_find_icon.png",
-        "concept_quest": "icons/concept_quest_icon.png",
-        "categorisation": "icons/categorisation_icon.png",
-        "story_train": "icons/story_train_icon.png",
+        "colourful_semantics": "exercise_icons/colourful_semantics_icon.webp",
+        "think_and_find": "exercise_icons/think_and_find_icon.webp",
+        "concept_quest": "exercise_icons/concept_quest_icon.webp",
+        "categorisation": "exercise_icons/categorisation_icon.webp",
+        "story_train": "exercise_icons/story_train_icon.webp",
     }
 
     title_to_key = {
