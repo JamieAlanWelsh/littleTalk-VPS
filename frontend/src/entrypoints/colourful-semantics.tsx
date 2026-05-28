@@ -3,11 +3,11 @@ import ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "../style.css";
 import { LearnerContextProvider } from "../contexts/LearnerContext";
-import ColourfulSemanticsExercise from "../exercises/colourful_semantics/ColourfulSemantics";
+import ColourfulSemanticsExercise from "../exercises/colourfulSemantics/ColourfulSemantics";
 import {
     getColourfulSemanticsVariantData,
     resolveColourfulSemanticsVariantId,
-} from "../exercises/colourful_semantics/variantData";
+} from "../exercises/colourfulSemantics/variantData";
 
 const queryClient = new QueryClient();
 const mountElement = document.getElementById("exercise-root");

@@ -3,9 +3,9 @@ import ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "../style.css";
 import { LearnerContextProvider } from "../contexts/LearnerContext";
-import WhatHappensNext from "../exercises/what_happens_next/WhatHappensNext";
-import exerciseData from "../exercises/what_happens_next/exerciseData.json";
-import { WhatHappensNextPayloadSchema } from "../exercises/what_happens_next/types";
+import WhatHappensNext from "../exercises/whatHappensNext/WhatHappensNext";
+import exerciseData from "../exercises/whatHappensNext/exerciseData.json";
+import { WhatHappensNextPayloadSchema } from "../exercises/whatHappensNext/types";
 
 const queryClient = new QueryClient();
 const mountElement = document.getElementById("exercise-root");

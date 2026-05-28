@@ -3,10 +3,10 @@ import ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "../style.css";
 import { LearnerContextProvider } from "../contexts/LearnerContext";
-import StoryTrain from "../exercises/story_train/StoryTrain";
-import advancedExerciseData from "../exercises/story_train/exerciseData.advanced.json";
-import exerciseData from "../exercises/story_train/exerciseData.json";
-import { StoryTrainExercisePayloadSchema } from "../exercises/story_train/types";
+import StoryTrain from "../exercises/storyTrain/StoryTrain";
+import advancedExerciseData from "../exercises/storyTrain/exerciseData.advanced.json";
+import exerciseData from "../exercises/storyTrain/exerciseData.json";
+import { StoryTrainExercisePayloadSchema } from "../exercises/storyTrain/types";
 
 const queryClient = new QueryClient();
 

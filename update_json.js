@@ -1,8 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 
-const advancedVariantPath = 'frontend/src/exercises/colourful_semantics/data/advancedVariant.json';
-const sharedAssetPoolPath = 'frontend/src/exercises/colourful_semantics/data/sharedAssetPool.json';
+const advancedVariantPath = 'frontend/src/exercises/colourfulSemantics/data/advancedVariant.json';
+const sharedAssetPoolPath = 'frontend/src/exercises/colourfulSemantics/data/sharedAssetPool.json';
 
 // --- Update advancedVariant.json ---
 let advancedVariant = JSON.parse(fs.readFileSync(advancedVariantPath, 'utf8'));
