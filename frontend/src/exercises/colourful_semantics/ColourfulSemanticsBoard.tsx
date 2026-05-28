@@ -11,6 +11,7 @@ import { PoolTray } from "../../components/PoolTray/PoolTray";
 import useAudio from "../../hooks/useAudio";
 import styles from "./colourfulSemantics.module.css";
 import { getIsPluralSubject, resolveOptionPresentation } from "./presentation";
+import { COLOURFUL_SEMANTICS_SLOT_METADATA } from "./slotMetadata";
 import type {
     ColourfulSemanticsOption,
     ColourfulSemanticsSlot,
@@ -195,14 +196,16 @@ export const ColourfulSemanticsBoard = ({
                             const slotColourClass = getSlotColourClass(
                                 step.slot,
                             );
+                            const slotMetadata =
+                                COLOURFUL_SEMANTICS_SLOT_METADATA[step.slot];
                             const slotTitle =
                                 isLocked && slotItemId
                                     ? (resolveOptionPresentation({
                                           item: itemsById[slotItemId],
                                           slot: step.slot,
                                           isPluralSubject,
-                                      }).label ?? step.title)
-                                    : step.title;
+                                      }).label ?? slotMetadata.label)
+                                    : slotMetadata.label;
 
                             return (
                                 <article
@@ -231,8 +234,8 @@ export const ColourfulSemanticsBoard = ({
                                                       isLocked,
                                                   )
                                                 : renderPlaceholder(
-                                                      step.levelIconUrl,
-                                                      step.levelIconAlt,
+                                                      slotMetadata.levelIconUrl,
+                                                      slotMetadata.levelIconAlt,
                                                   )}
                                         </DroppableImageZone>
                                     </div>

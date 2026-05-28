@@ -139,11 +139,7 @@ export type ColourfulSemanticsAssetPool = z.infer<
 export const ColourfulSemanticsStepSchema = z.object({
     id: z.string(),
     slot: ColourfulSemanticsSlotSchema,
-    title: z.string(),
     prompt: z.string(),
-    color: z.string(),
-    levelIconUrl: z.string(),
-    levelIconAlt: z.string(),
     correctOptionId: z.string(),
 });
 
@@ -160,9 +156,6 @@ export interface ConfiguredColourfulSemanticsStep extends Omit<
 
 export const ColourfulSemanticsSceneSchema = z.object({
     id: z.string(),
-    title: z.string(),
-    instruction: z.string(),
-    modellingTip: z.string().optional(),
     targetImageUrl: z.string(),
     targetImageAlt: z.string(),
     steps: z
