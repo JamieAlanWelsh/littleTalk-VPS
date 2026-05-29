@@ -30,9 +30,6 @@ export const WhatsInTheBagExercise = ({
             title={EXERCISE_METADATA.setupTitle}
             subtitle={EXERCISE_METADATA.setupSubtitle}
             onStart={handleStartExercise}
-            onTutorial={() => {
-                console.log("Tutorial requested");
-            }}
         >
             <WhatsInTheBagSettingsScreen onSetOptions={setOptions} />
         </ExerciseStartScreen>

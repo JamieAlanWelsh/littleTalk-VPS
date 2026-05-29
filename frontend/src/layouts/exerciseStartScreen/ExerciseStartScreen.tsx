@@ -17,7 +17,6 @@ interface ExerciseStartScreenProps {
     children: ReactNode; // Zone 2: Custom content
     onStart: (params: Record<string, unknown>) => void;
     startButtonLabel?: string;
-    onTutorial?: () => void;
 }
 
 export const ExerciseStartScreen = ({
@@ -26,7 +25,6 @@ export const ExerciseStartScreen = ({
     children,
     onStart,
     startButtonLabel = "Confirm & Start",
-    onTutorial,
 }: ExerciseStartScreenProps) => {
     return (
         <div className={styles.overlay}>
@@ -49,14 +47,6 @@ export const ExerciseStartScreen = ({
                             width={"100%"}
                             onClick={() => onStart({})}
                         />
-                        {onTutorial && (
-                            <Button
-                                label="Tutorial / Tips"
-                                variant="secondary"
-                                width={"100%"}
-                                onClick={onTutorial}
-                            />
-                        )}
                     </div>
                 </div>
             </div>
