@@ -31,3 +31,14 @@
 .exercise-video-container:has(.exercise-video-wrapper:empty) {
     display: none;
 }
+
+/* Start button layout */
+.description-button-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.description-button-wrapper .btn {
+    display: inline-block;
+}

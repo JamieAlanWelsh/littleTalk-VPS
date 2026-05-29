@@ -6,7 +6,6 @@ import tailwindcss from '@tailwindcss/vite'
 // Define all exercise entry points
 const exercises = [
   // React exercise entries
-  'sentence-matching-example',
   'think-and-find',
   'concept-quest',
   'categorisation',
@@ -16,6 +15,7 @@ const exercises = [
   'what-happens-next',
   'in-the-know',
   'whos-who',
+  'spot-on',
 ]
 
 // Create input object for multiple entry points

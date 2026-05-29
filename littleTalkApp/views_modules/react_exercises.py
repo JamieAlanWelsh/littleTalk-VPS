@@ -11,23 +11,6 @@ def _get_session_learner_uuid(request):
     learner = Learner.objects.get(id=learner_id)
     return str(learner.learner_uuid)
 
-
-def hi_from_react(request):
-    """Original proof-of-concept React route."""
-    return render(request, "hello_from_react.html")
-
-
-@login_required
-def sentence_matching_example(request):
-    """
-    Example exercise using the React framework.
-    Renders a sentence-to-picture matching exercise with fixture data.
-    """
-    context = {
-        "learner_uuid": _get_session_learner_uuid(request),
-    }
-    return render(request, "exercises/sentence_matching_example.html", context)
-
 @login_required
 def categorisation_example(request):
     """
@@ -87,6 +70,9 @@ def spot_on(request):
         "learner_uuid": _get_session_learner_uuid(request),
     }
     return render(request, "exercises/spot_on.html", context)
+
+
+@login_required
 def whats_in_the_bag(request):
     context = {
         "learner_uuid": _get_session_learner_uuid(request),

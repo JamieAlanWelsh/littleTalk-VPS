@@ -232,7 +232,7 @@ Create `littleTalkApp/templates/exercises/my_exercise.html`:
 In `littleTalkApp/urls.py`:
 
 ```python
-path('exercise-framework/my-exercise/', my_exercise_views.my_exercise, name='my_exercise'),
+path('exercises/my-exercise/', my_exercise_views.my_exercise, name='my_exercise'),
 ```
 
 ## Styling
@@ -255,12 +255,12 @@ Framework components use Tailwind for utility classes and custom CSS for framewo
 ### Manual Testing
 
 1. Start dev server: `npm run dev`
-2. Load the exercise URL: `http://localhost:8000/exercise-framework/sentence-matching/`
+2. Load the exercise URL: `http://localhost:8000/exercises/categorisation/`
 3. Test interaction: click options, submit answers, verify feedback states
 
 ### Example Route
 
-- **Sentence Matching Example**: `http://localhost:8000/exercise-framework/sentence-matching/`
+- **Categorisation Example**: `http://localhost:8000/exercises/categorisation/`
 
 ## CSS Classes
 
