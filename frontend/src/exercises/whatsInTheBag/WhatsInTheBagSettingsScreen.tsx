@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import Button from "../../components/Button/Button";
-import styles from "../../layouts/exerciseStartScreen/ExerciseStartScreen.module.css";
+import styles from "./WhatsInTheBagSettingsScreen.module.css";
 import type { WhatsInTheBagOptions } from "./types";
 
 interface WhatsInTheBagSettingsScreenProps {
@@ -18,24 +17,32 @@ export const WhatsInTheBagSettingsScreen = ({
     }, [selectedNumOptions, onSetOptions]);
 
     return (
-        <>
-            <h3 className={styles.sectionTitle}>Number of word options:</h3>
-            <div className={styles.optionsList}>
-                {optionCounts.map((count) => (
-                    <Button
-                        key={count}
-                        variant={
-                            selectedNumOptions === count
-                                ? "primary"
-                                : "secondary"
-                        }
-                        onClick={() => setSelectedNumOptions(count)}
-                        width={"100%"}
-                        label={`${count} ${count === 1 ? "option" : "options"}`}
-                    />
-                ))}
+        <div className={styles.section}>
+            <div className={styles.optionsCard}>
+                <label
+                    htmlFor="whats-in-the-bag-choice-count"
+                    className={styles.sectionLabel}
+                >
+                    Choices per round
+                </label>
+                <select
+                    id="whats-in-the-bag-choice-count"
+                    value={selectedNumOptions}
+                    onChange={(event) =>
+                        setSelectedNumOptions(
+                            Number(event.target.value) as 1 | 2 | 3,
+                        )
+                    }
+                    className={styles.optionsSelect}
+                >
+                    {optionCounts.map((count) => (
+                        <option key={count} value={count}>
+                            {count} {count === 1 ? "choice" : "choices"}
+                        </option>
+                    ))}
+                </select>
             </div>
-        </>
+        </div>
     );
 };
 

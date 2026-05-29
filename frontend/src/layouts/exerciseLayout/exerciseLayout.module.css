@@ -2,7 +2,7 @@
 .exerciseLayoutWrapper {
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
+    gap: 2rem;
     width: min(100%, var(--exercise-chrome-max-width, 1000px));
     margin: 0 auto;
     padding: 0 var(--exercise-chrome-inline-padding, 1.25rem);
