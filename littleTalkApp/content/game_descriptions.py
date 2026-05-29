@@ -27,7 +27,7 @@ GAME_DESCRIPTIONS = {
         },
         'colourful_semantics_advanced_sentence_building': {
             'exercise_complexity': 0,
-            'title': 'Colourful Semantics Advanced',
+            'title': 'Colourful Semantics Plus',
             'target': 'Sentence Building',
             'description': "Colourful Semantics helps children understand what words mean, how words fit together, and how to create simple, meaningful sentences. It uses colors to group words, making it easier for your child to remember words, learn new vocabulary, and express themselves clearly. Research shows that visual grouping of words into colors helps children better understand language and remember words more effectively.",
             'youtube_video_id': 'JXC1VueOriY',
@@ -96,7 +96,7 @@ GAME_DESCRIPTIONS = {
         },
         'story_train_advanced_sequencing': {
             'exercise_complexity': 3,
-            'title': 'Story Train Advanced',
+            'title': 'Story Train Plus',
             'target': 'Ordering Pictures',
             'quote': '',
             'description': 'Story Train Advanced introduces more complex narratives, a wider range of options, and less obvious sequences, encouraging deeper thinking about how events connect. This helps children develop a stronger understanding of time, cause and effect, and narrative structure. Sequencing at this level also supports more advanced language skills, including comprehension, reasoning, and the ability to organise and explain ideas clearly.',
