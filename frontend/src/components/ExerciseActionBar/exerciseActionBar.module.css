@@ -46,8 +46,8 @@
 
 .exerciseZoneActionsMessage {
     margin: 0;
-    font-size: 1rem;
-    font-weight: 600;
+    font-size: var(--text-large);
+    font-weight: bold;
     font-family: var(--font-roboto);
     color: var(--font-color);
 }
