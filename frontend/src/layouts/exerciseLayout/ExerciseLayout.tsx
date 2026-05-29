@@ -169,6 +169,22 @@ export const ExerciseLayout = <AnswerType,>({
                 <>
                     <div className={styles.progressBarContainer}>
                         <div className={styles.progressBarContent}>
+                            <button
+                                className={styles.exitButton}
+                                onClick={() => {
+                                    setShowExitConfirmation(true);
+                                }}
+                                title="Exit exercise"
+                                type="button"
+                            >
+                                ✕
+                            </button>
+                            <div className={styles.progressBarInner}>
+                                <div
+                                    className={styles.progressBarFill}
+                                    style={{ width: `${progress * 100}%` }}
+                                ></div>
+                            </div>
                             {onSettingsRequested ? (
                                 <button
                                     className={styles.settingsButton}
@@ -186,22 +202,6 @@ export const ExerciseLayout = <AnswerType,>({
                                     aria-hidden="true"
                                 ></div>
                             )}
-                            <div className={styles.progressBarInner}>
-                                <div
-                                    className={styles.progressBarFill}
-                                    style={{ width: `${progress * 100}%` }}
-                                ></div>
-                            </div>
-                            <button
-                                className={styles.exitButton}
-                                onClick={() => {
-                                    setShowExitConfirmation(true);
-                                }}
-                                title="Exit exercise"
-                                type="button"
-                            >
-                                ✕
-                            </button>
                         </div>
                     </div>
 
