@@ -25,7 +25,7 @@ const correctFeedbackMessages = [
 
 const incorrectFeedbackMessages = [
     "Not quite, try again!",
-    "Almost there, give it another shot!",
+    "Almost there, give it another try!",
 ];
 
 interface ExerciseLayoutProps<AnswerType> {

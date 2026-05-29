@@ -1,4 +1,4 @@
-import Button from "../Button/Button";
+import type { AnswerState } from "../../lib/types";
 import styles from "./TextOptionGroup.module.css";
 
 export interface TextOption {
@@ -9,6 +9,7 @@ export interface TextOption {
 interface TextOptionGroupProps {
     options: TextOption[];
     selectedOptionId: string | null;
+    answerState?: AnswerState;
     disabled?: boolean;
     onSelect: (id: string) => void;
 }
@@ -16,6 +17,7 @@ interface TextOptionGroupProps {
 export const TextOptionGroup = ({
     options,
     selectedOptionId,
+    answerState = "notAnswered",
     disabled = false,
     onSelect,
 }: TextOptionGroupProps) => {
@@ -30,13 +32,21 @@ export const TextOptionGroup = ({
         <div className={`${styles.textOptionsGrid} ${layoutClassName}`}>
             {options.map((option) => {
                 const isSelected = selectedOptionId === option.id;
+                const stateClassName =
+                    answerState === "correct" && isSelected
+                        ? styles.optionButtonCorrect
+                        : answerState === "incorrect" && isSelected
+                          ? styles.optionButtonIncorrect
+                          : isSelected
+                            ? styles.optionButtonSelected
+                            : "";
 
                 return (
-                    <Button
+                    <button
                         key={option.id}
-                        label={option.label}
-                        variant={isSelected ? "primary" : "secondary"}
-                        width="100%"
+                        className={`${styles.optionButton} ${stateClassName}`.trim()}
+                        type="button"
+                        aria-pressed={isSelected}
                         disabled={disabled && !isSelected}
                         onClick={() => {
                             if (disabled) {
@@ -45,7 +55,9 @@ export const TextOptionGroup = ({
 
                             onSelect(option.id);
                         }}
-                    />
+                    >
+                        {option.label}
+                    </button>
                 );
             })}
         </div>
