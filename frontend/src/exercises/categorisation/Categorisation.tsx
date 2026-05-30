@@ -50,10 +50,6 @@ export const CategorisationExercise = ({
             title={EXERCISE_METADATA.setupTitle}
             subtitle={EXERCISE_METADATA.setupSubtitle}
             onStart={handleStartExercise}
-            onTutorial={() => {
-                // TODO: Implement tutorial modal or navigation
-                console.log("Tutorial requested");
-            }}
         >
             <CategorisationSettingsScreen
                 payload={payload}

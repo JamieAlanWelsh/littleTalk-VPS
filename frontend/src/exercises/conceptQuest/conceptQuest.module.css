@@ -118,6 +118,9 @@
     width: clamp(180px, 24vw, 280px);
     height: clamp(180px, 24vw, 280px);
     padding: 1.25rem;
+    --icon-block-interactive-bg: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
 }
 
 .optionsGrid img {

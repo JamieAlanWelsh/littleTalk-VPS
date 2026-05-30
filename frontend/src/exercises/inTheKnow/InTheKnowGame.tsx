@@ -145,7 +145,7 @@ export const InTheKnowGame = ({
                             <img
                                 src={imageUrl}
                                 alt={altText}
-                                className={styles.sceneImage}
+                                className={`${styles.sceneImage} ${showStepTwoImage ? styles.sceneImageFlip : ""}`}
                             />
                         </div>
                         <TextOptionGroup
@@ -153,6 +153,7 @@ export const InTheKnowGame = ({
                             selectedOptionId={
                                 questionState.selectedIconIds[0] ?? null
                             }
+                            answerState={questionState.answerState}
                             disabled={
                                 questionState.answerState !== "notAnswered"
                             }

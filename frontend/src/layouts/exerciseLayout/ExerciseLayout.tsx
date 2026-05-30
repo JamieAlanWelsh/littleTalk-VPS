@@ -25,7 +25,7 @@ const correctFeedbackMessages = [
 
 const incorrectFeedbackMessages = [
     "Not quite, try again!",
-    "Almost there, give it another shot!",
+    "Almost there, give it another try!",
 ];
 
 interface ExerciseLayoutProps<AnswerType> {
@@ -166,100 +166,110 @@ export const ExerciseLayout = <AnswerType,>({
                     onReturnHome={handleEndSession}
                 />
             ) : (
-                <div className={styles.exerciseLayoutWrapper}>
-                    {/* progress bar - fixed header */}
+                <>
                     <div className={styles.progressBarContainer}>
-                        {onSettingsRequested && (
+                        <div className={styles.progressBarContent}>
                             <button
-                                className={styles.settingsButton}
-                                onClick={() =>
-                                    setShowSettingsConfirmation(true)
-                                }
-                                title="Exercise settings"
+                                className={styles.exitButton}
+                                onClick={() => {
+                                    setShowExitConfirmation(true);
+                                }}
+                                title="Exit exercise"
                                 type="button"
                             >
-                                ⚙
+                                ✕
                             </button>
-                        )}
-                        <div className={styles.progressBarInner}>
+                            <div className={styles.progressBarInner}>
+                                <div
+                                    className={styles.progressBarFill}
+                                    style={{ width: `${progress * 100}%` }}
+                                ></div>
+                            </div>
+                            {onSettingsRequested ? (
+                                <button
+                                    className={styles.settingsButton}
+                                    onClick={() =>
+                                        setShowSettingsConfirmation(true)
+                                    }
+                                    title="Exercise settings"
+                                    type="button"
+                                >
+                                    ⚙
+                                </button>
+                            ) : (
+                                <div
+                                    className={styles.progressBarButtonSpacer}
+                                    aria-hidden="true"
+                                ></div>
+                            )}
+                        </div>
+                    </div>
+
+                    <div className={styles.exerciseLayoutWrapper}>
+                        {/* question */}
+                        <div className={styles.exercisePromptCard}>
+                            <h2
+                                style={{
+                                    fontSize: "var(--text-large)",
+                                    fontWeight: "bold",
+                                    color: "var(--font-color)",
+                                }}
+                            >
+                                <TypeAnimation
+                                    key={`${questions[currentQuestionStateIndex].id}-${promptOverride ?? ""}`} // Reset animation on question or override prompt change
+                                    sequence={[
+                                        promptOverride ??
+                                            questions[currentQuestionStateIndex]
+                                                .prompt,
+                                    ]}
+                                    speed={60}
+                                    cursor={false}
+                                />
+                            </h2>
+                        </div>
+
+                        {/* answer */}
+                        <div className={styles.exerciseContainer}>
                             <div
-                                className={styles.progressBarFill}
-                                style={{ width: `${progress * 100}%` }}
-                            ></div>
+                                className={`${styles.exerciseZone} ${styles.exerciseZoneInteractive}`}
+                            >
+                                {typeof children === "function" && answers
+                                    ? (
+                                          children as (
+                                              currentAnswer: AnswerType,
+                                              currentAnswerIndex: number,
+                                          ) => ReactNode
+                                      )(
+                                          answers[currentQuestionStateIndex],
+                                          currentQuestionStateIndex,
+                                      )
+                                    : (children as ReactNode)}
+                            </div>
                         </div>
-                        <button
-                            className={styles.exitButton}
-                            onClick={() => {
-                                setShowExitConfirmation(true);
+
+                        {/* action bar */}
+                        <ExerciseActionBar
+                            actionBarPhase={actionBarPhase}
+                            feedbackMessage={feedbackMessage}
+                            disableCheck={disableCheck}
+                            showSkip={showSkip}
+                            onCheckAnswer={() => {
+                                tracking.incrementAttempt(
+                                    currentQuestionStateIndex,
+                                );
+                                onCheckAnswer(
+                                    questions[currentQuestionStateIndex],
+                                );
                             }}
-                            title="Exit exercise"
-                            type="button"
-                        >
-                            ✕
-                        </button>
-                    </div>
-
-                    {/* question */}
-                    <div className={styles.exercisePromptCard}>
-                        <h2
-                            style={{
-                                fontSize: "var(--text-large)",
-                                fontWeight: "bold",
-                                color: "var(--font-color)",
+                            onTryAgain={() => {
+                                tracking.incrementIncorrectAnswers();
+                                onTryAgain();
                             }}
-                        >
-                            <TypeAnimation
-                                key={`${questions[currentQuestionStateIndex].id}-${promptOverride ?? ""}`} // Reset animation on question or override prompt change
-                                sequence={[
-                                    promptOverride ??
-                                        questions[currentQuestionStateIndex]
-                                            .prompt,
-                                ]}
-                                speed={60}
-                                cursor={false}
-                            />
-                        </h2>
+                            onContinue={onContinue}
+                            onSkip={onSkip}
+                        />
                     </div>
-
-                    {/* answer */}
-                    <div className={styles.exerciseContainer}>
-                        <div
-                            className={`${styles.exerciseZone} ${styles.exerciseZoneInteractive}`}
-                        >
-                            {typeof children === "function" && answers
-                                ? (
-                                      children as (
-                                          currentAnswer: AnswerType,
-                                          currentAnswerIndex: number,
-                                      ) => ReactNode
-                                  )(
-                                      answers[currentQuestionStateIndex],
-                                      currentQuestionStateIndex,
-                                  )
-                                : (children as ReactNode)}
-                        </div>
-                    </div>
-
-                    {/* action bar */}
-                    <ExerciseActionBar
-                        actionBarPhase={actionBarPhase}
-                        feedbackMessage={feedbackMessage}
-                        disableCheck={disableCheck}
-                        showSkip={showSkip}
-                        onCheckAnswer={() => {
-                            tracking.incrementAttempt(
-                                currentQuestionStateIndex,
-                            );
-                            onCheckAnswer(questions[currentQuestionStateIndex]);
-                        }}
-                        onTryAgain={() => {
-                            tracking.incrementIncorrectAnswers();
-                            onTryAgain();
-                        }}
-                        onContinue={onContinue}
-                        onSkip={onSkip}
-                    />
-                </div>
+                </>
             )}
             <ConfirmationModal
                 isOpen={showExitConfirmation}

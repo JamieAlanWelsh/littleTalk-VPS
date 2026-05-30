@@ -126,9 +126,6 @@ export const ColourfulSemanticsExercise = ({
                 }
                 subtitle="What would you like to work on today?"
                 onStart={handleStart}
-                onTutorial={() => {
-                    console.log("Tutorial requested");
-                }}
             >
                 <ColourfulSemanticsSettingsScreen
                     options={options}

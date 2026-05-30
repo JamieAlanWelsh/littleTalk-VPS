@@ -218,6 +218,7 @@ export const WhatsInTheBagGame = ({
                             selectedOptionId={
                                 questionState.selectedIconIds[0] ?? null
                             }
+                            answerState={questionState.answerState}
                             disabled={
                                 questionState.answerState !== "notAnswered"
                             }

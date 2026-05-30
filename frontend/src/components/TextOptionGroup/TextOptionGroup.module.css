@@ -5,6 +5,56 @@
     justify-content: center;
 }
 
+.optionButton {
+    width: 100%;
+    padding: 0.9rem 1.2rem;
+    border: 2px solid var(--border-grey);
+    border-radius: 20px;
+    background-color: white;
+    color: var(--font-color);
+    font-family: var(--font-roboto);
+    font-size: 1.2rem;
+    font-weight: 600;
+    line-height: 1.3;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    box-shadow: var(--box-shadow);
+}
+
+.optionButton:hover:not(:disabled) {
+    background-color: var(--yellow-button-color);
+    transform: translateY(-2px);
+}
+
+.optionButton:disabled {
+    cursor: not-allowed;
+    opacity: 0.65;
+    transform: none;
+}
+
+.optionButtonSelected {
+    border-color: var(--button-green);
+}
+
+.optionButtonCorrect {
+    border-color: var(--target-green);
+    background-color: white;
+    background-image: linear-gradient(
+        rgba(51, 218, 115, 0.14),
+        rgba(51, 218, 115, 0.14)
+    );
+}
+
+.optionButtonIncorrect {
+    border-color: var(--target-red);
+    background-color: white;
+    background-image: linear-gradient(
+        rgba(244, 67, 54, 0.14),
+        rgba(244, 67, 54, 0.14)
+    );
+}
+
 .oneOption {
     grid-template-columns: minmax(180px, 320px);
     max-width: 320px;
@@ -29,5 +79,12 @@
 
     .threeOptions {
         grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+    .optionButton {
+        padding: 0.8rem 1rem;
+        font-size: 1.05rem;
     }
 }

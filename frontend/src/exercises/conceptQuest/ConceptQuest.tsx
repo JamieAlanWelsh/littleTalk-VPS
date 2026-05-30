@@ -36,9 +36,6 @@ export const ConceptQuestExercise = ({
             title={EXERCISE_METADATA.setupTitle}
             subtitle={EXERCISE_METADATA.setupSubtitle}
             onStart={() => setHasStarted(true)}
-            onTutorial={() => {
-                console.log("Tutorial requested");
-            }}
         >
             <ConceptQuestSettingsScreen onSetOptions={setOptions} />
         </ExerciseStartScreen>

@@ -2,43 +2,47 @@
 @import "./variables.css";
 
 * {
-  box-sizing: border-box; /* What you just added */
-  margin: 0; /* Remove default margins */
-  padding: 0; /* Remove default padding */
+    box-sizing: border-box; /* What you just added */
+    margin: 0; /* Remove default margins */
+    padding: 0; /* Remove default padding */
 }
 
 html {
-  font-size: 16px; /* Base font size for rem units */
-  scroll-behavior: smooth; /* Smooth scrolling */
+    font-size: 16px; /* Base font size for rem units */
+    scroll-behavior: smooth; /* Smooth scrolling */
 }
 
 body {
-  font-family: var(--font-roboto); /* Use Roboto font from variables */
-  line-height: 1.5; /* Readable line spacing */
-  color: var(--font-color); /* Default text color */
-  -webkit-font-smoothing: antialiased; /* Better text rendering */
+    font-family: var(--font-roboto); /* Use Roboto font from variables */
+    line-height: 1.5; /* Readable line spacing */
+    color: var(--font-color); /* Default text color */
+    -webkit-font-smoothing: antialiased; /* Better text rendering */
 }
 
 img {
-  max-width: 100%; /* Responsive images */
-  height: auto;
-  display: block; /* Remove bottom spacing */
+    max-width: 100%; /* Responsive images */
+    height: auto;
+    display: block; /* Remove bottom spacing */
 }
 
 button,
 input,
 textarea,
 select {
-  font: inherit; /* Inherit font from parent */
+    font: inherit; /* Inherit font from parent */
 }
 
 body.exercise-page {
-  margin: 0;
-  padding: 20px;
-  padding-bottom: 140px;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--background-color);
+    --exercise-chrome-max-width: 1000px;
+    --exercise-chrome-inline-padding: 1.25rem;
+    --exercise-header-reserved-height: calc(env(safe-area-inset-top) + 5.75rem);
+    margin: 0;
+    padding: 20px;
+    padding-top: calc(20px + var(--exercise-header-reserved-height));
+    padding-bottom: 140px;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--background-color);
 }

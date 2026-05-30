@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import type { AnswerState } from "../../lib/types";
 import styles from "./exerciseActionBar.module.css";
 import Button from "../Button/Button";
+import { TypeAnimation } from "react-type-animation";
 
 interface ExerciseActionBar {
     actionBarPhase: AnswerState;
@@ -24,6 +25,17 @@ const ExerciseActionBar = ({
     onContinue,
     onSkip,
 }: ExerciseActionBar) => {
+    const renderFeedbackMessage = () => (
+        <p className={styles.exerciseZoneActionsMessage}>
+            <TypeAnimation
+                key={`${actionBarPhase}-${feedbackMessage}`}
+                sequence={[feedbackMessage]}
+                speed={60}
+                cursor={false}
+            />
+        </p>
+    );
+
     let toneClass = "";
     let leftContent: ReactNode = null;
     let rightContent: ReactNode = null;
@@ -43,26 +55,18 @@ const ExerciseActionBar = ({
             break;
         case "correct":
             toneClass = styles.exerciseZoneActionsCorrect;
-            leftContent = (
-                <p className={styles.exerciseZoneActionsMessage}>
-                    {feedbackMessage}
-                </p>
-            );
+            leftContent = renderFeedbackMessage();
             rightContent = <Button label="Continue" onClick={onContinue} />;
             break;
         case "incorrect":
             toneClass = styles.exerciseZoneActionsIncorrect;
-            leftContent = (
-                <>
-                    <p className={styles.exerciseZoneActionsMessage}>
-                        {feedbackMessage}
-                    </p>
-                    <Button
-                        label="Try Again"
-                        onClick={onTryAgain}
-                        variant="secondary"
-                    />
-                </>
+            leftContent = renderFeedbackMessage();
+            rightContent = (
+                <Button
+                    label="Try Again"
+                    onClick={onTryAgain}
+                    variant="secondary"
+                />
             );
             break;
         default: {

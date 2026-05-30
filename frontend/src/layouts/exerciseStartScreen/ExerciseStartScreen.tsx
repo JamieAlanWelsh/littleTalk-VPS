@@ -7,9 +7,12 @@
  * Zone 3: Action Buttons (fixed)
  */
 
-import type { ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import Button from "../../components/Button/Button";
+import { useAudio } from "../../hooks/useAudio";
 import styles from "./ExerciseStartScreen.module.css";
+
+const CLOSE_ANIMATION_MS = 420;
 
 interface ExerciseStartScreenProps {
     title: string;
@@ -17,7 +20,6 @@ interface ExerciseStartScreenProps {
     children: ReactNode; // Zone 2: Custom content
     onStart: (params: Record<string, unknown>) => void;
     startButtonLabel?: string;
-    onTutorial?: () => void;
 }
 
 export const ExerciseStartScreen = ({
@@ -26,11 +28,42 @@ export const ExerciseStartScreen = ({
     children,
     onStart,
     startButtonLabel = "Confirm & Start",
-    onTutorial,
 }: ExerciseStartScreenProps) => {
+    const [isClosing, setIsClosing] = useState(false);
+    const closeTimeoutRef = useRef<number | null>(null);
+    const { play } = useAudio();
+
+    useEffect(() => {
+        play("/static/audio/swish.wav");
+    }, [play]);
+
+    useEffect(() => {
+        return () => {
+            if (closeTimeoutRef.current !== null) {
+                window.clearTimeout(closeTimeoutRef.current);
+            }
+        };
+    }, []);
+
+    const handleStart = () => {
+        if (isClosing) {
+            return;
+        }
+
+        play("/static/audio/swoosh.wav");
+        setIsClosing(true);
+        closeTimeoutRef.current = window.setTimeout(() => {
+            onStart({});
+        }, CLOSE_ANIMATION_MS);
+    };
+
     return (
-        <div className={styles.overlay}>
-            <div className={styles.container}>
+        <div
+            className={`${styles.overlay} ${isClosing ? styles.overlayClosing : ""}`.trim()}
+        >
+            <div
+                className={`${styles.container} ${isClosing ? styles.containerClosing : ""}`.trim()}
+            >
                 {/* Zone 1: Title Card */}
                 <div className={styles.card}>
                     <h2 className={styles.title}>{title}</h2>
@@ -47,16 +80,9 @@ export const ExerciseStartScreen = ({
                             label={startButtonLabel}
                             variant="primary"
                             width={"100%"}
-                            onClick={() => onStart({})}
+                            onClick={handleStart}
+                            disabled={isClosing}
                         />
-                        {onTutorial && (
-                            <Button
-                                label="Tutorial / Tips"
-                                variant="secondary"
-                                width={"100%"}
-                                onClick={onTutorial}
-                            />
-                        )}
                     </div>
                 </div>
             </div>
