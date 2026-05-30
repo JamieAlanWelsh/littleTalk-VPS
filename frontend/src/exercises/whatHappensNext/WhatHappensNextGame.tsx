@@ -5,6 +5,7 @@ import ExerciseLayout from "../../layouts/exerciseLayout/ExerciseLayout";
 import type { Question, QuestionState } from "../../lib/types";
 import { shuffleArray } from "../../utils/shuffleArray";
 import type {
+    WhatHappensNextChoiceCount,
     WhatHappensNextOption,
     WhatHappensNextPayload,
     WhatHappensNextScene,
@@ -15,6 +16,7 @@ const EXERCISE_ID = "what-happens-next";
 
 interface WhatHappensNextGameProps {
     payload: WhatHappensNextPayload;
+    choiceCount: WhatHappensNextChoiceCount;
     onSettingsRequested?: () => void;
 }
 
@@ -25,6 +27,7 @@ interface WhatHappensNextAnswer {
 
 const buildRounds = (
     payload: WhatHappensNextPayload,
+    choiceCount: WhatHappensNextChoiceCount,
 ): { questions: Question[]; answers: WhatHappensNextAnswer[] } => {
     const roundsToPlay = Math.min(payload.rounds, payload.scenes.length);
     const selectedScenes = shuffleArray(payload.scenes).slice(0, roundsToPlay);
@@ -43,17 +46,19 @@ const buildRounds = (
         if (!correctOption) {
             return {
                 scene,
-                options: shuffleArray(payload.options).slice(0, 3),
+                options: shuffleArray(payload.options).slice(0, choiceCount),
             };
         }
+
+        const distractorCount = choiceCount - 1;
 
         const distractors = shuffleArray(
             scene.distractorOptionIds
                 .map((optionId) => optionById.get(optionId))
                 .filter(Boolean) as WhatHappensNextOption[],
-        ).slice(0, 2);
+        ).slice(0, distractorCount);
 
-        if (distractors.length < 2) {
+        if (distractors.length < distractorCount) {
             const fallbackDistractors = shuffleArray(
                 payload.options.filter(
                     (option) =>
@@ -62,7 +67,7 @@ const buildRounds = (
                             (distractor) => distractor.id === option.id,
                         ),
                 ),
-            ).slice(0, 2 - distractors.length);
+            ).slice(0, distractorCount - distractors.length);
 
             return {
                 scene,
@@ -85,6 +90,7 @@ const buildRounds = (
 
 export const WhatHappensNextGame = ({
     payload,
+    choiceCount,
     onSettingsRequested,
 }: WhatHappensNextGameProps) => {
     const [questionState, setQuestionState] = useState<QuestionState>({
@@ -96,7 +102,10 @@ export const WhatHappensNextGame = ({
         null,
     );
 
-    const gameData = useMemo(() => buildRounds(payload), [payload]);
+    const gameData = useMemo(
+        () => buildRounds(payload, choiceCount),
+        [choiceCount, payload],
+    );
     const tracking = useExerciseTracking(gameData.questions.length);
 
     const completionPromptByQuestionId = useMemo(

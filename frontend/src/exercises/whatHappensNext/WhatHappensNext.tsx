@@ -1,7 +1,11 @@
 import { useState } from "react";
 import ExerciseStartScreen from "../../layouts/exerciseStartScreen/ExerciseStartScreen";
 import WhatHappensNextGame from "./WhatHappensNextGame";
-import type { WhatHappensNextPayload } from "./types";
+import WhatHappensNextSettingsScreen from "./WhatHappensNextSettingsScreen";
+import {
+    type WhatHappensNextChoiceCount,
+    type WhatHappensNextPayload,
+} from "./types";
 
 const EXERCISE_METADATA = {
     setupTitle: "What Happens Next?",
@@ -14,6 +18,8 @@ interface WhatHappensNextProps {
 
 export const WhatHappensNext = ({ payload }: WhatHappensNextProps) => {
     const [hasStarted, setHasStarted] = useState(false);
+    const [choiceCount, setChoiceCount] =
+        useState<WhatHappensNextChoiceCount>(3);
 
     if (!hasStarted) {
         return (
@@ -36,6 +42,10 @@ export const WhatHappensNext = ({ payload }: WhatHappensNextProps) => {
                     <p style={{ margin: 0 }}>
                         Choose one answer, then press Check.
                     </p>
+                    <WhatHappensNextSettingsScreen
+                        choiceCount={choiceCount}
+                        onSetChoiceCount={setChoiceCount}
+                    />
                 </div>
             </ExerciseStartScreen>
         );
@@ -44,6 +54,7 @@ export const WhatHappensNext = ({ payload }: WhatHappensNextProps) => {
     return (
         <WhatHappensNextGame
             payload={payload}
+            choiceCount={choiceCount}
             onSettingsRequested={() => setHasStarted(false)}
         />
     );

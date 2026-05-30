@@ -3,71 +3,71 @@
   "options": [
     {
       "id": "pancake-falls",
-      "label": "the pancake falls on his head."
+      "label": "The pancake falls on his head."
     },
     {
       "id": "football-goes-away",
-      "label": "the football goes through the window"
+      "label": "The football goes through the window"
     },
     {
       "id": "boy-slips-on-wet-floor",
-      "label": "the boy slips and falls"
+      "label": "The boy slips and falls"
     },
     {
       "id": "books-fall-down",
-      "label": "the boy drops the books"
+      "label": "The boy drops the books"
     },
     {
       "id": "paint-spills-everywhere",
-      "label": "the cat knocks over the paint"
+      "label": "The cat knocks over the paint"
     },
     {
       "id": "dog-gets-muddy",
-      "label": "they get muddy"
+      "label": "They get muddy"
     },
     {
       "id": "dog-eats-sandwich",
-      "label": "the dog steals the sandwich"
+      "label": "The dog steals the sandwich"
     },
     {
       "id": "friends-enjoy-picnic",
-      "label": "it starts to rain"
+      "label": "It starts to rain"
     },
     {
       "id": "wave-washes-sandcastle",
-      "label": "the seagull steals her chips"
+      "label": "The seagull steals her chips"
     },
     {
       "id": "girl-enters-classroom",
-      "label": "the girl is invited to sit down"
+      "label": "The girl is invited to sit down"
     },
     {
       "id": "balloon-flies-away",
-      "label": "the balloon flies away"
+      "label": "The balloon flies away"
     },
     {
       "id": "ice-cream-melts",
-      "label": "the ice cream melts"
+      "label": "The ice cream melts"
     },
     {
       "id": "kids-keep-playing",
-      "label": "the children invite him to play"
+      "label": "The children invite him to play"
     },
     {
       "id": "rabbit-runs-away",
-      "label": "the rabbit escapes"
+      "label": "The rabbit escapes"
     },
     {
       "id": "runner-wins-race",
-      "label": "the boy trips and falls"
+      "label": "The boy trips and falls"
     },
     {
       "id": "wave-knocks-sandcastle",
-      "label": "the wave knocks over the sandcastle"
+      "label": "The wave knocks over the sandcastle"
     },
     {
       "id": "tower-falls-down",
-      "label": "the tower falls over"
+      "label": "The tower falls over"
     },
     {
       "id": "boy-starts-crying",
@@ -75,683 +75,683 @@
     },
     {
       "id": "boy-flipping-pancake-distractor-1",
-      "label": "the pancake flies out the window"
+      "label": "The pancake flies out the window"
     },
     {
       "id": "boy-flipping-pancake-distractor-2",
-      "label": "the boy starts eating the pancake"
+      "label": "The boy starts eating the pancake"
     },
     {
       "id": "boy-flipping-pancake-distractor-3",
-      "label": "the boy runs away"
+      "label": "The boy runs away"
     },
     {
       "id": "boy-flipping-pancake-distractor-4",
-      "label": "the frying pan starts burning"
+      "label": "The frying pan starts burning"
     },
     {
       "id": "boy-flipping-pancake-distractor-5",
-      "label": "the pancake falls on the dog"
+      "label": "The pancake falls on the dog"
     },
     {
       "id": "boy-flipping-pancake-distractor-6",
-      "label": "the pancake lands on the plant pot"
+      "label": "The pancake lands on the plant pot"
     },
     {
       "id": "boy-flipping-pancake-distractor-7",
-      "label": "the butter falls onto the floor"
+      "label": "The butter falls onto the floor"
     },
     {
       "id": "boy-flipping-pancake-distractor-8",
-      "label": "the frying pan breaks in half"
+      "label": "The frying pan breaks in half"
     },
     {
       "id": "boy-flipping-pancake-distractor-9",
-      "label": "the boy walks out of the kitchen"
+      "label": "The boy walks out of the kitchen"
     },
     {
       "id": "boy-flipping-pancake-distractor-10",
-      "label": "the pancake flies away"
+      "label": "The pancake flies away"
     },
     {
       "id": "boy-kicking-football-distractor-1",
-      "label": "a dog grabs the football and runs away with it"
+      "label": "A dog grabs the football and runs away with it"
     },
     {
       "id": "boy-kicking-football-distractor-2",
-      "label": "the boy falls over"
+      "label": "The boy falls over"
     },
     {
       "id": "boy-kicking-football-distractor-3",
-      "label": "the boy runs inside"
+      "label": "The boy runs inside"
     },
     {
       "id": "boy-kicking-football-distractor-4",
-      "label": "the football turns into a giant balloon"
+      "label": "The football turns into a giant balloon"
     },
     {
       "id": "boy-kicking-football-distractor-5",
-      "label": "the football lands in a swimming pool"
+      "label": "The football lands in a swimming pool"
     },
     {
       "id": "boy-kicking-football-distractor-6",
-      "label": "the window disappears"
+      "label": "The window disappears"
     },
     {
       "id": "boy-kicking-football-distractor-7",
-      "label": "the football breaks"
+      "label": "The football breaks"
     },
     {
       "id": "boy-kicking-football-distractor-8",
-      "label": "the boy sits down and reads a book"
+      "label": "The boy sits down and reads a book"
     },
     {
       "id": "boy-kicking-football-distractor-9",
-      "label": "the boy starts crying"
+      "label": "The boy starts crying"
     },
     {
       "id": "boy-kicking-football-distractor-10",
-      "label": "the boy starts playing football with his friend"
+      "label": "The boy starts playing football with his friend"
     },
     {
       "id": "boy-running-on-wet-floor-distractor-1",
-      "label": "the boy starts swimming in the puddle"
+      "label": "The boy starts swimming in the puddle"
     },
     {
       "id": "boy-running-on-wet-floor-distractor-2",
-      "label": "the boy does not fall over"
+      "label": "The boy does not fall over"
     },
     {
       "id": "boy-running-on-wet-floor-distractor-3",
-      "label": "the boy starts dancing on the wet floor"
+      "label": "The boy starts dancing on the wet floor"
     },
     {
       "id": "boy-running-on-wet-floor-distractor-4",
-      "label": "the boy cleans up the water"
+      "label": "The boy cleans up the water"
     },
     {
       "id": "boy-running-on-wet-floor-distractor-5",
-      "label": "the water disappears"
+      "label": "The water disappears"
     },
     {
       "id": "boy-running-on-wet-floor-distractor-6",
-      "label": "the lockers open and lots of bananas fall out"
+      "label": "The lockers open and lots of bananas fall out"
     },
     {
       "id": "boy-running-on-wet-floor-distractor-7",
-      "label": "the teacher tells him to slow down"
+      "label": "The teacher tells him to slow down"
     },
     {
       "id": "boy-running-on-wet-floor-distractor-8",
-      "label": "the boy ties his shoelaces"
+      "label": "The boy ties his shoelaces"
     },
     {
       "id": "boy-running-on-wet-floor-distractor-9",
-      "label": "the boy starts crying"
+      "label": "The boy starts crying"
     },
     {
       "id": "boy-running-on-wet-floor-distractor-10",
-      "label": "the boy jumps over the puddle"
+      "label": "The boy jumps over the puddle"
     },
     {
       "id": "boy-with-books-distractor-1",
-      "label": "the boy starts juggling the books"
+      "label": "The boy starts juggling the books"
     },
     {
       "id": "boy-with-books-distractor-2",
-      "label": "the books do not fall down"
+      "label": "The books do not fall down"
     },
     {
       "id": "boy-with-books-distractor-3",
-      "label": "a giant gust of wind blows the books away"
+      "label": "A giant gust of wind blows the books away"
     },
     {
       "id": "boy-with-books-distractor-4",
-      "label": "the boy sits down and reads a book"
+      "label": "The boy sits down and reads a book"
     },
     {
       "id": "boy-with-books-distractor-5",
-      "label": "the book falls onto his head"
+      "label": "The book falls onto his head"
     },
     {
       "id": "boy-with-books-distractor-6",
-      "label": "the boy shouts for help"
+      "label": "The boy shouts for help"
     },
     {
       "id": "boy-with-books-distractor-7",
-      "label": "the boy starts running"
+      "label": "The boy starts running"
     },
     {
       "id": "boy-with-books-distractor-8",
-      "label": "the boy bumps into the wall"
+      "label": "The boy bumps into the wall"
     },
     {
       "id": "boy-with-books-distractor-9",
-      "label": "the teacher helps him"
+      "label": "The teacher helps him"
     },
     {
       "id": "boy-with-books-distractor-10",
-      "label": "his friends laugh at him"
+      "label": "His friends laugh at him"
     },
     {
       "id": "cat-with-paint-distractor-1",
-      "label": "the cat drinks the paint"
+      "label": "The cat drinks the paint"
     },
     {
       "id": "cat-with-paint-distractor-2",
-      "label": "the cat says meow"
+      "label": "The cat says meow"
     },
     {
       "id": "cat-with-paint-distractor-3",
-      "label": "the cat runs away"
+      "label": "The cat runs away"
     },
     {
       "id": "cat-with-paint-distractor-4",
-      "label": "the cat starts painting"
+      "label": "The cat starts painting"
     },
     {
       "id": "cat-with-paint-distractor-5",
-      "label": "the cat eats their dinner"
+      "label": "The cat eats their dinner"
     },
     {
       "id": "cat-with-paint-distractor-6",
-      "label": "the cat starts dancing"
+      "label": "The cat starts dancing"
     },
     {
       "id": "cat-with-paint-distractor-7",
-      "label": "the cat puts the lid on the paint"
+      "label": "The cat puts the lid on the paint"
     },
     {
       "id": "cat-with-paint-distractor-8",
-      "label": "the cat falls asleep"
+      "label": "The cat falls asleep"
     },
     {
       "id": "cat-with-paint-distractor-9",
-      "label": "the cat drinks milk"
+      "label": "The cat drinks milk"
     },
     {
       "id": "cat-with-paint-distractor-10",
-      "label": "the cat catches a mouse"
+      "label": "The cat catches a mouse"
     },
     {
       "id": "dog-in-muddy-puddle-distractor-1",
-      "label": "the dog does not get muddy"
+      "label": "The dog does not get muddy"
     },
     {
       "id": "dog-in-muddy-puddle-distractor-2",
-      "label": "the dog jumps over the puddle"
+      "label": "The dog jumps over the puddle"
     },
     {
       "id": "dog-in-muddy-puddle-distractor-3",
-      "label": "the boy goes home"
+      "label": "The boy goes home"
     },
     {
       "id": "dog-in-muddy-puddle-distractor-4",
-      "label": "the puddle dries up"
+      "label": "The puddle dries up"
     },
     {
       "id": "dog-in-muddy-puddle-distractor-5",
-      "label": "the dog barks"
+      "label": "The dog barks"
     },
     {
       "id": "dog-in-muddy-puddle-distractor-6",
-      "label": "the dog climbs a tree"
+      "label": "The dog climbs a tree"
     },
     {
       "id": "dog-in-muddy-puddle-distractor-7",
-      "label": "the dog and the boy stay clean"
+      "label": "The dog and the boy stay clean"
     },
     {
       "id": "dog-in-muddy-puddle-distractor-8",
-      "label": "the boy gets muddy but the dog does not"
+      "label": "The boy gets muddy but the dog does not"
     },
     {
       "id": "dog-in-muddy-puddle-distractor-9",
-      "label": "the dog sits on the bench"
+      "label": "The dog sits on the bench"
     },
     {
       "id": "dog-in-muddy-puddle-distractor-10",
-      "label": "the boy climbs the tree"
+      "label": "The boy climbs the tree"
     },
     {
       "id": "dog-looking-at-sandwich-distractor-1",
-      "label": "the boy eats the sandwich"
+      "label": "The boy eats the sandwich"
     },
     {
       "id": "dog-looking-at-sandwich-distractor-2",
-      "label": "the boy drops the sandwich on the floor"
+      "label": "The boy drops the sandwich on the floor"
     },
     {
       "id": "dog-looking-at-sandwich-distractor-3",
-      "label": "the boy spills his orange juice"
+      "label": "The boy spills his orange juice"
     },
     {
       "id": "dog-looking-at-sandwich-distractor-4",
-      "label": "the boy opens the window"
+      "label": "The boy opens the window"
     },
     {
       "id": "dog-looking-at-sandwich-distractor-5",
-      "label": "the dog walks on the table"
+      "label": "The dog walks on the table"
     },
     {
       "id": "dog-looking-at-sandwich-distractor-6",
-      "label": "the dog lies down"
+      "label": "The dog lies down"
     },
     {
       "id": "dog-looking-at-sandwich-distractor-7",
-      "label": "the boy goes outside"
+      "label": "The boy goes outside"
     },
     {
       "id": "dog-looking-at-sandwich-distractor-8",
-      "label": "the sandwich filling falls out"
+      "label": "The sandwich filling falls out"
     },
     {
       "id": "dog-looking-at-sandwich-distractor-9",
-      "label": "the plate falls onto the floor"
+      "label": "The plate falls onto the floor"
     },
     {
       "id": "dog-looking-at-sandwich-distractor-10",
-      "label": "the dog starts barking"
+      "label": "The dog starts barking"
     },
     {
       "id": "friends-at-picnic-distractor-1",
-      "label": "the friends eat their food"
+      "label": "The friends eat their food"
     },
     {
       "id": "friends-at-picnic-distractor-2",
-      "label": "they have a food fight"
+      "label": "They have a food fight"
     },
     {
       "id": "friends-at-picnic-distractor-3",
-      "label": "the friends have an argument"
+      "label": "The friends have an argument"
     },
     {
       "id": "friends-at-picnic-distractor-4",
-      "label": "it does not start to rain"
+      "label": "It does not start to rain"
     },
     {
       "id": "friends-at-picnic-distractor-5",
-      "label": "the friends run around in the park"
+      "label": "The friends run around in the park"
     },
     {
       "id": "friends-at-picnic-distractor-6",
-      "label": "the picnic blanket blows away"
+      "label": "The picnic blanket blows away"
     },
     {
       "id": "friends-at-picnic-distractor-7",
-      "label": "the grapes roll all over the grass"
+      "label": "The grapes roll all over the grass"
     },
     {
       "id": "friends-at-picnic-distractor-8",
-      "label": "the children spill their drinks"
+      "label": "The children spill their drinks"
     },
     {
       "id": "friends-at-picnic-distractor-9",
-      "label": "a rainbow appears"
+      "label": "A rainbow appears"
     },
     {
       "id": "friends-at-picnic-distractor-10",
-      "label": "the sun suddenly comes out"
+      "label": "The sun suddenly comes out"
     },
     {
       "id": "girl-on-beach-distractor-1",
-      "label": "the girl starts singing"
+      "label": "The girl starts singing"
     },
     {
       "id": "girl-on-beach-distractor-2",
-      "label": "the girl starts dancing"
+      "label": "The girl starts dancing"
     },
     {
       "id": "girl-on-beach-distractor-3",
-      "label": "the girl goes for a swim"
+      "label": "The girl goes for a swim"
     },
     {
       "id": "girl-on-beach-distractor-4",
-      "label": "the girl keeps eating her chips"
+      "label": "The girl keeps eating her chips"
     },
     {
       "id": "girl-on-beach-distractor-5",
-      "label": "the seagull flies away"
+      "label": "The seagull flies away"
     },
     {
       "id": "girl-on-beach-distractor-6",
-      "label": "the girl throws her chips away"
+      "label": "The girl throws her chips away"
     },
     {
       "id": "girl-on-beach-distractor-7",
-      "label": "it starts to rain"
+      "label": "It starts to rain"
     },
     {
       "id": "girl-on-beach-distractor-8",
-      "label": "the girl goes for a run"
+      "label": "The girl goes for a run"
     },
     {
       "id": "girl-on-beach-distractor-9",
-      "label": "the seagull lands on her head"
+      "label": "The seagull lands on her head"
     },
     {
       "id": "girl-on-beach-distractor-10",
-      "label": "a big wave comes"
+      "label": "A big wave comes"
     },
     {
       "id": "girl-walking-into-classroom-distractor-1",
-      "label": "the girl turns around and leaves"
+      "label": "The girl turns around and leaves"
     },
     {
       "id": "girl-walking-into-classroom-distractor-2",
-      "label": "the children start laughing at her"
+      "label": "The children start laughing at her"
     },
     {
       "id": "girl-walking-into-classroom-distractor-3",
-      "label": "the children throw paper aeroplanes across the room"
+      "label": "The children throw paper aeroplanes across the room"
     },
     {
       "id": "girl-walking-into-classroom-distractor-4",
-      "label": "the teacher asks the girl to clean the whiteboard"
+      "label": "The teacher asks the girl to clean the whiteboard"
     },
     {
       "id": "girl-walking-into-classroom-distractor-5",
-      "label": "the girl opens her backpack"
+      "label": "The girl opens her backpack"
     },
     {
       "id": "girl-walking-into-classroom-distractor-6",
-      "label": "the classroom lights turn off"
+      "label": "The classroom lights turn off"
     },
     {
       "id": "girl-walking-into-classroom-distractor-7",
-      "label": "the girl starts singing in the doorway"
+      "label": "The girl starts singing in the doorway"
     },
     {
       "id": "girl-walking-into-classroom-distractor-8",
-      "label": "the boy stands on the desk and dances"
+      "label": "The boy stands on the desk and dances"
     },
     {
       "id": "girl-walking-into-classroom-distractor-9",
-      "label": "the dog steals her backpack"
+      "label": "The dog steals her backpack"
     },
     {
       "id": "girl-walking-into-classroom-distractor-10",
-      "label": "she falls over"
+      "label": "She falls over"
     },
     {
       "id": "girl-with-balloon-distractor-1",
-      "label": "the girl ties the balloon to the bench"
+      "label": "The girl ties the balloon to the bench"
     },
     {
       "id": "girl-with-balloon-distractor-2",
-      "label": "the balloon pops"
+      "label": "The balloon pops"
     },
     {
       "id": "girl-with-balloon-distractor-3",
-      "label": "the wind blows down a tree"
+      "label": "The wind blows down a tree"
     },
     {
       "id": "girl-with-balloon-distractor-4",
-      "label": "the wind stops"
+      "label": "The wind stops"
     },
     {
       "id": "girl-with-balloon-distractor-5",
-      "label": "the girl starts running with the balloon"
+      "label": "The girl starts running with the balloon"
     },
     {
       "id": "girl-with-balloon-distractor-6",
-      "label": "the balloon changes colour"
+      "label": "The balloon changes colour"
     },
     {
       "id": "girl-with-balloon-distractor-7",
-      "label": "the girl sits down"
+      "label": "The girl sits down"
     },
     {
       "id": "girl-with-balloon-distractor-8",
-      "label": "the girl gives the balloon to her friend"
+      "label": "The girl gives the balloon to her friend"
     },
     {
       "id": "girl-with-balloon-distractor-9",
-      "label": "a squirrel runs past and scares the girl"
+      "label": "A squirrel runs past and scares the girl"
     },
     {
       "id": "girl-with-balloon-distractor-10",
-      "label": "the balloon deflates"
+      "label": "The balloon deflates"
     },
     {
       "id": "ice-cream-melting-distractor-1",
-      "label": "the girl eats her ice cream"
+      "label": "The girl eats her ice cream"
     },
     {
       "id": "ice-cream-melting-distractor-2",
-      "label": "the girl drops her ice cream"
+      "label": "The girl drops her ice cream"
     },
     {
       "id": "ice-cream-melting-distractor-3",
-      "label": "the girl puts her ice cream back"
+      "label": "The girl puts her ice cream back"
     },
     {
       "id": "ice-cream-melting-distractor-4",
-      "label": "the girl gets another scoop of ice cream"
+      "label": "The girl gets another scoop of ice cream"
     },
     {
       "id": "ice-cream-melting-distractor-5",
-      "label": "the girl goes swimming"
+      "label": "The girl goes swimming"
     },
     {
       "id": "ice-cream-melting-distractor-6",
-      "label": "the girl puts her ice cream in the bin"
+      "label": "The girl puts her ice cream in the bin"
     },
     {
       "id": "ice-cream-melting-distractor-7",
-      "label": "the ice cream cone breaks"
+      "label": "The ice cream cone breaks"
     },
     {
       "id": "ice-cream-melting-distractor-8",
-      "label": "it starts to snow"
+      "label": "It starts to snow"
     },
     {
       "id": "ice-cream-melting-distractor-9",
-      "label": "it starts to rain"
+      "label": "It starts to rain"
     },
     {
       "id": "ice-cream-melting-distractor-10",
-      "label": "the ice cream shop closes"
+      "label": "The ice cream shop closes"
     },
     {
       "id": "kids-playing-in-park-distractor-1",
-      "label": "the children ignore the boy"
+      "label": "The children ignore the boy"
     },
     {
       "id": "kids-playing-in-park-distractor-2",
-      "label": "the boy runs away"
+      "label": "The boy runs away"
     },
     {
       "id": "kids-playing-in-park-distractor-3",
-      "label": "the children laugh at the boy"
+      "label": "The children laugh at the boy"
     },
     {
       "id": "kids-playing-in-park-distractor-4",
-      "label": "the boy climbs the tree"
+      "label": "The boy climbs the tree"
     },
     {
       "id": "kids-playing-in-park-distractor-5",
-      "label": "the children go on the slide"
+      "label": "The children go on the slide"
     },
     {
       "id": "kids-playing-in-park-distractor-6",
-      "label": "the park closes"
+      "label": "The park closes"
     },
     {
       "id": "kids-playing-in-park-distractor-7",
-      "label": "the boy rides his bike home"
+      "label": "The boy rides his bike home"
     },
     {
       "id": "kids-playing-in-park-distractor-8",
-      "label": "the children fall over"
+      "label": "The children fall over"
     },
     {
       "id": "kids-playing-in-park-distractor-9",
-      "label": "the boy sits on the bench"
+      "label": "The boy sits on the bench"
     },
     {
       "id": "kids-playing-in-park-distractor-10",
-      "label": "it starts to rain"
+      "label": "It starts to rain"
     },
     {
       "id": "rabbit-escaping-distractor-1",
-      "label": "the rabbit shuts the door"
+      "label": "The rabbit shuts the door"
     },
     {
       "id": "rabbit-escaping-distractor-2",
-      "label": "the rabbit starts dancing"
+      "label": "The rabbit starts dancing"
     },
     {
       "id": "rabbit-escaping-distractor-3",
-      "label": "the rabbit shouts for help"
+      "label": "The rabbit shouts for help"
     },
     {
       "id": "rabbit-escaping-distractor-4",
-      "label": "the children play in the garden"
+      "label": "The children play in the garden"
     },
     {
       "id": "rabbit-escaping-distractor-5",
-      "label": "the door shuts by itself"
+      "label": "The door shuts by itself"
     },
     {
       "id": "rabbit-escaping-distractor-6",
-      "label": "the rabbit eats the grass"
+      "label": "The rabbit eats the grass"
     },
     {
       "id": "rabbit-escaping-distractor-7",
-      "label": "the rabbit hides in the flowerbed"
+      "label": "The rabbit hides in the flowerbed"
     },
     {
       "id": "rabbit-escaping-distractor-8",
-      "label": "the rabbit eats its food"
+      "label": "The rabbit eats its food"
     },
     {
       "id": "rabbit-escaping-distractor-9",
-      "label": "the dog chases the rabbit"
+      "label": "The dog chases the rabbit"
     },
     {
       "id": "rabbit-escaping-distractor-10",
-      "label": "the girl pets the rabbit"
+      "label": "The girl pets the rabbit"
     },
     {
       "id": "running-race-distractor-1",
-      "label": "the boy gives his friend a high five"
+      "label": "The boy gives his friend a high five"
     },
     {
       "id": "running-race-distractor-2",
-      "label": "the boy starts celebrating"
+      "label": "The boy starts celebrating"
     },
     {
       "id": "running-race-distractor-3",
-      "label": "the boy turns around and runs away"
+      "label": "The boy turns around and runs away"
     },
     {
       "id": "running-race-distractor-4",
-      "label": "the girl overtakes him"
+      "label": "The girl overtakes him"
     },
     {
       "id": "running-race-distractor-5",
-      "label": "the boy loses the race"
+      "label": "The boy loses the race"
     },
     {
       "id": "running-race-distractor-6",
-      "label": "the boy wins the race"
+      "label": "The boy wins the race"
     },
     {
       "id": "running-race-distractor-7",
-      "label": "the boy asks for help"
+      "label": "The boy asks for help"
     },
     {
       "id": "running-race-distractor-8",
-      "label": "it starts to rain"
+      "label": "It starts to rain"
     },
     {
       "id": "running-race-distractor-9",
-      "label": "the children all stop running"
+      "label": "The children all stop running"
     },
     {
       "id": "running-race-distractor-10",
-      "label": "the children start dancing"
+      "label": "The children start dancing"
     },
     {
       "id": "sandcastle-wave-distractor-1",
-      "label": "the wave goes away"
+      "label": "The wave goes away"
     },
     {
       "id": "sandcastle-wave-distractor-2",
-      "label": "the girl goes swimming"
+      "label": "The girl goes swimming"
     },
     {
       "id": "sandcastle-wave-distractor-3",
-      "label": "the bucket and spade go missing"
+      "label": "The bucket and spade go missing"
     },
     {
       "id": "sandcastle-wave-distractor-4",
-      "label": "the girl has a drink of water"
+      "label": "The girl has a drink of water"
     },
     {
       "id": "sandcastle-wave-distractor-5",
-      "label": "the girl keeps building her sandcastle"
+      "label": "The girl keeps building her sandcastle"
     },
     {
       "id": "sandcastle-wave-distractor-6",
-      "label": "a shark washes up on the beach"
+      "label": "A shark washes up on the beach"
     },
     {
       "id": "sandcastle-wave-distractor-7",
-      "label": "a mermaid appears"
+      "label": "A mermaid appears"
     },
     {
       "id": "sandcastle-wave-distractor-8",
-      "label": "the girl runs away"
+      "label": "The girl runs away"
     },
     {
       "id": "sandcastle-wave-distractor-9",
-      "label": "the girl washes her hands"
+      "label": "The girl washes her hands"
     },
     {
       "id": "sandcastle-wave-distractor-10",
-      "label": "the girl fills up her bucket"
+      "label": "The girl fills up her bucket"
     },
     {
       "id": "tower-blocks-falling-distractor-1",
-      "label": "the boy puts his toys away"
+      "label": "The boy puts his toys away"
     },
     {
       "id": "tower-blocks-falling-distractor-2",
-      "label": "the boy throws a block"
+      "label": "The boy throws a block"
     },
     {
       "id": "tower-blocks-falling-distractor-3",
-      "label": "the tower stays standing"
+      "label": "The tower stays standing"
     },
     {
       "id": "tower-blocks-falling-distractor-4",
-      "label": "the boy reads a book"
+      "label": "The boy reads a book"
     },
     {
       "id": "tower-blocks-falling-distractor-5",
-      "label": "the boy looks out the window"
+      "label": "The boy looks out the window"
     },
     {
       "id": "tower-blocks-falling-distractor-6",
-      "label": "the boy plays with the teddy bear instead"
+      "label": "The boy plays with the teddy bear instead"
     },
     {
       "id": "tower-blocks-falling-distractor-7",
-      "label": "the boy goes and makes a sandwich"
+      "label": "The boy goes and makes a sandwich"
     },
     {
       "id": "tower-blocks-falling-distractor-8",
-      "label": "the dinosaur knocks down the tower"
+      "label": "The dinosaur knocks down the tower"
     },
     {
       "id": "tower-blocks-falling-distractor-9",
-      "label": "the boy stops building"
+      "label": "The boy stops building"
     },
     {
       "id": "tower-blocks-falling-distractor-10",
-      "label": "the tower disappears"
+      "label": "The tower disappears"
     },
     {
       "id": "boy-crying-distractor-1",
