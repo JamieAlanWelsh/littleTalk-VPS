@@ -48,10 +48,31 @@ const buildRounds = (
         }
 
         const distractors = shuffleArray(
-            payload.options.filter(
-                (option) => option.id !== scene.correctOptionId,
-            ),
+            scene.distractorOptionIds
+                .map((optionId) => optionById.get(optionId))
+                .filter(Boolean) as WhatHappensNextOption[],
         ).slice(0, 2);
+
+        if (distractors.length < 2) {
+            const fallbackDistractors = shuffleArray(
+                payload.options.filter(
+                    (option) =>
+                        option.id !== scene.correctOptionId &&
+                        !distractors.some(
+                            (distractor) => distractor.id === option.id,
+                        ),
+                ),
+            ).slice(0, 2 - distractors.length);
+
+            return {
+                scene,
+                options: shuffleArray([
+                    correctOption,
+                    ...distractors,
+                    ...fallbackDistractors,
+                ]),
+            };
+        }
 
         return {
             scene,
@@ -143,7 +164,9 @@ export const WhatHappensNextGame = ({
             onSettingsRequested={onSettingsRequested}
             promptOverride={
                 questionState.answerState === "correct"
-                    ? completionPrompt || undefined
+                    ? completionPrompt
+                        ? `That's right! ${completionPrompt}`
+                        : "That's right!"
                     : undefined
             }
             disableCheck={disableCheck}

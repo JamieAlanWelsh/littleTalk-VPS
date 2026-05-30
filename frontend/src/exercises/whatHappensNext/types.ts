@@ -16,6 +16,7 @@ export const WhatHappensNextSceneSchema = z.object({
     openingPrompt: z.string(),
     completionPrompt: z.string(),
     correctOptionId: z.string(),
+    distractorOptionIds: z.array(z.string()).min(2),
 });
 
 export type WhatHappensNextScene = z.infer<typeof WhatHappensNextSceneSchema>;
@@ -40,6 +41,33 @@ export const WhatHappensNextPayloadSchema = z
                     path: ["scenes", sceneIndex, "correctOptionId"],
                 });
             }
+
+            if (scene.distractorOptionIds.includes(scene.correctOptionId)) {
+                context.addIssue({
+                    code: z.ZodIssueCode.custom,
+                    message:
+                        "Scene distractorOptionIds must not include correctOptionId",
+                    path: ["scenes", sceneIndex, "distractorOptionIds"],
+                });
+            }
+
+            scene.distractorOptionIds.forEach(
+                (distractorOptionId, distractorIndex) => {
+                    if (!validOptionIds.has(distractorOptionId)) {
+                        context.addIssue({
+                            code: z.ZodIssueCode.custom,
+                            message:
+                                "Scene distractorOptionIds must reference option ids",
+                            path: [
+                                "scenes",
+                                sceneIndex,
+                                "distractorOptionIds",
+                                distractorIndex,
+                            ],
+                        });
+                    }
+                },
+            );
         });
     });
 
