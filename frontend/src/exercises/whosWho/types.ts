@@ -56,6 +56,10 @@ export const WhosWhoTargetSchema = z.object({
 
 export type WhosWhoTarget = z.infer<typeof WhosWhoTargetSchema>;
 
+export const WhosWhoTargetRoleSchema = z.enum(["boy", "girl", "group"]);
+
+export type WhosWhoTargetRole = z.infer<typeof WhosWhoTargetRoleSchema>;
+
 export const WhosWhoScenarioSchema = z.object({
     id: z.string(),
     pronoun: WhosWhoPronounSchema,
@@ -63,10 +67,40 @@ export const WhosWhoScenarioSchema = z.object({
     draggableItemId: z.string(),
     correctTargetId: z.string(),
     targetIds: z.array(z.string()).length(2),
-    distractorItemIds: z.array(z.string()).length(2),
+    distractorItemIds: z.array(z.string()).max(2),
 });
 
 export type WhosWhoScenario = z.infer<typeof WhosWhoScenarioSchema>;
+
+export const WhosWhoPromptTemplatesSchema = z.object({
+    he: z.array(z.string()).min(1),
+    she: z.array(z.string()).min(1),
+    him: z.array(z.string()).min(1),
+    her: z.array(z.string()).min(1),
+    they: z.array(z.string()).min(1),
+    them: z.array(z.string()).min(1),
+});
+
+export type WhosWhoPromptTemplates = z.infer<
+    typeof WhosWhoPromptTemplatesSchema
+>;
+
+export const WhosWhoTargetPoolsSchema = z.object({
+    boy: z.array(z.string()).min(1),
+    girl: z.array(z.string()).min(1),
+    group: z.array(z.string()).min(1),
+});
+
+export type WhosWhoTargetPools = z.infer<typeof WhosWhoTargetPoolsSchema>;
+
+export const WhosWhoGenerationConfigSchema = z.object({
+    promptTemplates: WhosWhoPromptTemplatesSchema,
+    targetPools: WhosWhoTargetPoolsSchema,
+});
+
+export type WhosWhoGenerationConfig = z.infer<
+    typeof WhosWhoGenerationConfigSchema
+>;
 
 export const WhosWhoExercisePayloadSchema = z.object({
     instruction: z.string(),
@@ -74,7 +108,8 @@ export const WhosWhoExercisePayloadSchema = z.object({
     rounds: z.number().int().positive(),
     items: z.array(WhosWhoItemSchema).min(3),
     targets: z.array(WhosWhoTargetSchema).min(3),
-    scenarios: z.array(WhosWhoScenarioSchema).min(5),
+    generationConfig: WhosWhoGenerationConfigSchema,
+    scenarios: z.array(WhosWhoScenarioSchema).optional(),
 });
 
 export type WhosWhoExercisePayload = z.infer<
