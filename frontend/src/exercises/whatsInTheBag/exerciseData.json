@@ -9,427 +9,427 @@
   "items": [
     {
       "id": "aeroplane",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/aeroplane.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/aeroplane.webp",
       "label": "Aeroplane",
       "altText": "an aeroplane"
     },
     {
       "id": "ambulance",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/ambulance.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/ambulance.webp",
       "label": "Ambulance",
       "altText": "an ambulance"
     },
     {
       "id": "apple",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/apple.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/apple.webp",
       "label": "Apple",
       "altText": "an apple"
     },
     {
       "id": "ball",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/ball.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/ball.webp",
       "label": "Ball",
       "altText": "a ball"
     },
     {
       "id": "balloons",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/balloons.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/balloons.webp",
       "label": "Balloons",
       "altText": "balloons"
     },
     {
       "id": "banana",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/banana.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/banana.webp",
       "label": "Banana",
       "altText": "a banana"
     },
     {
       "id": "bear",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/bear.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/bear.webp",
       "label": "Bear",
       "altText": "a bear"
     },
     {
       "id": "bee",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/bee.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/bee.webp",
       "label": "Bee",
       "altText": "a bee"
     },
     {
       "id": "bicycle",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/bicycle.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/bicycle.webp",
       "label": "Bicycle",
       "altText": "a bicycle"
     },
     {
       "id": "blocks",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/blocks.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/blocks.webp",
       "label": "Blocks",
       "altText": "blocks"
     },
     {
       "id": "boat",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/boat.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/boat.webp",
       "label": "Boat",
       "altText": "a boat"
     },
     {
       "id": "bus",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/bus.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/bus.webp",
       "label": "Bus",
       "altText": "a bus"
     },
     {
       "id": "butterfly",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/butterfly.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/butterfly.webp",
       "label": "Butterfly",
       "altText": "a butterfly"
     },
     {
       "id": "car",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/car.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/car.webp",
       "label": "Car",
       "altText": "a car"
     },
     {
       "id": "caterpillar",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/caterpillar.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/caterpillar.webp",
       "label": "Caterpillar",
       "altText": "a caterpillar"
     },
     {
       "id": "chick",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/chick.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/chick.webp",
       "label": "Chick",
       "altText": "a chick"
     },
     {
       "id": "chicken",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/chicken.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/chicken.webp",
       "label": "Chicken",
       "altText": "a chicken"
     },
     {
       "id": "coloured_pencils",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/coloured_pencils.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/coloured_pencils.webp",
       "label": "Coloured Pencils",
       "altText": "coloured pencils"
     },
     {
       "id": "cow",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/cow.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/cow.webp",
       "label": "Cow",
       "altText": "a cow"
     },
     {
       "id": "crayons",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/crayons.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/crayons.webp",
       "label": "Crayons",
       "altText": "crayons"
     },
     {
       "id": "dog",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/dog.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/dog.webp",
       "label": "Dog",
       "altText": "a dog"
     },
     {
       "id": "doll",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/doll.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/doll.webp",
       "label": "Doll",
       "altText": "a doll"
     },
     {
       "id": "dress",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/dress.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/dress.webp",
       "label": "Dress",
       "altText": "a dress"
     },
     {
       "id": "duck",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/duck.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/duck.webp",
       "label": "Duck",
       "altText": "a duck"
     },
     {
       "id": "elephant",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/elephant.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/elephant.webp",
       "label": "Elephant",
       "altText": "an elephant"
     },
     {
       "id": "fire_engine",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/fire_engine.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/fire_engine.webp",
       "label": "Fire Engine",
       "altText": "a fire engine"
     },
     {
       "id": "giraffe",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/giraffe.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/giraffe.webp",
       "label": "Giraffe",
       "altText": "a giraffe"
     },
     {
       "id": "gloves",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/gloves.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/gloves.webp",
       "label": "Gloves",
       "altText": "gloves"
     },
     {
       "id": "glue_stick",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/glue_stick.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/glue_stick.webp",
       "label": "Glue Stick",
       "altText": "a glue stick"
     },
     {
       "id": "goat",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/goat.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/goat.webp",
       "label": "Goat",
       "altText": "a goat"
     },
     {
       "id": "hand_gesture",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/hand-gesture.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/hand-gesture.webp",
       "label": "Hand Gesture",
       "altText": "a hand gesture"
     },
     {
       "id": "hat",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/hat.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/hat.webp",
       "label": "Hat",
       "altText": "a hat"
     },
     {
       "id": "helicopter",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/helicopter.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/helicopter.webp",
       "label": "Helicopter",
       "altText": "a helicopter"
     },
     {
       "id": "highlighter",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/highlighter.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/highlighter.webp",
       "label": "Highlighter",
       "altText": "a highlighter"
     },
     {
       "id": "horse",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/horse.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/horse.webp",
       "label": "Horse",
       "altText": "a horse"
     },
     {
       "id": "jumper",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/jumper.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/jumper.webp",
       "label": "Jumper",
       "altText": "a jumper"
     },
     {
       "id": "kite",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/kite.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/kite.webp",
       "label": "Kite",
       "altText": "a kite"
     },
     {
       "id": "ladybird",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/ladybird.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/ladybird.webp",
       "label": "Ladybird",
       "altText": "a ladybird"
     },
     {
       "id": "lego",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/lego.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/lego.webp",
       "label": "Lego",
       "altText": "lego"
     },
     {
       "id": "lion",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/lion.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/lion.webp",
       "label": "Lion",
       "altText": "a lion"
     },
     {
       "id": "monkey",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/monkey.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/monkey.webp",
       "label": "Monkey",
       "altText": "a monkey"
     },
     {
       "id": "orange_flaticon",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/orange_flaticon.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/orange_flaticon.webp",
       "label": "Orange",
       "altText": "an orange"
     },
     {
       "id": "peach",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/peach.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/peach.webp",
       "label": "Peach",
       "altText": "a peach"
     },
     {
       "id": "pear",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/pear.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/pear.webp",
       "label": "Pear",
       "altText": "a pear"
     },
     {
       "id": "pen",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/pen.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/pen.webp",
       "label": "Pen",
       "altText": "a pen"
     },
     {
       "id": "pencil_case",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/pencil_case.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/pencil_case.webp",
       "label": "Pencil Case",
       "altText": "a pencil case"
     },
     {
       "id": "pencil_sharpener",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/pencil_sharpener.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/pencil_sharpener.webp",
       "label": "Pencil Sharpener",
       "altText": "a pencil sharpener"
     },
     {
       "id": "pencil",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/pencil.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/pencil.webp",
       "label": "Pencil",
       "altText": "a pencil"
     },
     {
       "id": "penguin",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/penguin.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/penguin.webp",
       "label": "Penguin",
       "altText": "a penguin"
     },
     {
       "id": "pig",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/pig.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/pig.webp",
       "label": "Pig",
       "altText": "a pig"
     },
     {
       "id": "police_car",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/police_car.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/police_car.webp",
       "label": "Police Car",
       "altText": "a police car"
     },
     {
       "id": "puzzle",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/puzzle.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/puzzle.webp",
       "label": "Puzzle",
       "altText": "a puzzle"
     },
     {
       "id": "pyjamas",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/pyjamas.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/pyjamas.webp",
       "label": "Pyjamas",
       "altText": "pyjamas"
     },
     {
       "id": "rabbit",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/rabbit.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/rabbit.webp",
       "label": "Rabbit",
       "altText": "a rabbit"
     },
     {
       "id": "rubber",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/rubber.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/rubber.webp",
       "label": "Rubber",
       "altText": "a rubber"
     },
     {
       "id": "ruler",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/ruler.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/ruler.webp",
       "label": "Ruler",
       "altText": "a ruler"
     },
     {
       "id": "scissors",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/scissors.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/scissors.webp",
       "label": "Scissors",
       "altText": "scissors"
     },
     {
       "id": "sheep",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/sheep.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/sheep.webp",
       "label": "Sheep",
       "altText": "a sheep"
     },
     {
       "id": "shoes",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/shoes.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/shoes.webp",
       "label": "Shoes",
       "altText": "shoes"
     },
     {
       "id": "shorts",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/shorts.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/shorts.webp",
       "label": "Shorts",
       "altText": "shorts"
     },
     {
       "id": "snail",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/snail.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/snail.webp",
       "label": "Snail",
       "altText": "a snail"
     },
     {
       "id": "snake",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/snake.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/snake.webp",
       "label": "Snake",
       "altText": "a snake"
     },
     {
       "id": "socks",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/socks.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/socks.webp",
       "label": "Socks",
       "altText": "socks"
     },
     {
       "id": "strawberry",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/strawberry.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/strawberry.webp",
       "label": "Strawberry",
       "altText": "a strawberry"
     },
     {
       "id": "teddy_bear",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/teddy_bear.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/teddy_bear.webp",
       "label": "Teddy Bear",
       "altText": "a teddy bear"
     },
     {
       "id": "tiger",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/tiger.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/tiger.webp",
       "label": "Tiger",
       "altText": "a tiger"
     },
     {
       "id": "toy_car",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/toy%20car.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/toy_car.webp",
       "label": "Toy Car",
       "altText": "a toy car"
     },
     {
       "id": "toy_train",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/toy_train.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/toy_train.webp",
       "label": "Toy Train",
       "altText": "a toy train"
     },
     {
       "id": "tractor",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/tractor.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/tractor.webp",
       "label": "Tractor",
       "altText": "a tractor"
     },
     {
       "id": "trousers",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/trousers.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/trousers.webp",
       "label": "Trousers",
       "altText": "trousers"
     },
     {
       "id": "tshirt",
-      "imageUrl": "/static/exercise_assets/whats_in_the_bag/options/tshirt.png",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/tshirt.webp",
       "label": "T-Shirt",
       "altText": "a t-shirt"
     }
