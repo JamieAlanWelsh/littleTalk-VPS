@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, type CSSProperties } from "react";
 import { TextOptionGroup } from "../../components/TextOptionGroup";
 import { useExerciseTracking } from "../../hooks";
 import ExerciseLayout from "../../layouts/exerciseLayout/ExerciseLayout";
@@ -84,6 +84,7 @@ export const InTheKnowGame = ({
     const [completionPrompt, setCompletionPrompt] = useState<string | null>(
         null,
     );
+    const [sceneAspectRatio, setSceneAspectRatio] = useState(1);
 
     const gameData = useMemo(
         () => buildRounds(payload, choiceCount),
@@ -144,6 +145,10 @@ export const InTheKnowGame = ({
 
     const disableCheck = questionState.selectedIconIds.length === 0;
 
+    const sceneFrameStyle: CSSProperties = {
+        "--scene-aspect-ratio": sceneAspectRatio,
+    };
+
     return (
         <ExerciseLayout<InTheKnowAnswer>
             exerciseId={EXERCISE_ID}
@@ -175,11 +180,22 @@ export const InTheKnowGame = ({
                     <div className={styles.roundStage}>
                         <div
                             className={`${styles.sceneFrame} ${showStepTwoImage ? styles.sceneFrameRevealed : ""}`}
+                            style={sceneFrameStyle}
                         >
                             <img
                                 src={imageUrl}
                                 alt={altText}
                                 className={`${styles.sceneImage} ${showStepTwoImage ? styles.sceneImageFlip : ""}`}
+                                onLoad={(event) => {
+                                    const { naturalWidth, naturalHeight } =
+                                        event.currentTarget;
+
+                                    if (naturalWidth > 0 && naturalHeight > 0) {
+                                        setSceneAspectRatio(
+                                            naturalWidth / naturalHeight,
+                                        );
+                                    }
+                                }}
                             />
                         </div>
                         <TextOptionGroup

@@ -7,12 +7,20 @@
 }
 
 .sceneFrame {
-    width: min(100%, 39rem);
+    --scene-frame-height: clamp(20.8rem, 44.2vw, 31.2rem);
+    width: min(
+        100%,
+        calc(
+            (var(--scene-frame-height) * var(--scene-aspect-ratio)) + 2rem + 2px
+        )
+    );
+    height: calc(var(--scene-frame-height) + 2rem + 2px);
     background: #fdfdfd;
     border: 1px solid var(--border-grey);
     border-radius: 1.4rem;
     padding: 1rem;
     box-shadow: var(--box-shadow);
+    overflow: hidden;
     perspective: 1400px;
     transition:
         transform 180ms ease,
@@ -27,9 +35,8 @@
 .sceneImage {
     display: block;
     width: 100%;
-    height: auto;
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
+    height: 100%;
+    object-fit: contain;
     border-radius: 1rem;
 }
 
