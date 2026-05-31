@@ -4,6 +4,7 @@ import styles from "./CategoryBox.module.css";
 interface CategoryBoxProps {
     categoryId: string;
     title: string;
+    titleImageUrl?: string;
     slotCount: number;
     borderColor?: string;
     renderSlot?: (slotId: string, slotIndex: number) => React.ReactNode;
@@ -12,6 +13,7 @@ interface CategoryBoxProps {
 export const CategoryBox = ({
     categoryId,
     title,
+    titleImageUrl,
     slotCount,
     borderColor,
     renderSlot,
@@ -28,7 +30,18 @@ export const CategoryBox = ({
                 ["--category-box-border" as string]: borderColor ?? "#ff6b6b",
             }}
         >
-            <h3 className={styles.title}>{title}</h3>
+            <div className={styles.header}>
+                {titleImageUrl ? (
+                    <img
+                        className={styles.titleImage}
+                        src={titleImageUrl}
+                        alt={`${title} icon`}
+                        loading="lazy"
+                        decoding="async"
+                    />
+                ) : null}
+                <h3 className={styles.title}>{title}</h3>
+            </div>
             <div className={styles.grid}>
                 {slotIds.map(({ slotId, slotIndex }) => (
                     <DroppableImageZone key={slotId} id={slotId}>

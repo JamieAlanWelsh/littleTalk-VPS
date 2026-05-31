@@ -41,6 +41,12 @@ export const CategorisationExercise = ({
         itemsPerCategory: 2,
     });
 
+    const selectedCategoryTitleImages = Object.fromEntries(
+        Object.entries(payload.categoryTitleImages ?? {}).filter(
+            ([categoryId]) => options.selectedCategoryIds.includes(categoryId),
+        ),
+    );
+
     const handleStartExercise = () => {
         setHasStarted(true);
     };
@@ -68,6 +74,7 @@ export const CategorisationExercise = ({
                         selectRandomItems(items, options.itemsPerCategory),
                     ]),
             )}
+            categoryTitleImages={selectedCategoryTitleImages}
             onSettingsRequested={() => setHasStarted(false)}
         />
     );

@@ -20,6 +20,7 @@ import type { BoardState } from "./boardUtils";
 interface CategorisationBoardProps {
     boardState: BoardState;
     itemsById: Record<string, CategorisationItem>;
+    categoryTitleImages?: Record<string, string>;
     onDragEnd: (event: DragEndEvent) => void;
     itemCorrectnessMap?: Record<string, boolean>;
     showFeedback?: boolean;
@@ -36,6 +37,7 @@ const formatCategoryLabel = (categoryId: string) =>
 export const CategorisationBoard = ({
     boardState,
     itemsById,
+    categoryTitleImages = {},
     onDragEnd,
     itemCorrectnessMap = {},
     showFeedback = false,
@@ -103,6 +105,7 @@ export const CategorisationBoard = ({
                                 key={categoryId}
                                 categoryId={categoryId}
                                 title={formatCategoryLabel(categoryId)}
+                                titleImageUrl={categoryTitleImages[categoryId]}
                                 slotCount={slots.length}
                                 borderColor={
                                     CATEGORY_BORDER_COLORS[
