@@ -1,5 +1,5 @@
+import { PREPOSITIONS } from "../../types";
 import {
-    SPOT_ON_PREPOSITIONS,
     type SpotOnExercisePayload,
     type SpotOnPreposition,
     type SpotOnQuestion,
@@ -34,7 +34,7 @@ const buildPrepositionSequence = (
     const usablePrepositions =
         selectedPrepositions.length > 0
             ? selectedPrepositions
-            : [...SPOT_ON_PREPOSITIONS];
+            : [...PREPOSITIONS];
 
     const sequence: SpotOnPreposition[] = [];
 

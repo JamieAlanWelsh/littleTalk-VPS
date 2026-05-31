@@ -115,4 +115,5 @@ urlpatterns = [
     path('exercise-framework/colourful-semantics/', react_test_views.colourful_semantics, name='colourful_semantics'),
     path('exercise-framework/story-train/', react_test_views.story_train, name='story_train'),
     path('exercise-framework/spot-on/', react_test_views.spot_on, name='spot_on'),
+    path('exercise-framework/task-master/', react_test_views.task_master, name='task_master'),
 ]

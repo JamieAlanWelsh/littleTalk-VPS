@@ -1,18 +1,7 @@
 import { z } from "zod";
+import type { SpotOnPreposition } from "../../types";
 
-export const SPOT_ON_PREPOSITIONS = [
-    "in",
-    "on",
-    "under",
-    "next to",
-    "above",
-    "below",
-    "between",
-    "behind",
-    "in front of",
-] as const;
-
-export type SpotOnPreposition = (typeof SPOT_ON_PREPOSITIONS)[number];
+export type { SpotOnPreposition } from "../../types";
 
 export const ImageSchema = z.object({
     id: z.string(),
