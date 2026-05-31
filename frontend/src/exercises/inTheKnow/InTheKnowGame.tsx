@@ -6,7 +6,6 @@ import type { Question, QuestionState } from "../../lib/types";
 import { shuffleArray } from "../../utils/shuffleArray";
 import type {
     InTheKnowChoiceCount,
-    InTheKnowOption,
     InTheKnowPayload,
     InTheKnowRound,
     InTheKnowScenePack,
@@ -24,7 +23,12 @@ interface InTheKnowGameProps {
 interface InTheKnowAnswer {
     scenePack: InTheKnowScenePack;
     round: InTheKnowRound;
-    options: InTheKnowOption[];
+    options: RoundOption[];
+}
+
+interface RoundOption {
+    id: string;
+    label: string;
 }
 
 const buildRounds = (
@@ -37,55 +41,25 @@ const buildRounds = (
         selectedScenePack.rounds.length,
     );
     const selectedRounds = selectedScenePack.rounds.slice(0, roundsToPlay);
-    const optionById = new Map(
-        payload.options.map((option) => [option.id, option]),
-    );
 
     const questions: Question[] = selectedRounds.map((round, index) => ({
         id: `${selectedScenePack.id}-${round.id}-${index + 1}`,
         prompt: round.openingPrompt,
-        correctIconIds: [round.correctOptionId],
+        correctIconIds: [`${selectedScenePack.id}-${round.id}-correct`],
     }));
 
     const answers: InTheKnowAnswer[] = selectedRounds.map((round) => {
-        const correctOption = optionById.get(round.correctOptionId);
-
-        if (!correctOption) {
-            return {
-                scenePack: selectedScenePack,
-                round,
-                options: shuffleArray(payload.options).slice(0, choiceCount),
-            };
-        }
-
+        const correctOption: RoundOption = {
+            id: `${selectedScenePack.id}-${round.id}-correct`,
+            label: round.correctOptionLabel,
+        };
         const distractorCount = choiceCount - 1;
         const distractors = shuffleArray(
-            round.distractorOptionIds
-                .map((optionId) => optionById.get(optionId))
-                .filter(Boolean) as InTheKnowOption[],
+            round.distractorOptionLabels.map((label, index) => ({
+                id: `${selectedScenePack.id}-${round.id}-distractor-${index + 1}`,
+                label,
+            })),
         ).slice(0, distractorCount);
-
-        if (distractors.length < distractorCount) {
-            const fallbackDistractors = shuffleArray(
-                payload.options.filter(
-                    (option) =>
-                        option.id !== round.correctOptionId &&
-                        !distractors.some(
-                            (distractor) => distractor.id === option.id,
-                        ),
-                ),
-            ).slice(0, distractorCount - distractors.length);
-
-            return {
-                scenePack: selectedScenePack,
-                round,
-                options: shuffleArray([
-                    correctOption,
-                    ...distractors,
-                    ...fallbackDistractors,
-                ]),
-            };
-        }
 
         return {
             scenePack: selectedScenePack,

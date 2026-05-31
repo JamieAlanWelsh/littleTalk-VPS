@@ -1,888 +1,5 @@
 {
   "rounds": 5,
-  "options": [
-    {
-      "id": "at-the-cinema-q1-correct",
-      "label": "They feel scared/frightened."
-    },
-    {
-      "id": "at-the-cinema-q1-distractor-1",
-      "label": "They feel excited about the snacks."
-    },
-    {
-      "id": "at-the-cinema-q1-distractor-2",
-      "label": "They are laughing at a joke."
-    },
-    {
-      "id": "at-the-cinema-q1-distractor-3",
-      "label": "They are sleepy and tired."
-    },
-    {
-      "id": "at-the-cinema-q1-distractor-4",
-      "label": "They are bored with the film."
-    },
-    {
-      "id": "at-the-cinema-q1-distractor-5",
-      "label": "They are angry with each other."
-    },
-    {
-      "id": "at-the-cinema-q1-distractor-6",
-      "label": "They are cheering loudly."
-    },
-    {
-      "id": "at-the-cinema-q1-distractor-7",
-      "label": "They are practising singing."
-    },
-    {
-      "id": "at-the-cinema-q1-distractor-8",
-      "label": "They are happy because the movie ended."
-    },
-    {
-      "id": "at-the-cinema-q1-distractor-9",
-      "label": "They are deciding what drinks to buy."
-    },
-    {
-      "id": "at-the-cinema-q1-distractor-10",
-      "label": "They are waiting for a bus."
-    },
-    {
-      "id": "at-the-cinema-q2-correct",
-      "label": "Something scary or surprising is happening."
-    },
-    {
-      "id": "at-the-cinema-q2-distractor-1",
-      "label": "A character is baking a cake."
-    },
-    {
-      "id": "at-the-cinema-q2-distractor-2",
-      "label": "The movie is about a football match."
-    },
-    {
-      "id": "at-the-cinema-q2-distractor-3",
-      "label": "Someone is teaching maths."
-    },
-    {
-      "id": "at-the-cinema-q2-distractor-4",
-      "label": "A puppy is learning tricks."
-    },
-    {
-      "id": "at-the-cinema-q2-distractor-5",
-      "label": "The film has finished and the lights are on."
-    },
-    {
-      "id": "at-the-cinema-q2-distractor-6",
-      "label": "The characters are having a picnic."
-    },
-    {
-      "id": "at-the-cinema-q2-distractor-7",
-      "label": "A singer is performing on stage."
-    },
-    {
-      "id": "at-the-cinema-q2-distractor-8",
-      "label": "The family are watching the weather forecast."
-    },
-    {
-      "id": "at-the-cinema-q2-distractor-9",
-      "label": "Someone is reading a bedtime story."
-    },
-    {
-      "id": "at-the-cinema-q2-distractor-10",
-      "label": "The movie is showing instructions for cooking pasta."
-    },
-    {
-      "id": "at-the-cinema-q3-correct",
-      "label": "They are at the cinema/movie theatre."
-    },
-    {
-      "id": "at-the-cinema-q3-distractor-1",
-      "label": "At a restaurant."
-    },
-    {
-      "id": "at-the-cinema-q3-distractor-2",
-      "label": "In a classroom."
-    },
-    {
-      "id": "at-the-cinema-q3-distractor-3",
-      "label": "At the airport."
-    },
-    {
-      "id": "at-the-cinema-q3-distractor-4",
-      "label": "In a supermarket."
-    },
-    {
-      "id": "at-the-cinema-q3-distractor-5",
-      "label": "At the zoo."
-    },
-    {
-      "id": "at-the-cinema-q3-distractor-6",
-      "label": "On a train."
-    },
-    {
-      "id": "at-the-cinema-q3-distractor-7",
-      "label": "In a doctor's waiting room."
-    },
-    {
-      "id": "at-the-cinema-q3-distractor-8",
-      "label": "At a football stadium."
-    },
-    {
-      "id": "at-the-cinema-q3-distractor-9",
-      "label": "In a library."
-    },
-    {
-      "id": "at-the-cinema-q3-distractor-10",
-      "label": "At a swimming pool."
-    },
-    {
-      "id": "at-the-cinema-q4-correct",
-      "label": "She thinks the movie is scary."
-    },
-    {
-      "id": "at-the-cinema-q4-distractor-1",
-      "label": "She is playing peekaboo."
-    },
-    {
-      "id": "at-the-cinema-q4-distractor-2",
-      "label": "She has popcorn in her eyes."
-    },
-    {
-      "id": "at-the-cinema-q4-distractor-3",
-      "label": "She is counting to ten."
-    },
-    {
-      "id": "at-the-cinema-q4-distractor-4",
-      "label": "She is pretending to sleep."
-    },
-    {
-      "id": "at-the-cinema-q4-distractor-5",
-      "label": "She is hiding from her brother."
-    },
-    {
-      "id": "at-the-cinema-q4-distractor-6",
-      "label": "She is putting on glasses."
-    },
-    {
-      "id": "at-the-cinema-q4-distractor-7",
-      "label": "She is rubbing her face because she is tired."
-    },
-    {
-      "id": "at-the-cinema-q4-distractor-8",
-      "label": "She is practising a game."
-    },
-    {
-      "id": "at-the-cinema-q4-distractor-9",
-      "label": "She does not want to eat popcorn."
-    },
-    {
-      "id": "at-the-cinema-q4-distractor-10",
-      "label": "She is listening to music."
-    },
-    {
-      "id": "at-the-cinema-q5-correct",
-      "label": "The little girl."
-    },
-    {
-      "id": "at-the-cinema-q5-distractor-1",
-      "label": "The dad because he is holding popcorn."
-    },
-    {
-      "id": "at-the-cinema-q5-distractor-2",
-      "label": "The mum because she is sitting at the end."
-    },
-    {
-      "id": "at-the-cinema-q5-distractor-3",
-      "label": "The boy because he is wearing blue."
-    },
-    {
-      "id": "at-the-cinema-q5-distractor-4",
-      "label": "The people sitting behind them."
-    },
-    {
-      "id": "at-the-cinema-q5-distractor-5",
-      "label": "The cinema worker."
-    },
-    {
-      "id": "at-the-cinema-q5-distractor-6",
-      "label": "Nobody — everyone looks relaxed."
-    },
-    {
-      "id": "at-the-cinema-q5-distractor-7",
-      "label": "The person operating the projector."
-    },
-    {
-      "id": "at-the-cinema-q5-distractor-8",
-      "label": "The popcorn seller."
-    },
-    {
-      "id": "at-the-cinema-q5-distractor-9",
-      "label": "The family pet."
-    },
-    {
-      "id": "at-the-cinema-q5-distractor-10",
-      "label": "The movie characters on the screen."
-    },
-    {
-      "id": "birthday-q1-correct",
-      "label": "The girl's birthday"
-    },
-    {
-      "id": "birthday-q1-distractor-1",
-      "label": "The first day of school"
-    },
-    {
-      "id": "birthday-q1-distractor-2",
-      "label": "Christmas Day"
-    },
-    {
-      "id": "birthday-q1-distractor-3",
-      "label": "Sports Day"
-    },
-    {
-      "id": "birthday-q1-distractor-4",
-      "label": "Halloween"
-    },
-    {
-      "id": "birthday-q1-distractor-5",
-      "label": "The girl's first swimming lesson"
-    },
-    {
-      "id": "birthday-q1-distractor-6",
-      "label": "A normal school day"
-    },
-    {
-      "id": "birthday-q1-distractor-7",
-      "label": "The family's holiday"
-    },
-    {
-      "id": "birthday-q1-distractor-8",
-      "label": "The dad's birthday"
-    },
-    {
-      "id": "birthday-q1-distractor-9",
-      "label": "Cleaning day"
-    },
-    {
-      "id": "birthday-q1-distractor-10",
-      "label": "Moving house day"
-    },
-    {
-      "id": "birthday-q2-correct",
-      "label": "Happy"
-    },
-    {
-      "id": "birthday-q2-distractor-1",
-      "label": "Angry because she lost a toy"
-    },
-    {
-      "id": "birthday-q2-distractor-2",
-      "label": "Nervous about a test"
-    },
-    {
-      "id": "birthday-q2-distractor-3",
-      "label": "Sleepy after waking up"
-    },
-    {
-      "id": "birthday-q2-distractor-4",
-      "label": "Sad because it is raining"
-    },
-    {
-      "id": "birthday-q2-distractor-5",
-      "label": "Cross with her friends"
-    },
-    {
-      "id": "birthday-q2-distractor-6",
-      "label": "Bored during homework"
-    },
-    {
-      "id": "birthday-q2-distractor-7",
-      "label": "Frightened of the cake"
-    },
-    {
-      "id": "birthday-q2-distractor-8",
-      "label": "Worried about being late"
-    },
-    {
-      "id": "birthday-q2-distractor-9",
-      "label": "Hungry because there is no food"
-    },
-    {
-      "id": "birthday-q2-distractor-10",
-      "label": "Upset because she dropped something"
-    },
-    {
-      "id": "birthday-q3-correct",
-      "label": "7"
-    },
-    {
-      "id": "birthday-q3-distractor-1",
-      "label": "2"
-    },
-    {
-      "id": "birthday-q3-distractor-2",
-      "label": "3"
-    },
-    {
-      "id": "birthday-q3-distractor-3",
-      "label": "4"
-    },
-    {
-      "id": "birthday-q3-distractor-4",
-      "label": "5"
-    },
-    {
-      "id": "birthday-q3-distractor-5",
-      "label": "6"
-    },
-    {
-      "id": "birthday-q3-distractor-6",
-      "label": "9"
-    },
-    {
-      "id": "birthday-q3-distractor-7",
-      "label": "10"
-    },
-    {
-      "id": "birthday-q3-distractor-8",
-      "label": "30"
-    },
-    {
-      "id": "birthday-q3-distractor-9",
-      "label": "100"
-    },
-    {
-      "id": "birthday-q3-distractor-10",
-      "label": "8"
-    },
-    {
-      "id": "birthday-q4-correct",
-      "label": "Summer"
-    },
-    {
-      "id": "birthday-q4-distractor-1",
-      "label": "Spring"
-    },
-    {
-      "id": "birthday-q4-distractor-2",
-      "label": "Autumn"
-    },
-    {
-      "id": "birthday-q4-distractor-3",
-      "label": "Winter"
-    },
-    {
-      "id": "birthday-q4-distractor-4",
-      "label": "Rainy season"
-    },
-    {
-      "id": "birthday-q4-distractor-5",
-      "label": "Monsoon season"
-    },
-    {
-      "id": "birthday-q4-distractor-6",
-      "label": "Hurricane season"
-    },
-    {
-      "id": "birthday-q4-distractor-7",
-      "label": "Night time"
-    },
-    {
-      "id": "birthday-q4-distractor-8",
-      "label": "Snowy season"
-    },
-    {
-      "id": "birthday-q4-distractor-9",
-      "label": "Day time"
-    },
-    {
-      "id": "birthday-q4-distractor-10",
-      "label": "Christmas"
-    },
-    {
-      "id": "birthday-q5-correct",
-      "label": "Family and/or friends"
-    },
-    {
-      "id": "birthday-q5-distractor-1",
-      "label": "A teacher"
-    },
-    {
-      "id": "birthday-q5-distractor-2",
-      "label": "A bus driver"
-    },
-    {
-      "id": "birthday-q5-distractor-3",
-      "label": "A postman"
-    },
-    {
-      "id": "birthday-q5-distractor-4",
-      "label": "A stranger"
-    },
-    {
-      "id": "birthday-q5-distractor-5",
-      "label": "The family pet"
-    },
-    {
-      "id": "birthday-q5-distractor-6",
-      "label": "A dentist"
-    },
-    {
-      "id": "birthday-q5-distractor-7",
-      "label": "A doctor"
-    },
-    {
-      "id": "birthday-q5-distractor-8",
-      "label": "A librarian"
-    },
-    {
-      "id": "birthday-q5-distractor-9",
-      "label": "A vet"
-    },
-    {
-      "id": "birthday-q5-distractor-10",
-      "label": "An astronaut"
-    }
-    ,
-    {
-      "id": "camping-q1-correct",
-      "label": "Camping"
-    },
-    {
-      "id": "camping-q1-distractor-1",
-      "label": "Surfing"
-    },
-    {
-      "id": "camping-q1-distractor-2",
-      "label": "Swimming"
-    },
-    {
-      "id": "camping-q1-distractor-3",
-      "label": "Walking"
-    },
-    {
-      "id": "camping-q1-distractor-4",
-      "label": "Running"
-    },
-    {
-      "id": "camping-q1-distractor-5",
-      "label": "Riding bikes"
-    },
-    {
-      "id": "camping-q1-distractor-6",
-      "label": "Reading"
-    },
-    {
-      "id": "camping-q1-distractor-7",
-      "label": "Singing"
-    },
-    {
-      "id": "camping-q1-distractor-8",
-      "label": "Dancing"
-    },
-    {
-      "id": "camping-q1-distractor-9",
-      "label": "Rock climbing"
-    },
-    {
-      "id": "camping-q1-distractor-10",
-      "label": "Watching TV"
-    },
-    {
-      "id": "camping-q2-correct",
-      "label": "Nighttime"
-    },
-    {
-      "id": "camping-q2-distractor-1",
-      "label": "Day time"
-    },
-    {
-      "id": "camping-q2-distractor-2",
-      "label": "Afternoon"
-    },
-    {
-      "id": "camping-q2-distractor-3",
-      "label": "Morning"
-    },
-    {
-      "id": "camping-q2-distractor-4",
-      "label": "Breakfast time"
-    },
-    {
-      "id": "camping-q2-distractor-5",
-      "label": "Lunchtime"
-    },
-    {
-      "id": "camping-q2-distractor-6",
-      "label": "Dinner time"
-    },
-    {
-      "id": "camping-q2-distractor-7",
-      "label": "Play time at school"
-    },
-    {
-      "id": "camping-q2-distractor-8",
-      "label": "Assembly time"
-    },
-    {
-      "id": "camping-q2-distractor-9",
-      "label": "Evening"
-    },
-    {
-      "id": "camping-q2-distractor-10",
-      "label": "Midnight"
-    },
-    {
-      "id": "camping-q3-correct",
-      "label": "To roast marshmallows"
-    },
-    {
-      "id": "camping-q3-distractor-1",
-      "label": "To do their homework"
-    },
-    {
-      "id": "camping-q3-distractor-2",
-      "label": "To watch television"
-    },
-    {
-      "id": "camping-q3-distractor-3",
-      "label": "To play football"
-    },
-    {
-      "id": "camping-q3-distractor-4",
-      "label": "To go shopping"
-    },
-    {
-      "id": "camping-q3-distractor-5",
-      "label": "To clean the tent"
-    },
-    {
-      "id": "camping-q3-distractor-6",
-      "label": "To catch a bus"
-    },
-    {
-      "id": "camping-q3-distractor-7",
-      "label": "To have a maths lesson"
-    },
-    {
-      "id": "camping-q3-distractor-8",
-      "label": "To visit the dentist"
-    },
-    {
-      "id": "camping-q3-distractor-9",
-      "label": "To wash the dishes"
-    },
-    {
-      "id": "camping-q3-distractor-10",
-      "label": "To ride bicycles"
-    },
-    {
-      "id": "camping-q4-correct",
-      "label": "They are staying overnight"
-    },
-    {
-      "id": "camping-q4-distractor-1",
-      "label": "To keep their clothes clean."
-    },
-    {
-      "id": "camping-q4-distractor-2",
-      "label": "To carry their camping equipment."
-    },
-    {
-      "id": "camping-q4-distractor-3",
-      "label": "To sit on while they eat marshmallows."
-    },
-    {
-      "id": "camping-q4-distractor-4",
-      "label": "To stay warm during the day."
-    },
-    {
-      "id": "camping-q4-distractor-5",
-      "label": "To store their food."
-    },
-    {
-      "id": "camping-q4-distractor-6",
-      "label": "To use as extra pillows."
-    },
-    {
-      "id": "camping-q4-distractor-7",
-      "label": "To protect themselves from rain."
-    },
-    {
-      "id": "camping-q4-distractor-8",
-      "label": "To hide their belongings."
-    },
-    {
-      "id": "camping-q4-distractor-9",
-      "label": "To make the campsite look colourful."
-    },
-    {
-      "id": "camping-q4-distractor-10",
-      "label": "To help them roast marshmallows."
-    },
-    {
-      "id": "camping-q5-correct",
-      "label": "Happy and excited"
-    },
-    {
-      "id": "camping-q5-distractor-1",
-      "label": "Angry because they are arguing."
-    },
-    {
-      "id": "camping-q5-distractor-2",
-      "label": "Sad because they want to go home."
-    },
-    {
-      "id": "camping-q5-distractor-3",
-      "label": "Bored because there is nothing to do."
-    },
-    {
-      "id": "camping-q5-distractor-4",
-      "label": "Nervous about taking a test."
-    },
-    {
-      "id": "camping-q5-distractor-5",
-      "label": "Embarrassed because they made a mistake."
-    },
-    {
-      "id": "camping-q5-distractor-6",
-      "label": "Frustrated because they cannot find something."
-    },
-    {
-      "id": "camping-q5-distractor-7",
-      "label": "Lonely because nobody is with them."
-    },
-    {
-      "id": "camping-q5-distractor-8",
-      "label": "Disappointed because the trip was cancelled."
-    },
-    {
-      "id": "camping-q5-distractor-9",
-      "label": "Worried because they are lost."
-    },
-    {
-      "id": "camping-q5-distractor-10",
-      "label": "Sleepy because they have just woken up."
-    },
-    {
-      "id": "cooking-q1-correct",
-      "label": "Worried"
-    },
-    {
-      "id": "cooking-q1-distractor-1",
-      "label": "Excited about opening presents."
-    },
-    {
-      "id": "cooking-q1-distractor-2",
-      "label": "Happy because she won a prize."
-    },
-    {
-      "id": "cooking-q1-distractor-3",
-      "label": "Relaxed and calm."
-    },
-    {
-      "id": "cooking-q1-distractor-4",
-      "label": "Proud of her artwork."
-    },
-    {
-      "id": "cooking-q1-distractor-5",
-      "label": "Sleepy after a long day."
-    },
-    {
-      "id": "cooking-q1-distractor-6",
-      "label": "Bored because she has nothing to do."
-    },
-    {
-      "id": "cooking-q1-distractor-7",
-      "label": "Amused by a funny joke."
-    },
-    {
-      "id": "cooking-q1-distractor-8",
-      "label": "Confident about a test."
-    },
-    {
-      "id": "cooking-q1-distractor-9",
-      "label": "Cheerful because she is on holiday."
-    },
-    {
-      "id": "cooking-q1-distractor-10",
-      "label": "Grateful for a birthday gift."
-    },
-    {
-      "id": "cooking-q2-correct",
-      "label": "The food in the oven is burning"
-    },
-    {
-      "id": "cooking-q2-distractor-1",
-      "label": "The mixing bowl has broken."
-    },
-    {
-      "id": "cooking-q2-distractor-2",
-      "label": "The girl has dropped the cake on the floor."
-    },
-    {
-      "id": "cooking-q2-distractor-3",
-      "label": "The electricity has stopped working."
-    },
-    {
-      "id": "cooking-q2-distractor-4",
-      "label": "The fridge door has been left open."
-    },
-    {
-      "id": "cooking-q2-distractor-5",
-      "label": "The measuring jug is leaking."
-    },
-    {
-      "id": "cooking-q2-distractor-6",
-      "label": "The recipe book is missing."
-    },
-    {
-      "id": "cooking-q2-distractor-7",
-      "label": "The girl has run out of flour."
-    },
-    {
-      "id": "cooking-q2-distractor-8",
-      "label": "The sink is overflowing."
-    },
-    {
-      "id": "cooking-q2-distractor-9",
-      "label": "The utensils have fallen off the counter."
-    },
-    {
-      "id": "cooking-q2-distractor-10",
-      "label": "The girl cannot find the cake tin."
-    },
-    {
-      "id": "cooking-q3-correct",
-      "label": "The cake has been left in the oven for too long"
-    },
-    {
-      "id": "cooking-q3-distractor-1",
-      "label": "The girl is boiling water for tea."
-    },
-    {
-      "id": "cooking-q3-distractor-2",
-      "label": "Someone is using a smoke machine."
-    },
-    {
-      "id": "cooking-q3-distractor-3",
-      "label": "The window is letting fog into the house."
-    },
-    {
-      "id": "cooking-q3-distractor-4",
-      "label": "The girl is dusting the cupboards."
-    },
-    {
-      "id": "cooking-q3-distractor-5",
-      "label": "The kettle is making steam."
-    },
-    {
-      "id": "cooking-q3-distractor-6",
-      "label": "Someone is having a barbecue outside."
-    },
-    {
-      "id": "cooking-q3-distractor-7",
-      "label": "The fridge is too cold."
-    },
-    {
-      "id": "cooking-q3-distractor-8",
-      "label": "The washing machine is running."
-    },
-    {
-      "id": "cooking-q3-distractor-9",
-      "label": "The girl is cleaning the oven."
-    },
-    {
-      "id": "cooking-q3-distractor-10",
-      "label": "A cloud has drifted into the kitchen."
-    },
-    {
-      "id": "cooking-q4-correct",
-      "label": "Tidying up after baking"
-    },
-    {
-      "id": "cooking-q4-distractor-1",
-      "label": "Watching television."
-    },
-    {
-      "id": "cooking-q4-distractor-2",
-      "label": "Playing a video game."
-    },
-    {
-      "id": "cooking-q4-distractor-3",
-      "label": "Reading a book."
-    },
-    {
-      "id": "cooking-q4-distractor-4",
-      "label": "Walking the dog."
-    },
-    {
-      "id": "cooking-q4-distractor-5",
-      "label": "Doing her homework."
-    },
-    {
-      "id": "cooking-q4-distractor-6",
-      "label": "Talking on the phone."
-    },
-    {
-      "id": "cooking-q4-distractor-7",
-      "label": "Watering plants in the garden."
-    },
-    {
-      "id": "cooking-q4-distractor-8",
-      "label": "Riding her bicycle."
-    },
-    {
-      "id": "cooking-q4-distractor-9",
-      "label": "Drawing a picture."
-    },
-    {
-      "id": "cooking-q4-distractor-10",
-      "label": "Looking for her shoes."
-    },
-    {
-      "id": "cooking-q5-correct",
-      "label": "The girl will ask an adult to help her take the cake out of the oven"
-    },
-    {
-      "id": "cooking-q5-distractor-1",
-      "label": "She will start baking another cake."
-    },
-    {
-      "id": "cooking-q5-distractor-2",
-      "label": "She will go outside to play."
-    },
-    {
-      "id": "cooking-q5-distractor-3",
-      "label": "She will sit down and watch television."
-    },
-    {
-      "id": "cooking-q5-distractor-4",
-      "label": "She will begin her homework."
-    },
-    {
-      "id": "cooking-q5-distractor-5",
-      "label": "She will make a sandwich."
-    },
-    {
-      "id": "cooking-q5-distractor-6",
-      "label": "She will go to bed."
-    },
-    {
-      "id": "cooking-q5-distractor-7",
-      "label": "She will wash the windows."
-    },
-    {
-      "id": "cooking-q5-distractor-8",
-      "label": "She will decorate the kitchen."
-    },
-    {
-      "id": "cooking-q5-distractor-9",
-      "label": "She will read a storybook."
-    },
-    {
-      "id": "cooking-q5-distractor-10",
-      "label": "She will leave the house to go shopping."
-    }
-  ],
   "scenePacks": [
     {
       "id": "at_the_cinema",
@@ -893,101 +10,101 @@
           "id": "at-the-cinema-q1-feelings",
           "openingPrompt": "How are the family feeling?",
           "completionPrompt": "They feel scared/frightened.",
-          "correctOptionId": "at-the-cinema-q1-correct",
-          "distractorOptionIds": [
-            "at-the-cinema-q1-distractor-1",
-            "at-the-cinema-q1-distractor-2",
-            "at-the-cinema-q1-distractor-3",
-            "at-the-cinema-q1-distractor-4",
-            "at-the-cinema-q1-distractor-5",
-            "at-the-cinema-q1-distractor-6",
-            "at-the-cinema-q1-distractor-7",
-            "at-the-cinema-q1-distractor-8",
-            "at-the-cinema-q1-distractor-9",
-            "at-the-cinema-q1-distractor-10"
-          ],
           "stepTwoImageUrl": "/static/exercise_assets/in_the_know/at_the_cinema/at_the_cinema_circled_facial_expressions.webp",
-          "stepTwoAltText": "At the cinema scene with facial expressions circled"
+          "stepTwoAltText": "At the cinema scene with facial expressions circled",
+          "correctOptionLabel": "They feel scared/frightened.",
+          "distractorOptionLabels": [
+            "They feel excited about the snacks.",
+            "They are laughing at a joke.",
+            "They are sleepy and tired.",
+            "They are bored with the film.",
+            "They are angry with each other.",
+            "They are cheering loudly.",
+            "They are practising singing.",
+            "They are happy because the movie ended.",
+            "They are deciding what drinks to buy.",
+            "They are waiting for a bus."
+          ]
         },
         {
           "id": "at-the-cinema-q2-movie-context",
           "openingPrompt": "What do you think is happening in the movie?",
           "completionPrompt": "Something scary or surprising is happening.",
-          "correctOptionId": "at-the-cinema-q2-correct",
-          "distractorOptionIds": [
-            "at-the-cinema-q2-distractor-1",
-            "at-the-cinema-q2-distractor-2",
-            "at-the-cinema-q2-distractor-3",
-            "at-the-cinema-q2-distractor-4",
-            "at-the-cinema-q2-distractor-5",
-            "at-the-cinema-q2-distractor-6",
-            "at-the-cinema-q2-distractor-7",
-            "at-the-cinema-q2-distractor-8",
-            "at-the-cinema-q2-distractor-9",
-            "at-the-cinema-q2-distractor-10"
-          ],
           "stepTwoImageUrl": "/static/exercise_assets/in_the_know/at_the_cinema/at_the_cinema_circled_facial_expressions.webp",
-          "stepTwoAltText": "At the cinema scene with facial expressions circled"
+          "stepTwoAltText": "At the cinema scene with facial expressions circled",
+          "correctOptionLabel": "Something scary or surprising is happening.",
+          "distractorOptionLabels": [
+            "A character is baking a cake.",
+            "The movie is about a football match.",
+            "Someone is teaching maths.",
+            "A puppy is learning tricks.",
+            "The film has finished and the lights are on.",
+            "The characters are having a picnic.",
+            "A singer is performing on stage.",
+            "The family are watching the weather forecast.",
+            "Someone is reading a bedtime story.",
+            "The movie is showing instructions for cooking pasta."
+          ]
         },
         {
           "id": "at-the-cinema-q3-location",
           "openingPrompt": "Where are the family?",
           "completionPrompt": "They are at the cinema/movie theatre.",
-          "correctOptionId": "at-the-cinema-q3-correct",
-          "distractorOptionIds": [
-            "at-the-cinema-q3-distractor-1",
-            "at-the-cinema-q3-distractor-2",
-            "at-the-cinema-q3-distractor-3",
-            "at-the-cinema-q3-distractor-4",
-            "at-the-cinema-q3-distractor-5",
-            "at-the-cinema-q3-distractor-6",
-            "at-the-cinema-q3-distractor-7",
-            "at-the-cinema-q3-distractor-8",
-            "at-the-cinema-q3-distractor-9",
-            "at-the-cinema-q3-distractor-10"
-          ],
           "stepTwoImageUrl": "/static/exercise_assets/in_the_know/at_the_cinema/at_the_cinema_circled_popcorn.webp",
-          "stepTwoAltText": "At the cinema scene with popcorn circled"
+          "stepTwoAltText": "At the cinema scene with popcorn circled",
+          "correctOptionLabel": "They are at the cinema/movie theatre.",
+          "distractorOptionLabels": [
+            "At a restaurant.",
+            "In a classroom.",
+            "At the airport.",
+            "In a supermarket.",
+            "At the zoo.",
+            "On a train.",
+            "In a doctor's waiting room.",
+            "At a football stadium.",
+            "In a library.",
+            "At a swimming pool."
+          ]
         },
         {
           "id": "at-the-cinema-q4-covering-eyes",
           "openingPrompt": "Why is the girl covering her eyes?",
           "completionPrompt": "She thinks the movie is scary.",
-          "correctOptionId": "at-the-cinema-q4-correct",
-          "distractorOptionIds": [
-            "at-the-cinema-q4-distractor-1",
-            "at-the-cinema-q4-distractor-2",
-            "at-the-cinema-q4-distractor-3",
-            "at-the-cinema-q4-distractor-4",
-            "at-the-cinema-q4-distractor-5",
-            "at-the-cinema-q4-distractor-6",
-            "at-the-cinema-q4-distractor-7",
-            "at-the-cinema-q4-distractor-8",
-            "at-the-cinema-q4-distractor-9",
-            "at-the-cinema-q4-distractor-10"
-          ],
           "stepTwoImageUrl": "/static/exercise_assets/in_the_know/at_the_cinema/at_the_cinema_circled_girls_facial_expression.webp",
-          "stepTwoAltText": "At the cinema scene with the girl's facial expression circled"
+          "stepTwoAltText": "At the cinema scene with the girl's facial expression circled",
+          "correctOptionLabel": "She thinks the movie is scary.",
+          "distractorOptionLabels": [
+            "She is playing peekaboo.",
+            "She has popcorn in her eyes.",
+            "She is counting to ten.",
+            "She is pretending to sleep.",
+            "She is hiding from her brother.",
+            "She is putting on glasses.",
+            "She is rubbing her face because she is tired.",
+            "She is practising a game.",
+            "She does not want to eat popcorn.",
+            "She is listening to music."
+          ]
         },
         {
           "id": "at-the-cinema-q5-most-frightened",
           "openingPrompt": "Who seems the most frightened?",
           "completionPrompt": "The little girl.",
-          "correctOptionId": "at-the-cinema-q5-correct",
-          "distractorOptionIds": [
-            "at-the-cinema-q5-distractor-1",
-            "at-the-cinema-q5-distractor-2",
-            "at-the-cinema-q5-distractor-3",
-            "at-the-cinema-q5-distractor-4",
-            "at-the-cinema-q5-distractor-5",
-            "at-the-cinema-q5-distractor-6",
-            "at-the-cinema-q5-distractor-7",
-            "at-the-cinema-q5-distractor-8",
-            "at-the-cinema-q5-distractor-9",
-            "at-the-cinema-q5-distractor-10"
-          ],
           "stepTwoImageUrl": "/static/exercise_assets/in_the_know/at_the_cinema/at_the_cinema_circled_girls_facial_expression.webp",
-          "stepTwoAltText": "At the cinema scene with the girl's facial expression circled"
+          "stepTwoAltText": "At the cinema scene with the girl's facial expression circled",
+          "correctOptionLabel": "The little girl.",
+          "distractorOptionLabels": [
+            "The dad because he is holding popcorn.",
+            "The mum because she is sitting at the end.",
+            "The boy because he is wearing blue.",
+            "The people sitting behind them.",
+            "The cinema worker.",
+            "Nobody — everyone looks relaxed.",
+            "The person operating the projector.",
+            "The popcorn seller.",
+            "The family pet.",
+            "The movie characters on the screen."
+          ]
         }
       ]
     },
@@ -1000,101 +117,101 @@
           "id": "birthday-q1-what-day",
           "openingPrompt": "What day is it today?",
           "completionPrompt": "It's the girl's birthday.",
-          "correctOptionId": "birthday-q1-correct",
-          "distractorOptionIds": [
-            "birthday-q1-distractor-1",
-            "birthday-q1-distractor-2",
-            "birthday-q1-distractor-3",
-            "birthday-q1-distractor-4",
-            "birthday-q1-distractor-5",
-            "birthday-q1-distractor-6",
-            "birthday-q1-distractor-7",
-            "birthday-q1-distractor-8",
-            "birthday-q1-distractor-9",
-            "birthday-q1-distractor-10"
-          ],
           "stepTwoImageUrl": "/static/exercise_assets/in_the_know/birthday/birthday_circled_presents_cake_etc.webp",
-          "stepTwoAltText": "Birthday scene with cards, presents, banner, and cake circled"
+          "stepTwoAltText": "Birthday scene with cards, presents, banner, and cake circled",
+          "correctOptionLabel": "The girl's birthday",
+          "distractorOptionLabels": [
+            "The first day of school",
+            "Christmas Day",
+            "Sports Day",
+            "Halloween",
+            "The girl's first swimming lesson",
+            "A normal school day",
+            "The family's holiday",
+            "The dad's birthday",
+            "Cleaning day",
+            "Moving house day"
+          ]
         },
         {
           "id": "birthday-q2-feeling",
           "openingPrompt": "How is she feeling?",
           "completionPrompt": "She feels happy.",
-          "correctOptionId": "birthday-q2-correct",
-          "distractorOptionIds": [
-            "birthday-q2-distractor-1",
-            "birthday-q2-distractor-2",
-            "birthday-q2-distractor-3",
-            "birthday-q2-distractor-4",
-            "birthday-q2-distractor-5",
-            "birthday-q2-distractor-6",
-            "birthday-q2-distractor-7",
-            "birthday-q2-distractor-8",
-            "birthday-q2-distractor-9",
-            "birthday-q2-distractor-10"
-          ],
           "stepTwoImageUrl": "/static/exercise_assets/in_the_know/birthday/birthday_circled_facial_expression.webp",
-          "stepTwoAltText": "Birthday scene with facial expression circled"
+          "stepTwoAltText": "Birthday scene with facial expression circled",
+          "correctOptionLabel": "Happy",
+          "distractorOptionLabels": [
+            "Angry because she lost a toy",
+            "Nervous about a test",
+            "Sleepy after waking up",
+            "Sad because it is raining",
+            "Cross with her friends",
+            "Bored during homework",
+            "Frightened of the cake",
+            "Worried about being late",
+            "Hungry because there is no food",
+            "Upset because she dropped something"
+          ]
         },
         {
           "id": "birthday-q3-age",
           "openingPrompt": "How old is she turning?",
           "completionPrompt": "She is turning 7.",
-          "correctOptionId": "birthday-q3-correct",
-          "distractorOptionIds": [
-            "birthday-q3-distractor-1",
-            "birthday-q3-distractor-2",
-            "birthday-q3-distractor-3",
-            "birthday-q3-distractor-4",
-            "birthday-q3-distractor-5",
-            "birthday-q3-distractor-6",
-            "birthday-q3-distractor-7",
-            "birthday-q3-distractor-8",
-            "birthday-q3-distractor-9",
-            "birthday-q3-distractor-10"
-          ],
           "stepTwoImageUrl": "/static/exercise_assets/in_the_know/birthday/birthday_circled_candles.webp",
-          "stepTwoAltText": "Birthday scene with candles circled"
+          "stepTwoAltText": "Birthday scene with candles circled",
+          "correctOptionLabel": "7",
+          "distractorOptionLabels": [
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "9",
+            "10",
+            "30",
+            "100",
+            "8"
+          ]
         },
         {
           "id": "birthday-q4-season",
           "openingPrompt": "What season might it be?",
           "completionPrompt": "It might be summer.",
-          "correctOptionId": "birthday-q4-correct",
-          "distractorOptionIds": [
-            "birthday-q4-distractor-1",
-            "birthday-q4-distractor-2",
-            "birthday-q4-distractor-3",
-            "birthday-q4-distractor-4",
-            "birthday-q4-distractor-5",
-            "birthday-q4-distractor-6",
-            "birthday-q4-distractor-7",
-            "birthday-q4-distractor-8",
-            "birthday-q4-distractor-9",
-            "birthday-q4-distractor-10"
-          ],
           "stepTwoImageUrl": "/static/exercise_assets/in_the_know/birthday/birthday_circled_outside.webp",
-          "stepTwoAltText": "Birthday scene with outside weather clues circled"
+          "stepTwoAltText": "Birthday scene with outside weather clues circled",
+          "correctOptionLabel": "Summer",
+          "distractorOptionLabels": [
+            "Spring",
+            "Autumn",
+            "Winter",
+            "Rainy season",
+            "Monsoon season",
+            "Hurricane season",
+            "Night time",
+            "Snowy season",
+            "Day time",
+            "Christmas"
+          ]
         },
         {
           "id": "birthday-q5-who-bought-presents",
           "openingPrompt": "Who do you think bought her the presents?",
           "completionPrompt": "Family and/or friends bought the presents.",
-          "correctOptionId": "birthday-q5-correct",
-          "distractorOptionIds": [
-            "birthday-q5-distractor-1",
-            "birthday-q5-distractor-2",
-            "birthday-q5-distractor-3",
-            "birthday-q5-distractor-4",
-            "birthday-q5-distractor-5",
-            "birthday-q5-distractor-6",
-            "birthday-q5-distractor-7",
-            "birthday-q5-distractor-8",
-            "birthday-q5-distractor-9",
-            "birthday-q5-distractor-10"
-          ],
           "stepTwoImageUrl": "/static/exercise_assets/in_the_know/birthday/birthday_base.webp",
-          "stepTwoAltText": "Birthday scene used for inference question"
+          "stepTwoAltText": "Birthday scene used for inference question",
+          "correctOptionLabel": "Family and/or friends",
+          "distractorOptionLabels": [
+            "A teacher",
+            "A bus driver",
+            "A postman",
+            "A stranger",
+            "The family pet",
+            "A dentist",
+            "A doctor",
+            "A librarian",
+            "A vet",
+            "An astronaut"
+          ]
         }
       ]
     },
@@ -1107,101 +224,101 @@
           "id": "camping-q1-what-are-children-doing",
           "openingPrompt": "What are the children doing?",
           "completionPrompt": "They are camping.",
-          "correctOptionId": "camping-q1-correct",
-          "distractorOptionIds": [
-            "camping-q1-distractor-1",
-            "camping-q1-distractor-2",
-            "camping-q1-distractor-3",
-            "camping-q1-distractor-4",
-            "camping-q1-distractor-5",
-            "camping-q1-distractor-6",
-            "camping-q1-distractor-7",
-            "camping-q1-distractor-8",
-            "camping-q1-distractor-9",
-            "camping-q1-distractor-10"
-          ],
           "stepTwoImageUrl": "/static/exercise_assets/in_the_know/camping/camping_circled_tent_.webp",
-          "stepTwoAltText": "Camping scene with tent and equipment circled"
+          "stepTwoAltText": "Camping scene with tent and equipment circled",
+          "correctOptionLabel": "Camping",
+          "distractorOptionLabels": [
+            "Surfing",
+            "Swimming",
+            "Walking",
+            "Running",
+            "Riding bikes",
+            "Reading",
+            "Singing",
+            "Dancing",
+            "Rock climbing",
+            "Watching TV"
+          ]
         },
         {
           "id": "camping-q2-time-of-day",
           "openingPrompt": "What time of day do you think it is?",
           "completionPrompt": "It is nighttime.",
-          "correctOptionId": "camping-q2-correct",
-          "distractorOptionIds": [
-            "camping-q2-distractor-1",
-            "camping-q2-distractor-2",
-            "camping-q2-distractor-3",
-            "camping-q2-distractor-4",
-            "camping-q2-distractor-5",
-            "camping-q2-distractor-6",
-            "camping-q2-distractor-7",
-            "camping-q2-distractor-8",
-            "camping-q2-distractor-9",
-            "camping-q2-distractor-10"
-          ],
           "stepTwoImageUrl": "/static/exercise_assets/in_the_know/camping/camping_circled_night_sky_.webp",
-          "stepTwoAltText": "Camping scene with the sky circled"
+          "stepTwoAltText": "Camping scene with the sky circled",
+          "correctOptionLabel": "Nighttime",
+          "distractorOptionLabels": [
+            "Day time",
+            "Afternoon",
+            "Morning",
+            "Breakfast time",
+            "Lunchtime",
+            "Dinner time",
+            "Play time at school",
+            "Assembly time",
+            "Evening",
+            "Midnight"
+          ]
         },
         {
           "id": "camping-q3-fire-question",
           "openingPrompt": "Why are the children sitting around the fire?",
           "completionPrompt": "They are sitting around the fire to roast marshmallows.",
-          "correctOptionId": "camping-q3-correct",
-          "distractorOptionIds": [
-            "camping-q3-distractor-1",
-            "camping-q3-distractor-2",
-            "camping-q3-distractor-3",
-            "camping-q3-distractor-4",
-            "camping-q3-distractor-5",
-            "camping-q3-distractor-6",
-            "camping-q3-distractor-7",
-            "camping-q3-distractor-8",
-            "camping-q3-distractor-9",
-            "camping-q3-distractor-10"
-          ],
           "stepTwoImageUrl": "/static/exercise_assets/in_the_know/camping/camping_circled_cooking_marshmallows_.webp",
-          "stepTwoAltText": "Camping scene with cooking ingredients and marshmallows on sticks circled"
+          "stepTwoAltText": "Camping scene with cooking ingredients and marshmallows on sticks circled",
+          "correctOptionLabel": "To roast marshmallows",
+          "distractorOptionLabels": [
+            "To do their homework",
+            "To watch television",
+            "To play football",
+            "To go shopping",
+            "To clean the tent",
+            "To catch a bus",
+            "To have a maths lesson",
+            "To visit the dentist",
+            "To wash the dishes",
+            "To ride bicycles"
+          ]
         },
         {
           "id": "camping-q4-sleeping-bags",
           "openingPrompt": "Why have the children brought sleeping bags?",
           "completionPrompt": "They have brought sleeping bags because they are staying overnight.",
-          "correctOptionId": "camping-q4-correct",
-          "distractorOptionIds": [
-            "camping-q4-distractor-1",
-            "camping-q4-distractor-2",
-            "camping-q4-distractor-3",
-            "camping-q4-distractor-4",
-            "camping-q4-distractor-5",
-            "camping-q4-distractor-6",
-            "camping-q4-distractor-7",
-            "camping-q4-distractor-8",
-            "camping-q4-distractor-9",
-            "camping-q4-distractor-10"
-          ],
           "stepTwoImageUrl": "/static/exercise_assets/in_the_know/camping/camping_circled_night_sky_.webp",
-          "stepTwoAltText": "Camping scene with the night sky circled"
+          "stepTwoAltText": "Camping scene with the night sky circled",
+          "correctOptionLabel": "They are staying overnight",
+          "distractorOptionLabels": [
+            "To keep their clothes clean.",
+            "To carry their camping equipment.",
+            "To sit on while they eat marshmallows.",
+            "To stay warm during the day.",
+            "To store their food.",
+            "To use as extra pillows.",
+            "To protect themselves from rain.",
+            "To hide their belongings.",
+            "To make the campsite look colourful.",
+            "To help them roast marshmallows."
+          ]
         },
         {
           "id": "camping-q5-feelings",
           "openingPrompt": "How are the children feeling?",
           "completionPrompt": "They are feeling happy and excited.",
-          "correctOptionId": "camping-q5-correct",
-          "distractorOptionIds": [
-            "camping-q5-distractor-1",
-            "camping-q5-distractor-2",
-            "camping-q5-distractor-3",
-            "camping-q5-distractor-4",
-            "camping-q5-distractor-5",
-            "camping-q5-distractor-6",
-            "camping-q5-distractor-7",
-            "camping-q5-distractor-8",
-            "camping-q5-distractor-9",
-            "camping-q5-distractor-10"
-          ],
           "stepTwoImageUrl": "/static/exercise_assets/in_the_know/camping/camping_base.webp",
-          "stepTwoAltText": "Camping scene used for feelings question"
+          "stepTwoAltText": "Camping scene used for feelings question",
+          "correctOptionLabel": "Happy and excited",
+          "distractorOptionLabels": [
+            "Angry because they are arguing.",
+            "Sad because they want to go home.",
+            "Bored because there is nothing to do.",
+            "Nervous about taking a test.",
+            "Embarrassed because they made a mistake.",
+            "Frustrated because they cannot find something.",
+            "Lonely because nobody is with them.",
+            "Disappointed because the trip was cancelled.",
+            "Worried because they are lost.",
+            "Sleepy because they have just woken up."
+          ]
         }
       ]
     },
@@ -1214,101 +331,101 @@
           "id": "cooking-q1-how-is-the-girl-feeling",
           "openingPrompt": "How is the girl feeling?",
           "completionPrompt": "She is worried.",
-          "correctOptionId": "cooking-q1-correct",
-          "distractorOptionIds": [
-            "cooking-q1-distractor-1",
-            "cooking-q1-distractor-2",
-            "cooking-q1-distractor-3",
-            "cooking-q1-distractor-4",
-            "cooking-q1-distractor-5",
-            "cooking-q1-distractor-6",
-            "cooking-q1-distractor-7",
-            "cooking-q1-distractor-8",
-            "cooking-q1-distractor-9",
-            "cooking-q1-distractor-10"
-          ],
           "stepTwoImageUrl": "/static/exercise_assets/in_the_know/cooking_gone_wrong/cooking_gone_wrong_circled_facial_expression.webp",
-          "stepTwoAltText": "Cooking gone wrong scene with the girl's facial expression circled"
+          "stepTwoAltText": "Cooking gone wrong scene with the girl's facial expression circled",
+          "correctOptionLabel": "Worried",
+          "distractorOptionLabels": [
+            "Excited about opening presents.",
+            "Happy because she won a prize.",
+            "Relaxed and calm.",
+            "Proud of her artwork.",
+            "Sleepy after a long day.",
+            "Bored because she has nothing to do.",
+            "Amused by a funny joke.",
+            "Confident about a test.",
+            "Cheerful because she is on holiday.",
+            "Grateful for a birthday gift."
+          ]
         },
         {
           "id": "cooking-q2-what-happened",
           "openingPrompt": "What has happened?",
           "completionPrompt": "The food in the oven is burning.",
-          "correctOptionId": "cooking-q2-correct",
-          "distractorOptionIds": [
-            "cooking-q2-distractor-1",
-            "cooking-q2-distractor-2",
-            "cooking-q2-distractor-3",
-            "cooking-q2-distractor-4",
-            "cooking-q2-distractor-5",
-            "cooking-q2-distractor-6",
-            "cooking-q2-distractor-7",
-            "cooking-q2-distractor-8",
-            "cooking-q2-distractor-9",
-            "cooking-q2-distractor-10"
-          ],
           "stepTwoImageUrl": "/static/exercise_assets/in_the_know/cooking_gone_wrong/cooking_gone_wrong_circled_smoking_oven.webp",
-          "stepTwoAltText": "Cooking gone wrong scene with the smoky oven circled"
+          "stepTwoAltText": "Cooking gone wrong scene with the smoky oven circled",
+          "correctOptionLabel": "The food in the oven is burning",
+          "distractorOptionLabels": [
+            "The mixing bowl has broken.",
+            "The girl has dropped the cake on the floor.",
+            "The electricity has stopped working.",
+            "The fridge door has been left open.",
+            "The measuring jug is leaking.",
+            "The recipe book is missing.",
+            "The girl has run out of flour.",
+            "The sink is overflowing.",
+            "The utensils have fallen off the counter.",
+            "The girl cannot find the cake tin."
+          ]
         },
         {
           "id": "cooking-q3-why-smoke",
           "openingPrompt": "Why is there smoke in the kitchen?",
           "completionPrompt": "The cake has been left in the oven for too long.",
-          "correctOptionId": "cooking-q3-correct",
-          "distractorOptionIds": [
-            "cooking-q3-distractor-1",
-            "cooking-q3-distractor-2",
-            "cooking-q3-distractor-3",
-            "cooking-q3-distractor-4",
-            "cooking-q3-distractor-5",
-            "cooking-q3-distractor-6",
-            "cooking-q3-distractor-7",
-            "cooking-q3-distractor-8",
-            "cooking-q3-distractor-9",
-            "cooking-q3-distractor-10"
-          ],
           "stepTwoImageUrl": "/static/exercise_assets/in_the_know/cooking_gone_wrong/cooking_gone_wrong_circled_smoking_oven.webp",
-          "stepTwoAltText": "Cooking gone wrong scene with the smoky oven circled"
+          "stepTwoAltText": "Cooking gone wrong scene with the smoky oven circled",
+          "correctOptionLabel": "The cake has been left in the oven for too long",
+          "distractorOptionLabels": [
+            "The girl is boiling water for tea.",
+            "Someone is using a smoke machine.",
+            "The window is letting fog into the house.",
+            "The girl is dusting the cupboards.",
+            "The kettle is making steam.",
+            "Someone is having a barbecue outside.",
+            "The fridge is too cold.",
+            "The washing machine is running.",
+            "The girl is cleaning the oven.",
+            "A cloud has drifted into the kitchen."
+          ]
         },
         {
           "id": "cooking-q4-before-smoke",
           "openingPrompt": "What was the girl doing before she noticed the smoke?",
           "completionPrompt": "She was tidying up after baking.",
-          "correctOptionId": "cooking-q4-correct",
-          "distractorOptionIds": [
-            "cooking-q4-distractor-1",
-            "cooking-q4-distractor-2",
-            "cooking-q4-distractor-3",
-            "cooking-q4-distractor-4",
-            "cooking-q4-distractor-5",
-            "cooking-q4-distractor-6",
-            "cooking-q4-distractor-7",
-            "cooking-q4-distractor-8",
-            "cooking-q4-distractor-9",
-            "cooking-q4-distractor-10"
-          ],
           "stepTwoImageUrl": "/static/exercise_assets/in_the_know/cooking_gone_wrong/cooking_gone_wrong_circled_dirty_dishes.webp",
-          "stepTwoAltText": "Cooking gone wrong scene with dirty dishes and utensils circled"
+          "stepTwoAltText": "Cooking gone wrong scene with dirty dishes and utensils circled",
+          "correctOptionLabel": "Tidying up after baking",
+          "distractorOptionLabels": [
+            "Watching television.",
+            "Playing a video game.",
+            "Reading a book.",
+            "Walking the dog.",
+            "Doing her homework.",
+            "Talking on the phone.",
+            "Watering plants in the garden.",
+            "Riding her bicycle.",
+            "Drawing a picture.",
+            "Looking for her shoes."
+          ]
         },
         {
           "id": "cooking-q5-next-step",
           "openingPrompt": "What do you think the girl will do next?",
           "completionPrompt": "She will ask an adult to help her take the cake out of the oven.",
-          "correctOptionId": "cooking-q5-correct",
-          "distractorOptionIds": [
-            "cooking-q5-distractor-1",
-            "cooking-q5-distractor-2",
-            "cooking-q5-distractor-3",
-            "cooking-q5-distractor-4",
-            "cooking-q5-distractor-5",
-            "cooking-q5-distractor-6",
-            "cooking-q5-distractor-7",
-            "cooking-q5-distractor-8",
-            "cooking-q5-distractor-9",
-            "cooking-q5-distractor-10"
-          ],
           "stepTwoImageUrl": "/static/exercise_assets/in_the_know/cooking_gone_wrong/cooking_gone_wrong_base.webp",
-          "stepTwoAltText": "Cooking gone wrong scene used for the next step question"
+          "stepTwoAltText": "Cooking gone wrong scene used for the next step question",
+          "correctOptionLabel": "The girl will ask an adult to help her take the cake out of the oven",
+          "distractorOptionLabels": [
+            "She will start baking another cake.",
+            "She will go outside to play.",
+            "She will sit down and watch television.",
+            "She will begin her homework.",
+            "She will make a sandwich.",
+            "She will go to bed.",
+            "She will wash the windows.",
+            "She will decorate the kitchen.",
+            "She will read a storybook.",
+            "She will leave the house to go shopping."
+          ]
         }
       ]
     }
