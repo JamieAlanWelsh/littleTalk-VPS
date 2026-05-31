@@ -4,103 +4,443 @@
   "rounds": 3,
   "sets": [
     {
-      "id": "banana",
-      "title": "Eating a banana",
+      "id": "bird_feeder",
+      "title": "Bird Feeder",
       "steps": [
         {
-          "id": "banana-1",
-          "imageUrl": "/static/exercise_assets/story_train/ks2/banana/banana-1.png",
-          "label": "Choose a banana",
-          "altText": "A child picks up a banana from a bowl of fruit.",
+          "id": "bird_feeder-1",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/bird_feeder/bird_feeder_1.webp",
+          "label": "Step 1",
+          "altText": "Bird Feeder story step 1",
           "order": 0
         },
         {
-          "id": "banana-2",
-          "imageUrl": "/static/exercise_assets/story_train/ks2/banana/banana-2.png",
-          "label": "Peel the banana",
-          "altText": "A child peels the banana and smiles.",
+          "id": "bird_feeder-2",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/bird_feeder/bird_feeder_2.webp",
+          "label": "Step 2",
+          "altText": "Bird Feeder story step 2",
           "order": 1
         },
         {
-          "id": "banana-3",
-          "imageUrl": "/static/exercise_assets/story_train/ks2/banana/banana-3.png",
-          "label": "Take a bite",
-          "altText": "A child starts to eat the peeled banana.",
+          "id": "bird_feeder-3",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/bird_feeder/bird_feeder_3.webp",
+          "label": "Step 3",
+          "altText": "Bird Feeder story step 3",
           "order": 2
         },
         {
-          "id": "banana-4",
-          "imageUrl": "/static/exercise_assets/story_train/ks2/banana/banana-4.png",
-          "label": "Finished eating",
-          "altText": "A child looks pleased after eating the banana.",
+          "id": "bird_feeder-4",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/bird_feeder/bird_feeder_4.webp",
+          "label": "Step 4",
+          "altText": "Bird Feeder story step 4",
           "order": 3
         }
       ]
     },
     {
-      "id": "chick",
-      "title": "A chick hatches",
+      "id": "birdhouse",
+      "title": "Birdhouse",
       "steps": [
         {
-          "id": "chick-1",
-          "imageUrl": "/static/exercise_assets/story_train/ks2/chick/chick-1.png",
-          "label": "Egg in the nest",
-          "altText": "An egg rests in a straw nest.",
+          "id": "birdhouse-1",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/birdhouse/birdhouse_1.webp",
+          "label": "Step 1",
+          "altText": "Birdhouse story step 1",
           "order": 0
         },
         {
-          "id": "chick-2",
-          "imageUrl": "/static/exercise_assets/story_train/ks2/chick/chick-2.png",
-          "label": "The shell cracks",
-          "altText": "The egg starts to crack open in the nest.",
+          "id": "birdhouse-2",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/birdhouse/birdhouse_2.webp",
+          "label": "Step 2",
+          "altText": "Birdhouse story step 2",
           "order": 1
         },
         {
-          "id": "chick-3",
-          "imageUrl": "/static/exercise_assets/story_train/ks2/chick/chick-3.png",
-          "label": "The chick appears",
-          "altText": "A yellow chick peeks out from the broken shell.",
+          "id": "birdhouse-3",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/birdhouse/birdhouse_3.webp",
+          "label": "Step 3",
+          "altText": "Birdhouse story step 3",
           "order": 2
         },
         {
-          "id": "chick-4",
-          "imageUrl": "/static/exercise_assets/story_train/ks2/chick/chick-4.png",
-          "label": "The chick stands up",
-          "altText": "A newly hatched chick stands beside its broken shell.",
+          "id": "birdhouse-4",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/birdhouse/birdhouse_4.webp",
+          "label": "Step 4",
+          "altText": "Birdhouse story step 4",
           "order": 3
         }
       ]
     },
     {
-      "id": "fire",
-      "title": "Toasting a marshmallow",
+      "id": "building_a_den",
+      "title": "Building A Den",
       "steps": [
         {
-          "id": "fire-1",
-          "imageUrl": "/static/exercise_assets/story_train/ks2/fire/fire-1.png",
-          "label": "Collect sticks",
-          "altText": "A child carries sticks through the woods.",
+          "id": "building_a_den-1",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/building_a_den/building_a_den_1.webp",
+          "label": "Step 1",
+          "altText": "Building A Den story step 1",
           "order": 0
         },
         {
-          "id": "fire-2",
-          "imageUrl": "/static/exercise_assets/story_train/ks2/fire/fire-2.png",
-          "label": "Build the fire",
-          "altText": "A child and an adult place sticks onto a campfire.",
+          "id": "building_a_den-2",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/building_a_den/building_a_den_2.webp",
+          "label": "Step 2",
+          "altText": "Building A Den story step 2",
           "order": 1
         },
         {
-          "id": "fire-3",
-          "imageUrl": "/static/exercise_assets/story_train/ks2/fire/fire-3.png",
-          "label": "Toast the marshmallow",
-          "altText": "A child holds a marshmallow over the fire on a stick.",
+          "id": "building_a_den-3",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/building_a_den/building_a_den_3.webp",
+          "label": "Step 3",
+          "altText": "Building A Den story step 3",
           "order": 2
         },
         {
-          "id": "fire-4",
-          "imageUrl": "/static/exercise_assets/story_train/ks2/fire/fire-4.png",
-          "label": "Eat the marshmallow",
-          "altText": "A child eats the toasted marshmallow.",
+          "id": "building_a_den-4",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/building_a_den/building_a_den_4.webp",
+          "label": "Step 4",
+          "altText": "Building A Den story step 4",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "id": "buried_treasure",
+      "title": "Buried Treasure",
+      "steps": [
+        {
+          "id": "buried_treasure-1",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/buried_treasure/buried_treasure_1.webp",
+          "label": "Step 1",
+          "altText": "Buried Treasure story step 1",
+          "order": 0
+        },
+        {
+          "id": "buried_treasure-2",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/buried_treasure/buried_treasure_2.webp",
+          "label": "Step 2",
+          "altText": "Buried Treasure story step 2",
+          "order": 1
+        },
+        {
+          "id": "buried_treasure-3",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/buried_treasure/buried_treasure_3.webp",
+          "label": "Step 3",
+          "altText": "Buried Treasure story step 3",
+          "order": 2
+        },
+        {
+          "id": "buried_treasure-4",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/buried_treasure/buried_treasure_4.webp",
+          "label": "Step 4",
+          "altText": "Buried Treasure story step 4",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "id": "camping",
+      "title": "Camping",
+      "steps": [
+        {
+          "id": "camping-1",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/camping/camping_1.webp",
+          "label": "Step 1",
+          "altText": "Camping story step 1",
+          "order": 0
+        },
+        {
+          "id": "camping-2",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/camping/camping_2.webp",
+          "label": "Step 2",
+          "altText": "Camping story step 2",
+          "order": 1
+        },
+        {
+          "id": "camping-3",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/camping/camping_3.webp",
+          "label": "Step 3",
+          "altText": "Camping story step 3",
+          "order": 2
+        },
+        {
+          "id": "camping-4",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/camping/camping_4.webp",
+          "label": "Step 4",
+          "altText": "Camping story step 4",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "id": "cupcakes",
+      "title": "Cupcakes",
+      "steps": [
+        {
+          "id": "cupcakes-1",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/cupcakes/cupcakes_1.webp",
+          "label": "Step 1",
+          "altText": "Cupcakes story step 1",
+          "order": 0
+        },
+        {
+          "id": "cupcakes-2",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/cupcakes/cupcakes_2.webp",
+          "label": "Step 2",
+          "altText": "Cupcakes story step 2",
+          "order": 1
+        },
+        {
+          "id": "cupcakes-3",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/cupcakes/cupcakes_3.webp",
+          "label": "Step 3",
+          "altText": "Cupcakes story step 3",
+          "order": 2
+        },
+        {
+          "id": "cupcakes-4",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/cupcakes/cupcakes_4.webp",
+          "label": "Step 4",
+          "altText": "Cupcakes story step 4",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "id": "kite",
+      "title": "Kite",
+      "steps": [
+        {
+          "id": "kite-1",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/kite/kite_1.webp",
+          "label": "Step 1",
+          "altText": "Kite story step 1",
+          "order": 0
+        },
+        {
+          "id": "kite-2",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/kite/kite_2.webp",
+          "label": "Step 2",
+          "altText": "Kite story step 2",
+          "order": 1
+        },
+        {
+          "id": "kite-3",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/kite/kite_3.webp",
+          "label": "Step 3",
+          "altText": "Kite story step 3",
+          "order": 2
+        },
+        {
+          "id": "kite-4",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/kite/kite_4.webp",
+          "label": "Step 4",
+          "altText": "Kite story step 4",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "id": "missing_dog",
+      "title": "Missing Dog",
+      "steps": [
+        {
+          "id": "missing_dog-1",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/missing_dog/missing_dog_1.webp",
+          "label": "Step 1",
+          "altText": "Missing Dog story step 1",
+          "order": 0
+        },
+        {
+          "id": "missing_dog-2",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/missing_dog/missing_dog_2.webp",
+          "label": "Step 2",
+          "altText": "Missing Dog story step 2",
+          "order": 1
+        },
+        {
+          "id": "missing_dog-3",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/missing_dog/missing_dog_3.webp",
+          "label": "Step 3",
+          "altText": "Missing Dog story step 3",
+          "order": 2
+        },
+        {
+          "id": "missing_dog-4",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/missing_dog/missing_dog_4.webp",
+          "label": "Step 4",
+          "altText": "Missing Dog story step 4",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "id": "muddy_dog",
+      "title": "Muddy Dog",
+      "steps": [
+        {
+          "id": "muddy_dog-1",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/muddy_dog/muddy_dog_1.webp",
+          "label": "Step 1",
+          "altText": "Muddy Dog story step 1",
+          "order": 0
+        },
+        {
+          "id": "muddy_dog-2",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/muddy_dog/muddy_dog_2.webp",
+          "label": "Step 2",
+          "altText": "Muddy Dog story step 2",
+          "order": 1
+        },
+        {
+          "id": "muddy_dog-3",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/muddy_dog/muddy_dog_3.webp",
+          "label": "Step 3",
+          "altText": "Muddy Dog story step 3",
+          "order": 2
+        },
+        {
+          "id": "muddy_dog-4",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/muddy_dog/muddy_dog_4.webp",
+          "label": "Step 4",
+          "altText": "Muddy Dog story step 4",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "id": "race",
+      "title": "Race",
+      "steps": [
+        {
+          "id": "race-1",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/race/race_1.webp",
+          "label": "Step 1",
+          "altText": "Race story step 1",
+          "order": 0
+        },
+        {
+          "id": "race-2",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/race/race_2.webp",
+          "label": "Step 2",
+          "altText": "Race story step 2",
+          "order": 1
+        },
+        {
+          "id": "race-3",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/race/race_3.webp",
+          "label": "Step 3",
+          "altText": "Race story step 3",
+          "order": 2
+        },
+        {
+          "id": "race-4",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/race/race_4.webp",
+          "label": "Step 4",
+          "altText": "Race story step 4",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "id": "rainstorm",
+      "title": "Rainstorm",
+      "steps": [
+        {
+          "id": "rainstorm-1",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/rainstorm/rainstorm_1.webp",
+          "label": "Step 1",
+          "altText": "Rainstorm story step 1",
+          "order": 0
+        },
+        {
+          "id": "rainstorm-2",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/rainstorm/rainstorm_2.webp",
+          "label": "Step 2",
+          "altText": "Rainstorm story step 2",
+          "order": 1
+        },
+        {
+          "id": "rainstorm-3",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/rainstorm/rainstorm_3.webp",
+          "label": "Step 3",
+          "altText": "Rainstorm story step 3",
+          "order": 2
+        },
+        {
+          "id": "rainstorm-4",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/rainstorm/rainstorm_4.webp",
+          "label": "Step 4",
+          "altText": "Rainstorm story step 4",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "id": "sandcastle",
+      "title": "Sandcastle",
+      "steps": [
+        {
+          "id": "sandcastle-1",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/sandcastle/sandcastle_1.webp",
+          "label": "Step 1",
+          "altText": "Sandcastle story step 1",
+          "order": 0
+        },
+        {
+          "id": "sandcastle-2",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/sandcastle/sandcastle_2.webp",
+          "label": "Step 2",
+          "altText": "Sandcastle story step 2",
+          "order": 1
+        },
+        {
+          "id": "sandcastle-3",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/sandcastle/sandcastle_3.webp",
+          "label": "Step 3",
+          "altText": "Sandcastle story step 3",
+          "order": 2
+        },
+        {
+          "id": "sandcastle-4",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/sandcastle/sandcastle_4.webp",
+          "label": "Step 4",
+          "altText": "Sandcastle story step 4",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "id": "science_experiment",
+      "title": "Science Experiment",
+      "steps": [
+        {
+          "id": "science_experiment-1",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/science_experiment/science_experiment_1.webp",
+          "label": "Step 1",
+          "altText": "Science Experiment story step 1",
+          "order": 0
+        },
+        {
+          "id": "science_experiment-2",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/science_experiment/science_experiment_2.webp",
+          "label": "Step 2",
+          "altText": "Science Experiment story step 2",
+          "order": 1
+        },
+        {
+          "id": "science_experiment-3",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/science_experiment/science_experiment_3.webp",
+          "label": "Step 3",
+          "altText": "Science Experiment story step 3",
+          "order": 2
+        },
+        {
+          "id": "science_experiment-4",
+          "imageUrl": "/static/exercise_assets/story_train/ks2/science_experiment/science_experiment_4.webp",
+          "label": "Step 4",
+          "altText": "Science Experiment story step 4",
           "order": 3
         }
       ]
