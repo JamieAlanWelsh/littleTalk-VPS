@@ -1,7 +1,7 @@
 {
   "instruction": "Drag the pictures into the right order",
   "modellingTip": "Modelling Tip: Use time words like first, next, then, and finally while you talk through the story.",
-  "rounds": 3,
+  "rounds": 5,
   "sets": [
     {
       "id": "bird_feeder",
