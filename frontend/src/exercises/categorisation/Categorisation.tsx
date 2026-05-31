@@ -38,7 +38,8 @@ export const CategorisationExercise = ({
     const categories = Object.keys(payload.categories);
     const [options, setOptions] = useState<CategorisationOptions>({
         selectedCategoryIds: categories.slice(0, 2),
-        itemsPerCategory: 2,
+        itemsPerCategory: 4,
+        isSfxMuted: false,
     });
 
     const selectedCategoryTitleImages = Object.fromEntries(
@@ -74,6 +75,7 @@ export const CategorisationExercise = ({
                         selectRandomItems(items, options.itemsPerCategory),
                     ]),
             )}
+            isSfxMuted={options.isSfxMuted}
             categoryTitleImages={selectedCategoryTitleImages}
             onSettingsRequested={() => setHasStarted(false)}
         />

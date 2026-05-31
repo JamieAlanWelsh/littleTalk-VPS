@@ -21,6 +21,7 @@ interface CategorisationBoardProps {
     boardState: BoardState;
     itemsById: Record<string, CategorisationItem>;
     categoryTitleImages?: Record<string, string>;
+    isSfxMuted?: boolean;
     onDragEnd: (event: DragEndEvent) => void;
     itemCorrectnessMap?: Record<string, boolean>;
     showFeedback?: boolean;
@@ -38,6 +39,7 @@ export const CategorisationBoard = ({
     boardState,
     itemsById,
     categoryTitleImages = {},
+    isSfxMuted = false,
     onDragEnd,
     itemCorrectnessMap = {},
     showFeedback = false,
@@ -53,7 +55,7 @@ export const CategorisationBoard = ({
     ];
 
     const playItemSfx = (item: CategorisationItem) => {
-        if (!item.sfxUrl) {
+        if (isSfxMuted || !item.sfxUrl) {
             return;
         }
 

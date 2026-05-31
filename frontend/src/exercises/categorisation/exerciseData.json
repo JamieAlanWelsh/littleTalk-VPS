@@ -452,7 +452,7 @@
         "label": "Selotape"
       }
     ],
-    "toys-sports": [
+    "toys": [
       {
         "id": "ball",
         "imageUrl": "/static/exercise_assets/categorisation/toys-sports/ball.webp",
@@ -823,7 +823,7 @@
     "furniture": "/static/exercise_assets/categorisation/furniture/furniture_title_image.webp",
     "insects": "/static/exercise_assets/categorisation/insects/insects_title_image.webp",
     "pencil-case": "/static/exercise_assets/categorisation/pencil-case/pencil_case_title_image.webp",
-    "toys-sports": "/static/exercise_assets/categorisation/toys-sports/webp/toys_title_image.webp",
+    "toys": "/static/exercise_assets/categorisation/toys-sports/webp/toys_title_image.webp",
     "vegetables": "/static/exercise_assets/categorisation/vegetables/webp/vegetables_title_image.webp",
     "wild-animals": "/static/exercise_assets/categorisation/wild-animals/webp/wild_animals_title_image.webp"
   }
