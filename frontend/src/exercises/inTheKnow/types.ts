@@ -7,39 +7,101 @@ export const InTheKnowOptionSchema = z.object({
 
 export type InTheKnowOption = z.infer<typeof InTheKnowOptionSchema>;
 
-export const InTheKnowSceneSchema = z.object({
+export const InTheKnowChoiceCountSchema = z.union([
+    z.literal(3),
+    z.literal(4),
+    z.literal(5),
+    z.literal(6),
+]);
+
+export type InTheKnowChoiceCount = z.infer<typeof InTheKnowChoiceCountSchema>;
+
+export const InTheKnowChoiceCounts = [3, 4, 5, 6] as const;
+
+export const InTheKnowRoundSchema = z.object({
     id: z.string(),
-    stepOneImageUrl: z.string(),
-    stepTwoImageUrl: z.string(),
-    stepOneAltText: z.string().optional(),
-    stepTwoAltText: z.string().optional(),
     openingPrompt: z.string(),
     completionPrompt: z.string(),
     correctOptionId: z.string(),
+    distractorOptionIds: z.array(z.string()).length(10),
+    stepTwoImageUrl: z.string(),
+    stepTwoAltText: z.string().optional(),
 });
 
-export type InTheKnowScene = z.infer<typeof InTheKnowSceneSchema>;
+export type InTheKnowRound = z.infer<typeof InTheKnowRoundSchema>;
+
+export const InTheKnowScenePackSchema = z.object({
+    id: z.string(),
+    stepOneImageUrl: z.string(),
+    stepOneAltText: z.string().optional(),
+    rounds: z.array(InTheKnowRoundSchema).length(5),
+});
+
+export type InTheKnowScenePack = z.infer<typeof InTheKnowScenePackSchema>;
 
 export const InTheKnowPayloadSchema = z
     .object({
         rounds: z.number().int().positive(),
-        options: z.array(InTheKnowOptionSchema).length(3),
-        scenes: z.array(InTheKnowSceneSchema).min(1),
+        options: z.array(InTheKnowOptionSchema).min(3),
+        scenePacks: z.array(InTheKnowScenePackSchema).min(1),
     })
     .superRefine((payload, context) => {
         const validOptionIds = new Set(
             payload.options.map((option) => option.id),
         );
 
-        payload.scenes.forEach((scene, sceneIndex) => {
-            if (!validOptionIds.has(scene.correctOptionId)) {
-                context.addIssue({
-                    code: z.ZodIssueCode.custom,
-                    message:
-                        "Scene correctOptionId must reference an option id",
-                    path: ["scenes", sceneIndex, "correctOptionId"],
-                });
-            }
+        payload.scenePacks.forEach((scenePack, scenePackIndex) => {
+            scenePack.rounds.forEach((round, roundIndex) => {
+                if (!validOptionIds.has(round.correctOptionId)) {
+                    context.addIssue({
+                        code: z.ZodIssueCode.custom,
+                        message:
+                            "Round correctOptionId must reference an option id",
+                        path: [
+                            "scenePacks",
+                            scenePackIndex,
+                            "rounds",
+                            roundIndex,
+                            "correctOptionId",
+                        ],
+                    });
+                }
+
+                if (round.distractorOptionIds.includes(round.correctOptionId)) {
+                    context.addIssue({
+                        code: z.ZodIssueCode.custom,
+                        message:
+                            "Round distractorOptionIds must not include correctOptionId",
+                        path: [
+                            "scenePacks",
+                            scenePackIndex,
+                            "rounds",
+                            roundIndex,
+                            "distractorOptionIds",
+                        ],
+                    });
+                }
+
+                round.distractorOptionIds.forEach(
+                    (distractorOptionId, distractorIndex) => {
+                        if (!validOptionIds.has(distractorOptionId)) {
+                            context.addIssue({
+                                code: z.ZodIssueCode.custom,
+                                message:
+                                    "Round distractorOptionIds must reference option ids",
+                                path: [
+                                    "scenePacks",
+                                    scenePackIndex,
+                                    "rounds",
+                                    roundIndex,
+                                    "distractorOptionIds",
+                                    distractorIndex,
+                                ],
+                            });
+                        }
+                    },
+                );
+            });
         });
     });
 

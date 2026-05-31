@@ -1,43 +1,661 @@
 {
-    "rounds": 10,
-    "options": [
+  "rounds": 5,
+  "options": [
+    {
+      "id": "at-the-cinema-q1-correct",
+      "label": "They feel scared/frightened."
+    },
+    {
+      "id": "at-the-cinema-q1-distractor-1",
+      "label": "They feel excited about the snacks."
+    },
+    {
+      "id": "at-the-cinema-q1-distractor-2",
+      "label": "They are laughing at a joke."
+    },
+    {
+      "id": "at-the-cinema-q1-distractor-3",
+      "label": "They are sleepy and tired."
+    },
+    {
+      "id": "at-the-cinema-q1-distractor-4",
+      "label": "They are bored with the film."
+    },
+    {
+      "id": "at-the-cinema-q1-distractor-5",
+      "label": "They are angry with each other."
+    },
+    {
+      "id": "at-the-cinema-q1-distractor-6",
+      "label": "They are cheering loudly."
+    },
+    {
+      "id": "at-the-cinema-q1-distractor-7",
+      "label": "They are practising singing."
+    },
+    {
+      "id": "at-the-cinema-q1-distractor-8",
+      "label": "They are happy because the movie ended."
+    },
+    {
+      "id": "at-the-cinema-q1-distractor-9",
+      "label": "They are deciding what drinks to buy."
+    },
+    {
+      "id": "at-the-cinema-q1-distractor-10",
+      "label": "They are waiting for a bus."
+    },
+    {
+      "id": "at-the-cinema-q2-correct",
+      "label": "Something scary or surprising is happening."
+    },
+    {
+      "id": "at-the-cinema-q2-distractor-1",
+      "label": "A character is baking a cake."
+    },
+    {
+      "id": "at-the-cinema-q2-distractor-2",
+      "label": "The movie is about a football match."
+    },
+    {
+      "id": "at-the-cinema-q2-distractor-3",
+      "label": "Someone is teaching maths."
+    },
+    {
+      "id": "at-the-cinema-q2-distractor-4",
+      "label": "A puppy is learning tricks."
+    },
+    {
+      "id": "at-the-cinema-q2-distractor-5",
+      "label": "The film has finished and the lights are on."
+    },
+    {
+      "id": "at-the-cinema-q2-distractor-6",
+      "label": "The characters are having a picnic."
+    },
+    {
+      "id": "at-the-cinema-q2-distractor-7",
+      "label": "A singer is performing on stage."
+    },
+    {
+      "id": "at-the-cinema-q2-distractor-8",
+      "label": "The family are watching the weather forecast."
+    },
+    {
+      "id": "at-the-cinema-q2-distractor-9",
+      "label": "Someone is reading a bedtime story."
+    },
+    {
+      "id": "at-the-cinema-q2-distractor-10",
+      "label": "The movie is showing instructions for cooking pasta."
+    },
+    {
+      "id": "at-the-cinema-q3-correct",
+      "label": "They are at the cinema/movie theatre."
+    },
+    {
+      "id": "at-the-cinema-q3-distractor-1",
+      "label": "At a restaurant."
+    },
+    {
+      "id": "at-the-cinema-q3-distractor-2",
+      "label": "In a classroom."
+    },
+    {
+      "id": "at-the-cinema-q3-distractor-3",
+      "label": "At the airport."
+    },
+    {
+      "id": "at-the-cinema-q3-distractor-4",
+      "label": "In a supermarket."
+    },
+    {
+      "id": "at-the-cinema-q3-distractor-5",
+      "label": "At the zoo."
+    },
+    {
+      "id": "at-the-cinema-q3-distractor-6",
+      "label": "On a train."
+    },
+    {
+      "id": "at-the-cinema-q3-distractor-7",
+      "label": "In a doctor's waiting room."
+    },
+    {
+      "id": "at-the-cinema-q3-distractor-8",
+      "label": "At a football stadium."
+    },
+    {
+      "id": "at-the-cinema-q3-distractor-9",
+      "label": "In a library."
+    },
+    {
+      "id": "at-the-cinema-q3-distractor-10",
+      "label": "At a swimming pool."
+    },
+    {
+      "id": "at-the-cinema-q4-correct",
+      "label": "She thinks the movie is scary."
+    },
+    {
+      "id": "at-the-cinema-q4-distractor-1",
+      "label": "She is playing peekaboo."
+    },
+    {
+      "id": "at-the-cinema-q4-distractor-2",
+      "label": "She has popcorn in her eyes."
+    },
+    {
+      "id": "at-the-cinema-q4-distractor-3",
+      "label": "She is counting to ten."
+    },
+    {
+      "id": "at-the-cinema-q4-distractor-4",
+      "label": "She is pretending to sleep."
+    },
+    {
+      "id": "at-the-cinema-q4-distractor-5",
+      "label": "She is hiding from her brother."
+    },
+    {
+      "id": "at-the-cinema-q4-distractor-6",
+      "label": "She is putting on glasses."
+    },
+    {
+      "id": "at-the-cinema-q4-distractor-7",
+      "label": "She is rubbing her face because she is tired."
+    },
+    {
+      "id": "at-the-cinema-q4-distractor-8",
+      "label": "She is practising a game."
+    },
+    {
+      "id": "at-the-cinema-q4-distractor-9",
+      "label": "She does not want to eat popcorn."
+    },
+    {
+      "id": "at-the-cinema-q4-distractor-10",
+      "label": "She is listening to music."
+    },
+    {
+      "id": "at-the-cinema-q5-correct",
+      "label": "The little girl."
+    },
+    {
+      "id": "at-the-cinema-q5-distractor-1",
+      "label": "The dad because he is holding popcorn."
+    },
+    {
+      "id": "at-the-cinema-q5-distractor-2",
+      "label": "The mum because she is sitting at the end."
+    },
+    {
+      "id": "at-the-cinema-q5-distractor-3",
+      "label": "The boy because he is wearing blue."
+    },
+    {
+      "id": "at-the-cinema-q5-distractor-4",
+      "label": "The people sitting behind them."
+    },
+    {
+      "id": "at-the-cinema-q5-distractor-5",
+      "label": "The cinema worker."
+    },
+    {
+      "id": "at-the-cinema-q5-distractor-6",
+      "label": "Nobody — everyone looks relaxed."
+    },
+    {
+      "id": "at-the-cinema-q5-distractor-7",
+      "label": "The person operating the projector."
+    },
+    {
+      "id": "at-the-cinema-q5-distractor-8",
+      "label": "The popcorn seller."
+    },
+    {
+      "id": "at-the-cinema-q5-distractor-9",
+      "label": "The family pet."
+    },
+    {
+      "id": "at-the-cinema-q5-distractor-10",
+      "label": "The movie characters on the screen."
+    },
+    {
+      "id": "birthday-q1-correct",
+      "label": "The girl's birthday"
+    },
+    {
+      "id": "birthday-q1-distractor-1",
+      "label": "The first day of school"
+    },
+    {
+      "id": "birthday-q1-distractor-2",
+      "label": "Christmas Day"
+    },
+    {
+      "id": "birthday-q1-distractor-3",
+      "label": "Sports Day"
+    },
+    {
+      "id": "birthday-q1-distractor-4",
+      "label": "Halloween"
+    },
+    {
+      "id": "birthday-q1-distractor-5",
+      "label": "The girl's first swimming lesson"
+    },
+    {
+      "id": "birthday-q1-distractor-6",
+      "label": "A normal school day"
+    },
+    {
+      "id": "birthday-q1-distractor-7",
+      "label": "The family's holiday"
+    },
+    {
+      "id": "birthday-q1-distractor-8",
+      "label": "The dad's birthday"
+    },
+    {
+      "id": "birthday-q1-distractor-9",
+      "label": "Cleaning day"
+    },
+    {
+      "id": "birthday-q1-distractor-10",
+      "label": "Moving house day"
+    },
+    {
+      "id": "birthday-q2-correct",
+      "label": "Happy"
+    },
+    {
+      "id": "birthday-q2-distractor-1",
+      "label": "Angry because she lost a toy"
+    },
+    {
+      "id": "birthday-q2-distractor-2",
+      "label": "Nervous about a test"
+    },
+    {
+      "id": "birthday-q2-distractor-3",
+      "label": "Sleepy after waking up"
+    },
+    {
+      "id": "birthday-q2-distractor-4",
+      "label": "Sad because it is raining"
+    },
+    {
+      "id": "birthday-q2-distractor-5",
+      "label": "Cross with her friends"
+    },
+    {
+      "id": "birthday-q2-distractor-6",
+      "label": "Bored during homework"
+    },
+    {
+      "id": "birthday-q2-distractor-7",
+      "label": "Frightened of the cake"
+    },
+    {
+      "id": "birthday-q2-distractor-8",
+      "label": "Worried about being late"
+    },
+    {
+      "id": "birthday-q2-distractor-9",
+      "label": "Hungry because there is no food"
+    },
+    {
+      "id": "birthday-q2-distractor-10",
+      "label": "Upset because she dropped something"
+    },
+    {
+      "id": "birthday-q3-correct",
+      "label": "7"
+    },
+    {
+      "id": "birthday-q3-distractor-1",
+      "label": "2"
+    },
+    {
+      "id": "birthday-q3-distractor-2",
+      "label": "3"
+    },
+    {
+      "id": "birthday-q3-distractor-3",
+      "label": "4"
+    },
+    {
+      "id": "birthday-q3-distractor-4",
+      "label": "5"
+    },
+    {
+      "id": "birthday-q3-distractor-5",
+      "label": "6"
+    },
+    {
+      "id": "birthday-q3-distractor-6",
+      "label": "9"
+    },
+    {
+      "id": "birthday-q3-distractor-7",
+      "label": "10"
+    },
+    {
+      "id": "birthday-q3-distractor-8",
+      "label": "30"
+    },
+    {
+      "id": "birthday-q3-distractor-9",
+      "label": "100"
+    },
+    {
+      "id": "birthday-q3-distractor-10",
+      "label": "8"
+    },
+    {
+      "id": "birthday-q4-correct",
+      "label": "Summer"
+    },
+    {
+      "id": "birthday-q4-distractor-1",
+      "label": "Spring"
+    },
+    {
+      "id": "birthday-q4-distractor-2",
+      "label": "Autumn"
+    },
+    {
+      "id": "birthday-q4-distractor-3",
+      "label": "Winter"
+    },
+    {
+      "id": "birthday-q4-distractor-4",
+      "label": "Hurricane season"
+    },
+    {
+      "id": "birthday-q4-distractor-5",
+      "label": "Monsoon season"
+    },
+    {
+      "id": "birthday-q4-distractor-6",
+      "label": "Blizzard season"
+    },
+    {
+      "id": "birthday-q4-distractor-7",
+      "label": "Frost season"
+    },
+    {
+      "id": "birthday-q4-distractor-8",
+      "label": "Rainy season"
+    },
+    {
+      "id": "birthday-q4-distractor-9",
+      "label": "Autumnal equinox"
+    },
+    {
+      "id": "birthday-q4-distractor-10",
+      "label": "Mid-winter freeze"
+    },
+    {
+      "id": "birthday-q5-correct",
+      "label": "Family and/or friends"
+    },
+    {
+      "id": "birthday-q5-distractor-1",
+      "label": "A teacher"
+    },
+    {
+      "id": "birthday-q5-distractor-2",
+      "label": "A bus driver"
+    },
+    {
+      "id": "birthday-q5-distractor-3",
+      "label": "A postman"
+    },
+    {
+      "id": "birthday-q5-distractor-4",
+      "label": "A stranger"
+    },
+    {
+      "id": "birthday-q5-distractor-5",
+      "label": "The family pet"
+    },
+    {
+      "id": "birthday-q5-distractor-6",
+      "label": "A dentist"
+    },
+    {
+      "id": "birthday-q5-distractor-7",
+      "label": "A doctor"
+    },
+    {
+      "id": "birthday-q5-distractor-8",
+      "label": "A librarian"
+    },
+    {
+      "id": "birthday-q5-distractor-9",
+      "label": "A vet"
+    },
+    {
+      "id": "birthday-q5-distractor-10",
+      "label": "An astronaut"
+    }
+  ],
+  "scenePacks": [
+    {
+      "id": "at_the_cinema",
+      "stepOneImageUrl": "/static/exercise_assets/in_the_know/at_the_cinema/at_the_cinema_base.webp",
+      "stepOneAltText": "Family at the cinema",
+      "rounds": [
         {
-            "id": "receiving-a-gift",
-            "label": "Because she is receiving a gift"
+          "id": "at-the-cinema-q1-feelings",
+          "openingPrompt": "How are the family feeling?",
+          "completionPrompt": "They feel scared/frightened.",
+          "correctOptionId": "at-the-cinema-q1-correct",
+          "distractorOptionIds": [
+            "at-the-cinema-q1-distractor-1",
+            "at-the-cinema-q1-distractor-2",
+            "at-the-cinema-q1-distractor-3",
+            "at-the-cinema-q1-distractor-4",
+            "at-the-cinema-q1-distractor-5",
+            "at-the-cinema-q1-distractor-6",
+            "at-the-cinema-q1-distractor-7",
+            "at-the-cinema-q1-distractor-8",
+            "at-the-cinema-q1-distractor-9",
+            "at-the-cinema-q1-distractor-10"
+          ],
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/at_the_cinema/at_the_cinema_circled_facial_expressions.webp",
+          "stepTwoAltText": "At the cinema scene with facial expressions circled"
         },
         {
-            "id": "her-birthday",
-            "label": "Her birthday"
+          "id": "at-the-cinema-q2-movie-context",
+          "openingPrompt": "What do you think is happening in the movie?",
+          "completionPrompt": "Something scary or surprising is happening.",
+          "correctOptionId": "at-the-cinema-q2-correct",
+          "distractorOptionIds": [
+            "at-the-cinema-q2-distractor-1",
+            "at-the-cinema-q2-distractor-2",
+            "at-the-cinema-q2-distractor-3",
+            "at-the-cinema-q2-distractor-4",
+            "at-the-cinema-q2-distractor-5",
+            "at-the-cinema-q2-distractor-6",
+            "at-the-cinema-q2-distractor-7",
+            "at-the-cinema-q2-distractor-8",
+            "at-the-cinema-q2-distractor-9",
+            "at-the-cinema-q2-distractor-10"
+          ],
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/at_the_cinema/at_the_cinema_circled_facial_expressions.webp",
+          "stepTwoAltText": "At the cinema scene with facial expressions circled"
         },
         {
-            "id": "giving-a-gift",
-            "label": "Because he's giving a gift"
+          "id": "at-the-cinema-q3-location",
+          "openingPrompt": "Where are the family?",
+          "completionPrompt": "They are at the cinema/movie theatre.",
+          "correctOptionId": "at-the-cinema-q3-correct",
+          "distractorOptionIds": [
+            "at-the-cinema-q3-distractor-1",
+            "at-the-cinema-q3-distractor-2",
+            "at-the-cinema-q3-distractor-3",
+            "at-the-cinema-q3-distractor-4",
+            "at-the-cinema-q3-distractor-5",
+            "at-the-cinema-q3-distractor-6",
+            "at-the-cinema-q3-distractor-7",
+            "at-the-cinema-q3-distractor-8",
+            "at-the-cinema-q3-distractor-9",
+            "at-the-cinema-q3-distractor-10"
+          ],
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/at_the_cinema/at_the_cinema_circled_popcorn.webp",
+          "stepTwoAltText": "At the cinema scene with popcorn circled"
+        },
+        {
+          "id": "at-the-cinema-q4-covering-eyes",
+          "openingPrompt": "Why is the girl covering her eyes?",
+          "completionPrompt": "She thinks the movie is scary.",
+          "correctOptionId": "at-the-cinema-q4-correct",
+          "distractorOptionIds": [
+            "at-the-cinema-q4-distractor-1",
+            "at-the-cinema-q4-distractor-2",
+            "at-the-cinema-q4-distractor-3",
+            "at-the-cinema-q4-distractor-4",
+            "at-the-cinema-q4-distractor-5",
+            "at-the-cinema-q4-distractor-6",
+            "at-the-cinema-q4-distractor-7",
+            "at-the-cinema-q4-distractor-8",
+            "at-the-cinema-q4-distractor-9",
+            "at-the-cinema-q4-distractor-10"
+          ],
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/at_the_cinema/at_the_cinema_circled_girls_facial_expression.webp",
+          "stepTwoAltText": "At the cinema scene with the girl's facial expression circled"
+        },
+        {
+          "id": "at-the-cinema-q5-most-frightened",
+          "openingPrompt": "Who seems the most frightened?",
+          "completionPrompt": "The little girl.",
+          "correctOptionId": "at-the-cinema-q5-correct",
+          "distractorOptionIds": [
+            "at-the-cinema-q5-distractor-1",
+            "at-the-cinema-q5-distractor-2",
+            "at-the-cinema-q5-distractor-3",
+            "at-the-cinema-q5-distractor-4",
+            "at-the-cinema-q5-distractor-5",
+            "at-the-cinema-q5-distractor-6",
+            "at-the-cinema-q5-distractor-7",
+            "at-the-cinema-q5-distractor-8",
+            "at-the-cinema-q5-distractor-9",
+            "at-the-cinema-q5-distractor-10"
+          ],
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/at_the_cinema/at_the_cinema_circled_girls_facial_expression.webp",
+          "stepTwoAltText": "At the cinema scene with the girl's facial expression circled"
         }
-    ],
-    "scenes": [
+      ]
+    },
+    {
+      "id": "birthday",
+      "stepOneImageUrl": "/static/exercise_assets/in_the_know/birthday/birthday_base.webp",
+      "stepOneAltText": "Girl celebrating her birthday",
+      "rounds": [
         {
-            "id": "birthday-girl-happy",
-            "stepOneImageUrl": "/static/exercise_assets/in_the_know/birthday_step1.png",
-            "stepTwoImageUrl": "/static/exercise_assets/in_the_know/birthday_step2.png",
-            "openingPrompt": "Why is the girl happy?",
-            "completionPrompt": "Thats right, because she is receiving a gift!",
-            "correctOptionId": "receiving-a-gift"
+          "id": "birthday-q1-what-day",
+          "openingPrompt": "What day is it today?",
+          "completionPrompt": "It's the girl's birthday.",
+          "correctOptionId": "birthday-q1-correct",
+          "distractorOptionIds": [
+            "birthday-q1-distractor-1",
+            "birthday-q1-distractor-2",
+            "birthday-q1-distractor-3",
+            "birthday-q1-distractor-4",
+            "birthday-q1-distractor-5",
+            "birthday-q1-distractor-6",
+            "birthday-q1-distractor-7",
+            "birthday-q1-distractor-8",
+            "birthday-q1-distractor-9",
+            "birthday-q1-distractor-10"
+          ],
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/birthday/birthday_circled_presents_cake_etc.webp",
+          "stepTwoAltText": "Birthday scene with cards, presents, banner, and cake circled"
         },
         {
-            "id": "birthday-day-question",
-            "stepOneImageUrl": "/static/exercise_assets/in_the_know/birthday_step1.png",
-            "stepTwoImageUrl": "/static/exercise_assets/in_the_know/birthday_step2.png",
-            "openingPrompt": "What day is it today?",
-            "completionPrompt": "That's right, it's her Birthday!",
-            "correctOptionId": "her-birthday"
+          "id": "birthday-q2-feeling",
+          "openingPrompt": "How is she feeling?",
+          "completionPrompt": "She feels happy.",
+          "correctOptionId": "birthday-q2-correct",
+          "distractorOptionIds": [
+            "birthday-q2-distractor-1",
+            "birthday-q2-distractor-2",
+            "birthday-q2-distractor-3",
+            "birthday-q2-distractor-4",
+            "birthday-q2-distractor-5",
+            "birthday-q2-distractor-6",
+            "birthday-q2-distractor-7",
+            "birthday-q2-distractor-8",
+            "birthday-q2-distractor-9",
+            "birthday-q2-distractor-10"
+          ],
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/birthday/birthday_circled_facial_expression.webp",
+          "stepTwoAltText": "Birthday scene with facial expression circled"
         },
         {
-            "id": "birthday-boy-smiling",
-            "stepOneImageUrl": "/static/exercise_assets/in_the_know/birthday_step1.png",
-            "stepTwoImageUrl": "/static/exercise_assets/in_the_know/birthday_step2.png",
-            "openingPrompt": "why is the boy smiling",
-            "completionPrompt": "That's right, he's giving her a gift",
-            "correctOptionId": "giving-a-gift"
+          "id": "birthday-q3-age",
+          "openingPrompt": "How old is she turning?",
+          "completionPrompt": "She is turning 7.",
+          "correctOptionId": "birthday-q3-correct",
+          "distractorOptionIds": [
+            "birthday-q3-distractor-1",
+            "birthday-q3-distractor-2",
+            "birthday-q3-distractor-3",
+            "birthday-q3-distractor-4",
+            "birthday-q3-distractor-5",
+            "birthday-q3-distractor-6",
+            "birthday-q3-distractor-7",
+            "birthday-q3-distractor-8",
+            "birthday-q3-distractor-9",
+            "birthday-q3-distractor-10"
+          ],
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/birthday/birthday_circled_candles.webp",
+          "stepTwoAltText": "Birthday scene with candles circled"
+        },
+        {
+          "id": "birthday-q4-season",
+          "openingPrompt": "What season might it be?",
+          "completionPrompt": "It might be summer.",
+          "correctOptionId": "birthday-q4-correct",
+          "distractorOptionIds": [
+            "birthday-q4-distractor-1",
+            "birthday-q4-distractor-2",
+            "birthday-q4-distractor-3",
+            "birthday-q4-distractor-4",
+            "birthday-q4-distractor-5",
+            "birthday-q4-distractor-6",
+            "birthday-q4-distractor-7",
+            "birthday-q4-distractor-8",
+            "birthday-q4-distractor-9",
+            "birthday-q4-distractor-10"
+          ],
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/birthday/birthday_circled_outside.webp",
+          "stepTwoAltText": "Birthday scene with outside weather clues circled"
+        },
+        {
+          "id": "birthday-q5-who-bought-presents",
+          "openingPrompt": "Who do you think bought her the presents?",
+          "completionPrompt": "Family and/or friends bought the presents.",
+          "correctOptionId": "birthday-q5-correct",
+          "distractorOptionIds": [
+            "birthday-q5-distractor-1",
+            "birthday-q5-distractor-2",
+            "birthday-q5-distractor-3",
+            "birthday-q5-distractor-4",
+            "birthday-q5-distractor-5",
+            "birthday-q5-distractor-6",
+            "birthday-q5-distractor-7",
+            "birthday-q5-distractor-8",
+            "birthday-q5-distractor-9",
+            "birthday-q5-distractor-10"
+          ],
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/birthday/birthday_base.webp",
+          "stepTwoAltText": "Birthday scene used for inference question"
         }
-    ]
+      ]
+    }
+  ]
 }
