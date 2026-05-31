@@ -1,12 +1,12 @@
 .board {
-    --icon-block-width: 14rem;
-    --icon-block-height: 18.5rem;
+    --icon-block-width: 15.5rem;
+    --icon-block-height: 20.5rem;
     --icon-block-padding: 0px;
-    --icon-block-img-width: 14rem;
-    --icon-block-img-height: 18.5rem;
+    --icon-block-img-width: 15.5rem;
+    --icon-block-img-height: 20.5rem;
     --icon-block-overflow: hidden;
     --icon-block-img-object-fit: cover;
-    --droppable-zone-width: 14rem;
+    --droppable-zone-width: 15.5rem;
     --droppable-zone-aspect-ratio: 28 / 37;
     display: flex;
     flex-direction: column;
@@ -37,7 +37,7 @@
 
 .slotsGrid {
     width: 100%;
-    max-width: 52rem;
+    max-width: 57.5rem;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1.5rem;
@@ -71,12 +71,12 @@
 
 @media (max-width: 720px) {
     .board {
-        --icon-block-width: 9.5rem;
-        --icon-block-height: 12.5rem;
+        --icon-block-width: 10.75rem;
+        --icon-block-height: 14.25rem;
         --icon-block-padding: 0px;
-        --icon-block-img-width: 9.5rem;
-        --icon-block-img-height: 12.5rem;
-        --droppable-zone-width: 9.5rem;
+        --icon-block-img-width: 10.75rem;
+        --icon-block-img-height: 14.25rem;
+        --droppable-zone-width: 10.75rem;
         --droppable-zone-aspect-ratio: 19 / 25;
     }
 
@@ -106,7 +106,7 @@
 @media (max-width: 540px) {
     .slotsGrid {
         grid-template-columns: 1fr;
-        max-width: 12rem;
+        max-width: 13.5rem;
     }
 
     .slotsGridFour {

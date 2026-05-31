@@ -355,33 +355,6 @@
       ]
     },
     {
-      "id": "riding_a_scooter",
-      "title": "Riding A Scooter",
-      "steps": [
-        {
-          "id": "riding_a_scooter-1",
-          "imageUrl": "/static/exercise_assets/story_train/ks1/riding_a_scooter/riding_a_scooter_1.webp",
-          "label": "Step 1",
-          "altText": "Riding A Scooter step 1",
-          "order": 0
-        },
-        {
-          "id": "riding_a_scooter-2",
-          "imageUrl": "/static/exercise_assets/story_train/ks1/riding_a_scooter/riding_a_scooter_2.webp",
-          "label": "Step 2",
-          "altText": "Riding A Scooter step 2",
-          "order": 1
-        },
-        {
-          "id": "riding_a_scooter-3",
-          "imageUrl": "/static/exercise_assets/story_train/ks1/riding_a_scooter/riding_a_scooter_3.webp",
-          "label": "Step 3",
-          "altText": "Riding A Scooter step 3",
-          "order": 2
-        }
-      ]
-    },
-    {
       "id": "snack_time",
       "title": "Snack Time",
       "steps": [
