@@ -88,62 +88,57 @@
     {
       "id": "cap",
       "label": "cap",
-      "imageUrl": "/static/exercise_assets/categorisation/clothing/cap.png"
-    },
-    {
-      "id": "clothes",
-      "label": "clothes",
-      "imageUrl": "/static/exercise_assets/categorisation/clothing/clothes.png"
+      "imageUrl": "/static/exercise_assets/categorisation/clothing/cap.webp"
     },
     {
       "id": "dress",
       "label": "dress",
-      "imageUrl": "/static/exercise_assets/categorisation/clothing/dress.png"
+      "imageUrl": "/static/exercise_assets/categorisation/clothing/dress.webp"
     },
     {
       "id": "gloves",
       "label": "gloves",
-      "imageUrl": "/static/exercise_assets/categorisation/clothing/gloves.png"
+      "imageUrl": "/static/exercise_assets/categorisation/clothing/gloves.webp"
     },
     {
       "id": "hat",
       "label": "hat",
-      "imageUrl": "/static/exercise_assets/categorisation/clothing/hat.png"
+      "imageUrl": "/static/exercise_assets/categorisation/clothing/hat.webp"
     },
     {
       "id": "jumper",
       "label": "jumper",
-      "imageUrl": "/static/exercise_assets/categorisation/clothing/jumper.png"
+      "imageUrl": "/static/exercise_assets/categorisation/clothing/jumper.webp"
     },
     {
       "id": "scarf",
       "label": "scarf",
-      "imageUrl": "/static/exercise_assets/categorisation/clothing/scarf.png"
+      "imageUrl": "/static/exercise_assets/categorisation/clothing/scarf.webp"
     },
     {
       "id": "shoes",
       "label": "shoes",
-      "imageUrl": "/static/exercise_assets/categorisation/clothing/shoes.png"
+      "imageUrl": "/static/exercise_assets/categorisation/clothing/shoes.webp"
     },
     {
       "id": "shorts",
       "label": "shorts",
-      "imageUrl": "/static/exercise_assets/categorisation/clothing/shorts.png"
+      "imageUrl": "/static/exercise_assets/categorisation/clothing/shorts.webp"
     },
     {
       "id": "socks",
       "label": "socks",
-      "imageUrl": "/static/exercise_assets/categorisation/clothing/socks.png"
+      "imageUrl": "/static/exercise_assets/categorisation/clothing/socks.webp"
     },
     {
       "id": "trousers",
       "label": "trousers",
-      "imageUrl": "/static/exercise_assets/categorisation/clothing/trousers.png"
+      "imageUrl": "/static/exercise_assets/categorisation/clothing/trousers.webp"
     },
     {
       "id": "tshirt",
       "label": "t-shirt",
-      "imageUrl": "/static/exercise_assets/categorisation/clothing/tshirt.png"
+      "imageUrl": "/static/exercise_assets/categorisation/clothing/tshirt.webp"
     }
   ]
 }

@@ -10,6 +10,7 @@ import { DraggableImage } from "../../components/DraggableImage/DraggableImage";
 import { DroppableImageZone } from "../../components/DroppableImageZone/DroppableImageZone";
 import { PoolTray } from "../../components/PoolTray/PoolTray";
 import { useExerciseTracking } from "../../hooks";
+import useAudio from "../../hooks/useAudio";
 import ExerciseLayout from "../../layouts/exerciseLayout/ExerciseLayout";
 import type { QuestionState } from "../../lib/types";
 import exerciseData from "./exerciseData.json";
@@ -70,6 +71,7 @@ export const TaskMasterGame = ({
     onSettingsRequested,
 }: TaskMasterGameProps) => {
     const tracking = useExerciseTracking(questions.length);
+    const { play } = useAudio();
     const [questionState, setQuestionState] = useState<QuestionState>({
         selectedIconIds: [],
         answerState: "notAnswered",
@@ -94,6 +96,7 @@ export const TaskMasterGame = ({
                         imageUrl: object.imageUrl,
                         label: object.label,
                         altText: object.label,
+                        sfxUrl: object.imageUrl.replace(/\.webp$/i, ".wav"),
                     },
                 ]),
             ),
@@ -255,6 +258,16 @@ export const TaskMasterGame = ({
         }));
     };
 
+    const playObjectSfx = (objectId: string) => {
+        const objectImage = objectPicturesById[objectId];
+
+        if (!objectImage?.sfxUrl) {
+            return;
+        }
+
+        play(objectImage.sfxUrl);
+    };
+
     const renderObject = (objectId: string) => {
         const image = objectPicturesById[objectId];
 
@@ -270,7 +283,14 @@ export const TaskMasterGame = ({
                 isSelected={false}
                 isDisabled={questionState.answerState !== "notAnswered"}
                 isBorderless
-                onClick={() => {}}
+                onClick={() => {
+                    playObjectSfx(objectId);
+                }}
+                onPointerEnter={(event) => {
+                    if (event.pointerType === "mouse") {
+                        playObjectSfx(objectId);
+                    }
+                }}
             />
         );
     };
