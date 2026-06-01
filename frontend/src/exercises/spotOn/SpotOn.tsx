@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { PREPOSITIONS } from "../../types";
 import ExerciseStartScreen from "../../layouts/exerciseStartScreen/ExerciseStartScreen";
 import SpotOnGame from "./SpotOnGame";
 import SpotOnSettings from "./SpotOnSettings";
 import { generateSpotOnQuestions } from "./generateQuestions";
 import {
+    SPOT_ON_PREPOSITIONS,
     type SpotOnExercisePayload,
     type SpotOnOptions,
     type SpotOnQuestion,
@@ -21,7 +21,7 @@ interface SpotOnProps {
 
 export const SpotOn = ({ payload }: SpotOnProps) => {
     const [options, setOptions] = useState<SpotOnOptions>({
-        selectedPrepositions: [...PREPOSITIONS],
+        selectedPrepositions: [...SPOT_ON_PREPOSITIONS],
     });
     const [questions, setQuestions] = useState<SpotOnQuestion[] | null>(null);
 

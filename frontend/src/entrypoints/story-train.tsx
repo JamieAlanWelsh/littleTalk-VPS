@@ -3,11 +3,23 @@ import ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "../style.css";
 import { LearnerContextProvider } from "../contexts/LearnerContext";
-import StoryTrain from "../exercises/story_train/StoryTrain";
-import exerciseData from "../exercises/story_train/exerciseData.json";
-import { StoryTrainExercisePayloadSchema } from "../exercises/story_train/types";
+import StoryTrain from "../exercises/storyTrain/StoryTrain";
+import advancedExerciseData from "../exercises/storyTrain/exerciseData.advanced.json";
+import exerciseData from "../exercises/storyTrain/exerciseData.json";
+import { StoryTrainExercisePayloadSchema } from "../exercises/storyTrain/types";
 
 const queryClient = new QueryClient();
+
+const getExerciseData = () => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const variant = queryParams.get("variant");
+
+    if (variant === "advanced") {
+        return advancedExerciseData;
+    }
+
+    return exerciseData;
+};
 
 const mountElement = document.getElementById("exercise-root");
 
@@ -16,7 +28,8 @@ if (!mountElement) {
     document.body.innerHTML = `<div style="padding: 2rem; color: red;">Error loading exercise: 'Root element #exercise-root not found'</div>`;
 } else {
     try {
-        const payload = StoryTrainExercisePayloadSchema.parse(exerciseData);
+        const payload =
+            StoryTrainExercisePayloadSchema.parse(getExerciseData());
         const learnerUUID =
             mountElement.getAttribute("data-learner-uuid") || null;
 

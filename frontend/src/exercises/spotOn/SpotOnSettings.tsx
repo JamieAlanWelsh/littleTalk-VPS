@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
-import { PREPOSITIONS, type SpotOnPreposition } from "../../types";
 import styles from "./SpotOnSettings.module.css";
-import { type SpotOnOptions } from "./types";
+import {
+    SPOT_ON_PREPOSITIONS,
+    type SpotOnOptions,
+    type SpotOnPreposition,
+} from "./types";
 
-const DEFAULT_SELECTED_PREPOSITIONS = [...PREPOSITIONS];
+const DEFAULT_SELECTED_PREPOSITIONS = [...SPOT_ON_PREPOSITIONS];
 
 interface SpotOnSettingsProps {
     onSetOptions: (options: SpotOnOptions) => void;
@@ -46,7 +49,7 @@ export const SpotOnSettings = ({ onSetOptions }: SpotOnSettingsProps) => {
         <div className={styles.container}>
             <div className={styles.section}>
                 <div className={styles.categoriesGrid}>
-                    {PREPOSITIONS.map((preposition) => {
+                    {SPOT_ON_PREPOSITIONS.map((preposition) => {
                         const isSelected =
                             selectedPrepositions.includes(preposition);
 
@@ -70,8 +73,8 @@ export const SpotOnSettings = ({ onSetOptions }: SpotOnSettingsProps) => {
                 <div className={styles.optionsCard}>
                     <p className={styles.sectionLabel}>Selected prepositions</p>
                     <p className={styles.selectedCount}>
-                        {selectedPrepositions.length} of {PREPOSITIONS.length}{" "}
-                        selected
+                        {selectedPrepositions.length} of{" "}
+                        {SPOT_ON_PREPOSITIONS.length} selected
                     </p>
                     <p className={styles.optionsLabel}>
                         Choose the location words you want to practise in this

@@ -21,6 +21,8 @@ import type { QuestionState } from "../../lib/types";
 
 interface CategorisationGameProps {
     categories: Record<CategoryId, CategorisationItem[]>;
+    categoryTitleImages?: Record<CategoryId, string>;
+    isSfxMuted?: boolean;
     onSettingsRequested?: () => void;
 }
 
@@ -32,6 +34,8 @@ const EXERCISE_METADATA = {
 
 export const CategorisationGame = ({
     categories,
+    categoryTitleImages = {},
+    isSfxMuted = false,
     onSettingsRequested,
 }: CategorisationGameProps) => {
     const itemsById = Object.fromEntries(
@@ -139,6 +143,8 @@ export const CategorisationGame = ({
             <CategorisationBoard
                 boardState={boardState}
                 itemsById={itemsById}
+                categoryTitleImages={categoryTitleImages}
+                isSfxMuted={isSfxMuted}
                 onDragEnd={handleDragEnd}
                 itemCorrectnessMap={
                     questionState.answerState !== "notAnswered"

@@ -2,9 +2,9 @@
     width: min(100%, 50rem);
     margin: 0 auto;
     padding: 0.75rem;
-    border-radius: 0.75rem;
-    background: #ffffff;
-    border: 1px solid #d0d7de;
+    border-radius: 3rem;
+    background: var(--accent-color);
+    border: 4px solid #5b8def;
 }
 
 .grid {
@@ -14,8 +14,20 @@
 }
 
 .gridCell {
-    min-height: 5.25rem;
-    --droppable-zone-bg: rgba(0, 0, 0, 0.05);
+    min-height: 7.875rem;
+    --droppable-zone-bg: transparent;
+    --droppable-zone-active-bg: rgba(91, 141, 239, 0.2);
+    --droppable-zone-active-border: #5b8def;
+    --droppable-zone-width: 9.3125rem;
+    --icon-block-width: 9.3125rem;
+    --icon-block-height: 9.3125rem;
+    --icon-block-img-width: 9.4375rem;
+    --icon-block-img-height: 9.4375rem;
+    --icon-block-bg: transparent;
+
+    --icon-block-interactive-bg: transparent;
+    --icon-block-disabled-bg: transparent;
+    --spot-on-object-scale: 3.5;
 }
 
 .gridCell :global(.content) {
@@ -31,8 +43,8 @@
 }
 
 .objectImage {
-    width: 20%;
-    height: 20%;
+    width: calc(var(--icon-block-img-width) * var(--spot-on-object-scale));
+    height: calc(var(--icon-block-img-height) * var(--spot-on-object-scale));
     object-fit: contain;
     pointer-events: none;
     opacity: 0.8;
@@ -47,6 +59,6 @@
 
 @media (max-width: 768px) {
     .gridCell {
-        min-height: 4.5rem;
+        min-height: 6.75rem;
     }
 }

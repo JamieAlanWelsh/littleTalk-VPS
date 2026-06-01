@@ -13,7 +13,7 @@
     align-items: center;
     gap: 0;
     padding: var(--icon-block-padding, 1rem);
-    background-color: white;
+    background-color: var(--icon-block-bg, white);
     border: 3px solid var(--border-grey);
     border-radius: var(--border-radius-light);
     overflow: var(--icon-block-overflow, visible);
@@ -34,12 +34,15 @@
 }
 
 .icon-block.interactive {
-    background-color: #f9f9f9;
+    background-color: var(
+        --icon-block-interactive-bg,
+        var(--icon-block-bg, #f9f9f9)
+    );
     border-color: var(--accent-color-dark);
 }
 
 .icon-block.withCustomBackground.interactive {
-    background-color: var(--option-bg-color);
+    background-color: var(--icon-block-bg, var(--option-bg-color));
 }
 
 .icon-block.borderless {
@@ -53,25 +56,33 @@
 }
 
 .icon-block.selected {
-    background-color: var(--accent-color);
+    background-color: var(--icon-block-bg, var(--accent-color));
     border-color: var(--button-green);
     box-shadow: 0 0 0 3px rgba(51, 218, 115, 0.2);
 }
 
 .icon-block.correct {
-    background-color: rgba(51, 218, 115, 0.1);
+    background-color: var(--icon-block-bg, white);
+    background-image: linear-gradient(
+        var(--icon-block-correct-overlay, rgba(51, 218, 115, 0.14)),
+        var(--icon-block-correct-overlay, rgba(51, 218, 115, 0.14))
+    );
     border-color: var(--target-green);
 }
 
 .icon-block.incorrect {
-    background-color: rgba(244, 67, 54, 0.1);
+    background-color: var(--icon-block-bg, white);
+    background-image: linear-gradient(
+        var(--icon-block-incorrect-overlay, rgba(244, 67, 54, 0.14)),
+        var(--icon-block-incorrect-overlay, rgba(244, 67, 54, 0.14))
+    );
     border-color: var(--target-red);
 }
 
 .icon-block.disabled {
     opacity: 0.6;
     cursor: not-allowed;
-    background-color: #f0f0f0;
+    background-color: var(--icon-block-bg, #f0f0f0);
 }
 
 .icon-block-image {

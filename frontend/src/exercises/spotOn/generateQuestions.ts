@@ -1,5 +1,5 @@
-import { PREPOSITIONS } from "../../types";
 import {
+    SPOT_ON_PREPOSITIONS,
     type SpotOnExercisePayload,
     type SpotOnPreposition,
     type SpotOnQuestion,
@@ -34,7 +34,7 @@ const buildPrepositionSequence = (
     const usablePrepositions =
         selectedPrepositions.length > 0
             ? selectedPrepositions
-            : [...PREPOSITIONS];
+            : [...SPOT_ON_PREPOSITIONS];
 
     const sequence: SpotOnPreposition[] = [];
 
@@ -56,11 +56,29 @@ export const generateSpotOnQuestions = (
 
     return prepositionSequence.map((preposition, index) => {
         const character = pickRandom(payload.characters);
-        const object = pickRandom(payload.objects);
+        // Filter objects by allowed IDs for this preposition
+        const allowedObjectIds =
+            payload.objectsByPreposition?.[preposition] || [];
+        const allowedObjects = payload.objects.filter((obj) =>
+            allowedObjectIds.includes(obj.id),
+        );
+        if (allowedObjects.length === 0) {
+            throw new Error(
+                `No allowed objects for preposition '${preposition}'. Check objectsByPreposition in exerciseData.json.`,
+            );
+        }
+        const object = pickRandom(allowedObjects);
 
+        // Pluralize object name for 'between' prompt
+        let promptObjectName = object.name;
+        if (preposition === "between") {
+            promptObjectName = object.name.endsWith("s")
+                ? object.name
+                : object.name + "s";
+        }
         return {
             id: `spoton-${index + 1}-${preposition.replace(/\s+/g, "-")}`,
-            prompt: buildPrompt(character.name, preposition, object.name),
+            prompt: buildPrompt(character.name, preposition, promptObjectName),
             preposition,
             character,
             object,

@@ -112,6 +112,8 @@ class SchoolSelectionMiddleware:
             'static',
             'media',
             'support',
+            'sso_callback',
+            'sso_launch',
         }
         if url_name in skip_urls:
             return False

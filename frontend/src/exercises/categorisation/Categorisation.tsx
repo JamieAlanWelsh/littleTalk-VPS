@@ -38,8 +38,15 @@ export const CategorisationExercise = ({
     const categories = Object.keys(payload.categories);
     const [options, setOptions] = useState<CategorisationOptions>({
         selectedCategoryIds: categories.slice(0, 2),
-        itemsPerCategory: 2,
+        itemsPerCategory: 4,
+        isSfxMuted: false,
     });
+
+    const selectedCategoryTitleImages = Object.fromEntries(
+        Object.entries(payload.categoryTitleImages ?? {}).filter(
+            ([categoryId]) => options.selectedCategoryIds.includes(categoryId),
+        ),
+    );
 
     const handleStartExercise = () => {
         setHasStarted(true);
@@ -50,10 +57,6 @@ export const CategorisationExercise = ({
             title={EXERCISE_METADATA.setupTitle}
             subtitle={EXERCISE_METADATA.setupSubtitle}
             onStart={handleStartExercise}
-            onTutorial={() => {
-                // TODO: Implement tutorial modal or navigation
-                console.log("Tutorial requested");
-            }}
         >
             <CategorisationSettingsScreen
                 payload={payload}
@@ -72,6 +75,8 @@ export const CategorisationExercise = ({
                         selectRandomItems(items, options.itemsPerCategory),
                     ]),
             )}
+            isSfxMuted={options.isSfxMuted}
+            categoryTitleImages={selectedCategoryTitleImages}
             onSettingsRequested={() => setHasStarted(false)}
         />
     );

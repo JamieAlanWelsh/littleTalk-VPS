@@ -5,59 +5,106 @@
   "characters": [
     {
       "id": "arlo",
-      "name": "Arlo",
-      "imageUrl": "/static/exercise_assets/think_and_find/boy/boy_blonde.png",
-      "altText": "Arlo character"
+      "name": "Arlo Armadillo",
+      "imageUrl": "/static/exercise_assets/spot_on/characters/arlo_armadillo.png",
+      "altText": "Arlo Armadillo character"
     },
     {
       "id": "maya",
-      "name": "Maya",
-      "imageUrl": "/static/exercise_assets/think_and_find/girl/girl_yellowdress.png",
-      "altText": "Maya character"
+      "name": "Humble Hedgehog",
+      "imageUrl": "/static/exercise_assets/spot_on/characters/humble_hedgehog.png",
+      "altText": "Humble Hedgehog character"
     },
     {
       "id": "pip",
-      "name": "Pip",
-      "imageUrl": "/static/exercise_assets/think_and_find/cat/cat_grey.png",
-      "altText": "Pip character"
+      "name": "Muddles Mole",
+      "imageUrl": "/static/exercise_assets/spot_on/characters/muddles_mole.png",
+      "altText": "Muddles Mole character"
     },
     {
       "id": "zed",
-      "name": "Zed",
-      "imageUrl": "/static/exercise_assets/think_and_find/monster/monster_yellow.png",
-      "altText": "Zed character"
+      "name": "Peppy Pigeon",
+      "imageUrl": "/static/exercise_assets/spot_on/characters/peppy_pigeon.png",
+      "altText": "Peppy Pigeon character"
     },
     {
       "id": "nala",
-      "name": "Nala",
-      "imageUrl": "/static/exercise_assets/think_and_find/elephant/elephant_earsblue.png",
-      "altText": "Nala character"
+      "name": "Resilient Red Panda",
+      "imageUrl": "/static/exercise_assets/spot_on/characters/resilient_red_panda.png",
+      "altText": "Resilient Red Panda character"
     }
   ],
   "objects": [
     {
       "id": "bookshelf",
       "name": "bookshelf",
-      "imageUrl": "/static/exercise_assets/prepositions/bookshelf.png",
+      "imageUrl": "/static/exercise_assets/spot_on/objects/bookshelf.png",
       "altText": "A bookshelf"
     },
     {
       "id": "box",
       "name": "box",
-      "imageUrl": "/static/exercise_assets/prepositions/box.png",
+      "imageUrl": "/static/exercise_assets/spot_on/objects/box.png",
       "altText": "A box"
     },
     {
       "id": "chair",
       "name": "chair",
-      "imageUrl": "/static/exercise_assets/prepositions/chair.png",
+      "imageUrl": "/static/exercise_assets/spot_on/objects/chair.png",
       "altText": "A chair"
     },
     {
       "id": "table",
       "name": "table",
-      "imageUrl": "/static/exercise_assets/prepositions/table.png",
+      "imageUrl": "/static/exercise_assets/spot_on/objects/table.png",
       "altText": "A table"
+    },
+    {
+      "id": "armchair",
+      "name": "armchair",
+      "imageUrl": "/static/exercise_assets/spot_on/objects/armchair.png",
+      "altText": "An armchair"
+    },
+    {
+      "id": "bed",
+      "name": "bed",
+      "imageUrl": "/static/exercise_assets/spot_on/objects/bed.png",
+      "altText": "A bed"
+    },
+    {
+      "id": "present",
+      "name": "present",
+      "imageUrl": "/static/exercise_assets/spot_on/objects/present.png",
+      "altText": "A present"
+    },
+    {
+      "id": "sofa",
+      "name": "sofa",
+      "imageUrl": "/static/exercise_assets/spot_on/objects/sofa.png",
+      "altText": "A sofa"
+    },
+    {
+      "id": "toybox",
+      "name": "toybox",
+      "imageUrl": "/static/exercise_assets/spot_on/objects/toybox.png",
+      "altText": "A toybox"
+    },
+    {
+      "id": "fridge",
+      "name": "fridge",
+      "imageUrl": "/static/exercise_assets/spot_on/objects/fridge.png",
+      "altText": "A fridge"
     }
-  ]
+  ],
+  "objectsByPreposition": {
+    "in": ["box", "bookshelf", "present", "toybox", "fridge"],
+    "on": ["box", "bookshelf", "chair", "table", "armchair", "bed", "sofa", "toybox", "present"],
+    "under": ["chair", "table", "armchair", "bed", "sofa"],
+    "next to": ["box", "bookshelf", "table", "present", "fridge"],
+    "above": ["box", "bookshelf", "chair", "table", "armchair", "bed", "sofa", "toybox", "present", "fridge"],
+    "below": ["box", "bookshelf", "chair", "table", "armchair", "bed", "sofa", "toybox", "present", "fridge"],
+    "between": ["box", "bookshelf", "table", "present", "fridge"],
+    "behind": ["box", "bookshelf", "present", "toybox", "fridge"],
+    "in front of": ["box", "bookshelf", "present", "toybox", "fridge"]
+  }
 }

@@ -24,8 +24,9 @@
 }
 
 .active {
+    border-color: var(--droppable-zone-active-border, #5b8def);
     border-color: #5b8def;
-    background: #dbeafe;
+    background: var(--droppable-zone-active-bg, #dbeafe);
 }
 
 .content {

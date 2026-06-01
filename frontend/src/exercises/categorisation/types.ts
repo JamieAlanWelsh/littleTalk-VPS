@@ -10,6 +10,7 @@ import { z } from "zod";
 export interface CategorisationOptions {
     selectedCategoryIds: string[];
     itemsPerCategory: number;
+    isSfxMuted: boolean;
 }
 
 export const CategorisationItemSchema = z.object({
@@ -24,6 +25,7 @@ export type CategorisationItem = z.infer<typeof CategorisationItemSchema>;
 export const CategorisationExercisePayloadSchema = z.object({
     instruction: z.string(),
     modellingTip: z.string().optional(),
+    categoryTitleImages: z.record(z.string(), z.string()).optional(),
     categories: z.record(z.string(), z.array(CategorisationItemSchema)),
 });
 

@@ -1,0 +1,255 @@
+{
+  "id": "advanced",
+  "allowedPresetIds": [
+    "subject-verb-object-location"
+  ],
+  "defaultPresetId": "subject-verb-object-location",
+  "defaultNumberOfOptions": 5,
+  "availableOptionalSlotIds": [
+    "to-who",
+    "when"
+  ],
+  "scenes": [
+    {
+      "id": "blowing-bubbles",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/girl_blowing_bubbles_park.webp",
+      "targetImageAlt": "A girl blowing bubbles at the park.",
+      "steps": [
+        {
+          "id": "blowing-bubbles-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-girl"
+        },
+        {
+          "id": "blowing-bubbles-doing",
+          "slot": "doing",
+          "prompt": "What is she doing?",
+          "correctOptionId": "doing-blowing"
+        },
+        {
+          "id": "blowing-bubbles-what",
+          "slot": "what",
+          "prompt": "What is she blowing?",
+          "correctOptionId": "what-bubbles"
+        },
+        {
+          "id": "blowing-bubbles-to-who",
+          "slot": "to-who",
+          "prompt": "To who?",
+          "correctOptionId": "to-who-boy"
+        },
+        {
+          "id": "blowing-bubbles-where",
+          "slot": "where",
+          "prompt": "Where is she?",
+          "correctOptionId": "where-park"
+        },
+        {
+          "id": "blowing-bubbles-when",
+          "slot": "when",
+          "prompt": "When?",
+          "correctOptionId": "when-in-morning"
+        }
+      ]
+    },
+    {
+      "id": "boy-swimming-pool",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/boy_swimming_blank_pool.webp",
+      "targetImageAlt": "A boy swimming at the swimming pool.",
+      "steps": [
+        {
+          "id": "boy-swimming-pool-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-boy"
+        },
+        {
+          "id": "boy-swimming-pool-doing",
+          "slot": "doing",
+          "prompt": "What is he doing?",
+          "correctOptionId": "doing-swimming"
+        },
+        {
+          "id": "boy-swimming-pool-where",
+          "slot": "where",
+          "prompt": "Where is he?",
+          "correctOptionId": "where-swimming-pool"
+        }
+      ]
+    },
+    {
+      "id": "butterfly-sitting-flower",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/butterfly_sitting_flower_blank.webp",
+      "targetImageAlt": "A butterfly sitting on a flower.",
+      "steps": [
+        {
+          "id": "butterfly-sitting-flower-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-butterfly"
+        },
+        {
+          "id": "butterfly-sitting-flower-doing",
+          "slot": "doing",
+          "prompt": "What is it doing?",
+          "correctOptionId": "doing-sitting"
+        },
+        {
+          "id": "butterfly-sitting-flower-what",
+          "slot": "what",
+          "prompt": "What is it sitting on?",
+          "correctOptionId": "what-flower"
+        }
+      ]
+    },
+    {
+      "id": "children-digging-sandpit",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/children_digging_sand_sandpit.webp",
+      "targetImageAlt": "Children digging in sand at the sandpit.",
+      "steps": [
+        {
+          "id": "children-digging-sandpit-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-children"
+        },
+        {
+          "id": "children-digging-sandpit-doing",
+          "slot": "doing",
+          "prompt": "What are they doing?",
+          "correctOptionId": "doing-digging"
+        },
+        {
+          "id": "children-digging-sandpit-what",
+          "slot": "what",
+          "prompt": "What are they digging in?",
+          "correctOptionId": "what-in-sand"
+        },
+        {
+          "id": "children-digging-sandpit-to-who",
+          "slot": "to-who",
+          "prompt": "To who?",
+          "correctOptionId": "to-who-teacher"
+        },
+        {
+          "id": "children-digging-sandpit-where",
+          "slot": "where",
+          "prompt": "Where are they?",
+          "correctOptionId": "where-sandpit"
+        },
+        {
+          "id": "children-digging-sandpit-when",
+          "slot": "when",
+          "prompt": "When?",
+          "correctOptionId": "when-in-afternoon"
+        }
+      ]
+    },
+    {
+      "id": "children-sitting-mat-school",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/children_sitting_mat_school.webp",
+      "targetImageAlt": "Children sitting on a mat at school.",
+      "steps": [
+        {
+          "id": "children-sitting-mat-school-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-children"
+        },
+        {
+          "id": "children-sitting-mat-school-doing",
+          "slot": "doing",
+          "prompt": "What are they doing?",
+          "correctOptionId": "doing-sitting"
+        },
+        {
+          "id": "children-sitting-mat-school-what",
+          "slot": "what",
+          "prompt": "What are they sitting on?",
+          "correctOptionId": "what-mat"
+        },
+        {
+          "id": "children-sitting-mat-school-to-who",
+          "slot": "to-who",
+          "prompt": "To who?",
+          "correctOptionId": "to-who-teacher"
+        },
+        {
+          "id": "children-sitting-mat-school-where",
+          "slot": "where",
+          "prompt": "Where are they?",
+          "correctOptionId": "where-school"
+        },
+        {
+          "id": "children-sitting-mat-school-when",
+          "slot": "when",
+          "prompt": "When?",
+          "correctOptionId": "when-in-morning"
+        }
+      ]
+    },
+    {
+      "id": "dog-swimming-river",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/dog_swimming_blank_river.webp",
+      "targetImageAlt": "A dog swimming in a river.",
+      "steps": [
+        {
+          "id": "dog-swimming-river-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-dog"
+        },
+        {
+          "id": "dog-swimming-river-doing",
+          "slot": "doing",
+          "prompt": "What is it doing?",
+          "correctOptionId": "doing-swimming"
+        },
+        {
+          "id": "dog-swimming-river-where",
+          "slot": "where",
+          "prompt": "Where is it?",
+          "correctOptionId": "where-river"
+        }
+      ]
+    },
+    {
+      "id": "boy-licking-icecream",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/boy_licking_icecream_blank.webp",
+      "targetImageAlt": "A boy licking an ice cream.",
+      "steps": [
+        {
+          "id": "boy-licking-icecream-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-boy"
+        },
+        {
+          "id": "boy-licking-icecream-doing",
+          "slot": "doing",
+          "prompt": "What is he doing?",
+          "correctOptionId": "doing-licking"
+        },
+        {
+          "id": "boy-licking-icecream-what",
+          "slot": "what",
+          "prompt": "What does he have?",
+          "correctOptionId": "what-ice-cream"
+        },
+        {
+          "id": "boy-licking-icecream-to-who",
+          "slot": "to-who",
+          "prompt": "To who?",
+          "correctOptionId": "to-who-girl"
+        },
+        {
+          "id": "boy-licking-icecream-when",
+          "slot": "when",
+          "prompt": "When?",
+          "correctOptionId": "when-in-summer"
+        }
+      ]
+    }
+  ]
+}

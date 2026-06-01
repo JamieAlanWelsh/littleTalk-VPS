@@ -6,39 +6,48 @@
 
 import { useEffect, useState } from "react";
 import type { SentenceMatchingOptions } from "../../lib/types";
-import Button from "../../components/Button/Button";
-import styles from "../../layouts/exerciseStartScreen/ExerciseStartScreen.module.css";
+import styles from "./ThinkAndFindSettingsScreen.module.css";
 
 interface ThinkAndFindSettingsScreenProps {
-  onSetOptions: (options: SentenceMatchingOptions) => void;
+    onSetOptions: (options: SentenceMatchingOptions) => void;
 }
 
 export const ThinkAndFindSettingsScreen = ({
-  onSetOptions,
+    onSetOptions,
 }: ThinkAndFindSettingsScreenProps) => {
-  const [selectedNumOptions, setSelectedNumOptions] = useState(2);
-  const optionCounts = [2, 3, 4, 5, 6];
+    const [selectedNumOptions, setSelectedNumOptions] = useState(3);
+    const optionCounts = [2, 3, 4, 5, 6];
 
-  useEffect(() => {
-    onSetOptions({ numberOfOptions: selectedNumOptions });
-  }, [selectedNumOptions, onSetOptions]);
+    useEffect(() => {
+        onSetOptions({ numberOfOptions: selectedNumOptions });
+    }, [selectedNumOptions, onSetOptions]);
 
-  return (
-    <>
-      <h3 className={styles.sectionTitle}>Number of picture options:</h3>
-      <div className={styles.optionsList}>
-        {optionCounts.map((count) => (
-          <Button
-            key={count}
-            variant={selectedNumOptions === count ? "primary" : "secondary"}
-            onClick={() => setSelectedNumOptions(count)}
-            width={"100%"}
-            label={`${count} ${count === 1 ? "option" : "options"}`}
-          />
-        ))}
-      </div>
-    </>
-  );
+    return (
+        <div className={styles.section}>
+            <div className={styles.optionsCard}>
+                <label
+                    htmlFor="think-and-find-choice-count"
+                    className={styles.sectionLabel}
+                >
+                    Choices per round
+                </label>
+                <select
+                    id="think-and-find-choice-count"
+                    value={selectedNumOptions}
+                    onChange={(event) =>
+                        setSelectedNumOptions(Number(event.target.value))
+                    }
+                    className={styles.optionsSelect}
+                >
+                    {optionCounts.map((count) => (
+                        <option key={count} value={count}>
+                            {count} {count === 1 ? "choice" : "choices"}
+                        </option>
+                    ))}
+                </select>
+            </div>
+        </div>
+    );
 };
 
 export default ThinkAndFindSettingsScreen;

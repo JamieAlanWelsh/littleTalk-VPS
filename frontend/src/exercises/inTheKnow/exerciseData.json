@@ -1,0 +1,1503 @@
+{
+  "rounds": 5,
+  "scenePacks": [
+    {
+      "id": "at_the_cinema",
+      "stepOneImageUrl": "/static/exercise_assets/in_the_know/at_the_cinema/at_the_cinema_base.webp",
+      "stepOneAltText": "Family at the cinema",
+      "rounds": [
+        {
+          "id": "at-the-cinema-q1-feelings",
+          "openingPrompt": "How are the family feeling?",
+          "completionPrompt": "They feel scared/frightened.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/at_the_cinema/at_the_cinema_circled_facial_expressions.webp",
+          "stepTwoAltText": "At the cinema scene with facial expressions circled",
+          "correctOptionLabel": "They feel scared/frightened.",
+          "distractorOptionLabels": [
+            "They feel excited about the snacks.",
+            "They are laughing at a joke.",
+            "They are sleepy and tired.",
+            "They are bored with the film.",
+            "They are angry with each other.",
+            "They are cheering loudly.",
+            "They are practising singing.",
+            "They are happy because the movie ended.",
+            "They are deciding what drinks to buy.",
+            "They are waiting for a bus."
+          ]
+        },
+        {
+          "id": "at-the-cinema-q2-movie-context",
+          "openingPrompt": "What do you think is happening in the movie?",
+          "completionPrompt": "Something scary or surprising is happening.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/at_the_cinema/at_the_cinema_circled_facial_expressions.webp",
+          "stepTwoAltText": "At the cinema scene with facial expressions circled",
+          "correctOptionLabel": "Something scary or surprising is happening.",
+          "distractorOptionLabels": [
+            "A character is baking a cake.",
+            "The movie is about a football match.",
+            "Someone is teaching maths.",
+            "A puppy is learning tricks.",
+            "The film has finished and the lights are on.",
+            "The characters are having a picnic.",
+            "A singer is performing on stage.",
+            "The family are watching the weather forecast.",
+            "Someone is reading a bedtime story.",
+            "The movie is showing instructions for cooking pasta."
+          ]
+        },
+        {
+          "id": "at-the-cinema-q3-location",
+          "openingPrompt": "Where are the family?",
+          "completionPrompt": "They are at the cinema/movie theatre.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/at_the_cinema/at_the_cinema_circled_popcorn.webp",
+          "stepTwoAltText": "At the cinema scene with popcorn circled",
+          "correctOptionLabel": "They are at the cinema/movie theatre.",
+          "distractorOptionLabels": [
+            "At a restaurant.",
+            "In a classroom.",
+            "At the airport.",
+            "In a supermarket.",
+            "At the zoo.",
+            "On a train.",
+            "In a doctor's waiting room.",
+            "At a football stadium.",
+            "In a library.",
+            "At a swimming pool."
+          ]
+        },
+        {
+          "id": "at-the-cinema-q4-covering-eyes",
+          "openingPrompt": "Why is the girl covering her eyes?",
+          "completionPrompt": "She thinks the movie is scary.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/at_the_cinema/at_the_cinema_circled_girls_facial_expression.webp",
+          "stepTwoAltText": "At the cinema scene with the girl's facial expression circled",
+          "correctOptionLabel": "She thinks the movie is scary.",
+          "distractorOptionLabels": [
+            "She is playing peekaboo.",
+            "She has popcorn in her eyes.",
+            "She is counting to ten.",
+            "She is pretending to sleep.",
+            "She is hiding from her brother.",
+            "She is putting on glasses.",
+            "She is rubbing her face because she is tired.",
+            "She is practising a game.",
+            "She does not want to eat popcorn.",
+            "She is listening to music."
+          ]
+        },
+        {
+          "id": "at-the-cinema-q5-most-frightened",
+          "openingPrompt": "Who seems the most frightened?",
+          "completionPrompt": "The little girl.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/at_the_cinema/at_the_cinema_circled_girls_facial_expression.webp",
+          "stepTwoAltText": "At the cinema scene with the girl's facial expression circled",
+          "correctOptionLabel": "The little girl.",
+          "distractorOptionLabels": [
+            "The dad because he is holding popcorn.",
+            "The mum because she is sitting at the end.",
+            "The boy because he is wearing blue.",
+            "The people sitting behind them.",
+            "The cinema worker.",
+            "Nobody — everyone looks relaxed.",
+            "The person operating the projector.",
+            "The popcorn seller.",
+            "The family pet.",
+            "The movie characters on the screen."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "birthday",
+      "stepOneImageUrl": "/static/exercise_assets/in_the_know/birthday/birthday_base.webp",
+      "stepOneAltText": "Girl celebrating her birthday",
+      "rounds": [
+        {
+          "id": "birthday-q1-what-day",
+          "openingPrompt": "What day is it today?",
+          "completionPrompt": "It's the girl's birthday.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/birthday/birthday_circled_presents_cake_etc.webp",
+          "stepTwoAltText": "Birthday scene with cards, presents, banner, and cake circled",
+          "correctOptionLabel": "The girl's birthday",
+          "distractorOptionLabels": [
+            "The first day of school",
+            "Christmas Day",
+            "Sports Day",
+            "Halloween",
+            "The girl's first swimming lesson",
+            "A normal school day",
+            "The family's holiday",
+            "The dad's birthday",
+            "Cleaning day",
+            "Moving house day"
+          ]
+        },
+        {
+          "id": "birthday-q2-feeling",
+          "openingPrompt": "How is she feeling?",
+          "completionPrompt": "She feels happy.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/birthday/birthday_circled_facial_expression.webp",
+          "stepTwoAltText": "Birthday scene with facial expression circled",
+          "correctOptionLabel": "Happy",
+          "distractorOptionLabels": [
+            "Angry because she lost a toy",
+            "Nervous about a test",
+            "Sleepy after waking up",
+            "Sad because it is raining",
+            "Cross with her friends",
+            "Bored during homework",
+            "Frightened of the cake",
+            "Worried about being late",
+            "Hungry because there is no food",
+            "Upset because she dropped something"
+          ]
+        },
+        {
+          "id": "birthday-q3-age",
+          "openingPrompt": "How old is she turning?",
+          "completionPrompt": "She is turning 7.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/birthday/birthday_circled_candles.webp",
+          "stepTwoAltText": "Birthday scene with candles circled",
+          "correctOptionLabel": "7",
+          "distractorOptionLabels": [
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "9",
+            "10",
+            "30",
+            "100",
+            "8"
+          ]
+        },
+        {
+          "id": "birthday-q4-season",
+          "openingPrompt": "What season might it be?",
+          "completionPrompt": "It might be summer.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/birthday/birthday_circled_outside.webp",
+          "stepTwoAltText": "Birthday scene with outside weather clues circled",
+          "correctOptionLabel": "Summer",
+          "distractorOptionLabels": [
+            "Spring",
+            "Autumn",
+            "Winter",
+            "Rainy season",
+            "Monsoon season",
+            "Hurricane season",
+            "Night time",
+            "Snowy season",
+            "Day time",
+            "Christmas"
+          ]
+        },
+        {
+          "id": "birthday-q5-who-bought-presents",
+          "openingPrompt": "Who do you think bought her the presents?",
+          "completionPrompt": "Family and/or friends bought the presents.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/birthday/birthday_base.webp",
+          "stepTwoAltText": "Birthday scene used for inference question",
+          "correctOptionLabel": "Family and/or friends",
+          "distractorOptionLabels": [
+            "A teacher",
+            "A bus driver",
+            "A postman",
+            "A stranger",
+            "The family pet",
+            "A dentist",
+            "A doctor",
+            "A librarian",
+            "A vet",
+            "An astronaut"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "camping",
+      "stepOneImageUrl": "/static/exercise_assets/in_the_know/camping/camping_base.webp",
+      "stepOneAltText": "Children camping",
+      "rounds": [
+        {
+          "id": "camping-q1-what-are-children-doing",
+          "openingPrompt": "What are the children doing?",
+          "completionPrompt": "They are camping.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/camping/camping_circled_tent_.webp",
+          "stepTwoAltText": "Camping scene with tent and equipment circled",
+          "correctOptionLabel": "Camping",
+          "distractorOptionLabels": [
+            "Surfing",
+            "Swimming",
+            "Walking",
+            "Running",
+            "Riding bikes",
+            "Reading",
+            "Singing",
+            "Dancing",
+            "Rock climbing",
+            "Watching TV"
+          ]
+        },
+        {
+          "id": "camping-q2-time-of-day",
+          "openingPrompt": "What time of day do you think it is?",
+          "completionPrompt": "It is nighttime.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/camping/camping_circled_night_sky_.webp",
+          "stepTwoAltText": "Camping scene with the sky circled",
+          "correctOptionLabel": "Nighttime",
+          "distractorOptionLabels": [
+            "Day time",
+            "Afternoon",
+            "Morning",
+            "Breakfast time",
+            "Lunchtime",
+            "Dinner time",
+            "Play time at school",
+            "Assembly time",
+            "Evening",
+            "Midnight"
+          ]
+        },
+        {
+          "id": "camping-q3-fire-question",
+          "openingPrompt": "Why are the children sitting around the fire?",
+          "completionPrompt": "They are sitting around the fire to roast marshmallows.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/camping/camping_circled_cooking_marshmallows_.webp",
+          "stepTwoAltText": "Camping scene with cooking ingredients and marshmallows on sticks circled",
+          "correctOptionLabel": "To roast marshmallows",
+          "distractorOptionLabels": [
+            "To do their homework",
+            "To watch television",
+            "To play football",
+            "To go shopping",
+            "To clean the tent",
+            "To catch a bus",
+            "To have a maths lesson",
+            "To visit the dentist",
+            "To wash the dishes",
+            "To ride bicycles"
+          ]
+        },
+        {
+          "id": "camping-q4-sleeping-bags",
+          "openingPrompt": "Why have the children brought sleeping bags?",
+          "completionPrompt": "They have brought sleeping bags because they are staying overnight.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/camping/camping_circled_night_sky_.webp",
+          "stepTwoAltText": "Camping scene with the night sky circled",
+          "correctOptionLabel": "They are staying overnight",
+          "distractorOptionLabels": [
+            "To keep their clothes clean.",
+            "To carry their camping equipment.",
+            "To sit on while they eat marshmallows.",
+            "To stay warm during the day.",
+            "To store their food.",
+            "To use as extra pillows.",
+            "To protect themselves from rain.",
+            "To hide their belongings.",
+            "To make the campsite look colourful.",
+            "To help them roast marshmallows."
+          ]
+        },
+        {
+          "id": "camping-q5-feelings",
+          "openingPrompt": "How are the children feeling?",
+          "completionPrompt": "They are feeling happy and excited.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/camping/camping_base.webp",
+          "stepTwoAltText": "Camping scene used for feelings question",
+          "correctOptionLabel": "Happy and excited",
+          "distractorOptionLabels": [
+            "Angry because they are arguing.",
+            "Sad because they want to go home.",
+            "Bored because there is nothing to do.",
+            "Nervous about taking a test.",
+            "Embarrassed because they made a mistake.",
+            "Frustrated because they cannot find something.",
+            "Lonely because nobody is with them.",
+            "Disappointed because the trip was cancelled.",
+            "Worried because they are lost.",
+            "Sleepy because they have just woken up."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cooking_gone_wrong",
+      "stepOneImageUrl": "/static/exercise_assets/in_the_know/cooking_gone_wrong/cooking_gone_wrong_base.webp",
+      "stepOneAltText": "Girl in a kitchen after cooking gone wrong",
+      "rounds": [
+        {
+          "id": "cooking-q1-how-is-the-girl-feeling",
+          "openingPrompt": "How is the girl feeling?",
+          "completionPrompt": "She is worried.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/cooking_gone_wrong/cooking_gone_wrong_circled_facial_expression.webp",
+          "stepTwoAltText": "Cooking gone wrong scene with the girl's facial expression circled",
+          "correctOptionLabel": "Worried",
+          "distractorOptionLabels": [
+            "Excited about opening presents.",
+            "Happy because she won a prize.",
+            "Relaxed and calm.",
+            "Proud of her artwork.",
+            "Sleepy after a long day.",
+            "Bored because she has nothing to do.",
+            "Amused by a funny joke.",
+            "Confident about a test.",
+            "Cheerful because she is on holiday.",
+            "Grateful for a birthday gift."
+          ]
+        },
+        {
+          "id": "cooking-q2-what-happened",
+          "openingPrompt": "What has happened?",
+          "completionPrompt": "The food in the oven is burning.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/cooking_gone_wrong/cooking_gone_wrong_circled_smoking_oven.webp",
+          "stepTwoAltText": "Cooking gone wrong scene with the smoky oven circled",
+          "correctOptionLabel": "The food in the oven is burning",
+          "distractorOptionLabels": [
+            "The mixing bowl has broken.",
+            "The girl has dropped the cake on the floor.",
+            "The electricity has stopped working.",
+            "The fridge door has been left open.",
+            "The measuring jug is leaking.",
+            "The recipe book is missing.",
+            "The girl has run out of flour.",
+            "The sink is overflowing.",
+            "The utensils have fallen off the counter.",
+            "The girl cannot find the cake tin."
+          ]
+        },
+        {
+          "id": "cooking-q3-why-smoke",
+          "openingPrompt": "Why is there smoke in the kitchen?",
+          "completionPrompt": "The cake has been left in the oven for too long.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/cooking_gone_wrong/cooking_gone_wrong_circled_smoking_oven.webp",
+          "stepTwoAltText": "Cooking gone wrong scene with the smoky oven circled",
+          "correctOptionLabel": "The cake has been left in the oven for too long",
+          "distractorOptionLabels": [
+            "The girl is boiling water for tea.",
+            "Someone is using a smoke machine.",
+            "The window is letting fog into the house.",
+            "The girl is dusting the cupboards.",
+            "The kettle is making steam.",
+            "Someone is having a barbecue outside.",
+            "The fridge is too cold.",
+            "The washing machine is running.",
+            "The girl is cleaning the oven.",
+            "A cloud has drifted into the kitchen."
+          ]
+        },
+        {
+          "id": "cooking-q4-before-smoke",
+          "openingPrompt": "What was the girl doing before she noticed the smoke?",
+          "completionPrompt": "She was tidying up after baking.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/cooking_gone_wrong/cooking_gone_wrong_circled_dirty_dishes.webp",
+          "stepTwoAltText": "Cooking gone wrong scene with dirty dishes and utensils circled",
+          "correctOptionLabel": "Tidying up after baking",
+          "distractorOptionLabels": [
+            "Watching television.",
+            "Playing a video game.",
+            "Reading a book.",
+            "Walking the dog.",
+            "Doing her homework.",
+            "Talking on the phone.",
+            "Watering plants in the garden.",
+            "Riding her bicycle.",
+            "Drawing a picture.",
+            "Looking for her shoes."
+          ]
+        },
+        {
+          "id": "cooking-q5-next-step",
+          "openingPrompt": "What do you think the girl will do next?",
+          "completionPrompt": "She will ask an adult to help her take the cake out of the oven.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/cooking_gone_wrong/cooking_gone_wrong_base.webp",
+          "stepTwoAltText": "Cooking gone wrong scene used for the next step question",
+          "correctOptionLabel": "The girl will ask an adult to help her take the cake out of the oven",
+          "distractorOptionLabels": [
+            "She will start baking another cake.",
+            "She will go outside to play.",
+            "She will sit down and watch television.",
+            "She will begin her homework.",
+            "She will make a sandwich.",
+            "She will go to bed.",
+            "She will wash the windows.",
+            "She will decorate the kitchen.",
+            "She will read a storybook.",
+            "She will leave the house to go shopping."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dentist",
+      "stepOneImageUrl": "/static/exercise_assets/in_the_know/dentist/dentist_base.webp",
+      "stepOneAltText": "Boy at the dentist",
+      "rounds": [
+        {
+          "id": "dentist-q1-where-is-the-boy",
+          "openingPrompt": "Where is the boy?",
+          "completionPrompt": "He is at the dentist.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/dentist/dentist_circled_tooth_on_wall.webp",
+          "stepTwoAltText": "Dentist scene with the tooth on the wall circled",
+          "correctOptionLabel": "At the dentist",
+          "distractorOptionLabels": [
+            "At the cinema.",
+            "At school.",
+            "At the supermarket.",
+            "At a restaurant.",
+            "At the library.",
+            "At a swimming pool.",
+            "At the airport.",
+            "At a football stadium.",
+            "At a train station.",
+            "At the zoo."
+          ]
+        },
+        {
+          "id": "dentist-q2-feeling",
+          "openingPrompt": "How is the boy feeling?",
+          "completionPrompt": "He is nervous.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/dentist/dentist_circled_facial_expression.webp",
+          "stepTwoAltText": "Dentist scene with the boy's facial expression circled",
+          "correctOptionLabel": "Nervous",
+          "distractorOptionLabels": [
+            "Excited.",
+            "Relaxed.",
+            "Proud.",
+            "Silly.",
+            "Sleepy.",
+            "Confident.",
+            "Cheerful.",
+            "Amused.",
+            "Energetic.",
+            "Curious."
+          ]
+        },
+        {
+          "id": "dentist-q3-why-nervous",
+          "openingPrompt": "Why do you think the boy might be nervous?",
+          "completionPrompt": "He doesn't like going to the dentist.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/dentist/dentist_circled_tooth_on_wall.webp",
+          "stepTwoAltText": "Dentist scene with the tooth poster circled",
+          "correctOptionLabel": "He doesn’t like going to the dentist",
+          "distractorOptionLabels": [
+            "He forgot his homework.",
+            "He lost his football.",
+            "He is late for school.",
+            "He cannot find his shoes.",
+            "He is waiting for a bus.",
+            "He has lost his lunchbox.",
+            "He forgot his birthday.",
+            "He cannot find his favourite toy.",
+            "He is choosing a book.",
+            "He is waiting for a swimming lesson."
+          ]
+        },
+        {
+          "id": "dentist-q4-what-next",
+          "openingPrompt": "What do you think will happen next?",
+          "completionPrompt": "He will be called in for his appointment.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/dentist/dentist_circled_reception_lady.webp",
+          "stepTwoAltText": "Dentist scene with the reception lady circled",
+          "correctOptionLabel": "He will be called in for his appointment",
+          "distractorOptionLabels": [
+            "He will start a maths lesson.",
+            "He will buy some groceries.",
+            "He will play football outside.",
+            "He will catch a train.",
+            "He will go swimming.",
+            "He will watch a film.",
+            "He will walk his dog.",
+            "He will bake a cake.",
+            "He will go camping.",
+            "He will have a picnic."
+          ]
+        },
+        {
+          "id": "dentist-q5-thinking",
+          "openingPrompt": "What do you think he might be thinking?",
+          "completionPrompt": "He might be thinking, 'I hope my appointment goes well.'",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/dentist/dentist_circled_facial_expression.webp",
+          "stepTwoAltText": "Dentist scene with the boy's facial expression circled",
+          "correctOptionLabel": "I hope my appointment goes well",
+          "distractorOptionLabels": [
+            "I can't wait to play football.",
+            "I wonder what I'll have for dinner.",
+            "I hope it snows today.",
+            "I want to go swimming.",
+            "I can't wait to open my birthday presents.",
+            "I need to walk my dog.",
+            "I wonder what's on television.",
+            "I hope my team wins the match.",
+            "I want to go camping.",
+            "I should tidy my room."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "early_morning",
+      "stepOneImageUrl": "/static/exercise_assets/in_the_know/early_morning/early_morning_base.webp",
+      "stepOneAltText": "Girl getting ready early in the morning",
+      "rounds": [
+        {
+          "id": "early-morning-q1-time",
+          "openingPrompt": "What is the time?",
+          "completionPrompt": "It is 7:30am.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/early_morning/early_morning_circled_clocks.webp",
+          "stepTwoAltText": "Early morning scene with the clocks circled",
+          "correctOptionLabel": "7:30am",
+          "distractorOptionLabels": [
+            "6.00",
+            "6.30",
+            "6.45",
+            "7.00",
+            "7.15",
+            "7.45",
+            "8.00",
+            "9.00",
+            "10.00",
+            "11.00"
+          ]
+        },
+        {
+          "id": "early-morning-q2-feeling",
+          "openingPrompt": "How is the girl feeling?",
+          "completionPrompt": "She is tired.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/early_morning/early_morning_circled_facial_expression.webp",
+          "stepTwoAltText": "Early morning scene with the girl's facial expression circled",
+          "correctOptionLabel": "Tired",
+          "distractorOptionLabels": [
+            "Excited",
+            "Angry",
+            "Nervous",
+            "Proud",
+            "Embarrassed",
+            "Confused",
+            "Worried",
+            "Silly",
+            "Frightened",
+            "Surprised"
+          ]
+        },
+        {
+          "id": "early-morning-q3-going-today",
+          "openingPrompt": "Where do you think the girl is going today?",
+          "completionPrompt": "She is going to school.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/early_morning/early_morning_circled_school_bag.webp",
+          "stepTwoAltText": "Early morning scene with the school bag circled",
+          "correctOptionLabel": "To school",
+          "distractorOptionLabels": [
+            "The beach",
+            "The cinema",
+            "The zoo",
+            "A birthday party",
+            "The swimming pool",
+            "A campsite",
+            "The dentist",
+            "The supermarket",
+            "The airport",
+            "A football match"
+          ]
+        },
+        {
+          "id": "early-morning-q4-before-picture",
+          "openingPrompt": "What was the girl doing before this picture was taken?",
+          "completionPrompt": "She was sleeping.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/early_morning/early_morning_circled_pyjamas.webp",
+          "stepTwoAltText": "Early morning scene with pyjamas circled",
+          "correctOptionLabel": "Sleeping",
+          "distractorOptionLabels": [
+            "Playing football",
+            "Baking a cake",
+            "Shopping",
+            "Swimming",
+            "Walking her dog",
+            "Reading in the library",
+            "Riding a bicycle",
+            "Camping",
+            "Visiting the dentist",
+            "Watching a film at the cinema"
+          ]
+        },
+        {
+          "id": "early-morning-q5-backpack",
+          "openingPrompt": "Why do you think her backpack is packed?",
+          "completionPrompt": "She is getting ready to go to school.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/early_morning/early_morning_circled_school_bag.webp",
+          "stepTwoAltText": "Early morning scene with the school bag circled",
+          "correctOptionLabel": "She is getting ready to go to school",
+          "distractorOptionLabels": [
+            "She is moving house.",
+            "She is going camping.",
+            "She is going shopping.",
+            "She is going swimming.",
+            "She is going to the zoo.",
+            "She is visiting a football stadium.",
+            "She is going to a birthday party.",
+            "She is travelling on an aeroplane.",
+            "She is going to a restaurant.",
+            "She is walking her dog."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "feeling_unwell",
+      "stepOneImageUrl": "/static/exercise_assets/in_the_know/feeling_unwell/feeling_unwell_base.webp",
+      "stepOneAltText": "Boy feeling unwell at home",
+      "rounds": [
+        {
+          "id": "feeling-unwell-q1-feeling",
+          "openingPrompt": "How is the boy feeling?",
+          "completionPrompt": "He is unwell.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/feeling_unwell/feeling_unwell_circled_facial_expression.webp",
+          "stepTwoAltText": "Feeling unwell scene with the facial expression circled",
+          "correctOptionLabel": "Unwell",
+          "distractorOptionLabels": [
+            "Excited about a party.",
+            "Happy and energetic.",
+            "Relaxed after a holiday.",
+            "Proud of his school work.",
+            "Amused by a funny joke.",
+            "Confident about a test.",
+            "Cheerful because he won a game.",
+            "Surprised by a present.",
+            "Curious about a new toy.",
+            "Bored by his surroundings."
+          ]
+        },
+        {
+          "id": "feeling-unwell-q2-not-school",
+          "openingPrompt": "Why do you think he is not at school today?",
+          "completionPrompt": "He is too unwell to go to school.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/feeling_unwell/feeling_unwell_circled_facial_expression.webp",
+          "stepTwoAltText": "Feeling unwell scene with the facial expression circled",
+          "correctOptionLabel": "He is too unwell to go to school",
+          "distractorOptionLabels": [
+            "It is the summer holidays.",
+            "He is at a birthday party.",
+            "He is visiting the zoo.",
+            "He is going camping.",
+            "He is playing football.",
+            "He is helping in a shop.",
+            "He is swimming at the leisure centre.",
+            "He is watching a film at the cinema.",
+            "He is travelling on a plane.",
+            "He is spending the day at the beach."
+          ]
+        },
+        {
+          "id": "feeling-unwell-q3-clue",
+          "openingPrompt": "Which clue best shows that the boy is unwell?",
+          "completionPrompt": "The thermometer best shows that he is unwell.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/feeling_unwell/feeling_unwell_circled_thermometer.webp",
+          "stepTwoAltText": "Feeling unwell scene with the thermometer circled",
+          "correctOptionLabel": "Thermometer",
+          "distractorOptionLabels": [
+            "The green sofa.",
+            "The orange cushion.",
+            "The bookshelf.",
+            "The framed family photo.",
+            "The window.",
+            "The curtain.",
+            "The lamp.",
+            "The wooden table.",
+            "The plant.",
+            "The blanket."
+          ]
+        },
+        {
+          "id": "feeling-unwell-q4-would-rather",
+          "openingPrompt": "What do you think he would rather be doing?",
+          "completionPrompt": "He would rather be playing with his friends at school.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/feeling_unwell/feeling_unwell_base.webp",
+          "stepTwoAltText": "Feeling unwell scene used for the next question",
+          "correctOptionLabel": "Playing with his friends at school",
+          "distractorOptionLabels": [
+            "Taking more medicine.",
+            "Buying tissues.",
+            "Sitting on the sofa all day.",
+            "Looking at the thermometer.",
+            "Drinking another hot drink.",
+            "Wrapping himself in another blanket.",
+            "Counting tissues on the table.",
+            "Reading the medicine bottle.",
+            "Watching the rain through the window.",
+            "Staying poorly for longer."
+          ]
+        },
+        {
+          "id": "feeling-unwell-q5-sick-with",
+          "openingPrompt": "What do you think the boy is sick with?",
+          "completionPrompt": "He might have a cold.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/feeling_unwell/feeling_unwell_circled_tissues_medicine.webp",
+          "stepTwoAltText": "Feeling unwell scene with tissues and medicine circled",
+          "correctOptionLabel": "A cold",
+          "distractorOptionLabels": [
+            "A broken arm.",
+            "A toothache.",
+            "A sprained ankle.",
+            "Sunburn.",
+            "A bee sting.",
+            "A stomach ache from eating too much cake.",
+            "An ear infection.",
+            "A black eye.",
+            "A cut on his finger.",
+            "Hay fever."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "holiday",
+      "stepOneImageUrl": "/static/exercise_assets/in_the_know/holiday/holiday_base.webp",
+      "stepOneAltText": "Family preparing for a holiday",
+      "rounds": [
+        {
+          "id": "holiday-q1-going-where",
+          "openingPrompt": "Where do you think the family are going?",
+          "completionPrompt": "They are going on holiday.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/holiday/holiday_circled_passports.webp",
+          "stepTwoAltText": "Holiday scene with passports circled",
+          "correctOptionLabel": "On holiday",
+          "distractorOptionLabels": [
+            "To school",
+            "To the supermarket",
+            "To the dentist",
+            "To a football match",
+            "To the library",
+            "To a restaurant",
+            "To the swimming pool",
+            "To a birthday party",
+            "To the cinema",
+            "To the park"
+          ]
+        },
+        {
+          "id": "holiday-q2-feeling",
+          "openingPrompt": "How are they feeling?",
+          "completionPrompt": "They are excited.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/holiday/holiday_circled_facial_expressions.webp",
+          "stepTwoAltText": "Holiday scene with the family's facial expressions circled",
+          "correctOptionLabel": "Excited",
+          "distractorOptionLabels": [
+            "Angry",
+            "Nervous",
+            "Bored",
+            "Tired",
+            "Lonely",
+            "Confused",
+            "Disappointed",
+            "Frightened",
+            "Sad",
+            "Cross"
+          ]
+        },
+        {
+          "id": "holiday-q3-travelling-country",
+          "openingPrompt": "What clue best shows the family are travelling to another country?",
+          "completionPrompt": "The passports best show they are travelling to another country.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/holiday/holiday_circled_passports.webp",
+          "stepTwoAltText": "Holiday scene with the passports circled",
+          "correctOptionLabel": "Passports",
+          "distractorOptionLabels": [
+            "The front door",
+            "The family photograph",
+            "The backpack",
+            "The shoes",
+            "The plant",
+            "The coat hooks",
+            "The sunglasses",
+            "The hat",
+            "The floor",
+            "The wall"
+          ]
+        },
+        {
+          "id": "holiday-q4-before-picture",
+          "openingPrompt": "What was the family probably doing before this picture was taken?",
+          "completionPrompt": "They were packing for their holiday.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/holiday/holiday_circled_suitcases.webp",
+          "stepTwoAltText": "Holiday scene with suitcases circled",
+          "correctOptionLabel": "Packing for their holiday",
+          "distractorOptionLabels": [
+            "Baking a cake.",
+            "Watching television.",
+            "Playing football.",
+            "Swimming.",
+            "Gardening.",
+            "Walking the dog.",
+            "Reading books.",
+            "Decorating the house.",
+            "Doing homework.",
+            "Cleaning the kitchen."
+          ]
+        },
+        {
+          "id": "holiday-q5-weather",
+          "openingPrompt": "What do you think the weather will be like on their holiday?",
+          "completionPrompt": "It will be hot and sunny.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/holiday/holiday_circled_hats.webp",
+          "stepTwoAltText": "Holiday scene with hats circled",
+          "correctOptionLabel": "Hot and sunny",
+          "distractorOptionLabels": [
+            "Cold and snowy.",
+            "Frosty with icy roads.",
+            "Wet and stormy all day.",
+            "Foggy with poor visibility.",
+            "Windy and freezing.",
+            "Hailing every afternoon.",
+            "Snowing heavily.",
+            "Cold and rainy.",
+            "Covered in ice and frost.",
+            "Hot and cloudy"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "lost_football_game",
+      "stepOneImageUrl": "/static/exercise_assets/in_the_know/lost_football_game/lost_football_game_base.webp",
+      "stepOneAltText": "Boy after a lost football game",
+      "rounds": [
+        {
+          "id": "lost-football-q1-feeling",
+          "openingPrompt": "How is the boy feeling?",
+          "completionPrompt": "He is sad and disappointed.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/lost_football_game/lost_football_game_circled_facial_expression.webp",
+          "stepTwoAltText": "Lost football game scene with the boy's facial expression circled",
+          "correctOptionLabel": "Sad and disappointed",
+          "distractorOptionLabels": [
+            "Excited",
+            "Proud",
+            "Cheerful",
+            "Relaxed",
+            "Amused",
+            "Energetic",
+            "Confident",
+            "Surprised",
+            "Curious",
+            "Relieved"
+          ]
+        },
+        {
+          "id": "lost-football-q2-what-happened",
+          "openingPrompt": "What has happened?",
+          "completionPrompt": "His football team have lost the match.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/lost_football_game/lost_football_game_circled_winning_team_trophy.webp",
+          "stepTwoAltText": "Lost football game scene with the winning team trophy circled",
+          "correctOptionLabel": "His football team have lost the match",
+          "distractorOptionLabels": [
+            "His team has won the trophy.",
+            "The match has not started yet.",
+            "He forgot his football boots.",
+            "He is waiting to play.",
+            "The referee cancelled the game.",
+            "He is practising by himself.",
+            "His team is having lunch.",
+            "The players are changing teams.",
+            "He has just arrived at the pitch.",
+            "They are choosing team captains."
+          ]
+        },
+        {
+          "id": "lost-football-q3-winning-team-feeling",
+          "openingPrompt": "How do you think the winning team is feeling?",
+          "completionPrompt": "The winning team are proud and happy.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/lost_football_game/lost_football_game_circled_winning_team_expressions.webp",
+          "stepTwoAltText": "Lost football game scene with the winning team expressions circled",
+          "correctOptionLabel": "Proud and happy",
+          "distractorOptionLabels": [
+            "Bored",
+            "Lonely",
+            "Nervous",
+            "Sleepy",
+            "Confused",
+            "Embarrassed",
+            "Worried",
+            "Frightened",
+            "Disappointed",
+            "Miserable"
+          ]
+        },
+        {
+          "id": "lost-football-q4-thinking",
+          "openingPrompt": "What do you think the boy might be thinking?",
+          "completionPrompt": "I wish we had won.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/lost_football_game/lost_football_game_base.webp",
+          "stepTwoAltText": "Lost football game scene used for the thinking question",
+          "correctOptionLabel": "I wish we had won",
+          "distractorOptionLabels": [
+            "I can't wait to go swimming.",
+            "I wonder what is for dinner.",
+            "I want to visit the zoo.",
+            "I hope it snows tomorrow.",
+            "I can't wait for my birthday.",
+            "I want to go camping.",
+            "I hope I see a movie later.",
+            "I want to buy a new backpack.",
+            "I wonder what homework I have.",
+            "I can't wait to go shopping."
+          ]
+        },
+        {
+          "id": "lost-football-q5-clue",
+          "openingPrompt": "Which clue tells you which team won the match?",
+          "completionPrompt": "The trophy tells you which team won the match.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/lost_football_game/lost_football_game_circled_winning_team_trophy.webp",
+          "stepTwoAltText": "Lost football game scene with the trophy circled",
+          "correctOptionLabel": "The trophy",
+          "distractorOptionLabels": [
+            "The muddy football.",
+            "The bench.",
+            "The water bottle.",
+            "The rain clouds.",
+            "The goalposts.",
+            "The coach's shoes.",
+            "The trees.",
+            "The players' socks.",
+            "The dugout.",
+            "The football bag."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "new_baby",
+      "stepOneImageUrl": "/static/exercise_assets/in_the_know/new_baby/new_baby_base.webp",
+      "stepOneAltText": "Boy with a new baby in the family",
+      "rounds": [
+        {
+          "id": "new-baby-q1-who-is-baby",
+          "openingPrompt": "Who do you think the baby is?",
+          "completionPrompt": "The baby is the boy's sibling.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/new_baby/new_baby_circled_balloon.webp",
+          "stepTwoAltText": "New baby scene with the welcome balloon circled",
+          "correctOptionLabel": "The boy’s sibling",
+          "distractorOptionLabels": [
+            "The boy's teacher.",
+            "The family's pet.",
+            "The neighbour's baby.",
+            "The dentist's baby.",
+            "The football coach's baby.",
+            "The shopkeeper's baby.",
+            "The babysitter's baby.",
+            "A baby from a television show.",
+            "The librarian's baby.",
+            "A baby the family met in the park."
+          ]
+        },
+        {
+          "id": "new-baby-q2-feeling",
+          "openingPrompt": "How is the boy feeling?",
+          "completionPrompt": "He is happy and excited.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/new_baby/new_baby_circled_facial_expression.webp",
+          "stepTwoAltText": "New baby scene with the boy's facial expression circled",
+          "correctOptionLabel": "Happy and excited",
+          "distractorOptionLabels": [
+            "Angry",
+            "Bored",
+            "Lonely",
+            "Nervous",
+            "Frightened",
+            "Disappointed",
+            "Miserable",
+            "Sleepy",
+            "Confused",
+            "Cross"
+          ]
+        },
+        {
+          "id": "new-baby-q3-clue",
+          "openingPrompt": "What clue suggests this is a new family member?",
+          "completionPrompt": "The welcome balloon suggests this is a new family member.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/new_baby/new_baby_circled_balloon.webp",
+          "stepTwoAltText": "New baby scene with the welcome balloon circled",
+          "correctOptionLabel": "Welcome balloon",
+          "distractorOptionLabels": [
+            "The blanket.",
+            "The teddy bear.",
+            "The bookshelf.",
+            "The cot.",
+            "The pillow.",
+            "The rug.",
+            "The wall.",
+            "The picture frame.",
+            "The floor.",
+            "The door."
+          ]
+        },
+        {
+          "id": "new-baby-q4-family-change",
+          "openingPrompt": "What do you think has changed in the boy's family?",
+          "completionPrompt": "They have a new baby in the family.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/new_baby/new_baby_circled_baby.webp",
+          "stepTwoAltText": "New baby scene with the baby circled",
+          "correctOptionLabel": "They have a new baby in the family",
+          "distractorOptionLabels": [
+            "They have moved to a new house.",
+            "They have bought a new car.",
+            "They have got a new pet dog.",
+            "They have gone on holiday.",
+            "They have started a new school.",
+            "They have won a football trophy.",
+            "They have painted the baby's room.",
+            "They have bought new furniture.",
+            "They have opened a new business.",
+            "They have adopted a rabbit."
+          ]
+        },
+        {
+          "id": "new-baby-q5-before-picture",
+          "openingPrompt": "Where do you think the boy was before this picture was taken?",
+          "completionPrompt": "He was at school.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/new_baby/new_baby_circled_backpack.webp",
+          "stepTwoAltText": "New baby scene with the backpack circled",
+          "correctOptionLabel": "At school",
+          "distractorOptionLabels": [
+            "At football practice.",
+            "At the swimming pool.",
+            "At the cinema.",
+            "At the zoo.",
+            "At the dentist.",
+            "At a birthday party.",
+            "At the supermarket.",
+            "At the beach.",
+            "At a campsite.",
+            "In a playground."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "new_pet",
+      "stepOneImageUrl": "/static/exercise_assets/in_the_know/new_pet/new_pet_base.webp",
+      "stepOneAltText": "Family with a new puppy",
+      "rounds": [
+        {
+          "id": "new-pet-q1-what-happened",
+          "openingPrompt": "What do you think has happened?",
+          "completionPrompt": "The family have a new puppy.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/new_pet/new_pet_circled_puppy.webp",
+          "stepTwoAltText": "New pet scene with the puppy circled",
+          "correctOptionLabel": "The family have a new puppy",
+          "distractorOptionLabels": [
+            "They have moved house.",
+            "They have had a new baby.",
+            "They have bought a new car.",
+            "They have gone on holiday.",
+            "They have redecorated the hallway.",
+            "They have bought a new sofa.",
+            "They have won a football trophy.",
+            "They have painted the front door.",
+            "They have started a new school.",
+            "They have opened a shop."
+          ]
+        },
+        {
+          "id": "new-pet-q2-feeling",
+          "openingPrompt": "How is the boy feeling?",
+          "completionPrompt": "He is surprised.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/new_pet/new_pet_circled_facial_expression.webp",
+          "stepTwoAltText": "New pet scene with the boy's facial expression circled",
+          "correctOptionLabel": "Surprised",
+          "distractorOptionLabels": [
+            "Angry",
+            "Bored",
+            "Lonely",
+            "Sleepy",
+            "Disappointed",
+            "Frightened",
+            "Nervous",
+            "Cross",
+            "Miserable",
+            "Embarrassed"
+          ]
+        },
+        {
+          "id": "new-pet-q3-why-mum-smiling",
+          "openingPrompt": "Why do you think the mum is smiling?",
+          "completionPrompt": "She is excited to show the boy the puppy.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/new_pet/new_pet_circled_puppy.webp",
+          "stepTwoAltText": "New pet scene with the puppy circled",
+          "correctOptionLabel": "Because she is excited to show the boy the puppy",
+          "distractorOptionLabels": [
+            "She has just won a football match.",
+            "She is laughing at a funny film.",
+            "She is happy because dinner is ready.",
+            "She is pleased because the boy has finished his homework.",
+            "She is excited to go swimming.",
+            "She is smiling at someone outside.",
+            "She has found her missing keys.",
+            "She is happy because it is snowing.",
+            "She is proud of a painting on the wall.",
+            "She is excited to go shopping."
+          ]
+        },
+        {
+          "id": "new-pet-q4-just-arrived",
+          "openingPrompt": "What clue shows the puppy has just arrived?",
+          "completionPrompt": "The dog crate shows the puppy has just arrived.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/new_pet/new_pet_circled_dog_crate.webp",
+          "stepTwoAltText": "New pet scene with the dog crate circled",
+          "correctOptionLabel": "The dog crate",
+          "distractorOptionLabels": [
+            "The backpack",
+            "The floor",
+            "The door",
+            "The dog bowl",
+            "The mum",
+            "The boy",
+            "The weather",
+            "The plant",
+            "Their clothes",
+            "The dog"
+          ]
+        },
+        {
+          "id": "new-pet-q5-surprise-clue",
+          "openingPrompt": "What clue tells us the new puppy is a surprise?",
+          "completionPrompt": "The boy's surprised expression tells us the puppy is a surprise.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/new_pet/new_pet_circled_facial_expression.webp",
+          "stepTwoAltText": "New pet scene with the boy's facial expression circled",
+          "correctOptionLabel": "The boy’s surprised expression",
+          "distractorOptionLabels": [
+            "The backpack",
+            "The floor",
+            "The door",
+            "The dog bowl",
+            "The mum",
+            "The jacket on the wall",
+            "The weather",
+            "The plant",
+            "Their clothes",
+            "The dog crate"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "power_cut",
+      "stepOneImageUrl": "/static/exercise_assets/in_the_know/power_cut/power_cut_base.webp",
+      "stepOneAltText": "Family inside during a power cut",
+      "rounds": [
+        {
+          "id": "power-cut-q1-what-happened",
+          "openingPrompt": "What has happened?",
+          "completionPrompt": "There has been a power cut.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/power_cut/power_cut_circled_candles_torches.webp",
+          "stepTwoAltText": "Power cut scene with candles and torches circled",
+          "correctOptionLabel": "There has been a power cut",
+          "distractorOptionLabels": [
+            "The family is camping indoors.",
+            "It is bedtime.",
+            "The family is having a birthday party.",
+            "The family is getting ready for school.",
+            "The television is broken.",
+            "The family is playing hide-and-seek.",
+            "The family is decorating the house.",
+            "The family is having a picnic.",
+            "The family is watching a film.",
+            "The family is practising for a play."
+          ]
+        },
+        {
+          "id": "power-cut-q2-why-torches",
+          "openingPrompt": "Why are the family using torches and candles?",
+          "completionPrompt": "They are using torches and candles because there is no electricity.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/power_cut/power_cut_circled_candles_torches.webp",
+          "stepTwoAltText": "Power cut scene with candles and torches circled",
+          "correctOptionLabel": "Because there is no electricity",
+          "distractorOptionLabels": [
+            "They are practising for a camping trip.",
+            "They are looking for a lost toy.",
+            "They are decorating the room.",
+            "They are pretending it is Halloween.",
+            "They are getting ready for bed.",
+            "They are having a birthday party.",
+            "They are testing new batteries.",
+            "They are playing football indoors.",
+            "They are cleaning the house.",
+            "They are waiting for visitors."
+          ]
+        },
+        {
+          "id": "power-cut-q3-weather",
+          "openingPrompt": "What is the weather like outside?",
+          "completionPrompt": "It is wet and stormy outside.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/power_cut/power_cut_circled_weather.webp",
+          "stepTwoAltText": "Power cut scene with the weather outside circled",
+          "correctOptionLabel": "Wet and stormy",
+          "distractorOptionLabels": [
+            "Hot and sunny",
+            "Snowy and icy",
+            "Warm and dry",
+            "Foggy",
+            "Windy but sunny",
+            "Cloudless",
+            "Freezing cold",
+            "Bright and sunny",
+            "Dry and calm",
+            "Hot and humid"
+          ]
+        },
+        {
+          "id": "power-cut-q4-nighttime-clue",
+          "openingPrompt": "What clue tells you it is nighttime?",
+          "completionPrompt": "The dark sky outside tells you it is nighttime.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/power_cut/power_cut_circled_weather.webp",
+          "stepTwoAltText": "Power cut scene with the weather window circled",
+          "correctOptionLabel": "The dark sky outside",
+          "distractorOptionLabels": [
+            "The cookies",
+            "The book",
+            "The sofa",
+            "The bowl",
+            "The carpet",
+            "The television",
+            "The torch",
+            "The cushion",
+            "The curtains",
+            "The table"
+          ]
+        },
+        {
+          "id": "power-cut-q5-next",
+          "openingPrompt": "What do you think the family might do next?",
+          "completionPrompt": "They might continue reading together.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/power_cut/power_cut_circled_book.webp",
+          "stepTwoAltText": "Power cut scene with the book circled",
+          "correctOptionLabel": "Continue reading together",
+          "distractorOptionLabels": [
+            "Turn on the television.",
+            "Go swimming.",
+            "Start a football match.",
+            "Go shopping.",
+            "Catch a plane.",
+            "Visit the zoo.",
+            "Bake a birthday cake.",
+            "Go to school.",
+            "Paint the house.",
+            "Mow the lawn."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rainy_day",
+      "stepOneImageUrl": "/static/exercise_assets/in_the_know/rainy_day/rainy_day_base.webp",
+      "stepOneAltText": "Boy coming home in the rain",
+      "rounds": [
+        {
+          "id": "rainy-day-q1-feeling",
+          "openingPrompt": "How is the boy feeling?",
+          "completionPrompt": "He is disappointed.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/rainy_day/rainy_day_circled_facial_expression.webp",
+          "stepTwoAltText": "Rainy day scene with the boy's facial expression circled",
+          "correctOptionLabel": "Disappointed",
+          "distractorOptionLabels": [
+            "Excited",
+            "Proud",
+            "Cheerful",
+            "Amused",
+            "Relaxed",
+            "Confident",
+            "Thrilled",
+            "Curious",
+            "Energetic",
+            "Delighted"
+          ]
+        },
+        {
+          "id": "rainy-day-q2-what-happened",
+          "openingPrompt": "What do you think has happened to the boy?",
+          "completionPrompt": "He got caught in the rain.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/rainy_day/rainy_day_circled_rain_water.webp",
+          "stepTwoAltText": "Rainy day scene with the rain and water on the floor circled",
+          "correctOptionLabel": "He got caught in the rain",
+          "distractorOptionLabels": [
+            "He won a football trophy.",
+            "He went swimming.",
+            "He had a birthday party.",
+            "He visited the zoo.",
+            "He went camping.",
+            "He got a new bicycle.",
+            "He watched a film.",
+            "He baked a cake.",
+            "He played a board game.",
+            "He visited the dentist."
+          ]
+        },
+        {
+          "id": "rainy-day-q3-water-on-floor",
+          "openingPrompt": "Why do you think there is water on the floor?",
+          "completionPrompt": "The boy's umbrella and clothes are wet.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/rainy_day/rainy_day_circled_clothes.webp",
+          "stepTwoAltText": "Rainy day scene with the wet clothes circled",
+          "correctOptionLabel": "The boy's umbrella and clothes are wet",
+          "distractorOptionLabels": [
+            "Somebody spilled a drink.",
+            "The dog knocked over its water bowl.",
+            "A pipe burst.",
+            "Someone washed the floor.",
+            "The plant was watered too much.",
+            "A fish tank leaked.",
+            "Somebody dropped a bucket.",
+            "The roof is leaking.",
+            "A baby spilled juice.",
+            "Someone was painting."
+          ]
+        },
+        {
+          "id": "rainy-day-q4-weather-before",
+          "openingPrompt": "What was the weather like before the boy came home?",
+          "completionPrompt": "It was wet and rainy before the boy came home.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/rainy_day/rainy_day_circled_rain_water.webp",
+          "stepTwoAltText": "Rainy day scene with the rain outside circled",
+          "correctOptionLabel": "Wet and rainy",
+          "distractorOptionLabels": [
+            "Hot and sunny.",
+            "Snowy and icy.",
+            "Warm and dry.",
+            "Foggy.",
+            "Windy but sunny.",
+            "Bright and cloudless.",
+            "Frosty.",
+            "Dry and calm.",
+            "Hot and humid.",
+            "Sunny with no clouds."
+          ]
+        },
+        {
+          "id": "rainy-day-q5-next",
+          "openingPrompt": "What do you think the boy will do next?",
+          "completionPrompt": "He will get changed into dry clothes.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/rainy_day/rainy_day_circled_facial_expression.webp",
+          "stepTwoAltText": "Rainy day scene with the boy's uncomfortable expression circled",
+          "correctOptionLabel": "Get changed into dry clothes",
+          "distractorOptionLabels": [
+            "Go back outside to play football.",
+            "Go swimming.",
+            "Have a picnic.",
+            "Ride a bicycle.",
+            "Go camping.",
+            "Climb a tree.",
+            "Visit the zoo.",
+            "Fly on an aeroplane.",
+            "Start gardening.",
+            "Go to the cinema."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "snow_day",
+      "stepOneImageUrl": "/static/exercise_assets/in_the_know/snow_day/snow_day_base.webp",
+      "stepOneAltText": "Boy returning home after playing in the snow",
+      "rounds": [
+        {
+          "id": "snow-day-q1-where-been",
+          "openingPrompt": "Where do you think the boy has been?",
+          "completionPrompt": "He has been playing outside in the snow.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/snow_day/snow_day_circled_snowy_clothes_dripping.webp",
+          "stepTwoAltText": "Snow day scene with snowy clothes dripping circled",
+          "correctOptionLabel": "Playing outside in the snow",
+          "distractorOptionLabels": [
+            "Swimming at a pool.",
+            "Visiting the dentist.",
+            "Shopping at a supermarket.",
+            "Watching a film.",
+            "Playing football.",
+            "Reading in a library.",
+            "Visiting a zoo.",
+            "Eating at a restaurant.",
+            "Going to school.",
+            "Playing in a playground on a sunny day."
+          ]
+        },
+        {
+          "id": "snow-day-q2-feeling",
+          "openingPrompt": "How is the boy feeling?",
+          "completionPrompt": "He is happy and excited.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/snow_day/snow_day_circled_facial_expression.webp",
+          "stepTwoAltText": "Snow day scene with the boy's facial expression circled",
+          "correctOptionLabel": "Happy and excited",
+          "distractorOptionLabels": [
+            "Angry",
+            "Miserable",
+            "Bored",
+            "Lonely",
+            "Nervous",
+            "Frightened",
+            "Embarrassed",
+            "Disappointed",
+            "Sleepy",
+            "Cross"
+          ]
+        },
+        {
+          "id": "snow-day-q3-outside-clue",
+          "openingPrompt": "What clue suggests the boy has been outside for a while?",
+          "completionPrompt": "His clothes are covered in snow.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/snow_day/snow_day_circled_snowy_clothes_dripping.webp",
+          "stepTwoAltText": "Snow day scene with the snowy clothes dripping circled",
+          "correctOptionLabel": "His clothes are covered in snow",
+          "distractorOptionLabels": [
+            "The radiator.",
+            "The boots by the bench.",
+            "The picture on the wall.",
+            "The wreath on the door.",
+            "The plant.",
+            "The mat.",
+            "The gloves.",
+            "The bench.",
+            "The coat hooks.",
+            "The front door."
+          ]
+        },
+        {
+          "id": "snow-day-q4-why-winter",
+          "openingPrompt": "Why do you think it is winter?",
+          "completionPrompt": "It is winter because there is snow outside and the boy is wearing warm winter clothes.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/snow_day/snow_day_circled_snow.webp",
+          "stepTwoAltText": "Snow day scene with the snow circled",
+          "correctOptionLabel": "There is snow outside and the boy is wearing warm winter clothes",
+          "distractorOptionLabels": [
+            "The flowers are blooming.",
+            "The leaves are falling from the trees.",
+            "The sun is shining brightly.",
+            "The grass is very green.",
+            "The boy is wearing shorts.",
+            "The windows are open.",
+            "People are swimming outside.",
+            "The garden is full of flowers.",
+            "The boy is eating ice cream.",
+            "The trees are covered in blossom."
+          ]
+        },
+        {
+          "id": "snow-day-q5-how-know-cold",
+          "openingPrompt": "How do you know it is cold outside?",
+          "completionPrompt": "The snow and winter clothing show that it is cold.",
+          "stepTwoImageUrl": "/static/exercise_assets/in_the_know/snow_day/snow_day_circled_snow.webp",
+          "stepTwoAltText": "Snow day scene with the snow circled",
+          "correctOptionLabel": "The snow and winter clothing show that it is cold",
+          "distractorOptionLabels": [
+            "The flowers are blooming.",
+            "The windows are open.",
+            "The boy is wearing shorts.",
+            "The grass is very green.",
+            "The sun is shining brightly.",
+            "People are swimming.",
+            "The trees are covered in blossom.",
+            "The boy is eating ice cream.",
+            "The garden is full of flowers.",
+            "The radiator is turned off."
+          ]
+        }
+      ]
+    }
+  ]
+}

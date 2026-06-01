@@ -20,7 +20,7 @@ VIEW_MODULES = [
 	"littleTalkApp.views_modules.school",
 	"littleTalkApp.views_modules.settings_views",
 	"littleTalkApp.views_modules.subscription",
-	"littleTalkApp.views_modules.react_test",
+	"littleTalkApp.views_modules.react_exercises",
 ]
 
 __all__ = []

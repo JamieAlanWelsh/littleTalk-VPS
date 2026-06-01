@@ -27,12 +27,12 @@ const EXERCISE_METADATA = {
     id: "spot-on",
 };
 
-const GRID_ROWS = 4;
+const GRID_ROWS = 5;
 const GRID_COLUMNS = 5;
-const CHARACTER_START: SpotOnGridLocation = { row: 3, col: 2 };
-const OBJECT_LOCATION: SpotOnGridLocation = { row: 1, col: 2 };
-const BETWEEN_LEFT_OBJECT: SpotOnGridLocation = { row: 1, col: 1 };
-const BETWEEN_RIGHT_OBJECT: SpotOnGridLocation = { row: 1, col: 3 };
+const CHARACTER_START: SpotOnGridLocation = { row: 4, col: 2 };
+const OBJECT_LOCATION: SpotOnGridLocation = { row: 2, col: 2 };
+const BETWEEN_LEFT_OBJECT: SpotOnGridLocation = { row: 2, col: 1 };
+const BETWEEN_RIGHT_OBJECT: SpotOnGridLocation = { row: 2, col: 3 };
 
 const toCellId = ({ row, col }: SpotOnGridLocation) => `cell:${row}:${col}`;
 
@@ -69,10 +69,7 @@ const isLocationCorrect = (
                 characterLocation.col === OBJECT_LOCATION.col
             );
         case "under":
-            return (
-                characterLocation.row === OBJECT_LOCATION.row + 1 &&
-                characterLocation.col === OBJECT_LOCATION.col
-            );
+            return locationsEqual(characterLocation, OBJECT_LOCATION);
         case "next to":
             return (
                 (characterLocation.row === OBJECT_LOCATION.row &&
@@ -81,10 +78,8 @@ const isLocationCorrect = (
                     characterLocation.col === OBJECT_LOCATION.col + 1)
             );
         case "above":
-            return (
-                characterLocation.row === OBJECT_LOCATION.row - 1 &&
-                characterLocation.col === OBJECT_LOCATION.col
-            );
+            // Top row (0), middle column (2) for 5x5 grid
+            return characterLocation.row === 0 && characterLocation.col === 2;
         case "below":
             return (
                 characterLocation.row === OBJECT_LOCATION.row + 1 &&
