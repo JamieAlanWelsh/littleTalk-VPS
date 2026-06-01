@@ -27,7 +27,7 @@ export const ThinkAndFindExercise = ({
 }: ThinkAndFindExerciseProps) => {
     const [hasStarted, setHasStarted] = useState(false);
     const [options, setOptions] = useState<SentenceMatchingOptions>({
-        numberOfOptions: 4,
+        numberOfOptions: 3,
     });
 
     const handleStartExercise = () => {

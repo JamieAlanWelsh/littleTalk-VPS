@@ -15,7 +15,7 @@ interface ThinkAndFindSettingsScreenProps {
 export const ThinkAndFindSettingsScreen = ({
     onSetOptions,
 }: ThinkAndFindSettingsScreenProps) => {
-    const [selectedNumOptions, setSelectedNumOptions] = useState(2);
+    const [selectedNumOptions, setSelectedNumOptions] = useState(3);
     const optionCounts = [2, 3, 4, 5, 6];
 
     useEffect(() => {
