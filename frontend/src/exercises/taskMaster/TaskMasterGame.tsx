@@ -60,6 +60,11 @@ const getPlacedObjectIdForCell = (
     return null;
 };
 
+const getSceneIdFromQuestionId = (questionId: string): string => {
+    const [sceneId] = questionId.split("-");
+    return sceneId ?? "";
+};
+
 export const TaskMasterGame = ({
     questions,
     onSettingsRequested,
@@ -69,6 +74,7 @@ export const TaskMasterGame = ({
         selectedIconIds: [],
         answerState: "notAnswered",
     });
+    const [isDragging, setIsDragging] = useState(false);
     const [placementsByQuestionId, setPlacementsByQuestionId] = useState<
         Record<string, Record<string, string>>
     >(() => Object.fromEntries(questions.map((question) => [question.id, {}])));
@@ -94,11 +100,6 @@ export const TaskMasterGame = ({
         [parsedData.objects],
     );
 
-    const allObjectIds = useMemo(
-        () => parsedData.objects.map((object) => object.id),
-        [parsedData.objects],
-    );
-
     const objectIdByImageUrl = useMemo(
         () =>
             Object.fromEntries(
@@ -118,6 +119,29 @@ export const TaskMasterGame = ({
         [questions],
     );
 
+    const sceneObjectIdsBySceneId = useMemo(() => {
+        const map: Record<string, string[]> = {};
+
+        for (const question of questions) {
+            const sceneId = getSceneIdFromQuestionId(question.id);
+            const objectId = objectIdByImageUrl[question.objectUrl];
+
+            if (!sceneId || !objectId) {
+                continue;
+            }
+
+            const currentSceneObjectIds = map[sceneId] ?? [];
+
+            if (!currentSceneObjectIds.includes(objectId)) {
+                currentSceneObjectIds.push(objectId);
+            }
+
+            map[sceneId] = currentSceneObjectIds;
+        }
+
+        return map;
+    }, [questions, objectIdByImageUrl]);
+
     const activeQuestionIdRef = useRef(questions[0]?.id ?? "");
 
     const sensors = [
@@ -129,7 +153,17 @@ export const TaskMasterGame = ({
         KeyboardSensor,
     ];
 
+    const onDragStart = () => {
+        if (questionState.answerState !== "notAnswered") {
+            return;
+        }
+
+        setIsDragging(true);
+    };
+
     const onDragEnd = (event: DragEndEvent) => {
+        setIsDragging(false);
+
         if (questionState.answerState !== "notAnswered" || event.canceled) {
             return;
         }
@@ -229,17 +263,15 @@ export const TaskMasterGame = ({
         }
 
         return (
-            <div className={styles.placedObject}>
-                <DraggableImage
-                    id={toDragId(objectId)}
-                    image={image}
-                    isCorrect={null}
-                    isSelected={false}
-                    isDisabled={questionState.answerState !== "notAnswered"}
-                    isBorderless
-                    onClick={() => {}}
-                />
-            </div>
+            <DraggableImage
+                id={toDragId(objectId)}
+                image={image}
+                isCorrect={null}
+                isSelected={false}
+                isDisabled={questionState.answerState !== "notAnswered"}
+                isBorderless
+                onClick={() => {}}
+            />
         );
     };
 
@@ -262,7 +294,9 @@ export const TaskMasterGame = ({
             {(question) => {
                 activeQuestionIdRef.current = question.id;
                 const placements = placementsByQuestionId[question.id] ?? {};
-                const poolObjectIds = allObjectIds.filter(
+                const sceneId = getSceneIdFromQuestionId(question.id);
+                const sceneObjectIds = sceneObjectIdsBySceneId[sceneId] ?? [];
+                const poolObjectIds = sceneObjectIds.filter(
                     (objectId) => placements[objectId] == null,
                 );
 
@@ -270,9 +304,12 @@ export const TaskMasterGame = ({
                     <div className={styles.board}>
                         <DragDropProvider
                             sensors={sensors}
+                            onDragStart={onDragStart}
                             onDragEnd={onDragEnd}
                         >
-                            <div className={styles.boardCard}>
+                            <div
+                                className={`${styles.boardCard} ${isDragging ? styles.dragging : ""}`.trim()}
+                            >
                                 <img
                                     className={styles.sceneImage}
                                     src={question.image}

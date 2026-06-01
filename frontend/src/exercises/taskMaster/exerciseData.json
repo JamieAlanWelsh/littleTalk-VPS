@@ -19,9 +19,21 @@
         },
         {
             "id": "3",
+            "preposition": "below",
+            "question": "below the bear",
+            "answer": [[3,3], [3,4]]
+        },
+        {
+            "id": "4",
+            "preposition": "in front of",
+            "question": "in front of the highest cloud",
+            "answer": [[0,3]]
+        },
+        {
+            "id": "5",
             "preposition": "on",
-            "question": "on the mountains",
-            "answer": [[1,0], [1,1]]
+            "question": "on the smallest mountain",
+            "answer": [[1,2]]
         }
       ]
     },
@@ -42,6 +54,12 @@
             "preposition": "on",
             "question": "on the boat",
             "answer": [[1,4]]
+        },
+        {
+            "id": "3",
+            "preposition": "on",
+            "question": "on the smallest tree",
+            "answer": [[0,2]]
         }
       ]
     },
@@ -55,13 +73,13 @@
             "id": "1",
             "preposition": "in",
             "question": "in the waterfall",
-            "answer": [[1,2]]
+            "answer": [[2,1]]
         },
         {
             "id": "2",
             "preposition": "on",
             "question": "on the sand",
-            "answer": [[3,2]]
+            "answer": [[3,1],[3,2]]
         }
       ]
     }
