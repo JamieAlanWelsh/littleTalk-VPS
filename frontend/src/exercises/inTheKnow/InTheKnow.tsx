@@ -1,7 +1,8 @@
 import { useState } from "react";
 import ExerciseStartScreen from "../../layouts/exerciseStartScreen/ExerciseStartScreen";
 import InTheKnowGame from "./InTheKnowGame";
-import type { InTheKnowPayload } from "./types";
+import InTheKnowSettingsScreen from "./InTheKnowSettingsScreen";
+import type { InTheKnowChoiceCount, InTheKnowPayload } from "./types";
 
 const EXERCISE_METADATA = {
     setupTitle: "In The Know",
@@ -14,6 +15,7 @@ interface InTheKnowProps {
 
 export const InTheKnow = ({ payload }: InTheKnowProps) => {
     const [hasStarted, setHasStarted] = useState(false);
+    const [choiceCount, setChoiceCount] = useState<InTheKnowChoiceCount>(3);
 
     if (!hasStarted) {
         return (
@@ -36,6 +38,10 @@ export const InTheKnow = ({ payload }: InTheKnowProps) => {
                     <p style={{ margin: 0 }}>
                         Pick one option, then press Check.
                     </p>
+                    <InTheKnowSettingsScreen
+                        choiceCount={choiceCount}
+                        onSetChoiceCount={setChoiceCount}
+                    />
                 </div>
             </ExerciseStartScreen>
         );
@@ -44,6 +50,7 @@ export const InTheKnow = ({ payload }: InTheKnowProps) => {
     return (
         <InTheKnowGame
             payload={payload}
+            choiceCount={choiceCount}
             onSettingsRequested={() => setHasStarted(false)}
         />
     );

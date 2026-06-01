@@ -25,6 +25,7 @@ interface ColourfulSemanticsBoardProps {
     activeStepIndex: number;
     boardState: SentenceBoardState;
     hideTray?: boolean;
+    isVoiceMuted?: boolean;
     itemCorrectnessMap?: Record<string, boolean>;
     isReadOnly?: boolean;
     itemsById: Record<string, ColourfulSemanticsOption>;
@@ -90,6 +91,7 @@ export const ColourfulSemanticsBoard = ({
     activeStepIndex,
     boardState,
     hideTray = false,
+    isVoiceMuted = false,
     itemCorrectnessMap = {},
     isReadOnly = false,
     itemsById,
@@ -124,6 +126,10 @@ export const ColourfulSemanticsBoard = ({
         });
 
         if (!sfxUrl) {
+            return;
+        }
+
+        if (isVoiceMuted) {
             return;
         }
 

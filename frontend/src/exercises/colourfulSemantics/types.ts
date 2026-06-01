@@ -105,6 +105,7 @@ export interface ColourfulSemanticsOptions {
     presetId: ColourfulSemanticsPresetId;
     numberOfOptions: number;
     enabledOptionalSlotIds: ColourfulSemanticsOptionalSlot[];
+    isVoiceMuted: boolean;
 }
 
 export const ColourfulSemanticsOptionSchema = z.object({

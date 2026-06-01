@@ -342,6 +342,7 @@ export const ColourfulSemanticsGame = ({
                         activeStepIndex={currentQuestionIndex}
                         boardState={boardState}
                         hideTray={isFinalAffirmationView}
+                        isVoiceMuted={options.isVoiceMuted}
                         isReadOnly={isFinalAffirmationView}
                         itemCorrectnessMap={itemCorrectnessMap}
                         itemsById={itemsById}

@@ -61,6 +61,7 @@ export const ColourfulSemanticsExercise = ({
             return currentOptions.presetId === nextOptions.presetId &&
                 currentOptions.numberOfOptions ===
                     nextOptions.numberOfOptions &&
+                currentOptions.isVoiceMuted === nextOptions.isVoiceMuted &&
                 hasSameOptionalSlots
                 ? currentOptions
                 : nextOptions;

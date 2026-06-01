@@ -7,6 +7,19 @@ export const WhatHappensNextOptionSchema = z.object({
 
 export type WhatHappensNextOption = z.infer<typeof WhatHappensNextOptionSchema>;
 
+export const WhatHappensNextChoiceCountSchema = z.union([
+    z.literal(3),
+    z.literal(4),
+    z.literal(5),
+    z.literal(6),
+]);
+
+export type WhatHappensNextChoiceCount = z.infer<
+    typeof WhatHappensNextChoiceCountSchema
+>;
+
+export const WhatHappensNextChoiceCounts = [3, 4, 5, 6] as const;
+
 export const WhatHappensNextSceneSchema = z.object({
     id: z.string(),
     stepOneImageUrl: z.string(),
@@ -16,6 +29,7 @@ export const WhatHappensNextSceneSchema = z.object({
     openingPrompt: z.string(),
     completionPrompt: z.string(),
     correctOptionId: z.string(),
+    distractorOptionIds: z.array(z.string()).min(5),
 });
 
 export type WhatHappensNextScene = z.infer<typeof WhatHappensNextSceneSchema>;
@@ -40,6 +54,33 @@ export const WhatHappensNextPayloadSchema = z
                     path: ["scenes", sceneIndex, "correctOptionId"],
                 });
             }
+
+            if (scene.distractorOptionIds.includes(scene.correctOptionId)) {
+                context.addIssue({
+                    code: z.ZodIssueCode.custom,
+                    message:
+                        "Scene distractorOptionIds must not include correctOptionId",
+                    path: ["scenes", sceneIndex, "distractorOptionIds"],
+                });
+            }
+
+            scene.distractorOptionIds.forEach(
+                (distractorOptionId, distractorIndex) => {
+                    if (!validOptionIds.has(distractorOptionId)) {
+                        context.addIssue({
+                            code: z.ZodIssueCode.custom,
+                            message:
+                                "Scene distractorOptionIds must reference option ids",
+                            path: [
+                                "scenes",
+                                sceneIndex,
+                                "distractorOptionIds",
+                                distractorIndex,
+                            ],
+                        });
+                    }
+                },
+            );
         });
     });
 

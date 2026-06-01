@@ -120,6 +120,19 @@
     margin: 0;
 }
 
+.muteToggleRow {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #2c233f;
+}
+
+.muteToggleRow input {
+    margin: 0;
+}
+
 /* iPad/Tablet - Landscape */
 @media (max-width: 1024px) and (min-width: 769px) {
     .categoriesGrid {
@@ -168,6 +181,10 @@
         padding: 0.5rem 0.6rem;
         font-size: 0.85rem;
     }
+
+    .muteToggleRow {
+        font-size: 0.9rem;
+    }
 }
 
 /* Mobile */
@@ -201,5 +218,9 @@
 
     .selectedCount {
         font-size: 0.75rem;
+    }
+
+    .muteToggleRow {
+        font-size: 0.85rem;
     }
 }

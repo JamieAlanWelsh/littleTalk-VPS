@@ -1,85 +1,436 @@
 {
   "instruction": "Drag the pictures into the right order",
   "modellingTip": "Modelling Tip: Use time words like first, next, and then while you talk through the story.",
-  "rounds": 3,
+  "rounds": 5,
   "sets": [
     {
-      "id": "building",
-      "title": "Building the tower",
+      "id": "baking_cookies",
+      "title": "making cookies?",
       "steps": [
         {
-          "id": "building-1",
-          "imageUrl": "/static/exercise_assets/story_train/ks1/building/building-1.webp",
-          "label": "Start the tower",
-          "altText": "A child beginning to stack blocks on a table.",
+          "id": "baking_cookies-1",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/baking_cookies/baking_cookies_1.webp",
+          "label": "Step 1",
+          "altText": "Baking Cookies step 1",
           "order": 0
         },
         {
-          "id": "building-2",
-          "imageUrl": "/static/exercise_assets/story_train/ks1/building/building-2.webp",
-          "label": "Add more blocks",
-          "altText": "A child stacking more blocks to make the tower taller.",
+          "id": "baking_cookies-2",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/baking_cookies/baking_cookies_2.webp",
+          "label": "Step 2",
+          "altText": "Baking Cookies step 2",
           "order": 1
         },
         {
-          "id": "building-3",
-          "imageUrl": "/static/exercise_assets/story_train/ks1/building/building-3.webp",
-          "label": "Finished tower",
-          "altText": "A child smiling with a tall tower of blocks.",
+          "id": "baking_cookies-3",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/baking_cookies/baking_cookies_3.webp",
+          "label": "Step 3",
+          "altText": "Baking Cookies step 3",
           "order": 2
         }
       ]
     },
     {
-      "id": "raincoat",
-      "title": "Putting on a raincoat",
+      "id": "birthday_party",
+      "title": "a birthday party?",
       "steps": [
         {
-          "id": "rain-2",
-          "imageUrl": "/static/exercise_assets/story_train/ks1/raincoat/rain-2.webp",
-          "label": "Pick up the coat",
-          "altText": "A child holding a yellow raincoat before putting it on.",
+          "id": "birthday_party-1",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/birthday_party/birthday_party_1.webp",
+          "label": "Step 1",
+          "altText": "Birthday Party step 1",
           "order": 0
         },
         {
-          "id": "rain-3",
-          "imageUrl": "/static/exercise_assets/story_train/ks1/raincoat/rain-3.webp",
-          "label": "Put the coat on",
-          "altText": "A child pulling on a yellow raincoat.",
+          "id": "birthday_party-2",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/birthday_party/birthday_party_2.webp",
+          "label": "Step 2",
+          "altText": "Birthday Party step 2",
           "order": 1
         },
         {
-          "id": "rain-4",
-          "imageUrl": "/static/exercise_assets/story_train/ks1/raincoat/rain-4.webp",
-          "label": "Ready to go outside",
-          "altText": "A child wearing the raincoat and ready to go out.",
+          "id": "birthday_party-3",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/birthday_party/birthday_party_3.webp",
+          "label": "Step 3",
+          "altText": "Birthday Party step 3",
           "order": 2
         }
       ]
     },
     {
-      "id": "snowman",
-      "title": "Making a snowman",
+      "id": "brushing_teeth",
+      "title": "how you brush your teeth?",
       "steps": [
         {
-          "id": "snowman-1",
-          "imageUrl": "/static/exercise_assets/story_train/ks1/snowman/snowman-1.webp",
-          "label": "Start the snowman",
-          "altText": "A child beginning a snowman with the first snowball.",
+          "id": "brushing_teeth-1",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/brushing_teeth/brushing_teeth_1.webp",
+          "label": "Step 1",
+          "altText": "Brushing Teeth step 1",
           "order": 0
         },
         {
-          "id": "snowman-2",
-          "imageUrl": "/static/exercise_assets/story_train/ks1/snowman/snowman-2.webp",
-          "label": "Build it up",
-          "altText": "A child adding another snowball to build the snowman.",
+          "id": "brushing_teeth-2",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/brushing_teeth/brushing_teeth_2.webp",
+          "label": "Step 2",
+          "altText": "Brushing Teeth step 2",
           "order": 1
         },
         {
-          "id": "snowman-3",
-          "imageUrl": "/static/exercise_assets/story_train/ks1/snowman/snowman-3.webp",
-          "label": "Finished snowman",
-          "altText": "A child standing with a completed snowman.",
+          "id": "brushing_teeth-3",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/brushing_teeth/brushing_teeth_3.webp",
+          "label": "Step 3",
+          "altText": "Brushing Teeth step 3",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "id": "building_a_snowman",
+      "title": "how you build a snowman?",
+      "steps": [
+        {
+          "id": "building_a_snowman-1",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/building_a_snowman/building_a_snowman_1.webp",
+          "label": "Step 1",
+          "altText": "Building A Snowman step 1",
+          "order": 0
+        },
+        {
+          "id": "building_a_snowman-2",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/building_a_snowman/building_a_snowman_2.webp",
+          "label": "Step 2",
+          "altText": "Building A Snowman step 2",
+          "order": 1
+        },
+        {
+          "id": "building_a_snowman-3",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/building_a_snowman/building_a_snowman_3_.webp",
+          "label": "Step 3",
+          "altText": "Building A Snowman step 3",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "id": "feeding_ducks",
+      "title": "how you feed ducks?",
+      "steps": [
+        {
+          "id": "feeding_ducks-1",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/feeding_ducks/feeding_ducks_1.webp",
+          "label": "Step 1",
+          "altText": "Feeding Ducks step 1",
+          "order": 0
+        },
+        {
+          "id": "feeding_ducks-2",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/feeding_ducks/feeding_ducks_2.webp",
+          "label": "Step 2",
+          "altText": "Feeding Ducks step 2",
+          "order": 1
+        },
+        {
+          "id": "feeding_ducks-3",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/feeding_ducks/feeding_ducks_3.webp",
+          "label": "Step 3",
+          "altText": "Feeding Ducks step 3",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "id": "getting_dressed_for_school",
+      "title": "how you get dressed for school?",
+      "steps": [
+        {
+          "id": "getting_dressed_for_school-1",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/getting_dressed_for_school/getting_dressed_for_school_1.webp",
+          "label": "Step 1",
+          "altText": "Getting Dressed For School step 1",
+          "order": 0
+        },
+        {
+          "id": "getting_dressed_for_school-2",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/getting_dressed_for_school/getting_dressed_for_school_2.webp",
+          "label": "Step 2",
+          "altText": "Getting Dressed For School step 2",
+          "order": 1
+        },
+        {
+          "id": "getting_dressed_for_school-3",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/getting_dressed_for_school/getting_dressed_for_school_3.webp",
+          "label": "Step 3",
+          "altText": "Getting Dressed For School step 3",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "id": "library_visit",
+      "title": "visiting the library?",
+      "steps": [
+        {
+          "id": "library_visit-1",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/library_visit/library_visit_1.webp",
+          "label": "Step 1",
+          "altText": "Library Visit step 1",
+          "order": 0
+        },
+        {
+          "id": "library_visit-2",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/library_visit/library_visit_2.webp",
+          "label": "Step 2",
+          "altText": "Library Visit step 2",
+          "order": 1
+        },
+        {
+          "id": "library_visit-3",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/library_visit/library_visit_3.webp",
+          "label": "Step 3",
+          "altText": "Library Visit step 3",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "id": "making_a_sandwich",
+      "title": "how you make a sandwich?",
+      "steps": [
+        {
+          "id": "making_a_sandwich-1",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/making_a_sandwich/making_a_sandwich_1.webp",
+          "label": "Step 1",
+          "altText": "Making A Sandwich step 1",
+          "order": 0
+        },
+        {
+          "id": "making_a_sandwich-2",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/making_a_sandwich/making_a_sandwich_2.webp",
+          "label": "Step 2",
+          "altText": "Making A Sandwich step 2",
+          "order": 1
+        },
+        {
+          "id": "making_a_sandwich-3",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/making_a_sandwich/making_a_sandwich_3.webp",
+          "label": "Step 3",
+          "altText": "Making A Sandwich step 3",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "id": "making_toast",
+      "title": "how you make toast?",
+      "steps": [
+        {
+          "id": "making_toast-1",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/making_toast/making_toast_1.webp",
+          "label": "Step 1",
+          "altText": "Making Toast step 1",
+          "order": 0
+        },
+        {
+          "id": "making_toast-2",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/making_toast/making_toast_2.webp",
+          "label": "Step 2",
+          "altText": "Making Toast step 2",
+          "order": 1
+        },
+        {
+          "id": "making_toast-3",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/making_toast/making_toast_3.webp",
+          "label": "Step 3",
+          "altText": "Making Toast step 3",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "id": "painting",
+      "title": "painting a picture?",
+      "steps": [
+        {
+          "id": "painting-1",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/painting/painting_1.webp",
+          "label": "Step 1",
+          "altText": "Painting step 1",
+          "order": 0
+        },
+        {
+          "id": "painting-2",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/painting/painting_2.webp",
+          "label": "Step 2",
+          "altText": "Painting step 2",
+          "order": 1
+        },
+        {
+          "id": "painting-3",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/painting/painting_3.webp",
+          "label": "Step 3",
+          "altText": "Painting step 3",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "id": "park_day",
+      "title": "a day at the park?",
+      "steps": [
+        {
+          "id": "park_day-1",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/park_day/park_day_1.webp",
+          "label": "Step 1",
+          "altText": "Park Day step 1",
+          "order": 0
+        },
+        {
+          "id": "park_day-2",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/park_day/park_day_2.webp",
+          "label": "Step 2",
+          "altText": "Park Day step 2",
+          "order": 1
+        },
+        {
+          "id": "park_day-3",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/park_day/park_day_3.webp",
+          "label": "Step 3",
+          "altText": "Park Day step 3",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "id": "planting_a_seed",
+      "title": "planting a seed?",
+      "steps": [
+        {
+          "id": "planting_a_seed-1",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/planting_a_seed/planting_a_seed_1.webp",
+          "label": "Step 1",
+          "altText": "Planting A Seed step 1",
+          "order": 0
+        },
+        {
+          "id": "planting_a_seed-2",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/planting_a_seed/planting_a_seed_2.webp",
+          "label": "Step 2",
+          "altText": "Planting A Seed step 2",
+          "order": 1
+        },
+        {
+          "id": "planting_a_seed-3",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/planting_a_seed/planting_a_seed_3.webp",
+          "label": "Step 3",
+          "altText": "Planting A Seed step 3",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "id": "rainy_day",
+      "title": "a rainy day?",
+      "steps": [
+        {
+          "id": "rainy_day-1",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/rainy_day/rainy_day_1.webp",
+          "label": "Step 1",
+          "altText": "Rainy Day step 1",
+          "order": 0
+        },
+        {
+          "id": "rainy_day-2",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/rainy_day/rainy_day_2.webp",
+          "label": "Step 2",
+          "altText": "Rainy Day step 2",
+          "order": 1
+        },
+        {
+          "id": "rainy_day-3",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/rainy_day/rainy_day_3.webp",
+          "label": "Step 3",
+          "altText": "Rainy Day step 3",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "id": "snack_time",
+      "title": "snack time?",
+      "steps": [
+        {
+          "id": "snack_time-1",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/snack_time/snack_time_1.webp",
+          "label": "Step 1",
+          "altText": "Snack Time step 1",
+          "order": 0
+        },
+        {
+          "id": "snack_time-2",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/snack_time/snack_time_2.webp",
+          "label": "Step 2",
+          "altText": "Snack Time step 2",
+          "order": 1
+        },
+        {
+          "id": "snack_time-3",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/snack_time/snack_time_3.webp",
+          "label": "Step 3",
+          "altText": "Snack Time step 3",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "id": "tidying_toys",
+      "title": "how you tidy your toys?",
+      "steps": [
+        {
+          "id": "tidying_toys-1",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/tidying_toys/tidying_toys_1.webp",
+          "label": "Step 1",
+          "altText": "Tidying Toys step 1",
+          "order": 0
+        },
+        {
+          "id": "tidying_toys-2",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/tidying_toys/tidying_toys_2.webp",
+          "label": "Step 2",
+          "altText": "Tidying Toys step 2",
+          "order": 1
+        },
+        {
+          "id": "tidying_toys-3",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/tidying_toys/tidying_toys_3.webp",
+          "label": "Step 3",
+          "altText": "Tidying Toys step 3",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "id": "washing_hands",
+      "title": "how you wash your hands?",
+      "steps": [
+        {
+          "id": "washing_hands-1",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/washing_hands/washing_hands_1.webp",
+          "label": "Step 1",
+          "altText": "Washing Hands step 1",
+          "order": 0
+        },
+        {
+          "id": "washing_hands-2",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/washing_hands/washing_hands_2.webp",
+          "label": "Step 2",
+          "altText": "Washing Hands step 2",
+          "order": 1
+        },
+        {
+          "id": "washing_hands-3",
+          "imageUrl": "/static/exercise_assets/story_train/ks1/washing_hands/washing_hands_3.webp",
+          "label": "Step 3",
+          "altText": "Washing Hands step 3",
           "order": 2
         }
       ]

@@ -1,259 +1,1195 @@
 {
-    "rounds": 5,
-    "options": [
-        {
-            "id": "pancake-falls",
-            "label": "the pancake falls on his head."
-        },
-        {
-            "id": "football-goes-away",
-            "label": "the football goes through the window"
-        },
-        {
-            "id": "boy-slips-on-wet-floor",
-            "label": "the boy slips and falls"
-        },
-        {
-            "id": "books-fall-down",
-            "label": "the boy drops the books"
-        },
-        {
-            "id": "paint-spills-everywhere",
-            "label": "the cat knocks over the paint"
-        },
-        {
-            "id": "dog-gets-muddy",
-            "label": "they get muddy"
-        },
-        {
-            "id": "dog-eats-sandwich",
-            "label": "the dog steals the sandwich"
-        },
-        {
-            "id": "friends-enjoy-picnic",
-            "label": "it starts to rain"
-        },
-        {
-            "id": "wave-washes-sandcastle",
-            "label": "the seagull steals her chips"
-        },
-        {
-            "id": "girl-enters-classroom",
-            "label": "the girl is invited to sit down"
-        },
-        {
-            "id": "balloon-flies-away",
-            "label": "the balloon flies away"
-        },
-        {
-            "id": "ice-cream-melts",
-            "label": "the ice cream melts"
-        },
-        {
-            "id": "kids-keep-playing",
-            "label": "the children invite him to play"
-        },
-        {
-            "id": "rabbit-runs-away",
-            "label": "the rabbit escapes"
-        },
-        {
-            "id": "runner-wins-race",
-            "label": "the boy trips and falls"
-        },
-        {
-            "id": "wave-knocks-sandcastle",
-            "label": "the wave knocks over the sandcastle"
-        },
-        {
-            "id": "tower-falls-down",
-            "label": "the tower falls over"
-        },
-        {
-            "id": "boy-starts-crying",
-            "label": "His friend comforts him."
-        }
-    ],
-    "scenes": [
-        {
-            "id": "boy-flipping-pancake",
-            "stepOneImageUrl": "/static/exercise_assets/what_happens_next/boy_flipping_pancake_1.webp",
-            "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/boy_flipping_pancake_2.webp",
-            "stepOneAltText": "boy flipping pancake scene step 1",
-            "stepTwoAltText": "boy flipping pancake scene step 2",
-            "openingPrompt": "The boy is flipping a pancake. What happens next?",
-            "completionPrompt": "The pancake fell on his head.",
-            "correctOptionId": "pancake-falls"
-        },
-        {
-            "id": "boy-kicking-football",
-            "stepOneImageUrl": "/static/exercise_assets/what_happens_next/boy_kicking_football_1.webp",
-            "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/boy_kicking_football_2.webp",
-            "stepOneAltText": "boy kicking football scene step 1",
-            "stepTwoAltText": "boy kicking football scene step 2",
-            "openingPrompt": "The boy is playing football in the garden. What happens next?",
-            "completionPrompt": "The boy accidentally smashed the window",
-            "correctOptionId": "football-goes-away"
-        },
-        {
-            "id": "boy-running-on-wet-floor",
-            "stepOneImageUrl": "/static/exercise_assets/what_happens_next/boy_running_on_wet_floor_1.webp",
-            "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/boy_running_on_wet_floor_2.webp",
-            "stepOneAltText": "boy running on wet floor scene step 1",
-            "stepTwoAltText": "boy running on wet floor scene step 2",
-            "openingPrompt": "The boy is running on a wet floor. What happens next?",
-            "completionPrompt": "The boy slipped and fell over.",
-            "correctOptionId": "boy-slips-on-wet-floor"
-        },
-        {
-            "id": "boy-with-books",
-            "stepOneImageUrl": "/static/exercise_assets/what_happens_next/boy_with_books_1.webp",
-            "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/boy_with_books_2.webp",
-            "stepOneAltText": "boy with books scene step 1",
-            "stepTwoAltText": "boy with books scene step 2",
-            "openingPrompt": "The boy is carrying a large stack of books. What happens next?",
-            "completionPrompt": "The boy dropped the books.",
-            "correctOptionId": "books-fall-down"
-        },
-        {
-            "id": "cat-with-paint",
-            "stepOneImageUrl": "/static/exercise_assets/what_happens_next/cat_with_paint_1_.webp",
-            "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/cat_with_paint_2.webp",
-            "stepOneAltText": "cat with paint scene step 1",
-            "stepTwoAltText": "cat with paint scene step 2",
-            "openingPrompt": "The cat is investigating the paint pot. What happens next?",
-            "completionPrompt": "The cat knocked the can over and made a mess",
-            "correctOptionId": "paint-spills-everywhere"
-        },
-        {
-            "id": "dog-in-muddy-puddle",
-            "stepOneImageUrl": "/static/exercise_assets/what_happens_next/dog_in_muddy_puddle_1.webp",
-            "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/dog_in_muddy_puddle_2.webp",
-            "stepOneAltText": "dog in muddy puddle scene step 1",
-            "stepTwoAltText": "dog in muddy puddle scene step 2",
-            "openingPrompt": "The dog is about to jump into a muddy puddle. What happens next?",
-            "completionPrompt": "The dog and the boy got covered in mud",
-            "correctOptionId": "dog-gets-muddy"
-        },
-        {
-            "id": "dog-looking-at-sandwich",
-            "stepOneImageUrl": "/static/exercise_assets/what_happens_next/dog_looking_at_sandwich_1.webp",
-            "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/dog_looking_at_sandwich_2.webp",
-            "stepOneAltText": "dog looking at sandwich scene step 1",
-            "stepTwoAltText": "dog looking at sandwich scene step 2",
-            "openingPrompt": "The boy is eating a delicious sandwich. What happens next?",
-            "completionPrompt": "The dog stole the boys sandwich",
-            "correctOptionId": "dog-eats-sandwich"
-        },
-        {
-            "id": "friends-at-picnic",
-            "stepOneImageUrl": "/static/exercise_assets/what_happens_next/friends_at_picnic_1.webp",
-            "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/friends_at_picnic_2.webp",
-            "stepOneAltText": "friends at picnic scene step 1",
-            "stepTwoAltText": "friends at picnic scene step 2",
-            "openingPrompt": "The children are having a picnic together in the park. What happens next?",
-            "completionPrompt": "It started raining and the children got wet",
-            "correctOptionId": "friends-enjoy-picnic"
-        },
-        {
-            "id": "girl-on-beach",
-            "stepOneImageUrl": "/static/exercise_assets/what_happens_next/girl_on_beach_1.webp",
-            "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/girl_on_beach_2.webp",
-            "stepOneAltText": "girl on beach scene step 1",
-            "stepTwoAltText": "girl on beach scene step 2",
-            "openingPrompt": "The girl is enjoying some chips on the beach. What happens next?",
-            "completionPrompt": "The seagull flew away with the girl's chips",
-            "correctOptionId": "wave-washes-sandcastle"
-        },
-        {
-            "id": "girl-walking-into-classroom",
-            "stepOneImageUrl": "/static/exercise_assets/what_happens_next/girl_walking_into_classroom_1.webp",
-            "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/girl_walking_into_classroom_2.webp",
-            "stepOneAltText": "girl walking into classroom scene step 1",
-            "stepTwoAltText": "girl walking into classroom scene step 2",
-            "openingPrompt": "The girl has nervously entered the classroom. What happens next?",
-            "completionPrompt": "The boy invited the girl to sit with him",
-            "correctOptionId": "girl-enters-classroom"
-        },
-        {
-            "id": "girl-with-balloon",
-            "stepOneImageUrl": "/static/exercise_assets/what_happens_next/girl_with_balloon_1.webp",
-            "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/girl_with_balloon_2.webp",
-            "stepOneAltText": "girl with balloon scene step 1",
-            "stepTwoAltText": "girl with balloon scene step 2",
-            "openingPrompt": "The girl is holding onto her balloon on a windy day. What happens next?",
-            "completionPrompt": "The girl lost her grip and the balloon flew away",
-            "correctOptionId": "balloon-flies-away"
-        },
-        {
-            "id": "ice-cream-melting",
-            "stepOneImageUrl": "/static/exercise_assets/what_happens_next/ice_cream_melting_1.webp",
-            "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/ice_cream_melting_2.webp",
-            "stepOneAltText": "ice cream melting scene step 1",
-            "stepTwoAltText": "ice cream melting scene step 2",
-            "openingPrompt": "The girl is eating an ice cream on a hot summers' day. What happens next?",
-            "completionPrompt": "The girl's ice cream melted",
-            "correctOptionId": "ice-cream-melts"
-        },
-        {
-            "id": "kids-playing-in-park",
-            "stepOneImageUrl": "/static/exercise_assets/what_happens_next/kids_playing_in_park_1.webp",
-            "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/kids_playing_in_park_2.webp",
-            "stepOneAltText": "kids playing in park scene step 1",
-            "stepTwoAltText": "kids playing in park scene step 2",
-            "openingPrompt": "The boy is watching the children play football in the park. What happens next?",
-            "completionPrompt": "The children invite the boy to play with them",
-            "correctOptionId": "kids-keep-playing"
-        },
-        {
-            "id": "rabbit-escaping",
-            "stepOneImageUrl": "/static/exercise_assets/what_happens_next/rabbit_escaping_1.webp",
-            "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/rabbit_escaping_2.webp",
-            "stepOneAltText": "rabbit escaping scene step 1",
-            "stepTwoAltText": "rabbit escaping scene step 2",
-            "openingPrompt": "The hutch door has been left open. What happens next?",
-            "completionPrompt": "The rabbit has escaped",
-            "correctOptionId": "rabbit-runs-away"
-        },
-        {
-            "id": "running-race",
-            "stepOneImageUrl": "/static/exercise_assets/what_happens_next/running_race_1.webp",
-            "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/running_race_2.webp",
-            "stepOneAltText": "running race scene step 1",
-            "stepTwoAltText": "running race scene step 2",
-            "openingPrompt": "The boys shoe lace has undone. What happens next?",
-            "completionPrompt": "The boy tripped and fell",
-            "correctOptionId": "runner-wins-race"
-        },
-        {
-            "id": "sandcastle-wave",
-            "stepOneImageUrl": "/static/exercise_assets/what_happens_next/sandcastle_wave_1.webp",
-            "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/sandcastle_wave_2.webp",
-            "stepOneAltText": "sandcastle wave scene step 1",
-            "stepTwoAltText": "sandcastle wave scene step 2",
-            "openingPrompt": "The girl has built a sandcastle and a wave is approaching the beach. What happens next?",
-            "completionPrompt": "The wave has knocked over the girl's sandcastle",
-            "correctOptionId": "wave-knocks-sandcastle"
-        },
-        {
-            "id": "tower-blocks-falling",
-            "stepOneImageUrl": "/static/exercise_assets/what_happens_next/tower_blocks_falling_1.webp",
-            "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/tower_blocks_falling_2.webp",
-            "stepOneAltText": "tower blocks falling scene step 1",
-            "stepTwoAltText": "tower blocks falling scene step 2",
-            "openingPrompt": "The boy is building a tall tower block. What happens next?",
-            "completionPrompt": "The boy's tower was too tall and fell over",
-            "correctOptionId": "tower-falls-down"
-        },
-        {
-            "id": "boy-crying",
-            "stepOneImageUrl": "/static/exercise_assets/what_happens_next/boy_crying_1.webp",
-            "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/boy_crying_2.webp",
-            "stepOneAltText": "boy crying scene step 1",
-            "stepTwoAltText": "boy crying scene step 2",
-            "openingPrompt": "The boy looks upset. What happens next?",
-            "completionPrompt": "His friend comforts him.",
-            "correctOptionId": "boy-starts-crying"
-        }
-    ]
+  "rounds": 5,
+  "options": [
+    {
+      "id": "pancake-falls",
+      "label": "The pancake falls on his head."
+    },
+    {
+      "id": "football-goes-away",
+      "label": "The football goes through the window"
+    },
+    {
+      "id": "boy-slips-on-wet-floor",
+      "label": "The boy slips and falls"
+    },
+    {
+      "id": "books-fall-down",
+      "label": "The boy drops the books"
+    },
+    {
+      "id": "paint-spills-everywhere",
+      "label": "The cat knocks over the paint"
+    },
+    {
+      "id": "dog-gets-muddy",
+      "label": "They get muddy"
+    },
+    {
+      "id": "dog-eats-sandwich",
+      "label": "The dog steals the sandwich"
+    },
+    {
+      "id": "friends-enjoy-picnic",
+      "label": "It starts to rain"
+    },
+    {
+      "id": "wave-washes-sandcastle",
+      "label": "The seagull steals her chips"
+    },
+    {
+      "id": "girl-enters-classroom",
+      "label": "The girl is invited to sit down"
+    },
+    {
+      "id": "balloon-flies-away",
+      "label": "The balloon flies away"
+    },
+    {
+      "id": "ice-cream-melts",
+      "label": "The ice cream melts"
+    },
+    {
+      "id": "kids-keep-playing",
+      "label": "The children invite him to play"
+    },
+    {
+      "id": "rabbit-runs-away",
+      "label": "The rabbit escapes"
+    },
+    {
+      "id": "runner-wins-race",
+      "label": "The boy trips and falls"
+    },
+    {
+      "id": "wave-knocks-sandcastle",
+      "label": "The wave knocks over the sandcastle"
+    },
+    {
+      "id": "tower-falls-down",
+      "label": "The tower falls over"
+    },
+    {
+      "id": "boy-starts-crying",
+      "label": "His friend comforts him."
+    },
+    {
+      "id": "boy-flipping-pancake-distractor-1",
+      "label": "The pancake flies out the window"
+    },
+    {
+      "id": "boy-flipping-pancake-distractor-2",
+      "label": "The boy starts eating the pancake"
+    },
+    {
+      "id": "boy-flipping-pancake-distractor-3",
+      "label": "The boy runs away"
+    },
+    {
+      "id": "boy-flipping-pancake-distractor-4",
+      "label": "The frying pan starts burning"
+    },
+    {
+      "id": "boy-flipping-pancake-distractor-5",
+      "label": "The pancake falls on the dog"
+    },
+    {
+      "id": "boy-flipping-pancake-distractor-6",
+      "label": "The pancake lands on the plant pot"
+    },
+    {
+      "id": "boy-flipping-pancake-distractor-7",
+      "label": "The butter falls onto the floor"
+    },
+    {
+      "id": "boy-flipping-pancake-distractor-8",
+      "label": "The frying pan breaks in half"
+    },
+    {
+      "id": "boy-flipping-pancake-distractor-9",
+      "label": "The boy walks out of the kitchen"
+    },
+    {
+      "id": "boy-flipping-pancake-distractor-10",
+      "label": "The pancake flies away"
+    },
+    {
+      "id": "boy-kicking-football-distractor-1",
+      "label": "A dog grabs the football and runs away with it"
+    },
+    {
+      "id": "boy-kicking-football-distractor-2",
+      "label": "The boy falls over"
+    },
+    {
+      "id": "boy-kicking-football-distractor-3",
+      "label": "The boy runs inside"
+    },
+    {
+      "id": "boy-kicking-football-distractor-4",
+      "label": "The football turns into a giant balloon"
+    },
+    {
+      "id": "boy-kicking-football-distractor-5",
+      "label": "The football lands in a swimming pool"
+    },
+    {
+      "id": "boy-kicking-football-distractor-6",
+      "label": "The window disappears"
+    },
+    {
+      "id": "boy-kicking-football-distractor-7",
+      "label": "The football breaks"
+    },
+    {
+      "id": "boy-kicking-football-distractor-8",
+      "label": "The boy sits down and reads a book"
+    },
+    {
+      "id": "boy-kicking-football-distractor-9",
+      "label": "The boy starts crying"
+    },
+    {
+      "id": "boy-kicking-football-distractor-10",
+      "label": "The boy starts playing football with his friend"
+    },
+    {
+      "id": "boy-running-on-wet-floor-distractor-1",
+      "label": "The boy starts swimming in the puddle"
+    },
+    {
+      "id": "boy-running-on-wet-floor-distractor-2",
+      "label": "The boy does not fall over"
+    },
+    {
+      "id": "boy-running-on-wet-floor-distractor-3",
+      "label": "The boy starts dancing on the wet floor"
+    },
+    {
+      "id": "boy-running-on-wet-floor-distractor-4",
+      "label": "The boy cleans up the water"
+    },
+    {
+      "id": "boy-running-on-wet-floor-distractor-5",
+      "label": "The water disappears"
+    },
+    {
+      "id": "boy-running-on-wet-floor-distractor-6",
+      "label": "The lockers open and lots of bananas fall out"
+    },
+    {
+      "id": "boy-running-on-wet-floor-distractor-7",
+      "label": "The teacher tells him to slow down"
+    },
+    {
+      "id": "boy-running-on-wet-floor-distractor-8",
+      "label": "The boy ties his shoelaces"
+    },
+    {
+      "id": "boy-running-on-wet-floor-distractor-9",
+      "label": "The boy starts crying"
+    },
+    {
+      "id": "boy-running-on-wet-floor-distractor-10",
+      "label": "The boy jumps over the puddle"
+    },
+    {
+      "id": "boy-with-books-distractor-1",
+      "label": "The boy starts juggling the books"
+    },
+    {
+      "id": "boy-with-books-distractor-2",
+      "label": "The books do not fall down"
+    },
+    {
+      "id": "boy-with-books-distractor-3",
+      "label": "A giant gust of wind blows the books away"
+    },
+    {
+      "id": "boy-with-books-distractor-4",
+      "label": "The boy sits down and reads a book"
+    },
+    {
+      "id": "boy-with-books-distractor-5",
+      "label": "The book falls onto his head"
+    },
+    {
+      "id": "boy-with-books-distractor-6",
+      "label": "The boy shouts for help"
+    },
+    {
+      "id": "boy-with-books-distractor-7",
+      "label": "The boy starts running"
+    },
+    {
+      "id": "boy-with-books-distractor-8",
+      "label": "The boy bumps into the wall"
+    },
+    {
+      "id": "boy-with-books-distractor-9",
+      "label": "The teacher helps him"
+    },
+    {
+      "id": "boy-with-books-distractor-10",
+      "label": "His friends laugh at him"
+    },
+    {
+      "id": "cat-with-paint-distractor-1",
+      "label": "The cat drinks the paint"
+    },
+    {
+      "id": "cat-with-paint-distractor-2",
+      "label": "The cat says meow"
+    },
+    {
+      "id": "cat-with-paint-distractor-3",
+      "label": "The cat runs away"
+    },
+    {
+      "id": "cat-with-paint-distractor-4",
+      "label": "The cat starts painting"
+    },
+    {
+      "id": "cat-with-paint-distractor-5",
+      "label": "The cat eats their dinner"
+    },
+    {
+      "id": "cat-with-paint-distractor-6",
+      "label": "The cat starts dancing"
+    },
+    {
+      "id": "cat-with-paint-distractor-7",
+      "label": "The cat puts the lid on the paint"
+    },
+    {
+      "id": "cat-with-paint-distractor-8",
+      "label": "The cat falls asleep"
+    },
+    {
+      "id": "cat-with-paint-distractor-9",
+      "label": "The cat drinks milk"
+    },
+    {
+      "id": "cat-with-paint-distractor-10",
+      "label": "The cat catches a mouse"
+    },
+    {
+      "id": "dog-in-muddy-puddle-distractor-1",
+      "label": "The dog does not get muddy"
+    },
+    {
+      "id": "dog-in-muddy-puddle-distractor-2",
+      "label": "The dog jumps over the puddle"
+    },
+    {
+      "id": "dog-in-muddy-puddle-distractor-3",
+      "label": "The boy goes home"
+    },
+    {
+      "id": "dog-in-muddy-puddle-distractor-4",
+      "label": "The puddle dries up"
+    },
+    {
+      "id": "dog-in-muddy-puddle-distractor-5",
+      "label": "The dog barks"
+    },
+    {
+      "id": "dog-in-muddy-puddle-distractor-6",
+      "label": "The dog climbs a tree"
+    },
+    {
+      "id": "dog-in-muddy-puddle-distractor-7",
+      "label": "The dog and the boy stay clean"
+    },
+    {
+      "id": "dog-in-muddy-puddle-distractor-8",
+      "label": "The boy gets muddy but the dog does not"
+    },
+    {
+      "id": "dog-in-muddy-puddle-distractor-9",
+      "label": "The dog sits on the bench"
+    },
+    {
+      "id": "dog-in-muddy-puddle-distractor-10",
+      "label": "The boy climbs the tree"
+    },
+    {
+      "id": "dog-looking-at-sandwich-distractor-1",
+      "label": "The boy eats the sandwich"
+    },
+    {
+      "id": "dog-looking-at-sandwich-distractor-2",
+      "label": "The boy drops the sandwich on the floor"
+    },
+    {
+      "id": "dog-looking-at-sandwich-distractor-3",
+      "label": "The boy spills his orange juice"
+    },
+    {
+      "id": "dog-looking-at-sandwich-distractor-4",
+      "label": "The boy opens the window"
+    },
+    {
+      "id": "dog-looking-at-sandwich-distractor-5",
+      "label": "The dog walks on the table"
+    },
+    {
+      "id": "dog-looking-at-sandwich-distractor-6",
+      "label": "The dog lies down"
+    },
+    {
+      "id": "dog-looking-at-sandwich-distractor-7",
+      "label": "The boy goes outside"
+    },
+    {
+      "id": "dog-looking-at-sandwich-distractor-8",
+      "label": "The sandwich filling falls out"
+    },
+    {
+      "id": "dog-looking-at-sandwich-distractor-9",
+      "label": "The plate falls onto the floor"
+    },
+    {
+      "id": "dog-looking-at-sandwich-distractor-10",
+      "label": "The dog starts barking"
+    },
+    {
+      "id": "friends-at-picnic-distractor-1",
+      "label": "The friends eat their food"
+    },
+    {
+      "id": "friends-at-picnic-distractor-2",
+      "label": "They have a food fight"
+    },
+    {
+      "id": "friends-at-picnic-distractor-3",
+      "label": "The friends have an argument"
+    },
+    {
+      "id": "friends-at-picnic-distractor-4",
+      "label": "It does not start to rain"
+    },
+    {
+      "id": "friends-at-picnic-distractor-5",
+      "label": "The friends run around in the park"
+    },
+    {
+      "id": "friends-at-picnic-distractor-6",
+      "label": "The picnic blanket blows away"
+    },
+    {
+      "id": "friends-at-picnic-distractor-7",
+      "label": "The grapes roll all over the grass"
+    },
+    {
+      "id": "friends-at-picnic-distractor-8",
+      "label": "The children spill their drinks"
+    },
+    {
+      "id": "friends-at-picnic-distractor-9",
+      "label": "A rainbow appears"
+    },
+    {
+      "id": "friends-at-picnic-distractor-10",
+      "label": "The sun suddenly comes out"
+    },
+    {
+      "id": "girl-on-beach-distractor-1",
+      "label": "The girl starts singing"
+    },
+    {
+      "id": "girl-on-beach-distractor-2",
+      "label": "The girl starts dancing"
+    },
+    {
+      "id": "girl-on-beach-distractor-3",
+      "label": "The girl goes for a swim"
+    },
+    {
+      "id": "girl-on-beach-distractor-4",
+      "label": "The girl keeps eating her chips"
+    },
+    {
+      "id": "girl-on-beach-distractor-5",
+      "label": "The seagull flies away"
+    },
+    {
+      "id": "girl-on-beach-distractor-6",
+      "label": "The girl throws her chips away"
+    },
+    {
+      "id": "girl-on-beach-distractor-7",
+      "label": "It starts to rain"
+    },
+    {
+      "id": "girl-on-beach-distractor-8",
+      "label": "The girl goes for a run"
+    },
+    {
+      "id": "girl-on-beach-distractor-9",
+      "label": "The seagull lands on her head"
+    },
+    {
+      "id": "girl-on-beach-distractor-10",
+      "label": "A big wave comes"
+    },
+    {
+      "id": "girl-walking-into-classroom-distractor-1",
+      "label": "The girl turns around and leaves"
+    },
+    {
+      "id": "girl-walking-into-classroom-distractor-2",
+      "label": "The children start laughing at her"
+    },
+    {
+      "id": "girl-walking-into-classroom-distractor-3",
+      "label": "The children throw paper aeroplanes across the room"
+    },
+    {
+      "id": "girl-walking-into-classroom-distractor-4",
+      "label": "The teacher asks the girl to clean the whiteboard"
+    },
+    {
+      "id": "girl-walking-into-classroom-distractor-5",
+      "label": "The girl opens her backpack"
+    },
+    {
+      "id": "girl-walking-into-classroom-distractor-6",
+      "label": "The classroom lights turn off"
+    },
+    {
+      "id": "girl-walking-into-classroom-distractor-7",
+      "label": "The girl starts singing in the doorway"
+    },
+    {
+      "id": "girl-walking-into-classroom-distractor-8",
+      "label": "The boy stands on the desk and dances"
+    },
+    {
+      "id": "girl-walking-into-classroom-distractor-9",
+      "label": "The dog steals her backpack"
+    },
+    {
+      "id": "girl-walking-into-classroom-distractor-10",
+      "label": "She falls over"
+    },
+    {
+      "id": "girl-with-balloon-distractor-1",
+      "label": "The girl ties the balloon to the bench"
+    },
+    {
+      "id": "girl-with-balloon-distractor-2",
+      "label": "The balloon pops"
+    },
+    {
+      "id": "girl-with-balloon-distractor-3",
+      "label": "The wind blows down a tree"
+    },
+    {
+      "id": "girl-with-balloon-distractor-4",
+      "label": "The wind stops"
+    },
+    {
+      "id": "girl-with-balloon-distractor-5",
+      "label": "The girl starts running with the balloon"
+    },
+    {
+      "id": "girl-with-balloon-distractor-6",
+      "label": "The balloon changes colour"
+    },
+    {
+      "id": "girl-with-balloon-distractor-7",
+      "label": "The girl sits down"
+    },
+    {
+      "id": "girl-with-balloon-distractor-8",
+      "label": "The girl gives the balloon to her friend"
+    },
+    {
+      "id": "girl-with-balloon-distractor-9",
+      "label": "A squirrel runs past and scares the girl"
+    },
+    {
+      "id": "girl-with-balloon-distractor-10",
+      "label": "The balloon deflates"
+    },
+    {
+      "id": "ice-cream-melting-distractor-1",
+      "label": "The girl eats her ice cream"
+    },
+    {
+      "id": "ice-cream-melting-distractor-2",
+      "label": "The girl drops her ice cream"
+    },
+    {
+      "id": "ice-cream-melting-distractor-3",
+      "label": "The girl puts her ice cream back"
+    },
+    {
+      "id": "ice-cream-melting-distractor-4",
+      "label": "The girl gets another scoop of ice cream"
+    },
+    {
+      "id": "ice-cream-melting-distractor-5",
+      "label": "The girl goes swimming"
+    },
+    {
+      "id": "ice-cream-melting-distractor-6",
+      "label": "The girl puts her ice cream in the bin"
+    },
+    {
+      "id": "ice-cream-melting-distractor-7",
+      "label": "The ice cream cone breaks"
+    },
+    {
+      "id": "ice-cream-melting-distractor-8",
+      "label": "It starts to snow"
+    },
+    {
+      "id": "ice-cream-melting-distractor-9",
+      "label": "It starts to rain"
+    },
+    {
+      "id": "ice-cream-melting-distractor-10",
+      "label": "The ice cream shop closes"
+    },
+    {
+      "id": "kids-playing-in-park-distractor-1",
+      "label": "The children ignore the boy"
+    },
+    {
+      "id": "kids-playing-in-park-distractor-2",
+      "label": "The boy runs away"
+    },
+    {
+      "id": "kids-playing-in-park-distractor-3",
+      "label": "The children laugh at the boy"
+    },
+    {
+      "id": "kids-playing-in-park-distractor-4",
+      "label": "The boy climbs the tree"
+    },
+    {
+      "id": "kids-playing-in-park-distractor-5",
+      "label": "The children go on the slide"
+    },
+    {
+      "id": "kids-playing-in-park-distractor-6",
+      "label": "The park closes"
+    },
+    {
+      "id": "kids-playing-in-park-distractor-7",
+      "label": "The boy rides his bike home"
+    },
+    {
+      "id": "kids-playing-in-park-distractor-8",
+      "label": "The children fall over"
+    },
+    {
+      "id": "kids-playing-in-park-distractor-9",
+      "label": "The boy sits on the bench"
+    },
+    {
+      "id": "kids-playing-in-park-distractor-10",
+      "label": "It starts to rain"
+    },
+    {
+      "id": "rabbit-escaping-distractor-1",
+      "label": "The rabbit shuts the door"
+    },
+    {
+      "id": "rabbit-escaping-distractor-2",
+      "label": "The rabbit starts dancing"
+    },
+    {
+      "id": "rabbit-escaping-distractor-3",
+      "label": "The rabbit shouts for help"
+    },
+    {
+      "id": "rabbit-escaping-distractor-4",
+      "label": "The children play in the garden"
+    },
+    {
+      "id": "rabbit-escaping-distractor-5",
+      "label": "The door shuts by itself"
+    },
+    {
+      "id": "rabbit-escaping-distractor-6",
+      "label": "The rabbit eats the grass"
+    },
+    {
+      "id": "rabbit-escaping-distractor-7",
+      "label": "The rabbit hides in the flowerbed"
+    },
+    {
+      "id": "rabbit-escaping-distractor-8",
+      "label": "The rabbit eats its food"
+    },
+    {
+      "id": "rabbit-escaping-distractor-9",
+      "label": "The dog chases the rabbit"
+    },
+    {
+      "id": "rabbit-escaping-distractor-10",
+      "label": "The girl pets the rabbit"
+    },
+    {
+      "id": "running-race-distractor-1",
+      "label": "The boy gives his friend a high five"
+    },
+    {
+      "id": "running-race-distractor-2",
+      "label": "The boy starts celebrating"
+    },
+    {
+      "id": "running-race-distractor-3",
+      "label": "The boy turns around and runs away"
+    },
+    {
+      "id": "running-race-distractor-4",
+      "label": "The girl overtakes him"
+    },
+    {
+      "id": "running-race-distractor-5",
+      "label": "The boy loses the race"
+    },
+    {
+      "id": "running-race-distractor-6",
+      "label": "The boy wins the race"
+    },
+    {
+      "id": "running-race-distractor-7",
+      "label": "The boy asks for help"
+    },
+    {
+      "id": "running-race-distractor-8",
+      "label": "It starts to rain"
+    },
+    {
+      "id": "running-race-distractor-9",
+      "label": "The children all stop running"
+    },
+    {
+      "id": "running-race-distractor-10",
+      "label": "The children start dancing"
+    },
+    {
+      "id": "sandcastle-wave-distractor-1",
+      "label": "The wave goes away"
+    },
+    {
+      "id": "sandcastle-wave-distractor-2",
+      "label": "The girl goes swimming"
+    },
+    {
+      "id": "sandcastle-wave-distractor-3",
+      "label": "The bucket and spade go missing"
+    },
+    {
+      "id": "sandcastle-wave-distractor-4",
+      "label": "The girl has a drink of water"
+    },
+    {
+      "id": "sandcastle-wave-distractor-5",
+      "label": "The girl keeps building her sandcastle"
+    },
+    {
+      "id": "sandcastle-wave-distractor-6",
+      "label": "A shark washes up on the beach"
+    },
+    {
+      "id": "sandcastle-wave-distractor-7",
+      "label": "A mermaid appears"
+    },
+    {
+      "id": "sandcastle-wave-distractor-8",
+      "label": "The girl runs away"
+    },
+    {
+      "id": "sandcastle-wave-distractor-9",
+      "label": "The girl washes her hands"
+    },
+    {
+      "id": "sandcastle-wave-distractor-10",
+      "label": "The girl fills up her bucket"
+    },
+    {
+      "id": "tower-blocks-falling-distractor-1",
+      "label": "The boy puts his toys away"
+    },
+    {
+      "id": "tower-blocks-falling-distractor-2",
+      "label": "The boy throws a block"
+    },
+    {
+      "id": "tower-blocks-falling-distractor-3",
+      "label": "The tower stays standing"
+    },
+    {
+      "id": "tower-blocks-falling-distractor-4",
+      "label": "The boy reads a book"
+    },
+    {
+      "id": "tower-blocks-falling-distractor-5",
+      "label": "The boy looks out the window"
+    },
+    {
+      "id": "tower-blocks-falling-distractor-6",
+      "label": "The boy plays with the teddy bear instead"
+    },
+    {
+      "id": "tower-blocks-falling-distractor-7",
+      "label": "The boy goes and makes a sandwich"
+    },
+    {
+      "id": "tower-blocks-falling-distractor-8",
+      "label": "The dinosaur knocks down the tower"
+    },
+    {
+      "id": "tower-blocks-falling-distractor-9",
+      "label": "The boy stops building"
+    },
+    {
+      "id": "tower-blocks-falling-distractor-10",
+      "label": "The tower disappears"
+    },
+    {
+      "id": "boy-crying-distractor-1",
+      "label": "His friend walks away and leaves him alone."
+    },
+    {
+      "id": "boy-crying-distractor-2",
+      "label": "The crying boy starts climbing a tree."
+    },
+    {
+      "id": "boy-crying-distractor-3",
+      "label": "His friend begins dancing in front of him."
+    },
+    {
+      "id": "boy-crying-distractor-4",
+      "label": "The boys start chasing each other around the park."
+    },
+    {
+      "id": "boy-crying-distractor-5",
+      "label": "A bird lands on the crying boy's head."
+    },
+    {
+      "id": "boy-crying-distractor-6",
+      "label": "His friend sits on the bench and reads a book."
+    },
+    {
+      "id": "boy-crying-distractor-7",
+      "label": "The crying boy falls asleep."
+    },
+    {
+      "id": "boy-crying-distractor-8",
+      "label": "The boys begin building a sandcastle together."
+    },
+    {
+      "id": "boy-crying-distractor-9",
+      "label": "His friend points at something in the sky and runs away."
+    },
+    {
+      "id": "boy-crying-distractor-10",
+      "label": "His friend splashes water on him."
+    }
+  ],
+  "scenes": [
+    {
+      "id": "boy-flipping-pancake",
+      "stepOneImageUrl": "/static/exercise_assets/what_happens_next/boy_flipping_pancake_1.webp",
+      "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/boy_flipping_pancake_2.webp",
+      "stepOneAltText": "boy flipping pancake scene step 1",
+      "stepTwoAltText": "boy flipping pancake scene step 2",
+      "openingPrompt": "The boy is flipping a pancake. What happens next?",
+      "completionPrompt": "The pancake fell on his head.",
+      "correctOptionId": "pancake-falls",
+      "distractorOptionIds": [
+        "boy-flipping-pancake-distractor-1",
+        "boy-flipping-pancake-distractor-2",
+        "boy-flipping-pancake-distractor-3",
+        "boy-flipping-pancake-distractor-4",
+        "boy-flipping-pancake-distractor-5",
+        "boy-flipping-pancake-distractor-6",
+        "boy-flipping-pancake-distractor-7",
+        "boy-flipping-pancake-distractor-8",
+        "boy-flipping-pancake-distractor-9",
+        "boy-flipping-pancake-distractor-10"
+      ]
+    },
+    {
+      "id": "boy-kicking-football",
+      "stepOneImageUrl": "/static/exercise_assets/what_happens_next/boy_kicking_football_1.webp",
+      "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/boy_kicking_football_2.webp",
+      "stepOneAltText": "boy kicking football scene step 1",
+      "stepTwoAltText": "boy kicking football scene step 2",
+      "openingPrompt": "The boy is playing football in the garden. What happens next?",
+      "completionPrompt": "The boy accidentally smashed the window.",
+      "correctOptionId": "football-goes-away",
+      "distractorOptionIds": [
+        "boy-kicking-football-distractor-1",
+        "boy-kicking-football-distractor-2",
+        "boy-kicking-football-distractor-3",
+        "boy-kicking-football-distractor-4",
+        "boy-kicking-football-distractor-5",
+        "boy-kicking-football-distractor-6",
+        "boy-kicking-football-distractor-7",
+        "boy-kicking-football-distractor-8",
+        "boy-kicking-football-distractor-9",
+        "boy-kicking-football-distractor-10"
+      ]
+    },
+    {
+      "id": "boy-running-on-wet-floor",
+      "stepOneImageUrl": "/static/exercise_assets/what_happens_next/boy_running_on_wet_floor_1.webp",
+      "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/boy_running_on_wet_floor_2.webp",
+      "stepOneAltText": "boy running on wet floor scene step 1",
+      "stepTwoAltText": "boy running on wet floor scene step 2",
+      "openingPrompt": "The boy is running on a wet floor. What happens next?",
+      "completionPrompt": "The boy slipped and fell over.",
+      "correctOptionId": "boy-slips-on-wet-floor",
+      "distractorOptionIds": [
+        "boy-running-on-wet-floor-distractor-1",
+        "boy-running-on-wet-floor-distractor-2",
+        "boy-running-on-wet-floor-distractor-3",
+        "boy-running-on-wet-floor-distractor-4",
+        "boy-running-on-wet-floor-distractor-5",
+        "boy-running-on-wet-floor-distractor-6",
+        "boy-running-on-wet-floor-distractor-7",
+        "boy-running-on-wet-floor-distractor-8",
+        "boy-running-on-wet-floor-distractor-9",
+        "boy-running-on-wet-floor-distractor-10"
+      ]
+    },
+    {
+      "id": "boy-with-books",
+      "stepOneImageUrl": "/static/exercise_assets/what_happens_next/boy_with_books_1.webp",
+      "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/boy_with_books_2.webp",
+      "stepOneAltText": "boy with books scene step 1",
+      "stepTwoAltText": "boy with books scene step 2",
+      "openingPrompt": "The boy is carrying a large stack of books. What happens next?",
+      "completionPrompt": "The boy dropped the books.",
+      "correctOptionId": "books-fall-down",
+      "distractorOptionIds": [
+        "boy-with-books-distractor-1",
+        "boy-with-books-distractor-2",
+        "boy-with-books-distractor-3",
+        "boy-with-books-distractor-4",
+        "boy-with-books-distractor-5",
+        "boy-with-books-distractor-6",
+        "boy-with-books-distractor-7",
+        "boy-with-books-distractor-8",
+        "boy-with-books-distractor-9",
+        "boy-with-books-distractor-10"
+      ]
+    },
+    {
+      "id": "cat-with-paint",
+      "stepOneImageUrl": "/static/exercise_assets/what_happens_next/cat_with_paint_1_.webp",
+      "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/cat_with_paint_2.webp",
+      "stepOneAltText": "cat with paint scene step 1",
+      "stepTwoAltText": "cat with paint scene step 2",
+      "openingPrompt": "The cat is investigating the paint pot. What happens next?",
+      "completionPrompt": "The cat knocked the can over and made a mess.",
+      "correctOptionId": "paint-spills-everywhere",
+      "distractorOptionIds": [
+        "cat-with-paint-distractor-1",
+        "cat-with-paint-distractor-2",
+        "cat-with-paint-distractor-3",
+        "cat-with-paint-distractor-4",
+        "cat-with-paint-distractor-5",
+        "cat-with-paint-distractor-6",
+        "cat-with-paint-distractor-7",
+        "cat-with-paint-distractor-8",
+        "cat-with-paint-distractor-9",
+        "cat-with-paint-distractor-10"
+      ]
+    },
+    {
+      "id": "dog-in-muddy-puddle",
+      "stepOneImageUrl": "/static/exercise_assets/what_happens_next/dog_in_muddy_puddle_1.webp",
+      "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/dog_in_muddy_puddle_2.webp",
+      "stepOneAltText": "dog in muddy puddle scene step 1",
+      "stepTwoAltText": "dog in muddy puddle scene step 2",
+      "openingPrompt": "The dog is about to jump into a muddy puddle. What happens next?",
+      "completionPrompt": "The dog and the boy got covered in mud.",
+      "correctOptionId": "dog-gets-muddy",
+      "distractorOptionIds": [
+        "dog-in-muddy-puddle-distractor-1",
+        "dog-in-muddy-puddle-distractor-2",
+        "dog-in-muddy-puddle-distractor-3",
+        "dog-in-muddy-puddle-distractor-4",
+        "dog-in-muddy-puddle-distractor-5",
+        "dog-in-muddy-puddle-distractor-6",
+        "dog-in-muddy-puddle-distractor-7",
+        "dog-in-muddy-puddle-distractor-8",
+        "dog-in-muddy-puddle-distractor-9",
+        "dog-in-muddy-puddle-distractor-10"
+      ]
+    },
+    {
+      "id": "dog-looking-at-sandwich",
+      "stepOneImageUrl": "/static/exercise_assets/what_happens_next/dog_looking_at_sandwich_1.webp",
+      "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/dog_looking_at_sandwich_2.webp",
+      "stepOneAltText": "dog looking at sandwich scene step 1",
+      "stepTwoAltText": "dog looking at sandwich scene step 2",
+      "openingPrompt": "The boy is eating a delicious sandwich. What happens next?",
+      "completionPrompt": "The dog stole the boys sandwich.",
+      "correctOptionId": "dog-eats-sandwich",
+      "distractorOptionIds": [
+        "dog-looking-at-sandwich-distractor-1",
+        "dog-looking-at-sandwich-distractor-2",
+        "dog-looking-at-sandwich-distractor-3",
+        "dog-looking-at-sandwich-distractor-4",
+        "dog-looking-at-sandwich-distractor-5",
+        "dog-looking-at-sandwich-distractor-6",
+        "dog-looking-at-sandwich-distractor-7",
+        "dog-looking-at-sandwich-distractor-8",
+        "dog-looking-at-sandwich-distractor-9",
+        "dog-looking-at-sandwich-distractor-10"
+      ]
+    },
+    {
+      "id": "friends-at-picnic",
+      "stepOneImageUrl": "/static/exercise_assets/what_happens_next/friends_at_picnic_1.webp",
+      "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/friends_at_picnic_2.webp",
+      "stepOneAltText": "friends at picnic scene step 1",
+      "stepTwoAltText": "friends at picnic scene step 2",
+      "openingPrompt": "The children are having a picnic together in the park. What happens next?",
+      "completionPrompt": "It started raining and the children got wet.",
+      "correctOptionId": "friends-enjoy-picnic",
+      "distractorOptionIds": [
+        "friends-at-picnic-distractor-1",
+        "friends-at-picnic-distractor-2",
+        "friends-at-picnic-distractor-3",
+        "friends-at-picnic-distractor-4",
+        "friends-at-picnic-distractor-5",
+        "friends-at-picnic-distractor-6",
+        "friends-at-picnic-distractor-7",
+        "friends-at-picnic-distractor-8",
+        "friends-at-picnic-distractor-9",
+        "friends-at-picnic-distractor-10"
+      ]
+    },
+    {
+      "id": "girl-on-beach",
+      "stepOneImageUrl": "/static/exercise_assets/what_happens_next/girl_on_beach_1.webp",
+      "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/girl_on_beach_2.webp",
+      "stepOneAltText": "girl on beach scene step 1",
+      "stepTwoAltText": "girl on beach scene step 2",
+      "openingPrompt": "The girl is enjoying some chips on the beach. What happens next?",
+      "completionPrompt": "The seagull flew away with the girl's chips.",
+      "correctOptionId": "wave-washes-sandcastle",
+      "distractorOptionIds": [
+        "girl-on-beach-distractor-1",
+        "girl-on-beach-distractor-2",
+        "girl-on-beach-distractor-3",
+        "girl-on-beach-distractor-4",
+        "girl-on-beach-distractor-5",
+        "girl-on-beach-distractor-6",
+        "girl-on-beach-distractor-7",
+        "girl-on-beach-distractor-8",
+        "girl-on-beach-distractor-9",
+        "girl-on-beach-distractor-10"
+      ]
+    },
+    {
+      "id": "girl-walking-into-classroom",
+      "stepOneImageUrl": "/static/exercise_assets/what_happens_next/girl_walking_into_classroom_1.webp",
+      "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/girl_walking_into_classroom_2.webp",
+      "stepOneAltText": "girl walking into classroom scene step 1",
+      "stepTwoAltText": "girl walking into classroom scene step 2",
+      "openingPrompt": "The girl has nervously entered the classroom. What happens next?",
+      "completionPrompt": "The boy invited the girl to sit with him.",
+      "correctOptionId": "girl-enters-classroom",
+      "distractorOptionIds": [
+        "girl-walking-into-classroom-distractor-1",
+        "girl-walking-into-classroom-distractor-2",
+        "girl-walking-into-classroom-distractor-3",
+        "girl-walking-into-classroom-distractor-4",
+        "girl-walking-into-classroom-distractor-5",
+        "girl-walking-into-classroom-distractor-6",
+        "girl-walking-into-classroom-distractor-7",
+        "girl-walking-into-classroom-distractor-8",
+        "girl-walking-into-classroom-distractor-9",
+        "girl-walking-into-classroom-distractor-10"
+      ]
+    },
+    {
+      "id": "girl-with-balloon",
+      "stepOneImageUrl": "/static/exercise_assets/what_happens_next/girl_with_balloon_1.webp",
+      "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/girl_with_balloon_2.webp",
+      "stepOneAltText": "girl with balloon scene step 1",
+      "stepTwoAltText": "girl with balloon scene step 2",
+      "openingPrompt": "The girl is holding onto her balloon on a windy day. What happens next?",
+      "completionPrompt": "The girl lost her grip and the balloon flew away.",
+      "correctOptionId": "balloon-flies-away",
+      "distractorOptionIds": [
+        "girl-with-balloon-distractor-1",
+        "girl-with-balloon-distractor-2",
+        "girl-with-balloon-distractor-3",
+        "girl-with-balloon-distractor-4",
+        "girl-with-balloon-distractor-5",
+        "girl-with-balloon-distractor-6",
+        "girl-with-balloon-distractor-7",
+        "girl-with-balloon-distractor-8",
+        "girl-with-balloon-distractor-9",
+        "girl-with-balloon-distractor-10"
+      ]
+    },
+    {
+      "id": "ice-cream-melting",
+      "stepOneImageUrl": "/static/exercise_assets/what_happens_next/ice_cream_melting_1.webp",
+      "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/ice_cream_melting_2.webp",
+      "stepOneAltText": "ice cream melting scene step 1",
+      "stepTwoAltText": "ice cream melting scene step 2",
+      "openingPrompt": "The girl is eating an ice cream on a hot summers' day. What happens next?",
+      "completionPrompt": "The girl's ice cream melted.",
+      "correctOptionId": "ice-cream-melts",
+      "distractorOptionIds": [
+        "ice-cream-melting-distractor-1",
+        "ice-cream-melting-distractor-2",
+        "ice-cream-melting-distractor-3",
+        "ice-cream-melting-distractor-4",
+        "ice-cream-melting-distractor-5",
+        "ice-cream-melting-distractor-6",
+        "ice-cream-melting-distractor-7",
+        "ice-cream-melting-distractor-8",
+        "ice-cream-melting-distractor-9",
+        "ice-cream-melting-distractor-10"
+      ]
+    },
+    {
+      "id": "kids-playing-in-park",
+      "stepOneImageUrl": "/static/exercise_assets/what_happens_next/kids_playing_in_park_1.webp",
+      "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/kids_playing_in_park_2.webp",
+      "stepOneAltText": "kids playing in park scene step 1",
+      "stepTwoAltText": "kids playing in park scene step 2",
+      "openingPrompt": "The boy is watching the children play football in the park. What happens next?",
+      "completionPrompt": "The children invite the boy to play with them.",
+      "correctOptionId": "kids-keep-playing",
+      "distractorOptionIds": [
+        "kids-playing-in-park-distractor-1",
+        "kids-playing-in-park-distractor-2",
+        "kids-playing-in-park-distractor-3",
+        "kids-playing-in-park-distractor-4",
+        "kids-playing-in-park-distractor-5",
+        "kids-playing-in-park-distractor-6",
+        "kids-playing-in-park-distractor-7",
+        "kids-playing-in-park-distractor-8",
+        "kids-playing-in-park-distractor-9",
+        "kids-playing-in-park-distractor-10"
+      ]
+    },
+    {
+      "id": "rabbit-escaping",
+      "stepOneImageUrl": "/static/exercise_assets/what_happens_next/rabbit_escaping_1.webp",
+      "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/rabbit_escaping_2.webp",
+      "stepOneAltText": "rabbit escaping scene step 1",
+      "stepTwoAltText": "rabbit escaping scene step 2",
+      "openingPrompt": "The hutch door has been left open. What happens next?",
+      "completionPrompt": "The rabbit has escaped.",
+      "correctOptionId": "rabbit-runs-away",
+      "distractorOptionIds": [
+        "rabbit-escaping-distractor-1",
+        "rabbit-escaping-distractor-2",
+        "rabbit-escaping-distractor-3",
+        "rabbit-escaping-distractor-4",
+        "rabbit-escaping-distractor-5",
+        "rabbit-escaping-distractor-6",
+        "rabbit-escaping-distractor-7",
+        "rabbit-escaping-distractor-8",
+        "rabbit-escaping-distractor-9",
+        "rabbit-escaping-distractor-10"
+      ]
+    },
+    {
+      "id": "running-race",
+      "stepOneImageUrl": "/static/exercise_assets/what_happens_next/running_race_1.webp",
+      "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/running_race_2.webp",
+      "stepOneAltText": "running race scene step 1",
+      "stepTwoAltText": "running race scene step 2",
+      "openingPrompt": "The boys shoe lace has undone. What happens next?",
+      "completionPrompt": "The boy tripped and fell.",
+      "correctOptionId": "runner-wins-race",
+      "distractorOptionIds": [
+        "running-race-distractor-1",
+        "running-race-distractor-2",
+        "running-race-distractor-3",
+        "running-race-distractor-4",
+        "running-race-distractor-5",
+        "running-race-distractor-6",
+        "running-race-distractor-7",
+        "running-race-distractor-8",
+        "running-race-distractor-9",
+        "running-race-distractor-10"
+      ]
+    },
+    {
+      "id": "sandcastle-wave",
+      "stepOneImageUrl": "/static/exercise_assets/what_happens_next/sandcastle_wave_1.webp",
+      "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/sandcastle_wave_2.webp",
+      "stepOneAltText": "sandcastle wave scene step 1",
+      "stepTwoAltText": "sandcastle wave scene step 2",
+      "openingPrompt": "The girl has built a sandcastle and a wave is approaching the beach. What happens next?",
+      "completionPrompt": "The wave has knocked over the girl's sandcastle.",
+      "correctOptionId": "wave-knocks-sandcastle",
+      "distractorOptionIds": [
+        "sandcastle-wave-distractor-1",
+        "sandcastle-wave-distractor-2",
+        "sandcastle-wave-distractor-3",
+        "sandcastle-wave-distractor-4",
+        "sandcastle-wave-distractor-5",
+        "sandcastle-wave-distractor-6",
+        "sandcastle-wave-distractor-7",
+        "sandcastle-wave-distractor-8",
+        "sandcastle-wave-distractor-9",
+        "sandcastle-wave-distractor-10"
+      ]
+    },
+    {
+      "id": "tower-blocks-falling",
+      "stepOneImageUrl": "/static/exercise_assets/what_happens_next/tower_blocks_falling_1.webp",
+      "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/tower_blocks_falling_2.webp",
+      "stepOneAltText": "tower blocks falling scene step 1",
+      "stepTwoAltText": "tower blocks falling scene step 2",
+      "openingPrompt": "The boy is building a tall tower block. What happens next?",
+      "completionPrompt": "The boy's tower was too tall and fell over.",
+      "correctOptionId": "tower-falls-down",
+      "distractorOptionIds": [
+        "tower-blocks-falling-distractor-1",
+        "tower-blocks-falling-distractor-2",
+        "tower-blocks-falling-distractor-3",
+        "tower-blocks-falling-distractor-4",
+        "tower-blocks-falling-distractor-5",
+        "tower-blocks-falling-distractor-6",
+        "tower-blocks-falling-distractor-7",
+        "tower-blocks-falling-distractor-8",
+        "tower-blocks-falling-distractor-9",
+        "tower-blocks-falling-distractor-10"
+      ]
+    },
+    {
+      "id": "boy-crying",
+      "stepOneImageUrl": "/static/exercise_assets/what_happens_next/boy_crying_1.webp",
+      "stepTwoImageUrl": "/static/exercise_assets/what_happens_next/boy_crying_2.webp",
+      "stepOneAltText": "boy crying scene step 1",
+      "stepTwoAltText": "boy crying scene step 2",
+      "openingPrompt": "The boy looks upset. What happens next?",
+      "completionPrompt": "His friend comforts him.",
+      "correctOptionId": "boy-starts-crying",
+      "distractorOptionIds": [
+        "boy-crying-distractor-1",
+        "boy-crying-distractor-2",
+        "boy-crying-distractor-3",
+        "boy-crying-distractor-4",
+        "boy-crying-distractor-5",
+        "boy-crying-distractor-6",
+        "boy-crying-distractor-7",
+        "boy-crying-distractor-8",
+        "boy-crying-distractor-9",
+        "boy-crying-distractor-10"
+      ]
+    }
+  ]
 }

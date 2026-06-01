@@ -1,13 +1,14 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, type CSSProperties } from "react";
 import { TextOptionGroup } from "../../components/TextOptionGroup";
 import { useExerciseTracking } from "../../hooks";
 import ExerciseLayout from "../../layouts/exerciseLayout/ExerciseLayout";
 import type { Question, QuestionState } from "../../lib/types";
 import { shuffleArray } from "../../utils/shuffleArray";
 import type {
-    InTheKnowOption,
+    InTheKnowChoiceCount,
     InTheKnowPayload,
-    InTheKnowScene,
+    InTheKnowRound,
+    InTheKnowScenePack,
 } from "./types";
 import styles from "./inTheKnow.module.css";
 
@@ -15,36 +16,64 @@ const EXERCISE_ID = "in-the-know";
 
 interface InTheKnowGameProps {
     payload: InTheKnowPayload;
+    choiceCount: InTheKnowChoiceCount;
     onSettingsRequested?: () => void;
 }
 
 interface InTheKnowAnswer {
-    scene: InTheKnowScene;
-    options: InTheKnowOption[];
+    scenePack: InTheKnowScenePack;
+    round: InTheKnowRound;
+    options: RoundOption[];
+}
+
+interface RoundOption {
+    id: string;
+    label: string;
 }
 
 const buildRounds = (
     payload: InTheKnowPayload,
+    choiceCount: InTheKnowChoiceCount,
 ): { questions: Question[]; answers: InTheKnowAnswer[] } => {
-    const roundsToPlay = Math.min(payload.rounds, payload.scenes.length);
-    const selectedScenes = shuffleArray(payload.scenes).slice(0, roundsToPlay);
+    const selectedScenePack = shuffleArray(payload.scenePacks)[0];
+    const roundsToPlay = Math.min(
+        payload.rounds,
+        selectedScenePack.rounds.length,
+    );
+    const selectedRounds = selectedScenePack.rounds.slice(0, roundsToPlay);
 
-    const questions: Question[] = selectedScenes.map((scene, index) => ({
-        id: `${scene.id}-${index + 1}`,
-        prompt: scene.openingPrompt,
-        correctIconIds: [scene.correctOptionId],
+    const questions: Question[] = selectedRounds.map((round, index) => ({
+        id: `${selectedScenePack.id}-${round.id}-${index + 1}`,
+        prompt: round.openingPrompt,
+        correctIconIds: [`${selectedScenePack.id}-${round.id}-correct`],
     }));
 
-    const answers: InTheKnowAnswer[] = selectedScenes.map((scene) => ({
-        scene,
-        options: payload.options,
-    }));
+    const answers: InTheKnowAnswer[] = selectedRounds.map((round) => {
+        const correctOption: RoundOption = {
+            id: `${selectedScenePack.id}-${round.id}-correct`,
+            label: round.correctOptionLabel,
+        };
+        const distractorCount = choiceCount - 1;
+        const distractors = shuffleArray(
+            round.distractorOptionLabels.map((label, index) => ({
+                id: `${selectedScenePack.id}-${round.id}-distractor-${index + 1}`,
+                label,
+            })),
+        ).slice(0, distractorCount);
+
+        return {
+            scenePack: selectedScenePack,
+            round,
+            options: shuffleArray([correctOption, ...distractors]),
+        };
+    });
 
     return { questions, answers };
 };
 
 export const InTheKnowGame = ({
     payload,
+    choiceCount,
     onSettingsRequested,
 }: InTheKnowGameProps) => {
     const [questionState, setQuestionState] = useState<QuestionState>({
@@ -55,8 +84,12 @@ export const InTheKnowGame = ({
     const [completionPrompt, setCompletionPrompt] = useState<string | null>(
         null,
     );
+    const [sceneAspectRatio, setSceneAspectRatio] = useState(1);
 
-    const gameData = useMemo(() => buildRounds(payload), [payload]);
+    const gameData = useMemo(
+        () => buildRounds(payload, choiceCount),
+        [choiceCount, payload],
+    );
     const tracking = useExerciseTracking(gameData.questions.length);
 
     const completionPromptByQuestionId = useMemo(
@@ -64,7 +97,7 @@ export const InTheKnowGame = ({
             new Map(
                 gameData.questions.map((question, index) => [
                     question.id,
-                    gameData.answers[index].scene.completionPrompt,
+                    gameData.answers[index].round.completionPrompt,
                 ]),
             ),
         [gameData.answers, gameData.questions],
@@ -112,6 +145,10 @@ export const InTheKnowGame = ({
 
     const disableCheck = questionState.selectedIconIds.length === 0;
 
+    const sceneFrameStyle: CSSProperties = {
+        "--scene-aspect-ratio": sceneAspectRatio,
+    };
+
     return (
         <ExerciseLayout<InTheKnowAnswer>
             exerciseId={EXERCISE_ID}
@@ -124,28 +161,41 @@ export const InTheKnowGame = ({
             onSettingsRequested={onSettingsRequested}
             promptOverride={
                 questionState.answerState === "correct"
-                    ? completionPrompt || undefined
+                    ? completionPrompt
+                        ? `That's right! ${completionPrompt}`
+                        : "That's right!"
                     : undefined
             }
             disableCheck={disableCheck}
         >
             {(currentAnswer: InTheKnowAnswer) => {
                 const imageUrl = showStepTwoImage
-                    ? currentAnswer.scene.stepTwoImageUrl
-                    : currentAnswer.scene.stepOneImageUrl;
+                    ? currentAnswer.round.stepTwoImageUrl
+                    : currentAnswer.scenePack.stepOneImageUrl;
                 const altText = showStepTwoImage
-                    ? currentAnswer.scene.stepTwoAltText || "Scene next step"
-                    : currentAnswer.scene.stepOneAltText || "Scene clue";
+                    ? currentAnswer.round.stepTwoAltText || "Scene next step"
+                    : currentAnswer.scenePack.stepOneAltText || "Scene clue";
 
                 return (
                     <div className={styles.roundStage}>
                         <div
                             className={`${styles.sceneFrame} ${showStepTwoImage ? styles.sceneFrameRevealed : ""}`}
+                            style={sceneFrameStyle}
                         >
                             <img
                                 src={imageUrl}
                                 alt={altText}
                                 className={`${styles.sceneImage} ${showStepTwoImage ? styles.sceneImageFlip : ""}`}
+                                onLoad={(event) => {
+                                    const { naturalWidth, naturalHeight } =
+                                        event.currentTarget;
+
+                                    if (naturalWidth > 0 && naturalHeight > 0) {
+                                        setSceneAspectRatio(
+                                            naturalWidth / naturalHeight,
+                                        );
+                                    }
+                                }}
                             />
                         </div>
                         <TextOptionGroup
