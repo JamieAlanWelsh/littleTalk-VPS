@@ -185,7 +185,7 @@ export const CategorisationSettingsScreen = ({
                         checked={isSfxMuted}
                         onChange={onMuteSfxToggle}
                     />
-                    Mute image voice
+                    Mute Voice
                 </label>
             </div>
         </div>

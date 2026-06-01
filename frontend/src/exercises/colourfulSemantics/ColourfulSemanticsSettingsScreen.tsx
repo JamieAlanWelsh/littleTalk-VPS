@@ -59,6 +59,7 @@ export const ColourfulSemanticsSettingsScreen = ({
         variant.allowedPresetIds.includes(preset.id),
     );
     const showPresetSelection = variant.id !== "advanced";
+    const showMuteVoiceToggle = variant.id !== "advanced";
     const maxOptions = Math.min(
         variant.maxNumberOfOptions,
         getMaxOptionsAcrossScenes(payload, payload.scenes, options, variant),
@@ -213,6 +214,24 @@ export const ColourfulSemanticsSettingsScreen = ({
                     ))}
                 </select>
             </section>
+
+            {showMuteVoiceToggle ? (
+                <section className={styles.section}>
+                    <label className={styles.muteToggleRow}>
+                        <input
+                            type="checkbox"
+                            checked={options.isVoiceMuted}
+                            onChange={(event) =>
+                                onSetOptions({
+                                    ...options,
+                                    isVoiceMuted: event.target.checked,
+                                })
+                            }
+                        />
+                        Mute Voice
+                    </label>
+                </section>
+            ) : null}
         </div>
     );
 };

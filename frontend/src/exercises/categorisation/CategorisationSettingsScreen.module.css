@@ -125,7 +125,8 @@
     align-items: center;
     gap: 0.45rem;
     font-size: 0.95rem;
-    color: #4b5563;
+    font-weight: 600;
+    color: #2c233f;
 }
 
 .muteToggleRow input {
@@ -182,7 +183,7 @@
     }
 
     .muteToggleRow {
-        font-size: 0.85rem;
+        font-size: 0.9rem;
     }
 }
 
@@ -217,5 +218,9 @@
 
     .selectedCount {
         font-size: 0.75rem;
+    }
+
+    .muteToggleRow {
+        font-size: 0.85rem;
     }
 }

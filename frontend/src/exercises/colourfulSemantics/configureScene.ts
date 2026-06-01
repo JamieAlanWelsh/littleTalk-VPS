@@ -115,6 +115,7 @@ export const getDefaultOptionsForVariant = (
     presetId: variant.defaultPresetId,
     numberOfOptions: variant.defaultNumberOfOptions,
     enabledOptionalSlotIds: [],
+    isVoiceMuted: false,
 });
 
 export const sanitizeOptionsForVariant = ({
@@ -157,6 +158,7 @@ export const sanitizeOptionsForVariant = ({
             Math.min(options.numberOfOptions, maxOptions),
         ),
         enabledOptionalSlotIds,
+        isVoiceMuted: options.isVoiceMuted,
     };
 };
 
