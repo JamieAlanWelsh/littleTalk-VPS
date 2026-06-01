@@ -61,12 +61,18 @@ const buildRounds = (
 ): { questions: Question[]; answers: ThinkAndFindAnswer[] } => {
     const questions: Question[] = [];
     const answers: ThinkAndFindAnswer[] = [];
+    const roundCount = Math.min(payload.rounds, payload.imageSets.length);
+    const selectedImageSets = shuffleArray(payload.imageSets).slice(
+        0,
+        roundCount,
+    );
 
-    for (let roundIndex = 0; roundIndex < payload.rounds; roundIndex += 1) {
-        const imageSet =
-            payload.imageSets[
-                Math.floor(Math.random() * payload.imageSets.length)
-            ];
+    for (
+        let roundIndex = 0;
+        roundIndex < selectedImageSets.length;
+        roundIndex += 1
+    ) {
+        const imageSet = selectedImageSets[roundIndex];
         const optionItems = shuffleArray(imageSet.items).slice(
             0,
             numberOfOptions,
