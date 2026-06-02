@@ -87,6 +87,24 @@
     opacity: 1;
 }
 
+.placedObject {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    transform: scale(var(--taskmaster-depth-scale, 1));
+    transform-origin: center bottom;
+}
+
+.placedObject :global(.icon-block) {
+    width: 100%;
+    height: 100%;
+}
+
+.placedObject :global(.icon-block:hover) {
+    transform: none;
+}
+
 @media (max-width: 768px) {
     .board {
         --taskmaster-tile-size: 5.75rem;

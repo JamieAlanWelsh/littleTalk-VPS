@@ -5,7 +5,7 @@ import {
     KeyboardSensor,
     PointerSensor,
 } from "@dnd-kit/react";
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState, type CSSProperties } from "react";
 import { DraggableImage } from "../../components/DraggableImage/DraggableImage";
 import { DroppableImageZone } from "../../components/DroppableImageZone/DroppableImageZone";
 import { PoolTray } from "../../components/PoolTray/PoolTray";
@@ -31,6 +31,7 @@ const EXERCISE_METADATA = {
 const GRID_ROWS = TASK_MASTER_GRID_ROWS;
 const GRID_COLUMNS = TASK_MASTER_GRID_COLUMNS;
 const POOL_ID = "pool";
+const DEPTH_MIN_SCALE = 0.45;
 
 const toCellId = (row: number, col: number) => `cell:${row}:${col}`;
 
@@ -65,6 +66,17 @@ const getPlacedObjectIdForCell = (
 const getSceneIdFromQuestionId = (questionId: string): string => {
     const [sceneId] = questionId.split("-");
     return sceneId ?? "";
+};
+
+const getDepthScaleForRow = (row: number): number => {
+    if (GRID_ROWS <= 1) {
+        return 1;
+    }
+
+    const clampedRow = Math.max(0, Math.min(row, GRID_ROWS - 1));
+    const depthProgress = clampedRow / (GRID_ROWS - 1);
+
+    return DEPTH_MIN_SCALE + depthProgress * (1 - DEPTH_MIN_SCALE);
 };
 
 const buildScenePlacements = (
@@ -382,7 +394,7 @@ export const TaskMasterGame = ({
 
     const renderObject = (
         objectId: string,
-        options?: { isLocked?: boolean },
+        options?: { isLocked?: boolean; depthScale?: number },
     ) => {
         const image = objectPicturesById[objectId];
 
@@ -391,8 +403,9 @@ export const TaskMasterGame = ({
         }
 
         const isLocked = options?.isLocked === true;
+        const depthScale = options?.depthScale;
 
-        return (
+        const draggable = (
             <DraggableImage
                 id={toDragId(objectId)}
                 image={image}
@@ -411,6 +424,23 @@ export const TaskMasterGame = ({
                     }
                 }}
             />
+        );
+
+        if (depthScale == null) {
+            return draggable;
+        }
+
+        return (
+            <div
+                className={(styles as Record<string, string>).placedObject}
+                style={
+                    {
+                        "--taskmaster-depth-scale": depthScale,
+                    } as CSSProperties
+                }
+            >
+                {draggable}
+            </div>
         );
     };
 
@@ -512,6 +542,10 @@ export const TaskMasterGame = ({
                                                                       isLocked:
                                                                           lockedObjectIds.has(
                                                                               placedObjectId,
+                                                                          ),
+                                                                      depthScale:
+                                                                          getDepthScaleForRow(
+                                                                              row,
                                                                           ),
                                                                   },
                                                               )

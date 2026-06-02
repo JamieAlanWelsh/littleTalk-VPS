@@ -7,7 +7,7 @@
       "questions": [
         {
           "id": "1",
-          "question": "on top of the tallest mountain on the right",
+          "question": "on top of the tallest mountain, on the right",
           "answer": [
             [
               1,
@@ -27,7 +27,7 @@
         },
         {
           "id": "3",
-          "question": "on the circular cactus with the yellow flower",
+          "question": "on the circular cactus with a yellow flower",
           "answer": [
             [
               4,
@@ -74,7 +74,7 @@
         },
         {
           "id": "2",
-          "question": "in the river under the bridge, to the left of the mushroom bush",
+          "question": "in the river, under the bridge and to the left of the mushroom bush",
           "answer": [
             [
               3,
@@ -182,7 +182,7 @@
       "questions": [
         {
           "id": "1",
-          "question": "in the lava river on the second bend, on the left hand side",
+          "question": "in the lava river on the second bend and on the left hand side",
           "answer": [
             [
               3,
@@ -192,7 +192,7 @@
         },
         {
           "id": "2",
-          "question": "in the tallest palm tree, on top of the coconuts",
+          "question": "in the tallest palm tree and on top of the coconuts",
           "answer": [
             [
               1,
@@ -212,7 +212,7 @@
         },
         {
           "id": "4",
-          "question": "in the middle of the smoke, on top of the volcano",
+          "question": "in the middle of the smoke at the top of the volcano",
           "answer": [
             [
               0,
@@ -222,7 +222,7 @@
         },
         {
           "id": "5",
-          "question": "at the bottom of the volcano, on the left hand side, in front of the smallest palm tree",
+          "question": "at the bottom of the volcano, on the left hand side and in front of the smallest palm tree",
           "answer": [
             [
               2,
@@ -259,7 +259,7 @@
         },
         {
           "id": "3",
-          "question": "on top of the chimney of the house closest to the postbox",
+          "question": "on top of the chimney of the house that is closest to the postbox",
           "answer": [
             [
               0,
@@ -316,7 +316,7 @@
         },
         {
           "id": "3",
-          "question": "on the brightest, biggest star above the earth",
+          "question": "on the brightest, biggest star above Earth",
           "answer": [
             [
               0,
@@ -336,7 +336,7 @@
         },
         {
           "id": "5",
-          "question": "on the biggest crater, below the blue planet with rings",
+          "question": "on the biggest crater and below the blue planet that has rings",
           "answer": [
             [
               3,
@@ -373,7 +373,7 @@
         },
         {
           "id": "3",
-          "question": "in the bush with two pink flowers and one yellow flower",
+          "question": "in the bush that has two pink flowers and one yellow flower",
           "answer": [
             [
               4,
@@ -383,7 +383,7 @@
         },
         {
           "id": "4",
-          "question": "in the bushes between the two trees and under the smallest cloud",
+          "question": "in the bushes between the two trees, under the smallest cloud",
           "answer": [
             [
               1,
@@ -420,7 +420,7 @@
         },
         {
           "id": "2",
-          "question": "between the two smaller mountains in the distance",
+          "question": "between the two smaller mountains, in the distance",
           "answer": [
             [
               2,
@@ -507,7 +507,7 @@
         },
         {
           "id": "5",
-          "question": "on the chimney of the house in the distance",
+          "question": "on the chimney of the house that is in the distance",
           "answer": [
             [
               1,
@@ -652,7 +652,7 @@
         },
         {
           "id": "2",
-          "question": "on top of the tallest buildings",
+          "question": "at the top of the tallest buildings",
           "answer": [
             [
               0,
@@ -662,7 +662,7 @@
         },
         {
           "id": "3",
-          "question": "on top of the building, to the right of the closest tree",
+          "question": "on top of the building that is to the right of the closest tree",
           "answer": [
             [
               1,
@@ -709,7 +709,7 @@
         },
         {
           "id": "2",
-          "question": "on top of the tallest tower of the castle",
+          "question": "at the top of the tallest tower of the castle",
           "answer": [
             [
               0,
@@ -719,7 +719,7 @@
         },
         {
           "id": "3",
-          "question": "in the branches of the tree, to the right of the castle",
+          "question": "in the branches of the tree that is to the right of the castle",
           "answer": [
             [
               2,
@@ -780,7 +780,7 @@
         },
         {
           "id": "3",
-          "question": "on top of the rocks at the far end of the beach",
+          "question": "on top of the rocks at the farthest end of the beach",
           "answer": [
             [
               1,
@@ -790,7 +790,7 @@
         },
         {
           "id": "4",
-          "question": "in the sea below the boat",
+          "question": "in the sea, below the boat",
           "answer": [
             [
               2,
