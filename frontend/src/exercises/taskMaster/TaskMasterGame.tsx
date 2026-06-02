@@ -67,6 +67,23 @@ const getSceneIdFromQuestionId = (questionId: string): string => {
     return sceneId ?? "";
 };
 
+const buildScenePlacements = (
+    placementsByQuestionId: Record<string, Record<string, string>>,
+    sceneQuestionIds: string[],
+) => {
+    const scenePlacements: Record<string, string> = {};
+
+    for (const sceneQuestionId of sceneQuestionIds) {
+        const placements = placementsByQuestionId[sceneQuestionId] ?? {};
+
+        for (const [objectId, cellId] of Object.entries(placements)) {
+            scenePlacements[objectId] = cellId;
+        }
+    }
+
+    return scenePlacements;
+};
+
 export const TaskMasterGame = ({
     questions,
     onSettingsRequested,
@@ -78,6 +95,9 @@ export const TaskMasterGame = ({
         answerState: "notAnswered",
     });
     const [isDragging, setIsDragging] = useState(false);
+    const [lockedQuestionIds, setLockedQuestionIds] = useState<Set<string>>(
+        () => new Set(),
+    );
     const [placementsByQuestionId, setPlacementsByQuestionId] = useState<
         Record<string, Record<string, string>>
     >(() => Object.fromEntries(questions.map((question) => [question.id, {}])));
@@ -148,6 +168,44 @@ export const TaskMasterGame = ({
         return map;
     }, [questions, objectIdByImageUrl]);
 
+    const sceneQuestionIdsBySceneId = useMemo(() => {
+        const map: Record<string, string[]> = {};
+
+        for (const question of questions) {
+            const sceneId = getSceneIdFromQuestionId(question.id);
+
+            if (!sceneId) {
+                continue;
+            }
+
+            const currentSceneQuestionIds = map[sceneId] ?? [];
+
+            if (!currentSceneQuestionIds.includes(question.id)) {
+                currentSceneQuestionIds.push(question.id);
+            }
+
+            map[sceneId] = currentSceneQuestionIds;
+        }
+
+        return map;
+    }, [questions]);
+
+    const questionIdByObjectId = useMemo(() => {
+        const map: Record<string, string> = {};
+
+        for (const question of questions) {
+            const objectId = objectIdByImageUrl[question.objectUrl];
+
+            if (!objectId) {
+                continue;
+            }
+
+            map[objectId] = question.id;
+        }
+
+        return map;
+    }, [questions, objectIdByImageUrl]);
+
     const activeQuestionIdRef = useRef(questions[0]?.id ?? "");
 
     const sensors = [
@@ -188,30 +246,64 @@ export const TaskMasterGame = ({
         }
 
         const questionId = activeQuestionIdRef.current;
+        const sourceQuestionId = questionIdByObjectId[objectId] ?? questionId;
+        const activeSceneId = getSceneIdFromQuestionId(questionId);
+        const sceneQuestionIds = sceneQuestionIdsBySceneId[activeSceneId] ?? [];
+
+        if (lockedQuestionIds.has(sourceQuestionId)) {
+            return;
+        }
 
         setPlacementsByQuestionId((current) => {
-            const currentPlacements = current[questionId] ?? {};
-            const nextPlacements = { ...currentPlacements };
+            const nextByQuestionId = { ...current };
+            const sourcePlacements = {
+                ...(nextByQuestionId[sourceQuestionId] ?? {}),
+            };
 
             if (targetId === POOL_ID) {
-                delete nextPlacements[objectId];
+                delete sourcePlacements[objectId];
+
+                nextByQuestionId[sourceQuestionId] = sourcePlacements;
+
+                return nextByQuestionId;
             } else {
+                const scenePlacements = buildScenePlacements(
+                    nextByQuestionId,
+                    sceneQuestionIds,
+                );
                 const displacedObjectId = getPlacedObjectIdForCell(
-                    nextPlacements,
+                    scenePlacements,
                     targetId,
                 );
 
                 if (displacedObjectId) {
-                    delete nextPlacements[displacedObjectId];
+                    const displacedQuestionId =
+                        questionIdByObjectId[displacedObjectId];
+
+                    if (
+                        displacedQuestionId &&
+                        lockedQuestionIds.has(displacedQuestionId)
+                    ) {
+                        return current;
+                    }
+
+                    if (displacedQuestionId) {
+                        const displacedPlacements = {
+                            ...(nextByQuestionId[displacedQuestionId] ?? {}),
+                        };
+
+                        delete displacedPlacements[displacedObjectId];
+                        nextByQuestionId[displacedQuestionId] =
+                            displacedPlacements;
+                    }
                 }
 
-                nextPlacements[objectId] = targetId;
+                sourcePlacements[objectId] = targetId;
             }
 
-            return {
-                ...current,
-                [questionId]: nextPlacements,
-            };
+            nextByQuestionId[sourceQuestionId] = sourcePlacements;
+
+            return nextByQuestionId;
         });
     };
 
@@ -241,6 +333,18 @@ export const TaskMasterGame = ({
         const isCorrect =
             placedCellId != null && validAnswerCellIds.includes(placedCellId);
 
+        if (isCorrect) {
+            setLockedQuestionIds((currentLockedQuestionIds) => {
+                if (currentLockedQuestionIds.has(currentQuestion.id)) {
+                    return currentLockedQuestionIds;
+                }
+
+                const nextLockedQuestionIds = new Set(currentLockedQuestionIds);
+                nextLockedQuestionIds.add(currentQuestion.id);
+                return nextLockedQuestionIds;
+            });
+        }
+
         setQuestionState((currentQuestionState) => ({
             ...currentQuestionState,
             answerState: isCorrect ? "correct" : "incorrect",
@@ -249,11 +353,16 @@ export const TaskMasterGame = ({
 
     const onResetQuestion = () => {
         const questionId = activeQuestionIdRef.current;
+        const isQuestionLocked = lockedQuestionIds.has(questionId);
 
         setQuestionState({
             selectedIconIds: [],
             answerState: "notAnswered",
         });
+
+        if (isQuestionLocked) {
+            return;
+        }
 
         setPlacementsByQuestionId((current) => ({
             ...current,
@@ -271,12 +380,17 @@ export const TaskMasterGame = ({
         play(objectImage.sfxUrl);
     };
 
-    const renderObject = (objectId: string) => {
+    const renderObject = (
+        objectId: string,
+        options?: { isLocked?: boolean },
+    ) => {
         const image = objectPicturesById[objectId];
 
         if (!image) {
             return null;
         }
+
+        const isLocked = options?.isLocked === true;
 
         return (
             <DraggableImage
@@ -284,7 +398,9 @@ export const TaskMasterGame = ({
                 image={image}
                 isCorrect={null}
                 isSelected={false}
-                isDisabled={questionState.answerState !== "notAnswered"}
+                isDisabled={
+                    questionState.answerState !== "notAnswered" || isLocked
+                }
                 isBorderless
                 onClick={() => {
                     playObjectSfx(objectId);
@@ -316,11 +432,35 @@ export const TaskMasterGame = ({
         >
             {(question) => {
                 activeQuestionIdRef.current = question.id;
-                const placements = placementsByQuestionId[question.id] ?? {};
                 const sceneId = getSceneIdFromQuestionId(question.id);
                 const sceneObjectIds = sceneObjectIdsBySceneId[sceneId] ?? [];
+                const sceneQuestionIds =
+                    sceneQuestionIdsBySceneId[sceneId] ?? [];
+                const scenePlacements = buildScenePlacements(
+                    placementsByQuestionId,
+                    sceneQuestionIds,
+                );
+                const lockedObjectIds = new Set(
+                    sceneQuestionIds
+                        .filter((sceneQuestionId) =>
+                            lockedQuestionIds.has(sceneQuestionId),
+                        )
+                        .map((sceneQuestionId) => {
+                            const sceneQuestion = questionById[sceneQuestionId];
+
+                            if (!sceneQuestion) {
+                                return "";
+                            }
+
+                            return (
+                                objectIdByImageUrl[sceneQuestion.objectUrl] ??
+                                ""
+                            );
+                        })
+                        .filter(Boolean),
+                );
                 const poolObjectIds = sceneObjectIds.filter(
-                    (objectId) => placements[objectId] == null,
+                    (objectId) => scenePlacements[objectId] == null,
                 );
 
                 return (
@@ -350,7 +490,7 @@ export const TaskMasterGame = ({
                                             const cellId = toCellId(row, col);
                                             const placedObjectId =
                                                 getPlacedObjectIdForCell(
-                                                    placements,
+                                                    scenePlacements,
                                                     cellId,
                                                 );
 
@@ -368,6 +508,12 @@ export const TaskMasterGame = ({
                                                         {placedObjectId
                                                             ? renderObject(
                                                                   placedObjectId,
+                                                                  {
+                                                                      isLocked:
+                                                                          lockedObjectIds.has(
+                                                                              placedObjectId,
+                                                                          ),
+                                                                  },
                                                               )
                                                             : null}
                                                     </DroppableImageZone>

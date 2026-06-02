@@ -47,7 +47,7 @@
         },
         {
           "id": "5",
-          "question": "on the left of the sun at the same height as the biggest cloud",
+          "question": "on the left of the sun and at the same height as the biggest cloud",
           "answer": [
             [
               0,
@@ -64,7 +64,7 @@
       "questions": [
         {
           "id": "1",
-          "question": "in the hole in the nearest tree on the right",
+          "question": "in the hole of the nearest tree on the right",
           "answer": [
             [
               1,
@@ -74,7 +74,7 @@
         },
         {
           "id": "2",
-          "question": "in the river under the bridge to the left of the mushroom bush",
+          "question": "in the river under the bridge, to the left of the mushroom bush",
           "answer": [
             [
               3,
@@ -84,7 +84,7 @@
         },
         {
           "id": "3",
-          "question": "in front of the dark green tree at the end of the path",
+          "question": "on the dark green tree at the end of the path",
           "answer": [
             [
               1,
@@ -94,7 +94,7 @@
         },
         {
           "id": "4",
-          "question": "on the right of the path but on the left of the green bush above the two rocks",
+          "question": "on the right of the path and underneath the sign post",
           "answer": [
             [
               2,
@@ -108,7 +108,7 @@
         },
         {
           "id": "5",
-          "question": "in between the two nearest tree trunks on the left above the pink flower bush",
+          "question": "in between the two nearest tree trunks on the left and above the pink flower bush",
           "answer": [
             [
               1,
@@ -145,7 +145,7 @@
         },
         {
           "id": "3",
-          "question": "in front of the ducklings on the pink lotus flower but not next to the heron",
+          "question": "in front of the ducklings and on the pink lotus flower but not next to the heron",
           "answer": [
             [
               3,
@@ -155,7 +155,7 @@
         },
         {
           "id": "4",
-          "question": "in the bush with the two yellow flowers",
+          "question": "in the bush with two yellow flowers",
           "answer": [
             [
               4,
@@ -182,7 +182,7 @@
       "questions": [
         {
           "id": "1",
-          "question": "in the lava river on the second bend on the left hand side",
+          "question": "in the lava river on the second bend, on the left hand side",
           "answer": [
             [
               3,
@@ -192,7 +192,7 @@
         },
         {
           "id": "2",
-          "question": "in the tallest palm tree on top of the coconuts",
+          "question": "in the tallest palm tree, on top of the coconuts",
           "answer": [
             [
               1,
@@ -202,7 +202,7 @@
         },
         {
           "id": "3",
-          "question": "on top of the mountain in the distance on the right hand side",
+          "question": "on top of the mountain in the distance, on the right hand side",
           "answer": [
             [
               1,
@@ -212,7 +212,7 @@
         },
         {
           "id": "4",
-          "question": "in the middle of the smoke on top of the volcano",
+          "question": "in the middle of the smoke, on top of the volcano",
           "answer": [
             [
               0,
@@ -222,7 +222,7 @@
         },
         {
           "id": "5",
-          "question": "at the bottom of the volcano on the left hand side in front of the smallest palm tree",
+          "question": "at the bottom of the volcano, on the left hand side, in front of the smallest palm tree",
           "answer": [
             [
               2,
@@ -269,7 +269,7 @@
         },
         {
           "id": "4",
-          "question": "on the light at the top of the lamp post below the cloud",
+          "question": "on the light at the top of the lamp post, below the cloud",
           "answer": [
             [
               1,
@@ -336,7 +336,7 @@
         },
         {
           "id": "5",
-          "question": "on the biggest crater below the blue planet with rings",
+          "question": "on the biggest crater, below the blue planet with rings",
           "answer": [
             [
               3,
@@ -353,7 +353,7 @@
       "questions": [
         {
           "id": "1",
-          "question": "in the yellow flower bush to the left of the bench",
+          "question": "in the yellow flower bush and to the left of the bench",
           "answer": [
             [
               2,
@@ -383,7 +383,7 @@
         },
         {
           "id": "4",
-          "question": "in the bushes between the two trees under the smallest cloud",
+          "question": "in the bushes between the two trees and under the smallest cloud",
           "answer": [
             [
               1,
@@ -430,7 +430,7 @@
         },
         {
           "id": "3",
-          "question": "in the middle of the river in the distance",
+          "question": "in the middle of the river, in the distance",
           "answer": [
             [
               3,
@@ -467,7 +467,7 @@
       "questions": [
         {
           "id": "1",
-          "question": "on the biggest cloud in the middle of the sky",
+          "question": "on the biggest cloud, in the middle of the sky",
           "answer": [
             [
               0,
@@ -477,7 +477,7 @@
         },
         {
           "id": "2",
-          "question": "on the bend on the path just before the fences",
+          "question": "on the bend on the path, just before the fences",
           "answer": [
             [
               2,
@@ -497,7 +497,7 @@
         },
         {
           "id": "4",
-          "question": "in the bushes under the nearest tree",
+          "question": "in the bushes, under the nearest tree",
           "answer": [
             [
               2,
@@ -585,7 +585,7 @@
       "questions": [
         {
           "id": "1",
-          "question": "in the yellow field in between the windmill and the tree",
+          "question": "in the yellow field, in between the windmill and the tree",
           "answer": [
             [
               1,
@@ -595,7 +595,7 @@
         },
         {
           "id": "2",
-          "question": "on the right of the windmill above the brown gate",
+          "question": "on the right of the windmill, above the brown gate",
           "answer": [
             [
               1,
@@ -615,7 +615,7 @@
         },
         {
           "id": "4",
-          "question": "in the vegetable patch above the cabbages",
+          "question": "in the vegetable patch, above the cabbages",
           "answer": [
             [
               2,
@@ -625,7 +625,7 @@
         },
         {
           "id": "5",
-          "question": "on the hay bales to the right of the barn",
+          "question": "on the hay bales, to the right of the barn",
           "answer": [
             [
               1,
@@ -662,7 +662,7 @@
         },
         {
           "id": "3",
-          "question": "on top of the building to the right of the closest tree",
+          "question": "on top of the building, to the right of the closest tree",
           "answer": [
             [
               1,
@@ -672,7 +672,7 @@
         },
         {
           "id": "4",
-          "question": "on the bench to the left of the fountain",
+          "question": "on the bench, to the left of the fountain",
           "answer": [
             [
               3,
@@ -719,7 +719,7 @@
         },
         {
           "id": "3",
-          "question": "in the branches of the tree to the right of the castle",
+          "question": "in the branches of the tree, to the right of the castle",
           "answer": [
             [
               2,
@@ -729,7 +729,7 @@
         },
         {
           "id": "4",
-          "question": "in the water in between the castle and the biggest tree",
+          "question": "in the water, in between the castle and the biggest tree",
           "answer": [
             [
               3,
@@ -770,7 +770,7 @@
         },
         {
           "id": "2",
-          "question": "on the beach towel under the umbrella",
+          "question": "on the beach towel and under the umbrella",
           "answer": [
             [
               3,
