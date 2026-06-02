@@ -1,14 +1,10 @@
 import exerciseData from "./exerciseData.json";
+import { TASK_MASTER_MAX_OBJECTS_PER_SCENE } from "./constants";
 import {
-    TASK_MASTER_PREPOSITIONS,
     TaskMasterExerciseDataSchema,
     type TaskMasterTaskData,
-    type TaskMasterOptions,
     type TaskMasterQuestion,
 } from "./types";
-
-const SCENES_PER_EXERCISE = 2;
-const MAX_OBJECTS_PER_SCENE = 5;
 
 const shuffleArray = <T>(items: T[]): T[] => {
     const shuffledItems = [...items];
@@ -28,23 +24,14 @@ const pickRandom = <T>(items: readonly T[]): T =>
 
 const buildQuestionsForScene = (
     scene: TaskMasterTaskData,
-    selectedPrepositions: readonly string[],
     allObjects: ReadonlyArray<{ label: string; imageUrl: string }>,
 ): TaskMasterQuestion[] => {
-    const filteredQuestions = scene.questions.filter((question) =>
-        selectedPrepositions.includes(question.preposition),
-    );
-
-    if (filteredQuestions.length === 0) {
-        return [];
-    }
-
     const objectCount = Math.min(
-        MAX_OBJECTS_PER_SCENE,
-        filteredQuestions.length,
+        TASK_MASTER_MAX_OBJECTS_PER_SCENE,
+        scene.questions.length,
     );
     const sceneObjects = shuffleArray([...allObjects]).slice(0, objectCount);
-    const shuffledQuestions = shuffleArray(filteredQuestions);
+    const shuffledQuestions = shuffleArray(scene.questions);
 
     return shuffledQuestions.map((question, index) => {
         const object =
@@ -52,7 +39,7 @@ const buildQuestionsForScene = (
 
         return {
             id: `${scene.id}-${question.id}`,
-            prompt: `Put the ${object.label} ${question.question}.`,
+            prompt: `Put ${object.label} ${question.question}.`,
             character: scene.altText ?? scene.id,
             answer: question.answer,
             image: scene.imageUrl,
@@ -62,9 +49,7 @@ const buildQuestionsForScene = (
     });
 };
 
-export const generateQuestions = (
-    options: TaskMasterOptions,
-): TaskMasterQuestion[] => {
+export const generateQuestions = (): TaskMasterQuestion[] => {
     const parseResult = TaskMasterExerciseDataSchema.safeParse(exerciseData);
 
     if (!parseResult.success) {
@@ -76,28 +61,16 @@ export const generateQuestions = (
     }
 
     const data = parseResult.data;
-    const selectedPrepositions =
-        options.selectedPrepositions.length > 0
-            ? options.selectedPrepositions
-            : [...TASK_MASTER_PREPOSITIONS];
 
-    const scenesWithMatchingQuestions = data.tasks.filter((scene) =>
-        scene.questions.some((question) =>
-            selectedPrepositions.includes(question.preposition),
-        ),
-    );
-
-    if (scenesWithMatchingQuestions.length === 0) {
+    if (data.tasks.length === 0) {
         return [];
     }
 
-    const selectedScenes = shuffleArray(scenesWithMatchingQuestions).slice(
-        0,
-        SCENES_PER_EXERCISE,
-    );
+    const [selectedScene] = shuffleArray(data.tasks);
 
-    // Keep scene order stable: all questions from scene X, then scene Y.
-    return selectedScenes.flatMap((scene) =>
-        buildQuestionsForScene(scene, selectedPrepositions, data.objects),
-    );
+    if (!selectedScene) {
+        return [];
+    }
+
+    return buildQuestionsForScene(selectedScene, data.objects);
 };

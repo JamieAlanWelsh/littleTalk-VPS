@@ -6,6 +6,7 @@
     "dev": "concurrently \"tcm frontend/src --watch\" \"vite --host\"",
     "build": "tcm frontend/src && vite build",
     "preview": "vite preview",
+    "validate:task-master": "node scripts/validate-task-master-data.mjs",
     "prepare": "husky"
   },
   "dependencies": {

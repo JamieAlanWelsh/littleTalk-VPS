@@ -1,5 +1,5 @@
 .tray {
-    --pool-item-slot-width: 6.875rem;
+    --pool-item-slot-width: var(--pool-item-slot-width-override, 6.875rem);
     --pool-item-gap: 0.75rem;
     --pool-items-per-row: 5;
     --pool-dropzone-padding-x: 0.75rem;

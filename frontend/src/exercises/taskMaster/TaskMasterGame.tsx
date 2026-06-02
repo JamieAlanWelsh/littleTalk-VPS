@@ -14,6 +14,7 @@ import useAudio from "../../hooks/useAudio";
 import ExerciseLayout from "../../layouts/exerciseLayout/ExerciseLayout";
 import type { QuestionState } from "../../lib/types";
 import exerciseData from "./exerciseData.json";
+import { TASK_MASTER_GRID_COLUMNS, TASK_MASTER_GRID_ROWS } from "./constants";
 import type { TaskMasterQuestion } from "./types";
 import { TaskMasterExerciseDataSchema } from "./types";
 import styles from "./TaskMasterGame.module.css";
@@ -27,8 +28,8 @@ const EXERCISE_METADATA = {
     id: "task-master",
 };
 
-const GRID_ROWS = 4;
-const GRID_COLUMNS = 6;
+const GRID_ROWS = TASK_MASTER_GRID_ROWS;
+const GRID_COLUMNS = TASK_MASTER_GRID_COLUMNS;
 const POOL_ID = "pool";
 
 const toCellId = (row: number, col: number) => `cell:${row}:${col}`;

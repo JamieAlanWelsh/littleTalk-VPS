@@ -1,23 +1,10 @@
 import { z } from "zod";
-import {
-    PREPOSITIONS,
-    prepositionsSchema,
-    type SpotOnPreposition,
-} from "../../types";
-
-export const TASK_MASTER_PREPOSITIONS = PREPOSITIONS;
-
-export type TaskMasterPreposition = SpotOnPreposition;
-
-export interface TaskMasterOptions {
-    selectedPrepositions: TaskMasterPreposition[];
-}
+import { TASK_MASTER_QUESTIONS_PER_SCENE } from "./constants";
 
 export const TaskMasterTaskQuestionDataSchema = z.object({
     id: z.string(),
-    preposition: prepositionsSchema,
     question: z.string(),
-    answer: z.array(z.tuple([z.number().int(), z.number().int()])),
+    answer: z.array(z.tuple([z.number().int(), z.number().int()])).min(1),
 });
 
 export type TaskMasterTaskQuestionData = z.infer<
@@ -26,9 +13,13 @@ export type TaskMasterTaskQuestionData = z.infer<
 
 export const TaskMasterTaskDataSchema = z.object({
     id: z.string(),
-    imageUrl: z.string(),
+    imageUrl: z
+        .string()
+        .regex(/^\/static\/exercise_assets\/task_master\/.+\.webp$/i),
     altText: z.string().optional(),
-    questions: z.array(TaskMasterTaskQuestionDataSchema),
+    questions: z
+        .array(TaskMasterTaskQuestionDataSchema)
+        .length(TASK_MASTER_QUESTIONS_PER_SCENE),
 });
 
 export type TaskMasterTaskData = z.infer<typeof TaskMasterTaskDataSchema>;
@@ -36,7 +27,7 @@ export type TaskMasterTaskData = z.infer<typeof TaskMasterTaskDataSchema>;
 export const TaskMasterObjectDataSchema = z.object({
     id: z.string(),
     label: z.string(),
-    imageUrl: z.string(),
+    imageUrl: z.string().regex(/^\/static\/exercise_assets\/characters\/.+/i),
 });
 
 export type TaskMasterObjectData = z.infer<typeof TaskMasterObjectDataSchema>;
