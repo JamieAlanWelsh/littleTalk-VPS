@@ -59,6 +59,7 @@ PRACTISE_EXERCISE_ROUTE_NAMES = {
     "spot_on": "spot_on",
     "whos_who_pronouns": "whos_who",
     "whats_in_the_bag_vocabulary_builder": "whats_in_the_bag",
+    "task_master_instructions": "task_master",
     "in_the_know_inferencing": "in_the_know",
     "what_happens_next_predicting": "what_happens_next",
 }

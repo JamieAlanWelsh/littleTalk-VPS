@@ -102,3 +102,11 @@ def whos_who(request):
         "learner_uuid": _get_session_learner_uuid(request),
     }
     return render(request, "exercises/whos_who.html", context)
+
+
+@login_required
+def task_master(request):
+    context = {
+        "learner_uuid": _get_session_learner_uuid(request),
+    }
+    return render(request, "exercises/task_master.html", context)

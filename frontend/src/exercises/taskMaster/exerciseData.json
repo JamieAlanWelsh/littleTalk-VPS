@@ -1,0 +1,907 @@
+{
+  "tasks": [
+    {
+      "id": "desert",
+      "imageUrl": "/static/exercise_assets/task_master/desertscene.webp",
+      "altText": "Desert Scene",
+      "questions": [
+        {
+          "id": "1",
+          "question": "on top of the tallest mountain, on the right",
+          "answer": [
+            [
+              1,
+              6
+            ]
+          ]
+        },
+        {
+          "id": "2",
+          "question": "on the third bend in the road",
+          "answer": [
+            [
+              3,
+              3
+            ]
+          ]
+        },
+        {
+          "id": "3",
+          "question": "on the circular cactus with a yellow flower",
+          "answer": [
+            [
+              4,
+              6
+            ]
+          ]
+        },
+        {
+          "id": "4",
+          "question": "in between the two smallest mountains and near the smallest cloud",
+          "answer": [
+            [
+              2,
+              2
+            ]
+          ]
+        },
+        {
+          "id": "5",
+          "question": "on the left of the sun and at the same height as the biggest cloud",
+          "answer": [
+            [
+              0,
+              5
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "woodland",
+      "imageUrl": "/static/exercise_assets/task_master/woodlandscene.webp",
+      "altText": "Woodland Scene",
+      "questions": [
+        {
+          "id": "1",
+          "question": "in the hole of the nearest tree on the right",
+          "answer": [
+            [
+              1,
+              6
+            ]
+          ]
+        },
+        {
+          "id": "2",
+          "question": "in the river, under the bridge and to the left of the mushroom bush",
+          "answer": [
+            [
+              3,
+              1
+            ]
+          ]
+        },
+        {
+          "id": "3",
+          "question": "on the dark green tree at the end of the path",
+          "answer": [
+            [
+              1,
+              3
+            ]
+          ]
+        },
+        {
+          "id": "4",
+          "question": "on the right of the path and underneath the sign post",
+          "answer": [
+            [
+              2,
+              4
+            ],
+            [
+              3,
+              5
+            ]
+          ]
+        },
+        {
+          "id": "5",
+          "question": "in between the two nearest tree trunks on the left and above the pink flower bush",
+          "answer": [
+            [
+              1,
+              0
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "wetlands",
+      "imageUrl": "/static/exercise_assets/task_master/wetlandsscene.webp",
+      "altText": "Wetland Scene",
+      "questions": [
+        {
+          "id": "1",
+          "question": "above the island that is furthest away",
+          "answer": [
+            [
+              1,
+              3
+            ]
+          ]
+        },
+        {
+          "id": "2",
+          "question": "in the tree on the biggest island on the left",
+          "answer": [
+            [
+              1,
+              1
+            ]
+          ]
+        },
+        {
+          "id": "3",
+          "question": "in front of the ducklings and on the pink lotus flower but not next to the heron",
+          "answer": [
+            [
+              3,
+              3
+            ]
+          ]
+        },
+        {
+          "id": "4",
+          "question": "in the bush with two yellow flowers",
+          "answer": [
+            [
+              4,
+              6
+            ]
+          ]
+        },
+        {
+          "id": "5",
+          "question": "in between the reeds and the turtle",
+          "answer": [
+            [
+              2,
+              5
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "volcano",
+      "imageUrl": "/static/exercise_assets/task_master/volcanoscene.webp",
+      "altText": "Volcano Scene",
+      "questions": [
+        {
+          "id": "1",
+          "question": "in the lava river on the second bend and on the left hand side",
+          "answer": [
+            [
+              3,
+              2
+            ]
+          ]
+        },
+        {
+          "id": "2",
+          "question": "in the tallest palm tree and on top of the coconuts",
+          "answer": [
+            [
+              1,
+              0
+            ]
+          ]
+        },
+        {
+          "id": "3",
+          "question": "on top of the mountain in the distance, on the right hand side",
+          "answer": [
+            [
+              1,
+              6
+            ]
+          ]
+        },
+        {
+          "id": "4",
+          "question": "in the middle of the smoke at the top of the volcano",
+          "answer": [
+            [
+              0,
+              4
+            ]
+          ]
+        },
+        {
+          "id": "5",
+          "question": "at the bottom of the volcano, on the left hand side and in front of the smallest palm tree",
+          "answer": [
+            [
+              2,
+              1
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "suburban",
+      "imageUrl": "/static/exercise_assets/task_master/suburbanscene.webp",
+      "altText": "Suburban Scene",
+      "questions": [
+        {
+          "id": "1",
+          "question": "in the middle of the postbox",
+          "answer": [
+            [
+              3,
+              1
+            ]
+          ]
+        },
+        {
+          "id": "2",
+          "question": "on the branches of the closest tree",
+          "answer": [
+            [
+              1,
+              0
+            ]
+          ]
+        },
+        {
+          "id": "3",
+          "question": "on top of the chimney of the house that is closest to the postbox",
+          "answer": [
+            [
+              0,
+              2
+            ]
+          ]
+        },
+        {
+          "id": "4",
+          "question": "on the light at the top of the lamp post, below the cloud",
+          "answer": [
+            [
+              1,
+              6
+            ]
+          ]
+        },
+        {
+          "id": "5",
+          "question": "in the middle of the road, between the drain and the flower bush",
+          "answer": [
+            [
+              4,
+              3
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "space",
+      "imageUrl": "/static/exercise_assets/task_master/spacescene.webp",
+      "altText": "Space Scene",
+      "questions": [
+        {
+          "id": "1",
+          "question": "on the biggest planet with rings",
+          "answer": [
+            [
+              0,
+              5
+            ]
+          ]
+        },
+        {
+          "id": "2",
+          "question": "in between the flag and the rocket",
+          "answer": [
+            [
+              3,
+              5
+            ]
+          ]
+        },
+        {
+          "id": "3",
+          "question": "on the brightest, biggest star above Earth",
+          "answer": [
+            [
+              0,
+              0
+            ]
+          ]
+        },
+        {
+          "id": "4",
+          "question": "on the smallest planet",
+          "answer": [
+            [
+              1,
+              4
+            ]
+          ]
+        },
+        {
+          "id": "5",
+          "question": "on the biggest crater and below the blue planet that has rings",
+          "answer": [
+            [
+              3,
+              3
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "park",
+      "imageUrl": "/static/exercise_assets/task_master/parkscene.webp",
+      "altText": "Park Scene",
+      "questions": [
+        {
+          "id": "1",
+          "question": "in the yellow flower bush and to the left of the bench",
+          "answer": [
+            [
+              2,
+              0
+            ]
+          ]
+        },
+        {
+          "id": "2",
+          "question": "in the middle of the pond",
+          "answer": [
+            [
+              3,
+              1
+            ]
+          ]
+        },
+        {
+          "id": "3",
+          "question": "in the bush that has two pink flowers and one yellow flower",
+          "answer": [
+            [
+              4,
+              0
+            ]
+          ]
+        },
+        {
+          "id": "4",
+          "question": "in the bushes between the two trees, under the smallest cloud",
+          "answer": [
+            [
+              1,
+              3
+            ]
+          ]
+        },
+        {
+          "id": "5",
+          "question": "on the nearest yellow flower in the grass",
+          "answer": [
+            [
+              3,
+              4
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mountain",
+      "imageUrl": "/static/exercise_assets/task_master/mountainscene.webp",
+      "altText": "Mountain Scene",
+      "questions": [
+        {
+          "id": "1",
+          "question": "on the tallest mountain",
+          "answer": [
+            [
+              1,
+              2
+            ]
+          ]
+        },
+        {
+          "id": "2",
+          "question": "between the two smaller mountains, in the distance",
+          "answer": [
+            [
+              2,
+              4
+            ]
+          ]
+        },
+        {
+          "id": "3",
+          "question": "in the middle of the river, in the distance",
+          "answer": [
+            [
+              3,
+              4
+            ]
+          ]
+        },
+        {
+          "id": "4",
+          "question": "to the right of the sign on the path in front of the boulders",
+          "answer": [
+            [
+              3,
+              2
+            ]
+          ]
+        },
+        {
+          "id": "5",
+          "question": "on the rock in front of the pink flower bush",
+          "answer": [
+            [
+              4,
+              0
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "meadow",
+      "imageUrl": "/static/exercise_assets/task_master/meadowscene.webp",
+      "altText": "Meadow Scene",
+      "questions": [
+        {
+          "id": "1",
+          "question": "on the biggest cloud, in the middle of the sky",
+          "answer": [
+            [
+              0,
+              3
+            ]
+          ]
+        },
+        {
+          "id": "2",
+          "question": "on the bend on the path, just before the fences",
+          "answer": [
+            [
+              2,
+              4
+            ]
+          ]
+        },
+        {
+          "id": "3",
+          "question": "in the middle of the beginning of the path",
+          "answer": [
+            [
+              4,
+              2
+            ]
+          ]
+        },
+        {
+          "id": "4",
+          "question": "in the bushes, under the nearest tree",
+          "answer": [
+            [
+              2,
+              1
+            ]
+          ]
+        },
+        {
+          "id": "5",
+          "question": "on the chimney of the house that is in the distance",
+          "answer": [
+            [
+              1,
+              6
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "jungle",
+      "imageUrl": "/static/exercise_assets/task_master/junglescene.webp",
+      "altText": "Jungle Scene",
+      "questions": [
+        {
+          "id": "1",
+          "question": "in the water at the top of the waterfall",
+          "answer": [
+            [
+              1,
+              1
+            ]
+          ]
+        },
+        {
+          "id": "2",
+          "question": "on top of the middle palm tree in the distance",
+          "answer": [
+            [
+              1,
+              4
+            ]
+          ]
+        },
+        {
+          "id": "3",
+          "question": "in the hanging branches of the tree",
+          "answer": [
+            [
+              0,
+              5
+            ],
+            [
+              0,
+              6
+            ]
+          ]
+        },
+        {
+          "id": "4",
+          "question": "at the bottom of the waterfall",
+          "answer": [
+            [
+              3,
+              2
+            ]
+          ]
+        },
+        {
+          "id": "5",
+          "question": "on the right of the sandy path",
+          "answer": [
+            [
+              4,
+              3
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "farm",
+      "imageUrl": "/static/exercise_assets/task_master/farmscene.webp",
+      "altText": "Farm Scene",
+      "questions": [
+        {
+          "id": "1",
+          "question": "in the yellow field, in between the windmill and the tree",
+          "answer": [
+            [
+              1,
+              1
+            ]
+          ]
+        },
+        {
+          "id": "2",
+          "question": "on the right of the windmill, above the brown gate",
+          "answer": [
+            [
+              1,
+              3
+            ]
+          ]
+        },
+        {
+          "id": "3",
+          "question": "on the barn roof",
+          "answer": [
+            [
+              0,
+              5
+            ]
+          ]
+        },
+        {
+          "id": "4",
+          "question": "in the vegetable patch, above the cabbages",
+          "answer": [
+            [
+              2,
+              6
+            ]
+          ]
+        },
+        {
+          "id": "5",
+          "question": "on the hay bales, to the right of the barn",
+          "answer": [
+            [
+              1,
+              6
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "city",
+      "imageUrl": "/static/exercise_assets/task_master/cityscene.webp",
+      "altText": "City Scene",
+      "questions": [
+        {
+          "id": "1",
+          "question": "on the zebra crossing in the distance",
+          "answer": [
+            [
+              3,
+              2
+            ]
+          ]
+        },
+        {
+          "id": "2",
+          "question": "at the top of the tallest buildings",
+          "answer": [
+            [
+              0,
+              4
+            ]
+          ]
+        },
+        {
+          "id": "3",
+          "question": "on top of the building that is to the right of the closest tree",
+          "answer": [
+            [
+              1,
+              2
+            ]
+          ]
+        },
+        {
+          "id": "4",
+          "question": "on the bench, to the left of the fountain",
+          "answer": [
+            [
+              3,
+              4
+            ]
+          ]
+        },
+        {
+          "id": "5",
+          "question": "at the bottom of the nearest lamp post",
+          "answer": [
+            [
+              4,
+              6
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "castle",
+      "imageUrl": "/static/exercise_assets/task_master/castlescene.webp",
+      "altText": "Castle Scene",
+      "questions": [
+        {
+          "id": "1",
+          "question": "in front of the castle door",
+          "answer": [
+            [
+              2,
+              4
+            ]
+          ]
+        },
+        {
+          "id": "2",
+          "question": "at the top of the tallest tower of the castle",
+          "answer": [
+            [
+              0,
+              4
+            ]
+          ]
+        },
+        {
+          "id": "3",
+          "question": "in the branches of the tree that is to the right of the castle",
+          "answer": [
+            [
+              2,
+              6
+            ]
+          ]
+        },
+        {
+          "id": "4",
+          "question": "in the water, in between the castle and the biggest tree",
+          "answer": [
+            [
+              3,
+              1
+            ],
+            [
+              3,
+              2
+            ]
+          ]
+        },
+        {
+          "id": "5",
+          "question": "in front of the pink flower bush",
+          "answer": [
+            [
+              4,
+              0
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "beach",
+      "imageUrl": "/static/exercise_assets/task_master/beachscene.webp",
+      "altText": "Beach Scene",
+      "questions": [
+        {
+          "id": "1",
+          "question": "in front of the beach hut",
+          "answer": [
+            [
+              1,
+              1
+            ]
+          ]
+        },
+        {
+          "id": "2",
+          "question": "on the beach towel and under the umbrella",
+          "answer": [
+            [
+              3,
+              1
+            ]
+          ]
+        },
+        {
+          "id": "3",
+          "question": "on top of the rocks at the farthest end of the beach",
+          "answer": [
+            [
+              1,
+              4
+            ]
+          ]
+        },
+        {
+          "id": "4",
+          "question": "in the sea, below the boat",
+          "answer": [
+            [
+              2,
+              6
+            ],
+            [
+              3,
+              6
+            ]
+          ]
+        },
+        {
+          "id": "5",
+          "question": "in the water above the sandcastle but to the right of the stairs",
+          "answer": [
+            [
+              2,
+              2
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "arctic",
+      "imageUrl": "/static/exercise_assets/task_master/arcticscene.webp",
+      "altText": "Arctic Scene",
+      "questions": [
+        {
+          "id": "1",
+          "question": "on the big iceberg above the penguins",
+          "answer": [
+            [
+              2,
+              1
+            ]
+          ]
+        },
+        {
+          "id": "2",
+          "question": "in front of the penguins",
+          "answer": [
+            [
+              4,
+              1
+            ]
+          ]
+        },
+        {
+          "id": "3",
+          "question": "on the cloud above the trees",
+          "answer": [
+            [
+              0,
+              6
+            ]
+          ]
+        },
+        {
+          "id": "4",
+          "question": "on the snow next to the polar bear",
+          "answer": [
+            [
+              3,
+              6
+            ]
+          ]
+        },
+        {
+          "id": "5",
+          "question": "in the cave on the left side of the house",
+          "answer": [
+            [
+              2,
+              5
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "objects": [
+    {
+      "id": "arlo_armadillo",
+      "label": "Arlo Armadillo",
+      "imageUrl": "/static/exercise_assets/characters/arlo_armadillo.png"
+    },
+    {
+      "id": "humble_hedgehog",
+      "label": "Humble Hedgehog",
+      "imageUrl": "/static/exercise_assets/characters/humble_hedgehog.png"
+    },
+    {
+      "id": "muddles_mole",
+      "label": "Muddles Mole",
+      "imageUrl": "/static/exercise_assets/characters/muddles_mole.png"
+    },
+    {
+      "id": "peppy_pigeon",
+      "label": "Peppy Pigeon",
+      "imageUrl": "/static/exercise_assets/characters/peppy_pigeon.png"
+    },
+    {
+      "id": "resilient_red_panda",
+      "label": "Resilient Red Panda",
+      "imageUrl": "/static/exercise_assets/characters/resilient_red_panda.png"
+    },
+    {
+      "id": "thoughtful_tortoise",
+      "label": "Thoughtful Tortoise",
+      "imageUrl": "/static/exercise_assets/characters/thoughtful_tortoise.png"
+    }
+  ]
+}

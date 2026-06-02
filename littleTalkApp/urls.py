@@ -124,4 +124,5 @@ urlpatterns = [
     path('exercises/what-happens-next/', react_exercises_views.what_happens_next, name='what_happens_next'),
     path('exercises/in-the-know/', react_exercises_views.in_the_know, name='in_the_know'),
     path('exercises/whos-who/', react_exercises_views.whos_who, name='whos_who'),
+    path('exercises/task-master/', react_exercises_views.task_master, name='task_master'),
 ]

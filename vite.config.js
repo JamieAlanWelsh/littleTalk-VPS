@@ -11,6 +11,7 @@ const exercises = [
   'categorisation',
   'colourful-semantics',
   'story-train',
+  'task-master',
   'whats-in-the-bag',
   'what-happens-next',
   'in-the-know',

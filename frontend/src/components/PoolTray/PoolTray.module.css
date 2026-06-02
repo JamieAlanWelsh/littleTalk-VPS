@@ -1,4 +1,8 @@
 .tray {
+    --pool-item-slot-width: var(--pool-item-slot-width-override, 6.875rem);
+    --pool-item-gap: 0.75rem;
+    --pool-items-per-row: 5;
+    --pool-dropzone-padding-x: 0.75rem;
     background: #ffffff;
     border-radius: 20px;
     padding: 1rem;
@@ -7,6 +11,11 @@
     display: flex;
     flex-direction: column;
     gap: 0.875rem;
+    min-width: calc(
+        (var(--pool-item-slot-width) * var(--pool-items-per-row)) +
+            (var(--pool-item-gap) * (var(--pool-items-per-row) - 1)) +
+            (var(--pool-dropzone-padding-x) * 2)
+    );
 }
 
 .title {
@@ -27,6 +36,11 @@
         background-color 120ms ease;
     overflow: visible;
     touch-action: none;
+    min-width: calc(
+        (var(--pool-item-slot-width) * var(--pool-items-per-row)) +
+            (var(--pool-item-gap) * (var(--pool-items-per-row) - 1)) +
+            (var(--pool-dropzone-padding-x) * 2)
+    );
 }
 
 .active {
@@ -53,10 +67,22 @@
 .items {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.75rem;
+    gap: var(--pool-item-gap);
     justify-content: center;
     animation: slideIn 0.3s ease-out;
     width: 100%;
+}
+
+@media (max-width: 800px) {
+    .tray {
+        --pool-item-slot-width: 6.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .tray {
+        --pool-item-slot-width: 7.5rem;
+    }
 }
 
 @keyframes slideIn {
@@ -99,6 +125,7 @@
     line-height: 1.2;
     word-break: break-word;
     display: -webkit-box;
+    line-clamp: 2;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
