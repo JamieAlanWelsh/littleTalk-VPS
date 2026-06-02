@@ -83,7 +83,7 @@
     transform: none;
 }
 
-.cellZone :global(.icon-block.disabled) {
+.cellZone button[disabled] {
     opacity: 1;
 }
 
