@@ -25,7 +25,7 @@ interface StoryTrainAnswer {
 const buildQuestions = (selectedSets: StoryTrainSet[]): Question[] =>
     selectedSets.map((storySet) => ({
         id: storySet.id,
-        prompt: `Can you show me a story about ${storySet.title}`,
+        prompt: `Can you put the story about ${storySet.title} in order?`,
         correctIconIds: storySet.steps
             .slice()
             .sort((left, right) => left.order - right.order)

@@ -5,24 +5,13 @@ import type { StoryTrainExercisePayload, StoryTrainSet } from "./types";
 
 const EXERCISE_METADATA = {
     setupTitle: "Story Train",
-    setupSubtitle: "Put each picture story in the order it happens.",
+    setupSubtitle:
+        "Organise each picture in the correct order to create a story.",
 };
 
 interface StoryTrainProps {
     payload: StoryTrainExercisePayload;
 }
-
-const getTimeWords = (payload: StoryTrainExercisePayload) => {
-    const maxStepCount = Math.max(
-        ...payload.sets.map((storySet) => storySet.steps.length),
-    );
-
-    if (maxStepCount >= 4) {
-        return "first, next, then, and finally";
-    }
-
-    return "first, next, and then";
-};
 
 const shuffleSets = (sets: StoryTrainSet[]): StoryTrainSet[] => {
     const shuffled = [...sets];
@@ -38,15 +27,26 @@ const shuffleSets = (sets: StoryTrainSet[]): StoryTrainSet[] => {
     return shuffled;
 };
 
+const selectSessionSets = (payload: StoryTrainExercisePayload) => {
+    // Defensive dedupe by id guarantees no repeated set in a session,
+    // even if payload data accidentally includes duplicates.
+    const uniqueSets = Array.from(
+        new Map(
+            payload.sets.map((storySet) => [storySet.id, storySet]),
+        ).values(),
+    );
+    const roundsToPlay = Math.min(payload.rounds, uniqueSets.length);
+
+    return shuffleSets(uniqueSets).slice(0, roundsToPlay);
+};
+
 export const StoryTrain = ({ payload }: StoryTrainProps) => {
-    const timeWords = getTimeWords(payload);
     const [selectedSets, setSelectedSets] = useState<StoryTrainSet[] | null>(
         null,
     );
 
     const handleStartExercise = () => {
-        const roundsToPlay = Math.min(payload.rounds, payload.sets.length);
-        setSelectedSets(shuffleSets(payload.sets).slice(0, roundsToPlay));
+        setSelectedSets(selectSessionSets(payload));
     };
 
     if (!selectedSets) {
@@ -67,10 +67,6 @@ export const StoryTrain = ({ payload }: StoryTrainProps) => {
                     <p style={{ margin: 0 }}>
                         Look at the pictures and drag them into the order they
                         happen.
-                    </p>
-                    <p style={{ margin: 0 }}>
-                        Use the time words {timeWords} to talk through each
-                        story.
                     </p>
                     {payload.modellingTip ? (
                         <p style={{ margin: 0, fontWeight: 700 }}>

@@ -5,7 +5,7 @@
   "sets": [
     {
       "id": "bird_feeder",
-      "title": "feeding the birds?",
+      "title": "feeding the birds",
       "steps": [
         {
           "id": "bird_feeder-1",
@@ -39,7 +39,7 @@
     },
     {
       "id": "birdhouse",
-      "title": "building a birdhouse?",
+      "title": "building a birdhouse",
       "steps": [
         {
           "id": "birdhouse-1",
@@ -73,7 +73,7 @@
     },
     {
       "id": "building_a_den",
-      "title": "building a den?",
+      "title": "building a den",
       "steps": [
         {
           "id": "building_a_den-1",
@@ -107,7 +107,7 @@
     },
     {
       "id": "buried_treasure",
-      "title": "finding buried treasure?",
+      "title": "finding buried treasure",
       "steps": [
         {
           "id": "buried_treasure-1",
@@ -141,7 +141,7 @@
     },
     {
       "id": "camping",
-      "title": "going camping?",
+      "title": "going camping",
       "steps": [
         {
           "id": "camping-1",
@@ -175,7 +175,7 @@
     },
     {
       "id": "cupcakes",
-      "title": "making cupcakes?",
+      "title": "making cupcakes",
       "steps": [
         {
           "id": "cupcakes-1",
@@ -209,7 +209,7 @@
     },
     {
       "id": "kite",
-      "title": "flying a kite?",
+      "title": "flying a kite",
       "steps": [
         {
           "id": "kite-1",
@@ -243,7 +243,7 @@
     },
     {
       "id": "missing_dog",
-      "title": "finding a missing dog?",
+      "title": "finding a missing dog",
       "steps": [
         {
           "id": "missing_dog-1",
@@ -277,7 +277,7 @@
     },
     {
       "id": "muddy_dog",
-      "title": "washing the dog?",
+      "title": "washing the dog",
       "steps": [
         {
           "id": "muddy_dog-1",
@@ -311,7 +311,7 @@
     },
     {
       "id": "race",
-      "title": "winning a race?",
+      "title": "winning a race",
       "steps": [
         {
           "id": "race-1",
@@ -345,7 +345,7 @@
     },
     {
       "id": "rainstorm",
-      "title": "getting caught in the rain?",
+      "title": "getting caught in the rain",
       "steps": [
         {
           "id": "rainstorm-1",
@@ -379,7 +379,7 @@
     },
     {
       "id": "sandcastle",
-      "title": "building a sandcastle?",
+      "title": "building a sandcastle",
       "steps": [
         {
           "id": "sandcastle-1",
@@ -413,7 +413,7 @@
     },
     {
       "id": "science_experiment",
-      "title": "a failed science experiment?",
+      "title": "a failed science experiment",
       "steps": [
         {
           "id": "science_experiment-1",

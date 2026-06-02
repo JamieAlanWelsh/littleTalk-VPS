@@ -5,7 +5,7 @@
   "sets": [
     {
       "id": "baking_cookies",
-      "title": "making cookies?",
+      "title": "making cookies",
       "steps": [
         {
           "id": "baking_cookies-1",
@@ -32,7 +32,7 @@
     },
     {
       "id": "birthday_party",
-      "title": "a birthday party?",
+      "title": "a birthday party",
       "steps": [
         {
           "id": "birthday_party-1",
@@ -59,7 +59,7 @@
     },
     {
       "id": "brushing_teeth",
-      "title": "how you brush your teeth?",
+      "title": "how you brush your teeth",
       "steps": [
         {
           "id": "brushing_teeth-1",
@@ -86,7 +86,7 @@
     },
     {
       "id": "building_a_snowman",
-      "title": "how you build a snowman?",
+      "title": "how you build a snowman",
       "steps": [
         {
           "id": "building_a_snowman-1",
@@ -113,7 +113,7 @@
     },
     {
       "id": "feeding_ducks",
-      "title": "how you feed ducks?",
+      "title": "how you feed ducks",
       "steps": [
         {
           "id": "feeding_ducks-1",
@@ -140,7 +140,7 @@
     },
     {
       "id": "getting_dressed_for_school",
-      "title": "how you get dressed for school?",
+      "title": "how you get dressed for school",
       "steps": [
         {
           "id": "getting_dressed_for_school-1",
@@ -167,7 +167,7 @@
     },
     {
       "id": "library_visit",
-      "title": "visiting the library?",
+      "title": "visiting the library",
       "steps": [
         {
           "id": "library_visit-1",
@@ -194,7 +194,7 @@
     },
     {
       "id": "making_a_sandwich",
-      "title": "how you make a sandwich?",
+      "title": "how you make a sandwich",
       "steps": [
         {
           "id": "making_a_sandwich-1",
@@ -221,7 +221,7 @@
     },
     {
       "id": "making_toast",
-      "title": "how you make toast?",
+      "title": "how you make toast",
       "steps": [
         {
           "id": "making_toast-1",
@@ -248,7 +248,7 @@
     },
     {
       "id": "painting",
-      "title": "painting a picture?",
+      "title": "painting a picture",
       "steps": [
         {
           "id": "painting-1",
@@ -275,7 +275,7 @@
     },
     {
       "id": "park_day",
-      "title": "a day at the park?",
+      "title": "a day at the park",
       "steps": [
         {
           "id": "park_day-1",
@@ -302,7 +302,7 @@
     },
     {
       "id": "planting_a_seed",
-      "title": "planting a seed?",
+      "title": "planting a seed",
       "steps": [
         {
           "id": "planting_a_seed-1",
@@ -329,7 +329,7 @@
     },
     {
       "id": "rainy_day",
-      "title": "a rainy day?",
+      "title": "a rainy day",
       "steps": [
         {
           "id": "rainy_day-1",
@@ -356,7 +356,7 @@
     },
     {
       "id": "snack_time",
-      "title": "snack time?",
+      "title": "snack time",
       "steps": [
         {
           "id": "snack_time-1",
@@ -383,7 +383,7 @@
     },
     {
       "id": "tidying_toys",
-      "title": "how you tidy your toys?",
+      "title": "how you tidy your toys",
       "steps": [
         {
           "id": "tidying_toys-1",
@@ -410,7 +410,7 @@
     },
     {
       "id": "washing_hands",
-      "title": "how you wash your hands?",
+      "title": "how you wash your hands",
       "steps": [
         {
           "id": "washing_hands-1",
