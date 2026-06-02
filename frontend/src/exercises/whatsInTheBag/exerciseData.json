@@ -188,10 +188,10 @@
       "altText": "a goat"
     },
     {
-      "id": "hand_gesture",
-      "imageUrl": "/static/exercise_assets/early_years_image_options/hand-gesture.webp",
-      "label": "Hand Gesture",
-      "altText": "a hand gesture"
+      "id": "scooter",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/scooter.webp",
+      "label": "Scooter",
+      "altText": "a scooter"
     },
     {
       "id": "hat",
