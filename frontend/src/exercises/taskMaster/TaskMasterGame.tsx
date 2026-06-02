@@ -21,7 +21,6 @@ import styles from "./TaskMasterGame.module.css";
 
 interface TaskMasterGameProps {
     questions: TaskMasterQuestion[];
-    onSettingsRequested?: () => void;
 }
 
 const EXERCISE_METADATA = {
@@ -96,10 +95,7 @@ const buildScenePlacements = (
     return scenePlacements;
 };
 
-export const TaskMasterGame = ({
-    questions,
-    onSettingsRequested,
-}: TaskMasterGameProps) => {
+export const TaskMasterGame = ({ questions }: TaskMasterGameProps) => {
     const tracking = useExerciseTracking(questions.length);
     const { play } = useAudio();
     const [questionState, setQuestionState] = useState<QuestionState>({
@@ -457,7 +453,6 @@ export const TaskMasterGame = ({
             tracking={tracking}
             onCheckAnswer={onCheckAnswer}
             onResetQuestion={onResetQuestion}
-            onSettingsRequested={onSettingsRequested}
             showSkip={false}
         >
             {(question) => {

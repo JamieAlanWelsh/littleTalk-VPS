@@ -14,7 +14,7 @@ import type { TaskMasterQuestion } from "./types";
 const EXERCISE_METADATA = {
     setupTitle: "Task Master Setup",
     setupSubtitle:
-        "Follow the instructions and place each character in the scene.",
+        "Follow the multi-step instructions and place each character in the scene one by one.",
 };
 
 export interface TaskMasterPayload {
@@ -26,11 +26,7 @@ export interface TaskMasterPayload {
     }[];
 }
 
-interface TaskMasterProps {
-    onSettingsRequested?: () => void;
-}
-
-export const TaskMaster = ({ onSettingsRequested }: TaskMasterProps) => {
+export const TaskMaster = () => {
     const [hasStarted, setHasStarted] = useState(false);
     const [questions, setQuestions] = useState<TaskMasterQuestion[]>([]);
 
@@ -44,10 +40,6 @@ export const TaskMaster = ({ onSettingsRequested }: TaskMasterProps) => {
             title={EXERCISE_METADATA.setupTitle}
             subtitle={EXERCISE_METADATA.setupSubtitle}
             onStart={handleStartExercise}
-            onTutorial={() => {
-                // TODO: Implement tutorial
-                console.log("Tutorial requested");
-            }}
             startButtonLabel="Start"
         >
             <div
@@ -65,19 +57,14 @@ export const TaskMaster = ({ onSettingsRequested }: TaskMasterProps) => {
                     prompt.
                 </p>
                 <p style={{ margin: 0, fontWeight: 700 }}>
-                    Tip: move a character back to the tray if you want to change
-                    your answer.
+                    Modelling Tip: Use contextual clues to help break down
+                    instructions. For example: Which tree is the closest to the
+                    path?
                 </p>
             </div>
         </ExerciseStartScreen>
     ) : (
-        <TaskMasterGame
-            questions={questions}
-            onSettingsRequested={() => {
-                setHasStarted(false);
-                onSettingsRequested?.();
-            }}
-        />
+        <TaskMasterGame questions={questions} />
     );
 };
 
