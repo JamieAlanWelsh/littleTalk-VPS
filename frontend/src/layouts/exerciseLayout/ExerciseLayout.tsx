@@ -15,7 +15,6 @@ import ConfirmationModal from "../../components/ConfirmationModal/ConfirmationMo
 import type { AnswerState, Question } from "../../lib/types";
 import { useExerciseTracking, useSubmitExerciseResult } from "../../hooks";
 import ExerciseEndscreen from "../exerciseEndscreen/ExerciseEndscreen";
-import { TypeAnimation } from "react-type-animation";
 import { useAudio } from "../../hooks/useAudio";
 
 const correctFeedbackMessages = [
@@ -87,6 +86,8 @@ export const ExerciseLayout = <AnswerType,>({
         progressScale * (currentQuestionStateIndex / questions.length);
     const isComplete = currentQuestionStateIndex === questions.length;
     const isLastQuestion = currentQuestionStateIndex === questions.length - 1;
+    const currentQuestion = questions[currentQuestionStateIndex];
+    const promptText = promptOverride ?? currentQuestion?.prompt ?? "";
 
     const { play } = useAudio();
 
@@ -207,24 +208,14 @@ export const ExerciseLayout = <AnswerType,>({
 
                     <div className={styles.exerciseLayoutWrapper}>
                         {/* question */}
-                        <div className={styles.exercisePromptCard}>
-                            <h2
-                                style={{
-                                    fontSize: "var(--text-large)",
-                                    fontWeight: "bold",
-                                    color: "var(--font-color)",
-                                }}
-                            >
-                                <TypeAnimation
-                                    key={`${questions[currentQuestionStateIndex].id}-${promptOverride ?? ""}`} // Reset animation on question or override prompt change
-                                    sequence={[
-                                        promptOverride ??
-                                            questions[currentQuestionStateIndex]
-                                                .prompt,
-                                    ]}
-                                    speed={60}
-                                    cursor={false}
-                                />
+                        <div
+                            key={`${questions[currentQuestionStateIndex].id}-${promptOverride ?? ""}`}
+                            className={`${styles.exercisePromptCard} ${styles.exercisePromptCardPop}`}
+                        >
+                            <h2 className={styles.exercisePromptTitle}>
+                                <span className={styles.exercisePromptText}>
+                                    {promptText}
+                                </span>
                             </h2>
                         </div>
 
