@@ -9,10 +9,10 @@
         {
           "id": "at-the-cinema-q1-feelings",
           "openingPrompt": "How are the family feeling?",
-          "completionPrompt": "They feel scared/frightened.",
+          "completionPrompt": "They feel scared.",
           "stepTwoImageUrl": "/static/exercise_assets/in_the_know/at_the_cinema/at_the_cinema_circled_facial_expressions.webp",
           "stepTwoAltText": "At the cinema scene with facial expressions circled",
-          "correctOptionLabel": "They feel scared/frightened.",
+          "correctOptionLabel": "They feel scared.",
           "distractorOptionLabels": [
             "They feel excited about the snacks.",
             "They are laughing at a joke.",
@@ -52,7 +52,7 @@
           "completionPrompt": "They are at the cinema/movie theatre.",
           "stepTwoImageUrl": "/static/exercise_assets/in_the_know/at_the_cinema/at_the_cinema_circled_popcorn.webp",
           "stepTwoAltText": "At the cinema scene with popcorn circled",
-          "correctOptionLabel": "They are at the cinema/movie theatre.",
+          "correctOptionLabel": "They are at the cinema.",
           "distractorOptionLabels": [
             "At a restaurant.",
             "In a classroom.",
@@ -517,21 +517,21 @@
         {
           "id": "dentist-q5-thinking",
           "openingPrompt": "What do you think he might be thinking?",
-          "completionPrompt": "He might be thinking, 'I hope my appointment goes well.'",
+          "completionPrompt": "He might be thinking, \"I hope my appointment goes well.\"",
           "stepTwoImageUrl": "/static/exercise_assets/in_the_know/dentist/dentist_circled_facial_expression.webp",
           "stepTwoAltText": "Dentist scene with the boy's facial expression circled",
-          "correctOptionLabel": "I hope my appointment goes well",
+          "correctOptionLabel": "\"I hope my appointment goes well.\"",
           "distractorOptionLabels": [
-            "I can't wait to play football.",
-            "I wonder what I'll have for dinner.",
-            "I hope it snows today.",
-            "I want to go swimming.",
-            "I can't wait to open my birthday presents.",
-            "I need to walk my dog.",
-            "I wonder what's on television.",
-            "I hope my team wins the match.",
-            "I want to go camping.",
-            "I should tidy my room."
+            "\"I can't wait to play football.\"",
+            "\"I wonder what I'll have for dinner.\"",
+            "\"I hope it snows today.\"",
+            "\"I want to go swimming.\"",
+            "\"I can't wait to open my birthday presents.\"",
+            "\"I need to walk my dog.\"",
+            "\"I wonder what's on television.\"",
+            "\"I hope my team wins the match.\"",
+            "\"I want to go camping.\"",
+            "\"I should tidy my room.\""
           ]
         }
       ]
@@ -1122,7 +1122,7 @@
           "completionPrompt": "She is excited to show the boy the puppy.",
           "stepTwoImageUrl": "/static/exercise_assets/in_the_know/new_pet/new_pet_circled_puppy.webp",
           "stepTwoAltText": "New pet scene with the puppy circled",
-          "correctOptionLabel": "Because she is excited to show the boy the puppy",
+          "correctOptionLabel": "She is excited to show the boy the puppy",
           "distractorOptionLabels": [
             "She has just won a football match.",
             "She is laughing at a funny film.",
