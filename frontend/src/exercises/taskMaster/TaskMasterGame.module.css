@@ -5,7 +5,8 @@
 
 .boardCard {
     position: relative;
-    width: min(100%, 54rem);
+    width: min(100%, 64rem);
+    aspect-ratio: 3 / 2;
     margin: 0 auto;
     border-radius: 0.85rem;
     overflow: hidden;
@@ -34,7 +35,7 @@
     position: relative;
     z-index: 1;
     display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(6, minmax(0, 1fr));
     gap: 0.35rem;
     padding: 0.75rem;
     min-height: 10rem;
@@ -67,6 +68,7 @@
 
 @media (max-width: 768px) {
     .boardCard {
+        aspect-ratio: 3 / 2;
         min-height: 20rem;
     }
 

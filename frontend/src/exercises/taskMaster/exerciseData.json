@@ -60,6 +60,18 @@
             "preposition": "on",
             "question": "on the smallest tree",
             "answer": [[0,2]]
+        },
+        {
+          "id": "4",
+          "preposition": "next to",
+          "question": "next to the umbrella",
+          "answer": [[2,4], [2,5]]
+        },
+        {
+          "id": "5",
+          "preposition": "in front of",
+          "question": "in front of the beach hut",
+          "answer": [[3,3]]
         }
       ]
     },
@@ -80,65 +92,58 @@
             "preposition": "on",
             "question": "on the sand",
             "answer": [[3,1],[3,2]]
+        },
+        {
+          "id": "3",
+          "preposition": "behind",
+          "question": "behind the tallest tree",
+          "answer": [[1,4]]
+        },
+        {
+          "id": "4",
+          "preposition": "next to",
+          "question": "next to the river",
+          "answer": [[2,2], [2,3]]
+        },
+        {
+          "id": "5",
+          "preposition": "below",
+          "question": "below the monkey",
+          "answer": [[3,4]]
         }
       ]
     }
   ],
   "objects": [
     {
-      "id": "cap",
-      "label": "cap",
-      "imageUrl": "/static/exercise_assets/categorisation/clothing/cap.webp"
+      "id": "arlo_armadillo",
+      "label": "Arlo Armadillo",
+      "imageUrl": "/static/exercise_assets/characters/arlo_armadillo.png"
     },
     {
-      "id": "dress",
-      "label": "dress",
-      "imageUrl": "/static/exercise_assets/categorisation/clothing/dress.webp"
+      "id": "humble_hedgehog",
+      "label": "Humble Hedgehog",
+      "imageUrl": "/static/exercise_assets/characters/humble_hedgehog.png"
     },
     {
-      "id": "gloves",
-      "label": "gloves",
-      "imageUrl": "/static/exercise_assets/categorisation/clothing/gloves.webp"
+      "id": "muddles_mole",
+      "label": "Muddles Mole",
+      "imageUrl": "/static/exercise_assets/characters/muddles_mole.png"
     },
     {
-      "id": "hat",
-      "label": "hat",
-      "imageUrl": "/static/exercise_assets/categorisation/clothing/hat.webp"
+      "id": "peppy_pigeon",
+      "label": "Peppy Pigeon",
+      "imageUrl": "/static/exercise_assets/characters/peppy_pigeon.png"
     },
     {
-      "id": "jumper",
-      "label": "jumper",
-      "imageUrl": "/static/exercise_assets/categorisation/clothing/jumper.webp"
+      "id": "resilient_red_panda",
+      "label": "Resilient Red Panda",
+      "imageUrl": "/static/exercise_assets/characters/resilient_red_panda.png"
     },
     {
-      "id": "scarf",
-      "label": "scarf",
-      "imageUrl": "/static/exercise_assets/categorisation/clothing/scarf.webp"
-    },
-    {
-      "id": "shoes",
-      "label": "shoes",
-      "imageUrl": "/static/exercise_assets/categorisation/clothing/shoes.webp"
-    },
-    {
-      "id": "shorts",
-      "label": "shorts",
-      "imageUrl": "/static/exercise_assets/categorisation/clothing/shorts.webp"
-    },
-    {
-      "id": "socks",
-      "label": "socks",
-      "imageUrl": "/static/exercise_assets/categorisation/clothing/socks.webp"
-    },
-    {
-      "id": "trousers",
-      "label": "trousers",
-      "imageUrl": "/static/exercise_assets/categorisation/clothing/trousers.webp"
-    },
-    {
-      "id": "tshirt",
-      "label": "t-shirt",
-      "imageUrl": "/static/exercise_assets/categorisation/clothing/tshirt.webp"
+      "id": "thoughtful_tortoise",
+      "label": "Thoughtful Tortoise",
+      "imageUrl": "/static/exercise_assets/characters/thoughtful_tortoise.png"
     }
   ]
 }

@@ -28,7 +28,7 @@ const EXERCISE_METADATA = {
 };
 
 const GRID_ROWS = 4;
-const GRID_COLUMNS = 5;
+const GRID_COLUMNS = 6;
 const POOL_ID = "pool";
 
 const toCellId = (row: number, col: number) => `cell:${row}:${col}`;
@@ -96,7 +96,9 @@ export const TaskMasterGame = ({
                         imageUrl: object.imageUrl,
                         label: object.label,
                         altText: object.label,
-                        sfxUrl: object.imageUrl.replace(/\.webp$/i, ".wav"),
+                        sfxUrl: object.imageUrl.match(/\.webp$/i)
+                            ? object.imageUrl.replace(/\.webp$/i, ".wav")
+                            : undefined,
                     },
                 ]),
             ),
