@@ -296,6 +296,7 @@ class Learner(models.Model):
     total_exercises = models.IntegerField(default=0)
     recommendation_level = models.IntegerField(blank=True, null=True)
     recommended_exercise_ids = models.JSONField(blank=True, null=True)
+    secondary_exercise_ids = models.JSONField(blank=True, null=True)
     recommendation_index = models.IntegerField(default=0)
     recommendation_index_updated_at = models.DateTimeField(blank=True, null=True)
     deleted = models.BooleanField(default=False)

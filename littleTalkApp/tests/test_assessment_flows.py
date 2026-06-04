@@ -7,7 +7,11 @@ from django.utils import timezone
 
 from littleTalkApp.models import Learner, LearnerAssessmentAnswer, Role
 from littleTalkApp.tests.base import BaseFlowTestMixin
-from littleTalkApp.views_modules.assessment import compute_v2_recommendations
+from littleTalkApp.views_modules.assessment import (
+    compute_stage_mastery,
+    compute_v2_recommendations,
+    compute_v2_secondary_recommendations,
+)
 
 
 class AssessmentTypicalFlowTests(BaseFlowTestMixin, TestCase):
@@ -89,8 +93,9 @@ class AssessmentTypicalFlowTests(BaseFlowTestMixin, TestCase):
         learner.refresh_from_db()
         self.assertEqual(
             learner.recommended_exercise_ids,
-            ["whats-in-the-bag", "story-train", "in-the-know"],
+            ["whats-in-the-bag", "spot-on", "whos-who"],
         )
+        self.assertEqual(learner.secondary_exercise_ids, [])
         self.assertEqual(learner.recommendation_index, 0)
         self.assertIsNotNone(learner.recommendation_index_updated_at)
 
@@ -112,7 +117,7 @@ class AssessmentRecommendationTests(TestCase):
 
         self.assertEqual(
             recommendations,
-            ["whats-in-the-bag", "spot-on", "story-train-plus"],
+            ["whats-in-the-bag", "spot-on", "whos-who"],
         )
 
     def test_compute_v2_recommendations_pads_to_three_with_high_stage(self):
@@ -127,8 +132,58 @@ class AssessmentRecommendationTests(TestCase):
         self.assertEqual(
             recommendations,
             [
-                "colourful-semantics-plus",
-                "story-train-plus",
-                "what-happens-next",
+                "colourful-semantics",
+                "concept-quest",
+                "categorisation",
             ],
         )
+
+    def test_compute_stage_mastery_locks_to_stage_one_when_stage_one_is_mostly_no(self):
+        answers_payload = {
+            "3": "No",
+            "4": "No",
+            "5": "No",
+            "8": "Yes",
+        }
+
+        stage_mastery, allowed_max_stage = compute_stage_mastery(answers_payload)
+
+        self.assertFalse(stage_mastery[1])
+        self.assertEqual(allowed_max_stage, 1)
+
+    def test_compute_v2_recommendations_unlocks_stage_three_when_stage_one_and_two_mostly_yes(self):
+        answers_payload = {
+            "3": "Yes",
+            "4": "Yes",
+            "5": "Yes",
+            "8": "Yes",
+            "9": "Yes",
+            "10": "Yes",
+            "15": "No",
+        }
+
+        recommendations = compute_v2_recommendations(answers_payload)
+
+        self.assertEqual(recommendations[0], "in-the-know")
+        self.assertIn("story-train-plus", recommendations)
+
+    def test_compute_v2_secondary_recommendations_returns_in_range_needs_support_only(self):
+        answers_payload = {
+            "3": "Yes",
+            "4": "Yes",
+            "5": "Yes",
+            "8": "No",
+            "9": "No",
+            "10": "No",
+            "11": "No",
+            "15": "No",
+        }
+
+        tier_one = compute_v2_recommendations(answers_payload)
+        secondary = compute_v2_secondary_recommendations(answers_payload, tier_one)
+
+        self.assertEqual(
+            tier_one,
+            ["categorisation", "colourful-semantics", "concept-quest"],
+        )
+        self.assertEqual(secondary, ["story-train"])

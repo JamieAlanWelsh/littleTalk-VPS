@@ -215,16 +215,28 @@
     border: 3px solid #ff8f8f;
 }
 
-.good-match-badge {
+.exercise-widget--glow-soft {
+    border: 2px solid #ffc98f;
+}
+
+.match-badge {
     position: absolute;
     top: -14px;
     right: 12px;
-    background: #ff8f8f;
     color: #ffffff;
     padding: 7px 12px;
     border-radius: 10px;
     font-size: 0.95rem;
     font-weight: 700;
+}
+
+.strong-match-badge {
+    background: #ff8f8f;
+}
+
+.good-match-badge {
+    background: #ffc98f;
+    color: #513415;
 }
 
 .exercise-image img {

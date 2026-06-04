@@ -91,9 +91,11 @@
                 data-stage-content="{{ stage.number }}"
             >
                 {% for card in stage.exercise_cards %}
-                    <article class="exercise-widget {% if card.key in recommended_exercise_keys %}exercise-widget--glow{% endif %}">
+                    <article class="exercise-widget {% if card.key in recommended_exercise_keys %}exercise-widget--glow{% elif card.key in secondary_exercise_keys %}exercise-widget--glow-soft{% endif %}">
                         {% if card.key in recommended_exercise_keys %}
-                            <span class="good-match-badge">GOOD MATCH</span>
+                            <span class="match-badge strong-match-badge">STRONG MATCH</span>
+                        {% elif card.key in secondary_exercise_keys %}
+                            <span class="match-badge good-match-badge">GOOD MATCH</span>
                         {% endif %}
 
                         <div class="exercise-image">

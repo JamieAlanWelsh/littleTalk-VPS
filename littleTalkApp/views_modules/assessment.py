@@ -12,11 +12,14 @@ from django.utils import timezone
 from littleTalkApp.content import QUESTIONS
 from littleTalkApp.content.assessments_v2 import (
     QUESTIONS_V2,
-    STAGE_3_PADDING_ORDER,
+    STAGE_PADDING_ORDER,
     get_question_by_order,
     validate_v2_exercise_ids,
 )
 from littleTalkApp.models import Cohort, Learner, LearnerAssessmentAnswer
+
+
+MOSTLY_YES_THRESHOLD = 0.6
 
 
 @login_required
@@ -183,17 +186,10 @@ def save_all_assessment_answers_v2(request):
     return JsonResponse({"redirect_url": reverse("assessment_summary")})
 
 
-def compute_v2_recommendations(answers):
-    """Compute top-3 exercise recommendations from V2 answers.
-
-    Scoring: each "No" adds one point to the mapped exercise. Ties are resolved
-    by lower stage, then lower blank level. If fewer than 3 exercises receive a
-    score, pad from predefined stage-3 exercises (high-level indicator).
-    """
+def _iter_v2_scored_answers(answers):
+    """Yield non-readiness V2 answers normalized as lowercase yes/no strings."""
 
     question_index = {question["order"]: question for question in QUESTIONS_V2}
-    exercise_scores = defaultdict(int)
-    exercise_tiebreak = {}
 
     for question_id_str, user_answer in answers.items():
         try:
@@ -201,11 +197,74 @@ def compute_v2_recommendations(answers):
         except (TypeError, ValueError):
             continue
 
-        if str(user_answer).strip().lower() != "no":
+        question = question_index.get(question_id)
+        if not question or question.get("is_readiness"):
             continue
 
-        question = question_index.get(question_id)
-        if not question:
+        normalized_answer = str(user_answer).strip().lower()
+        if normalized_answer not in {"yes", "no"}:
+            continue
+
+        yield question, normalized_answer
+
+
+def compute_stage_mastery(answers, tau=MOSTLY_YES_THRESHOLD):
+    """Compute per-stage mastery and stage ceiling based on clustered yes answers."""
+
+    stage_stats = {
+        1: {"yes": 0, "total": 0},
+        2: {"yes": 0, "total": 0},
+        3: {"yes": 0, "total": 0},
+    }
+
+    for question, normalized_answer in _iter_v2_scored_answers(answers):
+        stage = question.get("stage")
+        if stage not in stage_stats:
+            continue
+        stage_stats[stage]["total"] += 1
+        if normalized_answer == "yes":
+            stage_stats[stage]["yes"] += 1
+
+    stage_mastery = {}
+    for stage, counts in stage_stats.items():
+        yes_ratio = (counts["yes"] / counts["total"]) if counts["total"] else 0.0
+        stage_mastery[stage] = yes_ratio >= tau
+
+    allowed_max_stage = 1
+    if stage_mastery[1]:
+        allowed_max_stage = 2
+    if stage_mastery[1] and stage_mastery[2]:
+        allowed_max_stage = 3
+
+    return stage_mastery, allowed_max_stage
+
+
+def _pad_recommendations(recommendations, allowed_max_stage):
+    """Pad recommendations from the current frontier stage downward."""
+
+    for stage in range(allowed_max_stage, 0, -1):
+        for exercise_id in STAGE_PADDING_ORDER.get(stage, []):
+            if len(recommendations) >= 3:
+                return recommendations[:3]
+            if exercise_id not in recommendations:
+                recommendations.append(exercise_id)
+
+    return recommendations[:3]
+
+
+def compute_v2_recommendations(answers):
+    """Compute top-3 strong-match recommendations within the allowed stage ceiling."""
+
+    _, allowed_max_stage = compute_stage_mastery(answers)
+    exercise_scores = defaultdict(int)
+    exercise_tiebreak = {}
+
+    for question, normalized_answer in _iter_v2_scored_answers(answers):
+        if normalized_answer != "no":
+            continue
+
+        stage = question.get("stage")
+        if not stage or stage > allowed_max_stage:
             continue
 
         exercise_id = question.get("exercise_id")
@@ -214,7 +273,6 @@ def compute_v2_recommendations(answers):
 
         exercise_scores[exercise_id] += 1
 
-        stage = question.get("stage") or 999
         blank_level = question.get("blank_level") or 999
         current_tiebreak = exercise_tiebreak.get(exercise_id)
         if not current_tiebreak or (stage, blank_level) < (
@@ -235,16 +293,53 @@ def compute_v2_recommendations(answers):
             item[0],
         ),
     )
-
     recommendations = [exercise_id for exercise_id, _ in ranked][:3]
+    return _pad_recommendations(recommendations, allowed_max_stage)
 
-    for exercise_id in STAGE_3_PADDING_ORDER:
-        if len(recommendations) >= 3:
-            break
-        if exercise_id not in recommendations:
-            recommendations.append(exercise_id)
 
-    return recommendations[:3]
+def compute_v2_secondary_recommendations(answers, tier_one_recommendations):
+    """Compute good-match in-range support recommendations excluded from tier one."""
+
+    _, allowed_max_stage = compute_stage_mastery(answers)
+    tier_one_ids = set(tier_one_recommendations)
+    exercise_scores = defaultdict(int)
+    exercise_tiebreak = {}
+
+    for question, normalized_answer in _iter_v2_scored_answers(answers):
+        if normalized_answer != "no":
+            continue
+
+        stage = question.get("stage")
+        if not stage or stage > allowed_max_stage:
+            continue
+
+        exercise_id = question.get("exercise_id")
+        if not exercise_id or exercise_id in tier_one_ids:
+            continue
+
+        exercise_scores[exercise_id] += 1
+
+        blank_level = question.get("blank_level") or 999
+        current_tiebreak = exercise_tiebreak.get(exercise_id)
+        if not current_tiebreak or (stage, blank_level) < (
+            current_tiebreak["stage"],
+            current_tiebreak["blank_level"],
+        ):
+            exercise_tiebreak[exercise_id] = {
+                "stage": stage,
+                "blank_level": blank_level,
+            }
+
+    ranked = sorted(
+        exercise_scores.items(),
+        key=lambda item: (
+            -item[1],
+            exercise_tiebreak[item[0]]["stage"],
+            exercise_tiebreak[item[0]]["blank_level"],
+            item[0],
+        ),
+    )
+    return [exercise_id for exercise_id, _ in ranked]
 
 
 def save_assessment_v2_for_learner(learner, answers, session_id=None):
@@ -293,13 +388,19 @@ def save_assessment_v2_for_learner(learner, answers, session_id=None):
         skill for skill, responses in skill_answers.items() if "No" not in responses
     ]
     learner.assessment1 = len(strong_skills)
-    learner.recommended_exercise_ids = compute_v2_recommendations(answers)
+    tier_one_recommendations = compute_v2_recommendations(answers)
+    learner.recommended_exercise_ids = tier_one_recommendations
+    learner.secondary_exercise_ids = compute_v2_secondary_recommendations(
+        answers,
+        tier_one_recommendations,
+    )
     learner.recommendation_index = 0
     learner.recommendation_index_updated_at = timezone.now()
     learner.save(
         update_fields=[
             "assessment1",
             "recommended_exercise_ids",
+            "secondary_exercise_ids",
             "recommendation_index",
             "recommendation_index_updated_at",
         ]

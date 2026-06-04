@@ -195,13 +195,28 @@ QUESTIONS_V2 = [
     },
 ]
 
-STAGE_3_PADDING_ORDER = [
-    "colourful-semantics-plus",
-    "story-train-plus",
-    "what-happens-next",
-    "task-master",
-    "in-the-know",
-]
+STAGE_PADDING_ORDER = {
+    1: [
+        "whats-in-the-bag",
+        "spot-on",
+        "whos-who",
+        "colourful-semantics-early",
+    ],
+    2: [
+        "colourful-semantics",
+        "concept-quest",
+        "categorisation",
+        "story-train",
+        "think-and-find",
+    ],
+    3: [
+        "colourful-semantics-plus",
+        "story-train-plus",
+        "what-happens-next",
+        "task-master",
+        "in-the-know",
+    ],
+}
 
 
 def get_question_by_order(order):

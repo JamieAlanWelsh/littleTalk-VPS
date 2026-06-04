@@ -20,6 +20,7 @@ class PractiseRecommendationRotationTests(BaseFlowTestMixin, TestCase):
             name="Practise Learner",
             date_of_birth=timezone.now().date() - timedelta(days=365 * 7),
             recommended_exercise_ids=["whats-in-the-bag", "story-train-plus", "in-the-know"],
+            secondary_exercise_ids=["concept-quest"],
             recommendation_index=0,
             recommendation_index_updated_at=timezone.now() - timedelta(days=2),
         )
@@ -50,6 +51,7 @@ class PractiseRecommendationRotationTests(BaseFlowTestMixin, TestCase):
                 "in_the_know_inferencing",
             ],
         )
+        self.assertEqual(response.context["secondary_exercise_keys"], ["concept_quest"])
         self.assertEqual(response.context["recommended_stage_numbers"], [1, 3])
         self.assertIn(response.context["recommended_exercise_key"], response.context["recommended_exercise_keys"])
         self.assertEqual(response.context["recommended_stage_number"], 3)
@@ -64,5 +66,6 @@ class PractiseRecommendationRotationTests(BaseFlowTestMixin, TestCase):
                 "whats_in_the_bag_vocabulary_builder",
                 "story_train_advanced_sequencing",
                 "in_the_know_inferencing",
+                "concept_quest",
             ],
         )

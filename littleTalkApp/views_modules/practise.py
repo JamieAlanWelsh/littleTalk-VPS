@@ -142,6 +142,7 @@ def practise(request):
     recommended_stage_number = None
     recommended_exercise_key = None
     recommended_exercise_keys = []
+    secondary_exercise_keys = []
     recommended_stage_numbers = []
     has_recommended_filter = False
 
@@ -221,6 +222,18 @@ def practise(request):
 
             recommended_exercise_keys = mapped_keys
 
+            mapped_secondary_keys = []
+            for exercise_id in selected_learner.secondary_exercise_ids or []:
+                practise_key = CANONICAL_TO_PRACTISE_KEY.get(exercise_id)
+                if (
+                    practise_key
+                    and practise_key not in mapped_keys
+                    and practise_key not in mapped_secondary_keys
+                ):
+                    mapped_secondary_keys.append(practise_key)
+
+            secondary_exercise_keys = mapped_secondary_keys
+
             stage_set = {
                 PRACTISE_KEY_TO_STAGE[practice_key]
                 for practice_key in mapped_keys
@@ -255,9 +268,12 @@ def practise(request):
                     recommended_stage_numbers = [recommended_stage_number]
 
     if recommended_exercise_keys:
+        suggested_keys = recommended_exercise_keys + [
+            key for key in secondary_exercise_keys if key not in recommended_exercise_keys
+        ]
         recommended_cards = [
             exercise_cards_by_key[key]
-            for key in recommended_exercise_keys
+            for key in suggested_keys
             if key in exercise_cards_by_key
         ]
         if recommended_cards:
@@ -284,6 +300,7 @@ def practise(request):
         "recommended_stage_numbers": recommended_stage_numbers,
         "recommended_exercise_key": recommended_exercise_key,
         "recommended_exercise_keys": recommended_exercise_keys,
+        "secondary_exercise_keys": secondary_exercise_keys,
         "recommended_exercise_card": recommended_exercise_card,
         "active_stage_number": active_stage_number,
     }
