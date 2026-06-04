@@ -186,6 +186,7 @@ class ExerciseSessionAdmin(admin.ModelAdmin):
         "school_name",
         "exercise_id",
         "difficulty_selected",
+        "learner_total_exp_after_session",
         "time_elapsed",
         "total_questions",
         "incorrect_answers",

@@ -62,12 +62,41 @@ class SubmitExerciseApiTests(BaseFlowTestMixin, TestCase):
                 )
 
                 self.assertEqual(response.status_code, 200)
-                self.assertTrue(
-                    ExerciseSession.objects.filter(
-                        learner=self.learner,
-                        exercise_id=exercise_id,
-                    ).exists()
+                self.learner.refresh_from_db()
+                session = ExerciseSession.objects.get(
+                    learner=self.learner,
+                    exercise_id=exercise_id,
                 )
+                self.assertEqual(
+                    session.learner_total_exp_after_session,
+                    self.learner.exp,
+                )
+
+    def test_submit_exercise_records_post_session_total_exp_snapshot(self):
+        self.learner.exp = 125
+        self.learner.save(update_fields=["exp"])
+
+        payload = self._build_payload(
+            exercise_id="categorisation",
+            nonce="nonce-exp-snapshot",
+        )
+
+        response = self.client.post(
+            self.url,
+            data=json.dumps(payload),
+            content_type="application/json",
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        self.learner.refresh_from_db()
+        self.assertEqual(self.learner.exp, 135)
+
+        session = ExerciseSession.objects.get(
+            learner=self.learner,
+            exercise_id="categorisation",
+        )
+        self.assertEqual(session.learner_total_exp_after_session, 135)
 
     def test_submit_exercise_rejects_unknown_exercise_id(self):
         payload = self._build_payload(
