@@ -91,6 +91,8 @@ class AssessmentTypicalFlowTests(BaseFlowTestMixin, TestCase):
             learner.recommended_exercise_ids,
             ["whats-in-the-bag", "story-train", "in-the-know"],
         )
+        self.assertEqual(learner.recommendation_index, 0)
+        self.assertIsNotNone(learner.recommendation_index_updated_at)
 
         latest_answers = LearnerAssessmentAnswer.objects.filter(learner=learner)
         self.assertTrue(latest_answers.exists())

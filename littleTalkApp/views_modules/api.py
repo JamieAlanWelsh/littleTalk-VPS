@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.middleware.csrf import get_token
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import BasePermission, IsAuthenticated
@@ -14,6 +15,7 @@ from rest_framework.views import APIView
 
 from littleTalkApp.models import ExerciseSession, Learner
 from littleTalkApp.serializers import SubmitExerciseSerializer, LearnerExpUpdateSerializer
+from littleTalkApp.views_modules.practise import resolve_recommendation_index
 
 logger = logging.getLogger(__name__)
 
@@ -73,9 +75,10 @@ class SubmitExerciseView(APIView):
         learner.save()
 
         if "exercise_id" in input_serializer.validated_data:
+            submitted_exercise_id = input_serializer.validated_data["exercise_id"]
             ExerciseSession.objects.create(
                 learner=learner,
-                exercise_id=input_serializer.validated_data["exercise_id"],
+                exercise_id=submitted_exercise_id,
                 difficulty_selected=input_serializer.validated_data.get("difficulty_selected", ""),
                 started_at=input_serializer.validated_data["started_at"],
                 completed_at=input_serializer.validated_data["completed_at"],
@@ -84,6 +87,21 @@ class SubmitExerciseView(APIView):
                 attempts_per_question=input_serializer.validated_data["attempts_per_question"],
                 learner_total_exp_after_session=learner.exp,
             )
+
+            recommendation_ids = learner.recommended_exercise_ids or []
+            if recommendation_ids:
+                current_index = resolve_recommendation_index(learner)
+                if current_index is not None:
+                    current_exercise_id = recommendation_ids[current_index]
+                    if submitted_exercise_id == current_exercise_id:
+                        learner.recommendation_index = (current_index + 1) % len(recommendation_ids)
+                        learner.recommendation_index_updated_at = timezone.now()
+                        learner.save(
+                            update_fields=[
+                                "recommendation_index",
+                                "recommendation_index_updated_at",
+                            ]
+                        )
 
         cache.set(cache_key, True, 600)
 

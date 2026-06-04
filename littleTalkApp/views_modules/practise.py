@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.urls import reverse
+from django.utils import timezone
 
 from littleTalkApp.content import GAME_DESCRIPTIONS, RECOMMENDATIONS
 from littleTalkApp.models import Learner
@@ -72,6 +73,59 @@ PRACTISE_EXERCISE_ROUTE_QUERIES = {
 }
 
 
+CANONICAL_TO_PRACTISE_KEY = {
+    "categorisation": "categorisation",
+    "colourful-semantics": "colourful_semantics",
+    "colourful-semantics-early": "colourful_semantics_early_sentence_building",
+    "colourful-semantics-plus": "colourful_semantics_advanced_sentence_building",
+    "concept-quest": "concept_quest",
+    "in-the-know": "in_the_know_inferencing",
+    "spot-on": "spot_on",
+    "story-train": "story_train",
+    "story-train-plus": "story_train_advanced_sequencing",
+    "task-master": "task_master_instructions",
+    "think-and-find": "think_and_find",
+    "what-happens-next": "what_happens_next_predicting",
+    "whats-in-the-bag": "whats_in_the_bag_vocabulary_builder",
+    "whos-who": "whos_who_pronouns",
+}
+
+PRACTISE_KEY_TO_STAGE = {
+    exercise_key: stage_number
+    for stage_number, stage_data in PRACTISE_STAGES.items()
+    for exercise_key in stage_data.get("exercises", [])
+}
+
+
+def resolve_recommendation_index(learner):
+    """Return current recommendation index and apply 24h fallback rotation."""
+
+    recommendation_ids = learner.recommended_exercise_ids or []
+    recommendation_count = len(recommendation_ids)
+    if recommendation_count == 0:
+        return None
+
+    current_index = learner.recommendation_index % recommendation_count
+    now = timezone.now()
+
+    if learner.recommendation_index_updated_at is None:
+        learner.recommendation_index = current_index
+        learner.recommendation_index_updated_at = now
+        learner.save(update_fields=["recommendation_index", "recommendation_index_updated_at"])
+        return current_index
+
+    elapsed = now - learner.recommendation_index_updated_at
+    elapsed_days = elapsed.days
+    if elapsed_days < 1:
+        return current_index
+
+    current_index = (current_index + elapsed_days) % recommendation_count
+    learner.recommendation_index = current_index
+    learner.recommendation_index_updated_at = now
+    learner.save(update_fields=["recommendation_index", "recommendation_index_updated_at"])
+    return current_index
+
+
 @login_required
 def practise(request):
     """Renders practise/practise.html — the main game selection page.
@@ -87,6 +141,8 @@ def practise(request):
     recommendation = None
     recommended_stage_number = None
     recommended_exercise_key = None
+    recommended_exercise_keys = []
+    recommended_stage_numbers = []
 
     stage_numbers = sorted(PRACTISE_STAGES.keys())
     default_stage_number = stage_numbers[0] if stage_numbers else None
@@ -155,12 +211,47 @@ def practise(request):
         selected_learner = Learner.objects.filter(id=selected_learner_id).first()
         learner_selected = selected_learner is not None
 
-        if learner_selected and selected_learner.recommendation_level is not None:
+        if learner_selected and selected_learner.recommended_exercise_ids:
+            mapped_keys = []
+            for exercise_id in selected_learner.recommended_exercise_ids:
+                practise_key = CANONICAL_TO_PRACTISE_KEY.get(exercise_id)
+                if practise_key and practise_key not in mapped_keys:
+                    mapped_keys.append(practise_key)
+
+            recommended_exercise_keys = mapped_keys
+
+            stage_set = {
+                PRACTISE_KEY_TO_STAGE[practice_key]
+                for practice_key in mapped_keys
+                if practice_key in PRACTISE_KEY_TO_STAGE
+            }
+            recommended_stage_numbers = sorted(stage_set)
+
+            current_index = resolve_recommendation_index(selected_learner)
+            if current_index is not None:
+                recommendation_ids = selected_learner.recommended_exercise_ids
+                ordered_current = (
+                    recommendation_ids[current_index:] + recommendation_ids[:current_index]
+                )
+                for exercise_id in ordered_current:
+                    practise_key = CANONICAL_TO_PRACTISE_KEY.get(exercise_id)
+                    if practise_key:
+                        recommended_exercise_key = practise_key
+                        break
+
+                if recommended_exercise_key:
+                    recommended_stage_number = PRACTISE_KEY_TO_STAGE.get(recommended_exercise_key)
+
+        elif learner_selected and selected_learner.recommendation_level is not None:
             level = selected_learner.recommendation_level
             recommendation = RECOMMENDATIONS[level] if level < len(RECOMMENDATIONS) else None
             if recommendation:
                 recommended_stage_number = RECOMMENDATION_LEVEL_TO_STAGE.get(level)
                 recommended_exercise_key = title_to_key.get(recommendation.get("focus"))
+                if recommended_exercise_key:
+                    recommended_exercise_keys = [recommended_exercise_key]
+                if recommended_stage_number:
+                    recommended_stage_numbers = [recommended_stage_number]
 
     active_stage_number = recommended_stage_number or default_stage_number
     recommended_exercise_card = exercise_cards_by_key.get(recommended_exercise_key)
@@ -172,7 +263,9 @@ def practise(request):
         "game_descriptions": GAME_DESCRIPTIONS,
         "stage_library": stage_library,
         "recommended_stage_number": recommended_stage_number,
+        "recommended_stage_numbers": recommended_stage_numbers,
         "recommended_exercise_key": recommended_exercise_key,
+        "recommended_exercise_keys": recommended_exercise_keys,
         "recommended_exercise_card": recommended_exercise_card,
         "active_stage_number": active_stage_number,
     }

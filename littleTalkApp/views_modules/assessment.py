@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
+from django.utils import timezone
 
 from littleTalkApp.content import QUESTIONS
 from littleTalkApp.content.assessments_v2 import (
@@ -293,7 +294,16 @@ def save_assessment_v2_for_learner(learner, answers, session_id=None):
     ]
     learner.assessment1 = len(strong_skills)
     learner.recommended_exercise_ids = compute_v2_recommendations(answers)
-    learner.save(update_fields=["assessment1", "recommended_exercise_ids"])
+    learner.recommendation_index = 0
+    learner.recommendation_index_updated_at = timezone.now()
+    learner.save(
+        update_fields=[
+            "assessment1",
+            "recommended_exercise_ids",
+            "recommendation_index",
+            "recommendation_index_updated_at",
+        ]
+    )
 
 
 @login_required
