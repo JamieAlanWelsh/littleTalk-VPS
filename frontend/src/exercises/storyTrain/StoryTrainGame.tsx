@@ -11,10 +11,18 @@ import {
 import StoryTrainBoard from "./StoryTrainBoard";
 import type { StoryTrainSet, StoryTrainStep } from "./types";
 
-const EXERCISE_ID = "story-train";
+const getExerciseIdForVariant = (
+    variantId: "standard" | "advanced",
+): string => {
+    if (variantId === "advanced") {
+        return "story-train-plus";
+    }
+    return "story-train";
+};
 
 interface StoryTrainGameProps {
     selectedSets: StoryTrainSet[];
+    variantId?: "standard" | "advanced";
 }
 
 interface StoryTrainAnswer {
@@ -32,7 +40,10 @@ const buildQuestions = (selectedSets: StoryTrainSet[]): Question[] =>
             .map((step) => step.id),
     }));
 
-export const StoryTrainGame = ({ selectedSets }: StoryTrainGameProps) => {
+export const StoryTrainGame = ({
+    selectedSets,
+    variantId = "standard",
+}: StoryTrainGameProps) => {
     const questions = useMemo(
         () => buildQuestions(selectedSets),
         [selectedSets],
@@ -126,7 +137,7 @@ export const StoryTrainGame = ({ selectedSets }: StoryTrainGameProps) => {
 
     return (
         <ExerciseLayout<StoryTrainAnswer>
-            exerciseId={EXERCISE_ID}
+            exerciseId={getExerciseIdForVariant(variantId)}
             actionBarPhase={questionState.answerState}
             answers={answers}
             onCheckAnswer={onCheckAnswer}

@@ -98,6 +98,26 @@ class SubmitExerciseApiTests(BaseFlowTestMixin, TestCase):
         )
         self.assertEqual(session.learner_total_exp_after_session, 135)
 
+    def test_submit_exercise_accepts_story_train_plus_id(self):
+        payload = self._build_payload(
+            exercise_id="story-train-plus",
+            nonce="nonce-story-train-plus",
+        )
+
+        response = self.client.post(
+            self.url,
+            data=json.dumps(payload),
+            content_type="application/json",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(
+            ExerciseSession.objects.filter(
+                learner=self.learner,
+                exercise_id="story-train-plus",
+            ).exists()
+        )
+
     def test_submit_exercise_rejects_unknown_exercise_id(self):
         payload = self._build_payload(
             exercise_id="colourful-semantics-unknown",

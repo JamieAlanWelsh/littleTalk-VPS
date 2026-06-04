@@ -11,6 +11,7 @@ const EXERCISE_METADATA = {
 
 interface StoryTrainProps {
     payload: StoryTrainExercisePayload;
+    variantId?: "standard" | "advanced";
 }
 
 const shuffleSets = (sets: StoryTrainSet[]): StoryTrainSet[] => {
@@ -40,7 +41,10 @@ const selectSessionSets = (payload: StoryTrainExercisePayload) => {
     return shuffleSets(uniqueSets).slice(0, roundsToPlay);
 };
 
-export const StoryTrain = ({ payload }: StoryTrainProps) => {
+export const StoryTrain = ({
+    payload,
+    variantId = "standard",
+}: StoryTrainProps) => {
     const [selectedSets, setSelectedSets] = useState<StoryTrainSet[] | null>(
         null,
     );
@@ -78,7 +82,7 @@ export const StoryTrain = ({ payload }: StoryTrainProps) => {
         );
     }
 
-    return <StoryTrainGame selectedSets={selectedSets} />;
+    return <StoryTrainGame selectedSets={selectedSets} variantId={variantId} />;
 };
 
 export default StoryTrain;

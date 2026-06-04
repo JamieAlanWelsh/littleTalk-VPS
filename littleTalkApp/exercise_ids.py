@@ -10,6 +10,7 @@ VALID_EXERCISE_IDS = frozenset(
         "in-the-know",
         "spot-on",
         "story-train",
+        "story-train-plus",
         "task-master",
         "think-and-find",
         "what-happens-next",
