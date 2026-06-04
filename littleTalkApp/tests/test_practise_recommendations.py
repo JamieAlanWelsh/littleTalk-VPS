@@ -53,3 +53,16 @@ class PractiseRecommendationRotationTests(BaseFlowTestMixin, TestCase):
         self.assertEqual(response.context["recommended_stage_numbers"], [1, 3])
         self.assertIn(response.context["recommended_exercise_key"], response.context["recommended_exercise_keys"])
         self.assertEqual(response.context["recommended_stage_number"], 3)
+        self.assertEqual(response.context["active_stage_number"], "recommended")
+
+        stage_library = response.context["stage_library"]
+        self.assertGreaterEqual(len(stage_library), 4)
+        self.assertEqual(stage_library[0]["number"], "recommended")
+        self.assertEqual(
+            [card["key"] for card in stage_library[0]["exercise_cards"]],
+            [
+                "whats_in_the_bag_vocabulary_builder",
+                "story_train_advanced_sequencing",
+                "in_the_know_inferencing",
+            ],
+        )

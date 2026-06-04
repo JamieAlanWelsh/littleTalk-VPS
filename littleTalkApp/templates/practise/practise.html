@@ -79,7 +79,7 @@
                 class="stage-tab {% if stage.number == active_stage_number %}stage-tab--active{% endif %} {% if stage.number in recommended_stage_numbers %}stage-tab--recommended{% endif %}"
                 data-stage-tab="{{ stage.number }}"
             >
-                Stage {{ stage.number }}
+                {% if stage.number == 'recommended' %}Suggested{% else %}Stage {{ stage.number }}{% endif %}
             </button>
         {% endfor %}
     </section>

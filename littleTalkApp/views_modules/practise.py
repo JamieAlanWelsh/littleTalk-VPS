@@ -143,6 +143,7 @@ def practise(request):
     recommended_exercise_key = None
     recommended_exercise_keys = []
     recommended_stage_numbers = []
+    has_recommended_filter = False
 
     stage_numbers = sorted(PRACTISE_STAGES.keys())
     default_stage_number = stage_numbers[0] if stage_numbers else None
@@ -253,7 +254,24 @@ def practise(request):
                 if recommended_stage_number:
                     recommended_stage_numbers = [recommended_stage_number]
 
-    active_stage_number = recommended_stage_number or default_stage_number
+    if recommended_exercise_keys:
+        recommended_cards = [
+            exercise_cards_by_key[key]
+            for key in recommended_exercise_keys
+            if key in exercise_cards_by_key
+        ]
+        if recommended_cards:
+            stage_library.insert(
+                0,
+                {
+                    "number": "recommended",
+                    "label": "Recommended",
+                    "exercise_cards": recommended_cards,
+                },
+            )
+            has_recommended_filter = True
+
+    active_stage_number = "recommended" if has_recommended_filter else (recommended_stage_number or default_stage_number)
     recommended_exercise_card = exercise_cards_by_key.get(recommended_exercise_key)
 
     context = {

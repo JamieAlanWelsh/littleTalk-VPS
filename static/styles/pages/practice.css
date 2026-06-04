@@ -38,6 +38,7 @@
 .learner-context-stage {
     margin: 0 auto;
     background-color: #f4d95b;
+    border: 1px solid var(--border-grey);
     border-radius: 999px;
     padding: 6px 20px;
     font-size: 0.86rem;
@@ -145,22 +146,26 @@
     align-items: center;
     justify-content: center;
     gap: 10px;
-    max-width: 360px;
+    width: min(100%, 640px);
     margin: 0 auto 26px;
-    padding: 8px;
+    padding: 10px;
     background: var(--accent-color);
     box-shadow: var(--box-shadow);
     border-radius: 999px;
 }
 
 .stage-tab {
+    flex: 1 1 0;
+    min-width: 0;
     border: 1.5px solid #c8c8cf;
     background: #f4f4f4;
     color: #2f2f39;
     border-radius: 999px;
-    padding: 7px 28px;
+    padding: 7px 12px;
     font-weight: 700;
     cursor: pointer;
+    text-align: center;
+    white-space: nowrap;
 }
 
 .stage-tab--active {
