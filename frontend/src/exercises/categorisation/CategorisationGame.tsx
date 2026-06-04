@@ -14,7 +14,7 @@ import {
     type BoardState,
     type CategoryId,
 } from "./boardUtils";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import ExerciseLayout from "../../layouts/exerciseLayout/ExerciseLayout";
 import { useExerciseTracking } from "../../hooks";
 import type { QuestionState } from "../../lib/types";
@@ -38,6 +38,14 @@ export const CategorisationGame = ({
     isSfxMuted = false,
     onSettingsRequested,
 }: CategorisationGameProps) => {
+    const totalTileQuestions = useMemo(
+        () =>
+            Object.values(categories).reduce(
+                (total, items) => total + items.length,
+                0,
+            ),
+        [categories],
+    );
     const itemsById = Object.fromEntries(
         Object.values(categories)
             .flat()
@@ -49,6 +57,7 @@ export const CategorisationGame = ({
         answerState: "notAnswered",
     });
     const tracking = useExerciseTracking(1);
+    const [cumulativeMisplacedTiles, setCumulativeMisplacedTiles] = useState(0);
 
     const [boardState, setBoardState] = useState<BoardState>(() =>
         createInitialBoardState(categories),
@@ -102,7 +111,39 @@ export const CategorisationGame = ({
         return correctnessMap;
     };
 
+    const getMisplacedTileCount = () => {
+        return Object.entries(boardState.categorySlots).reduce(
+            (misplacedCount, [categoryId, slots]) => {
+                const allowedItemIds = new Set(
+                    (categories[categoryId] || []).map((item) => item.id),
+                );
+
+                const misplacedInCategory = slots.reduce(
+                    (categoryMisplacedCount, slotItemId) => {
+                        if (!slotItemId) {
+                            return categoryMisplacedCount;
+                        }
+
+                        return allowedItemIds.has(slotItemId)
+                            ? categoryMisplacedCount
+                            : categoryMisplacedCount + 1;
+                    },
+                    0,
+                );
+
+                return misplacedCount + misplacedInCategory;
+            },
+            0,
+        );
+    };
+
     const onCheckAnswer = () => {
+        const misplacedTiles = getMisplacedTileCount();
+
+        if (misplacedTiles > 0) {
+            setCumulativeMisplacedTiles((prev) => prev + misplacedTiles);
+        }
+
         // Check if all items are placed in correct categories
         const allCorrect = Object.entries(categories).every(
             ([categoryId, items]) =>
@@ -139,6 +180,13 @@ export const CategorisationGame = ({
             onCheckAnswer={onCheckAnswer}
             onResetQuestion={onResetQuestion}
             onSettingsRequested={onSettingsRequested}
+            submissionStatsOverride={{
+                totalQuestions: totalTileQuestions,
+                incorrectAnswers: cumulativeMisplacedTiles,
+                attemptsPerQuestion: Array(totalTileQuestions).fill(
+                    Math.max(1, tracking.attemptsPerQuestion[0] ?? 0),
+                ),
+            }}
         >
             <CategorisationBoard
                 boardState={boardState}
