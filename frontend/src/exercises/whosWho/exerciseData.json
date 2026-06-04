@@ -159,9 +159,9 @@
       "label": "The Goat"
     },
     {
-      "id": "item-hand-gesture",
-      "imageUrl": "/static/exercise_assets/early_years_image_options/hand-gesture.webp",
-      "label": "The Hand Gesture"
+      "id": "item-scooter",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/scooter.webp",
+      "label": "The Scooter"
     },
     {
       "id": "item-hat",
@@ -502,28 +502,22 @@
   "generationConfig": {
     "promptTemplates": {
       "he": [
-        "He wants the {item}.",
-        "Give the {item} to him"
-      ],
-      "she": [
-        "She wants the {item}.",
-        "Give the {item} to her"
-      ],
-      "him": [
-        "Give the {item} to him",
         "He wants the {item}."
       ],
-      "her": [
-        "Give the {item} to her",
+      "she": [
         "She wants the {item}."
       ],
+      "him": [
+        "Give the {item} to him"
+      ],
+      "her": [
+        "Give the {item} to her"
+      ],
       "they": [
-        "They want the {item}. Give it to them",
-        "Give the {item} to them"
+        "They want the {item}."
       ],
       "them": [
-        "Give the {item} to them",
-        "They want the {item}."
+        "Give the {item} to them"
       ]
     },
     "targetPools": {

@@ -4,6 +4,7 @@ from django.utils import timezone
 from datetime import timedelta
 from django.core.cache import cache
 from .models import Learner, ExerciseSession
+from .exercise_ids import VALID_EXERCISE_IDS
 
 """Serializer for exercise submission with deduplication and full ExerciseSession recording."""
 class SubmitExerciseSerializer(serializers.Serializer):
@@ -22,6 +23,11 @@ class SubmitExerciseSerializer(serializers.Serializer):
     total_questions = serializers.IntegerField(validators=[MinValueValidator(0)])
     incorrect_answers = serializers.IntegerField(validators=[MinValueValidator(0)])
     attempts_per_question = serializers.ListField(child=serializers.IntegerField())
+
+    def validate_exercise_id(self, value):
+        if value not in VALID_EXERCISE_IDS:
+            raise serializers.ValidationError("Unsupported exercise_id.")
+        return value
 
 class LearnerExpUpdateSerializer(serializers.ModelSerializer):
     class Meta:

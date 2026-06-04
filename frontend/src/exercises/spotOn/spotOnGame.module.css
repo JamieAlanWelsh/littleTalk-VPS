@@ -57,6 +57,21 @@
     z-index: 2;
 }
 
+/* Elevate cells that only contain the character above the overflowing object image */
+.characterCell {
+    position: relative;
+    z-index: 2;
+}
+
+/*
+ * Suppress the disabled opacity for non-depth prepositions so the character
+ * stays fully visible after the answer is checked. Uses a CSS variable so it
+ * works across CSS module boundaries.
+ */
+.suppressDisabledOpacity {
+    --icon-block-disabled-opacity: 1;
+}
+
 @media (max-width: 768px) {
     .gridCell {
         min-height: 6.75rem;

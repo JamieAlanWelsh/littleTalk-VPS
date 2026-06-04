@@ -478,6 +478,7 @@ class ExerciseSession(models.Model):
     total_questions = models.IntegerField()
     incorrect_answers = models.IntegerField()
     attempts_per_question = models.JSONField()  # List of integers, e.g. [1, 2, 3] for attempts per question
+    learner_total_exp_after_session = models.IntegerField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

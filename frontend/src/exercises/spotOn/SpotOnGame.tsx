@@ -221,9 +221,15 @@ export const SpotOnGame = ({
                 const characterLocation =
                     characterLocations[question.id] ?? CHARACTER_START;
 
+                const needsDepthEffect = ["behind", "under", "in"].includes(
+                    question.preposition,
+                );
+
                 return (
                     <DragDropProvider sensors={sensors} onDragEnd={onDragEnd}>
-                        <div className={styles.boardCard}>
+                        <div
+                            className={`${styles.boardCard} ${needsDepthEffect ? "" : styles.suppressDisabledOpacity}`.trim()}
+                        >
                             <div className={styles.grid}>
                                 {Array.from(
                                     { length: GRID_ROWS * GRID_COLUMNS },
@@ -252,10 +258,16 @@ export const SpotOnGame = ({
                                             cellLocation,
                                         );
 
+                                        const characterFrontCell =
+                                            hasCharacter &&
+                                            hasObject &&
+                                            question.preposition ===
+                                                "in front of";
+
                                         return (
                                             <div
                                                 key={`${row}-${col}`}
-                                                className={styles.gridCell}
+                                                className={`${styles.gridCell} ${hasCharacter && !hasObject ? styles.characterCell : ""}`.trim()}
                                             >
                                                 <DroppableImageZone
                                                     id={toCellId(cellLocation)}
@@ -278,33 +290,47 @@ export const SpotOnGame = ({
                                                         />
                                                     ) : null}
                                                     {hasCharacter ? (
-                                                        <DraggableImage
-                                                            id={`character:${question.id}`}
-                                                            image={{
-                                                                id: question
-                                                                    .character
-                                                                    .id,
-                                                                imageUrl:
-                                                                    question
-                                                                        .character
-                                                                        .imageUrl,
-                                                                label: question
-                                                                    .character
-                                                                    .name,
-                                                                altText:
-                                                                    question
-                                                                        .character
-                                                                        .altText,
-                                                            }}
-                                                            isCorrect={null}
-                                                            isSelected={false}
-                                                            isDisabled={
-                                                                questionState.answerState !==
-                                                                "notAnswered"
+                                                        <div
+                                                            style={
+                                                                characterFrontCell
+                                                                    ? {
+                                                                          position:
+                                                                              "relative",
+                                                                          zIndex: 2,
+                                                                      }
+                                                                    : undefined
                                                             }
-                                                            isBorderless
-                                                            onClick={() => {}}
-                                                        />
+                                                        >
+                                                            <DraggableImage
+                                                                id={`character:${question.id}`}
+                                                                image={{
+                                                                    id: question
+                                                                        .character
+                                                                        .id,
+                                                                    imageUrl:
+                                                                        question
+                                                                            .character
+                                                                            .imageUrl,
+                                                                    label: question
+                                                                        .character
+                                                                        .name,
+                                                                    altText:
+                                                                        question
+                                                                            .character
+                                                                            .altText,
+                                                                }}
+                                                                isCorrect={null}
+                                                                isSelected={
+                                                                    false
+                                                                }
+                                                                isDisabled={
+                                                                    questionState.answerState !==
+                                                                    "notAnswered"
+                                                                }
+                                                                isBorderless
+                                                                onClick={() => {}}
+                                                            />
+                                                        </div>
                                                     ) : null}
                                                 </DroppableImageZone>
                                             </div>

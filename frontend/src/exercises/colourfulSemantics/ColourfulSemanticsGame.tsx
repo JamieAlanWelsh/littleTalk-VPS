@@ -19,19 +19,35 @@ import type {
     ColourfulSemanticsScene,
     ColourfulSemanticsVariantConfig,
     ColourfulSemanticsVariantId,
+    ColourfulSemanticsRoundStats,
     ConfiguredColourfulSemanticsScene,
 } from "./types";
 
-const EXERCISE_ID = "colourful-semantics";
+const getExerciseIdForVariant = (
+    variantId: ColourfulSemanticsVariantId,
+): string => {
+    if (variantId === "early-years") {
+        return "colourful-semantics-early";
+    }
+
+    if (variantId === "advanced") {
+        return "colourful-semantics-plus";
+    }
+
+    return "colourful-semantics";
+};
 
 interface ColourfulSemanticsGameProps {
     onSettingsRequested?: () => void;
-    onRoundComplete?: () => void;
+    onRoundComplete?: (roundStats: ColourfulSemanticsRoundStats) => void;
     onSkipRequested?: () => void;
     options: ColourfulSemanticsOptions;
     payload: ColourfulSemanticsPayload;
     scene: ColourfulSemanticsScene;
     variant: ColourfulSemanticsVariantConfig;
+    isFinalRepetition: boolean;
+    sessionStartedAt: string;
+    cumulativeRoundStats: ColourfulSemanticsRoundStats;
     progressBase?: number;
     progressScale?: number;
 }
@@ -140,6 +156,9 @@ export const ColourfulSemanticsGame = ({
     payload,
     scene: rawScene,
     variant,
+    isFinalRepetition,
+    sessionStartedAt,
+    cumulativeRoundStats,
     progressBase,
     progressScale,
 }: ColourfulSemanticsGameProps) => {
@@ -183,6 +202,21 @@ export const ColourfulSemanticsGame = ({
     const [showCompletionAffirmation, setShowCompletionAffirmation] =
         useState(false);
     const tracking = useExerciseTracking(questions.length);
+    const exerciseId = getExerciseIdForVariant(variant.id);
+    const finalSessionAttemptsPerQuestion = [
+        ...cumulativeRoundStats.attemptsPerQuestion,
+        ...tracking.attemptsPerQuestion,
+    ];
+    const submissionStatsOverride = isFinalRepetition
+        ? {
+              startedAt: sessionStartedAt || tracking.startedAt,
+              totalQuestions: finalSessionAttemptsPerQuestion.length,
+              incorrectAnswers:
+                  cumulativeRoundStats.incorrectAnswers +
+                  tracking.incorrectAnswers,
+              attemptsPerQuestion: finalSessionAttemptsPerQuestion,
+          }
+        : undefined;
 
     const completionAffirmationPrompt = useMemo(
         () =>
@@ -238,7 +272,7 @@ export const ColourfulSemanticsGame = ({
 
     return (
         <ExerciseLayout<ColourfulSemanticsAnswer>
-            exerciseId={EXERCISE_ID}
+            exerciseId={exerciseId}
             actionBarPhase={questionState.answerState}
             answers={answers}
             progressBase={progressBase}
@@ -255,7 +289,15 @@ export const ColourfulSemanticsGame = ({
                 }
 
                 if (isLastQuestion && showCompletionAffirmation) {
-                    onRoundComplete?.();
+                    if (isFinalRepetition) {
+                        return "proceed";
+                    }
+
+                    onRoundComplete?.({
+                        totalQuestions: questions.length,
+                        incorrectAnswers: tracking.incorrectAnswers,
+                        attemptsPerQuestion: tracking.attemptsPerQuestion,
+                    });
                     return "hold";
                 }
 
@@ -272,6 +314,7 @@ export const ColourfulSemanticsGame = ({
             showSkip={true}
             onSkipRequested={onSkipRequested}
             tracking={tracking}
+            submissionStatsOverride={submissionStatsOverride}
         >
             {(_, currentQuestionIndex) => {
                 const isFinalAffirmationView =

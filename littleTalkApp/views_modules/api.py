@@ -82,6 +82,7 @@ class SubmitExerciseView(APIView):
                 total_questions=input_serializer.validated_data["total_questions"],
                 incorrect_answers=input_serializer.validated_data["incorrect_answers"],
                 attempts_per_question=input_serializer.validated_data["attempts_per_question"],
+                learner_total_exp_after_session=learner.exp,
             )
 
         cache.set(cache_key, True, 600)

@@ -108,6 +108,12 @@ export interface ColourfulSemanticsOptions {
     isVoiceMuted: boolean;
 }
 
+export interface ColourfulSemanticsRoundStats {
+    totalQuestions: number;
+    incorrectAnswers: number;
+    attemptsPerQuestion: number[];
+}
+
 export const ColourfulSemanticsOptionSchema = z.object({
     id: z.string(),
     imageUrl: z.string(),

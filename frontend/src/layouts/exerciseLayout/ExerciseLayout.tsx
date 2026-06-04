@@ -15,8 +15,25 @@ import ConfirmationModal from "../../components/ConfirmationModal/ConfirmationMo
 import type { AnswerState, Question } from "../../lib/types";
 import { useExerciseTracking, useSubmitExerciseResult } from "../../hooks";
 import ExerciseEndscreen from "../exerciseEndscreen/ExerciseEndscreen";
-import { TypeAnimation } from "react-type-animation";
 import { useAudio } from "../../hooks/useAudio";
+
+const EXP_FLOOR = 200;
+const EXP_ACCURACY_RANGE = 80; // accuracy contributes 0–80
+const EXP_JITTER_RANGE = 20; // jitter contributes 0–20
+
+const formatElapsedTime = (startedAt: string, completedAt: string): string => {
+    const totalSeconds = Math.max(
+        0,
+        Math.round(
+            (new Date(completedAt).getTime() - new Date(startedAt).getTime()) /
+                1000,
+        ),
+    );
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    if (minutes === 0) return `${seconds}s`;
+    return `${minutes}m ${seconds}s`;
+};
 
 const correctFeedbackMessages = [
     "Great job! That's correct.",
@@ -49,6 +66,13 @@ interface ExerciseLayoutProps<AnswerType> {
     progressBase?: number;
     /** Fraction of total that one round occupies. Default: 1. */
     progressScale?: number;
+    /** Optional submit payload metric overrides for session-level exercises. */
+    submissionStatsOverride?: {
+        startedAt?: string;
+        totalQuestions?: number;
+        incorrectAnswers?: number;
+        attemptsPerQuestion?: number[];
+    };
     children:
         | ReactNode
         | ((
@@ -73,6 +97,7 @@ export const ExerciseLayout = <AnswerType,>({
     onSkipRequested,
     progressBase = 0,
     progressScale = 1,
+    submissionStatsOverride,
     children,
 }: ExerciseLayoutProps<AnswerType>) => {
     const [currentQuestionStateIndex, setCurrentQuestionStateIndex] =
@@ -80,6 +105,11 @@ export const ExerciseLayout = <AnswerType,>({
     const [showExitConfirmation, setShowExitConfirmation] = useState(false);
     const [showSettingsConfirmation, setShowSettingsConfirmation] =
         useState(false);
+    const [endscreenMetrics, setEndscreenMetrics] = useState<{
+        expGained: number;
+        accuracyPercent: number;
+        elapsedTimeLabel: string;
+    } | null>(null);
     const submitExerciseMutation = useSubmitExerciseResult();
 
     const progress =
@@ -87,6 +117,8 @@ export const ExerciseLayout = <AnswerType,>({
         progressScale * (currentQuestionStateIndex / questions.length);
     const isComplete = currentQuestionStateIndex === questions.length;
     const isLastQuestion = currentQuestionStateIndex === questions.length - 1;
+    const currentQuestion = questions[currentQuestionStateIndex];
+    const promptText = promptOverride ?? currentQuestion?.prompt ?? "";
 
     const { play } = useAudio();
 
@@ -109,17 +141,47 @@ export const ExerciseLayout = <AnswerType,>({
 
     const submitExerciseResults = () => {
         const completedAt = new Date().toISOString();
+        const startedAt =
+            submissionStatsOverride?.startedAt ?? tracking.startedAt;
+        const attemptsPerQuestion =
+            submissionStatsOverride?.attemptsPerQuestion ??
+            tracking.attemptsPerQuestion;
+        const totalQuestions =
+            submissionStatsOverride?.totalQuestions ?? questions.length;
+        const incorrectAnswers =
+            submissionStatsOverride?.incorrectAnswers ??
+            tracking.incorrectAnswers;
+
+        const accuracyRatio =
+            totalQuestions > 0
+                ? Math.max(0, totalQuestions - incorrectAnswers) /
+                  totalQuestions
+                : 1;
+        const accuracyPercent = Math.max(0, Math.round(accuracyRatio * 100));
+        const accuracyComponent = Math.round(
+            accuracyRatio * EXP_ACCURACY_RANGE,
+        );
+        const jitter = Math.floor(Math.random() * (EXP_JITTER_RANGE + 1));
+        const exp = EXP_FLOOR + accuracyComponent + jitter;
+        const elapsedTimeLabel = formatElapsedTime(startedAt, completedAt);
+
+        setEndscreenMetrics({
+            expGained: exp,
+            accuracyPercent,
+            elapsedTimeLabel,
+        });
+
         submitExerciseMutation.mutate({
             nonce: `${Date.now()}-${Math.random()}`,
-            exp: 10,
+            exp,
             totalExercises: 1,
             exerciseId: exerciseId,
             difficultySelected: "medium",
-            startedAt: tracking.startedAt,
-            completedAt: completedAt,
-            totalQuestions: questions.length,
-            incorrectAnswers: tracking.incorrectAnswers,
-            attemptsPerQuestion: tracking.attemptsPerQuestion,
+            startedAt,
+            completedAt,
+            totalQuestions,
+            incorrectAnswers,
+            attemptsPerQuestion,
         });
     };
 
@@ -161,10 +223,18 @@ export const ExerciseLayout = <AnswerType,>({
     return (
         <>
             {isComplete ? (
-                <ExerciseEndscreen
-                    expGained={500}
-                    onReturnHome={handleEndSession}
-                />
+                <div className={styles.exerciseLayoutWrapper}>
+                    <ExerciseEndscreen
+                        expGained={endscreenMetrics?.expGained ?? EXP_FLOOR}
+                        accuracyPercent={
+                            endscreenMetrics?.accuracyPercent ?? 100
+                        }
+                        elapsedTimeLabel={
+                            endscreenMetrics?.elapsedTimeLabel ?? "—"
+                        }
+                        onReturnHome={handleEndSession}
+                    />
+                </div>
             ) : (
                 <>
                     <div className={styles.progressBarContainer}>
@@ -207,24 +277,14 @@ export const ExerciseLayout = <AnswerType,>({
 
                     <div className={styles.exerciseLayoutWrapper}>
                         {/* question */}
-                        <div className={styles.exercisePromptCard}>
-                            <h2
-                                style={{
-                                    fontSize: "var(--text-large)",
-                                    fontWeight: "bold",
-                                    color: "var(--font-color)",
-                                }}
-                            >
-                                <TypeAnimation
-                                    key={`${questions[currentQuestionStateIndex].id}-${promptOverride ?? ""}`} // Reset animation on question or override prompt change
-                                    sequence={[
-                                        promptOverride ??
-                                            questions[currentQuestionStateIndex]
-                                                .prompt,
-                                    ]}
-                                    speed={60}
-                                    cursor={false}
-                                />
+                        <div
+                            key={`${questions[currentQuestionStateIndex].id}-${promptOverride ?? ""}`}
+                            className={`${styles.exercisePromptCard} ${styles.exercisePromptCardPop}`}
+                        >
+                            <h2 className={styles.exercisePromptTitle}>
+                                <span className={styles.exercisePromptText}>
+                                    {promptText}
+                                </span>
                             </h2>
                         </div>
 

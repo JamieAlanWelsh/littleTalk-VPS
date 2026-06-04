@@ -10,9 +10,13 @@ import { StoryTrainExercisePayloadSchema } from "../exercises/storyTrain/types";
 
 const queryClient = new QueryClient();
 
-const getExerciseData = () => {
+const resolveStoryTrainVariantId = (): "standard" | "advanced" => {
     const queryParams = new URLSearchParams(window.location.search);
-    const variant = queryParams.get("variant");
+    return queryParams.get("variant") === "advanced" ? "advanced" : "standard";
+};
+
+const getExerciseData = () => {
+    const variant = resolveStoryTrainVariantId();
 
     if (variant === "advanced") {
         return advancedExerciseData;
@@ -30,6 +34,7 @@ if (!mountElement) {
     try {
         const payload =
             StoryTrainExercisePayloadSchema.parse(getExerciseData());
+        const variantId = resolveStoryTrainVariantId();
         const learnerUUID =
             mountElement.getAttribute("data-learner-uuid") || null;
 
@@ -38,7 +43,7 @@ if (!mountElement) {
             <React.StrictMode>
                 <QueryClientProvider client={queryClient}>
                     <LearnerContextProvider learnerUUID={learnerUUID}>
-                        <StoryTrain payload={payload} />
+                        <StoryTrain payload={payload} variantId={variantId} />
                     </LearnerContextProvider>
                 </QueryClientProvider>
             </React.StrictMode>,

@@ -11,6 +11,7 @@ import {
 import type {
     ColourfulSemanticsOptions,
     ColourfulSemanticsPayload,
+    ColourfulSemanticsRoundStats,
     ColourfulSemanticsScene,
     ColourfulSemanticsVariantConfig,
 } from "./types";
@@ -40,6 +41,13 @@ export const ColourfulSemanticsExercise = ({
     const [repetitionCount, setRepetitionCount] = useState(0);
     const [skipToken, setSkipToken] = useState(0);
     const [usedSceneIds, setUsedSceneIds] = useState<string[]>([]);
+    const [sessionStartedAt, setSessionStartedAt] = useState<string>("");
+    const [cumulativeRoundStats, setCumulativeRoundStats] =
+        useState<ColourfulSemanticsRoundStats>({
+            totalQuestions: 0,
+            incorrectAnswers: 0,
+            attemptsPerQuestion: [],
+        });
 
     useEffect(() => {
         setOptions((currentOptions) => {
@@ -71,6 +79,12 @@ export const ColourfulSemanticsExercise = ({
     const handleStart = () => {
         setRepetitionCount(0);
         setUsedSceneIds([]);
+        setSessionStartedAt(new Date().toISOString());
+        setCumulativeRoundStats({
+            totalQuestions: 0,
+            incorrectAnswers: 0,
+            attemptsPerQuestion: [],
+        });
         setSelectedScene(pickRandomScene(payload.scenes, options, variant));
         setHasStarted(true);
     };
@@ -79,14 +93,31 @@ export const ColourfulSemanticsExercise = ({
         setSelectedScene(null);
         setRepetitionCount(0);
         setUsedSceneIds([]);
+        setSessionStartedAt("");
+        setCumulativeRoundStats({
+            totalQuestions: 0,
+            incorrectAnswers: 0,
+            attemptsPerQuestion: [],
+        });
         setHasStarted(false);
     };
 
-    const handleRoundComplete = () => {
+    const handleRoundComplete = (roundStats: ColourfulSemanticsRoundStats) => {
         const nextRep = repetitionCount + 1;
         const nextUsedSceneIds = selectedScene
             ? [...usedSceneIds, selectedScene.id]
             : usedSceneIds;
+
+        setCumulativeRoundStats((current) => ({
+            totalQuestions: current.totalQuestions + roundStats.totalQuestions,
+            incorrectAnswers:
+                current.incorrectAnswers + roundStats.incorrectAnswers,
+            attemptsPerQuestion: [
+                ...current.attemptsPerQuestion,
+                ...roundStats.attemptsPerQuestion,
+            ],
+        }));
+
         setUsedSceneIds(nextUsedSceneIds);
         setRepetitionCount(nextRep);
         if (nextRep < TOTAL_REPETITIONS) {
@@ -157,6 +188,9 @@ export const ColourfulSemanticsExercise = ({
             payload={payload}
             scene={selectedScene!}
             variant={variant}
+            isFinalRepetition={repetitionCount + 1 >= TOTAL_REPETITIONS}
+            sessionStartedAt={sessionStartedAt}
+            cumulativeRoundStats={cumulativeRoundStats}
             progressBase={repetitionCount / TOTAL_REPETITIONS}
             progressScale={1 / TOTAL_REPETITIONS}
         />
