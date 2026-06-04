@@ -17,6 +17,24 @@ import { useExerciseTracking, useSubmitExerciseResult } from "../../hooks";
 import ExerciseEndscreen from "../exerciseEndscreen/ExerciseEndscreen";
 import { useAudio } from "../../hooks/useAudio";
 
+const EXP_FLOOR = 200;
+const EXP_ACCURACY_RANGE = 80; // accuracy contributes 0–80
+const EXP_JITTER_RANGE = 20; // jitter contributes 0–20
+
+const formatElapsedTime = (startedAt: string, completedAt: string): string => {
+    const totalSeconds = Math.max(
+        0,
+        Math.round(
+            (new Date(completedAt).getTime() - new Date(startedAt).getTime()) /
+                1000,
+        ),
+    );
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    if (minutes === 0) return `${seconds}s`;
+    return `${minutes}m ${seconds}s`;
+};
+
 const correctFeedbackMessages = [
     "Great job! That's correct.",
     "Well done! You got it right.",
@@ -87,6 +105,11 @@ export const ExerciseLayout = <AnswerType,>({
     const [showExitConfirmation, setShowExitConfirmation] = useState(false);
     const [showSettingsConfirmation, setShowSettingsConfirmation] =
         useState(false);
+    const [endscreenMetrics, setEndscreenMetrics] = useState<{
+        expGained: number;
+        accuracyPercent: number;
+        elapsedTimeLabel: string;
+    } | null>(null);
     const submitExerciseMutation = useSubmitExerciseResult();
 
     const progress =
@@ -129,14 +152,33 @@ export const ExerciseLayout = <AnswerType,>({
             submissionStatsOverride?.incorrectAnswers ??
             tracking.incorrectAnswers;
 
+        const accuracyRatio =
+            totalQuestions > 0
+                ? Math.max(0, totalQuestions - incorrectAnswers) /
+                  totalQuestions
+                : 1;
+        const accuracyPercent = Math.max(0, Math.round(accuracyRatio * 100));
+        const accuracyComponent = Math.round(
+            accuracyRatio * EXP_ACCURACY_RANGE,
+        );
+        const jitter = Math.floor(Math.random() * (EXP_JITTER_RANGE + 1));
+        const exp = EXP_FLOOR + accuracyComponent + jitter;
+        const elapsedTimeLabel = formatElapsedTime(startedAt, completedAt);
+
+        setEndscreenMetrics({
+            expGained: exp,
+            accuracyPercent,
+            elapsedTimeLabel,
+        });
+
         submitExerciseMutation.mutate({
             nonce: `${Date.now()}-${Math.random()}`,
-            exp: 10,
+            exp,
             totalExercises: 1,
             exerciseId: exerciseId,
             difficultySelected: "medium",
             startedAt,
-            completedAt: completedAt,
+            completedAt,
             totalQuestions,
             incorrectAnswers,
             attemptsPerQuestion,
@@ -182,7 +224,9 @@ export const ExerciseLayout = <AnswerType,>({
         <>
             {isComplete ? (
                 <ExerciseEndscreen
-                    expGained={500}
+                    expGained={endscreenMetrics?.expGained ?? EXP_FLOOR}
+                    accuracyPercent={endscreenMetrics?.accuracyPercent ?? 100}
+                    elapsedTimeLabel={endscreenMetrics?.elapsedTimeLabel ?? "—"}
                     onReturnHome={handleEndSession}
                 />
             ) : (
