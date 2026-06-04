@@ -223,12 +223,18 @@ export const ExerciseLayout = <AnswerType,>({
     return (
         <>
             {isComplete ? (
-                <ExerciseEndscreen
-                    expGained={endscreenMetrics?.expGained ?? EXP_FLOOR}
-                    accuracyPercent={endscreenMetrics?.accuracyPercent ?? 100}
-                    elapsedTimeLabel={endscreenMetrics?.elapsedTimeLabel ?? "—"}
-                    onReturnHome={handleEndSession}
-                />
+                <div className={styles.exerciseLayoutWrapper}>
+                    <ExerciseEndscreen
+                        expGained={endscreenMetrics?.expGained ?? EXP_FLOOR}
+                        accuracyPercent={
+                            endscreenMetrics?.accuracyPercent ?? 100
+                        }
+                        elapsedTimeLabel={
+                            endscreenMetrics?.elapsedTimeLabel ?? "—"
+                        }
+                        onReturnHome={handleEndSession}
+                    />
+                </div>
             ) : (
                 <>
                     <div className={styles.progressBarContainer}>
