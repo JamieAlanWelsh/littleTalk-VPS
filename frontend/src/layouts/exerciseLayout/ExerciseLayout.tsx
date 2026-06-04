@@ -48,6 +48,13 @@ interface ExerciseLayoutProps<AnswerType> {
     progressBase?: number;
     /** Fraction of total that one round occupies. Default: 1. */
     progressScale?: number;
+    /** Optional submit payload metric overrides for session-level exercises. */
+    submissionStatsOverride?: {
+        startedAt?: string;
+        totalQuestions?: number;
+        incorrectAnswers?: number;
+        attemptsPerQuestion?: number[];
+    };
     children:
         | ReactNode
         | ((
@@ -72,6 +79,7 @@ export const ExerciseLayout = <AnswerType,>({
     onSkipRequested,
     progressBase = 0,
     progressScale = 1,
+    submissionStatsOverride,
     children,
 }: ExerciseLayoutProps<AnswerType>) => {
     const [currentQuestionStateIndex, setCurrentQuestionStateIndex] =
@@ -110,17 +118,28 @@ export const ExerciseLayout = <AnswerType,>({
 
     const submitExerciseResults = () => {
         const completedAt = new Date().toISOString();
+        const startedAt =
+            submissionStatsOverride?.startedAt ?? tracking.startedAt;
+        const attemptsPerQuestion =
+            submissionStatsOverride?.attemptsPerQuestion ??
+            tracking.attemptsPerQuestion;
+        const totalQuestions =
+            submissionStatsOverride?.totalQuestions ?? questions.length;
+        const incorrectAnswers =
+            submissionStatsOverride?.incorrectAnswers ??
+            tracking.incorrectAnswers;
+
         submitExerciseMutation.mutate({
             nonce: `${Date.now()}-${Math.random()}`,
             exp: 10,
             totalExercises: 1,
             exerciseId: exerciseId,
             difficultySelected: "medium",
-            startedAt: tracking.startedAt,
+            startedAt,
             completedAt: completedAt,
-            totalQuestions: questions.length,
-            incorrectAnswers: tracking.incorrectAnswers,
-            attemptsPerQuestion: tracking.attemptsPerQuestion,
+            totalQuestions,
+            incorrectAnswers,
+            attemptsPerQuestion,
         });
     };
 
