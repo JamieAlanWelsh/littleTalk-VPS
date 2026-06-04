@@ -137,11 +137,13 @@ export const ExerciseEndscreen = ({
                 <Button
                     label="Repeat Exercise"
                     variant="secondary"
+                    width="100%"
                     onClick={() => window.location.reload()}
                 />
                 <Button
                     label="Return to Home"
                     variant="primary"
+                    width="100%"
                     onClick={onReturnHome}
                 />
             </div>
