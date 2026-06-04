@@ -9,6 +9,12 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 
 from littleTalkApp.content import QUESTIONS
+from littleTalkApp.content.assessments_v2 import (
+    QUESTIONS_V2,
+    STAGE_3_PADDING_ORDER,
+    get_question_by_order,
+    validate_v2_exercise_ids,
+)
 from littleTalkApp.models import Cohort, Learner, LearnerAssessmentAnswer
 
 
@@ -50,6 +56,8 @@ def screener(request):
     learner_uuid = request.GET.get("learner")
     selected_learner = None
     has_screener = False
+    has_old_screener = False
+    has_v2_screener = False
     last_screener_date = None
 
     if learner_uuid:
@@ -72,7 +80,9 @@ def screener(request):
         request.session["selected_learner_id"] = selected_learner.id
 
     if selected_learner:
-        has_screener = selected_learner.answers.exists()
+        has_old_screener = selected_learner.answers.filter(screener_version=1).exists()
+        has_v2_screener = selected_learner.answers.filter(screener_version=2).exists()
+        has_screener = has_old_screener or has_v2_screener
         if has_screener:
             last_answer = selected_learner.answers.order_by("-timestamp").first()
             last_screener_date = last_answer.timestamp if last_answer else None
@@ -88,6 +98,8 @@ def screener(request):
             if selected_cohort_id and selected_cohort_id.isdigit()
             else None,
             "has_screener": has_screener,
+            "has_old_screener": has_old_screener,
+            "has_v2_screener": has_v2_screener,
             "last_screener_date": last_screener_date,
         },
     )
@@ -95,11 +107,14 @@ def screener(request):
 
 @login_required
 def start_assessment(request):
-    """Renders assessment/assessment_form.html — initialises a new assessment session.
+    """Legacy screener start route; redirect to V2 start."""
 
-    Assigns a fresh session UUID used to group answers in the database and
-    renders the first question in the screener questionnaire.
-    """
+    return redirect("start_assessment_v2")
+
+
+@login_required
+def start_assessment_v2(request):
+    """Renders assessment/assessment_form.html for Screener V2."""
 
     request.hide_sidebar = True
 
@@ -107,8 +122,8 @@ def start_assessment(request):
 
     request.session["assessment_session_id"] = str(assessment_session_id)
 
-    first_question = QUESTIONS[0]
-    total_questions = len(QUESTIONS)
+    first_question = QUESTIONS_V2[0]
+    total_questions = len(QUESTIONS_V2)
 
     return render(
         request,
@@ -118,17 +133,25 @@ def start_assessment(request):
             "total_questions": total_questions,
             "current_question_index": 1,
             "user_logged_in": request.user.is_authenticated,
-            "questions_json": json.dumps(QUESTIONS),
+            "questions_json": json.dumps(QUESTIONS_V2),
+            "save_url": reverse("save_all_assessment_answers_v2"),
         },
     )
 
 
 @login_required
 def save_all_assessment_answers(request):
-    """JSON API (POST): persists submitted screener answers directly to the database.
+    """Legacy save endpoint delegates to Screener V2 save handler."""
+
+    return save_all_assessment_answers_v2(request)
+
+
+@login_required
+def save_all_assessment_answers_v2(request):
+    """JSON API (POST): persists submitted Screener V2 answers to the database.
 
     Uses the currently selected learner from session state, saves answers via
-    save_assessment_for_learner, clears the active assessment session UUID,
+    save_assessment_v2_for_learner, clears the active assessment session UUID,
     and returns a JSON redirect URL to the summary page.
     """
 
@@ -152,13 +175,125 @@ def save_all_assessment_answers(request):
         return JsonResponse({"error": "No answers provided"}, status=400)
 
     assessment_session_id = request.session.get("assessment_session_id")
-    save_assessment_for_learner(
-        selected_learner, data, session_id=assessment_session_id
-    )
+    save_assessment_v2_for_learner(selected_learner, data, session_id=assessment_session_id)
 
     request.session.pop("assessment_session_id", None)
 
     return JsonResponse({"redirect_url": reverse("assessment_summary")})
+
+
+def compute_v2_recommendations(answers):
+    """Compute top-3 exercise recommendations from V2 answers.
+
+    Scoring: each "No" adds one point to the mapped exercise. Ties are resolved
+    by lower stage, then lower blank level. If fewer than 3 exercises receive a
+    score, pad from predefined stage-3 exercises (high-level indicator).
+    """
+
+    question_index = {question["order"]: question for question in QUESTIONS_V2}
+    exercise_scores = defaultdict(int)
+    exercise_tiebreak = {}
+
+    for question_id_str, user_answer in answers.items():
+        try:
+            question_id = int(question_id_str)
+        except (TypeError, ValueError):
+            continue
+
+        if str(user_answer).strip().lower() != "no":
+            continue
+
+        question = question_index.get(question_id)
+        if not question:
+            continue
+
+        exercise_id = question.get("exercise_id")
+        if not exercise_id:
+            continue
+
+        exercise_scores[exercise_id] += 1
+
+        stage = question.get("stage") or 999
+        blank_level = question.get("blank_level") or 999
+        current_tiebreak = exercise_tiebreak.get(exercise_id)
+        if not current_tiebreak or (stage, blank_level) < (
+            current_tiebreak["stage"],
+            current_tiebreak["blank_level"],
+        ):
+            exercise_tiebreak[exercise_id] = {
+                "stage": stage,
+                "blank_level": blank_level,
+            }
+
+    ranked = sorted(
+        exercise_scores.items(),
+        key=lambda item: (
+            -item[1],
+            exercise_tiebreak[item[0]]["stage"],
+            exercise_tiebreak[item[0]]["blank_level"],
+            item[0],
+        ),
+    )
+
+    recommendations = [exercise_id for exercise_id, _ in ranked][:3]
+
+    for exercise_id in STAGE_3_PADDING_ORDER:
+        if len(recommendations) >= 3:
+            break
+        if exercise_id not in recommendations:
+            recommendations.append(exercise_id)
+
+    return recommendations[:3]
+
+
+def save_assessment_v2_for_learner(learner, answers, session_id=None):
+    """Helper: persists a completed Screener V2 answer set for a learner."""
+
+    invalid_exercise_ids = validate_v2_exercise_ids()
+    if invalid_exercise_ids:
+        raise ValueError(f"Invalid V2 exercise IDs configured: {invalid_exercise_ids}")
+
+    if not session_id:
+        session_id = uuid.uuid4()
+
+    for question_id_str, user_answer in answers.items():
+        try:
+            question_id = int(question_id_str)
+        except (TypeError, ValueError):
+            continue
+
+        question = get_question_by_order(question_id)
+        if not question:
+            continue
+
+        LearnerAssessmentAnswer.objects.create(
+            learner=learner,
+            question_id=question_id,
+            topic=question["topic"],
+            skill=question["skill"],
+            text=question["text"],
+            answer=user_answer,
+            session_id=session_id,
+            screener_version=2,
+        )
+
+    skill_answers = defaultdict(list)
+    for question_id_str, user_answer in answers.items():
+        try:
+            question_id = int(question_id_str)
+        except (TypeError, ValueError):
+            continue
+        question = get_question_by_order(question_id)
+        if not question:
+            continue
+        skill_answers[question["skill"]].append(user_answer)
+
+    strong_skills = [
+        skill for skill, responses in skill_answers.items() if "No" not in responses
+    ]
+    learner.assessment1 = len(strong_skills)
+    learner.recommended_exercise_ids = compute_v2_recommendations(answers)
+    learner.save(update_fields=["assessment1", "recommended_exercise_ids"])
 
 
 @login_required
@@ -221,7 +356,7 @@ def save_assessment_for_learner(learner, answers, session_id=None):
     learner.save()
 
 
-def get_screener_comparison_data(learner):
+def get_screener_comparison_data(learner, screener_version=None):
     """Helper: builds a comparison dict between the learner's two most recent screener
     sessions. Returns None if the learner has fewer than two sessions. Used by both
     assessment_summary and the learner dashboard to show skill progression over time.
@@ -231,6 +366,8 @@ def get_screener_comparison_data(learner):
         return None
 
     all_answers = learner.answers.all()
+    if screener_version is not None:
+        all_answers = all_answers.filter(screener_version=screener_version)
 
     if not all_answers.exists():
         return None
@@ -321,13 +458,12 @@ def get_screener_comparison_data(learner):
 
 @login_required
 def assessment_summary(request):
-    """Renders assessment/summary.html — the results page after completing a screener.
+    """Legacy summary endpoint serves Screener V2 summary."""
 
-    Reads the most recent screener session for the currently selected learner and
-    categorises skills as strong or needing support. Also includes comparison data
-    against the previous session if one exists.
-    """
+    return assessment_summary_v2(request)
 
+
+def _render_assessment_summary(request, screener_version, is_old_results=False):
     answers = []
     learner = None
     comparison_data = None
@@ -336,11 +472,21 @@ def assessment_summary(request):
     if selected_id:
         learner = Learner.objects.filter(id=selected_id).first()
         if learner:
-            latest_session = learner.answers.order_by("-timestamp").values("session_id").first()
+            latest_session = (
+                learner.answers.filter(screener_version=screener_version)
+                .order_by("-timestamp")
+                .values("session_id")
+                .first()
+            )
             if latest_session:
-                answers = learner.answers.filter(session_id=latest_session["session_id"])
+                answers = learner.answers.filter(
+                    session_id=latest_session["session_id"],
+                    screener_version=screener_version,
+                )
 
-            comparison_data = get_screener_comparison_data(learner)
+            comparison_data = get_screener_comparison_data(
+                learner, screener_version=screener_version
+            )
 
     skill_answers = defaultdict(list)
     for answer in answers:
@@ -356,12 +502,12 @@ def assessment_summary(request):
             strong_skills.append(skill)
 
     readiness_answers = [a for a in answers if a.skill == "Attention and listening"]
-    readiness_yes = [a for a in readiness_answers if a.answer == "Yes"]
-    readiness_no = [a for a in readiness_answers if a.answer == "No"]
+    readiness_yes = [a for a in readiness_answers if str(a.answer).strip().lower() == "yes"]
+    readiness_no = [a for a in readiness_answers if str(a.answer).strip().lower() == "no"]
 
     if len(readiness_no) > 0:
         readiness_status = "not_ready"
-    elif len(readiness_yes) == len(readiness_answers):
+    elif len(readiness_yes) == len(readiness_answers) and readiness_answers:
         readiness_status = "ready"
     else:
         readiness_status = "mixed"
@@ -372,6 +518,8 @@ def assessment_summary(request):
         "needs_support_skills": needs_support_skills,
         "readiness_status": readiness_status,
         "learner": learner,
+        "is_old_results": is_old_results,
+        "rescreener_url": reverse("start_assessment_v2"),
     }
 
     if comparison_data:
@@ -382,4 +530,18 @@ def assessment_summary(request):
         "assessment/summary.html",
         context,
     )
+
+
+@login_required
+def assessment_summary_v2(request):
+    """Renders assessment/summary.html for latest Screener V2 session."""
+
+    return _render_assessment_summary(request, screener_version=2, is_old_results=False)
+
+
+@login_required
+def assessment_summary_old(request):
+    """Renders assessment/summary.html for latest legacy screener (v1) session."""
+
+    return _render_assessment_summary(request, screener_version=1, is_old_results=True)
 

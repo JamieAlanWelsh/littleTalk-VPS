@@ -265,6 +265,7 @@ class LearnerAssessmentAnswer(models.Model):
     answer = models.CharField(max_length=10)  # 'Yes' or 'No'
     timestamp = models.DateTimeField(auto_now_add=True)
     session_id = models.UUIDField(default=uuid.uuid4)  # Groups answers by screener session
+    screener_version = models.IntegerField(default=2)
     assessment_date = models.DateField(auto_now_add=True, null=True)  # Date screener was completed
 
     def __str__(self):
@@ -294,6 +295,7 @@ class Learner(models.Model):
     exp = models.IntegerField(default=0)
     total_exercises = models.IntegerField(default=0)
     recommendation_level = models.IntegerField(blank=True, null=True)
+    recommended_exercise_ids = models.JSONField(blank=True, null=True)
     deleted = models.BooleanField(default=False)
     date_of_birth = EncryptedDateField(null=True, blank=True)
     age_group = models.PositiveSmallIntegerField(
