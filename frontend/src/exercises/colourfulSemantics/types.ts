@@ -68,6 +68,21 @@ export type ColourfulSemanticsVariantId = z.infer<
     typeof ColourfulSemanticsVariantIdSchema
 >;
 
+export const ColourfulSemanticsOptionAllowlistBySlotSchema = z.object({
+    who: z.array(z.string()).optional(),
+    doing: z.array(z.string()).optional(),
+    what: z.array(z.string()).optional(),
+    where: z.array(z.string()).optional(),
+    "to-who": z.array(z.string()).optional(),
+    when: z.array(z.string()).optional(),
+    "what-like": z.array(z.string()).optional(),
+    how: z.array(z.string()).optional(),
+});
+
+export type ColourfulSemanticsOptionAllowlistBySlot = z.infer<
+    typeof ColourfulSemanticsOptionAllowlistBySlotSchema
+>;
+
 export const ColourfulSemanticsVariantConfigSchema = z
     .object({
         id: ColourfulSemanticsVariantIdSchema,
@@ -190,6 +205,8 @@ export interface ConfiguredColourfulSemanticsScene extends Omit<
 
 export const ColourfulSemanticsVariantPackSchema =
     ColourfulSemanticsVariantConfigSchema.extend({
+        optionAllowlistBySlot:
+            ColourfulSemanticsOptionAllowlistBySlotSchema.optional(),
         scenes: z.array(ColourfulSemanticsSceneSchema).min(1),
     });
 
