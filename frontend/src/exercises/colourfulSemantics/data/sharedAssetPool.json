@@ -217,11 +217,11 @@
     },
     {
       "id": "doing-admiring",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/admiring.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/admired.png",
       "label": "is admiring",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/admiring.wav",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/admired.wav",
       "pluralLabel": "are admiring",
-      "pluralSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/admiring_plural.wav",
+      "pluralSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/admired_plural.wav",
       "pastTenseLabel": "admired",
       "pastTenseSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/admired_past.wav"
     },
@@ -457,11 +457,11 @@
     },
     {
       "id": "doing-escaping",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/escaping.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/escaped.png",
       "label": "is escaping",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/escaping.wav",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/escaped.wav",
       "pluralLabel": "are escaping",
-      "pluralSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/escaping_plural.wav",
+      "pluralSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/escaped_plural.wav",
       "pastTenseLabel": "escaped",
       "pastTenseSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/escaped_past.wav"
     },
@@ -937,13 +937,13 @@
     },
     {
       "id": "doing-walked-through",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/walked_through.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/walking.png",
       "label": "is walking through",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/walked_through.wav",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/walking.wav",
       "pluralLabel": "are walking through",
-      "pluralSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/walked_through_plural.wav",
+      "pluralSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/walking_plural.wav",
       "pastTenseLabel": "walked through",
-      "pastTenseSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/walked_through_past.wav"
+      "pastTenseSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/walking_past.wav"
     },
     {
       "id": "doing-walking",
@@ -1947,9 +1947,9 @@
     },
     {
       "id": "when-after-competition",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/after_competition.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/competing.png",
       "label": "after the competition",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/after_competition.wav"
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/competing.wav"
     },
     {
       "id": "when-dinner-time",
@@ -2000,10 +2000,10 @@
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/birthday.wav"
     },
     {
-      "id": "when-during-morning",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/during_morning.png",
-      "label": "during the morning",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/during_morning.wav"
+      "id": "when-morning",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/morning.png",
+      "label": "in the morning",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/morning.wav"
     },
     {
       "id": "when-afternoon",
@@ -2020,15 +2020,8 @@
     {
       "id": "when-day-time",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/day.png",
-      "label": "during the day",
+      "label": "in the day time",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/day.wav"
-    },
-    {
-      "id": "when-morning",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/morning.png",
-      "label": "in the morning",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/morning.wav",
-      "whatLikeVariantLabel": "morning"
     },
     {
       "id": "when-evening",
