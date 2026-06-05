@@ -196,12 +196,32 @@
   ],
   "doing": [
     {
-      "id": "doing-admired",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/admired.png",
-      "label": "admired",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/admired.wav",
-      "pluralLabel": "admired",
-      "pluralSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/admired_plural.wav",
+      "id": "doing-opening",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/opening.png",
+      "label": "is opening",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/opening.wav",
+      "pluralLabel": "are opening",
+      "pluralSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/opening_plural.wav",
+      "pastTenseLabel": "opened",
+      "pastTenseSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/opening_past.wav"
+    },
+    {
+      "id": "doing-hugging",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/hugging.png",
+      "label": "is hugging",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/hugging.wav",
+      "pluralLabel": "are hugging",
+      "pluralSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/hugging_plural.wav",
+      "pastTenseLabel": "hugged",
+      "pastTenseSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/hugging_past.wav"
+    },
+    {
+      "id": "doing-admiring",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/admiring.png",
+      "label": "is admiring",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/admiring.wav",
+      "pluralLabel": "are admiring",
+      "pluralSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/admiring_plural.wav",
       "pastTenseLabel": "admired",
       "pastTenseSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/admired_past.wav"
     },
@@ -247,23 +267,13 @@
     },
     {
       "id": "doing-bringing",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/bringing.png",
-      "label": "is bringing",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/bringing.wav",
-      "pluralLabel": "are bringing",
-      "pluralSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/bringing_plural.wav",
-      "pastTenseLabel": "brought",
-      "pastTenseSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/bringing_past.wav"
-    },
-    {
-      "id": "doing-brought",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/brought.png",
-      "label": "brought",
+      "label": "is bringing",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/brought.wav",
-      "pluralLabel": "brought",
-      "pluralSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/brought_plural.wav",
+      "pluralLabel": "are bringing",
+      "pluralSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/brought.wav",
       "pastTenseLabel": "brought",
-      "pastTenseSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/brought_past.wav"
+      "pastTenseSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/brought.wav"
     },
     {
       "id": "doing-brushing",
@@ -446,12 +456,12 @@
       "pastTenseSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/eating_past.wav"
     },
     {
-      "id": "doing-escaped",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/escaped.png",
-      "label": "escaped",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/escaped.wav",
-      "pluralLabel": "escaped",
-      "pluralSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/escaped_plural.wav",
+      "id": "doing-escaping",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/escaping.png",
+      "label": "is escaping",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/escaping.wav",
+      "pluralLabel": "are escaping",
+      "pluralSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/escaping_plural.wav",
       "pastTenseLabel": "escaped",
       "pastTenseSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/escaped_past.wav"
     },
@@ -536,14 +546,14 @@
       "pastTenseSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/folding_past.wav"
     },
     {
-      "id": "doing-found",
+      "id": "doing-finding",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/found.png",
-      "label": "found",
+      "label": "is finding",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/found.wav",
-      "pluralLabel": "found",
-      "pluralSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/found_plural.wav",
+      "pluralLabel": "are finding",
+      "pluralSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/found.wav",
       "pastTenseLabel": "found",
-      "pastTenseSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/found_past.wav"
+      "pastTenseSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/found.wav"
     },
     {
       "id": "doing-gardening",
@@ -676,21 +686,11 @@
       "pastTenseSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/organising_past.wav"
     },
     {
-      "id": "doing-packed",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/packed.png",
-      "label": "packed",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/packed.wav",
-      "pluralLabel": "packed",
-      "pluralSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/packed_plural.wav",
-      "pastTenseLabel": "packed",
-      "pastTenseSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/packed_past.wav"
-    },
-    {
       "id": "doing-packing",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/packing.png",
-      "label": "packed",
+      "label": "is packing",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/packing.wav",
-      "pluralLabel": "packed",
+      "pluralLabel": "are packing",
       "pluralSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/packing_plural.wav",
       "pastTenseLabel": "packed",
       "pastTenseSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/packing_past.wav"
@@ -866,14 +866,14 @@
       "pastTenseSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/smelling_past.wav"
     },
     {
-      "id": "doing-stroked",
+      "id": "doing-stroking",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/stroked.png",
-      "label": "stroked",
+      "label": "is stroking",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/stroked.wav",
-      "pluralLabel": "stroked",
-      "pluralSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/stroked_plural.wav",
+      "pluralLabel": "are stroking",
+      "pluralSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/stroked.wav",
       "pastTenseLabel": "stroked",
-      "pastTenseSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/stroked_past.wav"
+      "pastTenseSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/stroked.wav"
     },
     {
       "id": "doing-sweeping",
@@ -966,7 +966,7 @@
       "pastTenseSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/washing_past.wav"
     },
     {
-      "id": "doing-watered",
+      "id": "doing-watering",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/watering.png",
       "label": "is watering",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/watering.wav",
@@ -996,11 +996,11 @@
       "pastTenseSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/whispering_past.wav"
     },
     {
-      "id": "doing-won",
+      "id": "doing-winning",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/won.png",
-      "label": "won",
+      "label": "is winning",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/won.wav",
-      "pluralLabel": "won",
+      "pluralLabel": "are winning",
       "pluralSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/won_plural.wav",
       "pastTenseLabel": "won",
       "pastTenseSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/won_past.wav"
@@ -1177,6 +1177,20 @@
       "label": "the firefighter",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/firefighter.wav",
       "whatLikeVariantLabel": "firefighter"
+    },
+    {
+      "id": "what-field",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/field.png",
+      "label": "the field",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/field.wav",
+      "whatLikeVariantLabel": "field"
+    },
+    {
+      "id": "what-park",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/park.png",
+      "label": "the park",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/park.wav",
+      "whatLikeVariantLabel": "park"
     },
     {
       "id": "what-flower",
@@ -1694,6 +1708,12 @@
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/living_room.wav"
     },
     {
+      "id": "where-library",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/library.png",
+      "label": "in the library",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/library.wav"
+    },
+    {
       "id": "where-on-bed",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/bed.png",
       "label": "on the bed",
@@ -1792,13 +1812,13 @@
   ],
   "to-who": [
     {
-      "id": "what-friend-female",
+      "id": "to-who-friend-female",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/friend_female.png",
       "label": "to her friend",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/friend_female.wav"
     },
     {
-      "id": "what-friend-male",
+      "id": "to-who-friend-male",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/friend_male.png",
       "label": "to his friend",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/friend_male.wav"
@@ -2495,6 +2515,19 @@
   ],
   "how": [
     {
+      "id": "how-quickly",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/quick.png",
+      "label": "quickly",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/quick.wav"
+    },
+
+    {
+      "id": "how-slowly",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/slow.png",
+      "label": "slowly",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/slow.wav"
+    },
+    {
       "id": "how-adventurously",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/adventurous.png",
       "label": "adventurously",
@@ -2542,18 +2575,6 @@
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/curiously.png",
       "label": "curiously",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/curiously.wav"
-    },
-    {
-      "id": "how-eagerly",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/excitedly.png",
-      "label": "eagerly",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/excitedly.wav"
-    },
-    {
-      "id": "how-enthusiastically",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/excitedly.png",
-      "label": "enthusiastically",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/excitedly.wav"
     },
     {
       "id": "how-excitedly",

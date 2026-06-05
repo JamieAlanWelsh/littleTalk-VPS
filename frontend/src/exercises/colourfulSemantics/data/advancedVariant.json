@@ -14,8 +14,8 @@
   "scenes": [
     {
       "id": "dog-carried-ball",
-      "targetImageUrl": "/static/exercise_assets/colourful_semantics/advanced_target_images/dog_eagerly_carried_spotted_ball_girl_park_sunnyday.webp",
-      "targetImageAlt": "The dog eagerly carried the spotted ball to the girl in the park on a sunny day.",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/advanced_target_images/dog_proudly_carried_spotted_ball_girl_park_sunnyday.webp",
+      "targetImageAlt": "The dog proudly carried the spotted ball to the girl in the park on a sunny day.",
       "steps": [
         {
           "id": "dog-carried-ball-who",
@@ -27,7 +27,7 @@
           "id": "dog-carried-ball-how",
           "slot": "how",
           "prompt": "How?",
-          "correctOptionId": "how-eagerly"
+          "correctOptionId": "how-proudly"
         },
         {
           "id": "dog-carried-ball-doing",
