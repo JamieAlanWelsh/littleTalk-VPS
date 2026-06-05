@@ -3,7 +3,7 @@
     {
       "id": "who-baby",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/child.png",
-      "label": "The baby",
+      "label": "The child",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/child.wav"
     },
     {
@@ -566,24 +566,14 @@
       "pastTenseSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/gardening_past.wav"
     },
     {
-      "id": "doing-gave",
+      "id": "doing-giving",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/gave.png",
-      "label": "gave",
+      "label": "is giving",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/gave.wav",
-      "pluralLabel": "gave",
+      "pluralLabel": "are giving",
       "pluralSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/gave_plural.wav",
       "pastTenseLabel": "gave",
       "pastTenseSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/gave_past.wav"
-    },
-    {
-      "id": "doing-giving",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/giving.png",
-      "label": "is giving",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/giving.wav",
-      "pluralLabel": "are giving",
-      "pluralSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/giving_plural.wav",
-      "pastTenseLabel": "gave",
-      "pastTenseSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/giving_past.wav"
     },
     {
       "id": "doing-going",
@@ -596,24 +586,14 @@
       "pastTenseSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/going_past.wav"
     },
     {
-      "id": "doing-handed",
+      "id": "doing-handing",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/handed.png",
-      "label": "handed",
+      "label": "is handing",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/handed.wav",
-      "pluralLabel": "handed",
+      "pluralLabel": "are handing",
       "pluralSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/handed_plural.wav",
       "pastTenseLabel": "handed",
       "pastTenseSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/handed_past.wav"
-    },
-    {
-      "id": "doing-handing",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/handing.png",
-      "label": "is handing",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/handing.wav",
-      "pluralLabel": "are handing",
-      "pluralSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/handing_plural.wav",
-      "pastTenseLabel": "handed",
-      "pastTenseSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/handing_past.wav"
     },
     {
       "id": "doing-holding",
@@ -746,24 +726,14 @@
       "pastTenseSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/passing_past.wav"
     },
     {
-      "id": "doing-picked-up",
+      "id": "doing-picking-up",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/picked_up.png",
-      "label": "picked up",
+      "label": "is picking up",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/picked_up.wav",
-      "pluralLabel": "picked up",
+      "pluralLabel": "are picking up",
       "pluralSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/picked_up_plural.wav",
       "pastTenseLabel": "picked up",
       "pastTenseSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/picked_up_past.wav"
-    },
-    {
-      "id": "doing-picking-up",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/picking_up.png",
-      "label": "is picking up",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/picking_up.wav",
-      "pluralLabel": "are picking up",
-      "pluralSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/picking_up_plural.wav",
-      "pastTenseLabel": "picked up",
-      "pastTenseSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/picking_up_past.wav"
     },
     {
       "id": "doing-planting",
@@ -786,24 +756,14 @@
       "pastTenseSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/playing_past.wav"
     },
     {
-      "id": "doing-presented",
+      "id": "doing-presenting",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/presented.png",
-      "label": "presented",
+      "label": "is presenting",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/presented.wav",
-      "pluralLabel": "presented",
+      "pluralLabel": "are presenting",
       "pluralSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/presented_plural.wav",
       "pastTenseLabel": "presented",
       "pastTenseSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/presented_past.wav"
-    },
-    {
-      "id": "doing-presenting",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/presenting.png",
-      "label": "is presenting",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/presenting.wav",
-      "pluralLabel": "are presenting",
-      "pluralSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/presenting_plural.wav",
-      "pastTenseLabel": "presented",
-      "pastTenseSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/presenting_past.wav"
     },
     {
       "id": "doing-racing",
@@ -866,21 +826,11 @@
       "pastTenseSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/sending_past.wav"
     },
     {
-      "id": "doing-shared",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/shared.png",
-      "label": "shared",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/shared.wav",
-      "pluralLabel": "shared",
-      "pluralSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/shared_plural.wav",
-      "pastTenseLabel": "shared",
-      "pastTenseSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/shared_past.wav"
-    },
-    {
       "id": "doing-sharing",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/sharing.png",
-      "label": "shared",
+      "label": "is sharing",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/sharing.wav",
-      "pluralLabel": "shared",
+      "pluralLabel": "are sharing",
       "pluralSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/sharing_plural.wav",
       "pastTenseLabel": "shared",
       "pastTenseSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/sharing_past.wav"
@@ -1078,13 +1028,6 @@
   ],
   "what": [
     {
-      "id": "what-afternoon",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/afternoon.png",
-      "label": "the afternoon",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/afternoon.wav",
-      "whatLikeVariantLabel": "afternoon"
-    },
-    {
       "id": "what-apple",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/apple.png",
       "label": "the apple",
@@ -1120,13 +1063,6 @@
       "whatLikeVariantLabel": "bed"
     },
     {
-      "id": "what-bed-time",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/bed_time.png",
-      "label": "the bed time",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/bed_time.wav",
-      "whatLikeVariantLabel": "bed time"
-    },
-    {
       "id": "what-bike",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/bike.png",
       "label": "the bike",
@@ -1153,13 +1089,6 @@
       "label": "the box",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/box.wav",
       "whatLikeVariantLabel": "box"
-    },
-    {
-      "id": "what-breakfast-time",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/breakfast_time.png",
-      "label": "the breakfast time",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/breakfast_time.wav",
-      "whatLikeVariantLabel": "breakfast time"
     },
     {
       "id": "what-bubbles",
@@ -1239,13 +1168,6 @@
       "whatLikeVariantLabel": "dinner"
     },
     {
-      "id": "what-dinner-time",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/dinner_time.png",
-      "label": "the dinner time",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/dinner_time.wav",
-      "whatLikeVariantLabel": "dinner time"
-    },
-    {
       "id": "what-doctor",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/doctor.png",
       "label": "the doctor",
@@ -1265,13 +1187,6 @@
       "label": "the doll",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/doll.wav",
       "whatLikeVariantLabel": "doll"
-    },
-    {
-      "id": "what-evening",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/evening.png",
-      "label": "the evening",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/evening.wav",
-      "whatLikeVariantLabel": "evening"
     },
     {
       "id": "what-firefighter",
@@ -1439,25 +1354,11 @@
       "whatLikeVariantLabel": "lost item"
     },
     {
-      "id": "what-lunch-time",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/lunch_time.png",
-      "label": "the lunch time",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/lunch_time.wav",
-      "whatLikeVariantLabel": "lunch time"
-    },
-    {
       "id": "what-mat",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/mat.png",
       "label": "the mat",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/mat.wav",
       "whatLikeVariantLabel": "mat"
-    },
-    {
-      "id": "what-morning",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/morning.png",
-      "label": "the morning",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/morning.wav",
-      "whatLikeVariantLabel": "morning"
     },
     {
       "id": "what-mouse",
@@ -1472,13 +1373,6 @@
       "label": "the music",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/music.wav",
       "whatLikeVariantLabel": "music"
-    },
-    {
-      "id": "what-night",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/night.png",
-      "label": "the night",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/night.wav",
-      "whatLikeVariantLabel": "night"
     },
     {
       "id": "what-nurse",
@@ -1606,13 +1500,6 @@
       "whatLikeVariantLabel": "singing"
     },
     {
-      "id": "what-sky",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/sky.png",
-      "label": "the sky",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/sky.wav",
-      "whatLikeVariantLabel": "sky"
-    },
-    {
       "id": "what-snowman",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/snowman.png",
       "label": "the snowman",
@@ -1632,13 +1519,6 @@
       "label": "the sticker",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/sticker.wav",
       "whatLikeVariantLabel": "sticker"
-    },
-    {
-      "id": "what-sunset",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/sunset.png",
-      "label": "the sunset",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/sunset.wav",
-      "whatLikeVariantLabel": "sunset"
     },
     {
       "id": "what-teddy-bear",
@@ -2051,10 +1931,28 @@
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/after_competition.wav"
     },
     {
-      "id": "when-at-dinner-time",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/at_dinner_time.png",
+      "id": "when-dinner-time",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/dinner_time.png",
       "label": "at dinner time",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/at_dinner_time.wav"
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/dinner_time.wav"
+    },
+    {
+      "id": "when-lunch-time",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/lunch_time.png",
+      "label": "at lunch time",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/lunch_time.wav"
+    },
+    {
+      "id": "when-bed-time",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/bed_time.png",
+      "label": "at bed time",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/bed_time.wav"
+    },
+    {
+      "id": "when-breakfast-time",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/breakfast_time.png",
+      "label": "at breakfast time",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/breakfast_time.wav"
     },
     {
       "id": "when-at-night",
@@ -2064,9 +1962,9 @@
     },
     {
       "id": "when-at-sunset",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/at_sunset.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/sunset.png",
       "label": "at sunset",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/at_sunset.wav"
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/sunset.wav"
     },
     {
       "id": "when-autumn",
@@ -2077,7 +1975,7 @@
     {
       "id": "when-birthday",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/birthday.png",
-      "label": "on your birthday",
+      "label": "on their birthday",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/birthday.wav"
     },
     {
@@ -2087,46 +1985,41 @@
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/during_morning.wav"
     },
     {
-      "id": "when-in-afternoon",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/classroom.png",
+      "id": "when-afternoon",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/afternoon.png",
       "label": "in the afternoon",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/classroom.wav"
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/afternoon.wav"
     },
     {
-      "id": "when-in-autumn",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/in_autumn.png",
-      "label": "in the autumn",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/in_autumn.wav"
+      "id": "when-night-time",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/night.png",
+      "label": "at night time",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/night.wav"
     },
     {
-      "id": "when-in-evening",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/house.png",
-      "label": "in the evening",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/house.wav"
+      "id": "when-day-time",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/day.png",
+      "label": "during the day",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/day.wav"
     },
     {
-      "id": "when-in-morning",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/park.png",
+      "id": "when-morning",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/morning.png",
       "label": "in the morning",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/park.wav"
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/morning.wav",
+      "whatLikeVariantLabel": "morning"
     },
     {
-      "id": "when-in-spring",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/in_spring.png",
-      "label": "in the spring",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/in_spring.wav"
-    },
-    {
-      "id": "when-in-summer",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/beach.png",
-      "label": "in summer",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/beach.wav"
+      "id": "when-evening",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/evening.png",
+      "label": "in the evening",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/evening.wav"
     },
     {
       "id": "when-on-sunny-day",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/on_sunny_day.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/sunny.png",
       "label": "on a sunny day",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/on_sunny_day.wav"
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/sunny.wav"
     },
     {
       "id": "when-spring",
@@ -2513,12 +2406,6 @@
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/striped.png",
       "label": "the striped",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/striped.wav"
-    },
-    {
-      "id": "what-like-sunny",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/sunny.png",
-      "label": "the sunny",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/sunny.wav"
     },
     {
       "id": "what-like-tall",
