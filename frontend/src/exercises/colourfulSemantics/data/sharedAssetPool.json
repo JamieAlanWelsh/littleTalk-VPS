@@ -356,16 +356,6 @@
       "pastTenseSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/competing_past.wav"
     },
     {
-      "id": "doing-completed",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/completed.png",
-      "label": "completed",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/completed.wav",
-      "pluralLabel": "completed",
-      "pluralSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/completed_plural.wav",
-      "pastTenseLabel": "completed",
-      "pastTenseSfxUrl": "/static/exercise_assets/colourful_semantics/word_options/completed_past.wav"
-    },
-    {
       "id": "doing-cooking",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/cooking.png",
       "label": "is cooking",
@@ -1049,13 +1039,6 @@
       "whatLikeVariantLabel": "ball"
     },
     {
-      "id": "what-basket",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/basket.png",
-      "label": "the basket",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/basket.wav",
-      "whatLikeVariantLabel": "basket"
-    },
-    {
       "id": "what-bed",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/bed.png",
       "label": "the bed",
@@ -1219,16 +1202,16 @@
     {
       "id": "what-friend-female",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/friend_female.png",
-      "label": "the friend female",
+      "label": "her friend",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/friend_female.wav",
-      "whatLikeVariantLabel": "friend female"
+      "whatLikeVariantLabel": "her friend"
     },
     {
       "id": "what-friend-male",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/friend_male.png",
-      "label": "the friend male",
+      "label": "his friend",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/friend_male.wav",
-      "whatLikeVariantLabel": "friend male"
+      "whatLikeVariantLabel": "his friend"
     },
     {
       "id": "what-game",
@@ -1451,11 +1434,11 @@
       "whatLikeVariantLabel": "pumpkin"
     },
     {
-      "id": "what-rabbit",
+      "id": "what-bunny",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/rabbit.png",
-      "label": "the rabbit",
+      "label": "the bunny",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/rabbit.wav",
-      "whatLikeVariantLabel": "rabbit"
+      "whatLikeVariantLabel": "bunny"
     },
     {
       "id": "what-sandcastle",
@@ -1653,7 +1636,7 @@
     {
       "id": "where-garage",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/garage.png",
-      "label": "in the garage",
+      "label": "into the garage",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/garage.wav"
     },
     {
@@ -1809,6 +1792,24 @@
   ],
   "to-who": [
     {
+      "id": "what-friend-female",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/friend_female.png",
+      "label": "to her friend",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/friend_female.wav"
+    },
+    {
+      "id": "what-friend-male",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/friend_male.png",
+      "label": "to his friend",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/friend_male.wav"
+    },
+    {
+      "id": "to-who-basket",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/basket.png",
+      "label": "into the basket",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/basket.wav"
+    },
+    {
       "id": "to-who-baby",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/baby.png",
       "label": "to its baby",
@@ -1841,7 +1842,7 @@
     {
       "id": "to-who-dad",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/dad.png",
-      "label": "to dad",
+      "label": "to their dad",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/dad.wav"
     },
     {
@@ -1889,7 +1890,7 @@
     {
       "id": "to-who-mum",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/mum.png",
-      "label": "to her mum",
+      "label": "to their mum",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/mum.wav"
     },
     {
@@ -2016,7 +2017,7 @@
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/evening.wav"
     },
     {
-      "id": "when-on-sunny-day",
+      "id": "when-sunny-day",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/sunny.png",
       "label": "on a sunny day",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/sunny.wav"
@@ -2041,6 +2042,12 @@
     }
   ],
   "what-like": [
+    {
+      "id": "what-like-completed",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/completed.png",
+      "label": "the completed",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/completed.wav"
+    },
     {
       "id": "what-like-big",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/big.png",
@@ -2298,6 +2305,12 @@
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/quick.png",
       "label": "the quick",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/quick.wav"
+    },
+    {
+      "id": "what-like-happy",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/happily.png",
+      "label": "the happy",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/happily.wav"
     },
     {
       "id": "what-like-rainbow",

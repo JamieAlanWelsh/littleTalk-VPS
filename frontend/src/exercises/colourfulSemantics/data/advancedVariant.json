@@ -63,7 +63,7 @@
           "id": "dog-carried-ball-when",
           "slot": "when",
           "prompt": "When?",
-          "correctOptionId": "when-on-sunny-day"
+          "correctOptionId": "when-sunny-day"
         }
       ]
     }
