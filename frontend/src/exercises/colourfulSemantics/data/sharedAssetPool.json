@@ -1450,9 +1450,9 @@
     {
       "id": "what-bunny",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/rabbit.png",
-      "label": "the bunny",
+      "label": "the rabbit",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/rabbit.wav",
-      "whatLikeVariantLabel": "bunny"
+      "whatLikeVariantLabel": "rabbit"
     },
     {
       "id": "what-sandcastle",

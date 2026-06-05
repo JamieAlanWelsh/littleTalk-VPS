@@ -1409,45 +1409,45 @@
       ]
     },
     {
-      "id": "girl-stroked-fluffy-bunny",
+      "id": "girl-stroked-fluffy-rabbit",
       "targetImageUrl": "/static/exercise_assets/colourful_semantics/advanced_target_images/girl_gently_stroked_fluffy_bunny_blank_garden_blank.webp",
-      "targetImageAlt": "The girl gently stroked the fluffy bunny in the garden.",
+      "targetImageAlt": "The girl gently stroked the fluffy rabbit in the garden.",
       "steps": [
         {
-          "id": "girl-stroked-fluffy-bunny-who",
+          "id": "girl-stroked-fluffy-rabbit-who",
           "slot": "who",
           "prompt": "Who is in the picture?",
           "correctOptionId": "who-girl"
         },
         {
-          "id": "girl-stroked-fluffy-bunny-how",
+          "id": "girl-stroked-fluffy-rabbit-how",
           "slot": "how",
           "prompt": "How?",
           "correctOptionId": "how-gently"
         },
         {
-          "id": "girl-stroked-fluffy-bunny-doing",
+          "id": "girl-stroked-fluffy-rabbit-doing",
           "slot": "doing",
           "prompt": "What did they do?",
           "correctOptionId": "doing-stroking"
         },
         {
-          "id": "girl-stroked-fluffy-bunny-what-like",
+          "id": "girl-stroked-fluffy-rabbit-what-like",
           "slot": "what-like",
           "prompt": "What is it like?",
           "correctOptionId": "what-like-fluffy"
         },
         {
-          "id": "girl-stroked-fluffy-bunny-what",
+          "id": "girl-stroked-fluffy-rabbit-what",
           "slot": "what",
           "prompt": "What?",
-          "correctOptionId": "what-bunny"
+          "correctOptionId": "what-rabbit"
         },
         {
-          "id": "girl-stroked-fluffy-bunny-where",
+          "id": "girl-stroked-fluffy-rabbit-where",
           "slot": "where",
           "prompt": "Where?",
-          "correctOptionId": "where-garden"
+          "correctOptionId": "where-hutch"
         }
       ]
     },
