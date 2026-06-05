@@ -45,7 +45,7 @@
           "id": "dog-carried-ball-what",
           "slot": "what",
           "prompt": "What?",
-          "correctOptionId": "what-ball-bare"
+          "correctOptionId": "what-ball"
         },
         {
           "id": "dog-carried-ball-to-who",
@@ -180,7 +180,7 @@
     {
       "id": "doctor-gave-sticker",
       "targetImageUrl": "/static/exercise_assets/colourful_semantics/advanced_target_images/doctor_reassuringly_gave_colourful_sticker_boy_clinic_appointment.webp",
-      "targetImageAlt": "The doctor reassuringly gave the colourful sticker to the boy in the clinic after his appointment.",
+      "targetImageAlt": "The doctor reassuringly gave the colourful sticker to the boy at the doctor's after his appointment.",
       "steps": [
         {
           "id": "doctor-gave-sticker-who",
@@ -222,13 +222,13 @@
           "id": "doctor-gave-sticker-where",
           "slot": "where",
           "prompt": "Where?",
-          "correctOptionId": "where-clinic"
+          "correctOptionId": "where-doctors"
         },
         {
           "id": "doctor-gave-sticker-when",
           "slot": "when",
           "prompt": "When?",
-          "correctOptionId": "when-after-appointment"
+          "correctOptionId": "when-after-his-appointment"
         }
       ]
     },
@@ -290,7 +290,7 @@
     {
       "id": "farmer-showed-pumpkin",
       "targetImageUrl": "/static/exercise_assets/colourful_semantics/advanced_target_images/farmer_cheerfully_showed_enormous_pumpkin_visitors_farm_autumn.webp",
-      "targetImageAlt": "The farmer cheerfully showed the enormous pumpkin to the visitors at the farm in the autumn.",
+      "targetImageAlt": "The farmer cheerfully showed the enormous pumpkin to the visitors on the farm in the autumn.",
       "steps": [
         {
           "id": "farmer-showed-pumpkin-who",
@@ -332,7 +332,7 @@
           "id": "farmer-showed-pumpkin-where",
           "slot": "where",
           "prompt": "Where?",
-          "correctOptionId": "where-at-farm"
+          "correctOptionId": "where-farm"
         },
         {
           "id": "farmer-showed-pumpkin-when",
@@ -510,7 +510,7 @@
     {
       "id": "teacher-presented-trophy",
       "targetImageUrl": "/static/exercise_assets/colourful_semantics/advanced_target_images/teacher_enthusiastically_presented_gold_trophy_boy_school_aftercompetition.webp",
-      "targetImageAlt": "The teacher enthusiastically presented the gold trophy to the boy in the school hall after the competition.",
+      "targetImageAlt": "The teacher enthusiastically presented the gold trophy to the boy at school after the competition.",
       "steps": [
         {
           "id": "teacher-presented-trophy-who",
@@ -552,7 +552,7 @@
           "id": "teacher-presented-trophy-where",
           "slot": "where",
           "prompt": "Where?",
-          "correctOptionId": "where-school-hall"
+          "correctOptionId": "where-school"
         },
         {
           "id": "teacher-presented-trophy-when",
@@ -565,7 +565,7 @@
     {
       "id": "vet-returned-kitten",
       "targetImageUrl": "/static/exercise_assets/colourful_semantics/advanced_target_images/vet_gently_returned_sleepy_kitten_girl_vet_morning.webp",
-      "targetImageAlt": "The vet gently returned the sleepy kitten to the girl in the animal clinic in the morning.",
+      "targetImageAlt": "The vet gently returned the sleepy kitten to the girl at the vet in the morning.",
       "steps": [
         {
           "id": "vet-returned-kitten-who",
@@ -607,7 +607,7 @@
           "id": "vet-returned-kitten-where",
           "slot": "where",
           "prompt": "Where?",
-          "correctOptionId": "where-animal-clinic"
+          "correctOptionId": "where-vet-location"
         },
         {
           "id": "vet-returned-kitten-when",
