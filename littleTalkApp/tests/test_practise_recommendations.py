@@ -1,10 +1,11 @@
+import uuid
 from datetime import timedelta
 
 from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
 
-from littleTalkApp.models import Learner, Role
+from littleTalkApp.models import Learner, LearnerAssessmentAnswer, Role
 from littleTalkApp.tests.base import BaseFlowTestMixin
 from littleTalkApp.views_modules.practise import resolve_recommendation_index
 
@@ -69,3 +70,31 @@ class PractiseRecommendationRotationTests(BaseFlowTestMixin, TestCase):
                 "concept_quest",
             ],
         )
+
+    def test_practise_recommendation_explanation_uses_current_screener_gap(self):
+        session_id = uuid.uuid4()
+        LearnerAssessmentAnswer.objects.create(
+            learner=self.learner,
+            question_id=15,
+            topic="Blank Level 3",
+            skill="Understanding emotions/mental states",
+            text="Can the child work out how someone is feeling from a situation or picture?",
+            answer="No",
+            session_id=session_id,
+            screener_version=2,
+        )
+        LearnerAssessmentAnswer.objects.create(
+            learner=self.learner,
+            question_id=19,
+            topic="Blank Level 4",
+            skill="Justifying with evidence",
+            text="Can the child explain how they know something (e.g. 'How do you know the girl is upset?')?",
+            answer="No",
+            session_id=session_id,
+            screener_version=2,
+        )
+
+        response = self.client.get(reverse("practise"))
+        self.assertEqual(response.status_code, 200)
+        self.assertIsNotNone(response.context["recommendation_explanation"])
+        self.assertIn("support needed", response.context["recommendation_explanation"]["summary"])

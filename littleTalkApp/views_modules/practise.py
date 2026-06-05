@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.utils import timezone
 
 from littleTalkApp.content import GAME_DESCRIPTIONS, RECOMMENDATIONS
+from littleTalkApp.content.assessments_v2 import QUESTIONS_V2
 from littleTalkApp.models import Learner
 
 
@@ -96,6 +97,23 @@ PRACTISE_KEY_TO_STAGE = {
     for exercise_key in stage_data.get("exercises", [])
 }
 
+CANONICAL_TO_SKILLS = {
+    "whats-in-the-bag": ["Naming common objects", "Vocabulary development"],
+    "spot-on": ["Understanding prepositions"],
+    "whos-who": ["Following pronoun instructions"],
+    "colourful-semantics-early": ["Using action words"],
+    "colourful-semantics": ["Answering 'who/what/where' questions"],
+    "concept-quest": ["Understanding concepts"],
+    "categorisation": ["Grouping things together"],
+    "story-train": ["Understanding time concepts", "Describing and sequencing events"],
+    "think-and-find": ["Following multi-step instructions"],
+    "story-train-plus": ["Retelling events/stories"],
+    "in-the-know": ["Understanding emotions/mental states", "Justifying with evidence"],
+    "colourful-semantics-plus": ["Answering 'why/how' questions"],
+    "what-happens-next": ["Predicting outcomes"],
+    "task-master": ["Giving sequential instructions"],
+}
+
 
 def resolve_recommendation_index(learner):
     """Return current recommendation index and apply 24h fallback rotation."""
@@ -126,6 +144,55 @@ def resolve_recommendation_index(learner):
     return current_index
 
 
+def build_recommendation_explanation(learner, current_exercise_id):
+    """Build a short human-readable explanation for the current recommendation."""
+
+    if not learner or not current_exercise_id:
+        return None
+
+    latest_session = (
+        learner.answers.filter(screener_version=2)
+        .order_by("-timestamp")
+        .values("session_id")
+        .first()
+    )
+    if not latest_session:
+        return None
+
+    question_index = {question["order"]: question for question in QUESTIONS_V2}
+    support_skills = []
+    for answer in learner.answers.filter(
+        screener_version=2,
+        session_id=latest_session["session_id"],
+        answer="No",
+    ):
+        question = question_index.get(answer.question_id)
+        if not question or question.get("exercise_id") != current_exercise_id:
+            continue
+        if answer.skill not in support_skills:
+            support_skills.append(answer.skill)
+
+    practice_key = CANONICAL_TO_PRACTISE_KEY.get(current_exercise_id)
+    stage_number = PRACTISE_KEY_TO_STAGE.get(practice_key) if practice_key else None
+
+    reason_skills = CANONICAL_TO_SKILLS.get(current_exercise_id, [])
+    highlighted_skills = [skill for skill in reason_skills if skill in support_skills]
+    if not highlighted_skills:
+        highlighted_skills = support_skills[:3]
+
+    if not highlighted_skills:
+        return None
+
+    return {
+        "exercise_id": current_exercise_id,
+        "stage": stage_number,
+        "skills": highlighted_skills,
+        "summary": (
+            "We recommended this exercise based on screener results, identifying support may be needed in developing the following skills."
+        ),
+    }
+
+
 @login_required
 def practise(request):
     """Renders practise/practise.html — the main game selection page.
@@ -145,6 +212,7 @@ def practise(request):
     secondary_exercise_keys = []
     recommended_stage_numbers = []
     has_recommended_filter = False
+    recommendation_explanation = None
 
     stage_numbers = sorted(PRACTISE_STAGES.keys())
     default_stage_number = stage_numbers[0] if stage_numbers else None
@@ -255,6 +323,10 @@ def practise(request):
 
                 if recommended_exercise_key:
                     recommended_stage_number = PRACTISE_KEY_TO_STAGE.get(recommended_exercise_key)
+                    recommendation_explanation = build_recommendation_explanation(
+                        selected_learner,
+                        recommendation_ids[current_index],
+                    )
 
         elif learner_selected and selected_learner.recommendation_level is not None:
             level = selected_learner.recommendation_level
@@ -302,6 +374,7 @@ def practise(request):
         "recommended_exercise_keys": recommended_exercise_keys,
         "secondary_exercise_keys": secondary_exercise_keys,
         "recommended_exercise_card": recommended_exercise_card,
+        "recommendation_explanation": recommendation_explanation,
         "active_stage_number": active_stage_number,
     }
 

@@ -27,7 +27,16 @@
         <section class="recommendation-box">
             <div class="recommendation-header-row">
                 <p class="recommendation-header-label">SUGGESTED FOR TODAY</p>
-                <a href="#" class="recommendation-text-action">Why this ?</a>
+                {% if recommendation_explanation %}
+                    <button
+                        type="button"
+                        class="recommendation-text-action recommendation-text-action--button"
+                        data-why-this-toggle
+                        aria-expanded="false"
+                    >
+                        Why this?
+                    </button>
+                {% endif %}
             </div>
             <div class="exercise-widget exercise-widget--recommended recommendation-card">
                 <div class="exercise-image">
@@ -51,6 +60,28 @@
                     </div>
                 </div>
             </div>
+            {% if recommendation_explanation %}
+                <div class="recommendation-popup" data-why-this-popup hidden>
+                    <div class="recommendation-popup__card" role="dialog" aria-modal="true" aria-labelledby="why-this-title">
+                        <div class="recommendation-popup__header">
+                            <h3 id="why-this-title">Why this exercise?</h3>
+                            <button type="button" class="recommendation-popup__close" data-why-this-close aria-label="Close explanation">×</button>
+                        </div>
+                        <p>{{ recommendation_explanation.summary }}</p>
+                        <div class="recommendation-popup__skills">
+                            <strong>Skills identified from the screener:</strong>
+                            <ul>
+                                {% for skill in recommendation_explanation.skills %}
+                                    <li>{{ skill }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% if recommendation_explanation.stage %}
+                            <p class="recommendation-popup__note">The exercise is stage {{ recommendation_explanation.stage }} - estimated to be within the child's likely working range.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
         </section>
     {% else %}
         <section class="recommendation-box">
