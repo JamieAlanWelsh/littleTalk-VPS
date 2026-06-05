@@ -2515,6 +2515,12 @@
   ],
   "how": [
     {
+      "id": "how-patiently",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/patiently.png",
+      "label": "patiently",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/patiently.wav"
+    },
+    {
       "id": "how-quickly",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/quick.png",
       "label": "quickly",
