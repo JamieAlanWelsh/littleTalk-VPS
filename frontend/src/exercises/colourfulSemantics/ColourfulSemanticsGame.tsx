@@ -390,7 +390,9 @@ export const ColourfulSemanticsGame = ({
                         boardState={boardState}
                         hideTray={isFinalAffirmationView}
                         isPastTense={variant.id === "advanced"}
-                        isVoiceMuted={options.isVoiceMuted}
+                        isVoiceMuted={
+                            variant.id === "advanced" || options.isVoiceMuted
+                        }
                         isReadOnly={isFinalAffirmationView}
                         itemCorrectnessMap={itemCorrectnessMap}
                         itemsById={itemsById}
