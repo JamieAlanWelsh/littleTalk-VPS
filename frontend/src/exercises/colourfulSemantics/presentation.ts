@@ -9,6 +9,7 @@ interface ResolvePresentationParams {
     slot: ColourfulSemanticsSlot;
     isPluralSubject: boolean;
     isPastTense: boolean;
+    useWhatLikeVariantLabel: boolean;
 }
 
 interface SubjectPluralityParams {
@@ -42,11 +43,19 @@ export const resolveOptionPresentation = ({
     slot,
     isPluralSubject,
     isPastTense,
+    useWhatLikeVariantLabel,
 }: ResolvePresentationParams) => {
     if (slot === "doing" && isPastTense) {
         return {
             label: item.pastTenseLabel ?? item.label,
             sfxUrl: item.pastTenseSfxUrl ?? item.sfxUrl,
+        };
+    }
+
+    if (slot === "what" && useWhatLikeVariantLabel) {
+        return {
+            label: item.whatLikeVariantLabel ?? item.label,
+            sfxUrl: item.sfxUrl,
         };
     }
 

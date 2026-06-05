@@ -79,11 +79,13 @@ const buildAffirmationPrompt = ({
     itemsById,
     scene,
     isPastTense,
+    useWhatLikeVariantLabel,
 }: {
     lockedSelectionIds: Array<string | null>;
     itemsById: Record<string, ColourfulSemanticsOption>;
     scene: ConfiguredColourfulSemanticsScene;
     isPastTense: boolean;
+    useWhatLikeVariantLabel: boolean;
 }) => {
     const isPluralSubject = getIsPluralSubject({
         itemsById,
@@ -110,6 +112,7 @@ const buildAffirmationPrompt = ({
                 slot: step.slot,
                 isPluralSubject,
                 isPastTense,
+                useWhatLikeVariantLabel,
             }).label;
         })
         .filter(Boolean)
@@ -228,6 +231,9 @@ export const ColourfulSemanticsGame = ({
                 itemsById,
                 scene,
                 isPastTense: variant.id === "advanced",
+                useWhatLikeVariantLabel:
+                    variant.id === "advanced" &&
+                    scene.steps.some((step) => step.slot === "what-like"),
             }),
         [lockedSelectionIds, itemsById, scene, variant.id],
     );

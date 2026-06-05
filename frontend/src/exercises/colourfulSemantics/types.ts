@@ -124,6 +124,7 @@ export const ColourfulSemanticsOptionSchema = z.object({
     pluralSfxUrl: z.string().optional(),
     pastTenseLabel: z.string().optional(),
     pastTenseSfxUrl: z.string().optional(),
+    whatLikeVariantLabel: z.string().optional(),
 });
 
 export type ColourfulSemanticsOption = z.infer<

@@ -103,6 +103,8 @@ export const ColourfulSemanticsBoard = ({
     showFeedback = false,
 }: ColourfulSemanticsBoardProps) => {
     const { play } = useAudio();
+    const useWhatLikeVariantLabel =
+        isPastTense && scene.steps.some((step) => step.slot === "what-like");
     const isPluralSubject = getIsPluralSubject({
         itemsById,
         scene,
@@ -126,6 +128,7 @@ export const ColourfulSemanticsBoard = ({
             slot,
             isPluralSubject,
             isPastTense,
+            useWhatLikeVariantLabel,
         });
 
         if (!sfxUrl) {
@@ -151,6 +154,7 @@ export const ColourfulSemanticsBoard = ({
             slot,
             isPluralSubject,
             isPastTense,
+            useWhatLikeVariantLabel,
         });
 
         return (
@@ -215,6 +219,7 @@ export const ColourfulSemanticsBoard = ({
                                           slot: step.slot,
                                           isPluralSubject,
                                           isPastTense,
+                                          useWhatLikeVariantLabel,
                                       }).label ?? slotMetadata.label)
                                     : slotMetadata.label;
 
@@ -271,6 +276,7 @@ export const ColourfulSemanticsBoard = ({
                                     "doing",
                                 isPluralSubject,
                                 isPastTense,
+                                useWhatLikeVariantLabel,
                             }).label
                         }
                         itemsById={itemsById}

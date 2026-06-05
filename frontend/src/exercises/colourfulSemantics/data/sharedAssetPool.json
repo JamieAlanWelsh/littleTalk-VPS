@@ -513,145 +513,169 @@
       "id": "what-car",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/car.png",
       "label": "the car",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/car.wav"
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/car.wav",
+      "whatLikeVariantLabel": "car"
     },
     {
       "id": "what-tree",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/tree.png",
       "label": "the tree",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/tree.wav"
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/tree.wav",
+      "whatLikeVariantLabel": "tree"
     },
     {
       "id": "what-bucket",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/bucket.png",
       "label": "the bucket",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/bucket.wav"
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/bucket.wav",
+      "whatLikeVariantLabel": "bucket"
     },
     {
       "id": "what-ball",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/ball.png",
       "label": "the ball",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/ball.wav"
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/ball.wav",
+      "whatLikeVariantLabel": "ball"
     },
     {
       "id": "what-horse",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/horse.png",
       "label": "the horse",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/horse.wav"
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/horse.wav",
+      "whatLikeVariantLabel": "horse"
     },
     {
       "id": "what-pizza",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/pizza.png",
       "label": "the pizza",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/pizza.wav"
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/pizza.wav",
+      "whatLikeVariantLabel": "pizza"
     },
     {
       "id": "what-soap",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/soap.png",
-      "label": "soap",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/soap.wav"
+      "label": "the soap",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/soap.wav",
+      "whatLikeVariantLabel": "soap"
     },
     {
       "id": "what-shoe",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/shoe.png",
       "label": "the shoe",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/shoe.wav"
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/shoe.wav",
+      "whatLikeVariantLabel": "shoe"
     },
     {
       "id": "what-toys",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/toys.png",
       "label": "the toys",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/toys.wav"
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/toys.wav",
+      "whatLikeVariantLabel": "toys"
     },
     {
       "id": "what-mat",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/mat.png",
       "label": "the mat",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/mat.wav"
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/mat.wav",
+      "whatLikeVariantLabel": "mat"
     },
     {
       "id": "what-lilypad",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/lilypad.png",
       "label": "the lilypad",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/lilypad.wav"
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/lilypad.wav",
+      "whatLikeVariantLabel": "lilypad"
     },
     {
       "id": "what-game",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/game.png",
       "label": "the game",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/game.wav"
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/game.wav",
+      "whatLikeVariantLabel": "game"
     },
     {
       "id": "what-flower",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/flower.png",
       "label": "the flower",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/flower.wav"
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/flower.wav",
+      "whatLikeVariantLabel": "flower"
     },
     {
       "id": "what-ipad",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/ipad.png",
       "label": "the ipad",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/ipad.wav"
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/ipad.wav",
+      "whatLikeVariantLabel": "ipad"
     },
     {
       "id": "what-bike",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/bike.png",
       "label": "the bike",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/bike.wav"
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/bike.wav",
+      "whatLikeVariantLabel": "bike"
     },
     {
       "id": "what-in-sand",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/sand.png",
       "label": "the sand",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/sand.wav"
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/sand.wav",
+      "whatLikeVariantLabel": "sand"
     },
     {
       "id": "what-bed",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/bed.png",
       "label": "the bed",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/bed.wav"
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/bed.wav",
+      "whatLikeVariantLabel": "bed"
     },
     {
       "id": "what-chair",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/chair.png",
       "label": "the chair",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/chair.wav"
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/chair.wav",
+      "whatLikeVariantLabel": "chair"
     },
     {
       "id": "what-dog",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/dog.png",
       "label": "the dog",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/dog.wav"
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/dog.wav",
+      "whatLikeVariantLabel": "dog"
     },
     {
       "id": "what-cat",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/cat.png",
       "label": "the cat",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/cat.wav"
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/cat.wav",
+      "whatLikeVariantLabel": "cat"
     },
     {
       "id": "what-grass",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/grass.png",
-      "label": "grass",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/grass.wav"
+      "label": "the grass",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/grass.wav",
+      "whatLikeVariantLabel": "grass"
     },
     {
       "id": "what-book",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/book.png",
       "label": "the book",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/book.wav"
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/book.wav",
+      "whatLikeVariantLabel": "book"
     },
     {
       "id": "what-football",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/football.png",
       "label": "the football",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/football.wav"
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/football.wav",
+      "whatLikeVariantLabel": "football"
     },
     {
       "id": "what-sandcastle",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/sandcastle.png",
-      "label": "a sandcastle",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/sandcastle.wav"
+      "label": "the sandcastle",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/sandcastle.wav",
+      "whatLikeVariantLabel": "sandcastle"
     },
     {
       "id": "what-on-path",
@@ -662,20 +686,23 @@
     {
       "id": "what-bubbles",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/bubble.png",
-      "label": "bubbles",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/bubble.wav"
+      "label": "the bubbles",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/bubble.wav",
+      "whatLikeVariantLabel": "bubbles"
     },
     {
       "id": "what-music",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/music.png",
-      "label": "music",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/music.wav"
+      "label": "the music",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/music.wav",
+      "whatLikeVariantLabel": "music"
     },
     {
       "id": "what-mouse",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/mouse.png",
       "label": "the mouse",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/mouse.wav"
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/mouse.wav",
+      "whatLikeVariantLabel": "mouse"
     },
     {
       "id": "what-his-teeth",
@@ -693,19 +720,22 @@
       "id": "what-doll",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/doll.png",
       "label": "the doll",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/doll.wav"
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/doll.wav",
+      "whatLikeVariantLabel": "doll"
     },
     {
       "id": "what-dinner",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/dinner.png",
-      "label": "dinner",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/dinner.wav"
+      "label": "the dinner",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/dinner.wav",
+      "whatLikeVariantLabel": "dinner"
     },
     {
       "id": "what-apple",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/apple.png",
       "label": "the apple",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/apple.wav"
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/apple.wav",
+      "whatLikeVariantLabel": "apple"
     },
     {
       "id": "what-in-puddle",
@@ -717,73 +747,85 @@
       "id": "what-ice-cream",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/ice_cream.png",
       "label": "the ice cream",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/ice_cream.wav"
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/ice_cream.wav",
+      "whatLikeVariantLabel": "ice cream"
     },
     {
       "id": "what-ball-bare",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/ball_bare.png",
-      "label": "ball",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/ball_bare.wav"
+      "label": "the ball",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/ball_bare.wav",
+      "whatLikeVariantLabel": "ball"
     },
     {
       "id": "what-cupcake",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/cupcake.png",
-      "label": "cupcake",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/cupcake.wav"
+      "label": "the cupcake",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/cupcake.wav",
+      "whatLikeVariantLabel": "cupcake"
     },
     {
       "id": "what-sticker",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/sticker.png",
-      "label": "sticker",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/sticker.wav"
+      "label": "the sticker",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/sticker.wav",
+      "whatLikeVariantLabel": "sticker"
     },
     {
       "id": "what-kitten",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/kitten.png",
-      "label": "kitten",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/kitten.wav"
+      "label": "the kitten",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/kitten.wav",
+      "whatLikeVariantLabel": "kitten"
     },
     {
       "id": "what-pumpkin",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/pumpkin.png",
-      "label": "pumpkin",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/pumpkin.wav"
+      "label": "the pumpkin",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/pumpkin.wav",
+      "whatLikeVariantLabel": "pumpkin"
     },
     {
       "id": "what-seedling",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/seedling.png",
-      "label": "seedling",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/seedling.wav"
+      "label": "the seedling",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/seedling.wav",
+      "whatLikeVariantLabel": "seedling"
     },
     {
       "id": "what-potatoes",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/potatoes.png",
-      "label": "potatoes",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/potatoes.wav"
+      "label": "the potatoes",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/potatoes.wav",
+      "whatLikeVariantLabel": "potatoes"
     },
     {
       "id": "what-carrot",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/carrot.png",
-      "label": "carrot",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/carrot.wav"
+      "label": "the carrot",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/carrot.wav",
+      "whatLikeVariantLabel": "carrot"
     },
     {
       "id": "what-trophy",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/trophy.png",
-      "label": "trophy",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/trophy.wav"
+      "label": "the trophy",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/trophy.wav",
+      "whatLikeVariantLabel": "trophy"
     },
     {
       "id": "what-crown",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/crown.png",
-      "label": "crown",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/crown.wav"
+      "label": "the crown",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/crown.wav",
+      "whatLikeVariantLabel": "crown"
     },
     {
       "id": "what-vegetables",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/vegetables.png",
-      "label": "vegetables",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/vegetables.wav"
+      "label": "the vegetables",
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/vegetables.wav",
+      "whatLikeVariantLabel": "vegetables"
     }
   ],
   "where": [
