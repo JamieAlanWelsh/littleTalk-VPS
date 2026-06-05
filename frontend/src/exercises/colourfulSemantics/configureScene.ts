@@ -3,7 +3,6 @@ import type {
     ColourfulSemanticsAssetPool,
     ColourfulSemanticsBaseSlot,
     ColourfulSemanticsOptions,
-    ColourfulSemanticsOptionalSlot,
     ColourfulSemanticsPayload,
     ColourfulSemanticsPresetId,
     ColourfulSemanticsScene,
@@ -27,54 +26,16 @@ export const getSlotsForPreset = (
     presetId: ColourfulSemanticsPresetId,
 ): ColourfulSemanticsBaseSlot[] => PRESET_SLOTS[presetId];
 
-const insertOptionalSlot = ({
-    slots,
-    optionalSlot,
-}: {
-    slots: ColourfulSemanticsSlot[];
-    optionalSlot: ColourfulSemanticsOptionalSlot;
-}): ColourfulSemanticsSlot[] => {
-    if (optionalSlot === "when") {
-        const withoutWhen = slots.filter((slot) => slot !== "when");
-        return [...withoutWhen, "when"];
-    }
-
-    const withoutWhen = slots.filter((slot) => slot !== "when");
-    const hasWhen = slots.includes("when");
-
-    if (withoutWhen.includes(optionalSlot)) {
-        return slots;
-    }
-
-    if (optionalSlot === "to-who") {
-        const whereIndex = withoutWhen.indexOf("where");
-
-        if (whereIndex !== -1) {
-            const nextSlots = [
-                ...withoutWhen.slice(0, whereIndex),
-                optionalSlot,
-                ...withoutWhen.slice(whereIndex),
-            ];
-
-            return hasWhen ? [...nextSlots, "when"] : nextSlots;
-        }
-
-        const whatIndex = withoutWhen.indexOf("what");
-
-        if (whatIndex !== -1) {
-            const nextSlots = [
-                ...withoutWhen.slice(0, whatIndex + 1),
-                optionalSlot,
-                ...withoutWhen.slice(whatIndex + 1),
-            ];
-
-            return hasWhen ? [...nextSlots, "when"] : nextSlots;
-        }
-    }
-
-    const nextSlots = [...withoutWhen, optionalSlot];
-    return hasWhen ? [...nextSlots, "when"] : nextSlots;
-};
+const ADVANCED_CANONICAL_SLOT_ORDER: ColourfulSemanticsSlot[] = [
+    "who",
+    "how",
+    "doing",
+    "what-like",
+    "what",
+    "to-who",
+    "where",
+    "when",
+];
 
 export const getActiveSlotsForScene = ({
     scene,
@@ -94,18 +55,17 @@ export const getActiveSlotsForScene = ({
         return activeBaseSlots;
     }
 
-    return options.enabledOptionalSlotIds.reduce<ColourfulSemanticsSlot[]>(
-        (slots, optionalSlot) => {
-            if (!authoredSlots.has(optionalSlot)) {
-                return slots;
-            }
+    const activeOptionalSlots = options.enabledOptionalSlotIds.filter((slot) =>
+        authoredSlots.has(slot),
+    );
 
-            return insertOptionalSlot({
-                slots,
-                optionalSlot,
-            });
-        },
-        [...activeBaseSlots],
+    const activeSlots = new Set<ColourfulSemanticsSlot>([
+        ...activeBaseSlots,
+        ...activeOptionalSlots,
+    ]);
+
+    return ADVANCED_CANONICAL_SLOT_ORDER.filter((slot) =>
+        activeSlots.has(slot),
     );
 };
 

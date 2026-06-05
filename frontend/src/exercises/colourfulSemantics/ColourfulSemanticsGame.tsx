@@ -78,10 +78,12 @@ const buildAffirmationPrompt = ({
     lockedSelectionIds,
     itemsById,
     scene,
+    isPastTense,
 }: {
     lockedSelectionIds: Array<string | null>;
     itemsById: Record<string, ColourfulSemanticsOption>;
     scene: ConfiguredColourfulSemanticsScene;
+    isPastTense: boolean;
 }) => {
     const isPluralSubject = getIsPluralSubject({
         itemsById,
@@ -107,6 +109,7 @@ const buildAffirmationPrompt = ({
                 item,
                 slot: step.slot,
                 isPluralSubject,
+                isPastTense,
             }).label;
         })
         .filter(Boolean)
@@ -224,8 +227,9 @@ export const ColourfulSemanticsGame = ({
                 lockedSelectionIds,
                 itemsById,
                 scene,
+                isPastTense: variant.id === "advanced",
             }),
-        [lockedSelectionIds, itemsById, scene],
+        [lockedSelectionIds, itemsById, scene, variant.id],
     );
 
     const onCheckAnswer = (question: Question) => {
@@ -385,6 +389,7 @@ export const ColourfulSemanticsGame = ({
                         activeStepIndex={currentQuestionIndex}
                         boardState={boardState}
                         hideTray={isFinalAffirmationView}
+                        isPastTense={variant.id === "advanced"}
                         isVoiceMuted={options.isVoiceMuted}
                         isReadOnly={isFinalAffirmationView}
                         itemCorrectnessMap={itemCorrectnessMap}

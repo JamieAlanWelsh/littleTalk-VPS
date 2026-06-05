@@ -6,140 +6,171 @@
   "defaultPresetId": "subject-verb-object-location",
   "defaultNumberOfOptions": 5,
   "availableOptionalSlotIds": [
+    "how",
+    "what-like",
     "to-who",
     "when"
   ],
   "scenes": [
     {
-      "id": "blowing-bubbles",
-      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/girl_blowing_bubbles_park.webp",
-      "targetImageAlt": "A girl blowing bubbles at the park.",
+      "id": "dog-carried-ball",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/advanced_target_images/dog_eagerly_carried_spotted_ball_girl_park_sunnyday.webp",
+      "targetImageAlt": "The dog eagerly carried the spotted ball to the girl in the park on a sunny day.",
       "steps": [
         {
-          "id": "blowing-bubbles-who",
+          "id": "dog-carried-ball-who",
           "slot": "who",
           "prompt": "Who is in the picture?",
-          "correctOptionId": "who-girl"
+          "correctOptionId": "who-dog"
         },
         {
-          "id": "blowing-bubbles-doing",
+          "id": "dog-carried-ball-how",
+          "slot": "how",
+          "prompt": "How?",
+          "correctOptionId": "how-eagerly"
+        },
+        {
+          "id": "dog-carried-ball-doing",
           "slot": "doing",
-          "prompt": "What is she doing?",
-          "correctOptionId": "doing-blowing"
+          "prompt": "What did they do?",
+          "correctOptionId": "doing-carrying"
         },
         {
-          "id": "blowing-bubbles-what",
+          "id": "dog-carried-ball-what-like",
+          "slot": "what-like",
+          "prompt": "What is it like?",
+          "correctOptionId": "what-like-spotted"
+        },
+        {
+          "id": "dog-carried-ball-what",
           "slot": "what",
-          "prompt": "What is she blowing?",
-          "correctOptionId": "what-bubbles"
+          "prompt": "What?",
+          "correctOptionId": "what-ball-bare"
         },
         {
-          "id": "blowing-bubbles-to-who",
+          "id": "dog-carried-ball-to-who",
           "slot": "to-who",
-          "prompt": "To who?",
-          "correctOptionId": "to-who-boy"
+          "prompt": "Who to?",
+          "correctOptionId": "to-who-girl"
         },
         {
-          "id": "blowing-bubbles-where",
+          "id": "dog-carried-ball-where",
           "slot": "where",
-          "prompt": "Where is she?",
+          "prompt": "Where?",
           "correctOptionId": "where-park"
         },
         {
-          "id": "blowing-bubbles-when",
+          "id": "dog-carried-ball-when",
           "slot": "when",
           "prompt": "When?",
-          "correctOptionId": "when-in-morning"
+          "correctOptionId": "when-on-sunny-day"
         }
       ]
     },
     {
-      "id": "boy-swimming-pool",
-      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/boy_swimming_blank_pool.webp",
-      "targetImageAlt": "A boy swimming at the swimming pool.",
+      "id": "cat-brought-ball",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/advanced_target_images/cat_playfully_brought_wool_ball_boy_livingroom_evening.webp",
+      "targetImageAlt": "The cat playfully brought the wool ball to the boy in the living room in the evening.",
       "steps": [
         {
-          "id": "boy-swimming-pool-who",
+          "id": "cat-brought-ball-who",
           "slot": "who",
           "prompt": "Who is in the picture?",
-          "correctOptionId": "who-boy"
+          "correctOptionId": "who-cat"
         },
         {
-          "id": "boy-swimming-pool-doing",
+          "id": "cat-brought-ball-how",
+          "slot": "how",
+          "prompt": "How?",
+          "correctOptionId": "how-playfully"
+        },
+        {
+          "id": "cat-brought-ball-doing",
           "slot": "doing",
-          "prompt": "What is he doing?",
-          "correctOptionId": "doing-swimming"
+          "prompt": "What did they do?",
+          "correctOptionId": "doing-bringing"
         },
         {
-          "id": "boy-swimming-pool-where",
-          "slot": "where",
-          "prompt": "Where is he?",
-          "correctOptionId": "where-swimming-pool"
-        }
-      ]
-    },
-    {
-      "id": "butterfly-sitting-flower",
-      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/butterfly_sitting_flower_blank.webp",
-      "targetImageAlt": "A butterfly sitting on a flower.",
-      "steps": [
-        {
-          "id": "butterfly-sitting-flower-who",
-          "slot": "who",
-          "prompt": "Who is in the picture?",
-          "correctOptionId": "who-butterfly"
+          "id": "cat-brought-ball-what-like",
+          "slot": "what-like",
+          "prompt": "What is it like?",
+          "correctOptionId": "what-like-wool"
         },
         {
-          "id": "butterfly-sitting-flower-doing",
-          "slot": "doing",
-          "prompt": "What is it doing?",
-          "correctOptionId": "doing-sitting"
-        },
-        {
-          "id": "butterfly-sitting-flower-what",
+          "id": "cat-brought-ball-what",
           "slot": "what",
-          "prompt": "What is it sitting on?",
-          "correctOptionId": "what-flower"
-        }
-      ]
-    },
-    {
-      "id": "children-digging-sandpit",
-      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/children_digging_sand_sandpit.webp",
-      "targetImageAlt": "Children digging in sand at the sandpit.",
-      "steps": [
-        {
-          "id": "children-digging-sandpit-who",
-          "slot": "who",
-          "prompt": "Who is in the picture?",
-          "correctOptionId": "who-children"
+          "prompt": "What?",
+          "correctOptionId": "what-ball-bare"
         },
         {
-          "id": "children-digging-sandpit-doing",
-          "slot": "doing",
-          "prompt": "What are they doing?",
-          "correctOptionId": "doing-digging"
-        },
-        {
-          "id": "children-digging-sandpit-what",
-          "slot": "what",
-          "prompt": "What are they digging in?",
-          "correctOptionId": "what-in-sand"
-        },
-        {
-          "id": "children-digging-sandpit-to-who",
+          "id": "cat-brought-ball-to-who",
           "slot": "to-who",
-          "prompt": "To who?",
-          "correctOptionId": "to-who-teacher"
+          "prompt": "Who to?",
+          "correctOptionId": "to-who-boy"
         },
         {
-          "id": "children-digging-sandpit-where",
+          "id": "cat-brought-ball-where",
           "slot": "where",
-          "prompt": "Where are they?",
-          "correctOptionId": "where-sandpit"
+          "prompt": "Where?",
+          "correctOptionId": "where-living-room"
         },
         {
-          "id": "children-digging-sandpit-when",
+          "id": "cat-brought-ball-when",
+          "slot": "when",
+          "prompt": "When?",
+          "correctOptionId": "when-in-evening"
+        }
+      ]
+    },
+    {
+      "id": "baker-handed-cupcake",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/advanced_target_images/baker_carefully_handed_enormous_ccupcake_lady_bakery_afternoon.webp",
+      "targetImageAlt": "The baker carefully handed the enormous cupcake to the lady in the bakery in the afternoon.",
+      "steps": [
+        {
+          "id": "baker-handed-cupcake-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-baker"
+        },
+        {
+          "id": "baker-handed-cupcake-how",
+          "slot": "how",
+          "prompt": "How?",
+          "correctOptionId": "how-carefully"
+        },
+        {
+          "id": "baker-handed-cupcake-doing",
+          "slot": "doing",
+          "prompt": "What did they do?",
+          "correctOptionId": "doing-handing"
+        },
+        {
+          "id": "baker-handed-cupcake-what-like",
+          "slot": "what-like",
+          "prompt": "What is it like?",
+          "correctOptionId": "what-like-enormous"
+        },
+        {
+          "id": "baker-handed-cupcake-what",
+          "slot": "what",
+          "prompt": "What?",
+          "correctOptionId": "what-cupcake"
+        },
+        {
+          "id": "baker-handed-cupcake-to-who",
+          "slot": "to-who",
+          "prompt": "Who to?",
+          "correctOptionId": "to-who-lady"
+        },
+        {
+          "id": "baker-handed-cupcake-where",
+          "slot": "where",
+          "prompt": "Where?",
+          "correctOptionId": "where-bakery"
+        },
+        {
+          "id": "baker-handed-cupcake-when",
           "slot": "when",
           "prompt": "When?",
           "correctOptionId": "when-in-afternoon"
@@ -147,42 +178,439 @@
       ]
     },
     {
-      "id": "children-sitting-mat-school",
-      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/children_sitting_mat_school.webp",
-      "targetImageAlt": "Children sitting on a mat at school.",
+      "id": "doctor-gave-sticker",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/advanced_target_images/doctor_reassuringly_gave_colourful_sticker_boy_clinic_appointment.webp",
+      "targetImageAlt": "The doctor reassuringly gave the colourful sticker to the boy in the clinic after his appointment.",
       "steps": [
         {
-          "id": "children-sitting-mat-school-who",
+          "id": "doctor-gave-sticker-who",
           "slot": "who",
           "prompt": "Who is in the picture?",
-          "correctOptionId": "who-children"
+          "correctOptionId": "who-doctor"
         },
         {
-          "id": "children-sitting-mat-school-doing",
+          "id": "doctor-gave-sticker-how",
+          "slot": "how",
+          "prompt": "How?",
+          "correctOptionId": "how-reassuringly"
+        },
+        {
+          "id": "doctor-gave-sticker-doing",
           "slot": "doing",
-          "prompt": "What are they doing?",
-          "correctOptionId": "doing-sitting"
+          "prompt": "What did they do?",
+          "correctOptionId": "doing-giving"
         },
         {
-          "id": "children-sitting-mat-school-what",
+          "id": "doctor-gave-sticker-what-like",
+          "slot": "what-like",
+          "prompt": "What is it like?",
+          "correctOptionId": "what-like-colourful"
+        },
+        {
+          "id": "doctor-gave-sticker-what",
           "slot": "what",
-          "prompt": "What are they sitting on?",
-          "correctOptionId": "what-mat"
+          "prompt": "What?",
+          "correctOptionId": "what-sticker"
         },
         {
-          "id": "children-sitting-mat-school-to-who",
+          "id": "doctor-gave-sticker-to-who",
           "slot": "to-who",
-          "prompt": "To who?",
-          "correctOptionId": "to-who-teacher"
+          "prompt": "Who to?",
+          "correctOptionId": "to-who-boy"
         },
         {
-          "id": "children-sitting-mat-school-where",
+          "id": "doctor-gave-sticker-where",
           "slot": "where",
-          "prompt": "Where are they?",
-          "correctOptionId": "where-school"
+          "prompt": "Where?",
+          "correctOptionId": "where-clinic"
         },
         {
-          "id": "children-sitting-mat-school-when",
+          "id": "doctor-gave-sticker-when",
+          "slot": "when",
+          "prompt": "When?",
+          "correctOptionId": "when-after-appointment"
+        }
+      ]
+    },
+    {
+      "id": "firefighter-gave-kitten",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/advanced_target_images/firefighter_confidently_gave_rescued_kitten_girl_park_afternoon.webp",
+      "targetImageAlt": "The firefighter confidently gave the rescued kitten to the girl in the park in the afternoon.",
+      "steps": [
+        {
+          "id": "firefighter-gave-kitten-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-firefighter"
+        },
+        {
+          "id": "firefighter-gave-kitten-how",
+          "slot": "how",
+          "prompt": "How?",
+          "correctOptionId": "how-confidently"
+        },
+        {
+          "id": "firefighter-gave-kitten-doing",
+          "slot": "doing",
+          "prompt": "What did they do?",
+          "correctOptionId": "doing-giving"
+        },
+        {
+          "id": "firefighter-gave-kitten-what-like",
+          "slot": "what-like",
+          "prompt": "What is it like?",
+          "correctOptionId": "what-like-rescued"
+        },
+        {
+          "id": "firefighter-gave-kitten-what",
+          "slot": "what",
+          "prompt": "What?",
+          "correctOptionId": "what-kitten"
+        },
+        {
+          "id": "firefighter-gave-kitten-to-who",
+          "slot": "to-who",
+          "prompt": "Who to?",
+          "correctOptionId": "to-who-girl"
+        },
+        {
+          "id": "firefighter-gave-kitten-where",
+          "slot": "where",
+          "prompt": "Where?",
+          "correctOptionId": "where-park"
+        },
+        {
+          "id": "firefighter-gave-kitten-when",
+          "slot": "when",
+          "prompt": "When?",
+          "correctOptionId": "when-in-afternoon"
+        }
+      ]
+    },
+    {
+      "id": "farmer-showed-pumpkin",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/advanced_target_images/farmer_cheerfully_showed_enormous_pumpkin_visitors_farm_autumn.webp",
+      "targetImageAlt": "The farmer cheerfully showed the enormous pumpkin to the visitors at the farm in the autumn.",
+      "steps": [
+        {
+          "id": "farmer-showed-pumpkin-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-farmer"
+        },
+        {
+          "id": "farmer-showed-pumpkin-how",
+          "slot": "how",
+          "prompt": "How?",
+          "correctOptionId": "how-cheerfully"
+        },
+        {
+          "id": "farmer-showed-pumpkin-doing",
+          "slot": "doing",
+          "prompt": "What did they do?",
+          "correctOptionId": "doing-showing"
+        },
+        {
+          "id": "farmer-showed-pumpkin-what-like",
+          "slot": "what-like",
+          "prompt": "What is it like?",
+          "correctOptionId": "what-like-enormous"
+        },
+        {
+          "id": "farmer-showed-pumpkin-what",
+          "slot": "what",
+          "prompt": "What?",
+          "correctOptionId": "what-pumpkin"
+        },
+        {
+          "id": "farmer-showed-pumpkin-to-who",
+          "slot": "to-who",
+          "prompt": "Who to?",
+          "correctOptionId": "to-who-visitors"
+        },
+        {
+          "id": "farmer-showed-pumpkin-where",
+          "slot": "where",
+          "prompt": "Where?",
+          "correctOptionId": "where-at-farm"
+        },
+        {
+          "id": "farmer-showed-pumpkin-when",
+          "slot": "when",
+          "prompt": "When?",
+          "correctOptionId": "when-in-autumn"
+        }
+      ]
+    },
+    {
+      "id": "gardener-gave-seedling",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/advanced_target_images/gardener_thoughtfully_gave_tiny_seedling_lady_greenhouse_spring.webp",
+      "targetImageAlt": "The gardener thoughtfully gave the tiny seedling to the lady in the greenhouse in the spring.",
+      "steps": [
+        {
+          "id": "gardener-gave-seedling-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-gardener"
+        },
+        {
+          "id": "gardener-gave-seedling-how",
+          "slot": "how",
+          "prompt": "How?",
+          "correctOptionId": "how-thoughtfully"
+        },
+        {
+          "id": "gardener-gave-seedling-doing",
+          "slot": "doing",
+          "prompt": "What did they do?",
+          "correctOptionId": "doing-giving"
+        },
+        {
+          "id": "gardener-gave-seedling-what-like",
+          "slot": "what-like",
+          "prompt": "What is it like?",
+          "correctOptionId": "what-like-tiny"
+        },
+        {
+          "id": "gardener-gave-seedling-what",
+          "slot": "what",
+          "prompt": "What?",
+          "correctOptionId": "what-seedling"
+        },
+        {
+          "id": "gardener-gave-seedling-to-who",
+          "slot": "to-who",
+          "prompt": "Who to?",
+          "correctOptionId": "to-who-lady"
+        },
+        {
+          "id": "gardener-gave-seedling-where",
+          "slot": "where",
+          "prompt": "Where?",
+          "correctOptionId": "where-greenhouse"
+        },
+        {
+          "id": "gardener-gave-seedling-when",
+          "slot": "when",
+          "prompt": "When?",
+          "correctOptionId": "when-in-spring"
+        }
+      ]
+    },
+    {
+      "id": "girl-passed-potatoes",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/advanced_target_images/girl_politely_passed_mashed_potatoes_mum_dinnertable_dinnertime.webp",
+      "targetImageAlt": "The girl politely passed the mashed potatoes to her mum at the dinner table at dinner time.",
+      "steps": [
+        {
+          "id": "girl-passed-potatoes-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-girl"
+        },
+        {
+          "id": "girl-passed-potatoes-how",
+          "slot": "how",
+          "prompt": "How?",
+          "correctOptionId": "how-politely"
+        },
+        {
+          "id": "girl-passed-potatoes-doing",
+          "slot": "doing",
+          "prompt": "What did they do?",
+          "correctOptionId": "doing-passing"
+        },
+        {
+          "id": "girl-passed-potatoes-what-like",
+          "slot": "what-like",
+          "prompt": "What is it like?",
+          "correctOptionId": "what-like-mashed"
+        },
+        {
+          "id": "girl-passed-potatoes-what",
+          "slot": "what",
+          "prompt": "What?",
+          "correctOptionId": "what-potatoes"
+        },
+        {
+          "id": "girl-passed-potatoes-to-who",
+          "slot": "to-who",
+          "prompt": "Who to?",
+          "correctOptionId": "to-who-mum"
+        },
+        {
+          "id": "girl-passed-potatoes-where",
+          "slot": "where",
+          "prompt": "Where?",
+          "correctOptionId": "where-dinner-table"
+        },
+        {
+          "id": "girl-passed-potatoes-when",
+          "slot": "when",
+          "prompt": "When?",
+          "correctOptionId": "when-at-dinner-time"
+        }
+      ]
+    },
+    {
+      "id": "rabbit-carried-carrot",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/advanced_target_images/rabbit_happily_carried_crunchy_carrot_baby_hutch_morning.webp",
+      "targetImageAlt": "The rabbit happily carried the crunchy carrot to its baby in the hutch during the morning.",
+      "steps": [
+        {
+          "id": "rabbit-carried-carrot-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-rabbit"
+        },
+        {
+          "id": "rabbit-carried-carrot-how",
+          "slot": "how",
+          "prompt": "How?",
+          "correctOptionId": "how-happily"
+        },
+        {
+          "id": "rabbit-carried-carrot-doing",
+          "slot": "doing",
+          "prompt": "What did they do?",
+          "correctOptionId": "doing-carrying"
+        },
+        {
+          "id": "rabbit-carried-carrot-what-like",
+          "slot": "what-like",
+          "prompt": "What is it like?",
+          "correctOptionId": "what-like-crunchy"
+        },
+        {
+          "id": "rabbit-carried-carrot-what",
+          "slot": "what",
+          "prompt": "What?",
+          "correctOptionId": "what-carrot"
+        },
+        {
+          "id": "rabbit-carried-carrot-to-who",
+          "slot": "to-who",
+          "prompt": "Who to?",
+          "correctOptionId": "to-who-baby"
+        },
+        {
+          "id": "rabbit-carried-carrot-where",
+          "slot": "where",
+          "prompt": "Where?",
+          "correctOptionId": "where-hutch"
+        },
+        {
+          "id": "rabbit-carried-carrot-when",
+          "slot": "when",
+          "prompt": "When?",
+          "correctOptionId": "when-during-morning"
+        }
+      ]
+    },
+    {
+      "id": "teacher-presented-trophy",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/advanced_target_images/teacher_enthusiastically_presented_gold_trophy_boy_school_aftercompetition.webp",
+      "targetImageAlt": "The teacher enthusiastically presented the gold trophy to the boy in the school hall after the competition.",
+      "steps": [
+        {
+          "id": "teacher-presented-trophy-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-teacher"
+        },
+        {
+          "id": "teacher-presented-trophy-how",
+          "slot": "how",
+          "prompt": "How?",
+          "correctOptionId": "how-enthusiastically"
+        },
+        {
+          "id": "teacher-presented-trophy-doing",
+          "slot": "doing",
+          "prompt": "What did they do?",
+          "correctOptionId": "doing-presenting"
+        },
+        {
+          "id": "teacher-presented-trophy-what-like",
+          "slot": "what-like",
+          "prompt": "What is it like?",
+          "correctOptionId": "what-like-gold"
+        },
+        {
+          "id": "teacher-presented-trophy-what",
+          "slot": "what",
+          "prompt": "What?",
+          "correctOptionId": "what-trophy"
+        },
+        {
+          "id": "teacher-presented-trophy-to-who",
+          "slot": "to-who",
+          "prompt": "Who to?",
+          "correctOptionId": "to-who-boy"
+        },
+        {
+          "id": "teacher-presented-trophy-where",
+          "slot": "where",
+          "prompt": "Where?",
+          "correctOptionId": "where-school-hall"
+        },
+        {
+          "id": "teacher-presented-trophy-when",
+          "slot": "when",
+          "prompt": "When?",
+          "correctOptionId": "when-after-competition"
+        }
+      ]
+    },
+    {
+      "id": "vet-returned-kitten",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/advanced_target_images/vet_gently_returned_sleepy_kitten_girl_vet_morning.webp",
+      "targetImageAlt": "The vet gently returned the sleepy kitten to the girl in the animal clinic in the morning.",
+      "steps": [
+        {
+          "id": "vet-returned-kitten-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-vet"
+        },
+        {
+          "id": "vet-returned-kitten-how",
+          "slot": "how",
+          "prompt": "How?",
+          "correctOptionId": "how-gently"
+        },
+        {
+          "id": "vet-returned-kitten-doing",
+          "slot": "doing",
+          "prompt": "What did they do?",
+          "correctOptionId": "doing-returning"
+        },
+        {
+          "id": "vet-returned-kitten-what-like",
+          "slot": "what-like",
+          "prompt": "What is it like?",
+          "correctOptionId": "what-like-sleepy"
+        },
+        {
+          "id": "vet-returned-kitten-what",
+          "slot": "what",
+          "prompt": "What?",
+          "correctOptionId": "what-kitten"
+        },
+        {
+          "id": "vet-returned-kitten-to-who",
+          "slot": "to-who",
+          "prompt": "Who to?",
+          "correctOptionId": "to-who-girl"
+        },
+        {
+          "id": "vet-returned-kitten-where",
+          "slot": "where",
+          "prompt": "Where?",
+          "correctOptionId": "where-animal-clinic"
+        },
+        {
+          "id": "vet-returned-kitten-when",
           "slot": "when",
           "prompt": "When?",
           "correctOptionId": "when-in-morning"
@@ -190,64 +618,112 @@
       ]
     },
     {
-      "id": "dog-swimming-river",
-      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/dog_swimming_blank_river.webp",
-      "targetImageAlt": "A dog swimming in a river.",
+      "id": "pirate-presented-crown",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/advanced_target_images/pirate_proudly_presented_jewelled_crown_captain_ship_sunset.webp",
+      "targetImageAlt": "The pirate proudly presented the jewelled crown to the captain on the ship at sunset.",
       "steps": [
         {
-          "id": "dog-swimming-river-who",
+          "id": "pirate-presented-crown-who",
           "slot": "who",
           "prompt": "Who is in the picture?",
-          "correctOptionId": "who-dog"
+          "correctOptionId": "who-pirate"
         },
         {
-          "id": "dog-swimming-river-doing",
+          "id": "pirate-presented-crown-how",
+          "slot": "how",
+          "prompt": "How?",
+          "correctOptionId": "how-proudly"
+        },
+        {
+          "id": "pirate-presented-crown-doing",
           "slot": "doing",
-          "prompt": "What is it doing?",
-          "correctOptionId": "doing-swimming"
+          "prompt": "What did they do?",
+          "correctOptionId": "doing-presenting"
         },
         {
-          "id": "dog-swimming-river-where",
+          "id": "pirate-presented-crown-what-like",
+          "slot": "what-like",
+          "prompt": "What is it like?",
+          "correctOptionId": "what-like-jewelled"
+        },
+        {
+          "id": "pirate-presented-crown-what",
+          "slot": "what",
+          "prompt": "What?",
+          "correctOptionId": "what-crown"
+        },
+        {
+          "id": "pirate-presented-crown-to-who",
+          "slot": "to-who",
+          "prompt": "Who to?",
+          "correctOptionId": "to-who-captain"
+        },
+        {
+          "id": "pirate-presented-crown-where",
           "slot": "where",
-          "prompt": "Where is it?",
-          "correctOptionId": "where-river"
+          "prompt": "Where?",
+          "correctOptionId": "where-ship"
+        },
+        {
+          "id": "pirate-presented-crown-when",
+          "slot": "when",
+          "prompt": "When?",
+          "correctOptionId": "when-at-sunset"
         }
       ]
     },
     {
-      "id": "boy-licking-icecream",
-      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/boy_licking_icecream_blank.webp",
-      "targetImageAlt": "A boy licking an ice cream.",
+      "id": "boy-picked-up-vegetables",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/advanced_target_images/boy_helpfully_pickedup_fallen_vegetables_shopkeeper_supermarket_afternoon.webp",
+      "targetImageAlt": "The boy helpfully picked up the fallen vegetables for the shopkeeper in the supermarket in the afternoon.",
       "steps": [
         {
-          "id": "boy-licking-icecream-who",
+          "id": "boy-picked-up-vegetables-who",
           "slot": "who",
           "prompt": "Who is in the picture?",
           "correctOptionId": "who-boy"
         },
         {
-          "id": "boy-licking-icecream-doing",
+          "id": "boy-picked-up-vegetables-how",
+          "slot": "how",
+          "prompt": "How?",
+          "correctOptionId": "how-helpfully"
+        },
+        {
+          "id": "boy-picked-up-vegetables-doing",
           "slot": "doing",
-          "prompt": "What is he doing?",
-          "correctOptionId": "doing-licking"
+          "prompt": "What did they do?",
+          "correctOptionId": "doing-picking-up"
         },
         {
-          "id": "boy-licking-icecream-what",
+          "id": "boy-picked-up-vegetables-what-like",
+          "slot": "what-like",
+          "prompt": "What is it like?",
+          "correctOptionId": "what-like-fallen"
+        },
+        {
+          "id": "boy-picked-up-vegetables-what",
           "slot": "what",
-          "prompt": "What does he have?",
-          "correctOptionId": "what-ice-cream"
+          "prompt": "What?",
+          "correctOptionId": "what-vegetables"
         },
         {
-          "id": "boy-licking-icecream-to-who",
+          "id": "boy-picked-up-vegetables-to-who",
           "slot": "to-who",
-          "prompt": "To who?",
-          "correctOptionId": "to-who-girl"
+          "prompt": "Who to?",
+          "correctOptionId": "to-who-shopkeeper"
         },
         {
-          "id": "boy-licking-icecream-when",
+          "id": "boy-picked-up-vegetables-where",
+          "slot": "where",
+          "prompt": "Where?",
+          "correctOptionId": "where-supermarket"
+        },
+        {
+          "id": "boy-picked-up-vegetables-when",
           "slot": "when",
           "prompt": "When?",
-          "correctOptionId": "when-in-summer"
+          "correctOptionId": "when-in-afternoon"
         }
       ]
     }

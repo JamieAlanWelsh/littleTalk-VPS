@@ -25,6 +25,7 @@ interface ColourfulSemanticsBoardProps {
     activeStepIndex: number;
     boardState: SentenceBoardState;
     hideTray?: boolean;
+    isPastTense?: boolean;
     isVoiceMuted?: boolean;
     itemCorrectnessMap?: Record<string, boolean>;
     isReadOnly?: boolean;
@@ -91,6 +92,7 @@ export const ColourfulSemanticsBoard = ({
     activeStepIndex,
     boardState,
     hideTray = false,
+    isPastTense = false,
     isVoiceMuted = false,
     itemCorrectnessMap = {},
     isReadOnly = false,
@@ -123,6 +125,7 @@ export const ColourfulSemanticsBoard = ({
             item,
             slot,
             isPluralSubject,
+            isPastTense,
         });
 
         if (!sfxUrl) {
@@ -147,6 +150,7 @@ export const ColourfulSemanticsBoard = ({
             item,
             slot,
             isPluralSubject,
+            isPastTense,
         });
 
         return (
@@ -210,6 +214,7 @@ export const ColourfulSemanticsBoard = ({
                                           item: itemsById[slotItemId],
                                           slot: step.slot,
                                           isPluralSubject,
+                                          isPastTense,
                                       }).label ?? slotMetadata.label)
                                     : slotMetadata.label;
 
@@ -265,6 +270,7 @@ export const ColourfulSemanticsBoard = ({
                                     scene.steps[activeStepIndex]?.slot ??
                                     "doing",
                                 isPluralSubject,
+                                isPastTense,
                             }).label
                         }
                         itemsById={itemsById}

@@ -8,6 +8,7 @@ interface ResolvePresentationParams {
     item: ColourfulSemanticsOption;
     slot: ColourfulSemanticsSlot;
     isPluralSubject: boolean;
+    isPastTense: boolean;
 }
 
 interface SubjectPluralityParams {
@@ -40,7 +41,15 @@ export const resolveOptionPresentation = ({
     item,
     slot,
     isPluralSubject,
+    isPastTense,
 }: ResolvePresentationParams) => {
+    if (slot === "doing" && isPastTense) {
+        return {
+            label: item.pastTenseLabel ?? item.label,
+            sfxUrl: item.pastTenseSfxUrl ?? item.sfxUrl,
+        };
+    }
+
     if (slot !== "doing" || !isPluralSubject) {
         return {
             label: item.label,

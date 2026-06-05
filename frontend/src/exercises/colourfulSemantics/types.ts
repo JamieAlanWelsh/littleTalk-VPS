@@ -122,6 +122,8 @@ export const ColourfulSemanticsOptionSchema = z.object({
     isPlural: z.boolean().optional(),
     pluralLabel: z.string().optional(),
     pluralSfxUrl: z.string().optional(),
+    pastTenseLabel: z.string().optional(),
+    pastTenseSfxUrl: z.string().optional(),
 });
 
 export type ColourfulSemanticsOption = z.infer<
