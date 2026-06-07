@@ -5,9 +5,12 @@ import standardVariantData from "./data/standardVariant.json";
 import {
     ColourfulSemanticsAssetPoolSchema,
     ColourfulSemanticsPayloadSchema,
+    COLOURFUL_SEMANTICS_ASSET_POOL_SLOT_IDS,
     ColourfulSemanticsVariantConfigSchema,
     ColourfulSemanticsVariantIdSchema,
     ColourfulSemanticsVariantPackSchema,
+    type ColourfulSemanticsAssetPool,
+    type ColourfulSemanticsOptionAllowlistBySlot,
     type ColourfulSemanticsPayload,
     type ColourfulSemanticsVariantConfig,
     type ColourfulSemanticsVariantId,
@@ -19,6 +22,36 @@ export const DEFAULT_COLOURFUL_SEMANTICS_VARIANT_ID: ColourfulSemanticsVariantId
 
 const getSharedAssetPool = () =>
     ColourfulSemanticsAssetPoolSchema.parse(sharedAssetPoolData);
+
+const applyOptionAllowlistBySlot = ({
+    assetPool,
+    optionAllowlistBySlot,
+}: {
+    assetPool: ColourfulSemanticsAssetPool;
+    optionAllowlistBySlot?: ColourfulSemanticsOptionAllowlistBySlot;
+}): ColourfulSemanticsAssetPool => {
+    if (!optionAllowlistBySlot) {
+        return assetPool;
+    }
+
+    const nextAssetPool = { ...assetPool };
+
+    for (const slotId of COLOURFUL_SEMANTICS_ASSET_POOL_SLOT_IDS) {
+        const allowedOptionIds = optionAllowlistBySlot[slotId];
+
+        if (!allowedOptionIds) {
+            continue;
+        }
+
+        const allowedOptionIdSet = new Set(allowedOptionIds);
+
+        nextAssetPool[slotId] = assetPool[slotId].filter((option) =>
+            allowedOptionIdSet.has(option.id),
+        );
+    }
+
+    return nextAssetPool;
+};
 
 const getVariantPacks = (): Record<
     ColourfulSemanticsVariantId,
@@ -64,7 +97,10 @@ export const getColourfulSemanticsVariantData = (
 
     return {
         payload: ColourfulSemanticsPayloadSchema.parse({
-            ...getSharedAssetPool(),
+            ...applyOptionAllowlistBySlot({
+                assetPool: getSharedAssetPool(),
+                optionAllowlistBySlot: variantPack.optionAllowlistBySlot,
+            }),
             scenes: variantPack.scenes,
         }),
         variant: getVariantConfig(variantPack),

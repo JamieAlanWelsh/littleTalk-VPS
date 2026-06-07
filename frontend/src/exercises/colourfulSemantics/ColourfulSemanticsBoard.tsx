@@ -25,6 +25,7 @@ interface ColourfulSemanticsBoardProps {
     activeStepIndex: number;
     boardState: SentenceBoardState;
     hideTray?: boolean;
+    isPastTense?: boolean;
     isVoiceMuted?: boolean;
     itemCorrectnessMap?: Record<string, boolean>;
     isReadOnly?: boolean;
@@ -91,6 +92,7 @@ export const ColourfulSemanticsBoard = ({
     activeStepIndex,
     boardState,
     hideTray = false,
+    isPastTense = false,
     isVoiceMuted = false,
     itemCorrectnessMap = {},
     isReadOnly = false,
@@ -101,6 +103,8 @@ export const ColourfulSemanticsBoard = ({
     showFeedback = false,
 }: ColourfulSemanticsBoardProps) => {
     const { play } = useAudio();
+    const useWhatLikeVariantLabel =
+        isPastTense && scene.steps.some((step) => step.slot === "what-like");
     const isPluralSubject = getIsPluralSubject({
         itemsById,
         scene,
@@ -123,6 +127,8 @@ export const ColourfulSemanticsBoard = ({
             item,
             slot,
             isPluralSubject,
+            isPastTense,
+            useWhatLikeVariantLabel,
         });
 
         if (!sfxUrl) {
@@ -147,6 +153,8 @@ export const ColourfulSemanticsBoard = ({
             item,
             slot,
             isPluralSubject,
+            isPastTense,
+            useWhatLikeVariantLabel,
         });
 
         return (
@@ -210,6 +218,8 @@ export const ColourfulSemanticsBoard = ({
                                           item: itemsById[slotItemId],
                                           slot: step.slot,
                                           isPluralSubject,
+                                          isPastTense,
+                                          useWhatLikeVariantLabel,
                                       }).label ?? slotMetadata.label)
                                     : slotMetadata.label;
 
@@ -265,6 +275,8 @@ export const ColourfulSemanticsBoard = ({
                                     scene.steps[activeStepIndex]?.slot ??
                                     "doing",
                                 isPluralSubject,
+                                isPastTense,
+                                useWhatLikeVariantLabel,
                             }).label
                         }
                         itemsById={itemsById}
