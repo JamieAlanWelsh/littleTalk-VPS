@@ -66,18 +66,17 @@
                 </div>
             </div>
             <p class="comparison-subtitle">
-                <strong>Note:</strong> Fluctuations in accuracy are to be expected as difficulty increases.
+                <strong>Note:</strong> Fluctuations in pupil performance may be expected as difficulty increases - strive for consistent improvement over time.
             </p>
             <div class="dashboard-filters">
                 <div class="filter-row">
                     <div class="chart-filter-buttons chart-filter-buttons--exercise-groups">
-                        <button class="filter-btn active" data-exercise="all">All ({{ total_sessions }})</button>
                         {% for group in exercise_groups %}
                             <div class="exercise-stage-group">
                                 <p class="exercise-stage-label">{{ group.label }}</p>
                                 <div class="exercise-stage-buttons">
                                     {% for exercise in group.exercises %}
-                                        <button class="filter-btn" data-exercise="{{ exercise.id }}">{{ exercise.name }} ({{ exercise.count }})</button>
+                                        <button class="filter-btn {% if forloop.first and forloop.parentloop.first %}active{% endif %}" data-exercise="{{ exercise.id }}">{{ exercise.name }} ({{ exercise.count }})</button>
                                     {% endfor %}
                                 </div>
                             </div>
@@ -87,15 +86,15 @@
 
                 <div class="filter-row">
                     <div class="chart-filter-buttons">
-                        <button class="filter-btn active" data-metric="exercises">Sessions Completed</button>
+                        <button class="filter-btn active" data-metric="difficulty">Difficulty Selected</button>
                         <button class="filter-btn" data-metric="accuracy">Accuracy (%)</button>
-                        <button class="filter-btn" data-metric="difficulty">Difficulty Level</button>
+                        <button class="filter-btn" data-metric="time_elapsed">Time Elapsed</button>
                     </div>
                 </div>
 
                 <div class="filter-row">
                     <div class="chart-filter-buttons">
-                        <button class="filter-btn" data-smart="layer-metrics" title="Enable selecting multiple metrics to overlay on the same chart">Layer Metrics</button>
+                        <button class="filter-btn" data-smart="layer-metrics" title="Enable selecting multiple metrics to overlay on the same chart">Select Multiple</button>
                         <button class="filter-btn" data-smart="plot-best-fit" title="Visualise overall direction and trend">Line of Best Fit</button>
                         <button class="filter-btn" data-smart="smooth-data" title="Reduce noise and outliers by applying a moving average algorithm">Data Smoothing</button>
                     </div>

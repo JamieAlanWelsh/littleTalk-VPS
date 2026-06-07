@@ -18,21 +18,26 @@ document.addEventListener("DOMContentLoaded", () => {
     let progressChart = null;
 
     const metricLabels = {
-        exercises: "Sessions Completed",
         accuracy: "Accuracy (%)",
         difficulty: "Difficulty Level",
+        time_elapsed: "Time Elapsed (mins)",
     };
 
     const metricColors = {
-        exercises: "#7B61FF",
         accuracy: "#00B894",
         difficulty: "#F39C12",
+        time_elapsed: "#2D8CFF",
     };
 
     // Helper functions to get active states
     function getSelectedExercise() {
         const activeBtn = document.querySelector('[data-exercise].active');
-        return activeBtn ? activeBtn.dataset.exercise : 'all';
+        if (activeBtn) {
+            return activeBtn.dataset.exercise;
+        }
+
+        const firstExerciseBtn = document.querySelector('[data-exercise]');
+        return firstExerciseBtn ? firstExerciseBtn.dataset.exercise : "";
     }
 
     function getSelectedMetrics() {
@@ -125,6 +130,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
             return Math.round((sum / count) * 100) / 100;
         });
+    }
+
+    function buildDifficultyLabelsByValue(metricData) {
+        const values = metricData?.values || [];
+        const labels = metricData?.labels || [];
+        const byValue = new Map();
+
+        values.forEach((value, index) => {
+            if (value === null || value === undefined) {
+                return;
+            }
+
+            const label = labels[index];
+            if (!label) {
+                return;
+            }
+
+            byValue.set(Number(value).toFixed(2), label);
+        });
+
+        return byValue;
+    }
+
+    function getValidNumericValues(values) {
+        return (values || []).filter(
+            (value) => value !== null && value !== undefined && !Number.isNaN(Number(value)),
+        );
     }
 
     function buildChart(labels, metricsData) {
@@ -230,8 +262,41 @@ document.addEventListener("DOMContentLoaded", () => {
                 return value + "%";
             };
         } else if (isDifficultyMetric) {
+            const difficultyMetricData = metricsData.find(
+                (metricData) => metricData.metric === "difficulty",
+            );
+            const difficultyLabelsByValue = buildDifficultyLabelsByValue(
+                difficultyMetricData,
+            );
+            const difficultyValues = getValidNumericValues(
+                difficultyMetricData?.values,
+            ).map((value) => Number(value));
+
+            if (difficultyValues.length > 0) {
+                const minDifficulty = Math.floor(Math.min(...difficultyValues));
+                const maxDifficulty = Math.ceil(Math.max(...difficultyValues));
+                yAxisConfig.min = minDifficulty;
+                yAxisConfig.max = minDifficulty === maxDifficulty
+                    ? minDifficulty + 1
+                    : maxDifficulty;
+            }
+
+            yAxisConfig.ticks.stepSize = 1;
+
             yAxisConfig.ticks.callback = (value) => {
-                return Number.isInteger(value) ? value : "";
+                const numericValue = Number(value);
+                if (Number.isNaN(numericValue)) {
+                    return "";
+                }
+
+                const mappedLabel = difficultyLabelsByValue.get(
+                    numericValue.toFixed(2),
+                );
+                if (mappedLabel) {
+                    return mappedLabel;
+                }
+
+                return "";
             };
         }
 
@@ -306,46 +371,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    function updateMetricAvailability() {
-        const exerciseId = getSelectedExercise();
-        const isAllExercises = exerciseId === "all";
-        
-        const accuracyButton = document.querySelector('[data-metric="accuracy"]');
-        const difficultyButton = document.querySelector('[data-metric="difficulty"]');
-        const exercisesButton = document.querySelector('[data-metric="exercises"]');
-        
-        if (isAllExercises) {
-            // Only "Sessions Completed" available
-            if (accuracyButton) {
-                accuracyButton.disabled = true;
-                accuracyButton.classList.remove('active');
-                accuracyButton.style.opacity = '0.5';
-                accuracyButton.style.cursor = 'not-allowed';
-            }
-            if (difficultyButton) {
-                difficultyButton.disabled = true;
-                difficultyButton.classList.remove('active');
-                difficultyButton.style.opacity = '0.5';
-                difficultyButton.style.cursor = 'not-allowed';
-            }
-            if (exercisesButton && !exercisesButton.classList.contains('active')) {
-                exercisesButton.classList.add('active');
-            }
-        } else {
-            // All metrics available
-            if (accuracyButton) {
-                accuracyButton.disabled = false;
-                accuracyButton.style.opacity = '1';
-                accuracyButton.style.cursor = 'pointer';
-            }
-            if (difficultyButton) {
-                difficultyButton.disabled = false;
-                difficultyButton.style.opacity = '1';
-                difficultyButton.style.cursor = 'pointer';
-            }
-        }
-    }
-
     function updateBestFitVisibility() {
         const bestFitButton = document.querySelector('[data-smart="plot-best-fit"]');
         if (!bestFitButton) {
@@ -399,14 +424,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const metricsText = selectedMetrics.map(m => metricLabels[m]).join(" vs ");
             
-            // Add exercise name to title if specific exercise is selected
             let titleText = metricsText;
-            if (exerciseId !== 'all') {
-                const activeExerciseBtn = document.querySelector('[data-exercise].active');
-                if (activeExerciseBtn) {
-                    const exerciseName = activeExerciseBtn.textContent.split('(')[0].trim();
-                    titleText = `${metricsText} for ${exerciseName}`;
-                }
+            const activeExerciseBtn = document.querySelector('[data-exercise].active');
+            if (activeExerciseBtn) {
+                const exerciseName = activeExerciseBtn.textContent.split('(')[0].trim();
+                titleText = `${metricsText} for ${exerciseName}`;
             }
             
             chartTitle.textContent = titleText;
@@ -426,7 +448,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Initialize
-    updateMetricAvailability();
     updateBestFitVisibility();
     fetchProgressData();
 
@@ -477,7 +498,6 @@ document.addEventListener("DOMContentLoaded", () => {
         button.addEventListener("click", () => {
             exerciseButtons.forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
-            updateMetricAvailability();
             fetchProgressData();
         });
     });

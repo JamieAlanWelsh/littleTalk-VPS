@@ -209,7 +209,7 @@ def learner_progress_data(request):
     """JSON API: returns time-series progress data for a given learner.
 
     Accepts query params: learner_uuid, date_range (days or 'all'), exercise_id,
-    and a comma-separated metrics list (exp, exercises, accuracy, difficulty).
+    and a comma-separated metrics list (exp, exercises, accuracy, difficulty, time_elapsed).
     Used to populate the progress chart on the learner dashboard.
     """
 
@@ -302,6 +302,12 @@ def learner_progress_data(request):
                     metrics_data[metric].append(round(difficulty, 2))
                 except (ValueError, TypeError):
                     metrics_data[metric].append(None)
+            elif metric == "time_elapsed":
+                if session.time_elapsed is None:
+                    metrics_data[metric].append(None)
+                else:
+                    elapsed_minutes = session.time_elapsed.total_seconds() / 60
+                    metrics_data[metric].append(round(max(elapsed_minutes, 0), 1))
 
         difficulty_labels.append(session.difficulty_label or "")
 

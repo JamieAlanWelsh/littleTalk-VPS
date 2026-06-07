@@ -10,7 +10,7 @@ from littleTalkApp.models import Learner
 
 PRACTISE_STAGES = {
     1: {
-        "label": "Stage 1 - Foundations",
+        "label": "Stage 1 - Early Years",
         "exercises": [
             "colourful_semantics_early_sentence_building",
             "spot_on",
@@ -19,7 +19,7 @@ PRACTISE_STAGES = {
         ],
     },
     2: {
-        "label": "Stage 2 - Building Language",
+        "label": "Stage 2 - Key Stage 1",
         "exercises": [
             "colourful_semantics",
             "think_and_find",
@@ -29,7 +29,7 @@ PRACTISE_STAGES = {
         ],
     },
     3: {
-        "label": "Stage 3 - Advanced Language",
+        "label": "Stage 3 - Key Stage 2",
         "exercises": [
             "colourful_semantics_advanced_sentence_building",
             "story_train_advanced_sequencing",
