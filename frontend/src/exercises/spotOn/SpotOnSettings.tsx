@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import styles from "./SpotOnSettings.module.css";
 import {
+    DEFAULT_SPOT_ON_PREPOSITIONS,
     SPOT_ON_PREPOSITIONS,
     type SpotOnOptions,
     type SpotOnPreposition,
 } from "./types";
 
-const DEFAULT_SELECTED_PREPOSITIONS = [...SPOT_ON_PREPOSITIONS];
+const DEFAULT_SELECTED_PREPOSITIONS = [...DEFAULT_SPOT_ON_PREPOSITIONS];
 
 interface SpotOnSettingsProps {
     onSetOptions: (options: SpotOnOptions) => void;

@@ -4,7 +4,6 @@ import WhosWhoGame from "./WhosWhoGame";
 import WhosWhoSettingsScreen from "./WhosWhoSettingsScreen";
 import { generateWhosWhoScenarios } from "./scenarioGenerator";
 import {
-    WhosWhoPronouns,
     type WhosWhoExercisePayload,
     type WhosWhoScenario,
     type WhosWhoSettings,
@@ -18,7 +17,7 @@ const EXERCISE_METADATA = {
 
 const DEFAULT_OPTIONS: WhosWhoSettings = {
     choiceCount: 3,
-    selectedPronouns: [...WhosWhoPronouns],
+    selectedPronouns: ["he", "she"],
 };
 
 interface WhosWhoProps {

@@ -11,6 +11,7 @@ import type {
     ConceptQuestItem,
     ConceptQuestOptions,
     ConceptQuestPayload,
+    ExerciseDifficulty,
     Picture,
     Question,
     QuestionState,
@@ -29,6 +30,21 @@ const WORD_FORMS: Record<ConceptQuestConcept, [string, string, string]> = {
     short: ["short", "shorter", "shortest"],
     long: ["long", "longer", "longest"],
     tall: ["tall", "taller", "tallest"],
+};
+
+const getComplexityLabel = (complexity: ConceptQuestComplexity): string => {
+    switch (complexity) {
+        case 1:
+            return "Positive";
+        case 2:
+            return "Comparative";
+        case 3:
+            return "Superlative";
+        case 4:
+            return "Comparative+";
+        case 5:
+            return "Descriptive";
+    }
 };
 
 interface ConceptQuestGameProps {
@@ -186,6 +202,16 @@ export const ConceptQuestGame = ({
         () => buildRounds(payload, options),
         [options, payload],
     );
+    const selectedComplexity: ConceptQuestComplexity =
+        options.complexities.reduce<ConceptQuestComplexity>(
+            (currentMax, complexity) =>
+                complexity > currentMax ? complexity : currentMax,
+            1,
+        );
+    const difficulty: ExerciseDifficulty = {
+        level: selectedComplexity,
+        label: getComplexityLabel(selectedComplexity),
+    };
     const tracking = useExerciseTracking(gameData.questions.length);
 
     const onCheckAnswer = (question: Question) => {
@@ -232,6 +258,7 @@ export const ConceptQuestGame = ({
             questions={gameData.questions}
             answers={gameData.answers}
             tracking={tracking}
+            difficulty={difficulty}
             onCheckAnswer={onCheckAnswer}
             onResetQuestion={onResetAnswer}
             onSettingsRequested={onSettingsRequested}

@@ -10,7 +10,7 @@ import { DraggableImage } from "../../components/DraggableImage/DraggableImage";
 import { DroppableImageZone } from "../../components/DroppableImageZone/DroppableImageZone";
 import { useExerciseTracking } from "../../hooks";
 import ExerciseLayout from "../../layouts/exerciseLayout/ExerciseLayout";
-import type { QuestionState } from "../../lib/types";
+import type { ExerciseDifficulty, QuestionState } from "../../lib/types";
 import type {
     SpotOnGridLocation,
     SpotOnPreposition,
@@ -20,12 +20,74 @@ import styles from "./spotOnGame.module.css";
 
 interface SpotOnGameProps {
     questions: SpotOnQuestion[];
+    selectedPrepositions: SpotOnPreposition[];
     onSettingsRequested?: () => void;
 }
 
 const EXERCISE_METADATA = {
     id: "spot-on",
 };
+
+const PREPOSITION_DIFFICULTY_MAP: Record<
+    SpotOnPreposition,
+    ExerciseDifficulty
+> = {
+    in: {
+        level: 1,
+        label: "Basic Prepositions",
+    },
+    on: {
+        level: 1,
+        label: "Basic Prepositions",
+    },
+    under: {
+        level: 1,
+        label: "Basic Prepositions",
+    },
+    above: {
+        level: 2,
+        label: "Intermediate Prepositions",
+    },
+    below: {
+        level: 2,
+        label: "Intermediate Prepositions",
+    },
+    "next to": {
+        level: 3,
+        label: "Advanced Prepositions",
+    },
+    behind: {
+        level: 3,
+        label: "Advanced Prepositions",
+    },
+    "in front of": {
+        level: 3,
+        label: "Advanced Prepositions",
+    },
+    between: {
+        level: 3,
+        label: "Advanced Prepositions",
+    },
+};
+
+const DEFAULT_SPOT_ON_DIFFICULTY: ExerciseDifficulty = {
+    level: 1,
+    label: "Basic Prepositions",
+};
+
+const getDifficultyFromPrepositions = (
+    prepositions: SpotOnPreposition[],
+): ExerciseDifficulty =>
+    prepositions.reduce<ExerciseDifficulty>(
+        (currentDifficulty, preposition) => {
+            const prepositionDifficulty =
+                PREPOSITION_DIFFICULTY_MAP[preposition];
+            return prepositionDifficulty.level > currentDifficulty.level
+                ? prepositionDifficulty
+                : currentDifficulty;
+        },
+        DEFAULT_SPOT_ON_DIFFICULTY,
+    );
 
 const GRID_ROWS = 5;
 const GRID_COLUMNS = 5;
@@ -104,9 +166,11 @@ const isLocationCorrect = (
 
 export const SpotOnGame = ({
     questions,
+    selectedPrepositions,
     onSettingsRequested,
 }: SpotOnGameProps) => {
     const tracking = useExerciseTracking(questions.length);
+    const difficulty = getDifficultyFromPrepositions(selectedPrepositions);
     const [questionState, setQuestionState] = useState<QuestionState>({
         selectedIconIds: [],
         answerState: "notAnswered",
@@ -211,6 +275,7 @@ export const SpotOnGame = ({
             }))}
             answers={questions}
             tracking={tracking}
+            difficulty={difficulty}
             onCheckAnswer={onCheckAnswer}
             onResetQuestion={onResetQuestion}
             onSettingsRequested={onSettingsRequested}

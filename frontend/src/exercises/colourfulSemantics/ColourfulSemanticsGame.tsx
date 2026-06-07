@@ -2,7 +2,11 @@ import type { DragEndEvent } from "@dnd-kit/abstract";
 import { useMemo, useState } from "react";
 import { useExerciseTracking } from "../../hooks";
 import ExerciseLayout from "../../layouts/exerciseLayout/ExerciseLayout";
-import type { Question, QuestionState } from "../../lib/types";
+import type {
+    ExerciseDifficulty,
+    Question,
+    QuestionState,
+} from "../../lib/types";
 import ColourfulSemanticsBoard from "./ColourfulSemanticsBoard";
 import { configureScene } from "./configureScene";
 import { getIsPluralSubject, resolveOptionPresentation } from "./presentation";
@@ -35,6 +39,17 @@ const getExerciseIdForVariant = (
     }
 
     return "colourful-semantics";
+};
+
+const SLOT_LABELS: Record<string, string> = {
+    who: "Subject",
+    doing: "Verb",
+    what: "Object",
+    where: "Location",
+    "to-who": "To Who",
+    when: "When",
+    "what-like": "What Like",
+    how: "How",
 };
 
 interface ColourfulSemanticsGameProps {
@@ -213,6 +228,13 @@ export const ColourfulSemanticsGame = ({
         ...cumulativeRoundStats.attemptsPerQuestion,
         ...tracking.attemptsPerQuestion,
     ];
+    const difficulty: ExerciseDifficulty = {
+        level: Math.max(1, scene.steps.length),
+        label:
+            scene.steps
+                .map((step) => SLOT_LABELS[step.slot] ?? step.slot)
+                .join("+") || "Standard",
+    };
     const submissionStatsOverride = isFinalRepetition
         ? {
               startedAt: sessionStartedAt || tracking.startedAt,
@@ -324,6 +346,7 @@ export const ColourfulSemanticsGame = ({
             showSkip={true}
             onSkipRequested={onSkipRequested}
             tracking={tracking}
+            difficulty={difficulty}
             submissionStatsOverride={submissionStatsOverride}
         >
             {(_, currentQuestionIndex) => {
