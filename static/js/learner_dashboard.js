@@ -188,6 +188,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 pointHoverRadius: 4,
                 spanGaps: true,
                 borderWidth: 2,
+                difficultyLabels: metricData.labels || [],
             });
         });
 
@@ -217,10 +218,9 @@ document.addEventListener("DOMContentLoaded", () => {
             ticks: {},
         };
         
-        // Check if we're viewing difficulty metric for specific exercises
+        // Check if we're viewing the difficulty metric
         const selectedMetrics = getSelectedMetrics();
         const isDifficultyMetric = selectedMetrics.length === 1 && selectedMetrics[0] === "difficulty";
-        const exerciseId = getSelectedExercise();
         
         // If multiple metrics, use normalized 0-100 scale
         if (metricsData.length > 1) {
@@ -229,83 +229,10 @@ document.addEventListener("DOMContentLoaded", () => {
             yAxisConfig.ticks.callback = (value) => {
                 return value + "%";
             };
-        } else if (isDifficultyMetric && exerciseId === "Colourful Semantics") {
-            // Custom labels for Colourful Semantics difficulty levels
-            yAxisConfig.min = 0;
-            yAxisConfig.max = 50;
-            let lastLabel = "";
+        } else if (isDifficultyMetric) {
             yAxisConfig.ticks.callback = (value) => {
-                let label;
-                if (value < 10) label = "Subject";
-                else if (value < 20) label = "Verb";
-                else if (value < 30) label = "Subject+Verb";
-                else if (value < 40) label = "Subject+Verb+Object";
-                else label = "Subject+Verb+Object+Location";
-                
-                if (label === lastLabel) {
-                    return "Max";
-                }
-                lastLabel = label;
-                return label;
+                return Number.isInteger(value) ? value : "";
             };
-            yAxisConfig.ticks.stepSize = 10;
-        } else if (isDifficultyMetric && exerciseId === "Categorisation") {
-            // Custom labels for Categorisation difficulty levels
-            yAxisConfig.min = 10;
-            yAxisConfig.max = 40;
-            let lastLabel = "";
-            yAxisConfig.ticks.callback = (value) => {
-                let label;
-                if (value < 20) label = "2 Categories";
-                else if (value < 30) label = "3 Categories";
-                else label = "4 Categories";
-                
-                if (label === lastLabel) {
-                    return "Max";
-                }
-                lastLabel = label;
-                return label;
-            };
-            yAxisConfig.ticks.stepSize = 10;
-        } else if (isDifficultyMetric && exerciseId === "Think and Find") {
-            // Custom labels for Think and Find difficulty levels
-            yAxisConfig.min = 10;
-            yAxisConfig.max = 40;
-            let lastLabel = "";
-            yAxisConfig.ticks.callback = (value) => {
-                let label;
-                if (value <= 10) label = "2 options";
-                else if (value <= 20) label = "3 options";
-                else if (value <= 30) label = "4 options";
-                else label = "5 options";
-                
-                if (label === lastLabel) {
-                    return "Max";
-                }
-                lastLabel = label;
-                return label;
-            };
-            yAxisConfig.ticks.stepSize = 10;
-        } else if (isDifficultyMetric && exerciseId === "Concept Quest") {
-            // Custom labels for Concept Quest difficulty levels
-            yAxisConfig.min = 0;
-            yAxisConfig.max = 50;
-            let lastLabel = "";
-            yAxisConfig.ticks.callback = (value) => {
-                let label;
-                if (value < 10) label = "Big";
-                else if (value < 20) label = "Small";
-                else if (value < 30) label = "Short";
-                else if (value < 40) label = "Long";
-                else label = "Tall";
-                
-                if (label === lastLabel) {
-                    return "Max";
-                }
-                lastLabel = label;
-                return label;
-            };
-            yAxisConfig.ticks.stepSize = 10;
         }
 
         const xAxisConfig = {
@@ -350,6 +277,25 @@ document.addEventListener("DOMContentLoaded", () => {
                     tooltip: {
                         mode: "index",
                         intersect: false,
+                        callbacks: {
+                            label: (context) => {
+                                const dataset = context.dataset;
+                                const value = context.parsed.y;
+                                const baseLabel = `${dataset.label}: ${value}`;
+
+                                if (dataset.label !== metricLabels.difficulty) {
+                                    return baseLabel;
+                                }
+
+                                const difficultyLabels = dataset.difficultyLabels || [];
+                                const pointLabel = difficultyLabels[context.dataIndex];
+                                if (!pointLabel) {
+                                    return baseLabel;
+                                }
+
+                                return `${baseLabel} (${pointLabel})`;
+                            },
+                        },
                     },
                 },
                 interaction: {

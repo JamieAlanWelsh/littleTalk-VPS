@@ -9,8 +9,52 @@ from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.utils import timezone
 
+from littleTalkApp.content import GAME_DESCRIPTIONS
 from littleTalkApp.models import Cohort, ExerciseSession, Learner
+from littleTalkApp.views_modules.practise import (
+    CANONICAL_TO_PRACTISE_KEY,
+    PRACTISE_STAGES,
+)
 from littleTalkApp.views_modules.assessment import get_screener_comparison_data
+
+
+def _build_dashboard_exercise_groups(exercise_counts):
+    groups = []
+
+    for stage_number in sorted(PRACTISE_STAGES.keys()):
+        stage_data = PRACTISE_STAGES[stage_number]
+        stage_exercises = []
+
+        for practise_key in stage_data.get("exercises", []):
+            matching_slug = next(
+                (
+                    slug
+                    for slug, mapped_key in CANONICAL_TO_PRACTISE_KEY.items()
+                    if mapped_key == practise_key
+                ),
+                None,
+            )
+            if not matching_slug:
+                continue
+
+            title = GAME_DESCRIPTIONS.get(practise_key, {}).get("title", matching_slug)
+            stage_exercises.append(
+                {
+                    "id": matching_slug,
+                    "name": title,
+                    "count": exercise_counts.get(matching_slug, 0),
+                }
+            )
+
+        groups.append(
+            {
+                "id": f"stage-{stage_number}",
+                "label": stage_data.get("label", f"Stage {stage_number}"),
+                "exercises": stage_exercises,
+            }
+        )
+
+    return groups
 
 
 @login_required
@@ -74,13 +118,7 @@ def learner_dashboard(request):
         total_count = ExerciseSession.objects.filter(learner=selected_learner).count()
         exercise_counts["all"] = total_count
 
-    exercise_choices = [
-        {"id": "Colourful Semantics", "name": "Colourful Semantics", "count": exercise_counts.get("Colourful Semantics", 0)},
-        {"id": "Think and Find", "name": "Think and Find", "count": exercise_counts.get("Think and Find", 0)},
-        {"id": "Concept Quest", "name": "Concept Quest", "count": exercise_counts.get("Concept Quest", 0)},
-        {"id": "Categorisation", "name": "Categorisation", "count": exercise_counts.get("Categorisation", 0)},
-        {"id": "Story Train", "name": "Story Train", "count": exercise_counts.get("Story Train", 0)},
-    ]
+    exercise_groups = _build_dashboard_exercise_groups(exercise_counts)
 
     targets_data = None
     if selected_learner:
@@ -157,7 +195,7 @@ def learner_dashboard(request):
         "selected_learner": selected_learner,
         "cohorts": cohorts,
         "selected_cohort": int(selected_cohort_id) if selected_cohort_id and selected_cohort_id.isdigit() else None,
-        "exercise_choices": exercise_choices,
+        "exercise_groups": exercise_groups,
         "total_sessions": exercise_counts.get("all", 0),
         "targets_data": targets_data,
         "screener_data": screener_data,
@@ -236,6 +274,7 @@ def learner_progress_data(request):
 
     dates = []
     metrics_data = {metric: [] for metric in metrics}
+    difficulty_labels = []
 
     cumulative_exp = prior_count * 10
     cumulative_exercises = prior_count
@@ -264,11 +303,21 @@ def learner_progress_data(request):
                 except (ValueError, TypeError):
                     metrics_data[metric].append(None)
 
+        difficulty_labels.append(session.difficulty_label or "")
+
     metrics_data_response = [
-        {
-            "metric": metric,
-            "values": metrics_data[metric],
-        }
+        (
+            {
+                "metric": metric,
+                "values": metrics_data[metric],
+                "labels": difficulty_labels,
+            }
+            if metric == "difficulty"
+            else {
+                "metric": metric,
+                "values": metrics_data[metric],
+            }
+        )
         for metric in metrics
     ]
 

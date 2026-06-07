@@ -70,10 +70,17 @@
             </p>
             <div class="dashboard-filters">
                 <div class="filter-row">
-                    <div class="chart-filter-buttons">
+                    <div class="chart-filter-buttons chart-filter-buttons--exercise-groups">
                         <button class="filter-btn active" data-exercise="all">All ({{ total_sessions }})</button>
-                        {% for exercise in exercise_choices %}
-                            <button class="filter-btn" data-exercise="{{ exercise.id }}">{{ exercise.name }} ({{ exercise.count }})</button>
+                        {% for group in exercise_groups %}
+                            <div class="exercise-stage-group">
+                                <p class="exercise-stage-label">{{ group.label }}</p>
+                                <div class="exercise-stage-buttons">
+                                    {% for exercise in group.exercises %}
+                                        <button class="filter-btn" data-exercise="{{ exercise.id }}">{{ exercise.name }} ({{ exercise.count }})</button>
+                                    {% endfor %}
+                                </div>
+                            </div>
                         {% endfor %}
                     </div>
                 </div>
