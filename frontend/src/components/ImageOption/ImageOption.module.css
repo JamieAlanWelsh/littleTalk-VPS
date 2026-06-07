@@ -18,19 +18,33 @@
     border-radius: var(--border-radius-light);
     overflow: var(--icon-block-overflow, visible);
     cursor: pointer;
-    transition: all 0.2s ease-in-out;
+    transition:
+        background-color 0.2s ease-in-out,
+        border-color 0.2s ease-in-out,
+        box-shadow 0.2s ease-in-out,
+        opacity 0.2s ease-in-out;
     text-align: center;
     width: var(--icon-block-width, 6.875rem);
     height: var(--icon-block-height, 6.875rem);
     justify-content: center;
     flex-shrink: 0;
     touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-touch-callout: none;
 }
 
-.icon-block:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-color: var(--accent-color-dark);
+@media (hover: hover) and (pointer: fine) {
+    .icon-block:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-color: var(--accent-color-dark);
+    }
+}
+
+.icon-block.dragging {
+    transition: none;
 }
 
 .icon-block.interactive {
@@ -90,6 +104,8 @@
     height: var(--icon-block-img-height, 5.625rem);
     object-fit: var(--icon-block-img-object-fit, contain);
     margin-bottom: 0;
+    -webkit-user-drag: none;
+    user-select: none;
 }
 
 /* Responsive Design */

@@ -12,6 +12,7 @@ interface ImageOptionProps {
     image: Picture;
     isCorrect: boolean | null;
     isSelected: boolean;
+    isDragging?: boolean;
     isDisabled?: boolean;
     optionBackgroundColor?: string;
     isBorderless?: boolean;
@@ -28,6 +29,7 @@ export const ImageOption = React.forwardRef<
             image,
             isCorrect,
             isSelected,
+            isDragging = false,
             isDisabled = false,
             optionBackgroundColor,
             isBorderless = false,
@@ -57,7 +59,7 @@ export const ImageOption = React.forwardRef<
 
         return (
             <button
-                className={`${styles["icon-block"]} ${styles[stateClass]} ${optionBackgroundColor ? styles.withCustomBackground : ""} ${isBorderless ? styles.borderless : ""}`.trim()}
+                className={`${styles["icon-block"]} ${styles[stateClass]} ${optionBackgroundColor ? styles.withCustomBackground : ""} ${isBorderless ? styles.borderless : ""} ${isDragging ? styles.dragging : ""}`.trim()}
                 onClick={onClick}
                 onPointerEnter={onPointerEnter}
                 disabled={isDisabled}
@@ -65,6 +67,7 @@ export const ImageOption = React.forwardRef<
                     image.label || image.altText || `Option ${image.id}`
                 }
                 type="button"
+                draggable={false}
                 ref={ref}
                 style={
                     optionBackgroundColor
@@ -79,6 +82,7 @@ export const ImageOption = React.forwardRef<
                     src={image.imageUrl}
                     alt={image.altText || image.label || "Icon option"}
                     className={styles["icon-block-image"]}
+                    draggable={false}
                     style={{ pointerEvents: "none" }}
                 />
             </button>

@@ -35,6 +35,9 @@ select {
 body.exercise-page {
     --exercise-chrome-max-width: 1000px;
     --exercise-chrome-inline-padding: 1.25rem;
+    /* Touch-only drag visual nudge to align the draggable under touch cursor. */
+    --exercise-touch-drag-hotspot-offset-x: 0px;
+    --exercise-touch-drag-hotspot-offset-y: 0px;
     --exercise-content-actionbar-gap: 2rem;
     --exercise-content-gap-top-reclaim-ratio: 0.5;
     --exercise-zoom-base: 1;
