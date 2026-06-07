@@ -15,39 +15,50 @@
 
 {% if learners %}
     <div class="container-box container--dash container--dash-no-bg">
-        <!-- Dashboard Header -->
-        <div class="dashboard-header">
-            {% if request.user.profile.role != 'parent' and cohorts %}
-            <div class="header-learner-section">
-                <label class="header-label" for="cohort-select">Cohort:</label>
-                <select id="cohort-select" class="select" style="margin-bottom: 0;">
-                    <option value="">All Cohorts</option>
-                    {% for cohort in cohorts %}
-                        <option value="{{ cohort.id }}" {% if cohort.id == selected_cohort %}selected{% endif %}>
-                            {{ cohort.name }}
-                        </option>
-                    {% endfor %}
-                </select>
+        <div class="dashboard-section dashboard-top-section no-print">
+            <div class="dashboard-top-layout">
+                <div class="dashboard-top-left">
+                    <div class="dashboard-top-row dashboard-top-row--selectors">
+                        {% if request.user.profile.role != 'parent' and cohorts %}
+                        <div class="header-learner-section">
+                            <label class="header-label" for="cohort-select">Cohort:</label>
+                            <select id="cohort-select" class="select" style="margin-bottom: 0;">
+                                <option value="">All Cohorts</option>
+                                {% for cohort in cohorts %}
+                                    <option value="{{ cohort.id }}" {% if cohort.id == selected_cohort %}selected{% endif %}>
+                                        {{ cohort.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        {% endif %}
+                        <div class="header-learner-section">
+                            <label class="header-label" for="learner-select">Learner:</label>
+                            <select id="learner-select" class="select" style="margin-bottom: 0;">
+                                {% for learner in learners %}
+                                    <option value="{{ learner.learner_uuid }}" {% if selected_learner and learner.id == selected_learner.id %}selected{% endif %}>
+                                        {{ learner.name }} ({{ learner.session_count }})
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-top-row dashboard-top-row--filters">
+                        <div class="section-filter">
+                            <button class="filter-btn active" data-section-filter="all">All</button>
+                            <button class="filter-btn" data-section-filter="recents">Recents</button>
+                            <button class="filter-btn" data-section-filter="chart">Exercises</button>
+                            <button class="filter-btn" data-section-filter="targets">Targets</button>
+                            <button class="filter-btn" data-section-filter="screener">Screener</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-top-right">
+                    <button id="print-dashboard" class="btn btn--white btn--small btn--border no-print" title="Print this dashboard">🖨 Print</button>
+                </div>
             </div>
-            {% endif %}
-            <div class="header-learner-section">
-                <label class="header-label" for="learner-select">Learner:</label>
-                <select id="learner-select" class="select" style="margin-bottom: 0;">
-                    {% for learner in learners %}
-                        <option value="{{ learner.learner_uuid }}" {% if selected_learner and learner.id == selected_learner.id %}selected{% endif %}>
-                            {{ learner.name }} ({{ learner.session_count }})
-                        </option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="section-filter">
-                <button class="filter-btn active" data-section-filter="all">All</button>
-                <button class="filter-btn" data-section-filter="recents">Recents</button>
-                <button class="filter-btn" data-section-filter="chart">Exercises</button>
-                <button class="filter-btn" data-section-filter="targets">Targets</button>
-                <button class="filter-btn" data-section-filter="screener">Screener</button>
-            </div>
-            <button id="print-dashboard" class="btn btn--white btn--small btn--border no-print" title="Print this dashboard">🖨 Print</button>
         </div>
 
         <div class="dashboard-section" data-section="recents">
