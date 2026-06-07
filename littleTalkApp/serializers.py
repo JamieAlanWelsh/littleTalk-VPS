@@ -17,7 +17,8 @@ class SubmitExerciseSerializer(serializers.Serializer):
     
     # ExerciseSession fields (all required)
     exercise_id = serializers.CharField(max_length=255)
-    difficulty_selected = serializers.CharField(max_length=50)
+    difficulty_level = serializers.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(1000)])
+    difficulty_label = serializers.CharField(max_length=100, required=False, allow_blank=True)
     started_at = serializers.DateTimeField()
     completed_at = serializers.DateTimeField()
     total_questions = serializers.IntegerField(validators=[MinValueValidator(0)])
