@@ -35,7 +35,19 @@ select {
 body.exercise-page {
     --exercise-chrome-max-width: 1000px;
     --exercise-chrome-inline-padding: 1.25rem;
-    --exercise-header-reserved-height: calc(env(safe-area-inset-top) + 4rem);
+    --exercise-top-bar-button-size: 44px;
+    --exercise-top-bar-pad-top: calc(env(safe-area-inset-top) + 1rem);
+    --exercise-top-bar-pad-bottom: 0.75rem;
+    --exercise-header-reserved-height: calc(
+        var(--exercise-top-bar-pad-top) + var(--exercise-top-bar-button-size) +
+            var(--exercise-top-bar-pad-bottom)
+    );
+    --exercise-action-bar-row-height: 3.5rem;
+    --exercise-action-bar-pad-y: 1rem;
+    --exercise-actionbar-reserved-height: calc(
+        env(safe-area-inset-bottom) + (var(--exercise-action-bar-pad-y) * 2) +
+            var(--exercise-action-bar-row-height)
+    );
     /* Zoom factor applied to the exercise board (see .exerciseScaleArea).
        Defaults to full size and steps down on shorter viewports so tall
        exercises stay fully on screen, mimicking a browser "zoom out". */
@@ -43,7 +55,7 @@ body.exercise-page {
     margin: 0;
     padding: 20px;
     padding-top: calc(8px + var(--exercise-header-reserved-height));
-    padding-bottom: 140px;
+    padding-bottom: var(--exercise-actionbar-reserved-height);
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -52,8 +64,14 @@ body.exercise-page {
 }
 
 /* Progressive "zoom out" for short viewports (e.g. laptops ~800px tall).
-   The body reserves ~90px (header) + 140px (action bar) that do NOT zoom, so
+   The body reserves fixed header/action-bar heights that do NOT zoom, so
    the ramp is intentionally aggressive to keep the board fully on screen. */
+@media (max-height: 1024px) {
+    body.exercise-page {
+        --exercise-zoom: 0.9;
+    }
+}
+
 @media (max-height: 950px) {
     body.exercise-page {
         --exercise-zoom: 0.8;

@@ -79,8 +79,12 @@
     z-index: 20;
     background-color: transparent;
     width: 100%;
-    padding: calc(env(safe-area-inset-top) + 1rem)
-        var(--exercise-chrome-inline-padding, 1.25rem) 0.75rem;
+    padding: var(
+            --exercise-top-bar-pad-top,
+            calc(env(safe-area-inset-top) + 1rem)
+        )
+        var(--exercise-chrome-inline-padding, 1.25rem)
+        var(--exercise-top-bar-pad-bottom, 0.75rem);
     box-sizing: border-box;
 }
 
@@ -113,10 +117,10 @@
 .progressBarButtonSpacer,
 .exitButton,
 .settingsButton {
-    width: 44px;
-    height: 44px;
-    min-width: 44px;
-    min-height: 44px;
+    width: var(--exercise-top-bar-button-size, 44px);
+    height: var(--exercise-top-bar-button-size, 44px);
+    min-width: var(--exercise-top-bar-button-size, 44px);
+    min-height: var(--exercise-top-bar-button-size, 44px);
     flex-shrink: 0;
 }
 
