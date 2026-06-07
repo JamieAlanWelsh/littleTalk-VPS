@@ -128,8 +128,10 @@ export const ColourfulSemanticsSettingsScreen = ({
                             Base Sentence Blocks
                         </h3>
                         <p className={styles.sectionDescription}>
-                            Advanced always includes the stage&apos;s authored
-                            base blocks up to location when it exists.
+                            Colourful Semantics Plus always includes a subject,
+                            verb, object, and location to build the base
+                            sentence. Please choose from the options below to
+                            add to this sentence.
                         </p>
                         <div className={styles.slotChipRow}>
                             {getSlotsForPreset(options.presetId).map((slot) => (
