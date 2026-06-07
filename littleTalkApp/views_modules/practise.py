@@ -191,7 +191,7 @@ def build_recommendation_explanation(learner, current_exercise_id):
             return {
                 "exercise_id": current_exercise_id,
                 "stage": stage_number,
-                "skills": reason_skills[:3],
+                "skills": [],
                 "summary": (
                     "We recommend Colourful Semantics for pupils within their likely working range, as it helps to build on taught concepts and supports the development of a range of language skills in a structured manner."
                 ),

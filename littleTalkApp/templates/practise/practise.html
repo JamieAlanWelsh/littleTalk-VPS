@@ -68,14 +68,16 @@
                             <button type="button" class="recommendation-popup__close" data-why-this-close aria-label="Close explanation">×</button>
                         </div>
                         <p>{{ recommendation_explanation.summary }}</p>
-                        <div class="recommendation-popup__skills">
-                            <strong>Skills identified from the screener:</strong>
-                            <ul>
-                                {% for skill in recommendation_explanation.skills %}
-                                    <li>{{ skill }}</li>
-                                {% endfor %}
-                            </ul>
-                        </div>
+                        {% if recommendation_explanation.skills %}
+                            <div class="recommendation-popup__skills">
+                                <strong>Skills identified from the screener:</strong>
+                                <ul>
+                                    {% for skill in recommendation_explanation.skills %}
+                                        <li>{{ skill }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
                         {% if recommendation_explanation.stage %}
                             <p class="recommendation-popup__note">The exercise is stage {{ recommendation_explanation.stage }} - estimated to be within the child's likely working range.</p>
                         {% endif %}
