@@ -36,6 +36,10 @@ urlpatterns = [
     path('screener/start/', assessment_views.start_assessment, name='start_assessment'),
     path('screener/save-all/', assessment_views.save_all_assessment_answers, name='save_all_assessment_answers'),
     path('screener/summary/', assessment_views.assessment_summary, name='assessment_summary'),
+    path('screener/summary/old/', assessment_views.assessment_summary_old, name='assessment_summary_old'),
+    path('screener/v2/start/', assessment_views.start_assessment_v2, name='start_assessment_v2'),
+    path('screener/v2/save-all/', assessment_views.save_all_assessment_answers_v2, name='save_all_assessment_answers_v2'),
+    path('screener/v2/summary/', assessment_views.assessment_summary_v2, name='assessment_summary_v2'),
 
     # Login and logout URLs
     path('login/', auth_app_views.CustomLoginView.as_view(), name='login'),

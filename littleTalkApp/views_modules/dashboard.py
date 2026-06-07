@@ -105,9 +105,14 @@ def learner_dashboard(request):
 
     screener_data = None
     if selected_learner:
-        comparison_data = get_screener_comparison_data(selected_learner)
+        comparison_data = get_screener_comparison_data(selected_learner, screener_version=2)
 
-        latest_session = selected_learner.answers.order_by("-timestamp").values("session_id").first()
+        latest_session = (
+            selected_learner.answers.filter(screener_version=2)
+            .order_by("-timestamp")
+            .values("session_id")
+            .first()
+        )
         current_strong_skills = []
         current_support_skills = []
 
@@ -129,7 +134,12 @@ def learner_dashboard(request):
         if comparison_data and comparison_data["has_previous"]:
             skills_gained_count = len(comparison_data["skills_gained"])
 
-            first_session = selected_learner.answers.order_by("timestamp").values("assessment_date").first()
+            first_session = (
+                selected_learner.answers.filter(screener_version=2)
+                .order_by("timestamp")
+                .values("assessment_date")
+                .first()
+            )
             if first_session:
                 first_screener_date = first_session["assessment_date"]
 

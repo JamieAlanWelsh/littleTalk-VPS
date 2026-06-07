@@ -135,3 +135,65 @@ class SubmitExerciseApiTests(BaseFlowTestMixin, TestCase):
         self.assertFalse(
             ExerciseSession.objects.filter(learner=self.learner).exists()
         )
+
+    def test_submit_exercise_advances_recommendation_index_when_current_is_completed(self):
+        self.learner.recommended_exercise_ids = [
+            "whats-in-the-bag",
+            "story-train-plus",
+            "in-the-know",
+        ]
+        self.learner.recommendation_index = 1
+        self.learner.recommendation_index_updated_at = timezone.now()
+        self.learner.save(
+            update_fields=[
+                "recommended_exercise_ids",
+                "recommendation_index",
+                "recommendation_index_updated_at",
+            ]
+        )
+
+        payload = self._build_payload(
+            exercise_id="story-train-plus",
+            nonce="nonce-advance-current",
+        )
+
+        response = self.client.post(
+            self.url,
+            data=json.dumps(payload),
+            content_type="application/json",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.learner.refresh_from_db()
+        self.assertEqual(self.learner.recommendation_index, 2)
+
+    def test_submit_exercise_does_not_advance_recommendation_index_for_non_current(self):
+        self.learner.recommended_exercise_ids = [
+            "whats-in-the-bag",
+            "story-train-plus",
+            "in-the-know",
+        ]
+        self.learner.recommendation_index = 1
+        self.learner.recommendation_index_updated_at = timezone.now()
+        self.learner.save(
+            update_fields=[
+                "recommended_exercise_ids",
+                "recommendation_index",
+                "recommendation_index_updated_at",
+            ]
+        )
+
+        payload = self._build_payload(
+            exercise_id="whats-in-the-bag",
+            nonce="nonce-no-advance",
+        )
+
+        response = self.client.post(
+            self.url,
+            data=json.dumps(payload),
+            content_type="application/json",
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.learner.refresh_from_db()
+        self.assertEqual(self.learner.recommendation_index, 1)

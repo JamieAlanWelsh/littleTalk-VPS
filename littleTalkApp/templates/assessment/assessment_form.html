@@ -120,7 +120,7 @@
 
     // Submit all answers at the end
     function submitAllAnswers() {
-        fetch('/screener/save-all/', {
+        fetch('{{ save_url|default:"/screener/v2/save-all/" }}', {
             method: 'POST',
             body: JSON.stringify(answers),
             headers: {

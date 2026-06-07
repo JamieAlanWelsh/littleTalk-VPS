@@ -10,7 +10,7 @@
 
 {% block content %}
 
-<h1 class="no-print">Screener Summary</h1>
+<h1 class="no-print">{% if is_old_results %}Old Screener Summary{% else %}Screener Summary{% endif %}</h1>
 
 <div class="container-box container--dash screener-summary-print">
     <section>
@@ -39,7 +39,7 @@
         <div class="summary-button-row no-print" style="display: flex; gap: 15px; margin-bottom: 24px;">
             <a href="{% url 'profile' %}" class="btn btn--white btn--full btn--small">Profile</a>
             <a href="{% url 'practise' %}" class="btn btn--white btn--full btn--small">Practise</a>
-            <a href="{% url 'start_assessment' %}" class="btn btn--white btn--full btn--small">Submit Re-Screener</a>
+            <a href="{{ rescreener_url }}" class="btn btn--white btn--full btn--small">Submit Re-Screener</a>
         </div>
 
         {% if has_previous %}
