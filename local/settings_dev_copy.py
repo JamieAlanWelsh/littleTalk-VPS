@@ -202,6 +202,36 @@ STRIPE_WEBHOOK_SECRET = os.getenv('STRIPE_WEBHOOK_SECRET')
 if not STRIPE_WEBHOOK_SECRET:
     raise ValueError("Missing STRIPE_WEBHOOK_SECRET environment variable")
 
+# Skolon integration
+SKOLON_CLIENT_ID = os.getenv('SKOLON_CLIENT_ID')
+if not SKOLON_CLIENT_ID:
+    raise ValueError("Missing SKOLON_CLIENT_ID environment variable")
+
+SKOLON_CLIENT_SECRET = os.getenv('SKOLON_CLIENT_SECRET')
+if not SKOLON_CLIENT_SECRET:
+    raise ValueError("Missing SKOLON_CLIENT_SECRET environment variable")
+
+SKOLON_ENV = os.getenv('SKOLON_ENV', 'production')
+
+SKOLON_IDP_BASE_URL = (
+    'https://idp.skolon.com'
+    if SKOLON_ENV == 'production'
+    else 'https://idp-test.skolon.com'
+)
+
+SKOLON_TOKEN_URL = (
+    'https://idp.skolon.com/oauth/access_token'
+    if SKOLON_ENV == 'production'
+    else 'https://idp-test.skolon.com/oauth/access_token'
+)
+SKOLON_API_BASE_URL = (
+    'https://api.skolon.com'
+    if SKOLON_ENV == 'production'
+    else 'https://api-test.skolon.com'
+)
+SKOLON_SSO_CALLBACK_URL = os.getenv('SKOLON_SSO_CALLBACK_URL', 'https://chatterdillo.com/sso/callback')
+
+
 CALENDLY_URL = os.getenv('CALENDLY_URL', 'https://calendly.com/chatterdillo-support/30min')
 
 # Honeypot settings
