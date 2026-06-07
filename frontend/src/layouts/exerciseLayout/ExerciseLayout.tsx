@@ -147,6 +147,19 @@ export const ExerciseLayout = <AnswerType,>({
 
         let frameId = 0;
 
+        // Convergence guards: some exercises (e.g. Story Train) have content
+        // whose height is not perfectly proportional to zoom, so the
+        // "measure -> set zoom -> measure" loop can oscillate between two
+        // states. We quantize, apply a deadband, and detect 2-cycles so the
+        // controller always settles instead of flickering.
+        const ZOOM_EPSILON = 0.01; // ignore changes smaller than this
+        const ZOOM_QUANTUM = 0.01; // snap zoom to 1% steps
+        const OSCILLATION_LIMIT = 4; // consecutive flips before we lock
+        let appliedZoom = Number.NaN;
+        let lastDirection = 0; // -1 shrinking, +1 growing
+        let oscillationCount = 0;
+        let isLocked = false;
+
         const resolveLengthToPx = (rawValue: string): number => {
             const trimmedValue = rawValue.trim();
             if (!trimmedValue) {
@@ -170,6 +183,10 @@ export const ExerciseLayout = <AnswerType,>({
         };
 
         const recalculateAdaptiveZoom = () => {
+            if (isLocked) {
+                return;
+            }
+
             const body = document.body;
             const bodyStyles = window.getComputedStyle(body);
             const zoomBase =
@@ -203,17 +220,68 @@ export const ExerciseLayout = <AnswerType,>({
 
             const unscaledHeight = scaledHeight / currentZoom;
             const fitZoom = availableHeight / unscaledHeight;
-            const nextZoom = Math.min(1, fitZoom);
-
-            body.style.setProperty(
-                "--exercise-zoom-auto",
-                Math.max(0.35, nextZoom).toFixed(4),
+            // Snap to a quantum so subpixel reflow differences collapse to the
+            // same target instead of producing a slightly different value each
+            // pass.
+            const rawZoom = Math.min(1, fitZoom);
+            const nextZoom = Math.max(
+                0.35,
+                Math.round(rawZoom / ZOOM_QUANTUM) * ZOOM_QUANTUM,
             );
+
+            if (Number.isNaN(appliedZoom)) {
+                appliedZoom = nextZoom;
+                body.style.setProperty(
+                    "--exercise-zoom-auto",
+                    nextZoom.toFixed(4),
+                );
+                return;
+            }
+
+            const delta = nextZoom - appliedZoom;
+            if (Math.abs(delta) < ZOOM_EPSILON) {
+                // Stable: settled within the deadband.
+                lastDirection = 0;
+                oscillationCount = 0;
+                return;
+            }
+
+            const direction = delta > 0 ? 1 : -1;
+            if (lastDirection !== 0 && direction !== lastDirection) {
+                // Reversed direction since last change: a limit cycle. After a
+                // few flips, lock onto the smaller (safe, no-overflow) value.
+                oscillationCount += 1;
+                if (oscillationCount >= OSCILLATION_LIMIT) {
+                    const safeZoom = Math.min(appliedZoom, nextZoom);
+                    appliedZoom = safeZoom;
+                    isLocked = true;
+                    body.style.setProperty(
+                        "--exercise-zoom-auto",
+                        safeZoom.toFixed(4),
+                    );
+                    return;
+                }
+            } else {
+                oscillationCount = 0;
+            }
+
+            lastDirection = direction;
+            appliedZoom = nextZoom;
+            body.style.setProperty("--exercise-zoom-auto", nextZoom.toFixed(4));
         };
 
         const scheduleRecalculate = () => {
             window.cancelAnimationFrame(frameId);
             frameId = window.requestAnimationFrame(recalculateAdaptiveZoom);
+        };
+
+        // External triggers (viewport resize / live style updates) should be
+        // able to re-fit even if we previously locked due to a limit cycle.
+        const scheduleExternalRecalculate = () => {
+            isLocked = false;
+            lastDirection = 0;
+            oscillationCount = 0;
+            scheduleRecalculate();
         };
 
         const resizeObserver = new ResizeObserver(() => {
@@ -222,7 +290,7 @@ export const ExerciseLayout = <AnswerType,>({
         resizeObserver.observe(scaleArea);
 
         const headObserver = new MutationObserver(() => {
-            scheduleRecalculate();
+            scheduleExternalRecalculate();
         });
         headObserver.observe(document.head, {
             childList: true,
@@ -231,11 +299,11 @@ export const ExerciseLayout = <AnswerType,>({
             attributes: true,
         });
 
-        window.addEventListener("resize", scheduleRecalculate);
+        window.addEventListener("resize", scheduleExternalRecalculate);
         scheduleRecalculate();
 
         return () => {
-            window.removeEventListener("resize", scheduleRecalculate);
+            window.removeEventListener("resize", scheduleExternalRecalculate);
             resizeObserver.disconnect();
             headObserver.disconnect();
             window.cancelAnimationFrame(frameId);
