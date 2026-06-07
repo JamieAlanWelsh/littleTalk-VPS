@@ -5,6 +5,27 @@ from django.http import HttpResponseForbidden
 from .models import Role
 
 
+class NoCacheHtmlMiddleware:
+    """
+    Prevent browsers/proxies from caching HTML documents.
+    Static assets remain cacheable via static file server/CDN policy.
+    """
+
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        response = self.get_response(request)
+
+        content_type = response.get("Content-Type", "")
+        if content_type.startswith("text/html"):
+            response["Cache-Control"] = "no-cache, no-store, must-revalidate, private"
+            response["Pragma"] = "no-cache"
+            response["Expires"] = "0"
+
+        return response
+
+
 class AccessControlMiddleware(MiddlewareMixin):
     """
     Restricts access based on parent subscription or school license.
