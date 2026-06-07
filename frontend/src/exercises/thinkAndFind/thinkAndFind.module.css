@@ -1,0 +1,39 @@
+.optionsGrid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.25rem;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.optionsGrid button {
+    width: clamp(180px, 24vw, 280px);
+    height: clamp(180px, 24vw, 280px);
+    padding: 1.25rem;
+    --icon-block-interactive-bg: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.optionsGrid img {
+    width: clamp(130px, 20vw, 220px);
+    height: clamp(130px, 20vw, 220px);
+}
+
+@media (max-width: 640px) {
+    .optionsGrid {
+        gap: 0.75rem;
+    }
+
+    .optionsGrid button {
+        width: clamp(130px, 40vw, 180px);
+        height: clamp(130px, 40vw, 180px);
+    }
+
+    .optionsGrid img {
+        width: clamp(90px, 28vw, 130px);
+        height: clamp(90px, 28vw, 130px);
+    }
+}

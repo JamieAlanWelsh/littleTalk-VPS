@@ -1,0 +1,389 @@
+{
+  "rounds": 5,
+  "imageSets": [
+    {
+      "id": "boy",
+      "name": "Boys",
+      "items": [
+        {
+          "id": "boy-blonde-hair",
+          "imageUrl": "/static/exercise_assets/think_and_find/boy_blonde.webp",
+          "label": "Boy with blonde hair",
+          "prompt": "Find the boy with blonde hair.",
+          "altText": "A boy with blonde hair"
+        },
+        {
+          "id": "boy-overalls",
+          "imageUrl": "/static/exercise_assets/think_and_find/boy_overalls.webp",
+          "label": "Boy with overalls",
+          "prompt": "Find the boy with overalls.",
+          "altText": "A boy wearing overalls"
+        },
+        {
+          "id": "boy-glasses",
+          "imageUrl": "/static/exercise_assets/think_and_find/boy_glasses.webp",
+          "label": "Boy with glasses",
+          "prompt": "Find the boy with glasses.",
+          "altText": "A boy wearing glasses"
+        },
+        {
+          "id": "boy-purple-jacket",
+          "imageUrl": "/static/exercise_assets/think_and_find/boy_purple_jacket.webp",
+          "label": "Boy with a purple jacket",
+          "prompt": "Find the boy with a purple jacket.",
+          "altText": "A boy wearing a purple jacket"
+        },
+        {
+          "id": "boy-striped-jumper",
+          "imageUrl": "/static/exercise_assets/think_and_find/boy_striped_jumper.webp",
+          "label": "Boy with a striped jumper",
+          "prompt": "Find the boy with a striped jumper.",
+          "altText": "A boy wearing a striped jumper"
+        },
+        {
+          "id": "boy-blue-hoodie",
+          "imageUrl": "/static/exercise_assets/think_and_find/boy_blue_hoodie.webp",
+          "label": "Boy with a blue hoodie",
+          "prompt": "Find the boy with a blue hoodie.",
+          "altText": "A boy wearing a blue hoodie"
+        }
+      ]
+    },
+    {
+      "id": "girl",
+      "name": "Girls",
+      "items": [
+        {
+          "id": "girl-green-hoodie",
+          "imageUrl": "/static/exercise_assets/think_and_find/girl_green_hoodie.webp",
+          "label": "Girl with a green hoodie",
+          "prompt": "Find the girl with a green hoodie.",
+          "altText": "A girl wearing a green hoodie"
+        },
+        {
+          "id": "girl-squares-top",
+          "imageUrl": "/static/exercise_assets/think_and_find/girl_squares_top.webp",
+          "label": "Girl with a top with squares",
+          "prompt": "Find the girl with a top with squares.",
+          "altText": "A girl wearing a top with a square pattern"
+        },
+        {
+          "id": "girl-blue-hoodie",
+          "imageUrl": "/static/exercise_assets/think_and_find/girl_blue_hoodie.webp",
+          "label": "Girl with a blue hoodie",
+          "prompt": "Find the girl with a blue hoodie.",
+          "altText": "A girl wearing a blue hoodie"
+        },
+        {
+          "id": "girl-dress-spots",
+          "imageUrl": "/static/exercise_assets/think_and_find/girl_dress_spots.webp",
+          "label": "Girl with a dress with spots",
+          "prompt": "Find the girl with a dress with spots.",
+          "altText": "A girl wearing a spotty dress"
+        },
+        {
+          "id": "girl-striped-hoodie",
+          "imageUrl": "/static/exercise_assets/think_and_find/girl_striped_hoodie.webp",
+          "label": "Girl with a striped hoodie",
+          "prompt": "Find the girl with a striped hoodie.",
+          "altText": "A girl wearing a striped hoodie"
+        },
+        {
+          "id": "girl-yellow-dress",
+          "imageUrl": "/static/exercise_assets/think_and_find/girl_yellow_dress.webp",
+          "label": "Girl with a yellow dress",
+          "prompt": "Find the girl with a yellow dress.",
+          "altText": "A girl wearing a yellow dress"
+        }
+      ]
+    },
+    {
+      "id": "monster",
+      "name": "Monsters",
+      "items": [
+        {
+          "id": "monster-yellow",
+          "imageUrl": "/static/exercise_assets/think_and_find/monster_yellow.webp",
+          "label": "Monster that is yellow",
+          "prompt": "Find the monster that is yellow.",
+          "altText": "A bright yellow monster"
+        },
+        {
+          "id": "monster-two-eyes",
+          "imageUrl": "/static/exercise_assets/think_and_find/monster_two_eyes.webp",
+          "label": "Monster with two eyes",
+          "prompt": "Find the monster with two eyes.",
+          "altText": "A monster with two eyes"
+        },
+        {
+          "id": "monster-striped-arms",
+          "imageUrl": "/static/exercise_assets/think_and_find/monster_striped_arms.webp",
+          "label": "Monster with striped arms",
+          "prompt": "Find the monster with striped arms.",
+          "altText": "A monster with striped arms"
+        },
+        {
+          "id": "monster-three-eyes",
+          "imageUrl": "/static/exercise_assets/think_and_find/monster_three_eyes.webp",
+          "label": "Monster with three eyes",
+          "prompt": "Find the monster with three eyes.",
+          "altText": "A monster with three eyes"
+        },
+        {
+          "id": "monster-horns",
+          "imageUrl": "/static/exercise_assets/think_and_find/monster_horns.webp",
+          "label": "Monster with horns",
+          "prompt": "Find the monster with horns.",
+          "altText": "A monster with horns"
+        },
+        {
+          "id": "monster-spots",
+          "imageUrl": "/static/exercise_assets/think_and_find/monster_spots.webp",
+          "label": "Monster with spots",
+          "prompt": "Find the monster with spots.",
+          "altText": "A monster with spots"
+        }
+      ]
+    },
+    {
+      "id": "cat",
+      "name": "Cats",
+      "items": [
+        {
+          "id": "cat-blue-hoodie",
+          "imageUrl": "/static/exercise_assets/think_and_find/cat_blue_hoodie.webp",
+          "label": "Cat with a blue hoodie",
+          "prompt": "Find the cat with a blue hoodie.",
+          "altText": "A cat wearing a blue hoodie"
+        },
+        {
+          "id": "cat-glasses",
+          "imageUrl": "/static/exercise_assets/think_and_find/cat_glasses.webp",
+          "label": "Cat with glasses",
+          "prompt": "Find the cat with glasses.",
+          "altText": "A cat wearing glasses"
+        },
+        {
+          "id": "cat-grey",
+          "imageUrl": "/static/exercise_assets/think_and_find/cat_grey.webp",
+          "label": "Cat that is grey",
+          "prompt": "Find the cat that is grey.",
+          "altText": "A plain grey cat"
+        },
+        {
+          "id": "cat-pink-hat",
+          "imageUrl": "/static/exercise_assets/think_and_find/cat_pink_hat.webp",
+          "label": "Cat with a pink hat",
+          "prompt": "Find the cat with a pink hat.",
+          "altText": "A cat wearing a pink hat"
+        },
+        {
+          "id": "cat-striped-jumper",
+          "imageUrl": "/static/exercise_assets/think_and_find/cat_striped_jumper.webp",
+          "label": "Cat with a striped jumper",
+          "prompt": "Find the cat with a striped jumper.",
+          "altText": "A cat wearing a striped jumper"
+        },
+        {
+          "id": "cat-orange",
+          "imageUrl": "/static/exercise_assets/think_and_find/cat_orange.webp",
+          "label": "Cat that is orange",
+          "prompt": "Find the cat that is orange.",
+          "altText": "An orange cat"
+        }
+      ]
+    },
+    {
+      "id": "elephant",
+      "name": "Elephants",
+      "items": [
+        {
+          "id": "elephant-blue-ears",
+          "imageUrl": "/static/exercise_assets/think_and_find/elephant_blue_ears.webp",
+          "label": "Elephant with blue ears",
+          "prompt": "Find the elephant with blue ears.",
+          "altText": "An elephant with blue ears"
+        },
+        {
+          "id": "elephant-green-jacket",
+          "imageUrl": "/static/exercise_assets/think_and_find/elephant_green_jacket.webp",
+          "label": "Elephant with a green jacket",
+          "prompt": "Find the elephant with a green jacket.",
+          "altText": "An elephant wearing a green jacket"
+        },
+        {
+          "id": "elephant-red-hoodie",
+          "imageUrl": "/static/exercise_assets/think_and_find/elephant_red_hoodie.webp",
+          "label": "Elephant with a red hoodie",
+          "prompt": "Find the elephant with a red hoodie.",
+          "altText": "An elephant wearing a red hoodie"
+        },
+        {
+          "id": "elephant-striped-jumper",
+          "imageUrl": "/static/exercise_assets/think_and_find/elephant_striped_jumper.webp",
+          "label": "Elephant with a striped jumper",
+          "prompt": "Find the elephant with a striped jumper.",
+          "altText": "An elephant wearing a striped jumper"
+        },
+        {
+          "id": "elephant-blue-hat",
+          "imageUrl": "/static/exercise_assets/think_and_find/elephant_blue_hat.webp",
+          "label": "Elephant with a blue hat",
+          "prompt": "Find the elephant with a blue hat.",
+          "altText": "An elephant wearing a blue hat"
+        },
+        {
+          "id": "elephant-yellow-hat",
+          "imageUrl": "/static/exercise_assets/think_and_find/elephant_yellow_hat.webp",
+          "label": "Elephant with a yellow hat",
+          "prompt": "Find the elephant with a yellow hat.",
+          "altText": "An elephant wearing a yellow hat"
+        }
+      ]
+    },
+    {
+      "id": "mixed_animals",
+      "name": "Farm Animals",
+      "items": [
+        {
+          "id": "mixed-animals-chicken",
+          "imageUrl": "/static/exercise_assets/think_and_find/chicken.webp",
+          "label": "Animal with two legs",
+          "prompt": "Find the animal with two legs.",
+          "altText": "A chicken with two legs"
+        },
+        {
+          "id": "mixed-animals-pig",
+          "imageUrl": "/static/exercise_assets/think_and_find/pig.webp",
+          "label": "Animal that is pink",
+          "prompt": "Find the animal that is pink.",
+          "altText": "A pink pig"
+        },
+        {
+          "id": "mixed-animals-goat",
+          "imageUrl": "/static/exercise_assets/think_and_find/goat.webp",
+          "label": "Animal with two horns",
+          "prompt": "Find the animal with two horns.",
+          "altText": "A goat with two horns"
+        },
+        {
+          "id": "mixed-animals-rabbit",
+          "imageUrl": "/static/exercise_assets/think_and_find/rabbit.webp",
+          "label": "Animal with long ears",
+          "prompt": "Find the animal with long ears.",
+          "altText": "A rabbit with long ears"
+        },
+        {
+          "id": "mixed-animals-sheep",
+          "imageUrl": "/static/exercise_assets/think_and_find/sheep.webp",
+          "label": "Animal with wool",
+          "prompt": "Find the animal with wool.",
+          "altText": "A sheep with wool"
+        },
+        {
+          "id": "mixed-animals-tiger",
+          "imageUrl": "/static/exercise_assets/think_and_find/tiger.webp",
+          "label": "Animal with stripes",
+          "prompt": "Find the animal with stripes.",
+          "altText": "A tiger with stripes"
+        }
+      ]
+    },
+    {
+      "id": "zoo_animals",
+      "name": "Zoo Animals",
+      "items": [
+        {
+          "id": "zoo-animals-crocodile",
+          "imageUrl": "/static/exercise_assets/think_and_find/crocodile.webp",
+          "label": "Animal that is green and scaly",
+          "prompt": "Find the animal that is green and scaly.",
+          "altText": "A green scaly crocodile"
+        },
+        {
+          "id": "zoo-animals-horse",
+          "imageUrl": "/static/exercise_assets/think_and_find/horse.webp",
+          "label": "Animal with a long tail",
+          "prompt": "Find the animal with a long tail.",
+          "altText": "A horse with a long tail"
+        },
+        {
+          "id": "zoo-animals-toucan",
+          "imageUrl": "/static/exercise_assets/think_and_find/toucan.webp",
+          "label": "Animal with a big beak",
+          "prompt": "Find the animal with a big beak.",
+          "altText": "A toucan with a big beak"
+        },
+        {
+          "id": "zoo-animals-tiger",
+          "imageUrl": "/static/exercise_assets/think_and_find/tiger.webp",
+          "label": "Animal with stripes",
+          "prompt": "Find the animal with stripes.",
+          "altText": "A tiger with stripes"
+        },
+        {
+          "id": "zoo-animals-giraffe",
+          "imageUrl": "/static/exercise_assets/think_and_find/giraffe.webp",
+          "label": "Animal with a long neck",
+          "prompt": "Find the animal with a long neck.",
+          "altText": "A giraffe with a long neck"
+        },
+        {
+          "id": "zoo-animals-monkey",
+          "imageUrl": "/static/exercise_assets/think_and_find/monkey.webp",
+          "label": "Animal with two big ears",
+          "prompt": "Find the animal with two big ears.",
+          "altText": "A monkey with two big ears"
+        }
+      ]
+    },
+    {
+      "id": "mixed_animals2",
+      "name": "Wild Animals",
+      "items": [
+        {
+          "id": "mixed-animals2-elephant",
+          "imageUrl": "/static/exercise_assets/think_and_find/elephant.webp",
+          "label": "Animal with a long trunk",
+          "prompt": "Find the animal with a long trunk.",
+          "altText": "An elephant with a long trunk"
+        },
+        {
+          "id": "mixed-animals2-chicken",
+          "imageUrl": "/static/exercise_assets/think_and_find/chicken.webp",
+          "label": "Animal with feathers",
+          "prompt": "Find the animal with feathers.",
+          "altText": "A chicken with feathers"
+        },
+        {
+          "id": "mixed-animals2-giraffe",
+          "imageUrl": "/static/exercise_assets/think_and_find/giraffe.webp",
+          "label": "Animal with a long neck",
+          "prompt": "Find the animal with a long neck.",
+          "altText": "A giraffe with a long neck"
+        },
+        {
+          "id": "mixed-animals2-cow",
+          "imageUrl": "/static/exercise_assets/think_and_find/cow.webp",
+          "label": "Animal with black spots",
+          "prompt": "Find the animal with black spots.",
+          "altText": "A cow with black spots"
+        },
+        {
+          "id": "mixed-animals2-monkey",
+          "imageUrl": "/static/exercise_assets/think_and_find/monkey.webp",
+          "label": "Animal with a long tail",
+          "prompt": "Find the animal with a long tail.",
+          "altText": "A monkey with a long tail"
+        },
+        {
+          "id": "mixed-animals2-zebra",
+          "imageUrl": "/static/exercise_assets/think_and_find/zebra.webp",
+          "label": "Animal with stripes",
+          "prompt": "Find the animal with stripes.",
+          "altText": "A zebra with stripes"
+        }
+      ]
+    }
+  ]
+}

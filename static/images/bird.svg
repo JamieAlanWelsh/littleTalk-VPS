@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- Bird -->
+  <!-- Body -->
+  <ellipse cx="100" cy="110" rx="30" ry="35" fill="#3498DB"/>
+  <!-- Head -->
+  <circle cx="100" cy="60" r="25" fill="#3498DB"/>
+  <!-- Eye -->
+  <circle cx="110" cy="55" r="6" fill="white"/>
+  <circle cx="112" cy="55" r="3" fill="black"/>
+  <!-- Beak -->
+  <polygon points="120,60 135,58 120,65" fill="#FFB340"/>
+  <!-- Wing -->
+  <ellipse cx="85" cy="100" rx="20" ry="30" fill="#2980B9"/>
+  <!-- Tail -->
+  <path d="M 70 120 L 40 110 L 45 125 L 50 135 Z" fill="#2980B9"/>
+  <!-- Legs -->
+  <line x1="95" y1="145" x2="95" y2="165" stroke="#FFB340" stroke-width="2"/>
+  <line x1="105" y1="145" x2="105" y2="165" stroke="#FFB340" stroke-width="2"/>
+  <!-- Feet -->
+  <line x1="90" y1="165" x2="100" y2="165" stroke="#FFB340" stroke-width="2"/>
+  <line x1="100" y1="165" x2="110" y2="165" stroke="#FFB340" stroke-width="2"/>
+</svg>

@@ -1,8 +1,6 @@
-version: "3.9"
-
 services:
   app:
-    "image": "mcr.microsoft.com/devcontainers/python:3.11"
+    build: .
     volumes:
       - ..:/workspace:cached
     command: sleep infinity
@@ -15,9 +13,9 @@ services:
     restart: always
     # set shared memory limit when using docker compose
     shm_size: 128mb
-    env_file: ../.env
     environment:
       POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
       POSTGRES_DB: main
     ports:
       - "5432:5432"
@@ -29,6 +27,13 @@ services:
     restart: always
     ports:
       - 8080:8080
+
+  email:
+    image: mailhog/mailhog:latest
+    restart: always
+    ports:
+      - "1025:1025"
+      - "8025:8025"
 
 volumes:
   pgdata:

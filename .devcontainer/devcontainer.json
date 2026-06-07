@@ -6,7 +6,7 @@
   "features": {
     "ghcr.io/devcontainers/features/github-cli:1": {}
   },
-  "postCreateCommand": "pip3 install -r requirements.txt && python manage.py migrate",
+  "postCreateCommand": "pip3 install -r requirements.txt && python manage.py migrate && sudo apt update && sudo apt install -y graphviz && pnpm install",
   "customizations": {
     "vscode": {
       "extensions": [
@@ -21,7 +21,7 @@
       }
     }
   },
-  "forwardPorts": [8000, 5432, 8080],
+  "forwardPorts": [8000, 5432, 8080, 1025, 8025, 5173],
   "portsAttributes": {
     "8000": {
       "label": "Django",
@@ -33,6 +33,14 @@
     },
     "8080": {
       "label": "Adminer",
+      "onAutoForward": "notify"
+    },
+    "1025": {
+      "label": "MailHog SMTP",
+      "onAutoForward": "notify"
+    },
+    "8025": {
+      "label": "MailHog Web UI",
       "onAutoForward": "notify"
     }
   }

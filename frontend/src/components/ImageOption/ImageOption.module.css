@@ -1,0 +1,119 @@
+/**
+ * Exercise Framework Styles
+ *
+ * Global reusable styles for the exercise framework.
+ * Component-specific styles are in .module.css files.
+ * Uses CSS variables defined in variables.css.
+ */
+
+/* Icon Block - Reusable interactive element for exercises */
+.icon-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    padding: var(--icon-block-padding, 1rem);
+    background-color: var(--icon-block-bg, white);
+    border: 3px solid var(--border-grey);
+    border-radius: var(--border-radius-light);
+    overflow: var(--icon-block-overflow, visible);
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    text-align: center;
+    width: var(--icon-block-width, 6.875rem);
+    height: var(--icon-block-height, 6.875rem);
+    justify-content: center;
+    flex-shrink: 0;
+    touch-action: none;
+}
+
+.icon-block:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-color: var(--accent-color-dark);
+}
+
+.icon-block.interactive {
+    background-color: var(
+        --icon-block-interactive-bg,
+        var(--icon-block-bg, #f9f9f9)
+    );
+    border-color: var(--accent-color-dark);
+}
+
+.icon-block.withCustomBackground.interactive {
+    background-color: var(--icon-block-bg, var(--option-bg-color));
+}
+
+.icon-block.borderless {
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.icon-block.borderless:hover {
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.icon-block.selected {
+    background-color: var(--icon-block-bg, var(--accent-color));
+    border-color: var(--button-green);
+    box-shadow: 0 0 0 3px rgba(51, 218, 115, 0.2);
+}
+
+.icon-block.correct {
+    background-color: var(--icon-block-bg, white);
+    background-image: linear-gradient(
+        var(--icon-block-correct-overlay, rgba(51, 218, 115, 0.14)),
+        var(--icon-block-correct-overlay, rgba(51, 218, 115, 0.14))
+    );
+    border-color: var(--target-green);
+}
+
+.icon-block.incorrect {
+    background-color: var(--icon-block-bg, white);
+    background-image: linear-gradient(
+        var(--icon-block-incorrect-overlay, rgba(244, 67, 54, 0.14)),
+        var(--icon-block-incorrect-overlay, rgba(244, 67, 54, 0.14))
+    );
+    border-color: var(--target-red);
+}
+
+.icon-block.disabled {
+    opacity: var(--icon-block-disabled-opacity, 0.6);
+    cursor: not-allowed;
+    background-color: var(--icon-block-bg, #f0f0f0);
+}
+
+.icon-block-image {
+    width: var(--icon-block-img-width, 5.625rem);
+    height: var(--icon-block-img-height, 5.625rem);
+    object-fit: var(--icon-block-img-object-fit, contain);
+    margin-bottom: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 800px) {
+    .icon-block {
+        width: var(--icon-block-width, 6.25rem);
+        height: var(--icon-block-height, 6.25rem);
+        padding: var(--icon-block-padding, 0.75rem);
+    }
+
+    .icon-block-image {
+        width: var(--icon-block-img-width, 5rem);
+        height: var(--icon-block-img-height, 5rem);
+    }
+}
+
+@media (max-width: 480px) {
+    .icon-block {
+        min-height: 7.5rem;
+        padding: 0.5rem;
+    }
+
+    .icon-block-image {
+        width: 3.75rem;
+        height: 3.75rem;
+    }
+}

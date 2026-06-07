@@ -1,4 +1,63 @@
 /* -----------------------------
+   Learner Context Bar
+------------------------------ */
+
+.learner-context-bar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background-color: var(--accent-color);
+    border-radius: 18px;
+    box-shadow: var(--box-shadow);
+    padding: 10px 18px;
+    max-width: 720px;
+    margin: 40px auto 26px;
+}
+
+.learner-context-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: #f6f7fb;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+}
+
+.learner-context-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.learner-context-text {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.learner-context-stage {
+    margin: 0 auto;
+    background-color: #f4d95b;
+    border: 1px solid var(--border-grey);
+    border-radius: 999px;
+    padding: 4px 20px;
+    font-size: 0.86rem;
+    font-weight: 700;
+}
+
+.learner-context-change {
+    color: var(--font-color);
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.learner-context-change:hover {
+    color: var(--yellow-button-hover);
+    transition: color 0.2s ease;
+}
+
+/* -----------------------------
    Recommendation Widget
 ------------------------------ */
 
@@ -6,27 +65,201 @@
     display: flex;
     flex-direction: column;
     background-color: var(--accent-color);
-    border-radius: var(--border-radius-light);
+    border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
-    margin: 40px auto;
-    padding: 30px;
-    max-width: 600px;
+    margin: 20px auto 26px;
+    padding: 14px 16px;
+    max-width: 700px;
     text-align: left;
 }
 
-.recommendation-content {
+.recommendation-header-row {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    gap: 20px;
     align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin: 0 8px;
 }
 
-.recommendation-mascot img {
-    width: 150px;
-    margin-right: 20px;
+.recommendation-header-label {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+}
+
+.recommendation-text-action {
+    color: var(--font-color);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.recommendation-text-action--button {
+    background: transparent;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    font-family: inherit;
+    line-height: inherit;
+}
+
+.recommendation-text-action--button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.recommendation-text-action:hover {
+    color: var(--yellow-button-hover);
+    transition: color 0.2s ease;
+}
+
+.recommendation-fallback-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 12px 8px 8px;
+}
+
+.recommendation-fallback-image {
+    flex: 0 0 auto;
+    width: 110px;
+}
+
+.recommendation-fallback-image img {
+    width: 110px;
     height: auto;
-    /* max-width: 100%; */
+}
+
+.recommendation-fallback-content {
+    flex: 1;
+    text-align: left;
+}
+
+.recommendation-fallback-content h3 {
+    margin: 0 0 6px;
+    font-family: var(--font-outfit);
+}
+
+.recommendation-fallback-content p {
+    margin: 0 0 14px;
+    color: var(--font-color);
+    font-size: 0.95rem;
+}
+
+.recommendation-card {
+    margin: 0;
+}
+
+.recommendation-popup {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    background: rgba(32, 40, 60, 0.38);
+    z-index: 1000;
+}
+
+.recommendation-popup[hidden] {
+    display: none;
+}
+
+.recommendation-popup__card {
+    width: min(100%, 560px);
+    background: #fff;
+    border-radius: 24px;
+    box-shadow: var(--box-shadow);
+    padding: 20px 22px;
+    text-align: left;
+}
+
+.recommendation-popup__header {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.recommendation-popup__header h3 {
+    margin: 0;
+    font-family: var(--font-outfit);
+}
+
+.recommendation-popup__close {
+    border: 0;
+    background: transparent;
+    font-size: 2rem;
+    line-height: 1;
+    cursor: pointer;
+    color: var(--font-color);
+}
+
+.recommendation-popup__skills {
+    margin-top: 14px;
+}
+
+.recommendation-popup__skills ul {
+    margin: 8px 0 0;
+    padding-left: 20px;
+}
+
+.recommendation-popup__note {
+    margin-bottom: 0;
+    margin-top: 14px;
+    font-size: 0.95rem;
+    color: #454545;
+}
+
+/* -----------------------------
+   Stage Tabs
+------------------------------ */
+
+.stage-tabs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: min(100%, 640px);
+    margin: 0 auto 26px;
+    padding: 10px;
+    background: var(--accent-color);
+    box-shadow: var(--box-shadow);
+    border-radius: 999px;
+}
+
+.stage-tab {
+    flex: 1 1 0;
+    min-width: 0;
+    border: 1.5px solid #c8c8cf;
+    background: #f4f4f4;
+    color: #2f2f39;
+    border-radius: 999px;
+    padding: 7px 12px;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.stage-tab--active {
+    background: #f4d95b;
+}
+
+.stage-tab--recommended {
+    border: 3px solid #ff8f8f;
+}
+
+/* -----------------------------
+   Stage Library
+------------------------------ */
+
+.stage-library {
+    display: none;
+}
+
+.stage-library--active {
+    display: block;
 }
 
 /* -----------------------------
@@ -41,9 +274,43 @@
     background-color: var(--accent-color);
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
-    margin: 50px auto;
+    margin: 30px auto;
     padding: 20px;
-    max-width: 600px;
+    max-width: 650px;
+}
+
+.exercise-widget--recommended {
+    margin: 20px 20px;
+    border: 2px solid var(--border-grey);
+    box-shadow: none;
+}
+
+.exercise-widget--glow {
+    border: 3px solid #ff8f8f;
+}
+
+.exercise-widget--glow-soft {
+    border: 3px solid #5b8def;
+}
+
+.match-badge {
+    position: absolute;
+    top: -20px;
+    right: -40px;
+    color: #ffffff;
+    padding: 9px 12px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+.strong-match-badge {
+    background: #ff8f8f;
+}
+
+.good-match-badge {
+    background: #5b8def;
+    color: #ffffff;
 }
 
 .exercise-image img {
@@ -95,27 +362,33 @@
 }
 
 /* -----------------------------
-   Game Description
------------------------------- */
-
-.description-button-wrapper {
-    margin-top: 40px;
-    margin-bottom: 30px;
-    text-align: center;
-}
-
-/* -----------------------------
    Mobile Adjustability
 ------------------------------ */
 
-@media (max-width: 600px) {
-    .recommendation-mascot {
-        display: none;
+@media (max-width: 760px) {
+    .learner-context-bar {
+        flex-wrap: wrap;
+        gap: 8px 14px;
+        margin-top: 12px;
     }
 
-    /* -----------------------------
-    exercise image goes top right insteaad
-    ------------------------------ */   
+    .learner-context-stage {
+        margin: 0;
+    }
+
+    .learner-context-change {
+        margin-left: auto;
+    }
+
+    .stage-tabs {
+        overflow-x: auto;
+        justify-content: flex-start;
+        padding: 8px;
+    }
+
+    .stage-tab {
+        flex: 0 0 auto;
+    }
 
     .exercise-widget {
         flex-direction: column;
@@ -127,13 +400,14 @@
         position: absolute;
         top: 20px;
         right: 20px;
-        width: 60px; /* Reduce image size for small screens */
+        width: 60px;
         height: 60px;
     }
 
     .exercise-image img {
         width: 100%;
         height: 100%;
+        margin-right: 0;
     }
 
     .exercise-details {
@@ -141,23 +415,10 @@
     }
 
     .exercise-title {
-        margin-right: 90px; /* Add spacing so image doesn't overlap text */
+        margin-right: 90px;
     }
 
     .recommendation-box {
         margin-top: 0;
     }
 }
-
-/* -----------------------------
-   Expired locked button
------------------------------- */
-
-/* .locked-btn {
-    pointer-events: none;
-    background-color: #FF9292;
-}
-
-.locked-btn:hover {
-    background-color: #FF9292;
-} */

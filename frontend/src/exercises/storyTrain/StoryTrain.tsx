@@ -1,0 +1,88 @@
+import { useState } from "react";
+import ExerciseStartScreen from "../../layouts/exerciseStartScreen/ExerciseStartScreen";
+import StoryTrainGame from "./StoryTrainGame";
+import type { StoryTrainExercisePayload, StoryTrainSet } from "./types";
+
+const EXERCISE_METADATA = {
+    setupTitle: "Story Train",
+    setupSubtitle:
+        "Organise each picture in the correct order to create a story.",
+};
+
+interface StoryTrainProps {
+    payload: StoryTrainExercisePayload;
+    variantId?: "standard" | "advanced";
+}
+
+const shuffleSets = (sets: StoryTrainSet[]): StoryTrainSet[] => {
+    const shuffled = [...sets];
+
+    for (let index = shuffled.length - 1; index > 0; index -= 1) {
+        const swapIndex = Math.floor(Math.random() * (index + 1));
+        [shuffled[index], shuffled[swapIndex]] = [
+            shuffled[swapIndex],
+            shuffled[index],
+        ];
+    }
+
+    return shuffled;
+};
+
+const selectSessionSets = (payload: StoryTrainExercisePayload) => {
+    // Defensive dedupe by id guarantees no repeated set in a session,
+    // even if payload data accidentally includes duplicates.
+    const uniqueSets = Array.from(
+        new Map(
+            payload.sets.map((storySet) => [storySet.id, storySet]),
+        ).values(),
+    );
+    const roundsToPlay = Math.min(payload.rounds, uniqueSets.length);
+
+    return shuffleSets(uniqueSets).slice(0, roundsToPlay);
+};
+
+export const StoryTrain = ({
+    payload,
+    variantId = "standard",
+}: StoryTrainProps) => {
+    const [selectedSets, setSelectedSets] = useState<StoryTrainSet[] | null>(
+        null,
+    );
+
+    const handleStartExercise = () => {
+        setSelectedSets(selectSessionSets(payload));
+    };
+
+    if (!selectedSets) {
+        return (
+            <ExerciseStartScreen
+                title={EXERCISE_METADATA.setupTitle}
+                subtitle={EXERCISE_METADATA.setupSubtitle}
+                onStart={handleStartExercise}
+                startButtonLabel="Start"
+            >
+                <div
+                    style={{
+                        display: "grid",
+                        gap: "0.75rem",
+                        color: "var(--font-color)",
+                    }}
+                >
+                    <p style={{ margin: 0 }}>
+                        Look at the pictures and drag them into the order they
+                        happen.
+                    </p>
+                    {payload.modellingTip ? (
+                        <p style={{ margin: 0, fontWeight: 700 }}>
+                            {payload.modellingTip}
+                        </p>
+                    ) : null}
+                </div>
+            </ExerciseStartScreen>
+        );
+    }
+
+    return <StoryTrainGame selectedSets={selectedSets} variantId={variantId} />;
+};
+
+export default StoryTrain;

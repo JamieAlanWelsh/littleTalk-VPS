@@ -1,0 +1,271 @@
+{
+  "rounds": 5,
+  "imageSets": [
+    {
+      "id": "bear",
+      "name": "Bears",
+      "subject": "bear",
+      "supportedConcepts": ["big", "small"],
+      "items": [
+        {
+          "id": "bear-smallest",
+          "imageUrl": "/static/exercise_assets/concept_quest/bear/bear_smallest.png",
+          "label": "Smallest bear",
+          "altText": "the smallest bear"
+        },
+        {
+          "id": "bear-second-smallest",
+          "imageUrl": "/static/exercise_assets/concept_quest/bear/bear_second_smallest.png",
+          "label": "Second smallest bear",
+          "altText": "a bear that is a little bigger than the smallest bear"
+        },
+        {
+          "id": "bear-medium",
+          "imageUrl": "/static/exercise_assets/concept_quest/bear/bear_medium.png",
+          "label": "Medium bear",
+          "altText": "a medium-sized bear"
+        },
+        {
+          "id": "bear-second-biggest",
+          "imageUrl": "/static/exercise_assets/concept_quest/bear/bear_second_biggest.png",
+          "label": "Second biggest bear",
+          "altText": "a bear that is almost the biggest"
+        },
+        {
+          "id": "bear-biggest",
+          "imageUrl": "/static/exercise_assets/concept_quest/bear/bear_biggest.png",
+          "label": "Biggest bear",
+          "altText": "the biggest bear"
+        }
+      ]
+    },
+    {
+      "id": "car",
+      "name": "Cars",
+      "subject": "car",
+      "supportedConcepts": ["long", "short"],
+      "items": [
+        {
+          "id": "car-shortest",
+          "imageUrl": "/static/exercise_assets/concept_quest/car/car_shortest.png",
+          "label": "Shortest car",
+          "altText": "the shortest car"
+        },
+        {
+          "id": "car-second-shortest",
+          "imageUrl": "/static/exercise_assets/concept_quest/car/car_second_shortest.png",
+          "label": "Second shortest car",
+          "altText": "a car that is a little longer than the shortest car"
+        },
+        {
+          "id": "car-medium",
+          "imageUrl": "/static/exercise_assets/concept_quest/car/car_medium.png",
+          "label": "Medium car",
+          "altText": "a medium-length car"
+        },
+        {
+          "id": "car-second-longest",
+          "imageUrl": "/static/exercise_assets/concept_quest/car/car_second_longest.png",
+          "label": "Second longest car",
+          "altText": "a car that is almost the longest"
+        },
+        {
+          "id": "car-longest",
+          "imageUrl": "/static/exercise_assets/concept_quest/car/car_longest.png",
+          "label": "Longest car",
+          "altText": "the longest car"
+        }
+      ]
+    },
+    {
+      "id": "monster",
+      "name": "Monsters",
+      "subject": "monster",
+      "supportedConcepts": ["tall", "short"],
+      "items": [
+        {
+          "id": "monster-shortest",
+          "imageUrl": "/static/exercise_assets/concept_quest/monster/monster_shortest.png",
+          "label": "Shortest monster",
+          "altText": "the shortest monster"
+        },
+        {
+          "id": "monster-second-shortest",
+          "imageUrl": "/static/exercise_assets/concept_quest/monster/monster_second_shortest.png",
+          "label": "Second shortest monster",
+          "altText": "a monster that is a little taller than the shortest monster"
+        },
+        {
+          "id": "monster-medium",
+          "imageUrl": "/static/exercise_assets/concept_quest/monster/monster_medium.png",
+          "label": "Medium monster",
+          "altText": "a medium-height monster"
+        },
+        {
+          "id": "monster-second-tallest",
+          "imageUrl": "/static/exercise_assets/concept_quest/monster/monster_second_tallest.png",
+          "label": "Second tallest monster",
+          "altText": "a monster that is almost the tallest"
+        },
+        {
+          "id": "monster-tallest",
+          "imageUrl": "/static/exercise_assets/concept_quest/monster/monster_tallest.png",
+          "label": "Tallest monster",
+          "altText": "the tallest monster"
+        }
+      ]
+    },
+    {
+      "id": "pencil",
+      "name": "Pencils",
+      "subject": "pencil",
+      "supportedConcepts": ["long", "short"],
+      "items": [
+        {
+          "id": "pencil-shortest",
+          "imageUrl": "/static/exercise_assets/concept_quest/pencil/pencil_shortest.png",
+          "label": "Shortest pencil",
+          "altText": "the shortest pencil"
+        },
+        {
+          "id": "pencil-second-shortest",
+          "imageUrl": "/static/exercise_assets/concept_quest/pencil/pencil_second_shortest.png",
+          "label": "Second shortest pencil",
+          "altText": "a pencil that is a little longer than the shortest pencil"
+        },
+        {
+          "id": "pencil-medium",
+          "imageUrl": "/static/exercise_assets/concept_quest/pencil/penci_medium.png",
+          "label": "Medium pencil",
+          "altText": "a medium-length pencil"
+        },
+        {
+          "id": "pencil-second-longest",
+          "imageUrl": "/static/exercise_assets/concept_quest/pencil/pencil_second_longest.png",
+          "label": "Second longest pencil",
+          "altText": "a pencil that is almost the longest"
+        },
+        {
+          "id": "pencil-longest",
+          "imageUrl": "/static/exercise_assets/concept_quest/pencil/pencil_longest.png",
+          "label": "Longest pencil",
+          "altText": "the longest pencil"
+        }
+      ]
+    },
+    {
+      "id": "ruler",
+      "name": "Rulers",
+      "subject": "ruler",
+      "supportedConcepts": ["long", "short"],
+      "items": [
+        {
+          "id": "ruler-shortest",
+          "imageUrl": "/static/exercise_assets/concept_quest/ruler/ruler_shortest.png",
+          "label": "Shortest ruler",
+          "altText": "the shortest ruler"
+        },
+        {
+          "id": "ruler-second-shortest",
+          "imageUrl": "/static/exercise_assets/concept_quest/ruler/ruler_second_shortest.png",
+          "label": "Second shortest ruler",
+          "altText": "a ruler that is a little longer than the shortest ruler"
+        },
+        {
+          "id": "ruler-medium",
+          "imageUrl": "/static/exercise_assets/concept_quest/ruler/ruler_medium.png",
+          "label": "Medium ruler",
+          "altText": "a medium-length ruler"
+        },
+        {
+          "id": "ruler-second-longest",
+          "imageUrl": "/static/exercise_assets/concept_quest/ruler/ruler_second_longest.png",
+          "label": "Second longest ruler",
+          "altText": "a ruler that is almost the longest"
+        },
+        {
+          "id": "ruler-longest",
+          "imageUrl": "/static/exercise_assets/concept_quest/ruler/ruler_longest.png",
+          "label": "Longest ruler",
+          "altText": "the longest ruler"
+        }
+      ]
+    },
+    {
+      "id": "tower",
+      "name": "Towers",
+      "subject": "tower",
+      "supportedConcepts": ["tall", "short"],
+      "items": [
+        {
+          "id": "tower-shortest",
+          "imageUrl": "/static/exercise_assets/concept_quest/tower/tower_shortest.png",
+          "label": "Shortest tower",
+          "altText": "the shortest tower"
+        },
+        {
+          "id": "tower-second-shortest",
+          "imageUrl": "/static/exercise_assets/concept_quest/tower/tower_second_shortest.png",
+          "label": "Second shortest tower",
+          "altText": "a tower that is a little taller than the shortest tower"
+        },
+        {
+          "id": "tower-medium",
+          "imageUrl": "/static/exercise_assets/concept_quest/tower/tower_medium.png",
+          "label": "Medium tower",
+          "altText": "a medium-height tower"
+        },
+        {
+          "id": "tower-second-tallest",
+          "imageUrl": "/static/exercise_assets/concept_quest/tower/tower_second_tallest.png",
+          "label": "Second tallest tower",
+          "altText": "a tower that is almost the tallest"
+        },
+        {
+          "id": "tower-tallest",
+          "imageUrl": "/static/exercise_assets/concept_quest/tower/tower_tallest.png",
+          "label": "Tallest tower",
+          "altText": "the tallest tower"
+        }
+      ]
+    },
+    {
+      "id": "tree",
+      "name": "Trees",
+      "subject": "tree",
+      "supportedConcepts": ["tall", "short"],
+      "items": [
+        {
+          "id": "tree-shortest",
+          "imageUrl": "/static/exercise_assets/concept_quest/tree/tree_shortest.png",
+          "label": "Shortest tree",
+          "altText": "the shortest tree"
+        },
+        {
+          "id": "tree-second-shortest",
+          "imageUrl": "/static/exercise_assets/concept_quest/tree/tree_second_shortest.png",
+          "label": "Second shortest tree",
+          "altText": "a tree that is a little taller than the shortest tree"
+        },
+        {
+          "id": "tree-medium",
+          "imageUrl": "/static/exercise_assets/concept_quest/tree/tree_medium.png",
+          "label": "Medium tree",
+          "altText": "a medium-height tree"
+        },
+        {
+          "id": "tree-second-tallest",
+          "imageUrl": "/static/exercise_assets/concept_quest/tree/tree_second_tallest.png",
+          "label": "Second tallest tree",
+          "altText": "a tree that is almost the tallest"
+        },
+        {
+          "id": "tree-tallest",
+          "imageUrl": "/static/exercise_assets/concept_quest/tree/tree_tallest.png",
+          "label": "Tallest tree",
+          "altText": "the tallest tree"
+        }
+      ]
+    }
+  ]
+}

@@ -3,7 +3,6 @@ littleTalk/settings.py
 *.sqlite3
 .env
 media/
-staticfiles/
 staticfiles_test/
 
 # Python
@@ -28,19 +27,6 @@ Thumbs.db
 # IDE
 .vscode/
 
-littleTalk/settings.py
-littletalkvenv/
-__pycache__/
-*.py[cod]
-*.pyc
-*.pyo
-*.log
-db.sqlite3
-.env
-.vscode/
-.DS_Store
-Thumbs.db
-
 # Node / frontend dependencies and local caches
 node_modules/
 .npm/
@@ -57,8 +43,7 @@ static/js/exercises/*.js.map
 static/js/**/*.js
 static/js/**/*.js.map
 static/js/exercises/manifest.json
-
-cat >> .gitignore << EOF
+static/js/exercises/css/
 
 # Django static files (regenerated)
 staticfiles/
@@ -69,4 +54,3 @@ package-lock.json
 
 # IDE/workspace
 .vscode/settings.json
-EOF

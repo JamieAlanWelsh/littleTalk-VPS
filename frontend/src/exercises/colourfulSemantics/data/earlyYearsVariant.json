@@ -1,0 +1,1108 @@
+{
+  "id": "early-years",
+  "allowedPresetIds": [
+    "subject",
+    "verb",
+    "subject-verb",
+    "subject-verb-object"
+  ],
+  "defaultPresetId": "subject-verb-object",
+  "defaultNumberOfOptions": 3,
+  "maxNumberOfOptions": 3,
+  "scenes": [
+    {
+      "id": "blowing-bubbles",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/girl_blowing_bubbles_park.webp",
+      "targetImageAlt": "A girl blowing bubbles at the park.",
+      "steps": [
+        {
+          "id": "blowing-bubbles-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-girl"
+        },
+        {
+          "id": "blowing-bubbles-doing",
+          "slot": "doing",
+          "prompt": "What is she doing?",
+          "correctOptionId": "doing-blowing"
+        },
+        {
+          "id": "blowing-bubbles-what",
+          "slot": "what",
+          "prompt": "What is she blowing?",
+          "correctOptionId": "what-bubbles"
+        }
+      ]
+    },
+    {
+      "id": "boy-swimming-pool",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/boy_swimming_blank_pool.webp",
+      "targetImageAlt": "A boy swimming at the swimming pool.",
+      "steps": [
+        {
+          "id": "boy-swimming-pool-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-boy"
+        },
+        {
+          "id": "boy-swimming-pool-doing",
+          "slot": "doing",
+          "prompt": "What is he doing?",
+          "correctOptionId": "doing-swimming"
+        }
+      ]
+    },
+    {
+      "id": "butterfly-sitting-flower",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/butterfly_sitting_flower_blank.webp",
+      "targetImageAlt": "A butterfly sitting on a flower.",
+      "steps": [
+        {
+          "id": "butterfly-sitting-flower-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-butterfly"
+        },
+        {
+          "id": "butterfly-sitting-flower-doing",
+          "slot": "doing",
+          "prompt": "What is it doing?",
+          "correctOptionId": "doing-sitting"
+        },
+        {
+          "id": "butterfly-sitting-flower-what",
+          "slot": "what",
+          "prompt": "What is it sitting on?",
+          "correctOptionId": "what-flower"
+        }
+      ]
+    },
+    {
+      "id": "children-digging-sandpit",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/children_digging_sand_sandpit.webp",
+      "targetImageAlt": "Children digging in sand at the sandpit.",
+      "steps": [
+        {
+          "id": "children-digging-sandpit-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-children"
+        },
+        {
+          "id": "children-digging-sandpit-doing",
+          "slot": "doing",
+          "prompt": "What are they doing?",
+          "correctOptionId": "doing-digging"
+        },
+        {
+          "id": "children-digging-sandpit-what",
+          "slot": "what",
+          "prompt": "What are they digging in?",
+          "correctOptionId": "what-in-sand"
+        }
+      ]
+    },
+    {
+      "id": "children-sitting-mat-school",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/children_sitting_mat_school.webp",
+      "targetImageAlt": "Children sitting on a mat at school.",
+      "steps": [
+        {
+          "id": "children-sitting-mat-school-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-children"
+        },
+        {
+          "id": "children-sitting-mat-school-doing",
+          "slot": "doing",
+          "prompt": "What are they doing?",
+          "correctOptionId": "doing-sitting"
+        },
+        {
+          "id": "children-sitting-mat-school-what",
+          "slot": "what",
+          "prompt": "What are they sitting on?",
+          "correctOptionId": "what-mat"
+        }
+      ]
+    },
+    {
+      "id": "dog-swimming-river",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/dog_swimming_blank_river.webp",
+      "targetImageAlt": "A dog swimming in a river.",
+      "steps": [
+        {
+          "id": "dog-swimming-river-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-dog"
+        },
+        {
+          "id": "dog-swimming-river-doing",
+          "slot": "doing",
+          "prompt": "What is it doing?",
+          "correctOptionId": "doing-swimming"
+        }
+      ]
+    },
+    {
+      "id": "boy-licking-icecream",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/boy_licking_icecream_blank.webp",
+      "targetImageAlt": "A boy licking an ice cream.",
+      "steps": [
+        {
+          "id": "boy-licking-icecream-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-boy"
+        },
+        {
+          "id": "boy-licking-icecream-doing",
+          "slot": "doing",
+          "prompt": "What is he doing?",
+          "correctOptionId": "doing-licking"
+        },
+        {
+          "id": "boy-licking-icecream-what",
+          "slot": "what",
+          "prompt": "What does he have?",
+          "correctOptionId": "what-ice-cream"
+        }
+      ]
+    },
+    {
+      "id": "boy-climbing-tree",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/boy_climbing_tree_blank.webp",
+      "targetImageAlt": "A boy climbing a tree.",
+      "steps": [
+        {
+          "id": "boy-climbing-tree-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-boy"
+        },
+        {
+          "id": "boy-climbing-tree-doing",
+          "slot": "doing",
+          "prompt": "What is he doing?",
+          "correctOptionId": "doing-climbing"
+        },
+        {
+          "id": "boy-climbing-tree-what",
+          "slot": "what",
+          "prompt": "What is he climbing?",
+          "correctOptionId": "what-tree"
+        }
+      ]
+    },
+    {
+      "id": "boy-jumping-puddle-field",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/boy_jumping_puddle_field.webp",
+      "targetImageAlt": "A boy jumping in a puddle in the field.",
+      "steps": [
+        {
+          "id": "boy-jumping-puddle-field-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-boy"
+        },
+        {
+          "id": "boy-jumping-puddle-field-doing",
+          "slot": "doing",
+          "prompt": "What is he doing?",
+          "correctOptionId": "doing-jumping"
+        },
+        {
+          "id": "boy-jumping-puddle-field-what",
+          "slot": "what",
+          "prompt": "What is he jumping in?",
+          "correctOptionId": "what-in-puddle"
+        }
+      ]
+    },
+    {
+      "id": "boy-kicking-football-football-pitch",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/boy_kicking_football_footballpitch.webp",
+      "targetImageAlt": "A boy kicking a football at the football pitch.",
+      "steps": [
+        {
+          "id": "boy-kicking-football-football-pitch-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-boy"
+        },
+        {
+          "id": "boy-kicking-football-football-pitch-doing",
+          "slot": "doing",
+          "prompt": "What is he doing?",
+          "correctOptionId": "doing-kicking"
+        },
+        {
+          "id": "boy-kicking-football-football-pitch-what",
+          "slot": "what",
+          "prompt": "What is he kicking?",
+          "correctOptionId": "what-football"
+        }
+      ]
+    },
+    {
+      "id": "boy-looking-ipad-bedroom",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/boy_looking_ipad_bedroom.webp",
+      "targetImageAlt": "A boy looking at an ipad in the bedroom.",
+      "steps": [
+        {
+          "id": "boy-looking-ipad-bedroom-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-boy"
+        },
+        {
+          "id": "boy-looking-ipad-bedroom-doing",
+          "slot": "doing",
+          "prompt": "What is he doing?",
+          "correctOptionId": "doing-looking"
+        },
+        {
+          "id": "boy-looking-ipad-bedroom-what",
+          "slot": "what",
+          "prompt": "What is he looking at?",
+          "correctOptionId": "what-ipad"
+        }
+      ]
+    },
+    {
+      "id": "boy-smelling-flower",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/boy_smelling_flower_blank.webp",
+      "targetImageAlt": "A boy smelling a flower.",
+      "steps": [
+        {
+          "id": "boy-smelling-flower-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-boy"
+        },
+        {
+          "id": "boy-smelling-flower-doing",
+          "slot": "doing",
+          "prompt": "What is he doing?",
+          "correctOptionId": "doing-smelling"
+        },
+        {
+          "id": "boy-smelling-flower-what",
+          "slot": "what",
+          "prompt": "What is he smelling?",
+          "correctOptionId": "what-flower"
+        }
+      ]
+    },
+    {
+      "id": "cat-lying-bed-bedroom",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/cat_lying_bed_bedroom.webp",
+      "targetImageAlt": "A cat lying on a bed in the bedroom.",
+      "steps": [
+        {
+          "id": "cat-lying-bed-bedroom-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-cat"
+        },
+        {
+          "id": "cat-lying-bed-bedroom-doing",
+          "slot": "doing",
+          "prompt": "What is it doing?",
+          "correctOptionId": "doing-lying"
+        },
+        {
+          "id": "cat-lying-bed-bedroom-what",
+          "slot": "what",
+          "prompt": "What is it lying on?",
+          "correctOptionId": "what-bed"
+        }
+      ]
+    },
+    {
+      "id": "cat-sitting-chair",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/cat_sitting_chair_blank.webp",
+      "targetImageAlt": "A cat sitting on a chair.",
+      "steps": [
+        {
+          "id": "cat-sitting-chair-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-cat"
+        },
+        {
+          "id": "cat-sitting-chair-doing",
+          "slot": "doing",
+          "prompt": "What is it doing?",
+          "correctOptionId": "doing-sitting"
+        },
+        {
+          "id": "cat-sitting-chair-what",
+          "slot": "what",
+          "prompt": "What is it sitting on?",
+          "correctOptionId": "what-chair"
+        }
+      ]
+    },
+    {
+      "id": "children-building-sandcastle-sandpit",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/children_building_sandcastle_sandpit.webp",
+      "targetImageAlt": "Children building a sandcastle at the sandpit.",
+      "steps": [
+        {
+          "id": "children-building-sandcastle-sandpit-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-children"
+        },
+        {
+          "id": "children-building-sandcastle-sandpit-doing",
+          "slot": "doing",
+          "prompt": "What are they doing?",
+          "correctOptionId": "doing-building"
+        },
+        {
+          "id": "children-building-sandcastle-sandpit-what",
+          "slot": "what",
+          "prompt": "What are they building?",
+          "correctOptionId": "what-sandcastle"
+        }
+      ]
+    },
+    {
+      "id": "children-running-field",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/children_running_blank_field.webp",
+      "targetImageAlt": "Children running in the field.",
+      "steps": [
+        {
+          "id": "children-running-field-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-children"
+        },
+        {
+          "id": "children-running-field-doing",
+          "slot": "doing",
+          "prompt": "What are they doing?",
+          "correctOptionId": "doing-running"
+        }
+      ]
+    },
+    {
+      "id": "dog-licking-icecream",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/dog_licking_icecream_blank.webp",
+      "targetImageAlt": "A dog licking an ice cream.",
+      "steps": [
+        {
+          "id": "dog-licking-icecream-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-dog"
+        },
+        {
+          "id": "dog-licking-icecream-doing",
+          "slot": "doing",
+          "prompt": "What is it doing?",
+          "correctOptionId": "doing-licking"
+        },
+        {
+          "id": "dog-licking-icecream-what",
+          "slot": "what",
+          "prompt": "What is it licking?",
+          "correctOptionId": "what-ice-cream"
+        }
+      ]
+    },
+    {
+      "id": "dog-running-beach",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/dog_running_blank_beach.webp",
+      "targetImageAlt": "A dog running at the beach.",
+      "steps": [
+        {
+          "id": "dog-running-beach-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-dog"
+        },
+        {
+          "id": "dog-running-beach-doing",
+          "slot": "doing",
+          "prompt": "What is it doing?",
+          "correctOptionId": "doing-running"
+        }
+      ]
+    },
+    {
+      "id": "dog-running-path",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/dog_running_blank_path.webp",
+      "targetImageAlt": "A dog running on the path.",
+      "steps": [
+        {
+          "id": "dog-running-path-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-dog"
+        },
+        {
+          "id": "dog-running-path-doing",
+          "slot": "doing",
+          "prompt": "What is it doing?",
+          "correctOptionId": "doing-running"
+        }
+      ]
+    },
+    {
+      "id": "dog-sitting-mat-home",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/dog_sitting_mat_home.webp",
+      "targetImageAlt": "A dog sitting on a mat at home.",
+      "steps": [
+        {
+          "id": "dog-sitting-mat-home-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-dog"
+        },
+        {
+          "id": "dog-sitting-mat-home-doing",
+          "slot": "doing",
+          "prompt": "What is it doing?",
+          "correctOptionId": "doing-sitting"
+        },
+        {
+          "id": "dog-sitting-mat-home-what",
+          "slot": "what",
+          "prompt": "What is it sitting on?",
+          "correctOptionId": "what-mat"
+        }
+      ]
+    },
+    {
+      "id": "fox-running-field",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/fox_running_blank_field.webp",
+      "targetImageAlt": "A fox running in the field.",
+      "steps": [
+        {
+          "id": "fox-running-field-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-fox"
+        },
+        {
+          "id": "fox-running-field-doing",
+          "slot": "doing",
+          "prompt": "What is it doing?",
+          "correctOptionId": "doing-running"
+        }
+      ]
+    },
+    {
+      "id": "frog-sitting-lilypad",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/frog_sitting_lilypad_blank.webp",
+      "targetImageAlt": "A frog sitting on a lilypad.",
+      "steps": [
+        {
+          "id": "frog-sitting-lilypad-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-frog"
+        },
+        {
+          "id": "frog-sitting-lilypad-doing",
+          "slot": "doing",
+          "prompt": "What is it doing?",
+          "correctOptionId": "doing-sitting"
+        },
+        {
+          "id": "frog-sitting-lilypad-what",
+          "slot": "what",
+          "prompt": "What is it sitting on?",
+          "correctOptionId": "what-lilypad"
+        }
+      ]
+    },
+    {
+      "id": "girl-brushing-teeth-bathroom",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/girl_brushing_teeth_bathroom.webp",
+      "targetImageAlt": "A girl brushing her teeth in the bathroom.",
+      "steps": [
+        {
+          "id": "girl-brushing-teeth-bathroom-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-girl"
+        },
+        {
+          "id": "girl-brushing-teeth-bathroom-doing",
+          "slot": "doing",
+          "prompt": "What is she doing?",
+          "correctOptionId": "doing-brushing"
+        },
+        {
+          "id": "girl-brushing-teeth-bathroom-what",
+          "slot": "what",
+          "prompt": "What is she brushing?",
+          "correctOptionId": "what-her-teeth"
+        }
+      ]
+    },
+    {
+      "id": "girl-listening-music-bedroom",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/girl_listening_music_bedroom.webp",
+      "targetImageAlt": "A girl listening to music in the bedroom.",
+      "steps": [
+        {
+          "id": "girl-listening-music-bedroom-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-girl"
+        },
+        {
+          "id": "girl-listening-music-bedroom-doing",
+          "slot": "doing",
+          "prompt": "What is she doing?",
+          "correctOptionId": "doing-listening"
+        },
+        {
+          "id": "girl-listening-music-bedroom-what",
+          "slot": "what",
+          "prompt": "What is she listening to?",
+          "correctOptionId": "what-music"
+        }
+      ]
+    },
+    {
+      "id": "girl-looking-ipad-kitchen",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/girl_looking_ipad_kitchen.webp",
+      "targetImageAlt": "A girl looking at an ipad in the kitchen.",
+      "steps": [
+        {
+          "id": "girl-looking-ipad-kitchen-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-girl"
+        },
+        {
+          "id": "girl-looking-ipad-kitchen-doing",
+          "slot": "doing",
+          "prompt": "What is she doing?",
+          "correctOptionId": "doing-looking"
+        },
+        {
+          "id": "girl-looking-ipad-kitchen-what",
+          "slot": "what",
+          "prompt": "What is she looking at?",
+          "correctOptionId": "what-ipad"
+        }
+      ]
+    },
+    {
+      "id": "girl-playing-doll-bedroom",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/girl_playing_doll_bedroom.webp",
+      "targetImageAlt": "A girl playing with a doll in the bedroom.",
+      "steps": [
+        {
+          "id": "girl-playing-doll-bedroom-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-girl"
+        },
+        {
+          "id": "girl-playing-doll-bedroom-doing",
+          "slot": "doing",
+          "prompt": "What is she doing?",
+          "correctOptionId": "doing-playing"
+        },
+        {
+          "id": "girl-playing-doll-bedroom-what",
+          "slot": "what",
+          "prompt": "What is she playing with?",
+          "correctOptionId": "what-doll"
+        }
+      ]
+    },
+    {
+      "id": "girl-playing-toys",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/girl_playing_toys_blank.webp",
+      "targetImageAlt": "A girl playing with toys.",
+      "steps": [
+        {
+          "id": "girl-playing-toys-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-girl"
+        },
+        {
+          "id": "girl-playing-toys-doing",
+          "slot": "doing",
+          "prompt": "What is she doing?",
+          "correctOptionId": "doing-playing"
+        },
+        {
+          "id": "girl-playing-toys-what",
+          "slot": "what",
+          "prompt": "What is she playing with?",
+          "correctOptionId": "what-toys"
+        }
+      ]
+    },
+    {
+      "id": "girl-smelling-flower",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/girl_smelling_flower_blank.webp",
+      "targetImageAlt": "A girl smelling a flower.",
+      "steps": [
+        {
+          "id": "girl-smelling-flower-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-girl"
+        },
+        {
+          "id": "girl-smelling-flower-doing",
+          "slot": "doing",
+          "prompt": "What is she doing?",
+          "correctOptionId": "doing-smelling"
+        },
+        {
+          "id": "girl-smelling-flower-what",
+          "slot": "what",
+          "prompt": "What is she smelling?",
+          "correctOptionId": "what-flower"
+        }
+      ]
+    },
+    {
+      "id": "horse-eating-grass-field",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/horse_eating_grass_field.webp",
+      "targetImageAlt": "A horse eating grass in the field.",
+      "steps": [
+        {
+          "id": "horse-eating-grass-field-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-horse"
+        },
+        {
+          "id": "horse-eating-grass-field-doing",
+          "slot": "doing",
+          "prompt": "What is it doing?",
+          "correctOptionId": "doing-eating"
+        },
+        {
+          "id": "horse-eating-grass-field-what",
+          "slot": "what",
+          "prompt": "What is it eating?",
+          "correctOptionId": "what-grass"
+        }
+      ]
+    },
+    {
+      "id": "horse-running-beach",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/horse_running_blank_beach.webp",
+      "targetImageAlt": "A horse running at the beach.",
+      "steps": [
+        {
+          "id": "horse-running-beach-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-horse"
+        },
+        {
+          "id": "horse-running-beach-doing",
+          "slot": "doing",
+          "prompt": "What is it doing?",
+          "correctOptionId": "doing-running"
+        }
+      ]
+    },
+    {
+      "id": "lady-driving-car",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/lady_driving_car_blank.webp",
+      "targetImageAlt": "A lady driving a car.",
+      "steps": [
+        {
+          "id": "lady-driving-car-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-lady"
+        },
+        {
+          "id": "lady-driving-car-doing",
+          "slot": "doing",
+          "prompt": "What is she doing?",
+          "correctOptionId": "doing-driving"
+        },
+        {
+          "id": "lady-driving-car-what",
+          "slot": "what",
+          "prompt": "What is she driving?",
+          "correctOptionId": "what-car"
+        }
+      ]
+    },
+    {
+      "id": "lady-eating-apple",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/lady_eating_apple_blank.webp",
+      "targetImageAlt": "A lady eating an apple.",
+      "steps": [
+        {
+          "id": "lady-eating-apple-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-lady"
+        },
+        {
+          "id": "lady-eating-apple-doing",
+          "slot": "doing",
+          "prompt": "What is she doing?",
+          "correctOptionId": "doing-eating"
+        },
+        {
+          "id": "lady-eating-apple-what",
+          "slot": "what",
+          "prompt": "What is she eating?",
+          "correctOptionId": "what-apple"
+        }
+      ]
+    },
+    {
+      "id": "lady-riding-horse",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/lady_riding_horse_blank.webp",
+      "targetImageAlt": "A lady riding a horse.",
+      "steps": [
+        {
+          "id": "lady-riding-horse-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-lady"
+        },
+        {
+          "id": "lady-riding-horse-doing",
+          "slot": "doing",
+          "prompt": "What is she doing?",
+          "correctOptionId": "doing-riding"
+        },
+        {
+          "id": "lady-riding-horse-what",
+          "slot": "what",
+          "prompt": "What is she riding?",
+          "correctOptionId": "what-horse"
+        }
+      ]
+    },
+    {
+      "id": "man-brushing-teeth-bathroom",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/man_brushing_teeth_bathroom.webp",
+      "targetImageAlt": "A man brushing his teeth in the bathroom.",
+      "steps": [
+        {
+          "id": "man-brushing-teeth-bathroom-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-man"
+        },
+        {
+          "id": "man-brushing-teeth-bathroom-doing",
+          "slot": "doing",
+          "prompt": "What is he doing?",
+          "correctOptionId": "doing-brushing"
+        },
+        {
+          "id": "man-brushing-teeth-bathroom-what",
+          "slot": "what",
+          "prompt": "What is he brushing?",
+          "correctOptionId": "what-his-teeth"
+        }
+      ]
+    },
+    {
+      "id": "man-driving-car",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/man_driving_car_blank.webp",
+      "targetImageAlt": "A man driving a car.",
+      "steps": [
+        {
+          "id": "man-driving-car-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-man"
+        },
+        {
+          "id": "man-driving-car-doing",
+          "slot": "doing",
+          "prompt": "What is he doing?",
+          "correctOptionId": "doing-driving"
+        },
+        {
+          "id": "man-driving-car-what",
+          "slot": "what",
+          "prompt": "What is he driving?",
+          "correctOptionId": "what-car"
+        }
+      ]
+    },
+    {
+      "id": "man-eating-pizza",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/man_eating_pizza_blank.webp",
+      "targetImageAlt": "A man eating pizza.",
+      "steps": [
+        {
+          "id": "man-eating-pizza-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-man"
+        },
+        {
+          "id": "man-eating-pizza-doing",
+          "slot": "doing",
+          "prompt": "What is he doing?",
+          "correctOptionId": "doing-eating"
+        },
+        {
+          "id": "man-eating-pizza-what",
+          "slot": "what",
+          "prompt": "What is he eating?",
+          "correctOptionId": "what-pizza"
+        }
+      ]
+    },
+    {
+      "id": "man-reading-book-park",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/man_reading_book_park.webp",
+      "targetImageAlt": "A man reading a book at the park.",
+      "steps": [
+        {
+          "id": "man-reading-book-park-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-man"
+        },
+        {
+          "id": "man-reading-book-park-doing",
+          "slot": "doing",
+          "prompt": "What is he doing?",
+          "correctOptionId": "doing-reading"
+        },
+        {
+          "id": "man-reading-book-park-what",
+          "slot": "what",
+          "prompt": "What is he reading?",
+          "correctOptionId": "what-book"
+        }
+      ]
+    },
+    {
+      "id": "man-riding-bike-path",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/man_riding_bike_path.webp",
+      "targetImageAlt": "A man riding a bike on the path.",
+      "steps": [
+        {
+          "id": "man-riding-bike-path-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-man"
+        },
+        {
+          "id": "man-riding-bike-path-doing",
+          "slot": "doing",
+          "prompt": "What is he doing?",
+          "correctOptionId": "doing-riding"
+        },
+        {
+          "id": "man-riding-bike-path-what",
+          "slot": "what",
+          "prompt": "What is he riding?",
+          "correctOptionId": "what-bike"
+        }
+      ]
+    },
+    {
+      "id": "man-swimming-sea",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/man_swimming_blank_sea.webp",
+      "targetImageAlt": "A man swimming in the sea.",
+      "steps": [
+        {
+          "id": "man-swimming-sea-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-man"
+        },
+        {
+          "id": "man-swimming-sea-doing",
+          "slot": "doing",
+          "prompt": "What is he doing?",
+          "correctOptionId": "doing-swimming"
+        }
+      ]
+    },
+    {
+      "id": "monkey-sitting-tree-jungle",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/monkey_sitting_tree_jungle.webp",
+      "targetImageAlt": "A monkey sitting on a tree in the jungle.",
+      "steps": [
+        {
+          "id": "monkey-sitting-tree-jungle-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-monkey"
+        },
+        {
+          "id": "monkey-sitting-tree-jungle-doing",
+          "slot": "doing",
+          "prompt": "What is it doing?",
+          "correctOptionId": "doing-sitting"
+        },
+        {
+          "id": "monkey-sitting-tree-jungle-what",
+          "slot": "what",
+          "prompt": "What is it sitting on?",
+          "correctOptionId": "what-tree"
+        }
+      ]
+    },
+    {
+      "id": "teacher-reading-book-school",
+      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/teacher_reading_book_school.webp",
+      "targetImageAlt": "A teacher reading a book at school.",
+      "steps": [
+        {
+          "id": "teacher-reading-book-school-who",
+          "slot": "who",
+          "prompt": "Who is in the picture?",
+          "correctOptionId": "who-teacher"
+        },
+        {
+          "id": "teacher-reading-book-school-doing",
+          "slot": "doing",
+          "prompt": "What is the teacher doing?",
+          "correctOptionId": "doing-reading"
+        },
+        {
+          "id": "teacher-reading-book-school-what",
+          "slot": "what",
+          "prompt": "What is the teacher reading?",
+          "correctOptionId": "what-book"
+        }
+      ]
+    }
+  ],
+  "optionAllowlistBySlot": {
+    "who": [
+      "who-man",
+      "who-lady",
+      "who-boy",
+      "who-girl",
+      "who-dog",
+      "who-cat",
+      "who-mouse",
+      "who-fox",
+      "who-dinosaur",
+      "who-frog",
+      "who-pirate",
+      "who-children",
+      "who-butterfly",
+      "who-horse",
+      "who-baby",
+      "who-monkey",
+      "who-teacher"
+    ],
+    "doing": [
+      "doing-painting",
+      "doing-eating",
+      "doing-riding",
+      "doing-jumping",
+      "doing-climbing",
+      "doing-kicking",
+      "doing-licking",
+      "doing-smelling",
+      "doing-running",
+      "doing-lying",
+      "doing-sitting",
+      "doing-finding",
+      "doing-looking",
+      "doing-drinking",
+      "doing-cycling",
+      "doing-listening",
+      "doing-blowing",
+      "doing-dancing",
+      "doing-swimming",
+      "doing-brushing",
+      "doing-reading",
+      "doing-building",
+      "doing-flying",
+      "doing-driving",
+      "doing-walking",
+      "doing-playing",
+      "doing-digging"
+    ],
+    "what": [
+      "what-car",
+      "what-tree",
+      "what-bucket",
+      "what-ball",
+      "what-horse",
+      "what-pizza",
+      "what-soap",
+      "what-shoe",
+      "what-toys",
+      "what-mat",
+      "what-lilypad",
+      "what-game",
+      "what-flower",
+      "what-ipad",
+      "what-bike",
+      "what-in-sand",
+      "what-bed",
+      "what-chair",
+      "what-dog",
+      "what-cat",
+      "what-grass",
+      "what-book",
+      "what-football",
+      "what-sandcastle",
+      "what-on-path",
+      "what-bubbles",
+      "what-music",
+      "what-mouse",
+      "what-his-teeth",
+      "what-her-teeth",
+      "what-doll",
+      "what-dinner",
+      "what-apple",
+      "what-in-puddle",
+      "what-ice-cream"
+    ],
+    "where": [
+      "where-bathroom",
+      "where-cinema",
+      "where-shop",
+      "where-swimming-pool",
+      "where-park",
+      "where-football-pitch",
+      "where-on-bed",
+      "where-on-mat",
+      "where-woods",
+      "where-home",
+      "where-beach",
+      "where-field",
+      "where-flower",
+      "where-on-path",
+      "where-kitchen",
+      "where-jungle",
+      "where-river",
+      "where-on-chair",
+      "where-farm",
+      "where-garden",
+      "where-sandpit",
+      "where-farm-field",
+      "where-in-sand",
+      "where-sea",
+      "where-living-room",
+      "where-road",
+      "where-school",
+      "where-bedroom"
+    ]
+  }
+}

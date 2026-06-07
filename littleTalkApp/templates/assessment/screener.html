@@ -43,31 +43,30 @@
         {% endif %} -->
         
         <div class="card-row">
-            {% if not has_screener %}
-                <!-- Submit New Screener -->
-                <a href="{% url 'start_assessment' %}" class="setup-card">
+            {% if has_old_screener %}
+                <a href="{% url 'assessment_summary_old' %}" class="setup-card">
                     <div class="setup-card-inner">
-                        <h2>Submit New Screener</h2>
-                        <p>A short questionnaire to profile needs and get exercise recommendations</p>
-                    </div>
-                </a>
-            {% else %}
-                <!-- Submit Re-Screener -->
-                <a href="{% url 'start_assessment' %}" class="setup-card">
-                    <div class="setup-card-inner">
-                        <h2>Submit Re-Screener</h2>
-                        <p>Re-take questionnaire to show progress and update exercise recommendations</p>
-                    </div>
-                </a>
-                
-                <!-- View Screener Results -->
-                <a href="{% url 'assessment_summary' %}" class="setup-card">
-                    <div class="setup-card-inner">
-                        <h2>View Screener Results</h2>
-                        <p>Review or print previous screener results</p>
+                        <h2>View Old Screener Results</h2>
+                        <p>Review historical screener results from the previous screener format</p>
                     </div>
                 </a>
             {% endif %}
+
+            {% if has_v2_screener %}
+                <a href="{% url 'assessment_summary' %}" class="setup-card">
+                    <div class="setup-card-inner">
+                        <h2>View Screener Results</h2>
+                        <p>Review or print your latest Screener V2 results</p>
+                    </div>
+                </a>
+            {% endif %}
+
+            <a href="{% url 'start_assessment_v2' %}" class="setup-card">
+                <div class="setup-card-inner">
+                    <h2>{% if has_v2_screener %}Submit Re-Screener{% else %}Submit Screener{% endif %}</h2>
+                    <p>A short questionnaire to profile needs and get updated exercise recommendations</p>
+                </div>
+            </a>
         </div>
 
         <div class="screener-back-button">

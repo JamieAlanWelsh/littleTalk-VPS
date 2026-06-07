@@ -1,0 +1,296 @@
+import { shuffleArray } from "../../utils/shuffleArray";
+import type {
+    ColourfulSemanticsAssetPool,
+    ColourfulSemanticsBaseSlot,
+    ColourfulSemanticsOptions,
+    ColourfulSemanticsPayload,
+    ColourfulSemanticsPresetId,
+    ColourfulSemanticsScene,
+    ColourfulSemanticsSlot,
+    ColourfulSemanticsVariantConfig,
+    ConfiguredColourfulSemanticsScene,
+} from "./types";
+
+const PRESET_SLOTS: Record<
+    ColourfulSemanticsPresetId,
+    ColourfulSemanticsBaseSlot[]
+> = {
+    subject: ["who"],
+    verb: ["doing"],
+    "subject-verb": ["who", "doing"],
+    "subject-verb-object": ["who", "doing", "what"],
+    "subject-verb-object-location": ["who", "doing", "what", "where"],
+};
+
+export const getSlotsForPreset = (
+    presetId: ColourfulSemanticsPresetId,
+): ColourfulSemanticsBaseSlot[] => PRESET_SLOTS[presetId];
+
+const ADVANCED_CANONICAL_SLOT_ORDER: ColourfulSemanticsSlot[] = [
+    "who",
+    "how",
+    "doing",
+    "what-like",
+    "what",
+    "to-who",
+    "where",
+    "when",
+];
+
+export const getActiveSlotsForScene = ({
+    scene,
+    options,
+    variant,
+}: {
+    scene: ColourfulSemanticsScene;
+    options: ColourfulSemanticsOptions;
+    variant: ColourfulSemanticsVariantConfig;
+}): ColourfulSemanticsSlot[] => {
+    const authoredSlots = new Set(scene.steps.map((step) => step.slot));
+    const activeBaseSlots = getSlotsForPreset(options.presetId).filter((slot) =>
+        authoredSlots.has(slot),
+    );
+
+    if (variant.id !== "advanced") {
+        return activeBaseSlots;
+    }
+
+    const activeOptionalSlots = options.enabledOptionalSlotIds.filter((slot) =>
+        authoredSlots.has(slot),
+    );
+
+    const activeSlots = new Set<ColourfulSemanticsSlot>([
+        ...activeBaseSlots,
+        ...activeOptionalSlots,
+    ]);
+
+    return ADVANCED_CANONICAL_SLOT_ORDER.filter((slot) =>
+        activeSlots.has(slot),
+    );
+};
+
+export const getDefaultOptionsForVariant = (
+    variant: ColourfulSemanticsVariantConfig,
+): ColourfulSemanticsOptions => ({
+    presetId: variant.defaultPresetId,
+    numberOfOptions: variant.defaultNumberOfOptions,
+    enabledOptionalSlotIds: [],
+    isVoiceMuted: false,
+});
+
+export const sanitizeOptionsForVariant = ({
+    options,
+    payload,
+    scenes,
+    variant,
+}: {
+    options: ColourfulSemanticsOptions;
+    payload: ColourfulSemanticsPayload;
+    scenes: ColourfulSemanticsScene[];
+    variant: ColourfulSemanticsVariantConfig;
+}): ColourfulSemanticsOptions => {
+    const presetId = variant.allowedPresetIds.includes(options.presetId)
+        ? options.presetId
+        : variant.defaultPresetId;
+    const enabledOptionalSlotIds = variant.availableOptionalSlotIds.filter(
+        (slotId, index, availableOptionalSlotIds) =>
+            options.enabledOptionalSlotIds.includes(slotId) &&
+            availableOptionalSlotIds.indexOf(slotId) === index,
+    );
+    const maxOptions = Math.min(
+        variant.maxNumberOfOptions,
+        getMaxOptionsAcrossScenes(
+            payload,
+            scenes,
+            {
+                ...options,
+                presetId,
+                enabledOptionalSlotIds,
+            },
+            variant,
+        ),
+    );
+
+    return {
+        presetId,
+        numberOfOptions: Math.max(
+            1,
+            Math.min(options.numberOfOptions, maxOptions),
+        ),
+        enabledOptionalSlotIds,
+        isVoiceMuted: options.isVoiceMuted,
+    };
+};
+
+export const getMaxOptionsForScene = (
+    assetPool: ColourfulSemanticsAssetPool,
+    scene: ColourfulSemanticsScene,
+    options: ColourfulSemanticsOptions,
+    variant: ColourfulSemanticsVariantConfig,
+) => {
+    const slots = getActiveSlotsForScene({
+        scene,
+        options,
+        variant,
+    });
+
+    if (slots.length === 0) {
+        return 1;
+    }
+
+    return Math.min(
+        ...scene.steps
+            .filter((step) => slots.includes(step.slot))
+            .map((step) => getOptionIdsForSlot(assetPool, step.slot).length),
+    );
+};
+
+/** Returns the slots authored in a specific scene. */
+export const getSceneSupportedSlots = (
+    scene: ColourfulSemanticsScene,
+): ColourfulSemanticsSlot[] => scene.steps.map((step) => step.slot);
+
+/**
+ * Minimum option count across ALL scenes for the given preset.
+ * Only counts steps that are relevant to the preset for each scene.
+ */
+export const getMaxOptionsAcrossScenes = (
+    assetPool: ColourfulSemanticsAssetPool,
+    scenes: ColourfulSemanticsScene[],
+    options: ColourfulSemanticsOptions,
+    variant: ColourfulSemanticsVariantConfig,
+): number => {
+    const perSceneLimits = scenes
+        .map((scene) => {
+            const activeSlots = getActiveSlotsForScene({
+                scene,
+                options,
+                variant,
+            });
+
+            return scene.steps.filter((step) =>
+                activeSlots.includes(step.slot),
+            );
+        })
+        .filter((steps) => steps.length > 0)
+        .flatMap((steps) =>
+            steps.map(
+                (step) => getOptionIdsForSlot(assetPool, step.slot).length,
+            ),
+        );
+
+    if (perSceneLimits.length === 0) return 1;
+    return Math.min(...perSceneLimits);
+};
+
+/**
+ * Pick a random scene that is applicable to the given preset (has at least one
+ * matching slot).  Falls back to the full list if none match.
+ */
+export const pickRandomScene = (
+    scenes: ColourfulSemanticsScene[],
+    options: ColourfulSemanticsOptions,
+    variant: ColourfulSemanticsVariantConfig,
+    excludeSceneIds?: string[],
+): ColourfulSemanticsScene => {
+    const applicable = scenes.filter(
+        (scene) =>
+            getActiveSlotsForScene({
+                scene,
+                options,
+                variant,
+            }).length > 0,
+    );
+    const pool = applicable.length > 0 ? applicable : scenes;
+    const preferred = excludeSceneIds?.length
+        ? pool.filter((s) => !excludeSceneIds.includes(s.id))
+        : pool;
+    const finalPool = preferred.length > 0 ? preferred : pool;
+    return finalPool[Math.floor(Math.random() * finalPool.length)];
+};
+
+const getConfiguredOptionIds = ({
+    optionIds,
+    correctOptionId,
+    numberOfOptions,
+}: {
+    optionIds: string[];
+    correctOptionId: string;
+    numberOfOptions: number;
+}) => {
+    const distractorIds = optionIds.filter(
+        (optionId) => optionId !== correctOptionId,
+    );
+    const sampledDistractorIds = shuffleArray(distractorIds).slice(
+        0,
+        Math.max(0, numberOfOptions - 1),
+    );
+
+    return shuffleArray([correctOptionId, ...sampledDistractorIds]);
+};
+
+const getOptionIdsForSlot = (
+    assetPool: ColourfulSemanticsAssetPool,
+    slot: ColourfulSemanticsSlot,
+) => assetPool[slot].map((option) => option.id);
+
+const getStepOptionIds = ({
+    assetPool,
+    slot,
+    correctOptionId,
+    numberOfOptions,
+}: {
+    assetPool: ColourfulSemanticsAssetPool;
+    slot: ColourfulSemanticsSlot;
+    correctOptionId: string;
+    numberOfOptions: number;
+}) => {
+    const optionIds = getOptionIdsForSlot(assetPool, slot);
+
+    if (!optionIds.includes(correctOptionId)) {
+        throw new Error(
+            `Missing correct option "${correctOptionId}" in "${slot}" asset pool`,
+        );
+    }
+
+    return getConfiguredOptionIds({
+        optionIds,
+        correctOptionId,
+        numberOfOptions: Math.min(numberOfOptions, optionIds.length),
+    });
+};
+
+export const configureScene = ({
+    payload,
+    scene,
+    options,
+    variant,
+}: {
+    payload: ColourfulSemanticsPayload;
+    scene: ColourfulSemanticsScene;
+    options: ColourfulSemanticsOptions;
+    variant: ColourfulSemanticsVariantConfig;
+}): ConfiguredColourfulSemanticsScene => {
+    const configuredSlots = getActiveSlotsForScene({
+        scene,
+        options,
+        variant,
+    });
+    const stepsBySlot = new Map(scene.steps.map((step) => [step.slot, step]));
+
+    return {
+        ...scene,
+        steps: configuredSlots
+            .map((slot) => stepsBySlot.get(slot))
+            .filter((step) => step != null)
+            .map((step) => ({
+                ...step,
+                optionIds: getStepOptionIds({
+                    assetPool: payload,
+                    slot: step.slot,
+                    correctOptionId: step.correctOptionId,
+                    numberOfOptions: options.numberOfOptions,
+                }),
+            })),
+    };
+};

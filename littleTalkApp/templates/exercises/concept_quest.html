@@ -1,0 +1,17 @@
+{% load django_vite %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Concept Quest Exercise</title>
+    {% vite_hmr_client %}
+    {% vite_asset 'frontend/src/style.css' %}
+</head>
+<body class="exercise-page">
+    <div id="exercise-root" data-learner-uuid="{{ learner_uuid }}"></div>
+
+    {% vite_react_refresh %}
+    {% vite_asset 'frontend/src/entrypoints/concept-quest.tsx' %}
+</body>
+</html>
