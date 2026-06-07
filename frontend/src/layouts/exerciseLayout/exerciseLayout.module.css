@@ -9,6 +9,18 @@
     box-sizing: border-box;
 }
 
+/* Holds the prompt + interactive board. On short viewports `--exercise-zoom`
+   (set responsively in style.css) shrinks this whole area like a browser
+   "zoom out", so tall exercises stay on screen. The fixed header and action
+   bar live outside this element and keep their full, tappable size. */
+.exerciseScaleArea {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    width: 100%;
+    zoom: var(--exercise-zoom, 1);
+}
+
 .exercisePromptCard,
 .exerciseContainer {
     box-sizing: border-box;
@@ -17,7 +29,6 @@
     color: var(--font-color);
     width: 100%;
 }
-
 .exercisePromptCard {
     padding: 1rem 1rem;
     background-color: var(--yellow-button-color);

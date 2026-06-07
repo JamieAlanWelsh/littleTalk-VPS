@@ -288,34 +288,41 @@ export const ExerciseLayout = <AnswerType,>({
                     </div>
 
                     <div className={styles.exerciseLayoutWrapper}>
-                        {/* question */}
-                        <div
-                            key={`${questions[currentQuestionStateIndex].id}-${promptOverride ?? ""}`}
-                            className={`${styles.exercisePromptCard} ${styles.exercisePromptCardPop}`}
-                        >
-                            <h2 className={styles.exercisePromptTitle}>
-                                <span className={styles.exercisePromptText}>
-                                    {promptText}
-                                </span>
-                            </h2>
-                        </div>
-
-                        {/* answer */}
-                        <div className={styles.exerciseContainer}>
+                        {/* Scale area: shrinks the prompt + board on short
+                            viewports to keep the whole exercise on screen,
+                            while the fixed header and action bar stay full size. */}
+                        <div className={styles.exerciseScaleArea}>
+                            {/* question */}
                             <div
-                                className={`${styles.exerciseZone} ${styles.exerciseZoneInteractive}`}
+                                key={`${questions[currentQuestionStateIndex].id}-${promptOverride ?? ""}`}
+                                className={`${styles.exercisePromptCard} ${styles.exercisePromptCardPop}`}
                             >
-                                {typeof children === "function" && answers
-                                    ? (
-                                          children as (
-                                              currentAnswer: AnswerType,
-                                              currentAnswerIndex: number,
-                                          ) => ReactNode
-                                      )(
-                                          answers[currentQuestionStateIndex],
-                                          currentQuestionStateIndex,
-                                      )
-                                    : (children as ReactNode)}
+                                <h2 className={styles.exercisePromptTitle}>
+                                    <span className={styles.exercisePromptText}>
+                                        {promptText}
+                                    </span>
+                                </h2>
+                            </div>
+
+                            {/* answer */}
+                            <div className={styles.exerciseContainer}>
+                                <div
+                                    className={`${styles.exerciseZone} ${styles.exerciseZoneInteractive}`}
+                                >
+                                    {typeof children === "function" && answers
+                                        ? (
+                                              children as (
+                                                  currentAnswer: AnswerType,
+                                                  currentAnswerIndex: number,
+                                              ) => ReactNode
+                                          )(
+                                              answers[
+                                                  currentQuestionStateIndex
+                                              ],
+                                              currentQuestionStateIndex,
+                                          )
+                                        : (children as ReactNode)}
+                                </div>
                             </div>
                         </div>
 

@@ -36,6 +36,10 @@ body.exercise-page {
     --exercise-chrome-max-width: 1000px;
     --exercise-chrome-inline-padding: 1.25rem;
     --exercise-header-reserved-height: calc(env(safe-area-inset-top) + 5.75rem);
+    /* Zoom factor applied to the exercise board (see .exerciseScaleArea).
+       Defaults to full size and steps down on shorter viewports so tall
+       exercises stay fully on screen, mimicking a browser "zoom out". */
+    --exercise-zoom: 1;
     margin: 0;
     padding: 20px;
     padding-top: calc(20px + var(--exercise-header-reserved-height));
@@ -45,4 +49,42 @@ body.exercise-page {
     align-items: center;
     justify-content: center;
     background-color: var(--background-color);
+}
+
+/* Progressive "zoom out" for short viewports (e.g. laptops ~800px tall),
+   targeting a comfortable fit down to ~600px of height. */
+@media (max-height: 900px) {
+    body.exercise-page {
+        --exercise-zoom: 0.93;
+    }
+}
+
+@media (max-height: 840px) {
+    body.exercise-page {
+        --exercise-zoom: 0.86;
+    }
+}
+
+@media (max-height: 780px) {
+    body.exercise-page {
+        --exercise-zoom: 0.8;
+    }
+}
+
+@media (max-height: 720px) {
+    body.exercise-page {
+        --exercise-zoom: 0.74;
+    }
+}
+
+@media (max-height: 660px) {
+    body.exercise-page {
+        --exercise-zoom: 0.68;
+    }
+}
+
+@media (max-height: 600px) {
+    body.exercise-page {
+        --exercise-zoom: 0.62;
+    }
 }
