@@ -35,7 +35,9 @@ select {
 body.exercise-page {
     --exercise-chrome-max-width: 1000px;
     --exercise-chrome-inline-padding: 1.25rem;
-    --exercise-zoom: 1;
+    --exercise-zoom-base: 1;
+    --exercise-zoom-auto: var(--exercise-zoom-base);
+    --exercise-zoom: var(--exercise-zoom-auto);
     /* Keep fixed chrome (top progress bar + bottom action bar) in proportion
        with board zoom, but slightly less aggressive so controls remain usable. */
     --exercise-fixed-ui-scale: calc((var(--exercise-zoom) * 0.6) + 0.4);
@@ -86,48 +88,48 @@ body.exercise-page {
    the ramp is intentionally aggressive to keep the board fully on screen. */
 @media (max-height: 1024px) {
     body.exercise-page {
-        --exercise-zoom: 0.9;
+        --exercise-zoom-base: 0.9;
     }
 }
 
 @media (max-height: 950px) {
     body.exercise-page {
-        --exercise-zoom: 0.8;
+        --exercise-zoom-base: 0.8;
     }
 }
 
 @media (max-height: 880px) {
     body.exercise-page {
-        --exercise-zoom: 0.73;
+        --exercise-zoom-base: 0.73;
     }
 }
 
 @media (max-height: 820px) {
     body.exercise-page {
-        --exercise-zoom: 0.65;
+        --exercise-zoom-base: 0.65;
     }
 }
 
 @media (max-height: 760px) {
     body.exercise-page {
-        --exercise-zoom: 0.6;
+        --exercise-zoom-base: 0.6;
     }
 }
 
 @media (max-height: 700px) {
     body.exercise-page {
-        --exercise-zoom: 0.53;
+        --exercise-zoom-base: 0.53;
     }
 }
 
 @media (max-height: 640px) {
     body.exercise-page {
-        --exercise-zoom: 0.48;
+        --exercise-zoom-base: 0.48;
     }
 }
 
 @media (max-height: 580px) {
     body.exercise-page {
-        --exercise-zoom: 0.43;
+        --exercise-zoom-base: 0.43;
     }
 }

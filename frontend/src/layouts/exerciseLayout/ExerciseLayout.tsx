@@ -8,7 +8,7 @@
  * and feedback/progress indicators internally.
  */
 
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import styles from "./exerciseLayout.module.css";
 import ExerciseActionBar from "../../components/ExerciseActionBar/ExerciseActionBar";
 import ConfirmationModal from "../../components/ConfirmationModal/ConfirmationModal";
@@ -111,6 +111,7 @@ export const ExerciseLayout = <AnswerType,>({
     difficulty = DEFAULT_EXERCISE_DIFFICULTY,
     children,
 }: ExerciseLayoutProps<AnswerType>) => {
+    const scaleAreaRef = useRef<HTMLDivElement | null>(null);
     const [currentQuestionStateIndex, setCurrentQuestionStateIndex] =
         useState<number>(0);
     const [showExitConfirmation, setShowExitConfirmation] = useState(false);
@@ -132,6 +133,76 @@ export const ExerciseLayout = <AnswerType,>({
     const promptText = promptOverride ?? currentQuestion?.prompt ?? "";
 
     const { play } = useAudio();
+
+    useEffect(() => {
+        if (isComplete) {
+            document.body.style.removeProperty("--exercise-zoom-auto");
+            return;
+        }
+
+        const scaleArea = scaleAreaRef.current;
+        if (!scaleArea) {
+            return;
+        }
+
+        let frameId = 0;
+
+        const recalculateAdaptiveZoom = () => {
+            const body = document.body;
+            const bodyStyles = window.getComputedStyle(body);
+            const zoomBase =
+                Number.parseFloat(
+                    bodyStyles.getPropertyValue("--exercise-zoom-base"),
+                ) || 1;
+            const currentZoom =
+                Number.parseFloat(
+                    bodyStyles.getPropertyValue("--exercise-zoom"),
+                ) || zoomBase;
+
+            const reservedTop = Number.parseFloat(bodyStyles.paddingTop) || 0;
+            const reservedBottom =
+                Number.parseFloat(bodyStyles.paddingBottom) || 0;
+            const availableHeight =
+                window.innerHeight - reservedTop - reservedBottom;
+            if (availableHeight <= 0 || currentZoom <= 0) {
+                return;
+            }
+
+            const scaledHeight = scaleArea.getBoundingClientRect().height;
+            if (scaledHeight <= 0) {
+                return;
+            }
+
+            const unscaledHeight = scaledHeight / currentZoom;
+            const fitZoom = availableHeight / unscaledHeight;
+            const nextZoom = Math.min(1, fitZoom);
+
+            body.style.setProperty(
+                "--exercise-zoom-auto",
+                Math.max(0.35, nextZoom).toFixed(4),
+            );
+        };
+
+        const scheduleRecalculate = () => {
+            window.cancelAnimationFrame(frameId);
+            frameId = window.requestAnimationFrame(recalculateAdaptiveZoom);
+        };
+
+        const resizeObserver = new ResizeObserver(() => {
+            scheduleRecalculate();
+        });
+        resizeObserver.observe(scaleArea);
+
+        window.addEventListener("resize", scheduleRecalculate);
+        scheduleRecalculate();
+
+        return () => {
+            window.removeEventListener("resize", scheduleRecalculate);
+            resizeObserver.disconnect();
+            window.cancelAnimationFrame(frameId);
+            document.body.style.removeProperty("--exercise-zoom-auto");
+        };
+    }, [actionBarPhase, currentQuestionStateIndex, isComplete, promptText]);
 
     useEffect(() => {
         if (actionBarPhase === "correct") play("/static/audio/correct.wav");
@@ -291,7 +362,10 @@ export const ExerciseLayout = <AnswerType,>({
                         {/* Scale area: shrinks the prompt + board on short
                             viewports to keep the whole exercise on screen,
                             while the fixed header and action bar stay full size. */}
-                        <div className={styles.exerciseScaleArea}>
+                        <div
+                            className={styles.exerciseScaleArea}
+                            ref={scaleAreaRef}
+                        >
                             {/* question */}
                             <div
                                 key={`${questions[currentQuestionStateIndex].id}-${promptOverride ?? ""}`}
