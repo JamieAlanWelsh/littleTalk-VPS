@@ -42,11 +42,47 @@
             </div>
             <div class="section-filter">
                 <button class="filter-btn active" data-section-filter="all">All</button>
+                <button class="filter-btn" data-section-filter="recents">Recents</button>
                 <button class="filter-btn" data-section-filter="chart">Exercises</button>
                 <button class="filter-btn" data-section-filter="targets">Targets</button>
                 <button class="filter-btn" data-section-filter="screener">Screener</button>
             </div>
             <button id="print-dashboard" class="btn btn--white btn--small btn--border no-print" title="Print this dashboard">🖨 Print</button>
+        </div>
+
+        <div class="dashboard-section" data-section="recents">
+            <div class="section-header">
+                <h3>Recent Exercises</h3>
+            </div>
+
+            {% if recent_sessions %}
+            <div class="recent-exercises-table-wrap">
+                <table class="recent-exercises-table">
+                    <thead>
+                        <tr>
+                            <th>Exercise Name</th>
+                            <th>Difficulty Selected</th>
+                            <th>Accuracy</th>
+                            <th>Time Taken</th>
+                            <th>Time of Session</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for session in recent_sessions %}
+                        <tr>
+                            <td>{{ session.exercise_name }}</td>
+                            <td>{{ session.difficulty_selected }}</td>
+                            <td>{{ session.accuracy }}</td>
+                            <td>{{ session.time_elapsed }}</td>
+                            <td>{{ session.session_time|date:"j F, g:i" }}{{ session.session_time|date:"A"|lower }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="empty-state">No recent exercise sessions yet.</p>
+            {% endif %}
         </div>
 
         <!-- Chart Section -->
@@ -85,18 +121,25 @@
                 </div>
 
                 <div class="filter-row">
-                    <div class="chart-filter-buttons">
-                        <button class="filter-btn active" data-metric="difficulty">Difficulty Selected</button>
-                        <button class="filter-btn" data-metric="accuracy">Accuracy (%)</button>
-                        <button class="filter-btn" data-metric="time_elapsed">Time Elapsed</button>
-                    </div>
-                </div>
-
-                <div class="filter-row">
-                    <div class="chart-filter-buttons">
-                        <button class="filter-btn" data-smart="layer-metrics" title="Enable selecting multiple metrics to overlay on the same chart">Select Multiple</button>
-                        <button class="filter-btn" data-smart="plot-best-fit" title="Visualise overall direction and trend">Line of Best Fit</button>
-                        <button class="filter-btn" data-smart="smooth-data" title="Reduce noise and outliers by applying a moving average algorithm">Data Smoothing</button>
+                    <div class="chart-filter-group-box">
+                        <p class="chart-filter-group-label">Statistics</p>
+                        <div class="chart-filter-buttons">
+                            <button class="filter-btn active" data-metric="difficulty">Difficulty Selected</button>
+                            <button class="filter-btn" data-metric="accuracy">Accuracy (%)</button>
+                            <button class="filter-btn" data-metric="time_elapsed">Time Elapsed</button>
+                        </div>
+                        <label class="chart-filter-checkbox" for="layer-metrics-toggle">
+                            <input id="layer-metrics-toggle" type="checkbox">
+                            Select Multiple
+                        </label>
+                        <label class="chart-filter-checkbox" for="plot-best-fit-toggle">
+                            <input id="plot-best-fit-toggle" type="checkbox">
+                            Line of Best Fit
+                        </label>
+                        <label class="chart-filter-checkbox" for="smooth-data-toggle">
+                            <input id="smooth-data-toggle" type="checkbox">
+                            Data Smoothing
+                        </label>
                     </div>
                 </div>
             </div>

@@ -8,7 +8,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // Button-style filters
     const exerciseButtons = document.querySelectorAll('[data-exercise]');
     const metricButtons = document.querySelectorAll('[data-metric]');
-    const smartButtons = document.querySelectorAll('[data-smart]');
+    const layerMetricsCheckbox = document.getElementById("layer-metrics-toggle");
+    const plotBestFitCheckbox = document.getElementById("plot-best-fit-toggle");
+    const smoothDataCheckbox = document.getElementById("smooth-data-toggle");
 
     if (!learnerSelect) {
         return;
@@ -46,18 +48,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function isLayerMetricsEnabled() {
-        const layerBtn = document.querySelector('[data-smart="layer-metrics"]');
-        return layerBtn ? layerBtn.classList.contains('active') : false;
+        return layerMetricsCheckbox ? layerMetricsCheckbox.checked : false;
     }
 
     function isBestFitEnabled() {
-        const bestFitBtn = document.querySelector('[data-smart="plot-best-fit"]');
-        return bestFitBtn ? bestFitBtn.classList.contains('active') : false;
+        return plotBestFitCheckbox ? plotBestFitCheckbox.checked : false;
     }
 
     function isSmoothingEnabled() {
-        const smoothBtn = document.querySelector('[data-smart="smooth-data"]');
-        return smoothBtn ? smoothBtn.classList.contains('active') : false;
+        return smoothDataCheckbox ? smoothDataCheckbox.checked : false;
     }
 
 
@@ -372,21 +371,42 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function updateBestFitVisibility() {
-        const bestFitButton = document.querySelector('[data-smart="plot-best-fit"]');
-        if (!bestFitButton) {
+        if (!plotBestFitCheckbox) {
             return;
         }
+
+        const bestFitLabel = document.querySelector('label[for="plot-best-fit-toggle"]');
         const selectedMetrics = getSelectedMetrics();
         const layerMetricsEnabled = isLayerMetricsEnabled();
         const shouldShow = selectedMetrics.length === 1 && !layerMetricsEnabled;
-        
-        bestFitButton.disabled = !shouldShow;
-        bestFitButton.style.opacity = shouldShow ? '1' : '0.5';
-        bestFitButton.style.cursor = shouldShow ? 'pointer' : 'not-allowed';
-        
-        if (!shouldShow && bestFitButton.classList.contains('active')) {
-            bestFitButton.classList.remove('active');
+
+        plotBestFitCheckbox.disabled = !shouldShow;
+        if (bestFitLabel) {
+            bestFitLabel.style.opacity = shouldShow ? '1' : '0.5';
+            bestFitLabel.style.cursor = shouldShow ? 'pointer' : 'not-allowed';
         }
+
+        if (!shouldShow && plotBestFitCheckbox.checked) {
+            plotBestFitCheckbox.checked = false;
+        }
+    }
+
+    function normalizeMetricSelectionForMode() {
+        if (isLayerMetricsEnabled()) {
+            return;
+        }
+
+        const activeMetrics = Array.from(
+            document.querySelectorAll('[data-metric].active'),
+        );
+
+        if (activeMetrics.length <= 1) {
+            return;
+        }
+
+        const [firstActiveButton] = activeMetrics;
+        metricButtons.forEach((btn) => btn.classList.remove("active"));
+        firstActiveButton.classList.add("active");
     }
 
     async function fetchProgressData() {
@@ -448,8 +468,29 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Initialize
+    normalizeMetricSelectionForMode();
     updateBestFitVisibility();
     fetchProgressData();
+
+    if (layerMetricsCheckbox) {
+        layerMetricsCheckbox.addEventListener("change", () => {
+            normalizeMetricSelectionForMode();
+            updateBestFitVisibility();
+            fetchProgressData();
+        });
+    }
+
+    if (plotBestFitCheckbox) {
+        plotBestFitCheckbox.addEventListener("change", () => {
+            fetchProgressData();
+        });
+    }
+
+    if (smoothDataCheckbox) {
+        smoothDataCheckbox.addEventListener("change", () => {
+            fetchProgressData();
+        });
+    }
 
     // Cohort selection should reload page to filter learners
     const cohortSelect = document.getElementById("cohort-select");
@@ -529,19 +570,4 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // Smart data view buttons (toggles)
-    smartButtons.forEach(button => {
-        button.addEventListener("click", () => {
-            if (button.disabled) return;
-            
-            button.classList.toggle('active');
-            
-            // If layer metrics was toggled, update best fit visibility
-            if (button.dataset.smart === 'layer-metrics') {
-                updateBestFitVisibility();
-            }
-            
-            fetchProgressData();
-        });
-    });
 });

@@ -57,6 +57,54 @@ def _build_dashboard_exercise_groups(exercise_counts):
     return groups
 
 
+def _format_elapsed_time(duration):
+    total_seconds = int(max(duration.total_seconds(), 0))
+    minutes, seconds = divmod(total_seconds, 60)
+    return f"{minutes}m {seconds:02d}s"
+
+
+def _build_recent_sessions(selected_learner):
+    if not selected_learner:
+        return []
+
+    recent_sessions = (
+        ExerciseSession.objects.filter(learner=selected_learner)
+        .order_by("-completed_at")[:5]
+    )
+
+    rows = []
+    for session in recent_sessions:
+        practise_key = CANONICAL_TO_PRACTISE_KEY.get(session.exercise_id)
+        exercise_name = GAME_DESCRIPTIONS.get(practise_key, {}).get(
+            "title",
+            session.exercise_id,
+        )
+
+        if session.total_questions > 0:
+            correct = session.total_questions - session.incorrect_answers
+            accuracy_display = f"{round((correct / session.total_questions) * 100, 1)}%"
+        else:
+            accuracy_display = "-"
+
+        elapsed_display = "-"
+        if session.started_at and session.completed_at:
+            elapsed_display = _format_elapsed_time(session.completed_at - session.started_at)
+
+        rows.append(
+            {
+                "exercise_name": exercise_name,
+                "difficulty_selected": session.difficulty_label
+                or session.difficulty_selected
+                or "-",
+                "accuracy": accuracy_display,
+                "time_elapsed": elapsed_display,
+                "session_time": session.completed_at,
+            }
+        )
+
+    return rows
+
+
 @login_required
 def learner_dashboard(request):
     """Renders dashboard/learner_dashboard.html — the main staff-facing learner overview.
@@ -190,6 +238,8 @@ def learner_dashboard(request):
             "has_screener_data": latest_session is not None,
         }
 
+    recent_sessions = _build_recent_sessions(selected_learner)
+
     context = {
         "learners": accessible_learners,
         "selected_learner": selected_learner,
@@ -199,6 +249,7 @@ def learner_dashboard(request):
         "total_sessions": exercise_counts.get("all", 0),
         "targets_data": targets_data,
         "screener_data": screener_data,
+        "recent_sessions": recent_sessions,
     }
 
     return render(request, "dashboard/learner_dashboard.html", context)

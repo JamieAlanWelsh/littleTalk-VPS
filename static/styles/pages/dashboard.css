@@ -47,6 +47,38 @@
     gap: 8px;
 }
 
+.chart-filter-group-box {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px;
+    border: 1px solid #e8e8e8;
+    border-radius: 10px;
+    background: #fafafa;
+}
+
+.chart-filter-group-label {
+    margin: 0;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--font-color);
+}
+
+.chart-filter-checkbox {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: var(--font-color);
+    cursor: pointer;
+}
+
+.chart-filter-checkbox input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
 /* Dashboard Header */
 .dashboard-header {
     display: flex;
@@ -321,8 +353,9 @@
 }
 
 .filter-btn.active {
-    border-color: var(--font-color);
-    background: var(--font-color);
+    /* border-color: var(--font-color); */
+    background: #FF9292;
+    font-weight: 600;
     color: #ffffff;
 }
 
@@ -414,6 +447,30 @@
     text-align: center;
     color: #6c6c6c;
     font-size: 0.95rem;
+}
+
+.recent-exercises-table-wrap {
+    overflow-x: auto;
+}
+
+.recent-exercises-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 680px;
+}
+
+.recent-exercises-table th,
+.recent-exercises-table td {
+    text-align: left;
+    padding: 12px 10px;
+    border-bottom: 1px solid #ececec;
+    font-size: 0.92rem;
+    color: var(--font-color);
+}
+
+.recent-exercises-table thead th {
+    font-weight: 700;
+    background: #f8f9fa;
 }
 
 /* Screener Analysis Section */
