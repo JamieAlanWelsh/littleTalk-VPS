@@ -35,6 +35,8 @@ select {
 body.exercise-page {
     --exercise-chrome-max-width: 1000px;
     --exercise-chrome-inline-padding: 1.25rem;
+    --exercise-content-actionbar-gap: 2rem;
+    --exercise-content-gap-top-reclaim-ratio: 0.5;
     --exercise-zoom-base: 1;
     --exercise-zoom-auto: var(--exercise-zoom-base);
     --exercise-zoom: var(--exercise-zoom-auto);
@@ -74,7 +76,16 @@ body.exercise-page {
          exercises stay fully on screen, mimicking a browser "zoom out". */
     margin: 0;
     padding: 20px;
-    padding-top: calc(8px + var(--exercise-header-reserved-height));
+    padding-top: max(
+        8px,
+        calc(
+            8px + var(--exercise-header-reserved-height) -
+                (
+                    var(--exercise-content-actionbar-gap) *
+                        var(--exercise-content-gap-top-reclaim-ratio)
+                )
+        )
+    );
     padding-bottom: var(--exercise-actionbar-reserved-height);
     min-height: 100vh;
     display: flex;

@@ -147,6 +147,28 @@ export const ExerciseLayout = <AnswerType,>({
 
         let frameId = 0;
 
+        const resolveLengthToPx = (rawValue: string): number => {
+            const trimmedValue = rawValue.trim();
+            if (!trimmedValue) {
+                return 0;
+            }
+
+            const probe = document.createElement("div");
+            probe.style.position = "absolute";
+            probe.style.visibility = "hidden";
+            probe.style.pointerEvents = "none";
+            probe.style.height = trimmedValue;
+            document.body.appendChild(probe);
+            const px = probe.getBoundingClientRect().height;
+            probe.remove();
+
+            if (!Number.isFinite(px)) {
+                return 0;
+            }
+
+            return px;
+        };
+
         const recalculateAdaptiveZoom = () => {
             const body = document.body;
             const bodyStyles = window.getComputedStyle(body);
@@ -162,8 +184,14 @@ export const ExerciseLayout = <AnswerType,>({
             const reservedTop = Number.parseFloat(bodyStyles.paddingTop) || 0;
             const reservedBottom =
                 Number.parseFloat(bodyStyles.paddingBottom) || 0;
+            const contentBottomGap = resolveLengthToPx(
+                bodyStyles.getPropertyValue("--exercise-content-actionbar-gap"),
+            );
             const availableHeight =
-                window.innerHeight - reservedTop - reservedBottom;
+                window.innerHeight -
+                reservedTop -
+                reservedBottom -
+                contentBottomGap;
             if (availableHeight <= 0 || currentZoom <= 0) {
                 return;
             }
@@ -193,12 +221,23 @@ export const ExerciseLayout = <AnswerType,>({
         });
         resizeObserver.observe(scaleArea);
 
+        const headObserver = new MutationObserver(() => {
+            scheduleRecalculate();
+        });
+        headObserver.observe(document.head, {
+            childList: true,
+            subtree: true,
+            characterData: true,
+            attributes: true,
+        });
+
         window.addEventListener("resize", scheduleRecalculate);
         scheduleRecalculate();
 
         return () => {
             window.removeEventListener("resize", scheduleRecalculate);
             resizeObserver.disconnect();
+            headObserver.disconnect();
             window.cancelAnimationFrame(frameId);
             document.body.style.removeProperty("--exercise-zoom-auto");
         };
