@@ -10,7 +10,7 @@ import { DraggableImage } from "../../components/DraggableImage/DraggableImage";
 import { DroppableImageZone } from "../../components/DroppableImageZone/DroppableImageZone";
 import { useExerciseTracking } from "../../hooks";
 import ExerciseLayout from "../../layouts/exerciseLayout/ExerciseLayout";
-import type { QuestionState } from "../../lib/types";
+import type { ExerciseDifficulty, QuestionState } from "../../lib/types";
 import type {
     SpotOnGridLocation,
     SpotOnPreposition,
@@ -107,6 +107,13 @@ export const SpotOnGame = ({
     onSettingsRequested,
 }: SpotOnGameProps) => {
     const tracking = useExerciseTracking(questions.length);
+    const uniquePrepositionCount = new Set(
+        questions.map((question) => question.preposition),
+    ).size;
+    const difficulty: ExerciseDifficulty = {
+        level: Math.max(1, uniquePrepositionCount),
+        label: `${uniquePrepositionCount} prepositions`,
+    };
     const [questionState, setQuestionState] = useState<QuestionState>({
         selectedIconIds: [],
         answerState: "notAnswered",
@@ -211,6 +218,7 @@ export const SpotOnGame = ({
             }))}
             answers={questions}
             tracking={tracking}
+            difficulty={difficulty}
             onCheckAnswer={onCheckAnswer}
             onResetQuestion={onResetQuestion}
             onSettingsRequested={onSettingsRequested}

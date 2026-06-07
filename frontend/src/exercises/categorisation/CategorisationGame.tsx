@@ -17,7 +17,7 @@ import {
 import { useMemo, useState } from "react";
 import ExerciseLayout from "../../layouts/exerciseLayout/ExerciseLayout";
 import { useExerciseTracking } from "../../hooks";
-import type { QuestionState } from "../../lib/types";
+import type { ExerciseDifficulty, QuestionState } from "../../lib/types";
 
 interface CategorisationGameProps {
     categories: Record<CategoryId, CategorisationItem[]>;
@@ -38,6 +38,7 @@ export const CategorisationGame = ({
     isSfxMuted = false,
     onSettingsRequested,
 }: CategorisationGameProps) => {
+    const categoryCount = Object.keys(categories).length;
     const totalTileQuestions = useMemo(
         () =>
             Object.values(categories).reduce(
@@ -46,6 +47,12 @@ export const CategorisationGame = ({
             ),
         [categories],
     );
+    const itemsPerCategory =
+        categoryCount > 0 ? Math.round(totalTileQuestions / categoryCount) : 0;
+    const difficulty: ExerciseDifficulty = {
+        level: Math.max(1, categoryCount),
+        label: `${categoryCount} categories, ${itemsPerCategory} each`,
+    };
     const itemsById = Object.fromEntries(
         Object.values(categories)
             .flat()
@@ -180,6 +187,7 @@ export const CategorisationGame = ({
             onCheckAnswer={onCheckAnswer}
             onResetQuestion={onResetQuestion}
             onSettingsRequested={onSettingsRequested}
+            difficulty={difficulty}
             submissionStatsOverride={{
                 totalQuestions: totalTileQuestions,
                 incorrectAnswers: cumulativeMisplacedTiles,

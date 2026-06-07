@@ -478,6 +478,7 @@ class ExerciseSession(models.Model):
     learner = models.ForeignKey(Learner, on_delete=models.CASCADE, related_name="exercise_sessions")
     exercise_id = models.CharField(max_length=255)
     difficulty_selected = models.CharField(max_length=50)
+    difficulty_label = models.CharField(max_length=100, blank=True, default="")
     started_at = models.DateTimeField()
     completed_at = models.DateTimeField()
     total_questions = models.IntegerField()

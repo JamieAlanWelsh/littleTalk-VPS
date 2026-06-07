@@ -12,7 +12,11 @@ import { useEffect, useState, type ReactNode } from "react";
 import styles from "./exerciseLayout.module.css";
 import ExerciseActionBar from "../../components/ExerciseActionBar/ExerciseActionBar";
 import ConfirmationModal from "../../components/ConfirmationModal/ConfirmationModal";
-import type { AnswerState, Question } from "../../lib/types";
+import type {
+    AnswerState,
+    ExerciseDifficulty,
+    Question,
+} from "../../lib/types";
 import { useExerciseTracking, useSubmitExerciseResult } from "../../hooks";
 import ExerciseEndscreen from "../exerciseEndscreen/ExerciseEndscreen";
 import { useAudio } from "../../hooks/useAudio";
@@ -45,6 +49,11 @@ const incorrectFeedbackMessages = [
     "Almost there, give it another try!",
 ];
 
+const DEFAULT_EXERCISE_DIFFICULTY: ExerciseDifficulty = {
+    level: 1,
+    label: "Standard",
+};
+
 interface ExerciseLayoutProps<AnswerType> {
     exerciseId: string;
     actionBarPhase: AnswerState;
@@ -73,6 +82,7 @@ interface ExerciseLayoutProps<AnswerType> {
         incorrectAnswers?: number;
         attemptsPerQuestion?: number[];
     };
+    difficulty?: ExerciseDifficulty;
     children:
         | ReactNode
         | ((
@@ -98,6 +108,7 @@ export const ExerciseLayout = <AnswerType,>({
     progressBase = 0,
     progressScale = 1,
     submissionStatsOverride,
+    difficulty = DEFAULT_EXERCISE_DIFFICULTY,
     children,
 }: ExerciseLayoutProps<AnswerType>) => {
     const [currentQuestionStateIndex, setCurrentQuestionStateIndex] =
@@ -176,7 +187,8 @@ export const ExerciseLayout = <AnswerType,>({
             exp,
             totalExercises: 1,
             exerciseId: exerciseId,
-            difficultySelected: "medium",
+            difficultyLevel: difficulty.level,
+            difficultyLabel: difficulty.label,
             startedAt,
             completedAt,
             totalQuestions,

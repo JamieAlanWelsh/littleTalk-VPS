@@ -2,7 +2,11 @@ import { useMemo, useState } from "react";
 import { TextOptionGroup } from "../../components/TextOptionGroup";
 import { useExerciseTracking } from "../../hooks";
 import ExerciseLayout from "../../layouts/exerciseLayout/ExerciseLayout";
-import type { Question, QuestionState } from "../../lib/types";
+import type {
+    ExerciseDifficulty,
+    Question,
+    QuestionState,
+} from "../../lib/types";
 import { shuffleArray } from "../../utils/shuffleArray";
 import type {
     WhatsInTheBagItem,
@@ -100,6 +104,10 @@ export const WhatsInTheBagGame = ({
         () => buildRounds(payload, options.numberOfOptions),
         [payload, options.numberOfOptions],
     );
+    const difficulty: ExerciseDifficulty = {
+        level: options.numberOfOptions,
+        label: `${options.numberOfOptions} options`,
+    };
     const tracking = useExerciseTracking(gameData.questions.length);
 
     const idToPromptLabelMap = useMemo(
@@ -166,6 +174,7 @@ export const WhatsInTheBagGame = ({
             questions={gameData.questions}
             answers={gameData.answers}
             tracking={tracking}
+            difficulty={difficulty}
             onCheckAnswer={onCheckAnswer}
             onResetQuestion={onResetQuestion}
             onSettingsRequested={onSettingsRequested}

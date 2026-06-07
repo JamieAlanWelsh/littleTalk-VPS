@@ -184,6 +184,11 @@ export interface SentenceMatchingOptions {
     numberOfOptions: number;
 }
 
+export interface ExerciseDifficulty {
+    level: number;
+    label: string;
+}
+
 /**
  * ExerciseState: Tracks the interactive state of an exercise.
  * Used by exercise shells and components to manage UI state.

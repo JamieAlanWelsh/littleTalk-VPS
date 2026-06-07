@@ -7,6 +7,7 @@
 
 import { useMemo, useState } from "react";
 import type {
+    ExerciseDifficulty,
     Picture,
     Question,
     QuestionState,
@@ -109,6 +110,10 @@ export const ThinkAndFindGame = ({
         () => buildRounds(payload, options.numberOfOptions),
         [payload, options.numberOfOptions],
     );
+    const difficulty: ExerciseDifficulty = {
+        level: options.numberOfOptions,
+        label: `${options.numberOfOptions} options`,
+    };
     const tracking = useExerciseTracking(gameData.questions.length);
 
     const onCheckAnswer = (question: Question) => {
@@ -149,6 +154,7 @@ export const ThinkAndFindGame = ({
             questions={gameData.questions}
             answers={gameData.answers}
             tracking={tracking}
+            difficulty={difficulty}
             onCheckAnswer={onCheckAnswer}
             onResetQuestion={onResetAnswer}
             onSettingsRequested={onSettingsRequested}

@@ -2,7 +2,11 @@ import type { DragEndEvent } from "@dnd-kit/abstract";
 import { useMemo, useState } from "react";
 import { useExerciseTracking } from "../../hooks";
 import ExerciseLayout from "../../layouts/exerciseLayout/ExerciseLayout";
-import type { Question, QuestionState } from "../../lib/types";
+import type {
+    ExerciseDifficulty,
+    Question,
+    QuestionState,
+} from "../../lib/types";
 import WhosWhoBoard from "./WhosWhoBoard";
 import type {
     WhosWhoChoiceCount,
@@ -155,6 +159,10 @@ export const WhosWhoGame = ({
             buildRoundState(scenario, settings.choiceCount),
         ),
     );
+    const difficulty: ExerciseDifficulty = {
+        level: settings.choiceCount,
+        label: `${settings.choiceCount} options`,
+    };
 
     const tracking = useExerciseTracking(questions.length);
 
@@ -232,6 +240,7 @@ export const WhosWhoGame = ({
             questions={questions}
             answers={answers}
             tracking={tracking}
+            difficulty={difficulty}
             onCheckAnswer={onCheckAnswer}
             onResetQuestion={onResetQuestion}
             onSettingsRequested={onSettingsRequested}

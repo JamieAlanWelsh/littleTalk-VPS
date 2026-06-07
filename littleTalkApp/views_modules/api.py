@@ -79,7 +79,8 @@ class SubmitExerciseView(APIView):
             ExerciseSession.objects.create(
                 learner=learner,
                 exercise_id=submitted_exercise_id,
-                difficulty_selected=input_serializer.validated_data.get("difficulty_selected", ""),
+                difficulty_selected=str(input_serializer.validated_data.get("difficulty_level", 0)),
+                difficulty_label=input_serializer.validated_data.get("difficulty_label", ""),
                 started_at=input_serializer.validated_data["started_at"],
                 completed_at=input_serializer.validated_data["completed_at"],
                 total_questions=input_serializer.validated_data["total_questions"],

@@ -12,7 +12,7 @@ import { PoolTray } from "../../components/PoolTray/PoolTray";
 import { useExerciseTracking } from "../../hooks";
 import useAudio from "../../hooks/useAudio";
 import ExerciseLayout from "../../layouts/exerciseLayout/ExerciseLayout";
-import type { QuestionState } from "../../lib/types";
+import type { ExerciseDifficulty, QuestionState } from "../../lib/types";
 import exerciseData from "./exerciseData.json";
 import { TASK_MASTER_GRID_COLUMNS, TASK_MASTER_GRID_ROWS } from "./constants";
 import type { TaskMasterQuestion } from "./types";
@@ -215,6 +215,10 @@ export const TaskMasterGame = ({ questions }: TaskMasterGameProps) => {
     }, [questions, objectIdByImageUrl]);
 
     const activeQuestionIdRef = useRef(questions[0]?.id ?? "");
+    const difficulty: ExerciseDifficulty = {
+        level: 1,
+        label: "Standard",
+    };
 
     const sensors = [
         PointerSensor.configure({
@@ -451,6 +455,7 @@ export const TaskMasterGame = ({ questions }: TaskMasterGameProps) => {
             }))}
             answers={questions}
             tracking={tracking}
+            difficulty={difficulty}
             onCheckAnswer={onCheckAnswer}
             onResetQuestion={onResetQuestion}
             showSkip={false}

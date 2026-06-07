@@ -2,7 +2,11 @@ import { useMemo, useState, type CSSProperties } from "react";
 import { TextOptionGroup } from "../../components/TextOptionGroup";
 import { useExerciseTracking } from "../../hooks";
 import ExerciseLayout from "../../layouts/exerciseLayout/ExerciseLayout";
-import type { Question, QuestionState } from "../../lib/types";
+import type {
+    ExerciseDifficulty,
+    Question,
+    QuestionState,
+} from "../../lib/types";
 import { shuffleArray } from "../../utils/shuffleArray";
 import type {
     InTheKnowChoiceCount,
@@ -90,6 +94,10 @@ export const InTheKnowGame = ({
         () => buildRounds(payload, choiceCount),
         [choiceCount, payload],
     );
+    const difficulty: ExerciseDifficulty = {
+        level: choiceCount,
+        label: `${choiceCount} options`,
+    };
     const tracking = useExerciseTracking(gameData.questions.length);
 
     const completionPromptByQuestionId = useMemo(
@@ -156,6 +164,7 @@ export const InTheKnowGame = ({
             questions={gameData.questions}
             answers={gameData.answers}
             tracking={tracking}
+            difficulty={difficulty}
             onCheckAnswer={onCheckAnswer}
             onResetQuestion={onResetQuestion}
             onSettingsRequested={onSettingsRequested}

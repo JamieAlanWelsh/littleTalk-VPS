@@ -2,7 +2,11 @@ import type { DragEndEvent } from "@dnd-kit/abstract";
 import { useMemo, useState } from "react";
 import { useExerciseTracking } from "../../hooks";
 import ExerciseLayout from "../../layouts/exerciseLayout/ExerciseLayout";
-import type { Question, QuestionState } from "../../lib/types";
+import type {
+    ExerciseDifficulty,
+    Question,
+    QuestionState,
+} from "../../lib/types";
 import {
     createInitialBoardState,
     moveItem,
@@ -65,6 +69,14 @@ export const StoryTrainGame = ({
     const [boardStates, setBoardStates] = useState<BoardState[]>(() =>
         selectedSets.map((storySet) => createInitialBoardState(storySet)),
     );
+    const maxSequenceLength = Math.max(
+        1,
+        ...selectedSets.map((storySet) => storySet.steps.length),
+    );
+    const difficulty: ExerciseDifficulty = {
+        level: maxSequenceLength,
+        label: `${maxSequenceLength}-step sequence`,
+    };
     const tracking = useExerciseTracking(questions.length);
 
     const getQuestionIndex = (questionId: string) =>
@@ -144,6 +156,7 @@ export const StoryTrainGame = ({
             onResetQuestion={onResetQuestion}
             questions={questions}
             tracking={tracking}
+            difficulty={difficulty}
         >
             {(currentAnswer, currentQuestionIndex) => (
                 <StoryTrainBoard
