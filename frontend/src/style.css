@@ -35,23 +35,41 @@ select {
 body.exercise-page {
     --exercise-chrome-max-width: 1000px;
     --exercise-chrome-inline-padding: 1.25rem;
-    --exercise-top-bar-button-size: 44px;
-    --exercise-top-bar-pad-top: calc(env(safe-area-inset-top) + 1rem);
-    --exercise-top-bar-pad-bottom: 0.75rem;
+    --exercise-zoom: 1;
+    /* Keep fixed chrome (top progress bar + bottom action bar) in proportion
+       with board zoom, but slightly less aggressive so controls remain usable. */
+    --exercise-fixed-ui-scale: calc((var(--exercise-zoom) * 0.6) + 0.4);
+    --exercise-top-bar-button-size: calc(44px * var(--exercise-fixed-ui-scale));
+    --exercise-top-bar-icon-size: calc(1.5rem * var(--exercise-fixed-ui-scale));
+    --exercise-top-bar-gap: calc(0.75rem * var(--exercise-fixed-ui-scale));
+    --exercise-progress-track-height: calc(
+        16px * var(--exercise-fixed-ui-scale)
+    );
+    --exercise-top-bar-pad-top: calc(
+        env(safe-area-inset-top) + (1rem * var(--exercise-fixed-ui-scale))
+    );
+    --exercise-top-bar-pad-bottom: calc(
+        0.75rem * var(--exercise-fixed-ui-scale)
+    );
     --exercise-header-reserved-height: calc(
         var(--exercise-top-bar-pad-top) + var(--exercise-top-bar-button-size) +
             var(--exercise-top-bar-pad-bottom)
     );
-    --exercise-action-bar-row-height: 3.5rem;
-    --exercise-action-bar-pad-y: 1rem;
+    --exercise-action-bar-row-height: calc(
+        3.5rem * var(--exercise-fixed-ui-scale)
+    );
+    --exercise-action-bar-pad-y: calc(1rem * var(--exercise-fixed-ui-scale));
+    --exercise-action-bar-gap: calc(0.75rem * var(--exercise-fixed-ui-scale));
+    --exercise-action-bar-message-size: calc(
+        var(--text-large) * var(--exercise-fixed-ui-scale)
+    );
     --exercise-actionbar-reserved-height: calc(
         env(safe-area-inset-bottom) + (var(--exercise-action-bar-pad-y) * 2) +
             var(--exercise-action-bar-row-height)
     );
     /* Zoom factor applied to the exercise board (see .exerciseScaleArea).
-       Defaults to full size and steps down on shorter viewports so tall
-       exercises stay fully on screen, mimicking a browser "zoom out". */
-    --exercise-zoom: 1;
+         Defaults to full size and steps down on shorter viewports so tall
+         exercises stay fully on screen, mimicking a browser "zoom out". */
     margin: 0;
     padding: 20px;
     padding-top: calc(8px + var(--exercise-header-reserved-height));
