@@ -117,7 +117,7 @@ class AssessmentRecommendationTests(TestCase):
 
         self.assertEqual(
             recommendations,
-            ["whats-in-the-bag", "spot-on", "whos-who"],
+            ["colourful-semantics-early", "whats-in-the-bag", "spot-on"],
         )
 
     def test_compute_v2_recommendations_pads_to_three_with_high_stage(self):
@@ -137,6 +137,52 @@ class AssessmentRecommendationTests(TestCase):
                 "categorisation",
             ],
         )
+
+    def test_compute_v2_recommendations_guarantees_stage_matching_colourful_semantics(self):
+        answers_payload = {
+            "3": "Yes",
+            "4": "Yes",
+            "5": "Yes",
+            "8": "Yes",
+            "9": "No",
+            "10": "No",
+            "11": "No",
+            "12": "No",
+            "13": "No",
+        }
+
+        recommendations = compute_v2_recommendations(answers_payload)
+
+        self.assertEqual(
+            recommendations,
+            ["colourful-semantics", "story-train", "categorisation"],
+        )
+
+    def test_compute_v2_recommendations_keeps_genuine_colourful_semantics_first(self):
+        answers_payload = {
+            "3": "Yes",
+            "4": "Yes",
+            "5": "Yes",
+            "6": "Yes",
+            "7": "No",
+            "8": "Yes",
+            "9": "Yes",
+            "10": "Yes",
+            "11": "No",
+            "12": "No",
+            "13": "No",
+        }
+
+        recommendations = compute_v2_recommendations(answers_payload)
+
+        colourful_semantics_recommendations = [
+            exercise_id
+            for exercise_id in recommendations
+            if exercise_id.startswith("colourful-semantics")
+        ]
+
+        self.assertEqual(recommendations[0], "colourful-semantics-early")
+        self.assertEqual(colourful_semantics_recommendations, ["colourful-semantics-early"])
 
     def test_compute_stage_mastery_locks_to_stage_one_when_stage_one_is_mostly_no(self):
         answers_payload = {
@@ -164,7 +210,7 @@ class AssessmentRecommendationTests(TestCase):
 
         recommendations = compute_v2_recommendations(answers_payload)
 
-        self.assertEqual(recommendations[0], "in-the-know")
+        self.assertEqual(recommendations[0], "colourful-semantics-plus")
         self.assertIn("story-train-plus", recommendations)
 
     def test_compute_v2_secondary_recommendations_returns_in_range_needs_support_only(self):
@@ -184,6 +230,6 @@ class AssessmentRecommendationTests(TestCase):
 
         self.assertEqual(
             tier_one,
-            ["categorisation", "colourful-semantics", "concept-quest"],
+            ["colourful-semantics", "categorisation", "concept-quest"],
         )
         self.assertEqual(secondary, ["story-train"])

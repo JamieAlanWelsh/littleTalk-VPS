@@ -114,6 +114,12 @@ CANONICAL_TO_SKILLS = {
     "task-master": ["Giving sequential instructions"],
 }
 
+COLOURFUL_SEMANTICS_IDS = {
+    "colourful-semantics-early",
+    "colourful-semantics",
+    "colourful-semantics-plus",
+}
+
 
 def resolve_recommendation_index(learner):
     """Return current recommendation index and apply 24h fallback rotation."""
@@ -181,6 +187,15 @@ def build_recommendation_explanation(learner, current_exercise_id):
         highlighted_skills = support_skills[:3]
 
     if not highlighted_skills:
+        if current_exercise_id in COLOURFUL_SEMANTICS_IDS:
+            return {
+                "exercise_id": current_exercise_id,
+                "stage": stage_number,
+                "skills": reason_skills[:3],
+                "summary": (
+                    "We recommend Colourful Semantics for pupils within their likely working range, as it helps to build on taught concepts and supports the development of a range of language skills in a structured manner."
+                ),
+            }
         return None
 
     return {

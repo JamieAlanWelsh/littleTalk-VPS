@@ -21,6 +21,14 @@ from littleTalkApp.models import Cohort, Learner, LearnerAssessmentAnswer
 
 MOSTLY_YES_THRESHOLD = 0.6
 
+STAGE_TO_COLOURFUL_SEMANTICS = {
+    1: "colourful-semantics-early",
+    2: "colourful-semantics",
+    3: "colourful-semantics-plus",
+}
+
+COLOURFUL_SEMANTICS_IDS = frozenset(STAGE_TO_COLOURFUL_SEMANTICS.values())
+
 
 @login_required
 def screener(request):
@@ -246,6 +254,8 @@ def _pad_recommendations(recommendations, allowed_max_stage):
         for exercise_id in STAGE_PADDING_ORDER.get(stage, []):
             if len(recommendations) >= 3:
                 return recommendations[:3]
+            if exercise_id in COLOURFUL_SEMANTICS_IDS and exercise_id not in recommendations:
+                continue
             if exercise_id not in recommendations:
                 recommendations.append(exercise_id)
 
@@ -293,8 +303,25 @@ def compute_v2_recommendations(answers):
             item[0],
         ),
     )
-    recommendations = [exercise_id for exercise_id, _ in ranked][:3]
-    return _pad_recommendations(recommendations, allowed_max_stage)
+
+    recommendations = [exercise_id for exercise_id, _ in ranked]
+    colourful_semantics_id = STAGE_TO_COLOURFUL_SEMANTICS.get(allowed_max_stage)
+    genuine_colourful_semantics_id = next(
+        (exercise_id for exercise_id in recommendations if exercise_id in COLOURFUL_SEMANTICS_IDS),
+        None,
+    )
+
+    locked_colourful_semantics_id = genuine_colourful_semantics_id or colourful_semantics_id
+    if locked_colourful_semantics_id:
+        recommendations = [
+            locked_colourful_semantics_id,
+            *[exercise_id for exercise_id in recommendations if exercise_id != locked_colourful_semantics_id],
+        ]
+
+    return _pad_recommendations(
+        recommendations,
+        allowed_max_stage,
+    )
 
 
 def compute_v2_secondary_recommendations(answers, tier_one_recommendations):
