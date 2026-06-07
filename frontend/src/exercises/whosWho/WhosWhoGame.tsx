@@ -11,6 +11,7 @@ import WhosWhoBoard from "./WhosWhoBoard";
 import type {
     WhosWhoChoiceCount,
     WhosWhoItem,
+    WhosWhoPronoun,
     WhosWhoScenario,
     WhosWhoSettings,
     WhosWhoTarget,
@@ -42,6 +43,33 @@ interface WhosWhoAnswer {
     trayItems: WhosWhoItem[];
     targets: WhosWhoTarget[];
 }
+
+const PRONOUN_DIFFICULTY_MAP: Record<WhosWhoPronoun, ExerciseDifficulty> = {
+    he: { level: 1, label: "Subject (singular)" },
+    she: { level: 1, label: "Subject (singular)" },
+    him: { level: 2, label: "Object (singular)" },
+    her: { level: 2, label: "Object (singular)" },
+    they: { level: 3, label: "Subject + Object (plural)" },
+    them: { level: 3, label: "Subject + Object (plural)" },
+};
+
+const DEFAULT_PRONOUN_DIFFICULTY: ExerciseDifficulty = {
+    level: 1,
+    label: "Subject (singular)",
+};
+
+const getDifficultyFromSelectedPronouns = (
+    selectedPronouns: WhosWhoPronoun[],
+): ExerciseDifficulty =>
+    selectedPronouns.reduce<ExerciseDifficulty>(
+        (currentDifficulty, pronoun) => {
+            const pronounDifficulty = PRONOUN_DIFFICULTY_MAP[pronoun];
+            return pronounDifficulty.level > currentDifficulty.level
+                ? pronounDifficulty
+                : currentDifficulty;
+        },
+        DEFAULT_PRONOUN_DIFFICULTY,
+    );
 
 const getScenarioTrayItemIds = (
     scenario: WhosWhoScenario,
@@ -159,10 +187,9 @@ export const WhosWhoGame = ({
             buildRoundState(scenario, settings.choiceCount),
         ),
     );
-    const difficulty: ExerciseDifficulty = {
-        level: settings.choiceCount,
-        label: `${settings.choiceCount} options`,
-    };
+    const difficulty = getDifficultyFromSelectedPronouns(
+        settings.selectedPronouns,
+    );
 
     const tracking = useExerciseTracking(questions.length);
 
