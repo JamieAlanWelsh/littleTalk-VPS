@@ -288,7 +288,9 @@ LOGGING = {
 
 # SECURITY WARNING: DEV MODE MUST REMAIN FALSE IN PRODUCTION
 DJANGO_VITE = {
-   "default": {
-    "dev_mode": False
-  }
+    "default": {
+        "dev_mode": False,
+        "manifest_path": os.path.join(BASE_DIR, "static/js/exercises/manifest.json"),
+        "static_url_prefix": "js/exercises",
+    }
 }

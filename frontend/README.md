@@ -212,7 +212,7 @@ Create `littleTalkApp/templates/exercises/my_exercise.html`:
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Exercise</title>
-    {% vite_hmr_client %} {% vite_asset 'frontend/src/style.css' %}
+    {% vite_hmr_client %}
   </head>
   <body
     style="margin: 0; padding: 20px; min-height: 100vh; display: flex; align-items: center; justify-content: center;"
