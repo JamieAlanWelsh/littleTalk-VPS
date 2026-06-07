@@ -35,14 +35,14 @@ select {
 body.exercise-page {
     --exercise-chrome-max-width: 1000px;
     --exercise-chrome-inline-padding: 1.25rem;
-    --exercise-header-reserved-height: calc(env(safe-area-inset-top) + 5.75rem);
+    --exercise-header-reserved-height: calc(env(safe-area-inset-top) + 4rem);
     /* Zoom factor applied to the exercise board (see .exerciseScaleArea).
        Defaults to full size and steps down on shorter viewports so tall
        exercises stay fully on screen, mimicking a browser "zoom out". */
     --exercise-zoom: 1;
     margin: 0;
     padding: 20px;
-    padding-top: calc(20px + var(--exercise-header-reserved-height));
+    padding-top: calc(8px + var(--exercise-header-reserved-height));
     padding-bottom: 140px;
     min-height: 100vh;
     display: flex;
@@ -51,40 +51,47 @@ body.exercise-page {
     background-color: var(--background-color);
 }
 
-/* Progressive "zoom out" for short viewports (e.g. laptops ~800px tall),
-   targeting a comfortable fit down to ~600px of height. */
-@media (max-height: 900px) {
-    body.exercise-page {
-        --exercise-zoom: 0.93;
-    }
-}
-
-@media (max-height: 840px) {
-    body.exercise-page {
-        --exercise-zoom: 0.86;
-    }
-}
-
-@media (max-height: 780px) {
+/* Progressive "zoom out" for short viewports (e.g. laptops ~800px tall).
+   The body reserves ~90px (header) + 140px (action bar) that do NOT zoom, so
+   the ramp is intentionally aggressive to keep the board fully on screen. */
+@media (max-height: 950px) {
     body.exercise-page {
         --exercise-zoom: 0.8;
     }
 }
 
-@media (max-height: 720px) {
+@media (max-height: 880px) {
     body.exercise-page {
-        --exercise-zoom: 0.74;
+        --exercise-zoom: 0.73;
     }
 }
 
-@media (max-height: 660px) {
+@media (max-height: 820px) {
     body.exercise-page {
-        --exercise-zoom: 0.68;
+        --exercise-zoom: 0.65;
     }
 }
 
-@media (max-height: 600px) {
+@media (max-height: 760px) {
     body.exercise-page {
-        --exercise-zoom: 0.62;
+        --exercise-zoom: 0.6;
+    }
+}
+
+@media (max-height: 700px) {
+    body.exercise-page {
+        --exercise-zoom: 0.53;
+    }
+}
+
+@media (max-height: 640px) {
+    body.exercise-page {
+        --exercise-zoom: 0.48;
+    }
+}
+
+@media (max-height: 580px) {
+    body.exercise-page {
+        --exercise-zoom: 0.43;
     }
 }
