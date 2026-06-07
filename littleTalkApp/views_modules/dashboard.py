@@ -9,8 +9,100 @@ from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.utils import timezone
 
+from littleTalkApp.content import GAME_DESCRIPTIONS
 from littleTalkApp.models import Cohort, ExerciseSession, Learner
+from littleTalkApp.views_modules.practise import (
+    CANONICAL_TO_PRACTISE_KEY,
+    PRACTISE_STAGES,
+)
 from littleTalkApp.views_modules.assessment import get_screener_comparison_data
+
+
+def _build_dashboard_exercise_groups(exercise_counts):
+    groups = []
+
+    for stage_number in sorted(PRACTISE_STAGES.keys()):
+        stage_data = PRACTISE_STAGES[stage_number]
+        stage_exercises = []
+
+        for practise_key in stage_data.get("exercises", []):
+            matching_slug = next(
+                (
+                    slug
+                    for slug, mapped_key in CANONICAL_TO_PRACTISE_KEY.items()
+                    if mapped_key == practise_key
+                ),
+                None,
+            )
+            if not matching_slug:
+                continue
+
+            title = GAME_DESCRIPTIONS.get(practise_key, {}).get("title", matching_slug)
+            stage_exercises.append(
+                {
+                    "id": matching_slug,
+                    "name": title,
+                    "count": exercise_counts.get(matching_slug, 0),
+                }
+            )
+
+        groups.append(
+            {
+                "id": f"stage-{stage_number}",
+                "label": stage_data.get("label", f"Stage {stage_number}"),
+                "exercises": stage_exercises,
+            }
+        )
+
+    return groups
+
+
+def _format_elapsed_time(duration):
+    total_seconds = int(max(duration.total_seconds(), 0))
+    minutes, seconds = divmod(total_seconds, 60)
+    return f"{minutes}m {seconds:02d}s"
+
+
+def _build_recent_sessions(selected_learner):
+    if not selected_learner:
+        return []
+
+    recent_sessions = (
+        ExerciseSession.objects.filter(learner=selected_learner)
+        .order_by("-completed_at")[:5]
+    )
+
+    rows = []
+    for session in recent_sessions:
+        practise_key = CANONICAL_TO_PRACTISE_KEY.get(session.exercise_id)
+        exercise_name = GAME_DESCRIPTIONS.get(practise_key, {}).get(
+            "title",
+            session.exercise_id,
+        )
+
+        if session.total_questions > 0:
+            correct = session.total_questions - session.incorrect_answers
+            accuracy_display = f"{round((correct / session.total_questions) * 100, 1)}%"
+        else:
+            accuracy_display = "-"
+
+        elapsed_display = "-"
+        if session.started_at and session.completed_at:
+            elapsed_display = _format_elapsed_time(session.completed_at - session.started_at)
+
+        rows.append(
+            {
+                "exercise_name": exercise_name,
+                "difficulty_selected": session.difficulty_label
+                or session.difficulty_selected
+                or "-",
+                "accuracy": accuracy_display,
+                "time_elapsed": elapsed_display,
+                "session_time": session.completed_at,
+            }
+        )
+
+    return rows
 
 
 @login_required
@@ -74,13 +166,7 @@ def learner_dashboard(request):
         total_count = ExerciseSession.objects.filter(learner=selected_learner).count()
         exercise_counts["all"] = total_count
 
-    exercise_choices = [
-        {"id": "Colourful Semantics", "name": "Colourful Semantics", "count": exercise_counts.get("Colourful Semantics", 0)},
-        {"id": "Think and Find", "name": "Think and Find", "count": exercise_counts.get("Think and Find", 0)},
-        {"id": "Concept Quest", "name": "Concept Quest", "count": exercise_counts.get("Concept Quest", 0)},
-        {"id": "Categorisation", "name": "Categorisation", "count": exercise_counts.get("Categorisation", 0)},
-        {"id": "Story Train", "name": "Story Train", "count": exercise_counts.get("Story Train", 0)},
-    ]
+    exercise_groups = _build_dashboard_exercise_groups(exercise_counts)
 
     targets_data = None
     if selected_learner:
@@ -152,15 +238,18 @@ def learner_dashboard(request):
             "has_screener_data": latest_session is not None,
         }
 
+    recent_sessions = _build_recent_sessions(selected_learner)
+
     context = {
         "learners": accessible_learners,
         "selected_learner": selected_learner,
         "cohorts": cohorts,
         "selected_cohort": int(selected_cohort_id) if selected_cohort_id and selected_cohort_id.isdigit() else None,
-        "exercise_choices": exercise_choices,
+        "exercise_groups": exercise_groups,
         "total_sessions": exercise_counts.get("all", 0),
         "targets_data": targets_data,
         "screener_data": screener_data,
+        "recent_sessions": recent_sessions,
     }
 
     return render(request, "dashboard/learner_dashboard.html", context)
@@ -171,7 +260,7 @@ def learner_progress_data(request):
     """JSON API: returns time-series progress data for a given learner.
 
     Accepts query params: learner_uuid, date_range (days or 'all'), exercise_id,
-    and a comma-separated metrics list (exp, exercises, accuracy, difficulty).
+    and a comma-separated metrics list (exp, exercises, accuracy, difficulty, time_elapsed).
     Used to populate the progress chart on the learner dashboard.
     """
 
@@ -236,6 +325,7 @@ def learner_progress_data(request):
 
     dates = []
     metrics_data = {metric: [] for metric in metrics}
+    difficulty_labels = []
 
     cumulative_exp = prior_count * 10
     cumulative_exercises = prior_count
@@ -263,12 +353,28 @@ def learner_progress_data(request):
                     metrics_data[metric].append(round(difficulty, 2))
                 except (ValueError, TypeError):
                     metrics_data[metric].append(None)
+            elif metric == "time_elapsed":
+                if session.time_elapsed is None:
+                    metrics_data[metric].append(None)
+                else:
+                    elapsed_minutes = session.time_elapsed.total_seconds() / 60
+                    metrics_data[metric].append(round(max(elapsed_minutes, 0), 1))
+
+        difficulty_labels.append(session.difficulty_label or "")
 
     metrics_data_response = [
-        {
-            "metric": metric,
-            "values": metrics_data[metric],
-        }
+        (
+            {
+                "metric": metric,
+                "values": metrics_data[metric],
+                "labels": difficulty_labels,
+            }
+            if metric == "difficulty"
+            else {
+                "metric": metric,
+                "values": metrics_data[metric],
+            }
+        )
         for metric in metrics
     ]
 

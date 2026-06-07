@@ -45,17 +45,17 @@ interface WhosWhoAnswer {
 }
 
 const PRONOUN_DIFFICULTY_MAP: Record<WhosWhoPronoun, ExerciseDifficulty> = {
-    he: { level: 1, label: "Subject (singular)" },
-    she: { level: 1, label: "Subject (singular)" },
-    him: { level: 2, label: "Object (singular)" },
-    her: { level: 2, label: "Object (singular)" },
-    they: { level: 3, label: "Subject + Object (plural)" },
-    them: { level: 3, label: "Subject + Object (plural)" },
+    he: { level: 1, label: "2nd person pronouns" },
+    she: { level: 1, label: "2nd person pronouns" },
+    they: { level: 1, label: "2nd person pronouns" },
+    him: { level: 2, label: "3rd person pronouns" },
+    her: { level: 2, label: "3rd person pronouns" },
+    them: { level: 2, label: "3rd person pronouns" },
 };
 
 const DEFAULT_PRONOUN_DIFFICULTY: ExerciseDifficulty = {
     level: 1,
-    label: "Subject (singular)",
+    label: "2nd person pronouns",
 };
 
 const getDifficultyFromSelectedPronouns = (

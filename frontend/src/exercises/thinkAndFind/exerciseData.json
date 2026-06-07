@@ -303,9 +303,9 @@
         {
           "id": "zoo-animals-horse",
           "imageUrl": "/static/exercise_assets/think_and_find/horse.webp",
-          "label": "Animal with a long tail",
-          "prompt": "Find the animal with a long tail.",
-          "altText": "A horse with a long tail"
+          "label": "Animal with a hairy tail",
+          "prompt": "Find the animal with a hairy tail and a mane.",
+          "altText": "A horse with a hairy tail and a mane"
         },
         {
           "id": "zoo-animals-toucan",
