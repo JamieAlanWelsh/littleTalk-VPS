@@ -14,7 +14,7 @@
 
 
 {% if learners %}
-    <div class="container-box container--dash">
+    <div class="container-box container--dash container--dash-no-bg">
         <!-- Dashboard Header -->
         <div class="dashboard-header">
             {% if request.user.profile.role != 'parent' and cohorts %}
@@ -52,7 +52,7 @@
 
         <div class="dashboard-section" data-section="recents">
             <div class="section-header">
-                <h3>Recent Exercises</h3>
+                <h3>Recent Sessions 👀</h3>
             </div>
 
             {% if recent_sessions %}
@@ -89,7 +89,7 @@
         <div class="dashboard-section" data-section="chart">
             <div class="section-header">
                 <div class="section-header-title">
-                    <h3>Exercise Sessions Chart</h3>
+                    <h3>Exercise Sessions Chart 📈</h3>
                 </div>
                 <div class="section-header-actions">
                     <label class="label" for="date-range">Date Range:</label>
@@ -101,9 +101,6 @@
                     </select>
                 </div>
             </div>
-            <p class="comparison-subtitle">
-                <strong>Note:</strong> Fluctuations in pupil performance may be expected as difficulty increases - strive for consistent improvement over time.
-            </p>
             <div class="dashboard-filters">
                 <div class="filter-row">
                     <div class="chart-filter-buttons chart-filter-buttons--exercise-groups">
@@ -156,11 +153,12 @@
             </div>
         </div>
 
+
         {% if selected_learner %}
         <!-- Custom Targets Section -->
         <div class="dashboard-section" data-section="targets">
             <div class="section-header">
-                <h3>Custom Targets</h3>
+                <h3>Custom Targets 🎯</h3>
                 {% if targets_data and targets_data.achieved_count > 0 %}
                 <p class="section-note">
                     {{ selected_learner.name }} has achieved <strong>{{ targets_data.percentage }}%</strong> of their targets 
@@ -200,7 +198,7 @@
         {% if screener_data and screener_data.has_screener_data %}
         <div class="dashboard-section" data-section="screener">
             <div class="section-header">
-                <h3>Screener Progress Analysis</h3>
+                <h3>Screener Progress Analysis 📋</h3>
                 {% if screener_data.comparison and screener_data.first_screener_date and screener_data.skills_gained_count > 0 %}
                 <p class="section-note">
                     {{ selected_learner.name }} has gained <strong>{{ screener_data.skills_gained_count }} skill{{ screener_data.skills_gained_count|pluralize }}</strong> 
