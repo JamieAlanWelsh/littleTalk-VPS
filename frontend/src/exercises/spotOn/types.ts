@@ -12,6 +12,12 @@ export const SPOT_ON_PREPOSITIONS = [
     "in front of",
 ] as const;
 
+export const DEFAULT_SPOT_ON_PREPOSITIONS: SpotOnPreposition[] = [
+    "in",
+    "on",
+    "under",
+];
+
 export type SpotOnPreposition = (typeof SPOT_ON_PREPOSITIONS)[number];
 
 export const ImageSchema = z.object({

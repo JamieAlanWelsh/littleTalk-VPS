@@ -4,7 +4,7 @@ import SpotOnGame from "./SpotOnGame";
 import SpotOnSettings from "./SpotOnSettings";
 import { generateSpotOnQuestions } from "./generateQuestions";
 import {
-    SPOT_ON_PREPOSITIONS,
+    DEFAULT_SPOT_ON_PREPOSITIONS,
     type SpotOnExercisePayload,
     type SpotOnOptions,
     type SpotOnQuestion,
@@ -21,7 +21,7 @@ interface SpotOnProps {
 
 export const SpotOn = ({ payload }: SpotOnProps) => {
     const [options, setOptions] = useState<SpotOnOptions>({
-        selectedPrepositions: [...SPOT_ON_PREPOSITIONS],
+        selectedPrepositions: [...DEFAULT_SPOT_ON_PREPOSITIONS],
     });
     const [questions, setQuestions] = useState<SpotOnQuestion[] | null>(null);
 
@@ -61,6 +61,7 @@ export const SpotOn = ({ payload }: SpotOnProps) => {
     return (
         <SpotOnGame
             questions={questions}
+            selectedPrepositions={options.selectedPrepositions}
             onSettingsRequested={() => setQuestions(null)}
         />
     );
