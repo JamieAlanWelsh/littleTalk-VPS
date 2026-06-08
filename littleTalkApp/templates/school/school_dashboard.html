@@ -7,71 +7,69 @@
 
 <div class="container-box container--dash">
     <div class="dashboard-header school-mgmt-header">
-        <div class="school-mgmt-actions">
-            {% if school_switcher_enabled %}
-                <form method="post" action="{% url 'select_school' %}" class="school-dashboard-switcher">
-                    {% csrf_token %}
-                    <input type="hidden" name="next" value="{% url 'school' %}">
-                    <label for="school-dashboard-select">Current school</label>
-                    <select
-                        id="school-dashboard-select"
-                        name="school_id"
-                        class="select"
-                        onchange="this.form.submit()"
-                    >
-                        {% for option in school_switcher_options %}
-                            <option value="{{ option.id }}" {% if option.id == current_school_id %}selected{% endif %}>
-                                {{ option.name }}
-                            </option>
-                        {% endfor %}
-                    </select>
-                    <noscript>
-                        <button type="submit" class="btn btn--white btn--small">Switch</button>
-                    </noscript>
-                </form>
-            {% endif %}
-            <div class="school-mgmt-tools" aria-label="Management tools">
-                <p class="school-mgmt-tools-label">Management Tools</p>
-                <div class="school-mgmt-tools-grid">
-                    <a href="{% url 'invite_staff' %}" class="school-mgmt-tool-link">
-                        <span class="school-mgmt-tool-glyph">I</span>
+        <div class="school-mgmt-panel" aria-label="School management panel">
+            <div class="school-mgmt-current-row">
+                <p class="school-mgmt-current-label">Current School</p>
+                {% if school_switcher_enabled %}
+                    <form method="post" action="{% url 'select_school' %}" class="school-dashboard-switcher">
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value="{% url 'school' %}">
+                        <select
+                            id="school-dashboard-select"
+                            name="school_id"
+                            class="select"
+                            onchange="this.form.submit()"
+                            aria-label="Select current school"
+                        >
+                            {% for option in school_switcher_options %}
+                                <option value="{{ option.id }}" {% if option.id == current_school_id %}selected{% endif %}>
+                                    {{ option.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <noscript>
+                            <button type="submit" class="btn btn--white btn--small">Switch</button>
+                        </noscript>
+                    </form>
+                {% else %}
+                    <p class="school-mgmt-current-value">{{ school_name }}</p>
+                {% endif %}
+            </div>
+
+            <div class="school-mgmt-tools-row" aria-label="Management tools">
+                <a href="{% url 'invite_staff' %}" class="school-mgmt-tool-link">
+                    <span class="school-mgmt-tool-copy">
+                        <strong>Invite Staff</strong>
+                        <span>Send a new invitation email</span>
+                    </span>
+                </a>
+                {% if current_user_is_admin %}
+                    <a href="{% url 'update_school_name' %}" class="school-mgmt-tool-link">
                         <span class="school-mgmt-tool-copy">
-                            <strong>Invite Staff</strong>
-                            <span>Send a new invitation email</span>
+                            <strong>Update Name</strong>
+                            <span>Rename this school</span>
                         </span>
                     </a>
-                    {% if current_user_is_admin %}
-                        <a href="{% url 'update_school_name' %}" class="school-mgmt-tool-link">
-                            <span class="school-mgmt-tool-glyph">U</span>
-                            <span class="school-mgmt-tool-copy">
-                                <strong>Update Name</strong>
-                                <span>Rename this school</span>
-                            </span>
-                        </a>
-                    {% else %}
-                        <span class="school-mgmt-tool-link school-mgmt-tool-link--disabled" aria-disabled="true" title="Only admins can update school name.">
-                            <span class="school-mgmt-tool-glyph">U</span>
-                            <span class="school-mgmt-tool-copy">
-                                <strong>Update Name</strong>
-                                <span>Admin access required</span>
-                            </span>
-                        </span>
-                    {% endif %}
-                    <a href="{% url 'cohort_list' %}" class="school-mgmt-tool-link">
-                        <span class="school-mgmt-tool-glyph">C</span>
+                {% else %}
+                    <span class="school-mgmt-tool-link school-mgmt-tool-link--disabled" aria-disabled="true" title="Only admins can update school name.">
                         <span class="school-mgmt-tool-copy">
-                            <strong>Manage Cohorts</strong>
-                            <span>Organise learners into groups</span>
+                            <strong>Update Name</strong>
+                            <span>Admin access required</span>
                         </span>
-                    </a>
-                    <a href="{% url 'invite_audit_trail' %}" class="school-mgmt-tool-link">
-                        <span class="school-mgmt-tool-glyph">A</span>
-                        <span class="school-mgmt-tool-copy">
-                            <strong>Audit Trail</strong>
-                            <span>Review invite and join history</span>
-                        </span>
-                    </a>
-                </div>
+                    </span>
+                {% endif %}
+                <a href="{% url 'cohort_list' %}" class="school-mgmt-tool-link">
+                    <span class="school-mgmt-tool-copy">
+                        <strong>Manage Cohorts</strong>
+                        <span>Organise learners into groups</span>
+                    </span>
+                </a>
+                <a href="{% url 'invite_audit_trail' %}" class="school-mgmt-tool-link">
+                    <span class="school-mgmt-tool-copy">
+                        <strong>Audit Trail</strong>
+                        <span>Review invite and join history</span>
+                    </span>
+                </a>
             </div>
         </div>
     </div>
