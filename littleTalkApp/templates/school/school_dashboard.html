@@ -5,7 +5,7 @@
 {% block content %}
 <h1>{{ school_name }} – School Manager</h1>
 
-<div class="container-box container--dash">
+<div class="container-box container--dash container--dash-no-bg school-dashboard-page">
     <div class="dashboard-header school-mgmt-header">
         <div class="school-mgmt-panel" aria-label="School management panel">
             <div class="school-mgmt-current-row">
@@ -40,34 +40,29 @@
                 <a href="{% url 'invite_staff' %}" class="school-mgmt-tool-link">
                     <span class="school-mgmt-tool-copy">
                         <strong>Invite Staff</strong>
-                        <span>Send a new invitation email</span>
                     </span>
                 </a>
                 {% if current_user_is_admin %}
                     <a href="{% url 'update_school_name' %}" class="school-mgmt-tool-link">
                         <span class="school-mgmt-tool-copy">
                             <strong>Update Name</strong>
-                            <span>Rename this school</span>
                         </span>
                     </a>
                 {% else %}
                     <span class="school-mgmt-tool-link school-mgmt-tool-link--disabled" aria-disabled="true" title="Only admins can update school name.">
                         <span class="school-mgmt-tool-copy">
                             <strong>Update Name</strong>
-                            <span>Admin access required</span>
                         </span>
                     </span>
                 {% endif %}
                 <a href="{% url 'cohort_list' %}" class="school-mgmt-tool-link">
                     <span class="school-mgmt-tool-copy">
                         <strong>Manage Cohorts</strong>
-                        <span>Organise learners into groups</span>
                     </span>
                 </a>
                 <a href="{% url 'invite_audit_trail' %}" class="school-mgmt-tool-link">
                     <span class="school-mgmt-tool-copy">
                         <strong>Audit Trail</strong>
-                        <span>Review invite and join history</span>
                     </span>
                 </a>
             </div>
