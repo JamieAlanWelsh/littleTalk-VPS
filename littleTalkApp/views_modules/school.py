@@ -508,6 +508,9 @@ def school_dashboard(request):
             school=school, status="pending"
         ).order_by("-created_at")[:10]
 
+    school_switcher_options = list(profile.get_accessible_schools().order_by("name"))
+    school_switcher_enabled = len(school_switcher_options) > 1
+
     return render(
         request,
         "school/school_dashboard.html",
@@ -522,6 +525,9 @@ def school_dashboard(request):
             "current_user_is_admin_or_manager": can_invite_staff,
             "join_requests": join_requests,
             "active_staff_count": active_staff_count,
+            "school_switcher_enabled": school_switcher_enabled,
+            "school_switcher_options": school_switcher_options,
+            "current_school_id": school.id,
         },
     )
 

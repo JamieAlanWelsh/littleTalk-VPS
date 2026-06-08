@@ -7,18 +7,29 @@
 
 <div class="container-box container--dash">
     <div class="dashboard-header school-mgmt-header">
-        <div class="header-learner-section">
-            <p class="section-note" style="margin: 0;">
-                Use this page to keep your school team list accurate and process incoming access requests. This is an admin/team manager view.
-            </p>
-            <div class="school-mgmt-stats">
-                <span class="status-badge status-badge--neutral">{{ staff_profiles|length }} staff members</span>
-                <span class="status-badge status-badge--warning">{{ join_requests|length }} join requests</span>
-                <span class="status-badge status-badge--info">{{ invites|length }} pending invites</span>
-            </div>
-        </div>
-
         <div class="school-mgmt-actions">
+            {% if school_switcher_enabled %}
+                <form method="post" action="{% url 'select_school' %}" class="school-dashboard-switcher">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{% url 'school' %}">
+                    <label for="school-dashboard-select">Current school</label>
+                    <select
+                        id="school-dashboard-select"
+                        name="school_id"
+                        class="select"
+                        onchange="this.form.submit()"
+                    >
+                        {% for option in school_switcher_options %}
+                            <option value="{{ option.id }}" {% if option.id == current_school_id %}selected{% endif %}>
+                                {{ option.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <noscript>
+                        <button type="submit" class="btn btn--white btn--small">Switch</button>
+                    </noscript>
+                </form>
+            {% endif %}
             <div class="school-mgmt-tools" aria-label="Management tools">
                 <p class="school-mgmt-tools-label">Management Tools</p>
                 <div class="school-mgmt-tools-grid">

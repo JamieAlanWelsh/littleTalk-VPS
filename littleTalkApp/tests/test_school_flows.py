@@ -70,29 +70,29 @@ class SchoolTypicalFlowTests(BaseFlowTestMixin, TestCase):
         self.assertNotEqual(school.name, "Manager Renamed School")
         self.assertContains(post_response, "Only admins can update the school name.")
 
-    def test_staff_with_multiple_schools_can_use_sidebar_school_switcher(self):
+    def test_admin_with_multiple_schools_can_switch_school_from_school_dashboard(self):
         staff_user, staff_profile, first_school = self.create_staff_user_with_school(
-            username="staff_multi_switch",
-            role=Role.STAFF,
+            username="admin_multi_switch",
+            role=Role.ADMIN,
         )
         second_school = School.objects.create(name="Staff Multi School 2", is_licensed=True)
         staff_profile.schools.add(second_school)
         SchoolMembership.objects.create(
             profile=staff_profile,
             school=second_school,
-            role=Role.STAFF,
+            role=Role.ADMIN,
             is_active=True,
         )
 
         self.client.force_login(staff_user)
         self.set_selected_school(first_school.id)
 
-        profile_response = self.client.get(reverse("profile"))
-        self.assertContains(profile_response, 'id="sidebar-school-select"')
+        school_response = self.client.get(reverse("school"))
+        self.assertContains(school_response, 'id="school-dashboard-select"')
 
         switch_response = self.client.post(
             reverse("select_school"),
-            {"school_id": second_school.id, "next": reverse("profile")},
+            {"school_id": second_school.id, "next": reverse("school")},
             follow=True,
         )
 

@@ -28,30 +28,6 @@
     height: auto;
 }
 
-.sidebar-school-switcher {
-    margin-bottom: 14px;
-    padding: 10px;
-    border: 1px solid rgba(32, 13, 42, 0.18);
-    border-radius: var(--border-radius-light);
-    background: rgba(255, 255, 255, 0.42);
-}
-
-.sidebar-school-switcher label {
-    display: block;
-    margin: 0 0 6px;
-    color: var(--font-color);
-    font-family: var(--font-outfit);
-    font-size: 0.9rem;
-    font-weight: 700;
-}
-
-.sidebar-school-switcher .select {
-    margin-bottom: 0;
-    width: 100%;
-    padding: 8px 10px;
-    font-size: 0.9rem;
-}
-
 .sidebar-menu {
     list-style-type: none;
     padding: 0;
@@ -180,10 +156,6 @@
 
     .sidebar-logo {
         display: none; /* Hide logo on mobile */
-    }
-
-    .sidebar-school-switcher {
-        display: none;
     }
 
     .sidebar-menu {
