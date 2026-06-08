@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Chatterdillo | Logbook{% endblock %}
 
@@ -57,7 +58,7 @@
                 <div class="log-entry">
                     <!-- Delete Button -->
                     <a href="#" class="delete-entry-btn" aria-label="Delete Entry" onclick="confirmDelete({{ entry.id }})">
-                        <img src="/static/icons/bin.png" alt="Delete" class="delete-icon">
+                        <img src="{% static 'icons/bin.png' %}" alt="Delete" class="delete-icon">
                     </a>
 
                     <a href="{% url 'log_entry_detail' entry.id %}" class="log-entry-link">

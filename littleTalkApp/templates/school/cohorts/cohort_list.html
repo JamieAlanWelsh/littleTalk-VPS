@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}Chatterdillo | Cohorts{% endblock %}
 
 {% block content %}
@@ -32,7 +33,7 @@
           {% if can_edit_cohorts %}
             <div class="log-entry">
               <a href="{% url 'cohort_delete' cohort.id %}" class="delete-entry-btn" aria-label="Delete Cohort">
-                <img src="/static/icons/bin.png" alt="Delete" class="delete-icon">
+                <img src="{% static 'icons/bin.png' %}" alt="Delete" class="delete-icon">
               </a>
               <a href="{% url 'cohort_edit' cohort.id %}" class="log-entry-link">
                 <p>{{ cohort.name }}</p>
