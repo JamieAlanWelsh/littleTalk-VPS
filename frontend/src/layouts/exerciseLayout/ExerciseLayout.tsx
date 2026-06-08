@@ -8,7 +8,7 @@
  * and feedback/progress indicators internally.
  */
 
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import styles from "./exerciseLayout.module.css";
 import ExerciseActionBar from "../../components/ExerciseActionBar/ExerciseActionBar";
 import ConfirmationModal from "../../components/ConfirmationModal/ConfirmationModal";
@@ -111,6 +111,7 @@ export const ExerciseLayout = <AnswerType,>({
     difficulty = DEFAULT_EXERCISE_DIFFICULTY,
     children,
 }: ExerciseLayoutProps<AnswerType>) => {
+    const scaleAreaRef = useRef<HTMLDivElement | null>(null);
     const [currentQuestionStateIndex, setCurrentQuestionStateIndex] =
         useState<number>(0);
     const [showExitConfirmation, setShowExitConfirmation] = useState(false);
@@ -132,6 +133,183 @@ export const ExerciseLayout = <AnswerType,>({
     const promptText = promptOverride ?? currentQuestion?.prompt ?? "";
 
     const { play } = useAudio();
+
+    useEffect(() => {
+        if (isComplete) {
+            document.body.style.removeProperty("--exercise-zoom-auto");
+            return;
+        }
+
+        const scaleArea = scaleAreaRef.current;
+        if (!scaleArea) {
+            return;
+        }
+
+        let frameId = 0;
+
+        // Convergence guards: some exercises (e.g. Story Train) have content
+        // whose height is not perfectly proportional to zoom, so the
+        // "measure -> set zoom -> measure" loop can oscillate between two
+        // states. We quantize, apply a deadband, and detect 2-cycles so the
+        // controller always settles instead of flickering.
+        const ZOOM_EPSILON = 0.01; // ignore changes smaller than this
+        const ZOOM_QUANTUM = 0.01; // snap zoom to 1% steps
+        const OSCILLATION_LIMIT = 4; // consecutive flips before we lock
+        let appliedZoom = Number.NaN;
+        let lastDirection = 0; // -1 shrinking, +1 growing
+        let oscillationCount = 0;
+        let isLocked = false;
+
+        const resolveLengthToPx = (rawValue: string): number => {
+            const trimmedValue = rawValue.trim();
+            if (!trimmedValue) {
+                return 0;
+            }
+
+            const probe = document.createElement("div");
+            probe.style.position = "absolute";
+            probe.style.visibility = "hidden";
+            probe.style.pointerEvents = "none";
+            probe.style.height = trimmedValue;
+            document.body.appendChild(probe);
+            const px = probe.getBoundingClientRect().height;
+            probe.remove();
+
+            if (!Number.isFinite(px)) {
+                return 0;
+            }
+
+            return px;
+        };
+
+        const recalculateAdaptiveZoom = () => {
+            if (isLocked) {
+                return;
+            }
+
+            const body = document.body;
+            const bodyStyles = window.getComputedStyle(body);
+            const zoomBase =
+                Number.parseFloat(
+                    bodyStyles.getPropertyValue("--exercise-zoom-base"),
+                ) || 1;
+            const currentZoom =
+                Number.parseFloat(
+                    bodyStyles.getPropertyValue("--exercise-zoom"),
+                ) || zoomBase;
+
+            const reservedTop = Number.parseFloat(bodyStyles.paddingTop) || 0;
+            const reservedBottom =
+                Number.parseFloat(bodyStyles.paddingBottom) || 0;
+            const contentBottomGap = resolveLengthToPx(
+                bodyStyles.getPropertyValue("--exercise-content-actionbar-gap"),
+            );
+            const availableHeight =
+                window.innerHeight -
+                reservedTop -
+                reservedBottom -
+                contentBottomGap;
+            if (availableHeight <= 0 || currentZoom <= 0) {
+                return;
+            }
+
+            const scaledHeight = scaleArea.getBoundingClientRect().height;
+            if (scaledHeight <= 0) {
+                return;
+            }
+
+            const unscaledHeight = scaledHeight / currentZoom;
+            const fitZoom = availableHeight / unscaledHeight;
+            // Snap to a quantum so subpixel reflow differences collapse to the
+            // same target instead of producing a slightly different value each
+            // pass.
+            const rawZoom = Math.min(1, fitZoom);
+            const nextZoom = Math.max(
+                0.35,
+                Math.round(rawZoom / ZOOM_QUANTUM) * ZOOM_QUANTUM,
+            );
+
+            if (Number.isNaN(appliedZoom)) {
+                appliedZoom = nextZoom;
+                body.style.setProperty(
+                    "--exercise-zoom-auto",
+                    nextZoom.toFixed(4),
+                );
+                return;
+            }
+
+            const delta = nextZoom - appliedZoom;
+            if (Math.abs(delta) < ZOOM_EPSILON) {
+                // Stable: settled within the deadband.
+                lastDirection = 0;
+                oscillationCount = 0;
+                return;
+            }
+
+            const direction = delta > 0 ? 1 : -1;
+            if (lastDirection !== 0 && direction !== lastDirection) {
+                // Reversed direction since last change: a limit cycle. After a
+                // few flips, lock onto the smaller (safe, no-overflow) value.
+                oscillationCount += 1;
+                if (oscillationCount >= OSCILLATION_LIMIT) {
+                    const safeZoom = Math.min(appliedZoom, nextZoom);
+                    appliedZoom = safeZoom;
+                    isLocked = true;
+                    body.style.setProperty(
+                        "--exercise-zoom-auto",
+                        safeZoom.toFixed(4),
+                    );
+                    return;
+                }
+            } else {
+                oscillationCount = 0;
+            }
+
+            lastDirection = direction;
+            appliedZoom = nextZoom;
+            body.style.setProperty("--exercise-zoom-auto", nextZoom.toFixed(4));
+        };
+
+        const scheduleRecalculate = () => {
+            window.cancelAnimationFrame(frameId);
+            frameId = window.requestAnimationFrame(recalculateAdaptiveZoom);
+        };
+
+        // External triggers (viewport resize / live style updates) should be
+        // able to re-fit even if we previously locked due to a limit cycle.
+        const scheduleExternalRecalculate = () => {
+            isLocked = false;
+            lastDirection = 0;
+            oscillationCount = 0;
+            scheduleRecalculate();
+        };
+
+        const resizeObserver = new ResizeObserver(() => {
+            scheduleRecalculate();
+        });
+        resizeObserver.observe(scaleArea);
+
+        const headObserver = new MutationObserver(() => {
+            scheduleExternalRecalculate();
+        });
+        headObserver.observe(document.head, {
+            childList: true,
+            subtree: true,
+            characterData: true,
+            attributes: true,
+        });
+
+        window.addEventListener("resize", scheduleExternalRecalculate);
+        scheduleRecalculate();
+
+        return () => {
+            window.removeEventListener("resize", scheduleExternalRecalculate);
+            resizeObserver.disconnect();
+            headObserver.disconnect();
+            window.cancelAnimationFrame(frameId);
+            document.body.style.removeProperty("--exercise-zoom-auto");
+        };
+    }, [actionBarPhase, currentQuestionStateIndex, isComplete, promptText]);
 
     useEffect(() => {
         if (actionBarPhase === "correct") play("/static/audio/correct.wav");
@@ -288,34 +466,44 @@ export const ExerciseLayout = <AnswerType,>({
                     </div>
 
                     <div className={styles.exerciseLayoutWrapper}>
-                        {/* question */}
+                        {/* Scale area: shrinks the prompt + board on short
+                            viewports to keep the whole exercise on screen,
+                            while the fixed header and action bar stay full size. */}
                         <div
-                            key={`${questions[currentQuestionStateIndex].id}-${promptOverride ?? ""}`}
-                            className={`${styles.exercisePromptCard} ${styles.exercisePromptCardPop}`}
+                            className={styles.exerciseScaleArea}
+                            ref={scaleAreaRef}
                         >
-                            <h2 className={styles.exercisePromptTitle}>
-                                <span className={styles.exercisePromptText}>
-                                    {promptText}
-                                </span>
-                            </h2>
-                        </div>
-
-                        {/* answer */}
-                        <div className={styles.exerciseContainer}>
+                            {/* question */}
                             <div
-                                className={`${styles.exerciseZone} ${styles.exerciseZoneInteractive}`}
+                                key={`${questions[currentQuestionStateIndex].id}-${promptOverride ?? ""}`}
+                                className={`${styles.exercisePromptCard} ${styles.exercisePromptCardPop}`}
                             >
-                                {typeof children === "function" && answers
-                                    ? (
-                                          children as (
-                                              currentAnswer: AnswerType,
-                                              currentAnswerIndex: number,
-                                          ) => ReactNode
-                                      )(
-                                          answers[currentQuestionStateIndex],
-                                          currentQuestionStateIndex,
-                                      )
-                                    : (children as ReactNode)}
+                                <h2 className={styles.exercisePromptTitle}>
+                                    <span className={styles.exercisePromptText}>
+                                        {promptText}
+                                    </span>
+                                </h2>
+                            </div>
+
+                            {/* answer */}
+                            <div className={styles.exerciseContainer}>
+                                <div
+                                    className={`${styles.exerciseZone} ${styles.exerciseZoneInteractive}`}
+                                >
+                                    {typeof children === "function" && answers
+                                        ? (
+                                              children as (
+                                                  currentAnswer: AnswerType,
+                                                  currentAnswerIndex: number,
+                                              ) => ReactNode
+                                          )(
+                                              answers[
+                                                  currentQuestionStateIndex
+                                              ],
+                                              currentQuestionStateIndex,
+                                          )
+                                        : (children as ReactNode)}
+                                </div>
                             </div>
                         </div>
 

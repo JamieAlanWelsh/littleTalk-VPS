@@ -9,6 +9,7 @@ from honeypot.decorators import check_honeypot
 from littleTalkApp.decorators import valid_game_required
 from littleTalkApp.content.game_descriptions import GAME_DESCRIPTIONS
 from littleTalkApp.content.testimonials import get_landing_testimonials
+from littleTalkApp.views_modules.practise import PRACTISE_STAGES
 
 
 def home(request):
@@ -133,8 +134,28 @@ def method(request):
     including descriptions of all available games.
     """
 
+    method_stages = []
+    for stage_number in sorted(PRACTISE_STAGES.keys()):
+        stage_data = PRACTISE_STAGES[stage_number]
+        stage_exercises = []
+
+        for exercise_key in stage_data.get("exercises", []):
+            game_data = GAME_DESCRIPTIONS.get(exercise_key)
+            if not game_data:
+                continue
+            stage_exercises.append(game_data)
+
+        method_stages.append(
+            {
+                "number": stage_number,
+                "label": stage_data.get("label", f"Stage {stage_number}"),
+                "exercises": stage_exercises,
+            }
+        )
+
     context = {
         "game_descriptions": GAME_DESCRIPTIONS,
+        "method_stages": method_stages,
     }
     return render(request, "public/method.html", context)
 

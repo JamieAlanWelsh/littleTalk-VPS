@@ -339,11 +339,6 @@
       "label": "The Strawberry"
     },
     {
-      "id": "item-teddy",
-      "imageUrl": "/static/exercise_assets/early_years_image_options/teddy_bear.webp",
-      "label": "The Teddy"
-    },
-    {
       "id": "item-teddy-bear",
       "imageUrl": "/static/exercise_assets/early_years_image_options/teddy_bear.webp",
       "label": "The Teddy Bear"

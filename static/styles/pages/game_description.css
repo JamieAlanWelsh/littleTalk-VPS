@@ -26,6 +26,17 @@
     border-radius: var(--border-radius-light);
 }
 
+.exercise-video-wrapper img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    border-radius: var(--border-radius-light);
+    object-fit: cover;
+}
+
 /* Hide video container if no video ID is provided */
 .exercise-video-container:empty,
 .exercise-video-container:has(.exercise-video-wrapper:empty) {

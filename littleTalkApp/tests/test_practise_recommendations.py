@@ -32,6 +32,18 @@ class PractiseRecommendationRotationTests(BaseFlowTestMixin, TestCase):
         session["selected_learner_id"] = self.learner.id
         session.save()
 
+        # Treat fixture learner as having completed Screener V2 so recommendations are eligible.
+        LearnerAssessmentAnswer.objects.create(
+            learner=self.learner,
+            question_id=1,
+            topic="Blank Level 1",
+            skill="Naming common objects",
+            text="Can the child name familiar objects in pictures?",
+            answer="Yes",
+            session_id=uuid.uuid4(),
+            screener_version=2,
+        )
+
     def test_resolve_recommendation_index_advances_every_24h_with_wrap(self):
         index = resolve_recommendation_index(self.learner)
         self.assertEqual(index, 2)
@@ -97,4 +109,23 @@ class PractiseRecommendationRotationTests(BaseFlowTestMixin, TestCase):
         response = self.client.get(reverse("practise"))
         self.assertEqual(response.status_code, 200)
         self.assertIsNotNone(response.context["recommendation_explanation"])
-        self.assertIn("support needed", response.context["recommendation_explanation"]["summary"])
+        self.assertIn("support", response.context["recommendation_explanation"]["summary"])
+
+    def test_practise_hides_legacy_recommendation_without_screener_v2(self):
+        legacy_learner = Learner.objects.create(
+            user=self.user,
+            school=self.school,
+            name="Legacy Learner",
+            date_of_birth=timezone.now().date() - timedelta(days=365 * 8),
+            recommendation_level=2,
+        )
+
+        session = self.client.session
+        session["selected_learner_id"] = legacy_learner.id
+        session.save()
+
+        response = self.client.get(reverse("practise"))
+        self.assertEqual(response.status_code, 200)
+        self.assertIsNone(response.context["recommended_exercise_card"])
+        self.assertContains(response, "No recommendation yet")
+        self.assertContains(response, reverse("start_assessment_v2"))

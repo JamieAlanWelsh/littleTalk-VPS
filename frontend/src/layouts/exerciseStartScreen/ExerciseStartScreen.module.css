@@ -27,6 +27,12 @@
     gap: 1.25rem;
     width: min(100%, 500px);
     font-family: var(--font-roboto);
+    /* Settings should still scale, but much less aggressively than gameplay. */
+    --settings-zoom: calc((var(--exercise-zoom, 1) * 0.55) + 0.5);
+    zoom: var(--settings-zoom);
+    transform-origin: top center;
+    /* Keep shared Button sizing in sync with the lighter settings zoom. */
+    --button-scale: var(--settings-zoom);
 }
 
 .containerClosing {
