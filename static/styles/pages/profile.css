@@ -156,6 +156,7 @@
 
 .learner-avatar-chip {
     align-items: center;
+    background-color: var(--avatar-color, #f2f2f2);
     border: none;
     border-radius: 20px;
     display: inline-flex;
@@ -205,6 +206,7 @@
 
 .learner-avatar {
     align-items: center;
+    background-color: var(--avatar-color, #f2f2f2);
     border: 1px solid rgba(0, 0, 0, 0.18);
     border-radius: 16px;
     display: flex;
