@@ -43,7 +43,12 @@
                                 {% csrf_token %}
                                 <button type="submit" name="learner_id" value="{{ learner.id }}" 
                                         class="learner-button {% if learner.id == selected_learner.id %}selected{% endif %}">
-                                    {{ learner.name }}
+                                    <span class="learner-button__content">
+                                        <span class="learner-button__name">{{ learner.name }}</span>
+                                        <span class="learner-avatar-chip" style="background-color: {{ learner.avatar_display_color }};">
+                                            <img src="{{ learner.avatar_image_url }}" alt="{{ learner.name }} avatar" class="learner-avatar-chip__image">
+                                        </span>
+                                    </span>
                                 </button>
                             </form>
                         </li>
@@ -61,6 +66,11 @@
             <div class="profile-card profile-card--details">
                 <div class="profile-card__header">
                     <h3 class="profile-card__title">Learner Details:</h3>
+                    <a href="{% url 'avatar_editor' selected_learner.learner_uuid %}" class="learner-avatar-link" aria-label="Edit {{ selected_learner.name }} avatar">
+                        <span class="learner-avatar learner-avatar--details" style="background-color: {{ selected_learner.avatar_display_color }};">
+                            <img src="{{ selected_learner.avatar_image_url }}" alt="{{ selected_learner.name }} avatar" class="learner-avatar__image">
+                        </span>
+                    </a>
                 </div>
                 <p><strong>Name:</strong> {{ selected_learner.name }}</p>
                 {% if selected_learner.cohort %}

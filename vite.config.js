@@ -17,6 +17,7 @@ const exercises = [
   'in-the-know',
   'whos-who',
   'spot-on',
+  'avatar-editor',
 ]
 
 // Create input object for multiple entry points

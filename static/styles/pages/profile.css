@@ -142,6 +142,67 @@
     color: white;
 }
 
+.learner-button__content {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.learner-button__name {
+    display: inline-block;
+    margin-right: 12px;
+}
+
+.learner-avatar-chip {
+    align-items: center;
+    border: 1px solid rgba(0, 0, 0, 0.18);
+    border-radius: 9999px;
+    display: inline-flex;
+    height: 52px;
+    justify-content: center;
+    min-width: 52px;
+    overflow: hidden;
+    width: 52px;
+}
+
+.learner-avatar-chip__image {
+    height: 42px;
+    object-fit: contain;
+    width: 42px;
+}
+
+.learner-avatar-link {
+    border-radius: 16px;
+    display: inline-block;
+    outline: none;
+}
+
+.learner-avatar-link:focus-visible {
+    box-shadow: 0 0 0 3px rgba(54, 163, 226, 0.45);
+}
+
+.learner-avatar {
+    align-items: center;
+    border: 1px solid rgba(0, 0, 0, 0.18);
+    border-radius: 16px;
+    box-shadow: var(--box-shadow);
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.learner-avatar--details {
+    height: 92px;
+    width: 92px;
+}
+
+.learner-avatar__image {
+    height: 76px;
+    object-fit: contain;
+    width: 76px;
+}
+
 .add-learner-btn a {
     width: 270px;
     background-color: var(--yellow-button-color);

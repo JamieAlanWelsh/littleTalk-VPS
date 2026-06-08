@@ -5,6 +5,7 @@ from datetime import timedelta
 from django.core.cache import cache
 from .models import Learner, ExerciseSession
 from .exercise_ids import VALID_EXERCISE_IDS
+from .content.avatars import AVATAR_CHARACTER_IDS, AVATAR_COLOR_SET
 
 """Serializer for exercise submission with deduplication and full ExerciseSession recording."""
 class SubmitExerciseSerializer(serializers.Serializer):
@@ -34,3 +35,20 @@ class LearnerExpUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Learner
         fields = ['id', 'exp', 'total_exercises']
+
+
+class LearnerAvatarSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Learner
+        fields = ["avatar_character", "avatar_color"]
+
+    def validate_avatar_character(self, value):
+        if value not in AVATAR_CHARACTER_IDS:
+            raise serializers.ValidationError("Unsupported avatar_character.")
+        return value
+
+    def validate_avatar_color(self, value):
+        normalized = value.strip().upper()
+        if normalized not in AVATAR_COLOR_SET:
+            raise serializers.ValidationError("Unsupported avatar_color.")
+        return normalized

@@ -52,6 +52,7 @@ urlpatterns = [
     path('add-learner/', profile_views.add_learner, name='add_learner'),
     path('select-learner/', profile_views.select_learner, name='select_learner'),
     path('profile/edit_learner/<uuid:learner_uuid>/', profile_views.edit_learner, name='edit_learner'),
+    path('profile/avatar/<uuid:learner_uuid>/', profile_views.avatar_editor, name='avatar_editor'),
     path('profile/edit_learner/confirm_delete_learner/<uuid:learner_uuid>/', profile_views.confirm_delete_learner, name='confirm_delete_learner'),
 
     # Cohorts
@@ -109,6 +110,7 @@ urlpatterns = [
 
     # API endpoints
     path('api/learners/<uuid:learner_uuid>/submit-exercise/', api_views.SubmitExerciseView.as_view(), name='submit_exercise'),
+    path('api/learners/<uuid:learner_uuid>/avatar/', api_views.UpdateLearnerAvatarView.as_view(), name='update_learner_avatar'),
     path('api/selected-learner/', api_views.get_current_session_learner_context, name='get_current_session_learner_context'),
     path('api/targets/', api_views.create_target, name='create_target'),
     path('api/targets/<int:target_id>/', api_views.target_detail, name='target_detail'),

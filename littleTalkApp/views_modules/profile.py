@@ -4,9 +4,44 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
+from django.templatetags.static import static
 
+from littleTalkApp.content.avatars import (
+    AVATAR_CHARACTER_MAP,
+    AVATAR_COLORS,
+    DEFAULT_AVATAR_CHARACTER,
+    DEFAULT_AVATAR_COLOR,
+    SELECTABLE_AVATAR_CHARACTERS,
+)
 from littleTalkApp.forms import LearnerForm
 from littleTalkApp.models import Cohort, Learner, LogEntry, Role
+
+
+def _learner_is_accessible_by_user(user, request, learner):
+    if learner.deleted:
+        return False
+
+    if user.profile.is_parent():
+        if learner.school_id:
+            return learner.user_id == user.id
+        return learner in user.profile.parent_profile.learners.all()
+
+    user_school = user.profile.get_current_school(request)
+    return learner.school == user_school
+
+
+def _get_avatar_image_url(avatar_character):
+    character_meta = AVATAR_CHARACTER_MAP.get(avatar_character)
+    if not character_meta:
+        character_meta = AVATAR_CHARACTER_MAP[DEFAULT_AVATAR_CHARACTER]
+
+    return static(f"exercise_assets/characters/{character_meta['image_filename']}")
+
+
+def _decorate_learner_avatar(learner):
+    learner.avatar_image_url = _get_avatar_image_url(learner.avatar_character)
+    learner.avatar_display_color = learner.avatar_color or DEFAULT_AVATAR_COLOR
+    return learner
 
 
 @login_required
@@ -62,10 +97,13 @@ def profile(request):
         selected_learner = learners.first()
         request.session["selected_learner_id"] = selected_learner.id
 
-    learners_list = list(learners)
+    learners_list = [_decorate_learner_avatar(learner) for learner in learners]
     if selected_learner and selected_learner in learners_list:
         learners_list.remove(selected_learner)
         learners_list.insert(0, selected_learner)
+
+    if selected_learner:
+        selected_learner = _decorate_learner_avatar(selected_learner)
 
     return render(
         request,
@@ -80,6 +118,43 @@ def profile(request):
             "is_subscribed": is_subscribed,
         },
     )
+
+
+@login_required
+def avatar_editor(request, learner_uuid):
+    """Render avatar editor screen for a learner the current user can access."""
+
+    learner = get_object_or_404(Learner, learner_uuid=learner_uuid, deleted=False)
+
+    if not _learner_is_accessible_by_user(request.user, request, learner):
+        messages.error(request, "You do not have permission to edit this learner avatar.")
+        return redirect("profile")
+
+    characters = []
+    for character in SELECTABLE_AVATAR_CHARACTERS:
+        characters.append(
+            {
+                "id": character["id"],
+                "name": character["name"],
+                "bio": character["bio"],
+                "imageUrl": static(
+                    f"exercise_assets/characters/{character['image_filename']}"
+                ),
+            }
+        )
+
+    current_character = learner.avatar_character
+    if current_character == DEFAULT_AVATAR_CHARACTER:
+        current_character = SELECTABLE_AVATAR_CHARACTERS[0]["id"]
+
+    context = {
+        "learner": learner,
+        "avatar_characters": characters,
+        "avatar_colors": AVATAR_COLORS,
+        "current_avatar_character": current_character,
+        "current_avatar_color": learner.avatar_color or DEFAULT_AVATAR_COLOR,
+    }
+    return render(request, "profile/avatar_editor.html", context)
 
 
 @login_required
