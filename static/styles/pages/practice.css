@@ -231,9 +231,9 @@
 .stage-tab {
     flex: 1 1 0;
     min-width: 0;
-    border: 1.5px solid #c8c8cf;
-    background: #f4f4f4;
-    color: #2f2f39;
+    border: 1.5px solid var(--border-grey);
+    background: white;
+    color: var(--font-color);
     border-radius: 999px;
     padding: 7px 12px;
     font-weight: 700;
