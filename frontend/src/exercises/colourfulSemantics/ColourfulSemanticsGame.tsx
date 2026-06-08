@@ -1,0 +1,441 @@
+import type { DragEndEvent } from "@dnd-kit/abstract";
+import { useMemo, useState } from "react";
+import { useExerciseTracking } from "../../hooks";
+import ExerciseLayout from "../../layouts/exerciseLayout/ExerciseLayout";
+import type {
+    ExerciseDifficulty,
+    Question,
+    QuestionState,
+} from "../../lib/types";
+import ColourfulSemanticsBoard from "./ColourfulSemanticsBoard";
+import { configureScene } from "./configureScene";
+import { getIsPluralSubject, resolveOptionPresentation } from "./presentation";
+import { COLOURFUL_SEMANTICS_ASSET_POOL_SLOT_IDS } from "./types";
+import {
+    createBoardState,
+    moveItem,
+    type SentenceBoardState,
+} from "./boardUtils";
+import type {
+    ColourfulSemanticsOption,
+    ColourfulSemanticsOptions,
+    ColourfulSemanticsPayload,
+    ColourfulSemanticsScene,
+    ColourfulSemanticsVariantConfig,
+    ColourfulSemanticsVariantId,
+    ColourfulSemanticsRoundStats,
+    ConfiguredColourfulSemanticsScene,
+} from "./types";
+
+const getExerciseIdForVariant = (
+    variantId: ColourfulSemanticsVariantId,
+): string => {
+    if (variantId === "early-years") {
+        return "colourful-semantics-early";
+    }
+
+    if (variantId === "advanced") {
+        return "colourful-semantics-plus";
+    }
+
+    return "colourful-semantics";
+};
+
+const SLOT_LABELS: Record<string, string> = {
+    who: "Subject",
+    doing: "Verb",
+    what: "Object",
+    where: "Location",
+    "to-who": "To Who",
+    when: "When",
+    "what-like": "What Like",
+    how: "How",
+};
+
+interface ColourfulSemanticsGameProps {
+    onSettingsRequested?: () => void;
+    onRoundComplete?: (roundStats: ColourfulSemanticsRoundStats) => void;
+    onSkipRequested?: () => void;
+    options: ColourfulSemanticsOptions;
+    payload: ColourfulSemanticsPayload;
+    scene: ColourfulSemanticsScene;
+    variant: ColourfulSemanticsVariantConfig;
+    isFinalRepetition: boolean;
+    sessionStartedAt: string;
+    cumulativeRoundStats: ColourfulSemanticsRoundStats;
+    progressBase?: number;
+    progressScale?: number;
+}
+
+interface ColourfulSemanticsAnswer {
+    sceneId: string;
+    variantId: ColourfulSemanticsVariantId;
+    presetId: ColourfulSemanticsOptions["presetId"];
+    numberOfOptions: number;
+    stepIds: string[];
+}
+
+const buildItemsById = (payload: ColourfulSemanticsPayload) =>
+    Object.fromEntries(
+        COLOURFUL_SEMANTICS_ASSET_POOL_SLOT_IDS.flatMap((slotId) =>
+            payload[slotId].map((item) => [item.id, item] as const),
+        ),
+    ) as Record<string, ColourfulSemanticsOption>;
+
+const buildQuestions = (scene: ConfiguredColourfulSemanticsScene): Question[] =>
+    scene.steps.map((step) => ({
+        id: step.id,
+        prompt: step.prompt,
+        correctIconIds: [step.correctOptionId],
+    }));
+
+const buildAffirmationPrompt = ({
+    lockedSelectionIds,
+    itemsById,
+    scene,
+    isPastTense,
+    useWhatLikeVariantLabel,
+}: {
+    lockedSelectionIds: Array<string | null>;
+    itemsById: Record<string, ColourfulSemanticsOption>;
+    scene: ConfiguredColourfulSemanticsScene;
+    isPastTense: boolean;
+    useWhatLikeVariantLabel: boolean;
+}) => {
+    const isPluralSubject = getIsPluralSubject({
+        itemsById,
+        scene,
+        selectionIds: lockedSelectionIds,
+    });
+
+    const sentence = scene.steps
+        .map((step, stepIndex) => {
+            const selectionId = lockedSelectionIds[stepIndex];
+
+            if (!selectionId) {
+                return "";
+            }
+
+            const item = itemsById[selectionId];
+
+            if (!item) {
+                return "";
+            }
+
+            return resolveOptionPresentation({
+                item,
+                slot: step.slot,
+                isPluralSubject,
+                isPastTense,
+                useWhatLikeVariantLabel,
+            }).label;
+        })
+        .filter(Boolean)
+        .join(" ")
+        .trim();
+
+    const sentenceWithPunctuation = /[.!?]$/.test(sentence)
+        ? sentence
+        : `${sentence}.`;
+
+    return sentence
+        ? `That's right! ${sentenceWithPunctuation}`
+        : "That's right!";
+};
+
+const buildCorrectnessMap = ({
+    boardState,
+    questionState,
+    activeStepIndex,
+}: {
+    boardState: SentenceBoardState;
+    questionState: QuestionState;
+    activeStepIndex: number;
+}) => {
+    const correctnessMap: Record<string, boolean> = {};
+
+    const activeSelectionId = boardState.slotItemIds[activeStepIndex];
+
+    if (!activeSelectionId) {
+        return correctnessMap;
+    }
+
+    if (questionState.answerState === "correct") {
+        correctnessMap[activeSelectionId] = true;
+    } else if (questionState.answerState === "incorrect") {
+        correctnessMap[activeSelectionId] = false;
+    }
+
+    return correctnessMap;
+};
+
+export const ColourfulSemanticsGame = ({
+    onSettingsRequested,
+    onRoundComplete,
+    onSkipRequested,
+    options,
+    payload,
+    scene: rawScene,
+    variant,
+    isFinalRepetition,
+    sessionStartedAt,
+    cumulativeRoundStats,
+    progressBase,
+    progressScale,
+}: ColourfulSemanticsGameProps) => {
+    const scene = useMemo(
+        () =>
+            configureScene({
+                payload,
+                scene: rawScene,
+                options,
+                variant,
+            }),
+        [options, payload, rawScene, variant],
+    );
+    const itemsById = useMemo(() => buildItemsById(payload), [payload]);
+    const questions = useMemo(() => buildQuestions(scene), [scene]);
+    const answers = useMemo(
+        () =>
+            questions.map(() => ({
+                sceneId: scene.id,
+                variantId: variant.id,
+                presetId: options.presetId,
+                numberOfOptions: options.numberOfOptions,
+                stepIds: scene.steps.map((step) => step.id),
+            })),
+        [
+            options.numberOfOptions,
+            options.presetId,
+            questions,
+            scene,
+            variant.id,
+        ],
+    );
+
+    const [lockedSelectionIds, setLockedSelectionIds] = useState<
+        Array<string | null>
+    >(() => scene.steps.map(() => null));
+    const [questionState, setQuestionState] = useState<QuestionState>({
+        selectedIconIds: [],
+        answerState: "notAnswered",
+    });
+    const [showCompletionAffirmation, setShowCompletionAffirmation] =
+        useState(false);
+    const tracking = useExerciseTracking(questions.length);
+    const exerciseId = getExerciseIdForVariant(variant.id);
+    const finalSessionAttemptsPerQuestion = [
+        ...cumulativeRoundStats.attemptsPerQuestion,
+        ...tracking.attemptsPerQuestion,
+    ];
+    const difficulty: ExerciseDifficulty = {
+        level: Math.max(1, scene.steps.length),
+        label:
+            scene.steps
+                .map((step) => SLOT_LABELS[step.slot] ?? step.slot)
+                .join("+") || "Standard",
+    };
+    const submissionStatsOverride = isFinalRepetition
+        ? {
+              startedAt: sessionStartedAt || tracking.startedAt,
+              totalQuestions: finalSessionAttemptsPerQuestion.length,
+              incorrectAnswers:
+                  cumulativeRoundStats.incorrectAnswers +
+                  tracking.incorrectAnswers,
+              attemptsPerQuestion: finalSessionAttemptsPerQuestion,
+          }
+        : undefined;
+
+    const completionAffirmationPrompt = useMemo(
+        () =>
+            buildAffirmationPrompt({
+                lockedSelectionIds,
+                itemsById,
+                scene,
+                isPastTense: variant.id === "advanced",
+                useWhatLikeVariantLabel:
+                    variant.id === "advanced" &&
+                    scene.steps.some((step) => step.slot === "what-like"),
+            }),
+        [lockedSelectionIds, itemsById, scene, variant.id],
+    );
+
+    const onCheckAnswer = (question: Question) => {
+        const selectedIconId = questionState.selectedIconIds[0];
+
+        if (!selectedIconId) {
+            return;
+        }
+
+        const questionIndex = questions.findIndex(
+            ({ id }) => id === question.id,
+        );
+
+        if (questionIndex === -1) {
+            return;
+        }
+
+        const isCorrect = selectedIconId === question.correctIconIds[0];
+
+        if (isCorrect) {
+            setLockedSelectionIds((currentLockedSelectionIds) => {
+                const nextLockedSelectionIds = [...currentLockedSelectionIds];
+                nextLockedSelectionIds[questionIndex] = selectedIconId;
+                return nextLockedSelectionIds;
+            });
+        }
+
+        setQuestionState((currentQuestionState) => ({
+            ...currentQuestionState,
+            answerState: isCorrect ? "correct" : "incorrect",
+        }));
+    };
+
+    const onResetQuestion = () => {
+        if (showCompletionAffirmation) {
+            return;
+        }
+
+        setQuestionState({
+            selectedIconIds: [],
+            answerState: "notAnswered",
+        });
+    };
+
+    return (
+        <ExerciseLayout<ColourfulSemanticsAnswer>
+            exerciseId={exerciseId}
+            actionBarPhase={questionState.answerState}
+            answers={answers}
+            progressBase={progressBase}
+            progressScale={progressScale}
+            onCheckAnswer={onCheckAnswer}
+            onBeforeContinue={({ isLastQuestion }) => {
+                if (
+                    isLastQuestion &&
+                    !showCompletionAffirmation &&
+                    questionState.answerState === "correct"
+                ) {
+                    setShowCompletionAffirmation(true);
+                    return "hold";
+                }
+
+                if (isLastQuestion && showCompletionAffirmation) {
+                    if (isFinalRepetition) {
+                        return "proceed";
+                    }
+
+                    onRoundComplete?.({
+                        totalQuestions: questions.length,
+                        incorrectAnswers: tracking.incorrectAnswers,
+                        attemptsPerQuestion: tracking.attemptsPerQuestion,
+                    });
+                    return "hold";
+                }
+
+                return "proceed";
+            }}
+            onResetQuestion={onResetQuestion}
+            onSettingsRequested={onSettingsRequested}
+            promptOverride={
+                showCompletionAffirmation
+                    ? completionAffirmationPrompt
+                    : undefined
+            }
+            questions={questions}
+            showSkip={true}
+            onSkipRequested={onSkipRequested}
+            tracking={tracking}
+            difficulty={difficulty}
+            submissionStatsOverride={submissionStatsOverride}
+        >
+            {(_, currentQuestionIndex) => {
+                const isFinalAffirmationView =
+                    showCompletionAffirmation &&
+                    currentQuestionIndex === questions.length - 1;
+                const currentSelectionId =
+                    questionState.selectedIconIds[0] ?? null;
+                const boardState = isFinalAffirmationView
+                    ? {
+                          poolItemIds: [],
+                          slotItemIds: lockedSelectionIds,
+                      }
+                    : createBoardState({
+                          scene,
+                          activeStepIndex: currentQuestionIndex,
+                          currentSelectionId,
+                          lockedSelectionIds,
+                      });
+
+                const handleDragEnd = (event: DragEndEvent) => {
+                    if (isFinalAffirmationView) {
+                        return;
+                    }
+
+                    if (questionState.answerState !== "notAnswered") {
+                        return;
+                    }
+
+                    if (event.canceled) {
+                        return;
+                    }
+
+                    const sourceId = event.operation.source?.id;
+                    const targetId = event.operation.target?.id;
+
+                    if (!sourceId || !targetId) {
+                        return;
+                    }
+
+                    const nextBoardState = moveItem({
+                        boardState,
+                        itemId: String(sourceId),
+                        targetId: String(targetId),
+                        activeStepIndex: currentQuestionIndex,
+                    });
+
+                    const nextSelectionId =
+                        nextBoardState.slotItemIds[currentQuestionIndex];
+
+                    setQuestionState((currentQuestionState) => ({
+                        ...currentQuestionState,
+                        selectedIconIds: nextSelectionId
+                            ? [nextSelectionId]
+                            : [],
+                    }));
+                };
+
+                const itemCorrectnessMap = isFinalAffirmationView
+                    ? {}
+                    : buildCorrectnessMap({
+                          boardState,
+                          questionState,
+                          activeStepIndex: currentQuestionIndex,
+                      });
+
+                return (
+                    <ColourfulSemanticsBoard
+                        activeStepIndex={currentQuestionIndex}
+                        boardState={boardState}
+                        hideTray={isFinalAffirmationView}
+                        isPastTense={variant.id === "advanced"}
+                        isVoiceMuted={
+                            variant.id === "advanced" || options.isVoiceMuted
+                        }
+                        isReadOnly={isFinalAffirmationView}
+                        itemCorrectnessMap={itemCorrectnessMap}
+                        itemsById={itemsById}
+                        onDragEnd={handleDragEnd}
+                        scene={scene}
+                        showAllSlotsVisible={isFinalAffirmationView}
+                        showFeedback={
+                            questionState.answerState !== "notAnswered"
+                        }
+                    />
+                );
+            }}
+        </ExerciseLayout>
+    );
+};
+
+export default ColourfulSemanticsGame;

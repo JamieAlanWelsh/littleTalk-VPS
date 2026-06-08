@@ -25,6 +25,9 @@ class ImportContractsTests(TestCase):
             "littleTalkApp.views_modules.school",
             "littleTalkApp.views_modules.settings_views",
             "littleTalkApp.views_modules.subscription",
+            "littleTalkApp.views_modules.skolon",
+            "littleTalkApp.integrations.skolon_client",
+            "littleTalkApp.integrations.skolon_sync",
         ]
 
         for module_name in module_names:
@@ -66,8 +69,12 @@ class UrlContractsTests(TestCase):
             "send_support_email",
             "screener",
             "start_assessment",
+            "start_assessment_v2",
             "save_all_assessment_answers",
+            "save_all_assessment_answers_v2",
             "assessment_summary",
+            "assessment_summary_v2",
+            "assessment_summary_old",
             "login",
             "account_setup",
             "profile",
@@ -108,11 +115,16 @@ class UrlContractsTests(TestCase):
             "subscribe_success",
             "manage_subscription",
             "update_learner_exp",
-            "get_selected_learner",
+            "get_current_session_learner_context",
             "create_target",
             "target_detail",
             "learner_dashboard",
             "learner_progress_data",
+            "skolon_webhook",
+            "skolon_remove_user",
+            "skolon_remove_class",
+            "sso_callback",
+            "sso_launch",
         ]
 
         for name in names:

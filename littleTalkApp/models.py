@@ -11,6 +11,8 @@ from datetime import date, timedelta
 import random
 import string
 
+from littleTalkApp.content.avatars import DEFAULT_AVATAR_CHARACTER, DEFAULT_AVATAR_COLOR
+
 
 class School(models.Model):
     name = models.CharField(max_length=255)
@@ -321,6 +323,7 @@ class LearnerAssessmentAnswer(models.Model):
     answer = models.CharField(max_length=10)  # 'Yes' or 'No'
     timestamp = models.DateTimeField(auto_now_add=True)
     session_id = models.UUIDField(default=uuid.uuid4)  # Groups answers by screener session
+    screener_version = models.IntegerField(default=2)
     assessment_date = models.DateField(auto_now_add=True, null=True)  # Date screener was completed
 
     def __str__(self):
@@ -350,8 +353,14 @@ class Learner(models.Model):
     exp = models.IntegerField(default=0)
     total_exercises = models.IntegerField(default=0)
     recommendation_level = models.IntegerField(blank=True, null=True)
+    recommended_exercise_ids = models.JSONField(blank=True, null=True)
+    secondary_exercise_ids = models.JSONField(blank=True, null=True)
+    recommendation_index = models.IntegerField(default=0)
+    recommendation_index_updated_at = models.DateTimeField(blank=True, null=True)
     deleted = models.BooleanField(default=False)
     date_of_birth = EncryptedDateField(null=True, blank=True)
+    avatar_character = models.CharField(max_length=64, default=DEFAULT_AVATAR_CHARACTER)
+    avatar_color = models.CharField(max_length=7, default=DEFAULT_AVATAR_COLOR)
     age_group = models.PositiveSmallIntegerField(
         null=True,
         blank=True,
@@ -529,11 +538,13 @@ class ExerciseSession(models.Model):
     learner = models.ForeignKey(Learner, on_delete=models.CASCADE, related_name="exercise_sessions")
     exercise_id = models.CharField(max_length=255)
     difficulty_selected = models.CharField(max_length=50)
+    difficulty_label = models.CharField(max_length=100, blank=True, default="")
     started_at = models.DateTimeField()
     completed_at = models.DateTimeField()
     total_questions = models.IntegerField()
     incorrect_answers = models.IntegerField()
     attempts_per_question = models.JSONField()  # List of integers, e.g. [1, 2, 3] for attempts per question
+    learner_total_exp_after_session = models.IntegerField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -568,3 +579,62 @@ class Target(models.Model):
 
     def __str__(self):
         return f"{self.learner.name} - {self.text} ({self.status})"
+
+
+# =============================================================================
+# Skolon integration models
+# =============================================================================
+
+class SkolonSyncCursor(models.Model):
+    """Persists the versionTag returned by Skolon per entity type.
+    Passed back on the next API call to receive only changes since the last sync.
+    """
+
+    class EntityType(models.TextChoices):
+        USER = 'user', 'User'
+        SCHOOL = 'school', 'School'
+        GROUP = 'group', 'Group'
+        LICENSE = 'license', 'License'
+
+    entity_type = models.CharField(max_length=20, choices=EntityType.choices, unique=True)
+    version_tag = models.CharField(max_length=255, blank=True, null=True)
+    last_synced_at = models.DateTimeField(null=True, blank=True)
+
+    def __str__(self):
+        return f"SkolonSyncCursor({self.entity_type}: {self.version_tag})"
+
+
+class SkolonOrg(models.Model):
+    """Maps a Skolon school to a local School record."""
+
+    skolon_id = models.CharField(max_length=255, unique=True)
+    school = models.OneToOneField(
+        School, on_delete=models.SET_NULL, null=True, blank=True, related_name='skolon_org'
+    )
+    name = models.CharField(max_length=255)
+    organisation_number = models.CharField(max_length=100, blank=True, null=True)
+    is_deleted = models.BooleanField(default=False)
+    synced_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"SkolonOrg({self.skolon_id}: {self.name})"
+
+
+class SkolonUser(models.Model):
+    """Maps a Skolon user to a local accounts.User via external_id."""
+
+    skolon_id = models.CharField(max_length=255, unique=True)
+    external_id = models.CharField(max_length=255, db_index=True)
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True,
+        related_name='skolon_user'
+    )
+    skolon_org = models.ForeignKey(
+        SkolonOrg, on_delete=models.SET_NULL, null=True, blank=True, related_name='skolon_users'
+    )
+    role = models.CharField(max_length=50, blank=True, null=True)
+    is_deleted = models.BooleanField(default=False)
+    synced_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"SkolonUser({self.skolon_id}: {self.external_id})"

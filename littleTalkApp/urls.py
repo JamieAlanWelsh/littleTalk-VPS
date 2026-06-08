@@ -12,6 +12,8 @@ from .views_modules import public as public_views
 from .views_modules import school as school_views
 from .views_modules import settings_views as settings_app_views
 from .views_modules import subscription as subscription_views
+from .views_modules import react_exercises as react_exercises_views
+from .views_modules import skolon as skolon_views
 
 urlpatterns = [
     # Landing content
@@ -34,16 +36,23 @@ urlpatterns = [
     path('screener/start/', assessment_views.start_assessment, name='start_assessment'),
     path('screener/save-all/', assessment_views.save_all_assessment_answers, name='save_all_assessment_answers'),
     path('screener/summary/', assessment_views.assessment_summary, name='assessment_summary'),
+    path('screener/summary/old/', assessment_views.assessment_summary_old, name='assessment_summary_old'),
+    path('screener/v2/start/', assessment_views.start_assessment_v2, name='start_assessment_v2'),
+    path('screener/v2/save-all/', assessment_views.save_all_assessment_answers_v2, name='save_all_assessment_answers_v2'),
+    path('screener/v2/summary/', assessment_views.assessment_summary_v2, name='assessment_summary_v2'),
 
     # Login and logout URLs
     path('login/', auth_app_views.CustomLoginView.as_view(), name='login'),
     path('account-setup/', auth_app_views.account_setup_view, name='account_setup'),
+    path('sso/launch/', skolon_views.sso_launch, name='sso_launch'),
+    path('sso/callback/', skolon_views.sso_callback, name='sso_callback'),
 
     # Profile and adding learners
     path('profile/', profile_views.profile, name='profile'),
     path('add-learner/', profile_views.add_learner, name='add_learner'),
     path('select-learner/', profile_views.select_learner, name='select_learner'),
     path('profile/edit_learner/<uuid:learner_uuid>/', profile_views.edit_learner, name='edit_learner'),
+    path('profile/avatar/<uuid:learner_uuid>/', profile_views.avatar_editor, name='avatar_editor'),
     path('profile/edit_learner/confirm_delete_learner/<uuid:learner_uuid>/', profile_views.confirm_delete_learner, name='confirm_delete_learner'),
 
     # Cohorts
@@ -90,19 +99,38 @@ urlpatterns = [
     path('license-expired/', subscription_views.license_expired, name='license_expired'),
     path('access-restricted/', subscription_views.access_restricted, name='access_restricted'),
 
-    # Stripe Webhook to activate and manage subscription
-    path('webhooks/stripe/', subscription_views.stripe_webhook, name='stripe_webhook'),
+    # Stripe Webhooks 
+    path('webhooks/stripe/', subscription_views.stripe_webhook, name='stripe_webhook'), # to activate and manage subscription
     path('subscribe/checkout/', subscription_views.create_checkout_session, name='create_checkout_session'),
     path('subscribe/success/', subscription_views.subscribe_success, name='subscribe_success'),
     path('subscribe/manage/', subscription_views.manage_subscription, name='manage_subscription'),
 
+    # Skolon webhooks
+    path('webhooks/skolon/', skolon_views.skolon_webhook, name='skolon_webhook'),
+    path('webhooks/skolon/remove-user/', skolon_views.skolon_remove_user, name='skolon_remove_user'),
+    path('webhooks/skolon/remove-class/', skolon_views.skolon_remove_class, name='skolon_remove_class'),
+
     # API endpoints
-    path('api/learners/<uuid:learner_uuid>/update-exp/', api_views.UpdateLearnerExpAPIView.as_view(), name='update_learner_exp'),
-    path('api/selected-learner/', api_views.get_selected_learner, name='get_selected_learner'),
+    path('api/learners/<uuid:learner_uuid>/submit-exercise/', api_views.SubmitExerciseView.as_view(), name='submit_exercise'),
+    path('api/learners/<uuid:learner_uuid>/avatar/', api_views.UpdateLearnerAvatarView.as_view(), name='update_learner_avatar'),
+    path('api/selected-learner/', api_views.get_current_session_learner_context, name='get_current_session_learner_context'),
     path('api/targets/', api_views.create_target, name='create_target'),
     path('api/targets/<int:target_id>/', api_views.target_detail, name='target_detail'),
 
     # Dashboard
     path('dashboard/learner/', dashboard_views.learner_dashboard, name='learner_dashboard'),
     path('api/dashboard/progress-data/', dashboard_views.learner_progress_data, name='learner_progress_data'),
+
+    # React exercise routes (canonical)
+    path('exercises/categorisation/', react_exercises_views.categorisation_example, name='categorisation_example'),
+    path('exercises/think-and-find/', react_exercises_views.think_and_find, name='think_and_find'),
+    path('exercises/concept-quest/', react_exercises_views.concept_quest, name='concept_quest'),
+    path('exercises/colourful-semantics/', react_exercises_views.colourful_semantics, name='colourful_semantics'),
+    path('exercises/story-train/', react_exercises_views.story_train, name='story_train'),
+    path('exercises/spot-on/', react_exercises_views.spot_on, name='spot_on'),
+    path('exercises/whats-in-the-bag/', react_exercises_views.whats_in_the_bag, name='whats_in_the_bag'),
+    path('exercises/what-happens-next/', react_exercises_views.what_happens_next, name='what_happens_next'),
+    path('exercises/in-the-know/', react_exercises_views.in_the_know, name='in_the_know'),
+    path('exercises/whos-who/', react_exercises_views.whos_who, name='whos_who'),
+    path('exercises/task-master/', react_exercises_views.task_master, name='task_master'),
 ]

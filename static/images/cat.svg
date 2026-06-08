@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- Cat -->
+  <!-- Body -->
+  <ellipse cx="100" cy="120" rx="40" ry="50" fill="#FF9540"/>
+  <!-- Head -->
+  <circle cx="100" cy="60" r="40" fill="#FF9540"/>
+  <!-- Ears -->
+  <polygon points="70,20 60,10 75,40" fill="#FF9540"/>
+  <polygon points="130,20 140,10 125,40" fill="#FF9540"/>
+  <!-- Ears inside -->
+  <polygon points="70,25 65,15 72,35" fill="#FFB380"/>
+  <polygon points="130,25 135,15 128,35" fill="#FFB380"/>
+  <!-- Eyes -->
+  <ellipse cx="85" cy="50" rx="6" ry="10" fill="white"/>
+  <ellipse cx="115" cy="50" rx="6" ry="10" fill="white"/>
+  <ellipse cx="85" cy="52" rx="3" ry="6" fill="black"/>
+  <ellipse cx="115" cy="52" rx="3" ry="6" fill="black"/>
+  <!-- Nose -->
+  <polygon points="100,65 97,72 103,72" fill="#FFB380"/>
+  <!-- Mouth -->
+  <path d="M 100 72 Q 95 78 90 75" stroke="black" stroke-width="1.5" fill="none"/>
+  <path d="M 100 72 Q 105 78 110 75" stroke="black" stroke-width="1.5" fill="none"/>
+  <!-- Tail -->
+  <path d="M 140 130 Q 160 110 150 80" stroke="#FF9540" stroke-width="15" fill="none" stroke-linecap="round"/>
+</svg>

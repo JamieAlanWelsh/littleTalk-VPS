@@ -1,0 +1,563 @@
+/**
+ * ExerciseLayout Component
+ *
+ * Generic exercise container that wraps the exercise content.
+ * Provides a consistent UX pattern for all exercises built with the framework.
+ *
+ * The layout now expects exercises to manage their own zones (prompt, interactables, actions)
+ * and feedback/progress indicators internally.
+ */
+
+import { useEffect, useRef, useState, type ReactNode } from "react";
+import styles from "./exerciseLayout.module.css";
+import ExerciseActionBar from "../../components/ExerciseActionBar/ExerciseActionBar";
+import ConfirmationModal from "../../components/ConfirmationModal/ConfirmationModal";
+import type {
+    AnswerState,
+    ExerciseDifficulty,
+    Question,
+} from "../../lib/types";
+import { useExerciseTracking, useSubmitExerciseResult } from "../../hooks";
+import ExerciseEndscreen from "../exerciseEndscreen/ExerciseEndscreen";
+import { useAudio } from "../../hooks/useAudio";
+
+const EXP_FLOOR = 200;
+const EXP_ACCURACY_RANGE = 80; // accuracy contributes 0–80
+const EXP_JITTER_RANGE = 20; // jitter contributes 0–20
+
+const formatElapsedTime = (startedAt: string, completedAt: string): string => {
+    const totalSeconds = Math.max(
+        0,
+        Math.round(
+            (new Date(completedAt).getTime() - new Date(startedAt).getTime()) /
+                1000,
+        ),
+    );
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    if (minutes === 0) return `${seconds}s`;
+    return `${minutes}m ${seconds}s`;
+};
+
+const correctFeedbackMessages = [
+    "Great job! That's correct.",
+    "Well done! You got it right.",
+];
+
+const incorrectFeedbackMessages = [
+    "Not quite, try again!",
+    "Almost there, give it another try!",
+];
+
+const DEFAULT_EXERCISE_DIFFICULTY: ExerciseDifficulty = {
+    level: 1,
+    label: "Standard",
+};
+
+interface ExerciseLayoutProps<AnswerType> {
+    exerciseId: string;
+    actionBarPhase: AnswerState;
+    questions: Question[];
+    answers?: AnswerType[]; // Optional, for exercises that want to pass pre-processed answer data
+    tracking: ReturnType<typeof useExerciseTracking>;
+    onCheckAnswer: (question: Question) => void;
+    onResetQuestion: () => void;
+    onBeforeContinue?: (params: {
+        currentQuestionIndex: number;
+        isLastQuestion: boolean;
+    }) => "proceed" | "hold";
+    onSettingsRequested?: () => void;
+    promptOverride?: string;
+    disableCheck?: boolean;
+    showSkip?: boolean;
+    onSkipRequested?: () => void;
+    /** 0–1 fraction already completed before this round starts. Default: 0. */
+    progressBase?: number;
+    /** Fraction of total that one round occupies. Default: 1. */
+    progressScale?: number;
+    /** Optional submit payload metric overrides for session-level exercises. */
+    submissionStatsOverride?: {
+        startedAt?: string;
+        totalQuestions?: number;
+        incorrectAnswers?: number;
+        attemptsPerQuestion?: number[];
+    };
+    difficulty?: ExerciseDifficulty;
+    children:
+        | ReactNode
+        | ((
+              currentAnswer: AnswerType,
+              currentAnswerIndex: number,
+          ) => ReactNode);
+}
+
+export const ExerciseLayout = <AnswerType,>({
+    exerciseId,
+    actionBarPhase,
+    questions,
+    answers,
+    tracking,
+    onCheckAnswer,
+    onResetQuestion,
+    onBeforeContinue,
+    onSettingsRequested,
+    promptOverride,
+    disableCheck = false,
+    showSkip = true,
+    onSkipRequested,
+    progressBase = 0,
+    progressScale = 1,
+    submissionStatsOverride,
+    difficulty = DEFAULT_EXERCISE_DIFFICULTY,
+    children,
+}: ExerciseLayoutProps<AnswerType>) => {
+    const scaleAreaRef = useRef<HTMLDivElement | null>(null);
+    const [currentQuestionStateIndex, setCurrentQuestionStateIndex] =
+        useState<number>(0);
+    const [showExitConfirmation, setShowExitConfirmation] = useState(false);
+    const [showSettingsConfirmation, setShowSettingsConfirmation] =
+        useState(false);
+    const [endscreenMetrics, setEndscreenMetrics] = useState<{
+        expGained: number;
+        accuracyPercent: number;
+        elapsedTimeLabel: string;
+    } | null>(null);
+    const submitExerciseMutation = useSubmitExerciseResult();
+
+    const progress =
+        progressBase +
+        progressScale * (currentQuestionStateIndex / questions.length);
+    const isComplete = currentQuestionStateIndex === questions.length;
+    const isLastQuestion = currentQuestionStateIndex === questions.length - 1;
+    const currentQuestion = questions[currentQuestionStateIndex];
+    const promptText = promptOverride ?? currentQuestion?.prompt ?? "";
+
+    const { play } = useAudio();
+
+    useEffect(() => {
+        if (isComplete) {
+            document.body.style.removeProperty("--exercise-zoom-auto");
+            return;
+        }
+
+        const scaleArea = scaleAreaRef.current;
+        if (!scaleArea) {
+            return;
+        }
+
+        let frameId = 0;
+
+        // Convergence guards: some exercises (e.g. Story Train) have content
+        // whose height is not perfectly proportional to zoom, so the
+        // "measure -> set zoom -> measure" loop can oscillate between two
+        // states. We quantize, apply a deadband, and detect 2-cycles so the
+        // controller always settles instead of flickering.
+        const ZOOM_EPSILON = 0.01; // ignore changes smaller than this
+        const ZOOM_QUANTUM = 0.01; // snap zoom to 1% steps
+        const OSCILLATION_LIMIT = 4; // consecutive flips before we lock
+        let appliedZoom = Number.NaN;
+        let lastDirection = 0; // -1 shrinking, +1 growing
+        let oscillationCount = 0;
+        let isLocked = false;
+
+        const resolveLengthToPx = (rawValue: string): number => {
+            const trimmedValue = rawValue.trim();
+            if (!trimmedValue) {
+                return 0;
+            }
+
+            const probe = document.createElement("div");
+            probe.style.position = "absolute";
+            probe.style.visibility = "hidden";
+            probe.style.pointerEvents = "none";
+            probe.style.height = trimmedValue;
+            document.body.appendChild(probe);
+            const px = probe.getBoundingClientRect().height;
+            probe.remove();
+
+            if (!Number.isFinite(px)) {
+                return 0;
+            }
+
+            return px;
+        };
+
+        const recalculateAdaptiveZoom = () => {
+            if (isLocked) {
+                return;
+            }
+
+            const body = document.body;
+            const bodyStyles = window.getComputedStyle(body);
+            const zoomBase =
+                Number.parseFloat(
+                    bodyStyles.getPropertyValue("--exercise-zoom-base"),
+                ) || 1;
+            const currentZoom =
+                Number.parseFloat(
+                    bodyStyles.getPropertyValue("--exercise-zoom"),
+                ) || zoomBase;
+
+            const reservedTop = Number.parseFloat(bodyStyles.paddingTop) || 0;
+            const reservedBottom =
+                Number.parseFloat(bodyStyles.paddingBottom) || 0;
+            const contentBottomGap = resolveLengthToPx(
+                bodyStyles.getPropertyValue("--exercise-content-actionbar-gap"),
+            );
+            const availableHeight =
+                window.innerHeight -
+                reservedTop -
+                reservedBottom -
+                contentBottomGap;
+            if (availableHeight <= 0 || currentZoom <= 0) {
+                return;
+            }
+
+            const scaledHeight = scaleArea.getBoundingClientRect().height;
+            if (scaledHeight <= 0) {
+                return;
+            }
+
+            const unscaledHeight = scaledHeight / currentZoom;
+            const fitZoom = availableHeight / unscaledHeight;
+            // Snap to a quantum so subpixel reflow differences collapse to the
+            // same target instead of producing a slightly different value each
+            // pass.
+            const rawZoom = Math.min(1, fitZoom);
+            const nextZoom = Math.max(
+                0.35,
+                Math.round(rawZoom / ZOOM_QUANTUM) * ZOOM_QUANTUM,
+            );
+
+            if (Number.isNaN(appliedZoom)) {
+                appliedZoom = nextZoom;
+                body.style.setProperty(
+                    "--exercise-zoom-auto",
+                    nextZoom.toFixed(4),
+                );
+                return;
+            }
+
+            const delta = nextZoom - appliedZoom;
+            if (Math.abs(delta) < ZOOM_EPSILON) {
+                // Stable: settled within the deadband.
+                lastDirection = 0;
+                oscillationCount = 0;
+                return;
+            }
+
+            const direction = delta > 0 ? 1 : -1;
+            if (lastDirection !== 0 && direction !== lastDirection) {
+                // Reversed direction since last change: a limit cycle. After a
+                // few flips, lock onto the smaller (safe, no-overflow) value.
+                oscillationCount += 1;
+                if (oscillationCount >= OSCILLATION_LIMIT) {
+                    const safeZoom = Math.min(appliedZoom, nextZoom);
+                    appliedZoom = safeZoom;
+                    isLocked = true;
+                    body.style.setProperty(
+                        "--exercise-zoom-auto",
+                        safeZoom.toFixed(4),
+                    );
+                    return;
+                }
+            } else {
+                oscillationCount = 0;
+            }
+
+            lastDirection = direction;
+            appliedZoom = nextZoom;
+            body.style.setProperty("--exercise-zoom-auto", nextZoom.toFixed(4));
+        };
+
+        const scheduleRecalculate = () => {
+            window.cancelAnimationFrame(frameId);
+            frameId = window.requestAnimationFrame(recalculateAdaptiveZoom);
+        };
+
+        // External triggers (viewport resize / live style updates) should be
+        // able to re-fit even if we previously locked due to a limit cycle.
+        const scheduleExternalRecalculate = () => {
+            isLocked = false;
+            lastDirection = 0;
+            oscillationCount = 0;
+            scheduleRecalculate();
+        };
+
+        const resizeObserver = new ResizeObserver(() => {
+            scheduleRecalculate();
+        });
+        resizeObserver.observe(scaleArea);
+
+        const headObserver = new MutationObserver(() => {
+            scheduleExternalRecalculate();
+        });
+        headObserver.observe(document.head, {
+            childList: true,
+            subtree: true,
+            characterData: true,
+            attributes: true,
+        });
+
+        window.addEventListener("resize", scheduleExternalRecalculate);
+        scheduleRecalculate();
+
+        return () => {
+            window.removeEventListener("resize", scheduleExternalRecalculate);
+            resizeObserver.disconnect();
+            headObserver.disconnect();
+            window.cancelAnimationFrame(frameId);
+            document.body.style.removeProperty("--exercise-zoom-auto");
+        };
+    }, [actionBarPhase, currentQuestionStateIndex, isComplete, promptText]);
+
+    useEffect(() => {
+        if (actionBarPhase === "correct") play("/static/audio/correct.wav");
+        else if (actionBarPhase === "incorrect")
+            play("/static/audio/incorrect.wav");
+    }, [actionBarPhase]);
+
+    const feedbackMessage =
+        actionBarPhase === "correct"
+            ? correctFeedbackMessages[
+                  Math.floor(Math.random() * correctFeedbackMessages.length)
+              ]
+            : actionBarPhase === "incorrect"
+              ? incorrectFeedbackMessages[
+                    Math.floor(Math.random() * incorrectFeedbackMessages.length)
+                ]
+              : "";
+
+    const submitExerciseResults = () => {
+        const completedAt = new Date().toISOString();
+        const startedAt =
+            submissionStatsOverride?.startedAt ?? tracking.startedAt;
+        const attemptsPerQuestion =
+            submissionStatsOverride?.attemptsPerQuestion ??
+            tracking.attemptsPerQuestion;
+        const totalQuestions =
+            submissionStatsOverride?.totalQuestions ?? questions.length;
+        const incorrectAnswers =
+            submissionStatsOverride?.incorrectAnswers ??
+            tracking.incorrectAnswers;
+
+        const accuracyRatio =
+            totalQuestions > 0
+                ? Math.max(0, totalQuestions - incorrectAnswers) /
+                  totalQuestions
+                : 1;
+        const accuracyPercent = Math.max(0, Math.round(accuracyRatio * 100));
+        const accuracyComponent = Math.round(
+            accuracyRatio * EXP_ACCURACY_RANGE,
+        );
+        const jitter = Math.floor(Math.random() * (EXP_JITTER_RANGE + 1));
+        const exp = EXP_FLOOR + accuracyComponent + jitter;
+        const elapsedTimeLabel = formatElapsedTime(startedAt, completedAt);
+
+        setEndscreenMetrics({
+            expGained: exp,
+            accuracyPercent,
+            elapsedTimeLabel,
+        });
+
+        submitExerciseMutation.mutate({
+            nonce: `${Date.now()}-${Math.random()}`,
+            exp,
+            totalExercises: 1,
+            exerciseId: exerciseId,
+            difficultyLevel: difficulty.level,
+            difficultyLabel: difficulty.label,
+            startedAt,
+            completedAt,
+            totalQuestions,
+            incorrectAnswers,
+            attemptsPerQuestion,
+        });
+    };
+
+    const onContinue = () => {
+        const continueDecision = onBeforeContinue?.({
+            currentQuestionIndex: currentQuestionStateIndex,
+            isLastQuestion,
+        });
+
+        if (continueDecision === "hold") {
+            return;
+        }
+
+        setCurrentQuestionStateIndex((prev) => prev + 1);
+        if (isLastQuestion) {
+            submitExerciseResults();
+        } else {
+            onResetQuestion();
+        }
+    };
+
+    const onSkip = () => {
+        tracking.incrementSkips();
+        if (onSkipRequested) {
+            onSkipRequested();
+        } else {
+            onContinue();
+        }
+    };
+
+    const onTryAgain = () => {
+        onResetQuestion();
+    };
+
+    const handleEndSession = () => {
+        window.location.href = "/practise/";
+    };
+
+    return (
+        <>
+            {isComplete ? (
+                <div className={styles.exerciseLayoutWrapper}>
+                    <ExerciseEndscreen
+                        expGained={endscreenMetrics?.expGained ?? EXP_FLOOR}
+                        accuracyPercent={
+                            endscreenMetrics?.accuracyPercent ?? 100
+                        }
+                        elapsedTimeLabel={
+                            endscreenMetrics?.elapsedTimeLabel ?? "—"
+                        }
+                        onReturnHome={handleEndSession}
+                    />
+                </div>
+            ) : (
+                <>
+                    <div className={styles.progressBarContainer}>
+                        <div className={styles.progressBarContent}>
+                            <button
+                                className={styles.exitButton}
+                                onClick={() => {
+                                    setShowExitConfirmation(true);
+                                }}
+                                title="Exit exercise"
+                                type="button"
+                            >
+                                ✕
+                            </button>
+                            <div className={styles.progressBarInner}>
+                                <div
+                                    className={styles.progressBarFill}
+                                    style={{ width: `${progress * 100}%` }}
+                                ></div>
+                            </div>
+                            {onSettingsRequested ? (
+                                <button
+                                    className={styles.settingsButton}
+                                    onClick={() =>
+                                        setShowSettingsConfirmation(true)
+                                    }
+                                    title="Exercise settings"
+                                    type="button"
+                                >
+                                    ⚙
+                                </button>
+                            ) : (
+                                <div
+                                    className={styles.progressBarButtonSpacer}
+                                    aria-hidden="true"
+                                ></div>
+                            )}
+                        </div>
+                    </div>
+
+                    <div className={styles.exerciseLayoutWrapper}>
+                        {/* Scale area: shrinks the prompt + board on short
+                            viewports to keep the whole exercise on screen,
+                            while the fixed header and action bar stay full size. */}
+                        <div
+                            className={styles.exerciseScaleArea}
+                            ref={scaleAreaRef}
+                        >
+                            {/* question */}
+                            <div
+                                key={`${questions[currentQuestionStateIndex].id}-${promptOverride ?? ""}`}
+                                className={`${styles.exercisePromptCard} ${styles.exercisePromptCardPop}`}
+                            >
+                                <h2 className={styles.exercisePromptTitle}>
+                                    <span className={styles.exercisePromptText}>
+                                        {promptText}
+                                    </span>
+                                </h2>
+                            </div>
+
+                            {/* answer */}
+                            <div className={styles.exerciseContainer}>
+                                <div
+                                    className={`${styles.exerciseZone} ${styles.exerciseZoneInteractive}`}
+                                >
+                                    {typeof children === "function" && answers
+                                        ? (
+                                              children as (
+                                                  currentAnswer: AnswerType,
+                                                  currentAnswerIndex: number,
+                                              ) => ReactNode
+                                          )(
+                                              answers[
+                                                  currentQuestionStateIndex
+                                              ],
+                                              currentQuestionStateIndex,
+                                          )
+                                        : (children as ReactNode)}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* action bar */}
+                        <ExerciseActionBar
+                            actionBarPhase={actionBarPhase}
+                            feedbackMessage={feedbackMessage}
+                            disableCheck={disableCheck}
+                            showSkip={showSkip}
+                            onCheckAnswer={() => {
+                                tracking.incrementAttempt(
+                                    currentQuestionStateIndex,
+                                );
+                                onCheckAnswer(
+                                    questions[currentQuestionStateIndex],
+                                );
+                            }}
+                            onTryAgain={() => {
+                                tracking.incrementIncorrectAnswers();
+                                onTryAgain();
+                            }}
+                            onContinue={onContinue}
+                            onSkip={onSkip}
+                        />
+                    </div>
+                </>
+            )}
+            <ConfirmationModal
+                isOpen={showExitConfirmation}
+                title="Exit session?"
+                text="You'll lose your progress if you quit now."
+                onConfirmButtonText="Exit"
+                onCancelButtonText="Keep going"
+                onCancel={() => {
+                    setShowExitConfirmation(false);
+                }}
+                onConfirm={handleEndSession}
+            />
+            {onSettingsRequested && (
+                <ConfirmationModal
+                    isOpen={showSettingsConfirmation}
+                    title="Change settings?"
+                    text="Are you sure you want to return to settings? Your current progress will be reset."
+                    onConfirmButtonText="Change"
+                    onCancelButtonText="Keep current"
+                    onCancel={() => setShowSettingsConfirmation(false)}
+                    onConfirm={() => {
+                        setShowSettingsConfirmation(false);
+                        onSettingsRequested();
+                    }}
+                />
+            )}
+        </>
+    );
+};
+
+export default ExerciseLayout;

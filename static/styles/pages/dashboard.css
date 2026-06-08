@@ -19,6 +19,88 @@
     flex: 1;
 }
 
+.chart-filter-buttons--exercise-groups {
+    align-items: flex-start;
+}
+
+.container-box.container--dash.container--dash-no-bg {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+}
+
+.exercise-stage-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px;
+    border: 2px solid #e8e8e8;
+    border-radius: 10px;
+    background: #fafafa;
+    min-width: 260px;
+}
+
+.chart-filter-buttons--exercise-groups .exercise-stage-group:nth-of-type(1) {
+    background: #eaf4ff;
+    border-color: #9fc5ff;
+}
+
+.chart-filter-buttons--exercise-groups .exercise-stage-group:nth-of-type(2) {
+    background: #fff2e3;
+    border-color: #ffc987;
+}
+
+.chart-filter-buttons--exercise-groups .exercise-stage-group:nth-of-type(3) {
+    background: #eaf9ef;
+    border-color: #9ddfb2;
+}
+
+.exercise-stage-label {
+    margin: 0;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--font-color);
+}
+
+.exercise-stage-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.chart-filter-group-box {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px;
+    border: 2px solid #d9c8ff;
+    border-radius: 10px;
+    background: #f5efff;
+}
+
+.chart-filter-group-label {
+    margin: 0;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--font-color);
+}
+
+.chart-filter-checkbox {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: var(--font-color);
+    cursor: pointer;
+}
+
+.chart-filter-checkbox input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
 /* Dashboard Header */
 .dashboard-header {
     display: flex;
@@ -41,6 +123,43 @@
     color: var(--font-color);
     white-space: nowrap;
     margin: 0;
+}
+
+.dashboard-top-section {
+    margin-top: 0;
+}
+
+.dashboard-top-layout {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.dashboard-top-left {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+}
+
+.dashboard-top-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+
+.dashboard-top-row--filters .section-filter {
+    margin-bottom: 0;
+    flex: none;
+    justify-content: flex-start;
+}
+
+.dashboard-top-right {
+    display: flex;
+    align-items: flex-start;
 }
 
 /* Print Styles */
@@ -303,7 +422,7 @@
     padding: 24px;
     background: #ffffff;
     border: 1px solid var(--border-grey);
-    border-radius: 16px;
+    border-radius: 25px;
     box-shadow: var(--box-shadow);
 }
 
@@ -408,12 +527,13 @@
 
 .filter-btn:hover {
     border-color: var(--font-color);
-    background: rgba(123, 97, 255, 0.05);
+    background: #ff929260;
 }
 
 .filter-btn.active {
     border-color: var(--font-color);
-    background: var(--font-color);
+    background: #FF9292;
+    font-weight: 600;
     color: #ffffff;
 }
 
@@ -505,6 +625,34 @@
     text-align: center;
     color: #6c6c6c;
     font-size: 0.95rem;
+}
+
+.recent-exercises-table-wrap {
+    overflow-x: auto;
+    border: 2px solid var(--border-grey);
+    border-radius: 15px;
+    background: #ffffff;
+}
+
+.recent-exercises-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 680px;
+}
+
+.recent-exercises-table th,
+.recent-exercises-table td {
+    text-align: left;
+    padding: 12px 10px;
+    border-bottom: 1px solid #ececec;
+    font-size: 0.92rem;
+    color: var(--font-color);
+}
+
+.recent-exercises-table thead th {
+    font-weight: 700;
+    background: #FF9292;
+    color: #ffffff;
 }
 
 /* Screener Analysis Section */
@@ -619,6 +767,19 @@
     .dashboard-header {
         flex-direction: column;
         align-items: stretch;
+    }
+
+    .dashboard-top-layout {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .dashboard-top-right {
+        width: 100%;
+    }
+
+    .dashboard-top-right .btn {
+        width: 100%;
     }
     
     .header-learner-section {

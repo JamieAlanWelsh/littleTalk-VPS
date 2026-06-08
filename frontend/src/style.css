@@ -1,0 +1,149 @@
+/* Import app-wide CSS variables */
+@import "./variables.css";
+
+* {
+    box-sizing: border-box; /* What you just added */
+    margin: 0; /* Remove default margins */
+    padding: 0; /* Remove default padding */
+}
+
+html {
+    font-size: 16px; /* Base font size for rem units */
+    scroll-behavior: smooth; /* Smooth scrolling */
+}
+
+body {
+    font-family: var(--font-roboto); /* Use Roboto font from variables */
+    line-height: 1.5; /* Readable line spacing */
+    color: var(--font-color); /* Default text color */
+    -webkit-font-smoothing: antialiased; /* Better text rendering */
+}
+
+img {
+    max-width: 100%; /* Responsive images */
+    height: auto;
+    display: block; /* Remove bottom spacing */
+}
+
+button,
+input,
+textarea,
+select {
+    font: inherit; /* Inherit font from parent */
+}
+
+body.exercise-page {
+    --exercise-chrome-max-width: 1000px;
+    --exercise-chrome-inline-padding: 1.25rem;
+    /* Touch-only drag visual nudge to align the draggable under touch cursor. */
+    --exercise-touch-drag-hotspot-offset-x: 0px;
+    --exercise-touch-drag-hotspot-offset-y: 0px;
+    --exercise-content-actionbar-gap: 2rem;
+    --exercise-content-gap-top-reclaim-ratio: 0.5;
+    --exercise-zoom-base: 1;
+    --exercise-zoom-auto: var(--exercise-zoom-base);
+    --exercise-zoom: var(--exercise-zoom-auto);
+    /* Keep fixed chrome (top progress bar + bottom action bar) in proportion
+       with board zoom, but slightly less aggressive so controls remain usable. */
+    --exercise-fixed-ui-scale: calc((var(--exercise-zoom) * 0.6) + 0.4);
+    --exercise-top-bar-button-size: calc(44px * var(--exercise-fixed-ui-scale));
+    --exercise-top-bar-icon-size: calc(1.5rem * var(--exercise-fixed-ui-scale));
+    --exercise-top-bar-gap: calc(0.75rem * var(--exercise-fixed-ui-scale));
+    --exercise-progress-track-height: calc(
+        16px * var(--exercise-fixed-ui-scale)
+    );
+    --exercise-top-bar-pad-top: calc(
+        env(safe-area-inset-top) + (1rem * var(--exercise-fixed-ui-scale))
+    );
+    --exercise-top-bar-pad-bottom: calc(
+        0.75rem * var(--exercise-fixed-ui-scale)
+    );
+    --exercise-header-reserved-height: calc(
+        var(--exercise-top-bar-pad-top) + var(--exercise-top-bar-button-size) +
+            var(--exercise-top-bar-pad-bottom)
+    );
+    --exercise-action-bar-row-height: calc(
+        3.5rem * var(--exercise-fixed-ui-scale)
+    );
+    --exercise-action-bar-pad-y: calc(1rem * var(--exercise-fixed-ui-scale));
+    --exercise-action-bar-gap: calc(0.75rem * var(--exercise-fixed-ui-scale));
+    --exercise-action-bar-message-size: calc(
+        var(--text-large) * var(--exercise-fixed-ui-scale)
+    );
+    --exercise-actionbar-reserved-height: calc(
+        env(safe-area-inset-bottom) + (var(--exercise-action-bar-pad-y) * 2) +
+            var(--exercise-action-bar-row-height)
+    );
+    /* Zoom factor applied to the exercise board (see .exerciseScaleArea).
+         Defaults to full size and steps down on shorter viewports so tall
+         exercises stay fully on screen, mimicking a browser "zoom out". */
+    margin: 0;
+    padding: 20px;
+    padding-top: max(
+        8px,
+        calc(
+            8px + var(--exercise-header-reserved-height) -
+                (
+                    var(--exercise-content-actionbar-gap) *
+                        var(--exercise-content-gap-top-reclaim-ratio)
+                )
+        )
+    );
+    padding-bottom: var(--exercise-actionbar-reserved-height);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--background-color);
+}
+
+/* Progressive "zoom out" for short viewports (e.g. laptops ~800px tall).
+   The body reserves fixed header/action-bar heights that do NOT zoom, so
+   the ramp is intentionally aggressive to keep the board fully on screen. */
+@media (max-height: 1024px) {
+    body.exercise-page {
+        --exercise-zoom-base: 0.9;
+    }
+}
+
+@media (max-height: 950px) {
+    body.exercise-page {
+        --exercise-zoom-base: 0.8;
+    }
+}
+
+@media (max-height: 880px) {
+    body.exercise-page {
+        --exercise-zoom-base: 0.73;
+    }
+}
+
+@media (max-height: 820px) {
+    body.exercise-page {
+        --exercise-zoom-base: 0.65;
+    }
+}
+
+@media (max-height: 760px) {
+    body.exercise-page {
+        --exercise-zoom-base: 0.6;
+    }
+}
+
+@media (max-height: 700px) {
+    body.exercise-page {
+        --exercise-zoom-base: 0.53;
+    }
+}
+
+@media (max-height: 640px) {
+    body.exercise-page {
+        --exercise-zoom-base: 0.48;
+    }
+}
+
+@media (max-height: 580px) {
+    body.exercise-page {
+        --exercise-zoom-base: 0.43;
+    }
+}

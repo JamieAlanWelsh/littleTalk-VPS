@@ -231,11 +231,12 @@ class LearnerForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop("user", None)
+        request = kwargs.pop("request", None)
         super().__init__(*args, **kwargs)
 
         if user and hasattr(user, "profile"):
-            # Use profile helper (falls back to legacy FK or first M2M school)
-            school = user.profile.get_current_school()
+            # Respect the active school stored in session for multi-school users.
+            school = user.profile.get_current_school(request)
             if school:
                 self.fields["cohort"].queryset = Cohort.objects.filter(school=school)
             else:

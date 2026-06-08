@@ -10,6 +10,7 @@ __all__ = [
 	"practise",
 	"profile",
 	"public",
+	"react_exercises",
 	"school",
 	"settings_views",
 	"subscription",

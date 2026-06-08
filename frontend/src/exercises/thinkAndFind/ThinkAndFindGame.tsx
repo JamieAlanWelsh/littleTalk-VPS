@@ -1,0 +1,200 @@
+/**
+ * Think & Find Game
+ *
+ * Each round chooses a random image set and a random target image.
+ * The learner reads the prompt and taps the matching picture.
+ */
+
+import { useMemo, useState } from "react";
+import type {
+    ExerciseDifficulty,
+    Picture,
+    Question,
+    QuestionState,
+    SentenceMatchingOptions,
+    ThinkAndFindPayload,
+    ThinkAndFindItem,
+} from "../../lib/types";
+import ExerciseLayout from "../../layouts/exerciseLayout/ExerciseLayout";
+import { ImageOption } from "../../components/ImageOption";
+import { useExerciseTracking } from "../../hooks";
+import { shuffleArray } from "../../utils/shuffleArray";
+import styles from "./thinkAndFind.module.css";
+
+const EXERCISE_ID = "think-and-find";
+
+const PROMPT_PHRASINGS = [
+    "Where is the",
+    "Can you find the",
+    "Do you see the",
+    "Can you spot the",
+];
+
+const randomPrompt = (basePrompt: string): string => {
+    // basePrompt is stored as "Find the {descriptor}." — extract the descriptor
+    const descriptor = basePrompt.replace(/^Find the /i, "").replace(/\.$/, "");
+    const phrasing =
+        PROMPT_PHRASINGS[Math.floor(Math.random() * PROMPT_PHRASINGS.length)];
+    return `${phrasing} ${descriptor}?`;
+};
+
+interface ThinkAndFindGameProps {
+    payload: ThinkAndFindPayload;
+    options: SentenceMatchingOptions;
+    onSettingsRequested?: () => void;
+}
+
+interface ThinkAndFindAnswer {
+    options: Picture[];
+    correctIconId: string;
+}
+
+const toPicture = (item: ThinkAndFindItem): Picture => ({
+    id: item.id,
+    imageUrl: item.imageUrl,
+    label: item.label,
+    altText: item.altText,
+});
+
+const buildRounds = (
+    payload: ThinkAndFindPayload,
+    numberOfOptions: number,
+): { questions: Question[]; answers: ThinkAndFindAnswer[] } => {
+    const questions: Question[] = [];
+    const answers: ThinkAndFindAnswer[] = [];
+    const roundCount = Math.min(payload.rounds, payload.imageSets.length);
+    const selectedImageSets = shuffleArray(payload.imageSets).slice(
+        0,
+        roundCount,
+    );
+
+    for (
+        let roundIndex = 0;
+        roundIndex < selectedImageSets.length;
+        roundIndex += 1
+    ) {
+        const imageSet = selectedImageSets[roundIndex];
+        const optionItems = shuffleArray(imageSet.items).slice(
+            0,
+            numberOfOptions,
+        );
+        const targetItem =
+            optionItems[Math.floor(Math.random() * optionItems.length)];
+
+        questions.push({
+            id: `${imageSet.id}-${targetItem.id}-${roundIndex + 1}`,
+            prompt: randomPrompt(targetItem.prompt),
+            correctIconIds: [targetItem.id],
+        });
+
+        answers.push({
+            correctIconId: targetItem.id,
+            options: shuffleArray(optionItems).map(toPicture),
+        });
+    }
+
+    return { questions, answers };
+};
+
+export const ThinkAndFindGame = ({
+    payload,
+    options,
+    onSettingsRequested,
+}: ThinkAndFindGameProps) => {
+    const [questionState, setQuestionState] = useState<QuestionState>({
+        selectedIconIds: [],
+        answerState: "notAnswered",
+    });
+
+    const gameData = useMemo(
+        () => buildRounds(payload, options.numberOfOptions),
+        [payload, options.numberOfOptions],
+    );
+    const difficulty: ExerciseDifficulty = {
+        level: options.numberOfOptions,
+        label: `${options.numberOfOptions} options`,
+    };
+    const tracking = useExerciseTracking(gameData.questions.length);
+
+    const onCheckAnswer = (question: Question) => {
+        if (questionState.selectedIconIds.length === 0) return;
+
+        if (
+            question.correctIconIds.every((id) =>
+                questionState.selectedIconIds.includes(id),
+            )
+        ) {
+            setQuestionState((prev) => ({
+                ...prev,
+                answerState: "correct",
+            }));
+        } else {
+            setQuestionState((prev) => ({
+                ...prev,
+                answerState: "incorrect",
+            }));
+        }
+    };
+
+    const onResetAnswer = () => {
+        setQuestionState({
+            selectedIconIds: [],
+            answerState: "notAnswered",
+        });
+    };
+
+    if (gameData.questions.length === 0) {
+        return <p>Unable to load any Think and Find image sets.</p>;
+    }
+
+    return (
+        <ExerciseLayout<ThinkAndFindAnswer>
+            exerciseId={EXERCISE_ID}
+            actionBarPhase={questionState.answerState}
+            questions={gameData.questions}
+            answers={gameData.answers}
+            tracking={tracking}
+            difficulty={difficulty}
+            onCheckAnswer={onCheckAnswer}
+            onResetQuestion={onResetAnswer}
+            onSettingsRequested={onSettingsRequested}
+        >
+            {(currentAnswer: ThinkAndFindAnswer) => (
+                <div className={styles.optionsGrid}>
+                    {currentAnswer.options.map((picture) => {
+                        const isSelected =
+                            questionState.selectedIconIds.includes(picture.id);
+                        let isCorrect: boolean | null = null;
+                        if (questionState.answerState === "correct") {
+                            isCorrect = isSelected;
+                        } else if (questionState.answerState === "incorrect") {
+                            // Only mark the selected image as incorrect; do not show the correct answer
+                            isCorrect = isSelected ? false : null;
+                        }
+                        const isDisabled =
+                            questionState.answerState !== "notAnswered" &&
+                            !isSelected;
+
+                        return (
+                            <ImageOption
+                                key={picture.id}
+                                image={picture}
+                                isCorrect={isCorrect}
+                                isSelected={isSelected}
+                                isDisabled={isDisabled}
+                                onClick={() =>
+                                    setQuestionState((prev) => ({
+                                        ...prev,
+                                        selectedIconIds: [picture.id],
+                                    }))
+                                }
+                            />
+                        );
+                    })}
+                </div>
+            )}
+        </ExerciseLayout>
+    );
+};
+
+export default ThinkAndFindGame;

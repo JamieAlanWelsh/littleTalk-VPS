@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.middleware.csrf import get_token
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import BasePermission, IsAuthenticated
@@ -13,7 +14,12 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from littleTalkApp.models import ExerciseSession, Learner
-from littleTalkApp.serializers import LearnerExpUpdateInputSerializer, LearnerExpUpdateSerializer
+from littleTalkApp.serializers import (
+    SubmitExerciseSerializer,
+    LearnerAvatarSerializer,
+    LearnerExpUpdateSerializer,
+)
+from littleTalkApp.views_modules.practise import resolve_recommendation_index
 
 logger = logging.getLogger(__name__)
 
@@ -43,8 +49,8 @@ class CanUpdateLearnerPermission(BasePermission):
         return False
 
 
-class UpdateLearnerExpAPIView(APIView):
-    """API endpoint (POST /api/learners/<learner_uuid>/update-exp/) that increments a
+class SubmitExerciseView(APIView):
+    """API endpoint (POST /api/learners/<learner_uuid>/submit-exercise/) that increments a
     learner's XP and exercise count after completing a game session. Accepts a nonce
     to prevent duplicate submissions. Optionally records a full ExerciseSession record.
     """
@@ -56,7 +62,7 @@ class UpdateLearnerExpAPIView(APIView):
         learner = get_object_or_404(Learner, learner_uuid=learner_uuid)
         self.check_object_permissions(request, learner)
 
-        input_serializer = LearnerExpUpdateInputSerializer(data=request.data)
+        input_serializer = SubmitExerciseSerializer(data=request.data)
         if not input_serializer.is_valid():
             return Response(input_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -73,16 +79,34 @@ class UpdateLearnerExpAPIView(APIView):
         learner.save()
 
         if "exercise_id" in input_serializer.validated_data:
+            submitted_exercise_id = input_serializer.validated_data["exercise_id"]
             ExerciseSession.objects.create(
                 learner=learner,
-                exercise_id=input_serializer.validated_data["exercise_id"],
-                difficulty_selected=input_serializer.validated_data.get("difficulty_selected", ""),
+                exercise_id=submitted_exercise_id,
+                difficulty_selected=str(input_serializer.validated_data.get("difficulty_level", 0)),
+                difficulty_label=input_serializer.validated_data.get("difficulty_label", ""),
                 started_at=input_serializer.validated_data["started_at"],
                 completed_at=input_serializer.validated_data["completed_at"],
                 total_questions=input_serializer.validated_data["total_questions"],
                 incorrect_answers=input_serializer.validated_data["incorrect_answers"],
                 attempts_per_question=input_serializer.validated_data["attempts_per_question"],
+                learner_total_exp_after_session=learner.exp,
             )
+
+            recommendation_ids = learner.recommended_exercise_ids or []
+            if recommendation_ids:
+                current_index = resolve_recommendation_index(learner)
+                if current_index is not None:
+                    current_exercise_id = recommendation_ids[current_index]
+                    if submitted_exercise_id == current_exercise_id:
+                        learner.recommendation_index = (current_index + 1) % len(recommendation_ids)
+                        learner.recommendation_index_updated_at = timezone.now()
+                        learner.save(
+                            update_fields=[
+                                "recommendation_index",
+                                "recommendation_index_updated_at",
+                            ]
+                        )
 
         cache.set(cache_key, True, 600)
 
@@ -98,7 +122,28 @@ class UpdateLearnerExpAPIView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-def get_selected_learner(request):
+class UpdateLearnerAvatarView(APIView):
+    """API endpoint to update a learner's avatar character and background color."""
+
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticated, CanUpdateLearnerPermission]
+
+    def patch(self, request, learner_uuid):
+        learner = get_object_or_404(Learner, learner_uuid=learner_uuid)
+        self.check_object_permissions(request, learner)
+
+        serializer = LearnerAvatarSerializer(learner, data=request.data, partial=True)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request, learner_uuid):
+        return self.patch(request, learner_uuid)
+
+
+def get_current_session_learner_context(request):
     """JSON API: returns the UUID, CSRF token, and CS level of the learner currently
     stored in the session. Returns 401 if unauthenticated or 400 if no learner is selected.
     """

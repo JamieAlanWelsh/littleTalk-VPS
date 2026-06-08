@@ -1,0 +1,148 @@
+/* Exercise Start Screen Styles */
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background-color: var(--font-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1.25rem;
+    overflow-y: auto;
+    transform-origin: left center;
+    will-change: transform;
+    animation: overlayWipeInRight 420ms cubic-bezier(0.22, 0.9, 0.25, 1)
+        forwards;
+}
+
+.overlayClosing {
+    pointer-events: none;
+    animation: overlayWipeLeft 420ms cubic-bezier(0.35, 0, 0.9, 1) forwards;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    width: min(100%, 500px);
+    font-family: var(--font-roboto);
+    /* Settings should still scale, but much less aggressively than gameplay. */
+    --settings-zoom: calc((var(--exercise-zoom, 1) * 0.55) + 0.5);
+    zoom: var(--settings-zoom);
+    transform-origin: top center;
+    /* Keep shared Button sizing in sync with the lighter settings zoom. */
+    --button-scale: var(--settings-zoom);
+}
+
+.containerClosing {
+    animation: none;
+}
+
+/* Card Styling - shared by all 3 sections */
+.card {
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: var(--box-shadow);
+    padding: 1.5rem 2rem;
+}
+
+/* Zone 1: Title */
+.title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--font-color);
+    margin: 0 0 0.5rem 0;
+}
+
+.subtitle {
+    font-size: var(--text-medium);
+    color: var(--font-color);
+    margin: 0;
+    opacity: 0.85;
+    line-height: 1.4;
+}
+
+/* Zone 2: Options Section */
+.sectionTitle {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--font-color);
+    margin: 0 0 1rem 0;
+}
+
+.optionsList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.optionsList button {
+    box-shadow: none;
+}
+
+.optionsList button:active {
+    background-color: var(--yellow-button-hover);
+    transform: translateY(0);
+}
+
+/* Zone 3: Action Buttons */
+.buttonsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+}
+
+@keyframes overlayWipeLeft {
+    0% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(-110%);
+    }
+}
+
+@keyframes overlayWipeInRight {
+    0% {
+        opacity: 1;
+        transform: translateX(-110%);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .overlay {
+        padding: 1rem;
+    }
+
+    .container {
+        gap: 1rem;
+    }
+
+    .card {
+        padding: 1.25rem 1.5rem;
+    }
+
+    .title {
+        font-size: 1.25rem;
+    }
+
+    .sectionTitle {
+        font-size: 1rem;
+    }
+
+    .optionButton,
+    .confirmButton {
+        padding: 0.8rem 1rem;
+        font-size: var(--text-small);
+    }
+}

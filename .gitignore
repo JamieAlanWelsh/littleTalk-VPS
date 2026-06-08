@@ -1,4 +1,11 @@
+# Django
 littleTalk/settings.py
+*.sqlite3
+.env
+media/
+staticfiles_test/
+
+# Python
 littletalkvenv/
 staticfiles/
 staticfiles_test/
@@ -6,9 +13,46 @@ __pycache__/
 *.py[cod]
 *.pyc
 *.pyo
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Logs
 *.log
-db.sqlite3
-.env
-.vscode/
+
+# OS
 .DS_Store
 Thumbs.db
+
+# IDE
+.vscode/
+
+# Node / frontend dependencies and local caches
+node_modules/
+.npm/
+.pnpm-store/
+.vite/
+
+*.css.d.ts
+
+# Frontend build artifacts (bundles, maps, etc.)
+static/js/*.js
+static/js/*.js.map
+static/js/exercises/*.js
+static/js/exercises/*.js.map
+static/js/**/*.js
+static/js/**/*.js.map
+static/js/exercises/manifest.json
+static/js/exercises/css/
+
+# Django static files (regenerated)
+staticfiles/
+static/admin/
+
+# package-lock.json (if not using Node)
+package-lock.json
+
+# IDE/workspace
+.vscode/settings.json

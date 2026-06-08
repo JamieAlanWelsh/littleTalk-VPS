@@ -33,92 +33,65 @@
                 Our Exercises
             </h2>
             <p class="split-subtitle">
-                Activities developed by licensed Speech and Language Therapists—so you can trust they’re evidence-based, effective, and designed to support children's communication success in educational settings.
+                Activities developed by licensed Speech and Language Therapists, so you can trust they are evidence-based, effective and designed to support children’s communication in educational settings.
             </p>
         </div>
 
-        {% comment %} COLOURFUL SEMANTICS {% endcomment %}
-        {% with game=game_descriptions.colourful_semantics %}
-        <h3 class="split-heading">{{ game.title }} - {{ game.target }}</h3>
-        <p class="split-body">{{ game.description }}</p>
-        <p class="split-body"><strong>Develops ability to:</strong></p>
+        <section class="stage-tabs method-stage-tabs" aria-label="Exercise stages">
+            <button type="button" class="stage-tab stage-tab--active" data-method-stage-tab="all">All</button>
+            {% for stage in method_stages %}
+                <button type="button" class="stage-tab" data-method-stage-tab="{{ stage.number }}">{{ stage.label }}</button>
+            {% endfor %}
+        </section>
 
-        <ul class="split-list">
-            <li>{{ game.bullet1 }}</li>
-            <li>{{ game.bullet2 }}</li>
-            <li>{{ game.bullet3 }}</li>
-        </ul>
-        <div class="inline-full-image">
-            <img src="{% static 'images/landing/colourful_semantics_screenshot.png' %}" alt="Colourful Semantics">
-        </div>
-        {% endwith %}
+        {% for stage in method_stages %}
+            {% for game in stage.exercises %}
+                <article class="method-exercise" data-method-stage="{{ stage.number }}">
+                    <h3 class="split-heading">{{ game.title }} - {{ game.target }}</h3>
+                    <p class="split-body">{{ game.description }}</p>
+                    <p class="split-body"><strong>Develops ability to:</strong></p>
 
-        {% comment %} THINK AND FND {% endcomment %}
-        {% with game=game_descriptions.think_and_find %}
-        <h3 class="split-heading">{{ game.title }} - {{ game.target }}</h3>
-        <p class="split-body">{{ game.description }}</p>
-        <p class="split-body"><strong>Develops ability to:</strong></p>
-
-        <ul class="split-list">
-            <li>{{ game.bullet1 }}</li>
-            <li>{{ game.bullet2 }}</li>
-            <li>{{ game.bullet3 }}</li>
-        </ul>
-        <div class="inline-full-image">
-            <img src="{% static 'images/landing/think_and_find_screenshot.png' %}" alt="Think and Find">
-        </div>
-        {% endwith %}
-
-        {% comment %} CONCEPT QUEST {% endcomment %}
-        {% with game=game_descriptions.concept_quest %}
-        <h3 class="split-heading">{{ game.title }} - {{ game.target }}</h3>
-        <p class="split-body">{{ game.description }}</p>
-        <p class="split-body"><strong>Develops ability to:</strong></p>
-
-        <ul class="split-list">
-            <li>{{ game.bullet1 }}</li>
-            <li>{{ game.bullet2 }}</li>
-            <li>{{ game.bullet3 }}</li>
-        </ul>
-        <div class="inline-full-image">
-            <img src="{% static 'images/landing/concept_quest_screenshot.png' %}" alt="Concept Quest">
-        </div>
-        {% endwith %}
-
-        {% comment %} CATEGORISATION {% endcomment %}
-        {% with game=game_descriptions.categorisation %}
-        <h3 class="split-heading">{{ game.title }} - {{ game.target }}</h3>
-        <p class="split-body">{{ game.description }}</p>
-        <p class="split-body"><strong>Develops ability to:</strong></p>
-
-        <ul class="split-list">
-            <li>{{ game.bullet1 }}</li>
-            <li>{{ game.bullet2 }}</li>
-            <li>{{ game.bullet3 }}</li>
-        </ul>
-        <div class="inline-full-image">
-            <img src="{% static 'images/landing/categorisation_screenshot.png' %}" alt="Categorisation">
-        </div>
-        {% endwith %}
-
-        {% comment %} STORY TRAIN {% endcomment %}
-        {% with game=game_descriptions.story_train %}
-        <h3 class="split-heading">{{ game.title }} - {{ game.target }}</h3>
-        <p class="split-body">{{ game.description }}</p>
-        <p class="split-body"><strong>Develops ability to:</strong></p>
-
-        <ul class="split-list">
-            <li>{{ game.bullet1 }}</li>
-            <li>{{ game.bullet2 }}</li>
-            <li>{{ game.bullet3 }}</li>
-        </ul>
-        <div class="inline-full-image">
-            <img src="{% static 'images/landing/story_train_screenshot.png' %}" alt="Story Train">
-        </div>
-        {% endwith %}
+                    <ul class="split-list">
+                        <li>{{ game.bullet1 }}</li>
+                        <li>{{ game.bullet2 }}</li>
+                        <li>{{ game.bullet3 }}</li>
+                    </ul>
+                    <div class="inline-full-image">
+                        <img src="{% static game.tutorial_screenshot %}" alt="{{ game.title }} screenshot">
+                    </div>
+                </article>
+            {% endfor %}
+        {% endfor %}
     </div>
-    </p>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const stageTabs = Array.from(document.querySelectorAll('[data-method-stage-tab]'));
+        const exerciseCards = Array.from(document.querySelectorAll('[data-method-stage]'));
+
+        if (!stageTabs.length || !exerciseCards.length) {
+            return;
+        }
+
+        const activateStage = function (stageValue) {
+            stageTabs.forEach(function (tab) {
+                tab.classList.toggle('stage-tab--active', tab.dataset.methodStageTab === stageValue);
+            });
+
+            exerciseCards.forEach(function (card) {
+                const shouldShow = stageValue === 'all' || card.dataset.methodStage === stageValue;
+                card.hidden = !shouldShow;
+            });
+        };
+
+        stageTabs.forEach(function (tab) {
+            tab.addEventListener('click', function () {
+                activateStage(tab.dataset.methodStageTab);
+            });
+        });
+    });
+</script>
 {% comment %} final call to action footer {% endcomment %}
 <div class="footer-cta">
     <h1 class="footer-heading">Let’s Build Language Skills Together!</h1>

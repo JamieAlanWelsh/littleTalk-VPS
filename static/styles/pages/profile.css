@@ -127,7 +127,7 @@
     font-weight: 600;
     box-shadow: var(--box-shadow);
     letter-spacing: 0.5px;
-    padding: 25px;
+    padding: 14px 20px;
     text-align: left;
     display: block;
     cursor: pointer;
@@ -140,6 +140,87 @@
 .learner-button.selected {
     background-color: var(--font-color);
     color: white;
+}
+
+.learner-button__content {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.learner-button__name {
+    display: inline-block;
+    margin-right: 12px;
+}
+
+.learner-avatar-chip {
+    align-items: center;
+    border: none;
+    border-radius: 20px;
+    display: inline-flex;
+    height: 64px;
+    justify-content: center;
+    min-width: 64px;
+    overflow: hidden;
+    width: 64px;
+}
+
+.learner-avatar-chip__image {
+    height: 50px;
+    object-fit: contain;
+    width: 50px;
+}
+
+.learner-details-body {
+    align-items: center;
+    display: flex;
+    gap: 18px;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
+.learner-details-copy {
+    flex: 1;
+}
+
+.learner-details-copy p {
+    margin: 0 0 6px;
+}
+
+.learner-details-copy p:last-child {
+    margin-bottom: 0;
+}
+
+.learner-avatar-link {
+    border-radius: 16px;
+    display: inline-block;
+    margin-bottom: 8px;
+    outline: none;
+}
+
+.learner-avatar-link:focus-visible {
+    box-shadow: 0 0 0 3px rgba(54, 163, 226, 0.45);
+}
+
+.learner-avatar {
+    align-items: center;
+    border: 1px solid rgba(0, 0, 0, 0.18);
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.learner-avatar--details {
+    height: 92px;
+    width: 92px;
+}
+
+.learner-avatar__image {
+    height: 76px;
+    object-fit: contain;
+    width: 76px;
 }
 
 .add-learner-btn a {
@@ -208,6 +289,10 @@
         order: 2;
         width: 100%;
         max-height: none;
+    }
+
+    .learner-details-body {
+        align-items: flex-start;
     }
 }
 

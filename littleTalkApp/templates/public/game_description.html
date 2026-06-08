@@ -1,13 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
-
 {% block title %}Chatterdillo | {{ game.title }}{% endblock %}
 
 {% block content %}
 
 <h1>Exercise Guide & Tutorial</h1>
 
-<div class="container-box pt-70">
+<div class="container-box pt-70 container--wide">
 
     <!-- Back Arrow -->
     <a href="{% url 'practise' %}" class="back-arrow" aria-label="Go back">
@@ -36,11 +35,15 @@
 
     <div class="exercise-video-container">
         <div class="exercise-video-wrapper">
+            {% if game.youtube_video_id %}
             <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ game.youtube_video_id }}" 
                 title="Exercise Guide Video" frameborder="0" 
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                 referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
             </iframe>
+            {% elif game.tutorial_screenshot %}
+            <img src="{% static game.tutorial_screenshot %}" alt="{{ game.title }} tutorial screenshot" width="560" height="315">
+            {% endif %}
         </div>
     </div>
 
@@ -59,7 +62,7 @@
 
     <!-- Start button -->
     <div class="description-button-wrapper">
-        <a href="{% static 'exercises/'|add:game.static_name|add:'/index.html' %}" target="_blank" class="btn btn--green btn--large">
+        <a href="{{ launch_url }}" class="btn btn--green btn--large">
             START
         </a>
     </div>

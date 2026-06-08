@@ -1,0 +1,135 @@
+.board {
+    --icon-block-width: 15.5rem;
+    --icon-block-height: 20.5rem;
+    --icon-block-padding: 0px;
+    --icon-block-img-width: 15.5rem;
+    --icon-block-img-height: 20.5rem;
+    --icon-block-overflow: hidden;
+    --icon-block-img-object-fit: cover;
+    --droppable-zone-width: 15.5rem;
+    --droppable-zone-aspect-ratio: 28 / 37;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+}
+
+.boardFourSlots {
+    --icon-block-width: 13rem;
+    --icon-block-height: 17.5rem;
+    --icon-block-img-width: 13rem;
+    --icon-block-img-height: 17.5rem;
+    --droppable-zone-width: 13rem;
+    --droppable-zone-aspect-ratio: 3 / 4;
+}
+
+.slotsCard {
+    background: #ffffffde;
+    border-radius: 1.5rem;
+    border: 1px solid var(--border-grey);
+    padding: 1.25rem;
+}
+
+.slotsCard {
+    display: flex;
+    justify-content: center;
+}
+
+.slotsGrid {
+    width: 100%;
+    max-width: 57.5rem;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+}
+
+.slotsGridFour {
+    max-width: 58rem;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.1rem;
+}
+
+.slotGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.slotLabel {
+    margin: 0;
+    color: #2c233f;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.slotZone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width: 720px) {
+    .board {
+        --icon-block-width: 10.75rem;
+        --icon-block-height: 14.25rem;
+        --icon-block-padding: 0px;
+        --icon-block-img-width: 10.75rem;
+        --icon-block-img-height: 14.25rem;
+        --droppable-zone-width: 10.75rem;
+        --droppable-zone-aspect-ratio: 19 / 25;
+    }
+
+    .boardFourSlots {
+        --icon-block-width: 10rem;
+        --icon-block-height: 13.5rem;
+        --icon-block-img-width: 10rem;
+        --icon-block-img-height: 13.5rem;
+        --droppable-zone-width: 10rem;
+        --droppable-zone-aspect-ratio: 35 / 47;
+    }
+
+    .slotsGridFour {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        max-width: 23.5rem;
+    }
+
+    .slotsGrid {
+        gap: 0.75rem;
+    }
+
+    .slotLabel {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 540px) {
+    .slotsGrid {
+        grid-template-columns: 1fr;
+        max-width: 13.5rem;
+    }
+
+    .slotsGridFour {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        max-width: 21rem;
+    }
+
+    .boardFourSlots {
+        --icon-block-width: 8.25rem;
+        --icon-block-height: 11.25rem;
+        --icon-block-img-width: 8.25rem;
+        --icon-block-img-height: 11.25rem;
+        --droppable-zone-width: 8.25rem;
+    }
+
+    .slotZone {
+        min-height: auto;
+    }
+}
+
+@media (max-width: 420px) {
+    .slotsGridFour {
+        grid-template-columns: 1fr;
+        max-width: 10.5rem;
+    }
+}

@@ -1,17 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.models import Group
-from .models import (
-    ExerciseSession,
-    JoinRequest,
-    Learner,
-    LogEntry,
-    ParentProfile,
-    Profile,
-    School,
-    SchoolLicenseCode,
-    SchoolMembership,
-    Target,
-)
+from .models import Profile, School, ParentProfile, Learner, JoinRequest, SchoolMembership, ExerciseSession, LogEntry, Target, SchoolLicenseCode, SkolonSyncCursor, SkolonOrg, SkolonUser
 
 # unregister groups
 admin.site.unregister(Group)
@@ -206,6 +195,7 @@ class ExerciseSessionAdmin(admin.ModelAdmin):
         "school_name",
         "exercise_id",
         "difficulty_selected",
+        "learner_total_exp_after_session",
         "time_elapsed",
         "total_questions",
         "incorrect_answers",
@@ -312,3 +302,31 @@ class TargetAdmin(admin.ModelAdmin):
             "classes": ("collapse",)
         }),
     )
+
+
+# ---------------------------------------------------------------------------
+# Skolon integration admin
+# ---------------------------------------------------------------------------
+
+@admin.register(SkolonSyncCursor)
+class SkolonSyncCursorAdmin(admin.ModelAdmin):
+    list_display = ("entity_type", "version_tag", "last_synced_at")
+    readonly_fields = ("last_synced_at",)
+
+
+@admin.register(SkolonOrg)
+class SkolonOrgAdmin(admin.ModelAdmin):
+    list_display = ("skolon_id", "name", "school", "is_deleted", "synced_at")
+    list_filter = ("is_deleted",)
+    search_fields = ("skolon_id", "name", "school__name")
+    readonly_fields = ("synced_at",)
+    autocomplete_fields = ("school",)
+
+
+@admin.register(SkolonUser)
+class SkolonUserAdmin(admin.ModelAdmin):
+    list_display = ("skolon_id", "external_id", "user", "skolon_org", "role", "is_deleted", "synced_at")
+    list_filter = ("role", "is_deleted")
+    search_fields = ("skolon_id", "external_id", "user__username", "user__email_encrypted")
+    readonly_fields = ("synced_at",)
+    autocomplete_fields = ("user",)

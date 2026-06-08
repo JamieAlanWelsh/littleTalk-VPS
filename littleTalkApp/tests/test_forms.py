@@ -1,22 +1,24 @@
 from datetime import timedelta
 
-from django.test import TestCase
+from django.test import RequestFactory, TestCase
 from django.utils import timezone
 
 from accounts.models import User
 from littleTalkApp.forms import (
     AcceptInviteForm,
+    LearnerForm,
     ParentAccessCodeForm,
     ParentSignupForm,
     SchoolSignupForm,
     UserRegistrationForm,
 )
-from littleTalkApp.models import Learner, ParentAccessToken, School, SchoolLicenseCode
+from littleTalkApp.models import Learner, ParentAccessToken, School, SchoolLicenseCode, Cohort, Learner, ParentAccessToken, Profile, Role, School
 from littleTalkApp.utilities import hash_email
 
 
 class FormValidationTests(TestCase):
     def setUp(self):
+        self.factory = RequestFactory()
         self.existing_user = User.objects.create_user(
             username="existing-user",
             password="password123",
@@ -175,3 +177,24 @@ class FormValidationTests(TestCase):
 
         self.assertFalse(form.is_valid())
         self.assertIn("access_code", form.errors)
+
+    def test_learner_form_scopes_cohorts_to_session_selected_school(self):
+        staff_user = User.objects.create_user(username="staff-cohort", password="password123")
+        profile = Profile.objects.create(user=staff_user, role=Role.STAFF, first_name="Staff")
+        happy_school = School.objects.create(name="Happy School")
+        sad_school = School.objects.create(name="Sad School")
+        profile.schools.add(happy_school, sad_school)
+
+        happy_cohort = Cohort.objects.create(school=happy_school, name="happy")
+        Cohort.objects.create(school=sad_school, name="sad")
+
+        request = self.factory.get("/")
+        request.session = {"selected_school_id": happy_school.id}
+
+        form = LearnerForm(user=staff_user, request=request)
+
+        self.assertQuerySetEqual(
+            form.fields["cohort"].queryset.order_by("id"),
+            Cohort.objects.filter(id=happy_cohort.id),
+            transform=lambda cohort: cohort,
+        )

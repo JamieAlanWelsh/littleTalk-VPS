@@ -1,0 +1,110 @@
+{
+  "instruction": "Drag the character into the correct position.",
+  "modellingTip": "Model the full sentence: Put Arlo on the box.",
+  "rounds": 5,
+  "characters": [
+    {
+      "id": "arlo",
+      "name": "Arlo Armadillo",
+      "imageUrl": "/static/exercise_assets/characters/arlo_armadillo.png",
+      "altText": "Arlo Armadillo character"
+    },
+    {
+      "id": "maya",
+      "name": "Humble Hedgehog",
+      "imageUrl": "/static/exercise_assets/characters/humble_hedgehog.png",
+      "altText": "Humble Hedgehog character"
+    },
+    {
+      "id": "pip",
+      "name": "Muddles Mole",
+      "imageUrl": "/static/exercise_assets/characters/muddles_mole.png",
+      "altText": "Muddles Mole character"
+    },
+    {
+      "id": "zed",
+      "name": "Peppy Pigeon",
+      "imageUrl": "/static/exercise_assets/characters/peppy_pigeon.png",
+      "altText": "Peppy Pigeon character"
+    },
+    {
+      "id": "nala",
+      "name": "Resilient Red Panda",
+      "imageUrl": "/static/exercise_assets/characters/resilient_red_panda.png",
+      "altText": "Resilient Red Panda character"
+    }
+  ],
+  "objects": [
+    {
+      "id": "bookshelf",
+      "name": "bookshelf",
+      "imageUrl": "/static/exercise_assets/spot_on/objects/bookshelf.png",
+      "altText": "A bookshelf"
+    },
+    {
+      "id": "box",
+      "name": "box",
+      "imageUrl": "/static/exercise_assets/spot_on/objects/box.png",
+      "altText": "A box"
+    },
+    {
+      "id": "chair",
+      "name": "chair",
+      "imageUrl": "/static/exercise_assets/spot_on/objects/chair.png",
+      "altText": "A chair"
+    },
+    {
+      "id": "table",
+      "name": "table",
+      "imageUrl": "/static/exercise_assets/spot_on/objects/table.png",
+      "altText": "A table"
+    },
+    {
+      "id": "armchair",
+      "name": "armchair",
+      "imageUrl": "/static/exercise_assets/spot_on/objects/armchair.png",
+      "altText": "An armchair"
+    },
+    {
+      "id": "bed",
+      "name": "bed",
+      "imageUrl": "/static/exercise_assets/spot_on/objects/bed.png",
+      "altText": "A bed"
+    },
+    {
+      "id": "present",
+      "name": "present",
+      "imageUrl": "/static/exercise_assets/spot_on/objects/present.png",
+      "altText": "A present"
+    },
+    {
+      "id": "sofa",
+      "name": "sofa",
+      "imageUrl": "/static/exercise_assets/spot_on/objects/sofa.png",
+      "altText": "A sofa"
+    },
+    {
+      "id": "toybox",
+      "name": "toybox",
+      "imageUrl": "/static/exercise_assets/spot_on/objects/toybox.png",
+      "altText": "A toybox"
+    },
+    {
+      "id": "fridge",
+      "name": "fridge",
+      "imageUrl": "/static/exercise_assets/spot_on/objects/fridge.png",
+      "altText": "A fridge"
+    }
+  ],
+  "objectsByPreposition": {
+    "in": ["box", "bookshelf", "present", "toybox", "fridge"],
+    "on": ["box", "bookshelf", "chair", "table", "armchair", "bed", "sofa", "toybox", "present"],
+    "under": ["chair", "table", "armchair", "bed", "sofa"],
+    "next to": ["box", "bookshelf", "table", "present", "fridge"],
+    "above": ["box", "bookshelf", "chair", "table", "armchair", "bed", "sofa", "toybox", "present", "fridge"],
+    "below": ["box", "bookshelf", "chair", "table", "armchair", "bed", "sofa", "toybox", "present", "fridge"],
+    "between": ["box", "bookshelf", "table", "present", "fridge"],
+    "behind": ["box", "bookshelf", "present", "toybox", "fridge"],
+    "in front of": ["box", "bookshelf", "present", "toybox", "fridge"]
+  }
+}

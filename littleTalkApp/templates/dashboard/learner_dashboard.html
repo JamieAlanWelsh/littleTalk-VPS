@@ -15,46 +15,93 @@
 
 
 {% if learners %}
-    <div class="container-box container--dash">
-        <!-- Dashboard Header -->
-        <div class="dashboard-header">
-            {% if request.user.profile.role != 'parent' and cohorts %}
-            <div class="header-learner-section">
-                <label class="header-label" for="cohort-select">Cohort:</label>
-                <select id="cohort-select" class="select" style="margin-bottom: 0;">
-                    <option value="">All Cohorts</option>
-                    {% for cohort in cohorts %}
-                        <option value="{{ cohort.id }}" {% if cohort.id == selected_cohort %}selected{% endif %}>
-                            {{ cohort.name }}
-                        </option>
-                    {% endfor %}
-                </select>
+    <div class="container-box container--dash container--dash-no-bg">
+        <div class="dashboard-section dashboard-top-section no-print">
+            <div class="dashboard-top-layout">
+                <div class="dashboard-top-left">
+                    <div class="dashboard-top-row dashboard-top-row--selectors">
+                        {% if request.user.profile.role != 'parent' and cohorts %}
+                        <div class="header-learner-section">
+                            <label class="header-label" for="cohort-select">Cohort:</label>
+                            <select id="cohort-select" class="select" style="margin-bottom: 0;">
+                                <option value="">All Cohorts</option>
+                                {% for cohort in cohorts %}
+                                    <option value="{{ cohort.id }}" {% if cohort.id == selected_cohort %}selected{% endif %}>
+                                        {{ cohort.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        {% endif %}
+                        <div class="header-learner-section">
+                            <label class="header-label" for="learner-select">Learner:</label>
+                            <select id="learner-select" class="select" style="margin-bottom: 0;">
+                                {% for learner in learners %}
+                                    <option value="{{ learner.learner_uuid }}" {% if selected_learner and learner.id == selected_learner.id %}selected{% endif %}>
+                                        {{ learner.name }} ({{ learner.session_count }})
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-top-row dashboard-top-row--filters">
+                        <div class="section-filter">
+                            <button class="filter-btn active" data-section-filter="all">All</button>
+                            <button class="filter-btn" data-section-filter="recents">Recents</button>
+                            <button class="filter-btn" data-section-filter="chart">Exercises</button>
+                            <button class="filter-btn" data-section-filter="targets">Targets</button>
+                            <button class="filter-btn" data-section-filter="screener">Screener</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-top-right">
+                    <button id="print-dashboard" class="btn btn--white btn--small btn--border no-print" title="Print this dashboard">🖨 Print Selection</button>
+                </div>
             </div>
+        </div>
+
+        <div class="dashboard-section" data-section="recents">
+            <div class="section-header">
+                <h3>Recent Sessions 👀</h3>
+            </div>
+
+            {% if recent_sessions %}
+            <div class="recent-exercises-table-wrap">
+                <table class="recent-exercises-table">
+                    <thead>
+                        <tr>
+                            <th>Exercise Name</th>
+                            <th>Difficulty Selected</th>
+                            <th>Accuracy</th>
+                            <th>Time Taken</th>
+                            <th>Time of Session</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for session in recent_sessions %}
+                        <tr>
+                            <td>{{ session.exercise_name }}</td>
+                            <td>{{ session.difficulty_selected }}</td>
+                            <td>{{ session.accuracy }}</td>
+                            <td>{{ session.time_elapsed }}</td>
+                            <td>{{ session.session_time|date:"j F, g:i" }}{{ session.session_time|date:"A"|lower }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="empty-state">No recent exercise sessions yet.</p>
             {% endif %}
-            <div class="header-learner-section">
-                <label class="header-label" for="learner-select">Learner:</label>
-                <select id="learner-select" class="select" style="margin-bottom: 0;">
-                    {% for learner in learners %}
-                        <option value="{{ learner.learner_uuid }}" {% if selected_learner and learner.id == selected_learner.id %}selected{% endif %}>
-                            {{ learner.name }} ({{ learner.session_count }})
-                        </option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="section-filter">
-                <button class="filter-btn active" data-section-filter="all">All</button>
-                <button class="filter-btn" data-section-filter="chart">Exercises</button>
-                <button class="filter-btn" data-section-filter="targets">Targets</button>
-                <button class="filter-btn" data-section-filter="screener">Screener</button>
-            </div>
-            <button id="print-dashboard" class="btn btn--white btn--small btn--border no-print" title="Print this dashboard">🖨 Print</button>
         </div>
 
         <!-- Chart Section -->
         <div class="dashboard-section" data-section="chart">
             <div class="section-header">
                 <div class="section-header-title">
-                    <h3>Exercise Sessions Chart</h3>
+                    <h3>Exercise Sessions Chart 📈</h3>
                 </div>
                 <div class="section-header-actions">
                     <label class="label" for="date-range">Date Range:</label>
@@ -66,32 +113,42 @@
                     </select>
                 </div>
             </div>
-            <p class="comparison-subtitle">
-                <strong>Note:</strong> Fluctuations in accuracy are to be expected as difficulty increases.
-            </p>
             <div class="dashboard-filters">
                 <div class="filter-row">
-                    <div class="chart-filter-buttons">
-                        <button class="filter-btn active" data-exercise="all">All ({{ total_sessions }})</button>
-                        {% for exercise in exercise_choices %}
-                            <button class="filter-btn" data-exercise="{{ exercise.id }}">{{ exercise.name }} ({{ exercise.count }})</button>
+                    <div class="chart-filter-buttons chart-filter-buttons--exercise-groups">
+                        {% for group in exercise_groups %}
+                            <div class="exercise-stage-group">
+                                <p class="exercise-stage-label">{{ group.label }}</p>
+                                <div class="exercise-stage-buttons">
+                                    {% for exercise in group.exercises %}
+                                        <button class="filter-btn {% if forloop.first and forloop.parentloop.first %}active{% endif %}" data-exercise="{{ exercise.id }}">{{ exercise.name }} ({{ exercise.count }})</button>
+                                    {% endfor %}
+                                </div>
+                            </div>
                         {% endfor %}
                     </div>
                 </div>
 
                 <div class="filter-row">
-                    <div class="chart-filter-buttons">
-                        <button class="filter-btn active" data-metric="exercises">Sessions Completed</button>
-                        <button class="filter-btn" data-metric="accuracy">Accuracy (%)</button>
-                        <button class="filter-btn" data-metric="difficulty">Difficulty Level</button>
-                    </div>
-                </div>
-
-                <div class="filter-row">
-                    <div class="chart-filter-buttons">
-                        <button class="filter-btn" data-smart="layer-metrics" title="Enable selecting multiple metrics to overlay on the same chart">Layer Metrics</button>
-                        <button class="filter-btn" data-smart="plot-best-fit" title="Visualise overall direction and trend">Line of Best Fit</button>
-                        <button class="filter-btn" data-smart="smooth-data" title="Reduce noise and outliers by applying a moving average algorithm">Data Smoothing</button>
+                    <div class="chart-filter-group-box">
+                        <p class="chart-filter-group-label">Statistics</p>
+                        <div class="chart-filter-buttons">
+                            <button class="filter-btn active" data-metric="difficulty">Difficulty Selected</button>
+                            <button class="filter-btn" data-metric="accuracy">Accuracy (%)</button>
+                            <button class="filter-btn" data-metric="time_elapsed">Time Elapsed</button>
+                        </div>
+                        <label class="chart-filter-checkbox" for="layer-metrics-toggle">
+                            <input id="layer-metrics-toggle" type="checkbox">
+                            Select Multiple
+                        </label>
+                        <label class="chart-filter-checkbox" for="plot-best-fit-toggle">
+                            <input id="plot-best-fit-toggle" type="checkbox">
+                            Line of Best Fit
+                        </label>
+                        <label class="chart-filter-checkbox" for="smooth-data-toggle">
+                            <input id="smooth-data-toggle" type="checkbox">
+                            Data Smoothing
+                        </label>
                     </div>
                 </div>
             </div>
@@ -108,11 +165,12 @@
             </div>
         </div>
 
+
         {% if selected_learner %}
         <!-- Custom Targets Section -->
         <div class="dashboard-section" data-section="targets">
             <div class="section-header">
-                <h3>Custom Targets</h3>
+                <h3>Custom Targets 🎯</h3>
                 {% if targets_data and targets_data.achieved_count > 0 %}
                 <p class="section-note">
                     {{ selected_learner.name }} has achieved <strong>{{ targets_data.percentage }}%</strong> of their targets 
@@ -152,7 +210,7 @@
         {% if screener_data and screener_data.has_screener_data %}
         <div class="dashboard-section" data-section="screener">
             <div class="section-header">
-                <h3>Screener Progress Analysis</h3>
+                <h3>Screener Progress Analysis 📋</h3>
                 {% if screener_data.comparison and screener_data.first_screener_date and screener_data.skills_gained_count > 0 %}
                 <p class="section-note">
                     {{ selected_learner.name }} has gained <strong>{{ screener_data.skills_gained_count }} skill{{ screener_data.skills_gained_count|pluralize }}</strong> 

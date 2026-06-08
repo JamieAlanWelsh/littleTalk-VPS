@@ -6,70 +6,104 @@
 {% block content %}
 <!-- Learner not Selected -->
 {% if learner_selected != True %}
-    {% include "includes/learner_selection_required.html" with heading="Welcome to the practise section!" %}
+    <h1>Welcome to the practise section!</h1>
+    <div class="container-box container--short">
+        <p>Here, you will be able to access exercises and information to use on your learning journey.</p>
+        <p>To get started, add or select a learner in the profile section and come back!</p>
+        <a href="{% url 'profile' %}" class="btn btn--white btn--full">Go to Learner Selection</a>
+    </div>
 <!-- Learner Selected -->
 {% else %}
     <div class="learner-context-bar">
-        <div class="learner-context-avatar" aria-hidden="true">
-            <img src="{% static 'images/landing/arlo_butterfly.png' %}" alt="">
+        <div class="learner-context-avatar" style="background-color: {{ selected_learner.avatar_display_color }};" aria-hidden="true">
+            <img src="{{ selected_learner.avatar_image_url }}" alt="">
         </div>
         <p class="learner-context-text">practising with: <strong>{{ selected_learner.name }}</strong></p>
-        <p class="learner-context-stage">Stage {{ recommended_stage_number }}</p>
+        {% if recommended_stage_label %}
+            <p class="learner-context-stage">{{ recommended_stage_label }}</p>
+        {% endif %}
         <a href="{% url 'profile' %}" class="learner-context-change">Change Learner</a>
     </div>
 
-    {% if recommendation %}
+    {% if recommended_exercise_card %}
         <section class="recommendation-box">
             <div class="recommendation-header-row">
                 <p class="recommendation-header-label">SUGGESTED FOR TODAY</p>
-                <a href="#" class="recommendation-text-action">Why this ?</a>
+                {% if recommendation_explanation %}
+                    <button
+                        type="button"
+                        class="recommendation-text-action recommendation-text-action--button"
+                        data-why-this-toggle
+                        aria-expanded="false"
+                    >
+                        Why this?
+                    </button>
+                {% endif %}
             </div>
-            {% if recommended_exercise_card %}
-                <div class="exercise-widget exercise-widget--recommended recommendation-card">
-                    <div class="exercise-image">
-                        <img src="{% static recommended_exercise_card.icon %}" alt="{{ recommended_exercise_card.title }} icon">
+            <div class="exercise-widget exercise-widget--recommended recommendation-card">
+                <div class="exercise-image">
+                    <img src="{% static recommended_exercise_card.icon %}" alt="{{ recommended_exercise_card.title }} icon">
+                </div>
+                <div class="exercise-details">
+                    <div class="exercise-title">
+                        <h3>{{ recommended_exercise_card.title }} - {{ recommended_exercise_card.target }}</h3>
                     </div>
-                    <div class="exercise-details">
-                        <div class="exercise-title">
-                            <h3>{{ recommended_exercise_card.title }} - {{ recommended_exercise_card.target }}</h3>
+                    <p><strong>Develops ability to:</strong></p>
+                    <div class="skills-list">
+                        <ul>
+                            <li>{{ recommended_exercise_card.bullet1 }}</li>
+                            <li>{{ recommended_exercise_card.bullet2 }}</li>
+                            <li>{{ recommended_exercise_card.bullet3 }}</li>
+                        </ul>
+                    </div>
+                    <div class="exercise-buttons">
+                        <a href="{{ recommended_exercise_card.start_url }}" class="btn btn--green btn--small btn--short">START</a>
+                        <a href="{% url 'game_description' recommended_exercise_card.key %}" class="btn btn--white btn--small btn--short">Tutorial</a>
+                    </div>
+                </div>
+            </div>
+            {% if recommendation_explanation %}
+                <div class="recommendation-popup" data-why-this-popup hidden>
+                    <div class="recommendation-popup__card" role="dialog" aria-modal="true" aria-labelledby="why-this-title">
+                        <div class="recommendation-popup__header">
+                            <h3 id="why-this-title">Why this exercise?</h3>
+                            <button type="button" class="recommendation-popup__close" data-why-this-close aria-label="Close explanation">×</button>
                         </div>
-                        <p><strong>Develops ability to:</strong></p>
-                        <div class="skills-list">
-                            <ul>
-                                <li>{{ recommended_exercise_card.bullet1 }}</li>
-                                <li>{{ recommended_exercise_card.bullet2 }}</li>
-                                <li>{{ recommended_exercise_card.bullet3 }}</li>
-                            </ul>
-                        </div>
-                        <div class="exercise-buttons">
-                            <a href="{% static recommended_exercise_card.start_path %}" class="btn btn--green btn--small btn--short">START</a>
-                            <a href="{% url 'game_description' recommended_exercise_card.key %}" class="btn btn--white btn--small btn--short">Tutorial</a>
-                        </div>
+                        <p>{{ recommendation_explanation.summary }}</p>
+                        {% if recommendation_explanation.skills %}
+                            <div class="recommendation-popup__skills">
+                                <strong>Skills identified from the screener:</strong>
+                                <ul>
+                                    {% for skill in recommendation_explanation.skills %}
+                                        <li>{{ skill }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+                        {% if recommendation_explanation.stage_label %}
+                            <p class="recommendation-popup__note">The exercise is {{ recommendation_explanation.stage_label }} - estimated to be within the child's likely working range.</p>
+                        {% endif %}
                     </div>
                 </div>
             {% endif %}
-            <div class="recommendation-footer-actions">
-                <a href="#" class="recommendation-text-action">Too hard?</a>
-                <a href="#" class="recommendation-text-action">Too easy?</a>
-            </div>
         </section>
     {% else %}
         <section class="recommendation-box">
             <div class="recommendation-header-row">
                 <p class="recommendation-header-label">SUGGESTED FOR TODAY</p>
             </div>
-            <div class="recommendation-fallback-card">
+            <article class="exercise-widget exercise-widget--recommended recommendation-card recommendation-fallback-card">
                 <div class="recommendation-fallback-image">
-                    <img src="{% static 'images/landing/arlo_teacher.png' %}" alt="Arlo mascot">
+                    <img src="{% static 'images/landing/arlo_butterfly.png' %}" alt="Arlo mascot">
                 </div>
                 <div class="recommendation-fallback-content">
-                    <h3>No recommendation yet</h3>
-                    <p>Complete our 10-minute screener to get personalised exercise suggestions tailored to <strong>{{ selected_learner.name }}</strong>'s current skills.</p>
+                    <h3>Need a hand picking an exercise?</h3>
+                    <p>Complete our 10-minute screener to get personalised suggestions based on <strong>{{ selected_learner.name }}</strong>'s current skills.</p>
                     <div class="exercise-buttons">
-                        <a href="{% url 'start_assessment' %}" class="btn btn--yellow btn--small btn--short">Start Screener</a>
+                        <a href="{% url 'start_assessment_v2' %}" class="btn btn--green btn--small btn--short">Start Screener</a>
                     </div>
                 </div>
-            </div>
+            </article>
         </section>
     {% endif %}
 
@@ -77,10 +111,10 @@
         {% for stage in stage_library %}
             <button
                 type="button"
-                class="stage-tab {% if stage.number == active_stage_number %}stage-tab--active{% endif %} {% if stage.number == recommended_stage_number %}stage-tab--recommended{% endif %}"
+                class="stage-tab {% if stage.number == active_stage_number %}stage-tab--active{% endif %} {% if stage.number in recommended_stage_numbers %}stage-tab--recommended{% endif %}"
                 data-stage-tab="{{ stage.number }}"
             >
-                Stage {{ stage.number }}
+                {% if stage.number == 'recommended' %}Suggested{% else %}{{ stage.label }}{% endif %}
             </button>
         {% endfor %}
     </section>
@@ -92,9 +126,11 @@
                 data-stage-content="{{ stage.number }}"
             >
                 {% for card in stage.exercise_cards %}
-                    <article class="exercise-widget {% if card.key == recommended_exercise_key %}exercise-widget--glow{% endif %}">
-                        {% if card.key == recommended_exercise_key %}
-                            <span class="good-match-badge">GOOD MATCH</span>
+                    <article class="exercise-widget {% if card.key in recommended_exercise_keys %}exercise-widget--glow{% elif card.key in secondary_exercise_keys %}exercise-widget--glow-soft{% endif %}">
+                        {% if card.key in recommended_exercise_keys %}
+                            <span class="match-badge strong-match-badge">STRONG MATCH</span>
+                        {% elif card.key in secondary_exercise_keys %}
+                            <span class="match-badge good-match-badge">GOOD MATCH</span>
                         {% endif %}
 
                         <div class="exercise-image">
@@ -113,7 +149,7 @@
                                 </ul>
                             </div>
                             <div class="exercise-buttons">
-                                <a href="{% static card.start_path %}" class="btn btn--green btn--small btn--short">START</a>
+                                <a href="{{ card.start_url }}" class="btn btn--green btn--small btn--short">START</a>
                                 <a href="{% url 'game_description' card.key %}" class="btn btn--white btn--small btn--short">Tutorial</a>
                             </div>
                         </div>

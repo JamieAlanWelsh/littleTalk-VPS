@@ -1,0 +1,4 @@
+export const TASK_MASTER_GRID_COLUMNS = 7;
+export const TASK_MASTER_GRID_ROWS = 5;
+export const TASK_MASTER_QUESTIONS_PER_SCENE = 5;
+export const TASK_MASTER_MAX_OBJECTS_PER_SCENE = 5;

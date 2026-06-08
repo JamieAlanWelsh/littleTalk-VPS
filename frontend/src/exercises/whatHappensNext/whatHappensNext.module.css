@@ -1,0 +1,62 @@
+.roundStage {
+    display: grid;
+    gap: 1.25rem;
+    justify-items: center;
+    width: min(100%, 760px);
+    margin: 0 auto;
+}
+
+.sceneFrame {
+    width: min(100%, 39rem);
+    background: #fdfdfd;
+    border: 1px solid var(--border-grey);
+    border-radius: 1.4rem;
+    padding: 1rem;
+    box-shadow: var(--box-shadow);
+    perspective: 1400px;
+    transition:
+        transform 180ms ease,
+        box-shadow 180ms ease;
+}
+
+.sceneFrameRevealed {
+    box-shadow: var(--box-shadow);
+    transform: translateY(-2px);
+}
+
+.sceneImage {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 1rem;
+}
+
+.sceneImageFlip {
+    backface-visibility: hidden;
+    transform-origin: center;
+    animation: cardFlipReveal 800ms cubic-bezier(0.22, 0.85, 0.25, 1) forwards;
+}
+
+@keyframes cardFlipReveal {
+    0% {
+        opacity: 0.7;
+        transform: rotateY(-88deg);
+    }
+    100% {
+        opacity: 1;
+        transform: rotateY(0deg);
+    }
+}
+
+@media (max-width: 640px) {
+    .roundStage {
+        gap: 1rem;
+    }
+
+    .sceneFrame {
+        border-radius: 1rem;
+        padding: 0.75rem;
+    }
+}
