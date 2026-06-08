@@ -92,18 +92,18 @@
             <div class="recommendation-header-row">
                 <p class="recommendation-header-label">SUGGESTED FOR TODAY</p>
             </div>
-            <div class="recommendation-fallback-card">
+            <article class="exercise-widget exercise-widget--recommended recommendation-card recommendation-fallback-card">
                 <div class="recommendation-fallback-image">
-                    <img src="{% static 'images/landing/arlo_teacher.png' %}" alt="Arlo mascot">
+                    <img src="{% static 'images/landing/arlo_butterfly.png' %}" alt="Arlo mascot">
                 </div>
                 <div class="recommendation-fallback-content">
-                    <h3>No recommendation yet</h3>
-                    <p>Complete our 10-minute screener to get personalised exercise suggestions tailored to <strong>{{ selected_learner.name }}</strong>'s current skills.</p>
+                    <h3>Need a hand picking an exercise?</h3>
+                    <p>Complete our 10-minute screener to get personalised suggestions based on <strong>{{ selected_learner.name }}</strong>'s current skills.</p>
                     <div class="exercise-buttons">
-                        <a href="{% url 'start_assessment_v2' %}" class="btn btn--yellow btn--small btn--short">Start Screener</a>
+                        <a href="{% url 'start_assessment_v2' %}" class="btn btn--green btn--small btn--short">Start Screener</a>
                     </div>
                 </div>
-            </div>
+            </article>
         </section>
     {% endif %}
 
