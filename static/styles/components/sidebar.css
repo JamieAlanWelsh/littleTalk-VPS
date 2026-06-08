@@ -3,10 +3,11 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 220px;
+    width: var(--sidebar-width);
     height: 100vh;
     /* padding: 30px 10px 10px; */
     padding: 20px;
+    box-sizing: border-box;
     background-color: var(--sidebar-color);
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
     display: flex;
@@ -127,6 +128,8 @@
 
     .layout.with-sidebar .main-content {
         margin-left: 0;
+        width: 100%;
+        flex: 1 1 auto;
         margin-bottom: 120px;
     }
 

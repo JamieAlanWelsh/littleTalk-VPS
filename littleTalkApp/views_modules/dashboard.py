@@ -153,9 +153,6 @@ def learner_dashboard(request):
             except Learner.DoesNotExist:
                 pass
 
-    if not selected_learner and accessible_learners.exists():
-        selected_learner = accessible_learners.first()
-
     exercise_counts = {}
     if selected_learner:
         exercise_count_qs = ExerciseSession.objects.filter(learner=selected_learner).values(

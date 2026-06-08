@@ -1,15 +1,294 @@
 from datetime import timedelta
 
+from django.core import mail
 from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
 
-from littleTalkApp.models import JoinRequest, Profile, Role, School, SchoolMembership, StaffInvite
+from littleTalkApp.models import (
+    JoinRequest,
+    Profile,
+    Role,
+    School,
+    SchoolLicenseCode,
+    SchoolMembership,
+    StaffInvite,
+)
 from littleTalkApp.tests.base import BaseFlowTestMixin
 from littleTalkApp.utilities import hash_email
 
 
 class SchoolTypicalFlowTests(BaseFlowTestMixin, TestCase):
+    def test_admin_can_update_school_name(self):
+        admin_user, _, school = self.create_staff_user_with_school(
+            username="admin_rename",
+            role=Role.ADMIN,
+        )
+
+        self.client.force_login(admin_user)
+        self.set_selected_school(school.id)
+
+        response = self.client.post(
+            reverse("update_school_name"),
+            {"school_name": "Renamed School"},
+            follow=True,
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.request["PATH_INFO"], reverse("school"))
+        school.refresh_from_db()
+        self.assertEqual(school.name, "Renamed School")
+        self.assertContains(response, "School name updated.")
+
+    def test_team_manager_sees_disabled_update_name_and_cannot_post_update(self):
+        manager_user, manager_profile, school = self.create_staff_user_with_school(
+            username="manager_rename",
+            role=Role.TEAM_MANAGER,
+        )
+        SchoolMembership.objects.update_or_create(
+            profile=manager_profile,
+            school=school,
+            defaults={"role": Role.TEAM_MANAGER, "is_active": True},
+        )
+
+        self.client.force_login(manager_user)
+        self.set_selected_school(school.id)
+
+        dashboard_response = self.client.get(reverse("school"))
+        self.assertContains(dashboard_response, "Update Name")
+        self.assertContains(dashboard_response, "school-mgmt-tool-link--disabled")
+
+        post_response = self.client.post(
+            reverse("update_school_name"),
+            {"school_name": "Manager Renamed School"},
+            follow=True,
+        )
+
+        self.assertEqual(post_response.status_code, 200)
+        self.assertEqual(post_response.request["PATH_INFO"], reverse("school"))
+        school.refresh_from_db()
+        self.assertNotEqual(school.name, "Manager Renamed School")
+        self.assertContains(post_response, "Only admins can update the school name.")
+
+    def test_admin_with_multiple_schools_can_switch_school_from_school_dashboard(self):
+        staff_user, staff_profile, first_school = self.create_staff_user_with_school(
+            username="admin_multi_switch",
+            role=Role.ADMIN,
+        )
+        second_school = School.objects.create(name="Staff Multi School 2", is_licensed=True)
+        staff_profile.schools.add(second_school)
+        SchoolMembership.objects.create(
+            profile=staff_profile,
+            school=second_school,
+            role=Role.ADMIN,
+            is_active=True,
+        )
+
+        self.client.force_login(staff_user)
+        self.set_selected_school(first_school.id)
+
+        school_response = self.client.get(reverse("school"))
+        self.assertContains(school_response, 'id="school-dashboard-select"')
+
+        switch_response = self.client.post(
+            reverse("select_school"),
+            {"school_id": second_school.id, "next": reverse("school")},
+            follow=True,
+        )
+
+        self.assertEqual(switch_response.status_code, 200)
+        self.assertEqual(self.client.session.get("selected_school_id"), second_school.id)
+
+    def test_staff_is_redirected_from_school_dashboard(self):
+        staff_user, _, school = self.create_staff_user_with_school(
+            username="staff_restricted",
+            role=Role.STAFF,
+        )
+
+        self.client.force_login(staff_user)
+        self.set_selected_school(school.id)
+
+        response = self.client.get(reverse("school"), follow=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.request["PATH_INFO"], reverse("profile"))
+        self.assertContains(
+            response,
+            "School management is available to admins and team managers only.",
+        )
+
+    def test_staff_post_cannot_update_roles_on_school_dashboard(self):
+        _, _, school = self.create_staff_user_with_school(
+            username="admin_owner_restrict",
+            role=Role.ADMIN,
+        )
+        staff_user, staff_profile, _ = self.create_staff_user_with_school(
+            username="staff_actor",
+            role=Role.STAFF,
+        )
+        target_user, target_profile, _ = self.create_staff_user_with_school(
+            username="staff_target",
+            role=Role.STAFF,
+        )
+
+        staff_profile.schools.add(school)
+        target_profile.schools.add(school)
+        SchoolMembership.objects.update_or_create(
+            profile=staff_profile,
+            school=school,
+            defaults={"role": Role.STAFF, "is_active": True},
+        )
+        SchoolMembership.objects.update_or_create(
+            profile=target_profile,
+            school=school,
+            defaults={"role": Role.STAFF, "is_active": True},
+        )
+
+        self.client.force_login(staff_user)
+        self.set_selected_school(school.id)
+
+        response = self.client.post(
+            reverse("school"),
+            {"user_id": target_user.id, "new_role": Role.TEAM_MANAGER},
+            follow=True,
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.request["PATH_INFO"], reverse("profile"))
+        self.assertContains(
+            response,
+            "School management is available to admins and team managers only.",
+        )
+
+        membership = SchoolMembership.objects.get(profile=target_profile, school=school)
+        self.assertEqual(membership.role, Role.STAFF)
+
+    def test_school_sidebar_link_hidden_for_staff_visible_for_admin_and_manager(self):
+        admin_user, _, admin_school = self.create_staff_user_with_school(
+            username="admin_sidebar",
+            role=Role.ADMIN,
+        )
+        manager_user, manager_profile, manager_school = self.create_staff_user_with_school(
+            username="manager_sidebar",
+            role=Role.TEAM_MANAGER,
+        )
+        SchoolMembership.objects.update_or_create(
+            profile=manager_profile,
+            school=manager_school,
+            defaults={"role": Role.TEAM_MANAGER, "is_active": True},
+        )
+        staff_user, _, staff_school = self.create_staff_user_with_school(
+            username="staff_sidebar",
+            role=Role.STAFF,
+        )
+
+        self.client.force_login(admin_user)
+        self.set_selected_school(admin_school.id)
+        admin_response = self.client.get(reverse("profile"))
+        self.assertContains(admin_response, reverse("school"))
+
+        self.client.force_login(manager_user)
+        self.set_selected_school(manager_school.id)
+        manager_response = self.client.get(reverse("profile"))
+        self.assertContains(manager_response, reverse("school"))
+
+        self.client.force_login(staff_user)
+        self.set_selected_school(staff_school.id)
+        staff_response = self.client.get(reverse("profile"))
+        self.assertNotContains(staff_response, reverse("school"))
+
+    def test_school_signup_with_license_code_grants_90_day_license(self):
+        code = SchoolLicenseCode.objects.create(code="SCHOOL90")
+
+        response = self.client.post(
+            reverse("school_signup"),
+            {
+                "full_name": "Licensed Admin",
+                "email": "licensed-admin@example.com",
+                "password": "strongpass123",
+                "school_name": "Licensed School",
+                "license_code": "school90",
+                "contact_info": "",
+            },
+            follow=True,
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        school = School.objects.get(name="Licensed School")
+        self.assertTrue(school.is_licensed)
+        self.assertIsNotNone(school.license_expires_at)
+        self.assertGreaterEqual(school.license_expires_at, timezone.now() + timedelta(days=89))
+        self.assertLessEqual(school.license_expires_at, timezone.now() + timedelta(days=91))
+
+        code.refresh_from_db()
+        self.assertIsNone(code.used_at)
+        self.assertIsNone(code.used_by_school)
+
+    def test_school_signup_license_code_can_be_reused_when_active(self):
+        SchoolLicenseCode.objects.create(code="SHARED90", is_active=True)
+
+        first = self.client.post(
+            reverse("school_signup"),
+            {
+                "full_name": "Admin One",
+                "email": "admin-one@example.com",
+                "password": "strongpass123",
+                "school_name": "School One",
+                "license_code": "shared90",
+                "contact_info": "",
+            },
+            follow=True,
+        )
+        self.assertEqual(first.status_code, 200)
+
+        self.client.logout()
+
+        second = self.client.post(
+            reverse("school_signup"),
+            {
+                "full_name": "Admin Two",
+                "email": "admin-two@example.com",
+                "password": "strongpass123",
+                "school_name": "School Two",
+                "license_code": "SHARED90",
+                "contact_info": "",
+            },
+            follow=True,
+        )
+        self.assertEqual(second.status_code, 200)
+
+        self.assertTrue(School.objects.get(name="School One").is_licensed)
+        self.assertTrue(School.objects.get(name="School Two").is_licensed)
+
+    def test_school_signup_sends_support_notification_email(self):
+        response = self.client.post(
+            reverse("school_signup"),
+            {
+                "full_name": "New Admin",
+                "email": "new-admin@example.com",
+                "password": "strongpass123",
+                "school_name": "New School",
+                "license_code": "",
+                "contact_info": "",
+            },
+            follow=True,
+        )
+
+        self.assertEqual(response.status_code, 200)
+        support_messages = [
+            message
+            for message in mail.outbox
+            if "support@chatterdillo.com" in message.to
+            and message.subject == "New School Signup - Chatterdillo"
+        ]
+
+        self.assertEqual(len(support_messages), 1)
+        self.assertIn("School: New School", support_messages[0].body)
+        self.assertIn("Admin name: New Admin", support_messages[0].body)
+        self.assertIn("Admin email: new-admin@example.com", support_messages[0].body)
+        self.assertIn("License code used: none", support_messages[0].body)
+
     def test_accept_invite_creates_user_and_membership(self):
         admin_user, _, school = self.create_staff_user_with_school(username="admin_user", role=Role.ADMIN)
         invite = StaffInvite.objects.create(
@@ -76,6 +355,75 @@ class SchoolTypicalFlowTests(BaseFlowTestMixin, TestCase):
         self.assertEqual(response.status_code, 200)
         updated_membership = SchoolMembership.objects.get(profile=staff_profile, school=school)
         self.assertEqual(updated_membership.role, Role.TEAM_MANAGER)
+
+    def test_admin_can_deactivate_and_reactivate_staff_membership(self):
+        admin_user, _, school = self.create_staff_user_with_school(
+            username="admin_membership_toggle",
+            role=Role.ADMIN,
+        )
+        staff_user, staff_profile, _ = self.create_staff_user_with_school(
+            username="staff_membership_toggle",
+            role=Role.STAFF,
+        )
+
+        staff_profile.schools.add(school)
+        SchoolMembership.objects.update_or_create(
+            profile=staff_profile,
+            school=school,
+            defaults={"role": Role.STAFF, "is_active": True},
+        )
+
+        self.client.force_login(admin_user)
+        self.set_selected_school(school.id)
+
+        deactivate_response = self.client.post(
+            reverse("school"),
+            {"user_id": staff_user.id, "deactivate_membership": "1"},
+            follow=True,
+        )
+        self.assertEqual(deactivate_response.status_code, 200)
+        self.assertContains(deactivate_response, "membership was deactivated")
+        self.assertFalse(
+            SchoolMembership.objects.get(profile=staff_profile, school=school).is_active
+        )
+
+        reactivate_response = self.client.post(
+            reverse("school"),
+            {"user_id": staff_user.id, "activate_membership": "1"},
+            follow=True,
+        )
+        self.assertEqual(reactivate_response.status_code, 200)
+        self.assertContains(reactivate_response, "membership was activated")
+        self.assertTrue(
+            SchoolMembership.objects.get(profile=staff_profile, school=school).is_active
+        )
+
+    def test_admin_cannot_deactivate_own_membership(self):
+        admin_user, admin_profile, school = self.create_staff_user_with_school(
+            username="sole_admin",
+            role=Role.ADMIN,
+        )
+
+        SchoolMembership.objects.update_or_create(
+            profile=admin_profile,
+            school=school,
+            defaults={"role": Role.ADMIN, "is_active": True},
+        )
+
+        self.client.force_login(admin_user)
+        self.set_selected_school(school.id)
+
+        response = self.client.post(
+            reverse("school"),
+            {"user_id": admin_user.id, "deactivate_membership": "1"},
+            follow=True,
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "You cannot deactivate your own membership.")
+        self.assertTrue(
+            SchoolMembership.objects.get(profile=admin_profile, school=school).is_active
+        )
 
 
 class JoinRequestFlowTests(BaseFlowTestMixin, TestCase):

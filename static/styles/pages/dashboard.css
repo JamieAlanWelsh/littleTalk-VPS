@@ -306,6 +306,153 @@
     color: var(--target-green);
 }
 
+.school-mgmt-header {
+    margin-bottom: 6px;
+}
+
+.school-dashboard-page .status-badge {
+    border-width: 1px;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
+}
+
+.school-dashboard-page .status-badge--neutral {
+    background: #e7efff;
+    border-color: #8fb0ff;
+    color: #123a8f;
+}
+
+.school-dashboard-page .status-badge--warning {
+    background: #ffefbf;
+    border-color: #ffbe33;
+    color: #7a4200;
+}
+
+.school-dashboard-page .status-badge--info {
+    background: #dff4ff;
+    border-color: #63c3ff;
+    color: #004b7a;
+}
+
+.school-dashboard-page .status-badge--success {
+    background: #dbfbe7;
+    border-color: #43d07e;
+    color: #0f6a3f;
+}
+
+.school-dashboard-page .status-badge--danger {
+    background: #ffe1e1;
+    border-color: #ff7b7b;
+    color: #8a1f1f;
+}
+
+.school-mgmt-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    padding: 25px;
+    border: 1px solid var(--border-grey);
+    box-shadow: var(--box-shadow);
+    border-radius: 25px;
+    background: white;
+}
+
+.school-mgmt-current-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 12px;
+    border: 1px solid #d7dce4;
+    border-radius: 12px;
+    background: #ffffff;
+}
+
+.school-mgmt-current-label {
+    margin: 0;
+    color: var(--font-color);
+    font-size: 0.95rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.school-mgmt-current-value {
+    margin: 0;
+    color: var(--font-color);
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+.school-dashboard-switcher {
+    min-width: 260px;
+}
+
+.school-dashboard-switcher .select {
+    margin-bottom: 0;
+    width: 100%;
+    min-width: 0;
+}
+
+.school-mgmt-tools-row {
+    display: flex;
+    align-items: stretch;
+    gap: 8px;
+    flex-wrap: nowrap;
+}
+
+.school-mgmt-tool-link {
+    display: flex;
+    align-items: center;
+    padding: 9px 10px;
+    border: 1px solid var(--border-grey);
+    border-radius: 12px;
+    box-shadow: var(--box-shadow);
+    background: #ffffff;
+    color: var(--font-color);
+    text-decoration: none;
+    transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+.school-mgmt-tool-link:hover {
+    border-color: var(--border-grey);
+    background: var(--yellow-button-color);
+    transform: translateY(-1px);
+}
+
+.school-mgmt-tool-link--disabled {
+    opacity: 0.62;
+    cursor: not-allowed;
+    pointer-events: none;
+    background: #f4f6f8;
+}
+
+.school-mgmt-tool-copy {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.school-mgmt-tool-copy strong {
+    color: var(--font-color);
+    font-size: 0.95rem;
+    line-height: 1.2;
+}
+
+.school-dashboard-page .dashboard-table th {
+    background-color: var(--font-color);
+    color: #ffffff;
+}
+
+.school-mgmt-stats {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
 .dashboard-empty {
     padding: 24px;
     background: #ffffff;
@@ -375,6 +522,33 @@
 .section-note strong {
     color: var(--primary-color);
     font-weight: 600;
+}
+
+@media (max-width: 940px) {
+    .school-mgmt-current-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .school-dashboard-switcher {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .school-mgmt-tools-row {
+        flex-wrap: wrap;
+    }
+
+    .school-mgmt-tool-link {
+        flex: 1 1 calc(50% - 8px);
+    }
+}
+
+@media (max-width: 620px) {
+    .school-mgmt-tool-link {
+        flex: 1 1 100%;
+        width: 100%;
+    }
 }
 
 /* Targets Section */
@@ -532,7 +706,7 @@
 
 .recent-exercises-table thead th {
     font-weight: 700;
-    background: #FF9292;
+    background: var(--font-color);
     color: #ffffff;
 }
 

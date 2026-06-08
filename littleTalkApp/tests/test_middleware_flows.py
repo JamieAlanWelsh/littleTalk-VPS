@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.urls import reverse
 
 from accounts.models import User
-from littleTalkApp.models import Profile, Role, School
+from littleTalkApp.models import Profile, Role, School, SchoolMembership
 
 
 class MultiSchoolMiddlewareFlowTests(TestCase):
@@ -44,3 +44,20 @@ class MultiSchoolMiddlewareFlowTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.request["PATH_INFO"], reverse("select_school"))
+
+    def test_inactive_staff_membership_redirects_to_access_restricted_page(self):
+        school = School.objects.create(name="School Inactive", is_licensed=True)
+        self.profile.schools.add(school)
+        SchoolMembership.objects.create(
+            profile=self.profile,
+            school=school,
+            role=Role.STAFF,
+            is_active=False,
+        )
+
+        response = self.client.get(reverse("profile"), follow=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.request["PATH_INFO"], reverse("access_restricted"))
+        self.assertContains(response, "Access to this account is currently paused")
+        self.assertContains(response, 'action="/logout/"')

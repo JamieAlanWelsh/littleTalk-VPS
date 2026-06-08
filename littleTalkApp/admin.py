@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.models import Group
-from .models import Profile, School, ParentProfile, Learner, JoinRequest, SchoolMembership, ExerciseSession, LogEntry, Target, SkolonSyncCursor, SkolonOrg, SkolonUser
+from .models import Profile, School, ParentProfile, Learner, JoinRequest, SchoolMembership, ExerciseSession, LogEntry, Target, SchoolLicenseCode, SkolonSyncCursor, SkolonOrg, SkolonUser
 
 # unregister groups
 admin.site.unregister(Group)
@@ -102,6 +102,15 @@ class SchoolAdmin(admin.ModelAdmin):
         return "—"
     created_by_email.short_description = "Created By"
     created_by_email.admin_order_field = "created_by__email_encrypted"
+
+
+@admin.register(SchoolLicenseCode)
+class SchoolLicenseCodeAdmin(admin.ModelAdmin):
+    list_display = ("code", "is_active", "created_at")
+    list_editable = ("is_active",)
+    list_filter = ("is_active", "created_at")
+    search_fields = ("code",)
+    readonly_fields = ("created_at",)
 
 
 @admin.register(ParentProfile)

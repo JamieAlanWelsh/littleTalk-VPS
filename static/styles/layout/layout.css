@@ -4,11 +4,14 @@
     justify-content: center;
     padding: 20px;
     box-sizing: border-box;
+    width: 100%;
 }
 
 /* Inner content gets centered within the main-content area */
 .main-content-inner {
     width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
 }
 
 .layout {
@@ -18,8 +21,9 @@
 
 /* Only apply sidebar offset when the sidebar exists */
 .layout.with-sidebar .main-content {
-    margin-left: 240px;
-    flex: 1;
+    margin-left: var(--sidebar-width);
+    width: calc(100% - var(--sidebar-width));
+    flex: 0 0 calc(100% - var(--sidebar-width));
 }
 
 .container-box {

@@ -81,6 +81,7 @@ urlpatterns = [
     path('school/invite-staff/', school_views.invite_staff, name='invite_staff'),
     path('accept-invite/<uuid:token>/', school_views.accept_invite, name='accept_invite'),
     path('school/', school_views.school_dashboard, name='school'),
+    path('school/update-name/', school_views.update_school_name, name='update_school_name'),
     path('request-join-school/', school_views.request_join_school, name='request_join_school'),
     path('school/invite-audit/', school_views.invite_audit_trail, name='invite_audit_trail'),
 
@@ -96,6 +97,7 @@ urlpatterns = [
     # Subcription routes
     path('subscribe/', subscription_views.subscribe, name='subscribe'),
     path('license-expired/', subscription_views.license_expired, name='license_expired'),
+    path('access-restricted/', subscription_views.access_restricted, name='access_restricted'),
 
     # Stripe Webhooks 
     path('webhooks/stripe/', subscription_views.stripe_webhook, name='stripe_webhook'), # to activate and manage subscription

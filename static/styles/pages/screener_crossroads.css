@@ -10,10 +10,10 @@
     box-sizing: border-box;
 }
 
-.error-message {
-    color: var(--button-red);
-    font-size: 1.1rem;
-    margin-top: 20px;
+.screener-container .error-message {
+    margin: 20px auto 0;
+    max-width: 560px;
+    text-align: center;
 }
 
 .screener-back-button {

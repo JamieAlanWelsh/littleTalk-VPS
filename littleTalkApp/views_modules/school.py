@@ -1,8 +1,11 @@
 import uuid
+from datetime import timedelta
 
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate, get_user_model, login
 from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
@@ -16,8 +19,22 @@ from littleTalkApp.forms import (
     SchoolSignupForm,
     StaffInviteForm,
 )
-from littleTalkApp.models import Cohort, JoinRequest, Profile, Role, School, SchoolMembership, StaffInvite
+from littleTalkApp.models import (
+    Cohort,
+    JoinRequest,
+    Profile,
+    Role,
+    School,
+    SchoolMembership,
+    StaffInvite,
+)
 from littleTalkApp.utilities import hash_email, send_invite_email, send_school_welcome_email
+
+
+def _can_manage_school(profile, school):
+    return school and (
+        profile.is_admin_for_school(school) or profile.is_manager_for_school(school)
+    )
 
 
 def _handle_school_role_update(request, profile, school):
@@ -118,7 +135,58 @@ def _handle_school_join_request_action(request, school):
     return redirect("school")
 
 
+def _handle_school_membership_status_update(request, profile, school):
+    user_id = request.POST.get("user_id")
+    target_profile = get_object_or_404(Profile, user__id=user_id)
+
+    membership = target_profile.memberships.filter(school=school).first()
+    if not membership:
+        messages.error(request, "Membership not found for this school.")
+        return redirect("school")
+
+    if target_profile.user == request.user and "deactivate_membership" in request.POST:
+        messages.error(request, "You cannot deactivate your own membership.")
+        return redirect("school")
+
+    target_role = membership.role
+    if profile.is_manager_for_school(school) and target_role == Role.ADMIN:
+        messages.error(request, "Only admins can manage admin membership status.")
+        return redirect("school")
+
+    should_activate = "activate_membership" in request.POST
+    should_deactivate = "deactivate_membership" in request.POST
+    if not (should_activate or should_deactivate):
+        return None
+
+    if should_deactivate and target_role == Role.ADMIN and membership.is_active:
+        active_admins = SchoolMembership.objects.filter(
+            school=school,
+            role=Role.ADMIN,
+            is_active=True,
+        ).count()
+        if active_admins <= 1:
+            messages.error(request, "You must keep at least one active admin.")
+            return redirect("school")
+
+    membership.is_active = should_activate
+    membership.save(update_fields=["is_active", "updated_at"])
+
+    state_label = "activated" if should_activate else "deactivated"
+    messages.success(
+        request,
+        f"{target_profile.first_name}'s school membership was {state_label}.",
+    )
+    return redirect("school")
+
+
 def _handle_school_dashboard_post(request, profile, school):
+    if not _can_manage_school(profile, school):
+        messages.error(
+            request,
+            "School management is available to admins and team managers only.",
+        )
+        return redirect("profile")
+
     if "user_id" in request.POST and "new_role" in request.POST:
         return _handle_school_role_update(request, profile, school)
 
@@ -130,6 +198,9 @@ def _handle_school_dashboard_post(request, profile, school):
 
     if "approve_join_request" in request.POST or "reject_join_request" in request.POST:
         return _handle_school_join_request_action(request, school)
+
+    if "activate_membership" in request.POST or "deactivate_membership" in request.POST:
+        return _handle_school_membership_status_update(request, profile, school)
 
     return None
 
@@ -151,6 +222,7 @@ def school_signup(request):
             password = form.cleaned_data["password"]
             full_name = form.cleaned_data["full_name"]
             school_name = form.cleaned_data["school_name"]
+            license_code = form.cleaned_data.get("license_code")
 
             user = get_user_model().objects.create_user(
                 username=str(uuid.uuid4()), password=password
@@ -160,6 +232,11 @@ def school_signup(request):
             user.save()
 
             school = School.objects.create(name=school_name, created_by=user)
+
+            if license_code:
+                school.is_licensed = True
+                school.license_expires_at = timezone.now() + timedelta(days=90)
+                school.save(update_fields=["is_licensed", "license_expires_at"])
 
             profile = Profile.objects.create(user=user, first_name=full_name)
             try:
@@ -176,6 +253,21 @@ def school_signup(request):
                 pass
 
             send_school_welcome_email(school, user)
+
+            signup_notice = (
+                "New school sign-up submitted:\n\n"
+                f"School: {school_name}\n"
+                f"Admin name: {full_name}\n"
+                f"Admin email: {email}\n"
+                f"License code used: {license_code.code if license_code else 'none'}\n"
+            )
+            send_mail(
+                subject="New School Signup - Chatterdillo",
+                message=signup_notice,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=["support@chatterdillo.com"],
+                fail_silently=True,
+            )
 
             login(request, user)
 
@@ -209,7 +301,11 @@ def accept_invite(request, token):
 
     email_hash = hash_email(invite.email.lower())
     if email_hash and get_user_model().objects.filter(email_hash=email_hash).first():
-        return redirect("/")
+        messages.info(
+            request,
+            "An account already exists for this invited email. Please log in to continue.",
+        )
+        return redirect("login")
 
     if request.method == "POST":
         form = AcceptInviteForm(request.POST)
@@ -304,6 +400,38 @@ def invite_staff(request):
 
 
 @login_required
+def update_school_name(request):
+    """Renders school/update_school_name.html — lets admins rename the current school.
+
+    Only admins for the selected school may update the school name.
+    """
+
+    profile = request.user.profile
+    school = profile.get_current_school(request)
+
+    if not school:
+        messages.error(request, "No school is currently selected.")
+        return redirect("profile")
+
+    if not profile.is_admin_for_school(school):
+        messages.error(request, "Only admins can update the school name.")
+        return redirect("school")
+
+    if request.method == "POST":
+        new_name = (request.POST.get("school_name") or "").strip()
+        if not new_name:
+            messages.error(request, "School name cannot be empty.")
+            return render(request, "school/update_school_name.html", {"school": school})
+
+        school.name = new_name
+        school.save(update_fields=["name"])
+        messages.success(request, "School name updated.")
+        return redirect("school")
+
+    return render(request, "school/update_school_name.html", {"school": school})
+
+
+@login_required
 def school_dashboard(request):
     """Renders school/school_dashboard.html — the school management hub.
 
@@ -315,41 +443,77 @@ def school_dashboard(request):
 
     if request.user.profile.is_parent():
         return redirect("profile")
+
     profile = request.user.profile
     school = profile.get_current_school(request)
-    available_schools = profile.schools.all().order_by("name")
-    show_school_switcher = available_schools.count() > 1
-    current_school_id = school.id if school else None
+    if not school:
+        messages.error(request, "No school is currently selected.")
+        return redirect("profile")
+
+    if not _can_manage_school(profile, school):
+        messages.error(
+            request,
+            "School management is available to admins and team managers only.",
+        )
+        return redirect("profile")
 
     if request.method == "POST":
         post_response = _handle_school_dashboard_post(request, profile, school)
         if post_response:
             return post_response
 
-    raw_profiles = (
-        Profile.objects.filter(Q(schools=school)).select_related("user").distinct()
+    memberships = (
+        SchoolMembership.objects.filter(school=school)
+        .select_related("profile", "profile__user")
+        .order_by("profile__first_name")
     )
+
     staff_profiles = []
-    for profile_item in raw_profiles:
-        try:
-            role_for = profile_item.get_role_for_school(school)
-        except Exception:
-            role_for = profile_item.role
-        if role_for != Role.PARENT:
-            staff_profiles.append({"profile": profile_item, "role": role_for})
+    if memberships.exists():
+        for membership in memberships:
+            profile_item = membership.profile
+            role_for = membership.role or profile_item.role
+            if role_for != Role.PARENT:
+                staff_profiles.append(
+                    {
+                        "profile": profile_item,
+                        "role": role_for,
+                        "is_active": membership.is_active,
+                    }
+                )
+    else:
+        raw_profiles = (
+            Profile.objects.filter(Q(schools=school)).select_related("user").distinct()
+        )
+        for profile_item in raw_profiles:
+            try:
+                role_for = profile_item.get_role_for_school(school)
+            except Exception:
+                role_for = profile_item.role
+            if role_for != Role.PARENT:
+                staff_profiles.append(
+                    {
+                        "profile": profile_item,
+                        "role": role_for,
+                        "is_active": True,
+                    }
+                )
+
+    active_staff_count = sum(1 for item in staff_profiles if item["is_active"])
 
     invites = StaffInvite.objects.filter(
         school=school, used=False, withdrawn=False
     ).order_by("-created_at")[:10]
 
-    can_invite_staff = profile.is_admin_for_school(school) or profile.is_manager_for_school(
-        school
-    )
+    can_invite_staff = _can_manage_school(profile, school)
     join_requests = []
     if can_invite_staff:
         join_requests = JoinRequest.objects.filter(
             school=school, status="pending"
         ).order_by("-created_at")[:10]
+
+    school_switcher_options = list(profile.get_accessible_schools().order_by("name"))
+    school_switcher_enabled = len(school_switcher_options) > 1
 
     return render(
         request,
@@ -361,11 +525,13 @@ def school_dashboard(request):
             "school": school,
             "role_choices": Role.CHOICES,
             "can_invite_staff": can_invite_staff,
+            "current_user_is_admin": profile.is_admin_for_school(school),
             "current_user_is_admin_or_manager": can_invite_staff,
             "join_requests": join_requests,
-            "available_schools": available_schools,
-            "show_school_switcher": show_school_switcher,
-            "current_school_id": current_school_id,
+            "active_staff_count": active_staff_count,
+            "school_switcher_enabled": school_switcher_enabled,
+            "school_switcher_options": school_switcher_options,
+            "current_school_id": school.id,
         },
     )
 
@@ -423,6 +589,7 @@ def invite_audit_trail(request):
         {
             "invites": invites,
             "join_requests": join_requests,
+            "school_name": school.name,
             "now": timezone.now(),
         },
     )
@@ -558,8 +725,10 @@ def select_school(request):
     if profile.is_parent():
         return redirect("profile")
 
+    accessible_schools = profile.get_accessible_schools().order_by("name")
+
     if not profile.has_multiple_schools():
-        school = profile.schools.first()
+        school = accessible_schools.first()
         if school:
             request.session["selected_school_id"] = school.id
         return redirect("profile")
@@ -573,7 +742,7 @@ def select_school(request):
                 return redirect(next_url)
         messages.error(request, "Please select a valid school.")
 
-    schools = profile.schools.all()
+    schools = accessible_schools
     return render(
         request,
         "school/select_school.html",

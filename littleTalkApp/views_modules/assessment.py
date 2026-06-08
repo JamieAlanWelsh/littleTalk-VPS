@@ -87,10 +87,6 @@ def screener(request):
             except Learner.DoesNotExist:
                 pass
 
-    if not selected_learner and learners.exists():
-        selected_learner = learners.first()
-        request.session["selected_learner_id"] = selected_learner.id
-
     if selected_learner:
         has_old_screener = selected_learner.answers.filter(screener_version=1).exists()
         has_v2_screener = selected_learner.answers.filter(screener_version=2).exists()
@@ -129,6 +125,18 @@ def start_assessment_v2(request):
     """Renders assessment/assessment_form.html for Screener V2."""
 
     request.hide_sidebar = True
+
+    selected_learner_id = request.session.get("selected_learner_id")
+    selected_learner = None
+    if selected_learner_id:
+        selected_learner = Learner.objects.filter(id=selected_learner_id).first()
+
+    if not selected_learner:
+        messages.info(
+            request,
+            "Please add or select a learner in your profile before starting a screener.",
+        )
+        return redirect("profile")
 
     assessment_session_id = uuid.uuid4()
 

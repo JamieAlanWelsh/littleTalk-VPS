@@ -63,6 +63,14 @@
         </div>
 
         <div>
+            <input type="text" name="license_code" class="input" placeholder="License code (optional)"
+                value="{{ form.license_code.value|default_if_none:'' }}">
+            {% if form.license_code.errors %}
+                <div class="error-message">{{ form.license_code.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <div>
             <button type="submit" class="btn btn--yellow btn--full">Create School Account</button>
         </div>
 
