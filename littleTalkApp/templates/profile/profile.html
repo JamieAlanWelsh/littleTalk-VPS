@@ -66,17 +66,21 @@
             <div class="profile-card profile-card--details">
                 <div class="profile-card__header">
                     <h3 class="profile-card__title">Learner Details:</h3>
+                </div>
+                <div class="learner-details-body">
+                    <div class="learner-details-copy">
+                        <p><strong>Name:</strong> {{ selected_learner.name }}</p>
+                        {% if selected_learner.cohort %}
+                            <p><strong>Cohort:</strong> {{ selected_learner.cohort }}</p>
+                        {% endif %}
+                        <p><strong>Exp:</strong> {{ selected_learner.exp }}</p>
+                    </div>
                     <a href="{% url 'avatar_editor' selected_learner.learner_uuid %}" class="learner-avatar-link" aria-label="Edit {{ selected_learner.name }} avatar">
                         <span class="learner-avatar learner-avatar--details" style="background-color: {{ selected_learner.avatar_display_color }};">
                             <img src="{{ selected_learner.avatar_image_url }}" alt="{{ selected_learner.name }} avatar" class="learner-avatar__image">
                         </span>
                     </a>
                 </div>
-                <p><strong>Name:</strong> {{ selected_learner.name }}</p>
-                {% if selected_learner.cohort %}
-                    <p><strong>Cohort:</strong> {{ selected_learner.cohort }}</p>
-                {% endif %}
-                <p><strong>Experience:</strong> {{ selected_learner.exp }}</p>
                 {% if request.user.profile.role == 'parent' and selected_learner.school_id %}
                     <div class="recommendation-info no-print" style="margin-top: 16px; margin-bottom: 20px; padding: 12px; background: #f0f3ff; border-radius: 8px; display: flex; gap: 8px; align-items: flex-start;">
                         <span style="font-weight: 600; color: #0066cc;">i</span>

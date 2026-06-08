@@ -49,20 +49,20 @@ AVATAR_CHARACTERS = [
 ]
 
 AVATAR_COLORS = [
-    "#F41034",
-    "#F7931E",
-    "#E9D467",
-    "#3C9965",
-    "#36A3E2",
-    "#8D63D9",
-    "#BFC0C2",
-    "#7BE000",
-    "#426CD9",
-    "#DFA3C8",
-    "#4E7CB0",
-    "#E9C0C1",
-    "#DEE2E6",
-    "#000000",
+    "#FF7272",
+    "#FF9C63",
+    "#FFEE59",
+    "#86FFBB",
+    "#C6FF80",
+    "#C3E758",
+    "#7BCFFF",
+    "#83A6FF",
+    "#A1CDFF",
+    "#AB7EFF",
+    "#FF8EE6",
+    "#FDBDD6",
+    "#95A3B1",
+    "#494949",
 ]
 
 AVATAR_CHARACTER_IDS = {character["id"] for character in AVATAR_CHARACTERS}

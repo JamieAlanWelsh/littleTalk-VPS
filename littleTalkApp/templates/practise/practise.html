@@ -15,8 +15,8 @@
 <!-- Learner Selected -->
 {% else %}
     <div class="learner-context-bar">
-        <div class="learner-context-avatar" aria-hidden="true">
-            <img src="{% static 'images/landing/arlo_butterfly.png' %}" alt="">
+        <div class="learner-context-avatar" style="background-color: {{ selected_learner.avatar_display_color }};" aria-hidden="true">
+            <img src="{{ selected_learner.avatar_image_url }}" alt="">
         </div>
         <p class="learner-context-text">practising with: <strong>{{ selected_learner.name }}</strong></p>
         {% if recommended_stage_label %}
