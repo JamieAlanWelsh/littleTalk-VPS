@@ -14,7 +14,11 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from littleTalkApp.models import ExerciseSession, Learner
-from littleTalkApp.serializers import SubmitExerciseSerializer, LearnerExpUpdateSerializer
+from littleTalkApp.serializers import (
+    SubmitExerciseSerializer,
+    LearnerAvatarSerializer,
+    LearnerExpUpdateSerializer,
+)
 from littleTalkApp.views_modules.practise import resolve_recommendation_index
 
 logger = logging.getLogger(__name__)
@@ -116,6 +120,27 @@ class SubmitExerciseView(APIView):
 
         serializer = LearnerExpUpdateSerializer(learner)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class UpdateLearnerAvatarView(APIView):
+    """API endpoint to update a learner's avatar character and background color."""
+
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticated, CanUpdateLearnerPermission]
+
+    def patch(self, request, learner_uuid):
+        learner = get_object_or_404(Learner, learner_uuid=learner_uuid)
+        self.check_object_permissions(request, learner)
+
+        serializer = LearnerAvatarSerializer(learner, data=request.data, partial=True)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request, learner_uuid):
+        return self.patch(request, learner_uuid)
 
 
 def get_current_session_learner_context(request):

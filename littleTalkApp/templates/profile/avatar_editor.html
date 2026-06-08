@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load django_vite %}
+
+{% block title %}Chatterdillo | {{ learner.name }} Avatar{% endblock %}
+
+{% block head_extra %}
+    {{ block.super }}
+    {% vite_hmr_client %}
+{% endblock %}
+
+{% block content %}
+<div id="avatar-root"
+     data-learner-uuid="{{ learner.learner_uuid }}"
+    data-learner-name="{{ learner.name|escape }}"
+     data-save-url="{% url 'update_learner_avatar' learner.learner_uuid %}"
+     data-back-url="{% url 'profile' %}"
+     data-current-character="{{ current_avatar_character }}"
+     data-current-color="{{ current_avatar_color }}">
+</div>
+
+{{ avatar_characters|json_script:"avatar-characters-data" }}
+{{ avatar_colors|json_script:"avatar-colors-data" }}
+
+{% vite_react_refresh %}
+{% vite_asset 'frontend/src/entrypoints/avatar-editor.tsx' %}
+{% endblock %}

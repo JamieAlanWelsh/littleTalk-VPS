@@ -11,6 +11,8 @@ from datetime import date, timedelta
 import random
 import string
 
+from littleTalkApp.content.avatars import DEFAULT_AVATAR_CHARACTER, DEFAULT_AVATAR_COLOR
+
 
 class School(models.Model):
     name = models.CharField(max_length=255)
@@ -301,6 +303,8 @@ class Learner(models.Model):
     recommendation_index_updated_at = models.DateTimeField(blank=True, null=True)
     deleted = models.BooleanField(default=False)
     date_of_birth = EncryptedDateField(null=True, blank=True)
+    avatar_character = models.CharField(max_length=64, default=DEFAULT_AVATAR_CHARACTER)
+    avatar_color = models.CharField(max_length=7, default=DEFAULT_AVATAR_COLOR)
     age_group = models.PositiveSmallIntegerField(
         null=True,
         blank=True,

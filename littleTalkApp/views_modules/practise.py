@@ -1,10 +1,16 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+from django.templatetags.static import static
 from django.urls import reverse
 from django.utils import timezone
 
 from littleTalkApp.content import GAME_DESCRIPTIONS
 from littleTalkApp.content.assessments_v2 import QUESTIONS_V2
+from littleTalkApp.content.avatars import (
+    AVATAR_CHARACTER_MAP,
+    DEFAULT_AVATAR_CHARACTER,
+    DEFAULT_AVATAR_COLOR,
+)
 from littleTalkApp.models import Learner
 
 
@@ -110,6 +116,21 @@ COLOURFUL_SEMANTICS_IDS = {
     "colourful-semantics",
     "colourful-semantics-plus",
 }
+
+
+def _decorate_learner_avatar(learner):
+    if not learner:
+        return learner
+
+    character_meta = AVATAR_CHARACTER_MAP.get(learner.avatar_character)
+    if not character_meta:
+        character_meta = AVATAR_CHARACTER_MAP[DEFAULT_AVATAR_CHARACTER]
+
+    learner.avatar_image_url = static(
+        f"exercise_assets/characters/{character_meta['image_filename']}"
+    )
+    learner.avatar_display_color = learner.avatar_color or DEFAULT_AVATAR_COLOR
+    return learner
 
 
 def resolve_recommendation_index(learner):
@@ -282,6 +303,7 @@ def practise(request):
     if selected_learner_id:
         selected_learner = Learner.objects.filter(id=selected_learner_id).first()
         learner_selected = selected_learner is not None
+        selected_learner = _decorate_learner_avatar(selected_learner)
         if learner_selected:
             has_completed_screener_v2 = selected_learner.answers.filter(
                 screener_version=2

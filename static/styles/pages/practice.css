@@ -15,19 +15,19 @@
 }
 
 .learner-context-avatar {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background-color: #f6f7fb;
+    width: 42px;
+    height: 42px;
+    border-radius: 15px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
     display: grid;
     place-items: center;
     overflow: hidden;
 }
 
 .learner-context-avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    width: 38px;
+    height: 38px;
+    object-fit: contain;
 }
 
 .learner-context-text {
