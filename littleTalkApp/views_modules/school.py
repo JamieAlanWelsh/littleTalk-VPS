@@ -301,7 +301,11 @@ def accept_invite(request, token):
 
     email_hash = hash_email(invite.email.lower())
     if email_hash and get_user_model().objects.filter(email_hash=email_hash).first():
-        return redirect("/")
+        messages.info(
+            request,
+            "An account already exists for this invited email. Please log in to continue.",
+        )
+        return redirect("login")
 
     if request.method == "POST":
         form = AcceptInviteForm(request.POST)

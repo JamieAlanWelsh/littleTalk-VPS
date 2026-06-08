@@ -449,7 +449,7 @@ class StaffInviteForm(forms.ModelForm):
 
 class AcceptInviteForm(forms.Form):
     full_name = forms.CharField(label="Your name", max_length=100)
-    password = forms.CharField(widget=forms.PasswordInput, label="Password")
+    password = forms.CharField(widget=forms.PasswordInput, label="Create password")
 
     def clean_password(self):
         password = self.cleaned_data["password"]
