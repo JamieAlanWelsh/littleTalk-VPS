@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.utils import timezone
 
-from littleTalkApp.content import GAME_DESCRIPTIONS, RECOMMENDATIONS
+from littleTalkApp.content import GAME_DESCRIPTIONS
 from littleTalkApp.content.assessments_v2 import QUESTIONS_V2
 from littleTalkApp.models import Learner
 
@@ -39,15 +39,6 @@ PRACTISE_STAGES = {
         ],
     },
 }
-
-
-RECOMMENDATION_LEVEL_TO_STAGE = {
-    0: 1,
-    1: 1,
-    2: 2,
-    3: 3,
-}
-
 
 PRACTISE_EXERCISE_ROUTE_NAMES = {
     "colourful_semantics": "colourful_semantics",
@@ -228,6 +219,8 @@ def practise(request):
     recommended_stage_numbers = []
     has_recommended_filter = False
     recommendation_explanation = None
+    recommended_stage_label = None
+    has_completed_screener_v2 = False
 
     stage_numbers = sorted(PRACTISE_STAGES.keys())
     default_stage_number = stage_numbers[0] if stage_numbers else None
@@ -248,12 +241,6 @@ def practise(request):
         "in_the_know_inferencing": "exercise_icons/in_the_know_icon.webp",
         "what_happens_next_predicting": "exercise_icons/what_happens_next_icon.webp",
     }
-
-    title_to_key = {}
-    for game_key, game_data in GAME_DESCRIPTIONS.items():
-        title = game_data.get("title")
-        if title and title not in title_to_key:
-            title_to_key[title] = game_key
 
     stage_library = []
     exercise_cards_by_key = {}
@@ -295,8 +282,16 @@ def practise(request):
     if selected_learner_id:
         selected_learner = Learner.objects.filter(id=selected_learner_id).first()
         learner_selected = selected_learner is not None
+        if learner_selected:
+            has_completed_screener_v2 = selected_learner.answers.filter(
+                screener_version=2
+            ).exists()
 
-        if learner_selected and selected_learner.recommended_exercise_ids:
+        if (
+            learner_selected
+            and has_completed_screener_v2
+            and selected_learner.recommended_exercise_ids
+        ):
             mapped_keys = []
             for exercise_id in selected_learner.recommended_exercise_ids:
                 practise_key = CANONICAL_TO_PRACTISE_KEY.get(exercise_id)
@@ -338,21 +333,18 @@ def practise(request):
 
                 if recommended_exercise_key:
                     recommended_stage_number = PRACTISE_KEY_TO_STAGE.get(recommended_exercise_key)
+                    if recommended_stage_number in PRACTISE_STAGES:
+                        recommended_stage_label = PRACTISE_STAGES[recommended_stage_number].get(
+                            "label"
+                        )
                     recommendation_explanation = build_recommendation_explanation(
                         selected_learner,
                         recommendation_ids[current_index],
                     )
-
-        elif learner_selected and selected_learner.recommendation_level is not None:
-            level = selected_learner.recommendation_level
-            recommendation = RECOMMENDATIONS[level] if level < len(RECOMMENDATIONS) else None
-            if recommendation:
-                recommended_stage_number = RECOMMENDATION_LEVEL_TO_STAGE.get(level)
-                recommended_exercise_key = title_to_key.get(recommendation.get("focus"))
-                if recommended_exercise_key:
-                    recommended_exercise_keys = [recommended_exercise_key]
-                if recommended_stage_number:
-                    recommended_stage_numbers = [recommended_stage_number]
+                    if recommendation_explanation and recommendation_explanation.get("stage") in PRACTISE_STAGES:
+                        recommendation_explanation["stage_label"] = PRACTISE_STAGES[
+                            recommendation_explanation["stage"]
+                        ].get("label")
 
     if recommended_exercise_keys:
         suggested_keys = recommended_exercise_keys + [
@@ -390,6 +382,7 @@ def practise(request):
         "secondary_exercise_keys": secondary_exercise_keys,
         "recommended_exercise_card": recommended_exercise_card,
         "recommendation_explanation": recommendation_explanation,
+        "recommended_stage_label": recommended_stage_label,
         "active_stage_number": active_stage_number,
     }
 

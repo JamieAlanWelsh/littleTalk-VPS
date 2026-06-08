@@ -19,7 +19,9 @@
             <img src="{% static 'images/landing/arlo_butterfly.png' %}" alt="">
         </div>
         <p class="learner-context-text">practising with: <strong>{{ selected_learner.name }}</strong></p>
-        <p class="learner-context-stage">{% if recommended_stage_number %}Stage {{ recommended_stage_number }}{% endif %}</p>
+        {% if recommended_stage_label %}
+            <p class="learner-context-stage">{{ recommended_stage_label }}</p>
+        {% endif %}
         <a href="{% url 'profile' %}" class="learner-context-change">Change Learner</a>
     </div>
 
@@ -78,8 +80,8 @@
                                 </ul>
                             </div>
                         {% endif %}
-                        {% if recommendation_explanation.stage %}
-                            <p class="recommendation-popup__note">The exercise is stage {{ recommendation_explanation.stage }} - estimated to be within the child's likely working range.</p>
+                        {% if recommendation_explanation.stage_label %}
+                            <p class="recommendation-popup__note">The exercise is {{ recommendation_explanation.stage_label }} - estimated to be within the child's likely working range.</p>
                         {% endif %}
                     </div>
                 </div>
@@ -112,7 +114,7 @@
                 class="stage-tab {% if stage.number == active_stage_number %}stage-tab--active{% endif %} {% if stage.number in recommended_stage_numbers %}stage-tab--recommended{% endif %}"
                 data-stage-tab="{{ stage.number }}"
             >
-                {% if stage.number == 'recommended' %}Suggested{% else %}Stage {{ stage.number }}{% endif %}
+                {% if stage.number == 'recommended' %}Suggested{% else %}{{ stage.label }}{% endif %}
             </button>
         {% endfor %}
     </section>

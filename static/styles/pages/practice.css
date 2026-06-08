@@ -36,7 +36,7 @@
 }
 
 .learner-context-stage {
-    margin: 0 auto;
+    margin: 0;
     background-color: #f4d95b;
     border: 1px solid var(--border-grey);
     border-radius: 999px;
@@ -46,6 +46,7 @@
 }
 
 .learner-context-change {
+    margin-left: auto;
     color: var(--font-color);
     font-weight: 600;
     text-decoration: none;
