@@ -104,7 +104,7 @@
                             <span>Logbook</span>
                         </a>
                     </li>
-                    {% if can_access_school_management %}
+                    {% if can_access_school_management and not is_skolon_user %}
                         <li class="sidebar-school">
                             <a href="{% url 'school' %}">
                                 <img src="{% static 'icons/school.png' %}" alt="School" class="sidebar-icon">
@@ -121,9 +121,11 @@
                             <a href="{% url 'support' %}" class="dropdown-item">
                                 <span>Help Centre</span>
                             </a>
+                            {% if not is_skolon_user %}
                             <a href="{% url 'settings' %}" class="dropdown-item">
                                 <span>Settings</span>
                             </a>
+                            {% endif %}
                             <form method="post" action="{% url 'logout' %}" style="margin: 0;">
                                 {% csrf_token %}
                                 <button type="submit" class="dropdown-item dropdown-item--logout">

@@ -3,10 +3,12 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 
+from littleTalkApp.decorators import block_skolon_user
 from littleTalkApp.forms import PasswordUpdateForm, UserUpdateForm
 
 
 @login_required
+@block_skolon_user
 def settings_view(request):
     """Renders settings_views/settings.html — the account settings page.
 
@@ -24,6 +26,7 @@ def settings_view(request):
 
 
 @login_required
+@block_skolon_user
 def change_user_details(request):
     """Handles POST from the user-details form on the settings page.
 
@@ -54,6 +57,7 @@ def change_user_details(request):
 
 
 @login_required
+@block_skolon_user
 def change_password(request):
     """Handles POST from the change-password form on the settings page.
 

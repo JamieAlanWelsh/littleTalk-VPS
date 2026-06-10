@@ -3,7 +3,7 @@ from datetime import timedelta
 
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth import authenticate, get_user_model, login
+from django.contrib.auth import get_user_model, login
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.db.models import Q
@@ -19,6 +19,7 @@ from littleTalkApp.forms import (
     SchoolSignupForm,
     StaffInviteForm,
 )
+from littleTalkApp.decorators import block_skolon_user
 from littleTalkApp.models import (
     Cohort,
     JoinRequest,
@@ -291,6 +292,10 @@ def accept_invite(request, token):
 
     request.hide_sidebar = True
 
+    if request.user.is_authenticated and request.user.profile.is_skolon_user():
+        messages.error(request, "This page is not available for Skolon accounts.")
+        return redirect("profile")
+
     try:
         invite = StaffInvite.objects.get(token=token)
     except StaffInvite.DoesNotExist:
@@ -360,6 +365,7 @@ def accept_invite(request, token):
 
 
 @login_required
+@block_skolon_user
 def invite_staff(request):
     """Renders school/invite_staff.html — form for admins/managers to invite a new staff member.
 
@@ -432,6 +438,7 @@ def update_school_name(request):
 
 
 @login_required
+@block_skolon_user
 def school_dashboard(request):
     """Renders school/school_dashboard.html — the school management hub.
 
@@ -694,21 +701,27 @@ def cohort_delete(request, cohort_id):
     cohort = get_object_or_404(Cohort, id=cohort_id, school=school)
 
     if request.method == "POST":
-        password = request.POST.get("password")
-        user = authenticate(username=request.user.username, password=password)
+        confirmation = (request.POST.get("confirmation") or "").strip()
 
-        if user is not None:
+        if confirmation == "DELETE":
             cohort.delete()
             return redirect("cohort_list")
 
-        error_message = "Incorrect password. Please try again."
+        error_message = "Please type DELETE to confirm deletion. It is case-sensitive."
         return render(
             request,
             "school/cohorts/cohort_confirm_delete.html",
-            {"cohort": cohort, "error_message": error_message},
+            {
+                "cohort": cohort,
+                "error_message": error_message,
+            },
         )
 
-    return render(request, "school/cohorts/cohort_confirm_delete.html", {"cohort": cohort})
+    return render(
+        request,
+        "school/cohorts/cohort_confirm_delete.html",
+        {"cohort": cohort},
+    )
 
 
 @login_required

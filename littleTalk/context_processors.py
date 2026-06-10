@@ -3,9 +3,11 @@ from django.conf import settings
 
 def layout_context(request):
     can_access_school_management = False
+    is_skolon_user = False
     if request.user.is_authenticated:
         try:
             profile = request.user.profile
+            is_skolon_user = profile.is_skolon_user()
             school = profile.get_current_school(request)
             can_access_school_management = bool(
                 school
@@ -20,6 +22,7 @@ def layout_context(request):
     return {
         'hide_sidebar': getattr(request, 'hide_sidebar', False),
         'can_access_school_management': can_access_school_management,
+        'is_skolon_user': is_skolon_user,
     }
 
 def canonical_url(request):

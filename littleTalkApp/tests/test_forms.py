@@ -9,10 +9,11 @@ from littleTalkApp.forms import (
     LearnerForm,
     ParentAccessCodeForm,
     ParentSignupForm,
+    JoinRequestForm,
     SchoolSignupForm,
     UserRegistrationForm,
 )
-from littleTalkApp.models import Learner, ParentAccessToken, School, SchoolLicenseCode, Cohort, Learner, ParentAccessToken, Profile, Role, School
+from littleTalkApp.models import Cohort, Learner, ParentAccessToken, Profile, Role, School, SchoolLicenseCode, SkolonOrg
 from littleTalkApp.utilities import hash_email
 
 
@@ -198,3 +199,17 @@ class FormValidationTests(TestCase):
             Cohort.objects.filter(id=happy_cohort.id),
             transform=lambda cohort: cohort,
         )
+
+    def test_join_request_form_excludes_skolon_managed_schools(self):
+        regular_school = School.objects.create(name="Regular School")
+        skolon_school = School.objects.create(name="Skolon School")
+        SkolonOrg.objects.create(
+            skolon_id="org-skolon-school",
+            name=skolon_school.name,
+            school=skolon_school,
+        )
+
+        form = JoinRequestForm()
+
+        self.assertIn(regular_school, form.fields["school"].queryset)
+        self.assertNotIn(skolon_school, form.fields["school"].queryset)

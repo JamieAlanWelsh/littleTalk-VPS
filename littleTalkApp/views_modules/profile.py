@@ -1,5 +1,4 @@
 from django.contrib import messages
-from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
@@ -288,10 +287,9 @@ def confirm_delete_learner(request, learner_uuid):
         return redirect("profile")
 
     if request.method == "POST":
-        password = request.POST.get("password")
-        user = authenticate(request, username=request.user.username, password=password)
+        confirmation = (request.POST.get("confirmation") or "").strip()
 
-        if user is not None:
+        if confirmation == "DELETE":
             learner.deleted = True
             learner.save()
 
@@ -300,11 +298,18 @@ def confirm_delete_learner(request, learner_uuid):
             del request.session["selected_learner_id"]
             return redirect("profile")
 
-        error_message = "Incorrect password. Please try again."
+        error_message = "Please type DELETE to confirm deletion. It is case-sensitive."
         return render(
             request,
             "profile/confirm_delete_learner.html",
-            {"learner": learner, "error_message": error_message},
+            {
+                "learner": learner,
+                "error_message": error_message,
+            },
         )
 
-    return render(request, "profile/confirm_delete_learner.html", {"learner": learner})
+    return render(
+        request,
+        "profile/confirm_delete_learner.html",
+        {"learner": learner},
+    )

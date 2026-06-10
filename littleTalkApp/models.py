@@ -132,6 +132,10 @@ class Profile(models.Model):
     def is_parent(self):
         return self.role == Role.PARENT
 
+    def is_skolon_user(self):
+        skolon_user = getattr(self.user, "skolon_user", None)
+        return skolon_user is not None and not skolon_user.is_deleted
+
     def get_accessible_schools(self):
         """Return schools this profile can actively access.
 
@@ -232,7 +236,7 @@ class Profile(models.Model):
 
     def is_staff_for_school(self, school):
         return self.has_role_for_school(school, Role.STAFF)
-    
+
     def has_multiple_schools(self):
         """Return True if this profile has access to multiple schools."""
         return self.get_accessible_schools().count() > 1

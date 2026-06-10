@@ -536,6 +536,11 @@ class SkolonSSOCallbackTests(TestCase, BaseFlowTestMixin):
         skolon_user = SkolonUser.objects.get(skolon_id="sku-new-1")
         self.assertIsNotNone(skolon_user.user)
         self.assertFalse(skolon_user.user.has_usable_password())
+        self.assertEqual(skolon_user.user.profile.role, Role.ADMIN)
+        self.assertEqual(
+            SchoolMembership.objects.get(profile=skolon_user.user.profile, school=school).role,
+            Role.ADMIN,
+        )
 
         # And logged in
         self.assertEqual(

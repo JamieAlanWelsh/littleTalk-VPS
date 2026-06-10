@@ -12,6 +12,7 @@ from littleTalkApp.models import (
     School,
     SchoolLicenseCode,
     SchoolMembership,
+    SkolonUser,
     StaffInvite,
 )
 from littleTalkApp.tests.base import BaseFlowTestMixin
@@ -196,6 +197,29 @@ class SchoolTypicalFlowTests(BaseFlowTestMixin, TestCase):
         self.set_selected_school(staff_school.id)
         staff_response = self.client.get(reverse("profile"))
         self.assertNotContains(staff_response, reverse("school"))
+
+    def test_skolon_user_cannot_access_settings_or_invite_staff_and_sidebar_hides_links(self):
+        skolon_user, skolon_profile, school = self.create_skolon_user_with_school(
+            username="skolon_admin_sidebar",
+            school_name="Skolon Sidebar School",
+        )
+
+        self.client.force_login(skolon_user)
+        self.set_selected_school(school.id)
+
+        profile_response = self.client.get(reverse("profile"))
+        self.assertNotContains(profile_response, reverse("settings"))
+        self.assertNotContains(profile_response, reverse("school"))
+
+        settings_response = self.client.get(reverse("settings"), follow=True)
+        self.assertEqual(settings_response.status_code, 200)
+        self.assertEqual(settings_response.request["PATH_INFO"], reverse("profile"))
+        self.assertContains(settings_response, "This page is not available for Skolon accounts.")
+
+        invite_response = self.client.get(reverse("invite_staff"), follow=True)
+        self.assertEqual(invite_response.status_code, 200)
+        self.assertEqual(invite_response.request["PATH_INFO"], reverse("profile"))
+        self.assertContains(invite_response, "This page is not available for Skolon accounts.")
 
     def test_school_signup_with_license_code_grants_90_day_license(self):
         code = SchoolLicenseCode.objects.create(code="SCHOOL90")

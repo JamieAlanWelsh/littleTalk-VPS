@@ -465,8 +465,9 @@ class JoinRequestForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # Optional: limit to active schools, alphabetize
-        self.fields["school"].queryset = School.objects.order_by("name")
+        self.fields["school"].queryset = School.objects.filter(
+            skolon_org__isnull=True
+        ).order_by("name")
 
 
 class ParentAccessCodeForm(forms.Form):

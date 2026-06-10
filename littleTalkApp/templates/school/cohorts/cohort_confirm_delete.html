@@ -23,8 +23,8 @@
   <form method="POST" class="form-stack">
     {% csrf_token %}
 
-    <label for="password" class="label">Enter your password to confirm deletion:</label>
-    <input type="password" name="password" id="password" required class="input">
+    <label for="confirmation" class="label">Type DELETE to confirm deletion:</label>
+    <input type="text" name="confirmation" id="confirmation" required class="input" autocomplete="off" autocapitalize="characters">
 
     {% if error_message %}
       <p class="error-message">{{ error_message }}</p>
