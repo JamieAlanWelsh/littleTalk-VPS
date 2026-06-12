@@ -6,6 +6,7 @@ import {
     PointerSensor,
 } from "@dnd-kit/react";
 import { useState } from "react";
+import { DragImageOverlay } from "../../components/DragImageOverlay/DragImageOverlay";
 import { DraggableImage } from "../../components/DraggableImage/DraggableImage";
 import { DroppableImageZone } from "../../components/DroppableImageZone/DroppableImageZone";
 import { PoolTray } from "../../components/PoolTray/PoolTray";
@@ -161,6 +162,7 @@ export const WhosWhoBoard = ({
                 onDragStart={handleDragStart}
                 onDragEnd={handleDragEnd}
             >
+                <DragImageOverlay />
                 <div className={styles.targetsRow}>
                     {targets.map((target) => {
                         const hasPlacedItem =

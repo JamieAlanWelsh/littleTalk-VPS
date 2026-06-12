@@ -13,6 +13,7 @@ interface ImageOptionProps {
     isCorrect: boolean | null;
     isSelected: boolean;
     isDragging?: boolean;
+    fitToContainer?: boolean;
     isDisabled?: boolean;
     optionBackgroundColor?: string;
     isBorderless?: boolean;
@@ -30,6 +31,7 @@ export const ImageOption = React.forwardRef<
             isCorrect,
             isSelected,
             isDragging = false,
+            fitToContainer = false,
             isDisabled = false,
             optionBackgroundColor,
             isBorderless = false,
@@ -69,14 +71,24 @@ export const ImageOption = React.forwardRef<
                 type="button"
                 draggable={false}
                 ref={ref}
-                style={
-                    optionBackgroundColor
+                style={{
+                    ...(optionBackgroundColor
                         ? {
                               ["--option-bg-color" as string]:
                                   optionBackgroundColor,
                           }
-                        : undefined
-                }
+                        : {}),
+                    ...(fitToContainer
+                        ? {
+                              ["--icon-block-width" as string]: "100%",
+                              ["--icon-block-height" as string]: "100%",
+                              ["--icon-block-img-width" as string]: "100%",
+                              ["--icon-block-img-height" as string]: "100%",
+                              ["--icon-block-padding" as string]:
+                                  "clamp(0.3rem, 3.5%, 1rem)",
+                          }
+                        : {}),
+                }}
             >
                 <img
                     src={image.imageUrl}

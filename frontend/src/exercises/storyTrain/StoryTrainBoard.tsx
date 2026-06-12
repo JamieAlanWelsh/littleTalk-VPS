@@ -5,6 +5,7 @@ import {
     KeyboardSensor,
     PointerSensor,
 } from "@dnd-kit/react";
+import { DragImageOverlay } from "../../components/DragImageOverlay/DragImageOverlay";
 import { DraggableImage } from "../../components/DraggableImage/DraggableImage";
 import { DroppableImageZone } from "../../components/DroppableImageZone/DroppableImageZone";
 import { PoolTray } from "../../components/PoolTray/PoolTray";
@@ -67,6 +68,7 @@ export const StoryTrainBoard = ({
             className={`${styles.board} ${isFourSlotBoard ? styles.boardFourSlots : ""}`}
         >
             <DragDropProvider sensors={sensors} onDragEnd={onDragEnd}>
+                <DragImageOverlay />
                 <div className={styles.slotsCard}>
                     <div
                         className={`${styles.slotsGrid} ${isFourSlotBoard ? styles.slotsGridFour : ""}`}

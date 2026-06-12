@@ -10,6 +10,7 @@ import {
     KeyboardSensor,
     PointerSensor,
 } from "@dnd-kit/react";
+import { DragImageOverlay } from "../../components/DragImageOverlay/DragImageOverlay";
 import { CategoryBox } from "../../components/CategoryBox/CategoryBox";
 import { DraggableImage } from "../../components/DraggableImage/DraggableImage";
 import { PoolTray } from "../../components/PoolTray/PoolTray";
@@ -92,6 +93,7 @@ export const CategorisationBoard = ({
             }}
         >
             <DragDropProvider sensors={sensors} onDragEnd={onDragEnd}>
+                <DragImageOverlay />
                 <div
                     style={{
                         display: "flex",

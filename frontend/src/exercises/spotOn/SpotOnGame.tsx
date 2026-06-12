@@ -6,6 +6,7 @@ import {
     PointerSensor,
 } from "@dnd-kit/react";
 import { useMemo, useRef, useState } from "react";
+import { DragImageOverlay } from "../../components/DragImageOverlay/DragImageOverlay";
 import { DraggableImage } from "../../components/DraggableImage/DraggableImage";
 import { DroppableImageZone } from "../../components/DroppableImageZone/DroppableImageZone";
 import { useExerciseTracking } from "../../hooks";
@@ -292,6 +293,7 @@ export const SpotOnGame = ({
 
                 return (
                     <DragDropProvider sensors={sensors} onDragEnd={onDragEnd}>
+                        <DragImageOverlay />
                         <div
                             className={`${styles.boardCard} ${needsDepthEffect ? "" : styles.suppressDisabledOpacity}`.trim()}
                         >

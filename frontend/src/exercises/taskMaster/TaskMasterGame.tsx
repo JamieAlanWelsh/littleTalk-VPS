@@ -6,6 +6,7 @@ import {
     PointerSensor,
 } from "@dnd-kit/react";
 import { useMemo, useRef, useState, type CSSProperties } from "react";
+import { DragImageOverlay } from "../../components/DragImageOverlay/DragImageOverlay";
 import { DraggableImage } from "../../components/DraggableImage/DraggableImage";
 import { DroppableImageZone } from "../../components/DroppableImageZone/DroppableImageZone";
 import { PoolTray } from "../../components/PoolTray/PoolTray";
@@ -500,6 +501,7 @@ export const TaskMasterGame = ({ questions }: TaskMasterGameProps) => {
                             onDragStart={onDragStart}
                             onDragEnd={onDragEnd}
                         >
+                            <DragImageOverlay />
                             <div
                                 className={`${styles.boardCard} ${isDragging ? styles.dragging : ""}`.trim()}
                             >

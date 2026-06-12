@@ -5,6 +5,7 @@ import {
     KeyboardSensor,
     PointerSensor,
 } from "@dnd-kit/react";
+import { DragImageOverlay } from "../../components/DragImageOverlay/DragImageOverlay";
 import { DraggableImage } from "../../components/DraggableImage/DraggableImage";
 import { DroppableImageZone } from "../../components/DroppableImageZone/DroppableImageZone";
 import { PoolTray } from "../../components/PoolTray/PoolTray";
@@ -185,6 +186,7 @@ export const ColourfulSemanticsBoard = ({
 
     return (
         <DragDropProvider sensors={sensors} onDragEnd={onDragEnd}>
+            <DragImageOverlay />
             <div className={styles.board}>
                 <section className={styles.imageCard}>
                     <img
