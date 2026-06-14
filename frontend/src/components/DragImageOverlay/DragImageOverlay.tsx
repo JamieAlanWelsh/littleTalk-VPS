@@ -26,7 +26,14 @@ export const DragImageOverlay = () => {
     const draggableImageData = isDraggableImageData(dragData) ? dragData : null;
 
     return createPortal(
-        <DragOverlay style={{ pointerEvents: "none" }}>
+        <DragOverlay
+            style={{ pointerEvents: "none" }}
+            dropAnimation={{
+                duration: 250,
+                easing: "ease",
+                sideEffects: null,
+            }}
+        >
             {draggableImageData ? (
                 <ImageOption
                     image={draggableImageData.image}

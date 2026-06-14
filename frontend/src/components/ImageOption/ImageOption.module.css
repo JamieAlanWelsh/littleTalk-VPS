@@ -21,8 +21,7 @@
     transition:
         background-color 0.2s ease-in-out,
         border-color 0.2s ease-in-out,
-        box-shadow 0.2s ease-in-out,
-        opacity 0.2s ease-in-out;
+        box-shadow 0.2s ease-in-out;
     text-align: center;
     width: var(--icon-block-width, 6.875rem);
     height: var(--icon-block-height, 6.875rem);
@@ -45,7 +44,7 @@
 
 .icon-block.dragging {
     transition: none;
-    opacity: 0;
+    opacity: 1;
 }
 
 .icon-block.interactive {
