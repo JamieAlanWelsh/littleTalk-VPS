@@ -20,6 +20,7 @@ interface ImageOptionProps {
     onClick: () => void;
     onPointerEnter?: React.PointerEventHandler<HTMLButtonElement>;
     dndButtonProps?: React.ButtonHTMLAttributes<HTMLButtonElement>;
+    style?: React.CSSProperties;
 }
 
 export const ImageOption = React.forwardRef<
@@ -39,6 +40,7 @@ export const ImageOption = React.forwardRef<
             onClick,
             onPointerEnter,
             dndButtonProps,
+            style: extraStyle,
         },
         ref,
     ) => {
@@ -91,6 +93,7 @@ export const ImageOption = React.forwardRef<
                                   "clamp(0.3rem, 3.5%, 1rem)",
                           }
                         : {}),
+                    ...extraStyle,
                 }}
             >
                 <img

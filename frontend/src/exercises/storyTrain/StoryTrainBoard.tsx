@@ -59,6 +59,7 @@ export const StoryTrainBoard = ({
                 image={item}
                 isCorrect={isCorrect}
                 isSelected={false}
+                coverFit
                 onClick={() => {}}
             />
         );

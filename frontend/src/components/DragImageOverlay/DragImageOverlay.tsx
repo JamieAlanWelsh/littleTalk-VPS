@@ -53,6 +53,15 @@ export const DragImageOverlay = () => {
                     isBorderless={draggableImageData.isBorderless}
                     isDragging={false}
                     onClick={() => {}}
+                    style={
+                        draggableImageData.coverFit
+                            ? {
+                                  ["--icon-block-overflow" as string]: "hidden",
+                                  ["--icon-block-img-object-fit" as string]:
+                                      "cover",
+                              }
+                            : undefined
+                    }
                 />
             ) : null}
         </DragOverlay>,

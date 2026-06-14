@@ -11,6 +11,7 @@ export interface DraggableImageDragData {
     isDisabled?: boolean;
     optionBackgroundColor?: string;
     isBorderless: boolean;
+    coverFit?: boolean;
 }
 
 interface DraggableImageProps {
@@ -21,6 +22,7 @@ interface DraggableImageProps {
     isDisabled?: boolean;
     optionBackgroundColor?: string;
     isBorderless?: boolean;
+    coverFit?: boolean;
     onClick: () => void;
     onPointerEnter?: PointerEventHandler<HTMLButtonElement>;
 }
@@ -33,6 +35,7 @@ export const DraggableImage = ({
     isDisabled = false,
     optionBackgroundColor,
     isBorderless = false,
+    coverFit = false,
     onClick,
     onPointerEnter,
 }: DraggableImageProps) => {
@@ -46,6 +49,7 @@ export const DraggableImage = ({
             isDisabled,
             optionBackgroundColor,
             isBorderless,
+            coverFit,
         } satisfies DraggableImageDragData,
     });
 
