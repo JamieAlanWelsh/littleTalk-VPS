@@ -153,7 +153,9 @@ export const InTheKnowGame = ({
 
     const disableCheck = questionState.selectedIconIds.length === 0;
 
-    const sceneFrameStyle: CSSProperties = {
+    const sceneFrameStyle: CSSProperties & {
+        "--scene-aspect-ratio": number;
+    } = {
         "--scene-aspect-ratio": sceneAspectRatio,
     };
 

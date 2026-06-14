@@ -5,18 +5,17 @@
  * Called by exercise entry points to load the exercise definition from Django.
  */
 
-import type {
-  MatchingExercisePayload,
-  MatchingExercisePayload2,
-} from "./types";
+import type { MatchingExercisePayload2 } from "./types";
 import { MatchingExercisePayload2Schema } from "./types";
 
-export function getDataExercisePayload(rootElement: HTMLElement): any {
-  const payloadJson = rootElement.getAttribute("data-exercise-payload");
-  if (!payloadJson) {
-    throw new Error("Missing data-exercise-payload attribute on root element");
-  }
-  return JSON.parse(payloadJson);
+export function getDataExercisePayload(rootElement: HTMLElement): unknown {
+    const payloadJson = rootElement.getAttribute("data-exercise-payload");
+    if (!payloadJson) {
+        throw new Error(
+            "Missing data-exercise-payload attribute on root element",
+        );
+    }
+    return JSON.parse(payloadJson);
 }
 
 /**
@@ -27,14 +26,14 @@ export function getDataExercisePayload(rootElement: HTMLElement): any {
  * @throws Error if JSON fails schema validation
  */
 export function loadExerciseDataFromJSON(
-  jsonData: unknown,
+    jsonData: unknown,
 ): MatchingExercisePayload2 {
-  try {
-    const validated = MatchingExercisePayload2Schema.parse(jsonData);
-    return validated;
-  } catch (error) {
-    throw new Error(
-      `Invalid exercise data: ${error instanceof Error ? error.message : String(error)}`,
-    );
-  }
+    try {
+        const validated = MatchingExercisePayload2Schema.parse(jsonData);
+        return validated;
+    } catch (error) {
+        throw new Error(
+            `Invalid exercise data: ${error instanceof Error ? error.message : String(error)}`,
+        );
+    }
 }

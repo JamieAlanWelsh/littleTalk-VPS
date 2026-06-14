@@ -3,6 +3,8 @@
   "include": ["frontend/src/**/*"],
   "exclude": ["**/*.spec.ts"],
   "compilerOptions": {
+    "jsx": "react-jsx",
+    "types": ["vite/client", "react", "react-dom"],
     "plugins": [{ "name": "typescript-plugin-css-modules" }]
   }
 }

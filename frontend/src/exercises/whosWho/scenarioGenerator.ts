@@ -17,7 +17,7 @@ const PRONOUN_TO_TARGET_ROLE: Record<WhosWhoPronoun, WhosWhoTargetRole> = {
     them: "group",
 };
 
-const pickRandom = <T>(items: T[]): T => {
+const pickRandom = <T>(items: readonly T[]): T => {
     return items[Math.floor(Math.random() * items.length)];
 };
 
