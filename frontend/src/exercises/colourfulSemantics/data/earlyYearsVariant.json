@@ -938,31 +938,6 @@
       ]
     },
     {
-      "id": "monkey-sitting-tree-jungle",
-      "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/monkey_sitting_tree_jungle.webp",
-      "targetImageAlt": "A monkey sitting on a tree in the jungle.",
-      "steps": [
-        {
-          "id": "monkey-sitting-tree-jungle-who",
-          "slot": "who",
-          "prompt": "Who is in the picture?",
-          "correctOptionId": "who-monkey"
-        },
-        {
-          "id": "monkey-sitting-tree-jungle-doing",
-          "slot": "doing",
-          "prompt": "What is it doing?",
-          "correctOptionId": "doing-sitting"
-        },
-        {
-          "id": "monkey-sitting-tree-jungle-what",
-          "slot": "what",
-          "prompt": "What is it sitting on?",
-          "correctOptionId": "what-tree"
-        }
-      ]
-    },
-    {
       "id": "teacher-reading-book-school",
       "targetImageUrl": "/static/exercise_assets/colourful_semantics/target_images/teacher_reading_book_school.webp",
       "targetImageAlt": "A teacher reading a book at school.",
