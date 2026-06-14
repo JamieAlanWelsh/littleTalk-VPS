@@ -1,10 +1,13 @@
-import type { DragEndEvent } from "@dnd-kit/abstract";
-import { PointerActivationConstraints } from "@dnd-kit/dom";
 import {
-    DragDropProvider,
+    DndContext,
     KeyboardSensor,
     PointerSensor,
-} from "@dnd-kit/react";
+    pointerWithin,
+    rectIntersection,
+    type DragEndEvent,
+    useSensor,
+    useSensors,
+} from "@dnd-kit/core";
 import { useMemo, useRef, useState, type CSSProperties } from "react";
 import { DragImageOverlay } from "../../components/DragImageOverlay/DragImageOverlay";
 import { DraggableImage } from "../../components/DraggableImage/DraggableImage";
@@ -221,14 +224,12 @@ export const TaskMasterGame = ({ questions }: TaskMasterGameProps) => {
         label: "Standard",
     };
 
-    const sensors = [
-        PointerSensor.configure({
-            activationConstraints: [
-                new PointerActivationConstraints.Distance({ value: 1 }),
-            ],
+    const sensors = useSensors(
+        useSensor(PointerSensor, {
+            activationConstraint: { distance: 1 },
         }),
-        KeyboardSensor,
-    ];
+        useSensor(KeyboardSensor),
+    );
 
     const onDragStart = () => {
         if (questionState.answerState !== "notAnswered") {
@@ -241,12 +242,12 @@ export const TaskMasterGame = ({ questions }: TaskMasterGameProps) => {
     const onDragEnd = (event: DragEndEvent) => {
         setIsDragging(false);
 
-        if (questionState.answerState !== "notAnswered" || event.canceled) {
+        if (questionState.answerState !== "notAnswered") {
             return;
         }
 
-        const sourceId = String(event.operation.source?.id ?? "");
-        const targetId = String(event.operation.target?.id ?? "");
+        const sourceId = String(event.active.id ?? "");
+        const targetId = String(event.over?.id ?? "");
 
         if (!sourceId || !targetId || !isValidDropTarget(targetId)) {
             return;
@@ -496,8 +497,14 @@ export const TaskMasterGame = ({ questions }: TaskMasterGameProps) => {
 
                 return (
                     <div className={styles.board}>
-                        <DragDropProvider
+                        <DndContext
                             sensors={sensors}
+                            collisionDetection={(args) => {
+                                const pointerCollisions = pointerWithin(args);
+                                return pointerCollisions.length > 0
+                                    ? pointerCollisions
+                                    : rectIntersection(args);
+                            }}
                             onDragStart={onDragStart}
                             onDragEnd={onDragEnd}
                         >
@@ -568,7 +575,7 @@ export const TaskMasterGame = ({ questions }: TaskMasterGameProps) => {
                                     objectPicturesById[objectId]?.label
                                 }
                             />
-                        </DragDropProvider>
+                        </DndContext>
                     </div>
                 );
             }}

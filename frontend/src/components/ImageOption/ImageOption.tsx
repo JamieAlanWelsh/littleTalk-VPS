@@ -19,6 +19,7 @@ interface ImageOptionProps {
     isBorderless?: boolean;
     onClick: () => void;
     onPointerEnter?: React.PointerEventHandler<HTMLButtonElement>;
+    dndButtonProps?: React.ButtonHTMLAttributes<HTMLButtonElement>;
 }
 
 export const ImageOption = React.forwardRef<
@@ -37,6 +38,7 @@ export const ImageOption = React.forwardRef<
             isBorderless = false,
             onClick,
             onPointerEnter,
+            dndButtonProps,
         },
         ref,
     ) => {
@@ -61,6 +63,7 @@ export const ImageOption = React.forwardRef<
 
         return (
             <button
+                {...dndButtonProps}
                 className={`${styles["icon-block"]} ${styles[stateClass]} ${optionBackgroundColor ? styles.withCustomBackground : ""} ${isBorderless ? styles.borderless : ""} ${isDragging ? styles.dragging : ""}`.trim()}
                 onClick={onClick}
                 onPointerEnter={onPointerEnter}

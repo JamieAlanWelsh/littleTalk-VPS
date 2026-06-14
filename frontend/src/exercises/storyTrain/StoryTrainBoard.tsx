@@ -1,10 +1,13 @@
-import type { DragEndEvent } from "@dnd-kit/abstract";
-import { PointerActivationConstraints } from "@dnd-kit/dom";
 import {
-    DragDropProvider,
+    DndContext,
     KeyboardSensor,
     PointerSensor,
-} from "@dnd-kit/react";
+    pointerWithin,
+    rectIntersection,
+    type DragEndEvent,
+    useSensor,
+    useSensors,
+} from "@dnd-kit/core";
 import { DragImageOverlay } from "../../components/DragImageOverlay/DragImageOverlay";
 import { DraggableImage } from "../../components/DraggableImage/DraggableImage";
 import { DroppableImageZone } from "../../components/DroppableImageZone/DroppableImageZone";
@@ -38,14 +41,12 @@ export const StoryTrainBoard = ({
 }: StoryTrainBoardProps) => {
     const isFourSlotBoard = boardState.slotItemIds.length === 4;
     const slotLabels = getSlotLabels(boardState.slotItemIds.length);
-    const sensors = [
-        PointerSensor.configure({
-            activationConstraints: [
-                new PointerActivationConstraints.Distance({ value: 1 }),
-            ],
+    const sensors = useSensors(
+        useSensor(PointerSensor, {
+            activationConstraint: { distance: 1 },
         }),
-        KeyboardSensor,
-    ];
+        useSensor(KeyboardSensor),
+    );
 
     const renderImage = (itemId: string) => {
         const item = itemsById[itemId];
@@ -67,7 +68,16 @@ export const StoryTrainBoard = ({
         <div
             className={`${styles.board} ${isFourSlotBoard ? styles.boardFourSlots : ""}`}
         >
-            <DragDropProvider sensors={sensors} onDragEnd={onDragEnd}>
+            <DndContext
+                sensors={sensors}
+                collisionDetection={(args) => {
+                    const pointerCollisions = pointerWithin(args);
+                    return pointerCollisions.length > 0
+                        ? pointerCollisions
+                        : rectIntersection(args);
+                }}
+                onDragEnd={onDragEnd}
+            >
                 <DragImageOverlay />
                 <div className={styles.slotsCard}>
                     <div
@@ -99,7 +109,7 @@ export const StoryTrainBoard = ({
                     itemIds={boardState.poolItemIds}
                     renderItem={renderImage}
                 />
-            </DragDropProvider>
+            </DndContext>
         </div>
     );
 };

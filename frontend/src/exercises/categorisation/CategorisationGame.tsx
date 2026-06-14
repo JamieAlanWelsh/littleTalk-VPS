@@ -5,7 +5,7 @@
  * Users drag items from the bottom pool into category boxes.
  */
 
-import type { DragEndEvent } from "@dnd-kit/abstract";
+import type { DragEndEvent } from "@dnd-kit/core";
 import type { CategorisationItem } from "./types";
 import { CategorisationBoard } from "./CategorisationBoard";
 import {
@@ -82,12 +82,8 @@ export const CategorisationGame = ({
             return;
         }
 
-        if (event.canceled) {
-            return;
-        }
-
-        const sourceId = event.operation.source?.id;
-        const targetId = event.operation.target?.id;
+        const sourceId = event.active.id;
+        const targetId = event.over?.id;
 
         if (!sourceId || !targetId) {
             return;

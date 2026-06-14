@@ -1,10 +1,13 @@
-import type { DragEndEvent } from "@dnd-kit/abstract";
-import { PointerActivationConstraints } from "@dnd-kit/dom";
 import {
-    DragDropProvider,
+    DndContext,
     KeyboardSensor,
     PointerSensor,
-} from "@dnd-kit/react";
+    pointerWithin,
+    rectIntersection,
+    type DragEndEvent,
+    useSensor,
+    useSensors,
+} from "@dnd-kit/core";
 import { useMemo, useRef, useState } from "react";
 import { DragImageOverlay } from "../../components/DragImageOverlay/DragImageOverlay";
 import { DraggableImage } from "../../components/DraggableImage/DraggableImage";
@@ -194,21 +197,19 @@ export const SpotOnGame = ({
     );
     const activeQuestionIdRef = useRef(questions[0]?.id ?? "");
 
-    const sensors = [
-        PointerSensor.configure({
-            activationConstraints: [
-                new PointerActivationConstraints.Distance({ value: 1 }),
-            ],
+    const sensors = useSensors(
+        useSensor(PointerSensor, {
+            activationConstraint: { distance: 1 },
         }),
-        KeyboardSensor,
-    ];
+        useSensor(KeyboardSensor),
+    );
 
     const onDragEnd = (event: DragEndEvent) => {
-        if (questionState.answerState !== "notAnswered" || event.canceled) {
+        if (questionState.answerState !== "notAnswered") {
             return;
         }
 
-        const targetId = event.operation.target?.id;
+        const targetId = event.over?.id;
 
         if (!targetId) {
             return;
@@ -292,7 +293,16 @@ export const SpotOnGame = ({
                 );
 
                 return (
-                    <DragDropProvider sensors={sensors} onDragEnd={onDragEnd}>
+                    <DndContext
+                        sensors={sensors}
+                        collisionDetection={(args) => {
+                            const pointerCollisions = pointerWithin(args);
+                            return pointerCollisions.length > 0
+                                ? pointerCollisions
+                                : rectIntersection(args);
+                        }}
+                        onDragEnd={onDragEnd}
+                    >
                         <DragImageOverlay />
                         <div
                             className={`${styles.boardCard} ${needsDepthEffect ? "" : styles.suppressDisabledOpacity}`.trim()}
@@ -406,7 +416,7 @@ export const SpotOnGame = ({
                                 )}
                             </div>
                         </div>
-                    </DragDropProvider>
+                    </DndContext>
                 );
             }}
         </ExerciseLayout>

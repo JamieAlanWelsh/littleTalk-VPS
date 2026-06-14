@@ -3,13 +3,16 @@
  * Displays the drag-and-drop board with categories and pool
  */
 
-import type { DragEndEvent } from "@dnd-kit/abstract";
-import { PointerActivationConstraints } from "@dnd-kit/dom";
 import {
-    DragDropProvider,
+    DndContext,
     KeyboardSensor,
     PointerSensor,
-} from "@dnd-kit/react";
+    pointerWithin,
+    rectIntersection,
+    type DragEndEvent,
+    useSensor,
+    useSensors,
+} from "@dnd-kit/core";
 import { DragImageOverlay } from "../../components/DragImageOverlay/DragImageOverlay";
 import { CategoryBox } from "../../components/CategoryBox/CategoryBox";
 import { DraggableImage } from "../../components/DraggableImage/DraggableImage";
@@ -46,14 +49,12 @@ export const CategorisationBoard = ({
     showFeedback = false,
 }: CategorisationBoardProps) => {
     const { play } = useAudio();
-    const sensors = [
-        PointerSensor.configure({
-            activationConstraints: [
-                new PointerActivationConstraints.Distance({ value: 1 }),
-            ],
+    const sensors = useSensors(
+        useSensor(PointerSensor, {
+            activationConstraint: { distance: 1 },
         }),
-        KeyboardSensor,
-    ];
+        useSensor(KeyboardSensor),
+    );
 
     const playItemSfx = (item: CategorisationItem) => {
         if (isSfxMuted || !item.sfxUrl) {
@@ -92,7 +93,16 @@ export const CategorisationBoard = ({
                 gap: "1.5rem",
             }}
         >
-            <DragDropProvider sensors={sensors} onDragEnd={onDragEnd}>
+            <DndContext
+                sensors={sensors}
+                collisionDetection={(args) => {
+                    const pointerCollisions = pointerWithin(args);
+                    return pointerCollisions.length > 0
+                        ? pointerCollisions
+                        : rectIntersection(args);
+                }}
+                onDragEnd={onDragEnd}
+            >
                 <DragImageOverlay />
                 <div
                     style={{
@@ -130,7 +140,7 @@ export const CategorisationBoard = ({
                     renderItem={renderImage}
                     itemsById={itemsById}
                 />
-            </DragDropProvider>
+            </DndContext>
         </div>
     );
 };

@@ -1,4 +1,4 @@
-import type { DragEndEvent } from "@dnd-kit/abstract";
+import type { DragEndEvent } from "@dnd-kit/core";
 import { useMemo, useState } from "react";
 import { useExerciseTracking } from "../../hooks";
 import ExerciseLayout from "../../layouts/exerciseLayout/ExerciseLayout";
@@ -99,12 +99,12 @@ export const StoryTrainGame = ({
     };
 
     const handleDragEnd = (questionIndex: number, event: DragEndEvent) => {
-        if (questionState.answerState !== "notAnswered" || event.canceled) {
+        if (questionState.answerState !== "notAnswered") {
             return;
         }
 
-        const sourceId = event.operation.source?.id;
-        const targetId = event.operation.target?.id;
+        const sourceId = event.active.id;
+        const targetId = event.over?.id;
 
         if (!sourceId || !targetId) {
             return;
