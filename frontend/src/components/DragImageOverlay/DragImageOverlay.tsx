@@ -1,4 +1,8 @@
-import { DragOverlay, useDndContext } from "@dnd-kit/core";
+import {
+    DragOverlay,
+    defaultDropAnimationSideEffects,
+    useDndContext,
+} from "@dnd-kit/core";
 import { createPortal } from "react-dom";
 import { ImageOption } from "../ImageOption";
 import type { DraggableImageDragData } from "../DraggableImage/DraggableImage";
@@ -31,7 +35,9 @@ export const DragImageOverlay = () => {
             dropAnimation={{
                 duration: 250,
                 easing: "ease",
-                sideEffects: null,
+                sideEffects: defaultDropAnimationSideEffects({
+                    styles: { active: { opacity: "0" } },
+                }),
             }}
         >
             {draggableImageData ? (

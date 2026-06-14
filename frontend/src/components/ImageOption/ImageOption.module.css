@@ -44,7 +44,7 @@
 
 .icon-block.dragging {
     transition: none;
-    opacity: 1;
+    opacity: 0;
 }
 
 .icon-block.interactive {
