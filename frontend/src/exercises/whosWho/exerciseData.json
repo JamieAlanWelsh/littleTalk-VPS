@@ -215,13 +215,8 @@
     },
     {
       "id": "item-orange",
-      "imageUrl": "/static/exercise_assets/early_years_image_options/orange_flaticon.webp",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/orange.webp",
       "label": "The Orange"
-    },
-    {
-      "id": "item-orange-flaticon",
-      "imageUrl": "/static/exercise_assets/early_years_image_options/orange_flaticon.webp",
-      "label": "The Orange Flaticon"
     },
     {
       "id": "item-peach",

@@ -581,9 +581,9 @@
         "sfxUrl": "/static/exercise_assets/categorisation/vegetables/mushroom.wav"
       },
       {
-        "id": "onion_flaticon",
-        "imageUrl": "/static/exercise_assets/categorisation/vegetables/onion_flaticon.webp",
-        "label": "Onion Flaticon"
+        "id": "onion",
+        "imageUrl": "/static/exercise_assets/categorisation/vegetables/onion.webp",
+        "label": "Onion"
       },
       {
         "id": "peas",
@@ -621,7 +621,7 @@
         "sfxUrl": "/static/exercise_assets/categorisation/vegetables/tomato.wav"
       }
     ],
-    "vehicles": [
+    "transport": [
       {
         "id": "aeroplane",
         "imageUrl": "/static/exercise_assets/categorisation/vehicles/aeroplane.webp",
@@ -663,9 +663,9 @@
         "sfxUrl": "/static/exercise_assets/categorisation/vehicles/fire_engine.wav"
       },
       {
-        "id": "hand-gesture",
-        "imageUrl": "/static/exercise_assets/categorisation/vehicles/hand-gesture.webp",
-        "label": "Hand Gesture"
+        "id": "scooter",
+        "imageUrl": "/static/exercise_assets/categorisation/vehicles/scooter.webp",
+        "label": "Scooter"
       },
       {
         "id": "helicopter",
@@ -699,11 +699,6 @@
         "id": "train",
         "imageUrl": "/static/exercise_assets/categorisation/vehicles/train.webp",
         "label": "Train"
-      },
-      {
-        "id": "transportation_flaticon",
-        "imageUrl": "/static/exercise_assets/categorisation/vehicles/transportation_flaticon.webp",
-        "label": "Transportation Flaticon"
       },
       {
         "id": "truck",
@@ -826,6 +821,6 @@
     "toys": "/static/exercise_assets/categorisation/toys-sports/toys_title_image.webp",
     "vegetables": "/static/exercise_assets/categorisation/vegetables/vegetables_title_image.webp",
     "wild-animals": "/static/exercise_assets/categorisation/wild-animals/wild_animals_title_image.webp",
-    "vehicles": "/static/exercise_assets/categorisation/vehicles/vehicles_title_image.webp"
+    "transport": "/static/exercise_assets/categorisation/vehicles/vehicles_title_image.webp"
     }
 }

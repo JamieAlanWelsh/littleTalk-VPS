@@ -1,5 +1,4 @@
-import { useDroppable } from "@dnd-kit/react";
-import { CollisionPriority } from "@dnd-kit/abstract";
+import { useDroppable } from "@dnd-kit/core";
 import styles from "./DroppableImageZone.module.css";
 
 interface DroppableImageZoneProps {
@@ -13,16 +12,12 @@ export const DroppableImageZone = ({
     className,
     children,
 }: DroppableImageZoneProps) => {
-    const { isDropTarget, ref } = useDroppable({
-        id,
-        accept: "draggable-image",
-        collisionPriority: CollisionPriority.Low,
-    });
+    const { isOver, setNodeRef } = useDroppable({ id });
 
     return (
         <div
-            className={`${styles.zone} ${className ?? ""} ${isDropTarget ? styles.active : ""}`.trim()}
-            ref={ref}
+            className={`${styles.zone} ${className ?? ""} ${isOver ? styles.active : ""}`.trim()}
+            ref={setNodeRef}
         >
             <div className={styles.content}>{children}</div>
         </div>

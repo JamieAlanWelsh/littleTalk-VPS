@@ -1,11 +1,15 @@
-import type { DragEndEvent } from "@dnd-kit/abstract";
-import { PointerActivationConstraints } from "@dnd-kit/dom";
 import {
-    DragDropProvider,
+    DndContext,
     KeyboardSensor,
     PointerSensor,
-} from "@dnd-kit/react";
+    pointerWithin,
+    rectIntersection,
+    type DragEndEvent,
+    useSensor,
+    useSensors,
+} from "@dnd-kit/core";
 import { useState } from "react";
+import { DragImageOverlay } from "../../components/DragImageOverlay/DragImageOverlay";
 import { DraggableImage } from "../../components/DraggableImage/DraggableImage";
 import { DroppableImageZone } from "../../components/DroppableImageZone/DroppableImageZone";
 import { PoolTray } from "../../components/PoolTray/PoolTray";
@@ -132,14 +136,12 @@ export const WhosWhoBoard = ({
 }: WhosWhoBoardProps) => {
     const [isDragging, setIsDragging] = useState(false);
 
-    const sensors = [
-        PointerSensor.configure({
-            activationConstraints: [
-                new PointerActivationConstraints.Distance({ value: 1 }),
-            ],
+    const sensors = useSensors(
+        useSensor(PointerSensor, {
+            activationConstraint: { distance: 1 },
         }),
-        KeyboardSensor,
-    ];
+        useSensor(KeyboardSensor),
+    );
 
     const handleDragStart = () => {
         if (answerState !== "notAnswered") {
@@ -156,11 +158,18 @@ export const WhosWhoBoard = ({
 
     return (
         <div className={styles.wrapper}>
-            <DragDropProvider
+            <DndContext
                 sensors={sensors}
+                collisionDetection={(args) => {
+                    const pointerCollisions = pointerWithin(args);
+                    return pointerCollisions.length > 0
+                        ? pointerCollisions
+                        : rectIntersection(args);
+                }}
                 onDragStart={handleDragStart}
                 onDragEnd={handleDragEnd}
             >
+                <DragImageOverlay />
                 <div className={styles.targetsRow}>
                     {targets.map((target) => {
                         const hasPlacedItem =
@@ -224,7 +233,7 @@ export const WhosWhoBoard = ({
                     }
                     itemsById={itemById}
                 />
-            </DragDropProvider>
+            </DndContext>
         </div>
     );
 };

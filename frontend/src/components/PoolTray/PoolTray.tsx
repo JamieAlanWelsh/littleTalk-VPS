@@ -1,5 +1,4 @@
-import { useDroppable } from "@dnd-kit/react";
-import { CollisionPriority } from "@dnd-kit/abstract";
+import { useDroppable } from "@dnd-kit/core";
 import styles from "./PoolTray.module.css";
 
 interface PoolTrayProps {
@@ -19,19 +18,15 @@ export const PoolTray = ({
     renderItem,
     itemsById = {},
 }: PoolTrayProps) => {
-    const { isDropTarget, ref } = useDroppable({
-        id,
-        accept: "draggable-image",
-        collisionPriority: CollisionPriority.Low,
-    });
+    const { isOver, setNodeRef } = useDroppable({ id });
 
     const visibleItems = itemIds.slice(0, ITEMS_PER_VIEW);
 
     return (
         <section className={styles.tray}>
             <div
-                className={`${styles.dropZone} ${isDropTarget ? styles.active : ""}`.trim()}
-                ref={ref}
+                className={`${styles.dropZone} ${isOver ? styles.active : ""}`.trim()}
+                ref={setNodeRef}
             >
                 {itemIds.length > 0 ? (
                     <div className={styles.itemsContainer}>

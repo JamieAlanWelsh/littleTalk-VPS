@@ -1,4 +1,4 @@
-import type { DragEndEvent } from "@dnd-kit/abstract";
+import type { DragEndEvent } from "@dnd-kit/core";
 import { useMemo, useState } from "react";
 import { useExerciseTracking } from "../../hooks";
 import ExerciseLayout from "../../layouts/exerciseLayout/ExerciseLayout";
@@ -199,12 +199,12 @@ export const WhosWhoGame = ({
         );
 
     const handleDragEnd = (roundIndex: number, event: DragEndEvent) => {
-        if (questionState.answerState !== "notAnswered" || event.canceled) {
+        if (questionState.answerState !== "notAnswered") {
             return;
         }
 
-        const draggedItemId = event.operation.source?.id;
-        const dropTargetId = event.operation.target?.id;
+        const draggedItemId = event.active.id;
+        const dropTargetId = event.over?.id;
 
         if (!draggedItemId || !dropTargetId) {
             return;
