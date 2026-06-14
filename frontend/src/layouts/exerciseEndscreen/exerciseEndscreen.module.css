@@ -14,6 +14,12 @@
     box-shadow: var(--box-shadow);
     font-family: var(--font-roboto);
     color: var(--font-color);
+    /* Keep end screen responsive like settings: apply a lighter zoom curve
+       derived from global exercise zoom, and propagate scale to shared buttons. */
+    --endscreen-zoom: calc((var(--exercise-zoom, 1) * 0.55) + 0.5);
+    zoom: var(--endscreen-zoom);
+    transform-origin: top center;
+    --button-scale: var(--endscreen-zoom);
 }
 
 .congratsMessage {
