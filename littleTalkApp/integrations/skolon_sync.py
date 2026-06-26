@@ -28,14 +28,19 @@ logger = logging.getLogger(__name__)
 SYNCED_SKOLON_ROLES = {"TEACHER"}
 
 
-def _get_user_school_id(user: Dict) -> Optional[str]:
-    """Return the first school id from the live Skolon user payload."""
+def _get_user_school_ids(user: Dict) -> List[str]:
+    """Return all school ids from a Skolon user payload, preserving payload order."""
+    school_ids: List[str] = []
     schools = user.get("schools") or []
     if isinstance(schools, list):
         for school in schools:
-            if isinstance(school, dict) and school.get("id"):
-                return school["id"]
-    return user.get("schoolId") or user.get("school_id")
+            if isinstance(school, dict) and school.get("id") and school["id"] not in school_ids:
+                school_ids.append(school["id"])
+
+    fallback_school_id = user.get("schoolId") or user.get("school_id")
+    if fallback_school_id and fallback_school_id not in school_ids:
+        school_ids.append(fallback_school_id)
+    return school_ids
 
 
 def _get_user_role(user: Dict) -> Optional[str]:
@@ -45,6 +50,24 @@ def _get_user_role(user: Dict) -> Optional[str]:
 
 def _normalise_skolon_role(role: Optional[str]) -> str:
     return (role or "").strip().upper()
+
+
+def _resolve_user_org_from_school_ids(school_ids: List[str]) -> Optional[SkolonOrg]:
+    """Pick the first SkolonOrg that has a mapped local School from the user's school ids."""
+    if not school_ids:
+        return None
+
+    org_by_id = {
+        org.skolon_id: org
+        for org in SkolonOrg.objects.filter(skolon_id__in=school_ids).select_related("school")
+    }
+
+    for school_id in school_ids:
+        org = org_by_id.get(school_id)
+        if org and org.school is not None:
+            return org
+
+    return None
 
 
 def _get_license_school_id(lic: Dict) -> Optional[str]:
@@ -95,6 +118,61 @@ def _save_cursor(entity_type: str, version_tag: Optional[str]):
         )
 
 
+def _drain_paginated_results(
+    fetch_page,
+    items_key: str,
+    initial_cursor: Optional[str],
+    *,
+    max_pages: int = 1000,
+) -> Tuple[List[Dict], Optional[str]]:
+    """Drain Skolon pagination using versionTag/hasMore and return all items + final cursor."""
+    items: List[Dict] = []
+    current_cursor = initial_cursor
+    final_cursor: Optional[str] = initial_cursor
+    seen_version_tags = set()
+
+    for page_num in range(1, max_pages + 1):
+        result = fetch_page(version_tag=current_cursor)
+        page_items = result.get(items_key, [])
+        if isinstance(page_items, list):
+            items.extend(page_items)
+
+        page_version_tag = result.get("versionTag")
+        if page_version_tag:
+            final_cursor = page_version_tag
+
+        if not result.get("hasMore"):
+            break
+
+        if not page_version_tag:
+            logger.warning(
+                "Stopping %s pagination early: hasMore=true but versionTag missing on page %s.",
+                items_key,
+                page_num,
+            )
+            break
+
+        if page_version_tag in seen_version_tags:
+            logger.warning(
+                "Stopping %s pagination early: repeated versionTag '%s' on page %s.",
+                items_key,
+                page_version_tag,
+                page_num,
+            )
+            break
+
+        seen_version_tags.add(page_version_tag)
+        current_cursor = page_version_tag
+    else:
+        logger.warning(
+            "Stopping %s pagination after max_pages=%s safeguard.",
+            items_key,
+            max_pages,
+        )
+
+    return items, final_cursor
+
+
 # ---------------------------------------------------------------------------
 # Individual sync functions
 # ---------------------------------------------------------------------------
@@ -105,8 +183,11 @@ def sync_schools(client) -> Dict[str, object]:
     Local School creation is deferred until an active license is present.
     """
     cursor = _get_cursor(SkolonSyncCursor.EntityType.SCHOOL)
-    result = client.get_schools(version_tag=cursor)
-    schools = result["schools"]
+    schools, final_cursor = _drain_paginated_results(
+        client.get_schools,
+        "schools",
+        cursor,
+    )
     created_count = 0
     updated_count = 0
 
@@ -130,7 +211,7 @@ def sync_schools(client) -> Dict[str, object]:
         else:
             updated_count += 1
 
-    _save_cursor(SkolonSyncCursor.EntityType.SCHOOL, result.get("versionTag"))
+    _save_cursor(SkolonSyncCursor.EntityType.SCHOOL, final_cursor)
     stats = {
         "fetched": len(schools),
         "orgs_created": created_count,
@@ -153,8 +234,11 @@ def sync_users(client) -> Dict[str, object]:
     Deleted users are flagged; their local User link is left intact for auditing.
     """
     cursor = _get_cursor(SkolonSyncCursor.EntityType.USER)
-    result = client.get_users(version_tag=cursor)
-    users = result["users"]
+    users, final_cursor = _drain_paginated_results(
+        client.get_users,
+        "users",
+        cursor,
+    )
     eligible_count = 0
     created_count = 0
     updated_count = 0
@@ -175,17 +259,13 @@ def sync_users(client) -> Dict[str, object]:
 
         # Prefer externalId; fall back to Skolon's own id.
         external_id = user.get("externalId") or skolon_id
-        school_id = _get_user_school_id(user)
-        org = (
-            SkolonOrg.objects.filter(skolon_id=school_id).first()
-            if school_id
-            else None
-        )
+        school_ids = _get_user_school_ids(user)
+        org = _resolve_user_org_from_school_ids(school_ids)
         if org is None or org.school is None:
             logger.info(
-                "Skipping Skolon user %s because school %s has no licensed local School yet.",
+                "Skipping Skolon user %s because none of school ids %s has a licensed local School yet.",
                 skolon_id,
-                school_id,
+                school_ids,
             )
             skipped_unlicensed_school += 1
             continue
@@ -204,7 +284,7 @@ def sync_users(client) -> Dict[str, object]:
         else:
             updated_count += 1
 
-    _save_cursor(SkolonSyncCursor.EntityType.USER, result.get("versionTag"))
+    _save_cursor(SkolonSyncCursor.EntityType.USER, final_cursor)
     stats = {
         "fetched": len(users),
         "eligible": eligible_count,
@@ -233,10 +313,13 @@ def sync_groups(client) -> Dict[str, object]:
     Cohort mapping is a future step — groups are logged but not yet written to DB.
     """
     cursor = _get_cursor(SkolonSyncCursor.EntityType.GROUP)
-    result = client.get_groups(version_tag=cursor)
-    groups = result["groups"]
+    groups, final_cursor = _drain_paginated_results(
+        client.get_groups,
+        "groups",
+        cursor,
+    )
 
-    _save_cursor(SkolonSyncCursor.EntityType.GROUP, result.get("versionTag"))
+    _save_cursor(SkolonSyncCursor.EntityType.GROUP, final_cursor)
     stats = {
         "fetched": len(groups),
     }
@@ -275,8 +358,11 @@ def sync_licenses(client) -> Dict[str, object]:
     """
     cursor = _get_cursor(SkolonSyncCursor.EntityType.LICENSE)
     is_full_refresh = cursor is None
-    result = client.get_licenses(version_tag=cursor)
-    licenses = result["licenses"]
+    licenses, final_cursor = _drain_paginated_results(
+        client.get_licenses,
+        "licenses",
+        cursor,
+    )
 
     now = django_tz.now()
 
@@ -367,7 +453,7 @@ def sync_licenses(client) -> Dict[str, object]:
             )
             logger.info("Revoked license for school pk=%s", school_pk)
 
-    _save_cursor(SkolonSyncCursor.EntityType.LICENSE, result.get("versionTag"))
+    _save_cursor(SkolonSyncCursor.EntityType.LICENSE, final_cursor)
     revoked_school_pks = set(school_pks_to_apply) - set(school_expiry.keys())
     stats = {
         "fetched": len(licenses),

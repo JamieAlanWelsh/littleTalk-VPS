@@ -305,6 +305,54 @@ class SkolonSyncPayloadMappingTests(TestCase):
         self.assertEqual(skolon_user.skolon_org, org)
         self.assertEqual(skolon_user.role, "TEACHER")
 
+    def test_sync_users_drains_paginated_responses_and_saves_final_cursor(self):
+        school = School.objects.create(name="Chatterdillo School")
+        org = SkolonOrg.objects.create(
+            skolon_id="school-live-1",
+            name="Chatterdillo School",
+            school=school,
+        )
+
+        client = MagicMock()
+        client.get_users.side_effect = [
+            {
+                "users": [
+                    {
+                        "id": "user-live-1",
+                        "userType": "TEACHER",
+                        "schools": [{"id": "school-live-1", "uuid": "school-uuid-1"}],
+                        "isDeleted": False,
+                    }
+                ],
+                "versionTag": "vt-user-page-1",
+                "hasMore": True,
+            },
+            {
+                "users": [
+                    {
+                        "id": "user-live-2",
+                        "userType": "TEACHER",
+                        "schools": [{"id": "school-live-1", "uuid": "school-uuid-1"}],
+                        "isDeleted": False,
+                    }
+                ],
+                "versionTag": "vt-user-page-2",
+                "hasMore": False,
+            },
+        ]
+
+        sync_users(client)
+
+        self.assertEqual(SkolonUser.objects.filter(skolon_org=org).count(), 2)
+        client.get_users.assert_has_calls(
+            [
+                call(version_tag=None),
+                call(version_tag="vt-user-page-1"),
+            ]
+        )
+        cursor = SkolonSyncCursor.objects.get(entity_type=SkolonSyncCursor.EntityType.USER)
+        self.assertEqual(cursor.version_tag, "vt-user-page-2")
+
     def test_sync_users_skips_student_payload(self):
         school = School.objects.create(name="Chatterdillo School")
         SkolonOrg.objects.create(
@@ -353,6 +401,42 @@ class SkolonSyncPayloadMappingTests(TestCase):
         sync_users(client)
 
         self.assertFalse(SkolonUser.objects.filter(skolon_id="teacher-live-1").exists())
+
+    def test_sync_users_uses_any_mapped_school_not_just_first(self):
+        licensed_school = School.objects.create(name="Licensed School")
+        licensed_org = SkolonOrg.objects.create(
+            skolon_id="school-licensed",
+            name="Licensed School",
+            school=licensed_school,
+        )
+        # This org has no local School mapping and would previously cause a skip
+        # when it appeared first in the schools payload.
+        SkolonOrg.objects.create(
+            skolon_id="school-unmapped",
+            name="Unmapped School",
+            school=None,
+        )
+
+        client = MagicMock()
+        client.get_users.return_value = {
+            "users": [
+                {
+                    "id": "teacher-live-2",
+                    "userType": "TEACHER",
+                    "schools": [
+                        {"id": "school-unmapped", "uuid": "school-unmapped-uuid"},
+                        {"id": "school-licensed", "uuid": "school-licensed-uuid"},
+                    ],
+                    "isDeleted": False,
+                }
+            ],
+            "versionTag": "vt-user-4",
+        }
+
+        sync_users(client)
+
+        synced = SkolonUser.objects.get(skolon_id="teacher-live-2")
+        self.assertEqual(synced.skolon_org, licensed_org)
 
     def test_sync_licenses_creates_school_from_owner_school_id_and_licenses_it(self):
         org = SkolonOrg.objects.create(
