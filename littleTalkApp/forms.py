@@ -1,5 +1,7 @@
 from django import forms
 from django.contrib.auth import get_user_model
+from django.utils import timezone
+from django.db.models import Q
 from .models import Learner
 from .models import Cohort
 from .models import StaffInvite
@@ -371,11 +373,21 @@ class UserUpdateForm(forms.ModelForm):
         user = super().save(commit=False)
         email = self.cleaned_data.get("email", "").lower()
         first_name = self.cleaned_data.get("first_name", "")
-        
+
+        # Detect if email is actually changing
+        old_hash = hash_email(user.email_encrypted or "") if user.email_encrypted else None
+        new_hash = hash_email(email)
+        self.email_changed = (old_hash != new_hash)
+
         # Update email_encrypted and email_hash when email changes
         user.email_encrypted = email
-        user.email_hash = hash_email(email)
-        
+        user.email_hash = new_hash
+
+        # If email changed, revoke verification — middleware will gate until re-verified
+        if self.email_changed:
+            user.email_verified = False
+            user.email_verified_at = None
+
         if commit:
             user.save()
             # Update profile first_name
@@ -465,8 +477,13 @@ class JoinRequestForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        # Only show licensed schools (not Skolon, and with valid license)
+        now = timezone.now()
         self.fields["school"].queryset = School.objects.filter(
-            skolon_org__isnull=True
+            skolon_org__isnull=True,
+            is_licensed=True
+        ).filter(
+            Q(license_expires_at__isnull=True) | Q(license_expires_at__gt=now)
         ).order_by("name")
 
 

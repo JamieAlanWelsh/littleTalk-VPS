@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Verify Your Email - Chatterdillo{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'styles/pages/verify_email.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="verify-email-container">
+    <div class="verify-email-card">
+        <!-- Email Icon -->
+        <div class="verify-email-icon">
+            <img src="{% static 'images/landing/arlo_mail.png' %}" alt="Email" class="verify-email-arlo">
+        </div>
+
+        <!-- Title -->
+        <h1 class="verify-email-title">Verify Your Email</h1>
+
+        <!-- Description -->
+        <p class="verify-email-description">
+            You're almost there! A verification code has been sent to
+        </p>
+        <p class="verify-email-sent-to">{{ user.email_encrypted }}</p>
+        <p class="verify-email-description">
+            Just click on the link in the email or enter the code below to verify your email address.
+        </p>
+
+
+        <!-- Form -->
+        <form method="post" action="{% url 'verify_email' %}" class="verify-email-form">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="verify">
+
+            <!-- Code Input Fields -->
+            <div class="code-input-group" id="codeInputGroup">
+                <input type="text" class="code-input" maxlength="1" inputmode="numeric" placeholder="0">
+                <input type="text" class="code-input" maxlength="1" inputmode="numeric" placeholder="0">
+                <input type="text" class="code-input" maxlength="1" inputmode="numeric" placeholder="0">
+                <input type="text" class="code-input" maxlength="1" inputmode="numeric" placeholder="0">
+                <input type="text" class="code-input" maxlength="1" inputmode="numeric" placeholder="0">
+                <input type="text" class="code-input" maxlength="1" inputmode="numeric" placeholder="0">
+            </div>
+
+            <!-- Hidden input for the actual code value -->
+            <input type="hidden" name="code" id="codeValue" value="">
+
+            <!-- Verify Button -->
+            <button type="submit" class="btn btn--yellow btn--full">Verify</button>
+        </form>
+
+        <!-- Links -->
+        <div class="verify-email-links">
+            <form method="post" action="{% url 'verify_email' %}" style="display: inline;">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="resend">
+                <button type="submit" class="verify-email-link">Resend Code</button>
+            </form>            <span class="verify-email-divider">|</span>
+            <a href="{% url 'support' %}" class="verify-email-link">Help</a>
+            <span class="verify-email-divider">|</span>            <form method="post" action="{% url 'logout' %}" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="verify-email-link">Logout</button>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const inputs = document.querySelectorAll('.code-input');
+    const codeValue = document.getElementById('codeValue');
+    const form = document.querySelector('.verify-email-form');
+
+    // Handle input on each digit field
+    inputs.forEach((input, index) => {
+        input.addEventListener('input', function(e) {
+            const value = e.target.value;
+
+            // Only allow numeric input
+            if (!/^\d*$/.test(value)) {
+                e.target.value = '';
+                return;
+            }
+
+            // Move to next input if a digit is entered
+            if (value.length === 1 && index < inputs.length - 1) {
+                inputs[index + 1].focus();
+            }
+
+            // Update the hidden code input
+            updateCodeValue();
+        });
+
+        // Handle backspace
+        input.addEventListener('keydown', function(e) {
+            if (e.key === 'Backspace' && !e.target.value && index > 0) {
+                inputs[index - 1].focus();
+            }
+        });
+
+        // Handle paste
+        input.addEventListener('paste', function(e) {
+            e.preventDefault();
+            const pastedData = e.clipboardData.getData('text');
+            const digits = pastedData.replace(/\D/g, '').substring(0, 6);
+
+            if (digits.length > 0) {
+                digits.split('').forEach((digit, i) => {
+                    if (i < inputs.length) {
+                        inputs[i].value = digit;
+                    }
+                });
+                updateCodeValue();
+                if (digits.length === 6) {
+                    inputs[5].focus();
+                }
+            }
+        });
+    });
+
+    function updateCodeValue() {
+        const code = Array.from(inputs).map(input => input.value).join('');
+        codeValue.value = code.toUpperCase();
+    }
+
+    // Focus on first input on load
+    inputs[0].focus();
+
+
+});
+</script>
+{% endblock %}

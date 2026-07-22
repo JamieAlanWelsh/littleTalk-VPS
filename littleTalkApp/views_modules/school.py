@@ -22,6 +22,7 @@ from littleTalkApp.forms import (
 from littleTalkApp.decorators import block_skolon_user
 from littleTalkApp.models import (
     Cohort,
+    EmailVerificationCode,
     JoinRequest,
     Profile,
     Role,
@@ -29,7 +30,7 @@ from littleTalkApp.models import (
     SchoolMembership,
     StaffInvite,
 )
-from littleTalkApp.utilities import hash_email, send_invite_email, send_school_welcome_email
+from littleTalkApp.utilities import hash_email, send_invite_email, send_email_verification_code
 
 
 def _can_manage_school(profile, school):
@@ -210,8 +211,9 @@ def _handle_school_dashboard_post(request, profile, school):
 def school_signup(request):
     """Renders school/school_signup.html — onboarding form for a new school admin.
 
-    Creates the user account, school, profile, and SchoolMembership records, sends
-    a welcome email, logs the user in, and redirects to the profile page.
+    Creates the user account, school, profile, and SchoolMembership records, then
+    sends a verification email. The user must verify their email before accessing
+    the app. Logs the user in and redirects to the verification page.
     Protected by a honeypot field to deter bots.
     """
 
@@ -253,8 +255,6 @@ def school_signup(request):
             except Exception:
                 pass
 
-            send_school_welcome_email(school, user)
-
             signup_notice = (
                 "New school sign-up submitted:\n\n"
                 f"School: {school_name}\n"
@@ -270,9 +270,15 @@ def school_signup(request):
                 fail_silently=True,
             )
 
-            login(request, user)
+            # Create email verification code and send verification email
+            verification_code = EmailVerificationCode.objects.create(user=user)
+            send_email_verification_code(user, verification_code, request)
 
-            return redirect("profile")
+            # Log in the user and redirect to email verification
+            login(request, user)
+            messages.info(request, "Please verify your email address to get started.")
+
+            return redirect("verify_email")
     else:
         form = SchoolSignupForm()
 
@@ -324,6 +330,9 @@ def accept_invite(request, token):
             )
             user.email_encrypted = email
             user.email_hash = hash_email(email)
+            # Auto-verify invited users (they proved email ownership by clicking the link)
+            user.email_verified = True
+            user.email_verified_at = timezone.now()
             user.save()
 
             profile = Profile.objects.create(user=user, first_name=full_name)

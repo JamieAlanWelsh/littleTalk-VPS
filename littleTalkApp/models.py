@@ -488,9 +488,106 @@ class JoinRequest(models.Model):
         return f"{self.full_name} ({self.email}) → {self.school.name} [{self.status}]"
 
 
+class EmailVerificationCode(models.Model):
+    """
+    One-time email verification code for new users.
+    Mirrors the ParentAccessToken pattern: 6-digit code + optional click link.
+    """
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="email_verification_code"
+    )
+    code = models.CharField(
+        max_length=6,
+        unique=True,
+        editable=False,
+        help_text="6-character verification code"
+    )
+    link_token = models.UUIDField(
+        unique=True,
+        default=uuid.uuid4,
+        editable=False,
+        help_text="UUID for the click-link verification URL"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    used = models.BooleanField(default=False)
+    attempts = models.IntegerField(
+        default=0,
+        help_text="Number of failed verification attempts"
+    )
+    expires_at = models.DateTimeField(
+        default=default_expiry,
+        help_text="When this code expires"
+    )
+
+    class Meta:
+        indexes = [models.Index(fields=["user", "used"])]
+
+    def is_expired(self):
+        """Check if code is expired or already used."""
+        return self.used or timezone.now() > self.expires_at
+
+    def is_attempt_limit_exceeded(self, max_attempts=5):
+        """Check if max verification attempts have been exceeded."""
+        return self.attempts >= max_attempts
+
+    def increment_attempts(self):
+        """Increment failed attempt counter."""
+        self.attempts += 1
+        self.save(update_fields=["attempts"])
+
+    def mark_used(self):
+        """Mark code as used and set expiry."""
+        self.used = True
+        self.save(update_fields=["used"])
+
+    def regenerate_code(self, resend_cooldown_seconds=60):
+        """
+        Generate a new verification code and reset timestamps.
+        Respects a cooldown to prevent abuse.
+        """
+        # Check cooldown
+        if self.created_at:
+            time_since_creation = timezone.now() - self.created_at
+            if time_since_creation.total_seconds() < resend_cooldown_seconds:
+                raise Exception(
+                    f"Please wait {resend_cooldown_seconds} seconds before requesting a new code."
+                )
+
+        # Generate new unique code
+        for _ in range(10):
+            new_code = generate_short_code()
+            if not EmailVerificationCode.objects.filter(code=new_code).exists():
+                self.code = new_code
+                self.link_token = uuid.uuid4()
+                self.created_at = timezone.now()
+                self.expires_at = default_expiry()
+                self.used = False
+                self.attempts = 0
+                self.save()
+                return
+        raise Exception("Unable to generate unique verification code after multiple attempts")
+
+    def save(self, *args, **kwargs):
+        """Auto-generate code on first save if not set."""
+        if not self.code:
+            for _ in range(10):
+                new_code = generate_short_code()
+                if not EmailVerificationCode.objects.filter(code=new_code).exists():
+                    self.code = new_code
+                    break
+            else:
+                raise Exception("Unable to generate a unique verification code.")
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"Email verification code for {self.user.username}: {self.code}"
+
+
 def generate_short_code(length=6):
-    alphabet = string.ascii_uppercase + string.digits
-    return "".join(random.choices(alphabet, k=length))
+    """Generate a random numeric code (digits only)."""
+    return "".join(random.choices(string.digits, k=length))
 
 
 class ParentAccessToken(models.Model):

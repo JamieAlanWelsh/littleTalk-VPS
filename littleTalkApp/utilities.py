@@ -132,3 +132,31 @@ def send_parent_welcome_email(user):
     email = EmailMultiAlternatives(subject, text_content, from_email, to_email)
     email.attach_alternative(html_content, "text/html")
     email.send()
+
+
+# Send email verification code
+
+
+def send_email_verification_code(user, verification_code, request):
+    """Send a 6-digit verification code and a click link to the user."""
+    from_email = formataddr(("Chatterdillo Team", "noreply@chatterdillo.com"))
+    to_email = [user.email_encrypted]
+
+    # Build the click-link URL
+    verify_url = request.build_absolute_uri(
+        f"/verify-email/{verification_code.link_token}/"
+    )
+
+    context = {
+        "user": user,
+        "code": verification_code.code,
+        "verify_link": verify_url,
+    }
+
+    subject = "Verify your Chatterdillo email"
+    text_content = render_to_string("emails/verify_email.txt", context)
+    html_content = render_to_string("emails/verify_email.html", context)
+
+    email = EmailMultiAlternatives(subject, text_content, from_email, to_email)
+    email.attach_alternative(html_content, "text/html")
+    email.send()

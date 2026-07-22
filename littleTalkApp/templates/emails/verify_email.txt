@@ -1,0 +1,16 @@
+Hi,
+
+Welcome to Chatterdillo! Please verify your email address to get started.
+
+Your verification code is: {{ code }}
+
+Or click this link to verify instantly:
+{{ verify_link }}
+
+This code expires in 1 hour.
+
+If you didn't sign up for Chatterdillo, you can ignore this email.
+
+Best regards,
+The Chatterdillo Team
+noreply@chatterdillo.com

@@ -27,36 +27,46 @@ class NoCacheHtmlMiddleware:
 
 class AccessControlMiddleware(MiddlewareMixin):
     """
-    Restricts access based on parent subscription or school license.
-    Allows /login/, /logout/, /profile/, /subscribe/, /license-expired/
+    Enforces email verification as a strict gate: unverified authenticated users
+    cannot access anything except /logout/ and /verify-email/ (code entry and link verification).
+    
+    After verification, applies subscription/license restrictions.
     """
 
     def process_view(self, request, view_func, view_args, view_kwargs):
         user = request.user
         path = request.path
 
-        # Allow unauthenticated users to access login/logout
-        allowed_paths = [
+        # --- PUBLIC PATHS (always allowed, no auth required) ---
+        # Informational & gating pages that users must be able to access when redirected
+        public_paths = [
             reverse("login"),
             reverse("logout"),
-            reverse("profile"),
-            reverse("school"),
-            reverse("select_school"),
-            reverse("select_learner"),
-            reverse("subscribe"),
+            reverse("verify_email"),
             reverse("license_expired"),
-            reverse("settings"),
-            reverse("logbook"),
-            reverse("support"),
+            reverse("subscribe"),
             reverse("access_restricted"),
+            reverse("support"),
         ]
 
-        if any(path.startswith(ap) for ap in allowed_paths):
+        # Allow unauthenticated access and logout for everyone
+        if any(path.startswith(ap) for ap in public_paths):
+            return None
+
+        # Also allow the link-based verification URL (starts with /verify-email/)
+        if path.startswith("/verify-email/"):
             return None
 
         if not user.is_authenticated:
             return None  # Let login-required decorators handle it
 
+        # --- EMAIL VERIFICATION GATE (STRICT) ---
+        # ANY authenticated user who is NOT verified gets redirected, with no exceptions.
+        # This prevents access to /profile/, /school/, /logbook/, etc. until verified.
+        if not user.email_verified:
+            return redirect("verify_email")
+
+        # --- VERIFIED USER: Continue with subscription/license checks ---
         profile = getattr(user, "profile", None)
 
         if not profile:
