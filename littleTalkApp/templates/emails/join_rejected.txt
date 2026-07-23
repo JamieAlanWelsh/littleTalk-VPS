@@ -1,8 +1,9 @@
-Hi {{ user.first_name|default:user.username }},
+Hi there,
 
 Your request to join {{ school.name }} was not approved at this time.
 
-You can sign in here if you need to update your details:
+If you think this was a mistake, please contact your school administrator for an update.
+You can still sign in here if you need to review your details:
 {{ login_url }}
 
 Thanks,

@@ -1,8 +1,8 @@
-Hi {{ user.first_name|default:user.username }},
+Hi there,
 
 Your request to join {{ school.name }} has been approved.
 
-You can sign in here:
+You can sign in and get started here:
 {{ login_url }}
 
 Thanks,

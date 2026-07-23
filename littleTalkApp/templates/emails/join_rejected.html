@@ -1,9 +1,20 @@
 <!DOCTYPE html>
 <html>
-  <body>
-    <p>Hi {{ user.first_name|default:user.username }},</p>
-    <p>Your request to join {{ school.name }} was not approved at this time.</p>
-    <p>You can sign in here if you need to update your details: <a href="{{ login_url }}">{{ login_url }}</a></p>
-    <p>Thanks,<br>The Chatterdillo Team</p>
+  <body style="margin:0; padding:0; font-family: Arial, sans-serif; background-color:#f6f9fc; color:#1f2937;">
+    <div style="max-width:600px; margin:24px auto; background:#ffffff; border-radius:24px; overflow:hidden; box-shadow:0 10px 30px rgba(15, 23, 42, 0.08);">
+      <div style="background:#8BC2FF; padding:32px 24px; text-align:center;">
+        <h1 style="margin:0; font-size:28px; color:#1f2937;">Your school join request needs a little more review</h1>
+      </div>
+      <div style="padding:32px 24px; line-height:1.6;">
+        <p style="margin:0 0 16px;">Hi there,</p>
+        <p style="margin:0 0 16px;">Your request to join <strong>{{ school.name }}</strong> was not approved at this time.</p>
+        <p style="margin:0 0 16px;">If you think this was a mistake, please contact your school administrator for an update.</p>
+        <p style="margin:0 0 24px;">You can still sign in here if you need to review your details:</p>
+        <p style="margin:0 0 24px;">
+          <a href="{{ login_url }}" style="display:inline-block; background:#f7d46f; color:#1f2937; text-decoration:none; padding:12px 20px; border-radius:999px; font-weight:bold;">Sign in to Chatterdillo</a>
+        </p>
+        <p style="margin:0; color:#4b5563;">Best wishes,<br>The Chatterdillo Team</p>
+      </div>
+    </div>
   </body>
 </html>

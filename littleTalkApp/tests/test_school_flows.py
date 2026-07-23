@@ -479,6 +479,7 @@ class JoinRequestFlowTests(BaseFlowTestMixin, TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.request["PATH_INFO"], reverse("join_pending"))
         self.assertContains(response, "Your school join request is pending")
+        self.assertContains(response, "join-pending-container")
 
     def test_request_join_school_creates_user_and_pending_request(self):
         school = School.objects.create(name="Join School", is_licensed=True)
@@ -565,7 +566,7 @@ class JoinRequestFlowTests(BaseFlowTestMixin, TestCase):
         self.set_selected_school(school.id)
 
         dashboard_response = self.client.get(reverse("school"))
-        self.assertContains(dashboard_response, "Request pending")
+        self.assertContains(dashboard_response, "Join Pending")
         self.assertNotContains(dashboard_response, "Reactivate")
 
         response = self.client.post(

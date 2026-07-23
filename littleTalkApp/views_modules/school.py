@@ -650,6 +650,7 @@ def request_join_school(request):
 
 @login_required
 def join_pending(request):
+    request.hide_sidebar = True
     profile = request.user.profile
     join_request = (
         JoinRequest.objects.filter(user=request.user, status=JoinRequest.Status.PENDING)
