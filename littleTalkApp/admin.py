@@ -169,15 +169,23 @@ class LearnerAdmin(admin.ModelAdmin):
 @admin.register(JoinRequest)
 class JoinRequestAdmin(admin.ModelAdmin):
     list_display = (
-        "full_name",
-        "email",
+        "requester_name",
+        "requester_email",
         "school",
         "status",
         "created_at",
         "resolved_at",
         "resolved_by_email",
     )
-    search_fields = ("full_name", "email", "school")
+    search_fields = ("user__profile__first_name", "user__email_encrypted", "school__name")
+
+    def requester_name(self, obj):
+        return obj.full_name or "—"
+    requester_name.short_description = "Name"
+
+    def requester_email(self, obj):
+        return obj.email or "—"
+    requester_email.short_description = "Email"
 
     def resolved_by_email(self, obj):
         """Display the encrypted email of the user who resolved the join request"""

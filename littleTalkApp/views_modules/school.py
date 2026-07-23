@@ -16,6 +16,7 @@ from littleTalkApp.forms import (
     AcceptInviteForm,
     CohortForm,
     JoinRequestForm,
+    JoinRequestSignupForm,
     SchoolSignupForm,
     StaffInviteForm,
 )
@@ -30,7 +31,13 @@ from littleTalkApp.models import (
     SchoolMembership,
     StaffInvite,
 )
-from littleTalkApp.utilities import hash_email, send_invite_email, send_email_verification_code
+from littleTalkApp.utilities import (
+    hash_email,
+    send_email_verification_code,
+    send_invite_email,
+    send_join_approved_email,
+    send_join_rejected_email,
+)
 
 
 def _can_manage_school(profile, school):
@@ -109,24 +116,41 @@ def _handle_school_invite_withdrawal(request, school):
 def _handle_school_join_request_action(request, school):
     join_request_id = request.POST.get("join_request_id")
     join_request = get_object_or_404(
-        JoinRequest, id=join_request_id, school=school, status="pending"
+        JoinRequest, id=join_request_id, school=school, status=JoinRequest.Status.PENDING
     )
 
     if "approve_join_request" in request.POST:
-        invite = StaffInvite.objects.create(
-            email=join_request.email,
-            role="staff",
+        profile = join_request.user.profile
+        membership, created = SchoolMembership.objects.get_or_create(
+            profile=profile,
             school=school,
-            sent_by=request.user,
+            defaults={"role": Role.STAFF, "is_active": False},
         )
-        send_invite_email(invite, school, request)
-        join_request.status = "accepted"
+        membership.role = Role.STAFF
+        membership.is_active = True
+        membership.save(update_fields=["role", "is_active", "updated_at"])
+
+        if not profile.schools.filter(id=school.id).exists():
+            profile.schools.add(school)
+
+        join_request.status = JoinRequest.Status.APPROVED
+        send_join_approved_email(join_request.user, school, request)
         messages.success(
             request,
-            f"Join request from {join_request.full_name} approved and invite sent.",
+            f"Join request from {join_request.full_name} approved and the user can access the school.",
         )
     else:
-        join_request.status = "rejected"
+        join_request.status = JoinRequest.Status.REJECTED
+        profile = join_request.user.profile
+        membership = SchoolMembership.objects.filter(
+            profile=profile,
+            school=school,
+        ).first()
+        if membership and not membership.is_active:
+            membership.delete()
+        if profile and profile.schools.filter(id=school.id).exists():
+            profile.schools.remove(school)
+        send_join_rejected_email(join_request.user, school, request)
         messages.info(
             request, f"Join request from {join_request.full_name} was rejected."
         )
@@ -159,6 +183,17 @@ def _handle_school_membership_status_update(request, profile, school):
     should_deactivate = "deactivate_membership" in request.POST
     if not (should_activate or should_deactivate):
         return None
+
+    if should_activate and JoinRequest.objects.filter(
+        user=target_profile.user,
+        school=school,
+        status=JoinRequest.Status.PENDING,
+    ).exists():
+        messages.error(
+            request,
+            "This user has a pending join request. Approve or reject it from the Pending Join Requests section instead.",
+        )
+        return redirect("school")
 
     if should_deactivate and target_role == Role.ADMIN and membership.is_active:
         active_admins = SchoolMembership.objects.filter(
@@ -484,6 +519,13 @@ def school_dashboard(request):
         .order_by("profile__first_name")
     )
 
+    pending_join_user_ids = set(
+        JoinRequest.objects.filter(
+            school=school,
+            status=JoinRequest.Status.PENDING,
+        ).values_list("user_id", flat=True)
+    )
+
     staff_profiles = []
     if memberships.exists():
         for membership in memberships:
@@ -495,6 +537,7 @@ def school_dashboard(request):
                         "profile": profile_item,
                         "role": role_for,
                         "is_active": membership.is_active,
+                        "pending_join": profile_item.user_id in pending_join_user_ids,
                     }
                 )
     else:
@@ -512,6 +555,7 @@ def school_dashboard(request):
                         "profile": profile_item,
                         "role": role_for,
                         "is_active": True,
+                        "pending_join": profile_item.user_id in pending_join_user_ids,
                     }
                 )
 
@@ -525,7 +569,7 @@ def school_dashboard(request):
     join_requests = []
     if can_invite_staff:
         join_requests = JoinRequest.objects.filter(
-            school=school, status="pending"
+            school=school, status=JoinRequest.Status.PENDING
         ).order_by("-created_at")[:10]
 
     school_switcher_options = list(profile.get_accessible_schools().order_by("name"))
@@ -554,25 +598,71 @@ def school_dashboard(request):
 
 @check_honeypot
 def request_join_school(request):
-    """Renders school/request_join_school.html — public form for someone to request
-    access to a school without having received an invite. Admins review requests
-    in the school dashboard. Protected by a honeypot field.
-    """
+    """Create an account, create a pending join request, and send verification email."""
 
     request.hide_sidebar = True
     if request.method == "POST":
-        form = JoinRequestForm(request.POST)
+        form = JoinRequestSignupForm(request.POST)
         if form.is_valid():
-            form.save()
-            messages.success(
-                request,
-                "Your request has been submitted. An admin will review it shortly. If approved, you will receive an invite via E-Mail",
+            email = form.cleaned_data["email"].lower()
+            password = form.cleaned_data["password"]
+            full_name = form.cleaned_data["full_name"]
+            school = form.cleaned_data["school"]
+
+            user = get_user_model().objects.create_user(
+                username=str(uuid.uuid4()), password=password
             )
-            return redirect("request_join_school")
+            user.email_encrypted = email
+            user.email_hash = hash_email(email)
+            user.email_verified = False
+            user.email_verified_at = None
+            user.save()
+
+            profile = Profile.objects.create(user=user, first_name=full_name)
+            profile.role = Role.STAFF
+            profile.save()
+            membership = SchoolMembership.objects.create(
+                profile=profile,
+                school=school,
+                role=Role.STAFF,
+                is_active=False,
+            )
+
+            JoinRequest.objects.create(
+                user=user,
+                school=school,
+                status=JoinRequest.Status.PENDING,
+            )
+            verification_code = EmailVerificationCode.objects.create(user=user)
+            send_email_verification_code(user, verification_code, request)
+
+            login(request, user)
+            messages.info(
+                request,
+                "Please verify your email address before you can access this school.",
+            )
+            return redirect("verify_email")
     else:
-        form = JoinRequestForm()
+        form = JoinRequestSignupForm()
 
     return render(request, "school/request_join_school.html", {"form": form})
+
+
+@login_required
+def join_pending(request):
+    profile = request.user.profile
+    join_request = (
+        JoinRequest.objects.filter(user=request.user, status=JoinRequest.Status.PENDING)
+        .select_related("school")
+        .first()
+    )
+    if not join_request:
+        return redirect("profile")
+    return render(
+        request,
+        "school/join_pending.html",
+        {"school": join_request.school, "join_request": join_request},
+    )
 
 
 @login_required
@@ -595,7 +685,7 @@ def invite_audit_trail(request):
     )
     join_requests = (
         JoinRequest.objects.filter(school=school)
-        .select_related("resolved_by")
+        .select_related("resolved_by", "user")
         .order_by("-created_at")[:50]
     )
 

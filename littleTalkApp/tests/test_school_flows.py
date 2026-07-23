@@ -1,5 +1,6 @@
 from datetime import timedelta
 
+from django.contrib.auth import get_user_model
 from django.core import mail
 from django.test import TestCase
 from django.urls import reverse
@@ -451,14 +452,43 @@ class SchoolTypicalFlowTests(BaseFlowTestMixin, TestCase):
 
 
 class JoinRequestFlowTests(BaseFlowTestMixin, TestCase):
-    def test_request_join_school_creates_pending_request(self):
-        school = School.objects.create(name="Join School")
+    def test_request_join_school_page_renders_password_field(self):
+        response = self.client.get(reverse("request_join_school"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'name="password"')
+        self.assertContains(response, 'type="password"')
+        self.assertContains(response, 'If your school is already using Chatterdillo')
+        self.assertContains(response, 'Sign up & join school')
+        self.assertContains(response, 'Terms and Conditions')
+
+    def test_pending_join_request_user_can_view_pending_page(self):
+        school = School.objects.create(name="Pending School", is_licensed=True)
+        user = get_user_model().objects.create_user(username="pending-user", password="strongpass123")
+        user.email_encrypted = "pending@example.com"
+        user.email_hash = hash_email("pending@example.com")
+        user.email_verified = False
+        user.save()
+        profile = Profile.objects.create(user=user, first_name="Pending User")
+        SchoolMembership.objects.create(profile=profile, school=school, role=Role.STAFF, is_active=False)
+        JoinRequest.objects.create(user=user, school=school, status=JoinRequest.Status.PENDING)
+
+        self.client.force_login(user)
+        response = self.client.get(reverse("join_pending"), follow=True)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.request["PATH_INFO"], reverse("join_pending"))
+        self.assertContains(response, "Your school join request is pending")
+
+    def test_request_join_school_creates_user_and_pending_request(self):
+        school = School.objects.create(name="Join School", is_licensed=True)
 
         response = self.client.post(
             reverse("request_join_school"),
             {
                 "full_name": "Join User",
                 "email": "joiner@example.com",
+                "password": "strongpass123",
                 "school": school.id,
                 "contact_info": "",
             },
@@ -466,20 +496,106 @@ class JoinRequestFlowTests(BaseFlowTestMixin, TestCase):
         )
 
         self.assertEqual(response.status_code, 200)
-        self.assertTrue(
-            JoinRequest.objects.filter(
-                full_name="Join User",
-                email="joiner@example.com",
-                school=school,
-                status="pending",
-            ).exists()
+        self.assertEqual(response.request["PATH_INFO"], reverse("verify_email"))
+
+        user = get_user_model().objects.get(email_hash=hash_email("joiner@example.com"))
+        join_request = JoinRequest.objects.get(user=user, school=school)
+        self.assertEqual(join_request.status, JoinRequest.Status.PENDING)
+        self.assertFalse(user.email_verified)
+
+        membership = SchoolMembership.objects.get(profile=user.profile, school=school)
+        self.assertFalse(membership.is_active)
+        self.assertEqual(membership.role, Role.STAFF)
+
+    def test_rejected_join_request_removes_school_access(self):
+        admin_user, _, school = self.create_staff_user_with_school(username="admin_reject", role=Role.ADMIN)
+        join_request_user = get_user_model().objects.create_user(username="joiner-rejected", password="strongpass123")
+        join_request_user.email_encrypted = "rejected@example.com"
+        join_request_user.email_hash = hash_email("rejected@example.com")
+        join_request_user.save()
+        profile = Profile.objects.create(user=join_request_user, first_name="Rejected Staff")
+        SchoolMembership.objects.create(
+            profile=profile,
+            school=school,
+            role=Role.STAFF,
+            is_active=False,
         )
+        profile.schools.add(school)
+        join_request = JoinRequest.objects.create(
+            user=join_request_user,
+            school=school,
+            status=JoinRequest.Status.PENDING,
+        )
+
+        self.client.force_login(admin_user)
+        self.set_selected_school(school.id)
+
+        response = self.client.post(
+            reverse("school"),
+            {"reject_join_request": "1", "join_request_id": join_request.id},
+            follow=True,
+        )
+
+        self.assertEqual(response.status_code, 200)
+        join_request.refresh_from_db()
+        self.assertEqual(join_request.status, JoinRequest.Status.REJECTED)
+        self.assertFalse(profile.get_accessible_schools().filter(id=school.id).exists())
+        self.assertFalse(profile.schools.filter(id=school.id).exists())
+
+    def test_pending_join_request_user_is_marked_pending_and_cannot_be_reactivated(self):
+        admin_user, _, school = self.create_staff_user_with_school(username="admin_pending_toggle", role=Role.ADMIN)
+        join_request_user = get_user_model().objects.create_user(username="joiner-pending-toggle", password="strongpass123")
+        join_request_user.email_encrypted = "pending-toggle@example.com"
+        join_request_user.email_hash = hash_email("pending-toggle@example.com")
+        join_request_user.save()
+        profile = Profile.objects.create(user=join_request_user, first_name="Pending Toggle")
+        SchoolMembership.objects.create(
+            profile=profile,
+            school=school,
+            role=Role.STAFF,
+            is_active=False,
+        )
+        join_request = JoinRequest.objects.create(
+            user=join_request_user,
+            school=school,
+            status=JoinRequest.Status.PENDING,
+        )
+
+        self.client.force_login(admin_user)
+        self.set_selected_school(school.id)
+
+        dashboard_response = self.client.get(reverse("school"))
+        self.assertContains(dashboard_response, "Request pending")
+        self.assertNotContains(dashboard_response, "Reactivate")
+
+        response = self.client.post(
+            reverse("school"),
+            {"activate_membership": "1", "user_id": join_request_user.id},
+            follow=True,
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "This user has a pending join request")
+        membership = SchoolMembership.objects.get(profile=profile, school=school)
+        self.assertFalse(membership.is_active)
+        join_request.refresh_from_db()
+        self.assertEqual(join_request.status, JoinRequest.Status.PENDING)
 
     def test_admin_can_approve_join_request_from_school_dashboard(self):
         admin_user, _, school = self.create_staff_user_with_school(username="admin_join", role=Role.ADMIN)
+        join_request_user = get_user_model().objects.create_user(username="joiner-user", password="strongpass123")
+        join_request_user.email_encrypted = "prospective@example.com"
+        join_request_user.email_hash = hash_email("prospective@example.com")
+        join_request_user.save()
+        profile = Profile.objects.create(user=join_request_user, first_name="Prospective Staff")
+        SchoolMembership.objects.create(
+            profile=profile,
+            school=school,
+            role=Role.STAFF,
+            is_active=False,
+        )
         join_request = JoinRequest.objects.create(
-            full_name="Prospective Staff",
-            email="prospective@example.com",
+            user=join_request_user,
             school=school,
             status=JoinRequest.Status.PENDING,
         )
@@ -495,12 +611,8 @@ class JoinRequestFlowTests(BaseFlowTestMixin, TestCase):
 
         self.assertEqual(response.status_code, 200)
         join_request.refresh_from_db()
-        self.assertEqual(join_request.status, "accepted")
-        self.assertTrue(
-            StaffInvite.objects.filter(
-                school=school,
-                email="prospective@example.com",
-                used=False,
-                withdrawn=False,
-            ).exists()
-        )
+        self.assertEqual(join_request.status, JoinRequest.Status.APPROVED)
+        membership = SchoolMembership.objects.get(profile=profile, school=school)
+        self.assertTrue(membership.is_active)
+        self.assertEqual(membership.role, Role.STAFF)
+        self.assertGreaterEqual(len(mail.outbox), 1)

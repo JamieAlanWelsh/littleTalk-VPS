@@ -83,6 +83,51 @@ adding a hybrid model:
 
 ---
 
+## Phase 1.5 — Account-first join request flow
+
+This phase simplifies the join-request experience so a new user creates an account first,
+selects a school, and submits a join request immediately. The request is then reviewed by
+an admin, and on approval the user becomes an active school member without going through
+a separate invite-accept step.
+
+### Scope and behavior
+
+- New users create an account (email + password) and choose a school as part of the join
+  flow.
+- The system creates a pending `JoinRequest` linked to the newly created `User`.
+- The user is also created with an inactive `SchoolMembership` for that school while the
+  request is pending.
+- Pending users are routed to a dedicated `/join-pending/` page instead of the generic
+  access-restricted experience.
+- Admin approval activates the membership, marks the request as approved, and sends the user
+  an approval email.
+- Admin rejection keeps the account, removes the inactive membership, and sends a rejection
+  email.
+- This phase is scoped to new signups only; the direct invite-staff flow remains unchanged.
+
+### Implementation notes
+
+- `JoinRequest` should be reworked to use a required `user` FK instead of the old plaintext
+  `full_name` and `email` fields.
+- The current `"accepted"` status value should be normalized to the model enum value
+  `Status.APPROVED`.
+- The new flow should reuse the existing email-verification foundation so the user is still
+  required to verify their email before they can access the school.
+- This phase intentionally assumes legacy join requests have been cleaned up manually before
+  migration, so implementation can proceed as if the table is empty.
+
+### Key files
+
+- `littleTalkApp/models.py` — `JoinRequest` model updates and `SchoolMembership` reuse.
+- `littleTalkApp/forms.py` — new signup-style join form with password and school selection.
+- `littleTalkApp/views_modules/school.py` — new account-first request flow, approval/rejection
+  handling, and pending-page view.
+- `littleTalkApp/middleware.py` — pending-user redirect behavior.
+- `littleTalkApp/utilities.py` and email templates — approval/rejection emails.
+- `littleTalkApp/urls.py` — `/join-pending/` route.
+
+---
+
 ## Phase 2 — Shareable school join link (parallel with Phase 1)
 
 - `School` model (models.py#L17-L34): add `join_token` (uuid, unique, default generated)

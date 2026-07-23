@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <p>Hi {{ user.first_name|default:user.username }},</p>
+    <p>Your request to join {{ school.name }} has been approved.</p>
+    <p>You can sign in here: <a href="{{ login_url }}">{{ login_url }}</a></p>
+    <p>Thanks,<br>The Chatterdillo Team</p>
+  </body>
+</html>

@@ -1,7 +1,7 @@
 from django.shortcuts import redirect
 from django.urls import reverse, resolve
 from django.utils.deprecation import MiddlewareMixin
-from .models import Role
+from .models import EmailVerificationCode, JoinRequest, Role
 
 
 class NoCacheHtmlMiddleware:
@@ -43,6 +43,7 @@ class AccessControlMiddleware(MiddlewareMixin):
             reverse("login"),
             reverse("logout"),
             reverse("verify_email"),
+            reverse("join_pending"),
             reverse("license_expired"),
             reverse("subscribe"),
             reverse("access_restricted"),
@@ -61,9 +62,23 @@ class AccessControlMiddleware(MiddlewareMixin):
             return None  # Let login-required decorators handle it
 
         # --- EMAIL VERIFICATION GATE (STRICT) ---
-        # ANY authenticated user who is NOT verified gets redirected, with no exceptions.
-        # This prevents access to /profile/, /school/, /logbook/, etc. until verified.
+        # Newly created users should complete verification before proceeding.
+        # Existing staff users who already have an active school membership and
+        # no pending verification code can continue to use the app while legacy
+        # accounts are still being migrated.
+        profile = getattr(user, "profile", None)
+
         if not user.email_verified:
+            has_accessible_school = bool(
+                profile.get_accessible_schools().exists()
+                if profile and hasattr(profile, "get_accessible_schools")
+                else False
+            )
+            has_pending_verification = EmailVerificationCode.objects.filter(
+                user=user
+            ).exists()
+            if has_accessible_school and not has_pending_verification:
+                return None
             return redirect("verify_email")
 
         # --- VERIFIED USER: Continue with subscription/license checks ---
@@ -152,6 +167,10 @@ class SchoolSelectionMiddleware:
             'support',
             'sso_callback',
             'sso_launch',
+            'verify_email',
+            'request_join_school',
+            'school_signup',
+            'accept_invite',
         }
         if url_name in skip_urls:
             return False
@@ -193,14 +212,31 @@ class RoleSchoolBlockMiddleware:
         except Exception:
             url_name = ""
 
-        if url_name in {"access_restricted", "logout", "support"}:
+        if url_name in {
+            "access_restricted",
+            "logout",
+            "support",
+            "join_pending",
+            "verify_email",
+            "request_join_school",
+            "school_signup",
+            "accept_invite",
+        }:
             return self.get_response(request)
 
         if user.is_authenticated:
             profile = getattr(user, "profile", None)
             if profile:
-                # If this user is staff (non-parent) and has no associated
-                # schools, block access.
+                pending_join_request = JoinRequest.objects.filter(
+                    user=user,
+                    status=JoinRequest.Status.PENDING,
+                ).exists()
+                if (
+                    profile.role != Role.PARENT
+                    and not profile.get_accessible_schools().exists()
+                    and pending_join_request
+                ):
+                    return redirect("join_pending")
                 if profile.role != Role.PARENT and not profile.get_accessible_schools().exists():
                     return redirect("access_restricted")
 

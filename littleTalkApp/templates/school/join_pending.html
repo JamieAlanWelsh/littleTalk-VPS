@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-5">
+  <div class="card p-4">
+    <h1 class="h3 mb-3">Your school join request is pending</h1>
+    <p>Your request to join {{ school.name }} is still being reviewed by an administrator.</p>
+    <p>You will be notified by email once the request is approved or rejected.</p>
+  </div>
+</div>
+{% endblock %}

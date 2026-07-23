@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
+from django.urls import reverse
 from email.utils import formataddr
 
 from .models import Role
@@ -156,6 +157,44 @@ def send_email_verification_code(user, verification_code, request):
     subject = "Verify your Chatterdillo email"
     text_content = render_to_string("emails/verify_email.txt", context)
     html_content = render_to_string("emails/verify_email.html", context)
+
+    email = EmailMultiAlternatives(subject, text_content, from_email, to_email)
+    email.attach_alternative(html_content, "text/html")
+    email.send()
+
+
+def send_join_approved_email(user, school, request):
+    from_email = formataddr(("Chatterdillo Team", "noreply@chatterdillo.com"))
+    to_email = [user.email_encrypted]
+
+    context = {
+        "user": user,
+        "school": school,
+        "login_url": request.build_absolute_uri(reverse("login")),
+    }
+
+    subject = f"Your request to join {school.name} has been approved"
+    text_content = render_to_string("emails/join_approved.txt", context)
+    html_content = render_to_string("emails/join_approved.html", context)
+
+    email = EmailMultiAlternatives(subject, text_content, from_email, to_email)
+    email.attach_alternative(html_content, "text/html")
+    email.send()
+
+
+def send_join_rejected_email(user, school, request):
+    from_email = formataddr(("Chatterdillo Team", "noreply@chatterdillo.com"))
+    to_email = [user.email_encrypted]
+
+    context = {
+        "user": user,
+        "school": school,
+        "login_url": request.build_absolute_uri(reverse("login")),
+    }
+
+    subject = f"Your request to join {school.name} was not approved"
+    text_content = render_to_string("emails/join_rejected.txt", context)
+    html_content = render_to_string("emails/join_rejected.html", context)
 
     email = EmailMultiAlternatives(subject, text_content, from_email, to_email)
     email.attach_alternative(html_content, "text/html")

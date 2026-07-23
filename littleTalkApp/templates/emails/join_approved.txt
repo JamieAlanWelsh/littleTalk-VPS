@@ -1,0 +1,9 @@
+Hi {{ user.first_name|default:user.username }},
+
+Your request to join {{ school.name }} has been approved.
+
+You can sign in here:
+{{ login_url }}
+
+Thanks,
+The Chatterdillo Team

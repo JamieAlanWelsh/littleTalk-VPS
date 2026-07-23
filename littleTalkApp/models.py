@@ -468,8 +468,11 @@ class JoinRequest(models.Model):
         APPROVED = "approved", "Approved"
         REJECTED = "rejected", "Rejected"
 
-    full_name = models.CharField(max_length=255)
-    email = models.EmailField()
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="join_requests",
+    )
     school = models.ForeignKey(School, on_delete=models.CASCADE)
     status = models.CharField(
         max_length=10, choices=Status.choices, default=Status.PENDING
@@ -483,6 +486,16 @@ class JoinRequest(models.Model):
         on_delete=models.SET_NULL,
         related_name="handled_join_requests",
     )
+
+    @property
+    def full_name(self):
+        if self.user and getattr(self.user, "profile", None):
+            return self.user.profile.first_name or ""
+        return ""
+
+    @property
+    def email(self):
+        return self.user.email_encrypted if self.user else ""
 
     def __str__(self):
         return f"{self.full_name} ({self.email}) → {self.school.name} [{self.status}]"

@@ -121,7 +121,9 @@
                                 {% endif %}
                             </td>
                             <td>
-                                {% if item.is_active %}
+                                {% if item.pending_join %}
+                                    <span class="status-badge status-badge--warning">Request pending</span>
+                                {% elif item.is_active %}
                                     <span class="status-badge status-badge--success">Active</span>
                                 {% else %}
                                     <span class="status-badge status-badge--danger">Inactive</span>
@@ -129,24 +131,28 @@
                             </td>
                             <td>
                                 {% if current_user_is_admin_or_manager and profile.user != request.user %}
-                                    <form method="post" style="margin: 0;">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="user_id" value="{{ profile.user.id }}">
-                                        {% if item.is_active %}
-                                            <button
-                                                type="submit"
-                                                name="deactivate_membership"
-                                                class="btn btn--invisible btn--table"
-                                                onclick="return confirm('Deactivate this school member? They will lose school access until reactivated.')"
-                                            >
-                                                Deactivate
-                                            </button>
-                                        {% else %}
-                                            <button type="submit" name="activate_membership" class="btn btn--invisible btn--table">
-                                                Reactivate
-                                            </button>
-                                        {% endif %}
-                                    </form>
+                                    {% if item.pending_join %}
+                                        -
+                                    {% else %}
+                                        <form method="post" style="margin: 0;">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="user_id" value="{{ profile.user.id }}">
+                                            {% if item.is_active %}
+                                                <button
+                                                    type="submit"
+                                                    name="deactivate_membership"
+                                                    class="btn btn--invisible btn--table"
+                                                    onclick="return confirm('Deactivate this school member? They will lose school access until reactivated.')"
+                                                >
+                                                    Deactivate
+                                                </button>
+                                            {% else %}
+                                                <button type="submit" name="activate_membership" class="btn btn--invisible btn--table">
+                                                    Reactivate
+                                                </button>
+                                            {% endif %}
+                                        </form>
+                                    {% endif %}
                                 {% else %}
                                     -
                                 {% endif %}

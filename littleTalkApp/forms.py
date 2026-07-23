@@ -23,7 +23,7 @@ User = get_user_model()
 class SchoolSignupForm(forms.Form):
     full_name = forms.CharField(label="Your name", max_length=100)
     email = forms.EmailField(label="Email")
-    password = forms.CharField(widget=forms.PasswordInput(), label="Password")
+    password = forms.CharField(widget=forms.PasswordInput(), label="Create password")
     school_name = forms.CharField(label="School name", max_length=255)
     license_code = forms.CharField(label="License code", max_length=64, required=False)
 
@@ -470,21 +470,67 @@ class AcceptInviteForm(forms.Form):
         return password
 
 
-class JoinRequestForm(forms.ModelForm):
-    class Meta:
-        model = JoinRequest
-        fields = ["full_name", "email", "school"]
+class JoinRequestSignupForm(forms.Form):
+    full_name = forms.CharField(label="Your name", max_length=100)
+    email = forms.EmailField(label="Email")
+    password = forms.CharField(widget=forms.PasswordInput(), label="Create password")
+    school = forms.ModelChoiceField(queryset=School.objects.none(), label="School")
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # Only show licensed schools (not Skolon, and with valid license)
         now = timezone.now()
-        self.fields["school"].queryset = School.objects.filter(
-            skolon_org__isnull=True,
-            is_licensed=True
-        ).filter(
-            Q(license_expires_at__isnull=True) | Q(license_expires_at__gt=now)
-        ).order_by("name")
+        self.fields["school"].queryset = (
+            School.objects.filter(skolon_org__isnull=True, is_licensed=True)
+            .filter(Q(license_expires_at__isnull=True) | Q(license_expires_at__gt=now))
+            .order_by("name")
+        )
+        self.fields["school"].empty_label = "Select a school"
+
+    def clean_email(self):
+        email = self.cleaned_data["email"].lower()
+        email_hash = hash_email(email)
+        if email_hash and get_user_model().objects.filter(email_hash=email_hash).exists():
+            raise forms.ValidationError("An account with this email already exists.")
+        return email
+
+    def clean_password(self):
+        password = self.cleaned_data["password"]
+        if len(password) < 6:
+            raise forms.ValidationError("Password must be at least 6 characters.")
+        return password
+
+    def clean(self):
+        cleaned_data = super().clean()
+        email = cleaned_data.get("email")
+        school = cleaned_data.get("school")
+        if email and school:
+            email_hash = hash_email(email.lower())
+            existing_pending = JoinRequest.objects.filter(
+                user__email_hash=email_hash,
+                school=school,
+                status=JoinRequest.Status.PENDING,
+            ).exists()
+            if existing_pending:
+                raise forms.ValidationError(
+                    "You already have a pending request for this school."
+                )
+        return cleaned_data
+
+
+class JoinRequestForm(forms.Form):
+    full_name = forms.CharField(label="Your name", max_length=100)
+    email = forms.EmailField(label="Email")
+    school = forms.ModelChoiceField(queryset=School.objects.none(), label="School")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        now = timezone.now()
+        self.fields["school"].queryset = (
+            School.objects.filter(skolon_org__isnull=True)
+            .filter(Q(license_expires_at__isnull=True) | Q(license_expires_at__gt=now))
+            .order_by("name")
+        )
+        self.fields["school"].empty_label = "Select a school"
 
 
 class ParentAccessCodeForm(forms.Form):
