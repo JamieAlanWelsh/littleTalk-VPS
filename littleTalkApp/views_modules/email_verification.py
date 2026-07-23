@@ -9,6 +9,7 @@ from django.http import Http404
 
 from littleTalkApp.models import EmailVerificationCode
 from littleTalkApp.utilities import send_email_verification_code
+from littleTalkApp.views_modules.school import _auto_approve_pending_join_requests
 
 
 User = get_user_model()
@@ -89,6 +90,8 @@ def verify_email_view(request):
             user.save(update_fields=["email_verified", "email_verified_at"])
             verification_code.mark_used()
 
+            _auto_approve_pending_join_requests(user, request)
+
             messages.success(request, "Email verified successfully!")
             return redirect("profile")
 
@@ -147,6 +150,8 @@ def verify_email_link_view(request, link_token):
     user.email_verified_at = timezone.now()
     user.save(update_fields=["email_verified", "email_verified_at"])
     verification_code.mark_used()
+
+    _auto_approve_pending_join_requests(user, request)
 
     messages.success(request, "Email verified successfully!")
 

@@ -51,13 +51,13 @@
                 {% if current_user_is_admin %}
                     <a href="{% url 'update_school_name' %}" class="school-mgmt-tool-link">
                         <span class="school-mgmt-tool-copy">
-                            <strong>Update Name</strong>
+                            <strong>School Settings</strong>
                         </span>
                     </a>
                 {% else %}
-                    <span class="school-mgmt-tool-link school-mgmt-tool-link--disabled" aria-disabled="true" title="Only admins can update school name.">
+                    <span class="school-mgmt-tool-link school-mgmt-tool-link--disabled" aria-disabled="true" title="Only admins can change school settings.">
                         <span class="school-mgmt-tool-copy">
-                            <strong>Update Name</strong>
+                            <strong>School Settings</strong>
                         </span>
                     </span>
                 {% endif %}

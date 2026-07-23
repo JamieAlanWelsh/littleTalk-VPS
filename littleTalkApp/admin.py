@@ -68,6 +68,7 @@ class SchoolAdmin(admin.ModelAdmin):
         "is_licensed",
         "license_expires_at",
         "license_status",
+        "auto_approve_domains",
         "created_by_email",
         "created_at",
     )

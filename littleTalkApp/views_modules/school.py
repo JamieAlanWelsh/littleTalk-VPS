@@ -153,6 +153,57 @@ def _handle_school_invite_withdrawal(request, school):
     return redirect("school")
 
 
+def _approve_join_request(join_request, request, resolved_by=None):
+    """Approve a pending join request: activate membership + send approval email.
+
+    Shared by the dashboard admin action and domain-based auto-approval. Pass
+    ``resolved_by=None`` for system (auto) approvals.
+    """
+    school = join_request.school
+    profile = join_request.user.profile
+    membership, created = SchoolMembership.objects.get_or_create(
+        profile=profile,
+        school=school,
+        defaults={"role": Role.STAFF, "is_active": False},
+    )
+    membership.role = Role.STAFF
+    membership.is_active = True
+    membership.save(update_fields=["role", "is_active", "updated_at"])
+
+    if not profile.schools.filter(id=school.id).exists():
+        profile.schools.add(school)
+
+    join_request.status = JoinRequest.Status.APPROVED
+    join_request.resolved_by = resolved_by
+    join_request.resolved_at = timezone.now()
+    join_request.save(update_fields=["status", "resolved_by", "resolved_at"])
+
+    send_join_approved_email(join_request.user, school, request)
+
+
+def _auto_approve_pending_join_requests(user, request):
+    """Auto-approve a verified user's pending join requests when their email
+    domain matches the school's configured auto-approval domains.
+
+    Called after email verification succeeds, so domain trust is only granted
+    once the user has proven ownership of the email. Returns the number of
+    requests approved.
+    """
+    email = getattr(user, "email_encrypted", "") or ""
+    if not email:
+        return 0
+
+    approved = 0
+    pending = JoinRequest.objects.filter(
+        user=user, status=JoinRequest.Status.PENDING
+    ).select_related("school")
+    for join_request in pending:
+        if join_request.school.email_domain_is_auto_approved(email):
+            _approve_join_request(join_request, request, resolved_by=None)
+            approved += 1
+    return approved
+
+
 def _handle_school_join_request_action(request, school):
     join_request_id = request.POST.get("join_request_id")
     join_request = get_object_or_404(
@@ -160,21 +211,7 @@ def _handle_school_join_request_action(request, school):
     )
 
     if "approve_join_request" in request.POST:
-        profile = join_request.user.profile
-        membership, created = SchoolMembership.objects.get_or_create(
-            profile=profile,
-            school=school,
-            defaults={"role": Role.STAFF, "is_active": False},
-        )
-        membership.role = Role.STAFF
-        membership.is_active = True
-        membership.save(update_fields=["role", "is_active", "updated_at"])
-
-        if not profile.schools.filter(id=school.id).exists():
-            profile.schools.add(school)
-
-        join_request.status = JoinRequest.Status.APPROVED
-        send_join_approved_email(join_request.user, school, request)
+        _approve_join_request(join_request, request, resolved_by=request.user)
         messages.success(
             request,
             f"Join request from {join_request.full_name} approved and the user can access the school.",
@@ -194,11 +231,11 @@ def _handle_school_join_request_action(request, school):
         messages.info(
             request, f"Join request from {join_request.full_name} was rejected."
         )
-
-    join_request.resolved_by = request.user
-    join_request.resolved_at = timezone.now()
-    join_request.save()
+        join_request.resolved_by = request.user
+        join_request.resolved_at = timezone.now()
+        join_request.save()
     return redirect("school")
+
 
 
 def _handle_school_membership_status_update(request, profile, school):
@@ -518,8 +555,26 @@ def update_school_name(request):
             return render(request, "school/update_school_name.html", {"school": school})
 
         school.name = new_name
-        school.save(update_fields=["name"])
-        messages.success(request, "School name updated.")
+        normalized_domains = School.normalize_auto_approve_domains(
+            request.POST.get("auto_approve_domains", "")
+        )
+        blocked = School.find_public_domains(normalized_domains.split(","))
+        if blocked:
+            messages.error(
+                request,
+                "Public email providers can't be used for auto-approval: "
+                f"{', '.join(blocked)}. Please use a school or organisation domain.",
+            )
+            school.name = new_name
+            return render(
+                request,
+                "school/update_school_name.html",
+                {"school": school, "submitted_domains": request.POST.get("auto_approve_domains", "")},
+            )
+
+        school.auto_approve_domains = normalized_domains
+        school.save(update_fields=["name", "auto_approve_domains"])
+        messages.success(request, "School settings updated.")
         return redirect("school")
 
     return render(request, "school/update_school_name.html", {"school": school})

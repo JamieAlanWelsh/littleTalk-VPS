@@ -23,6 +23,9 @@ class School(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     # Public shareable join link token
     join_token = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
+    # Comma-separated, normalized list of email domains that are auto-approved
+    # for join requests (e.g. "stbarnabas.sch.uk,example-trust.org").
+    auto_approve_domains = models.TextField(blank=True, default="")
     # Licensing fields
     is_licensed = models.BooleanField(default=False)
     license_expires_at = models.DateTimeField(null=True, blank=True)
@@ -34,6 +37,86 @@ class School(models.Model):
         return self.is_licensed and (
             self.license_expires_at is None or self.license_expires_at > timezone.now()
         )
+
+    # Public/consumer email providers that must never be used for domain
+    # auto-approval (they are not owned by any single school/organisation).
+    PUBLIC_EMAIL_DOMAINS = frozenset(
+        {
+            "gmail.com",
+            "googlemail.com",
+            "outlook.com",
+            "hotmail.com",
+            "hotmail.co.uk",
+            "live.com",
+            "live.co.uk",
+            "msn.com",
+            "yahoo.com",
+            "yahoo.co.uk",
+            "ymail.com",
+            "icloud.com",
+            "me.com",
+            "mac.com",
+            "aol.com",
+            "protonmail.com",
+            "proton.me",
+            "gmx.com",
+            "gmx.co.uk",
+            "mail.com",
+            "zoho.com",
+            "yandex.com",
+            "btinternet.com",
+            "sky.com",
+            "virginmedia.com",
+            "ntlworld.com",
+            "talktalk.net",
+        }
+    )
+
+    def get_auto_approve_domains(self):
+        """Return the configured auto-approval domains as a normalized list."""
+        if not self.auto_approve_domains:
+            return []
+        return [d for d in self.auto_approve_domains.split(",") if d]
+
+    def email_domain_is_auto_approved(self, email):
+        """Return True if the given email's domain is auto-approved for this school."""
+        if not email or "@" not in email:
+            return False
+        domain = email.rsplit("@", 1)[1].strip().lower()
+        if not domain or domain in self.PUBLIC_EMAIL_DOMAINS:
+            return False
+        return domain in self.get_auto_approve_domains()
+
+    @staticmethod
+    def normalize_auto_approve_domains(raw):
+        """Normalize free-text domain input into a deduped comma-separated string.
+
+        Accepts commas/whitespace as separators, lowercases, strips a leading
+        '@', and drops blanks while preserving input order.
+        """
+        if not raw:
+            return ""
+        tokens = raw.replace(",", " ").split()
+        seen = []
+        for token in tokens:
+            domain = token.strip().lower().lstrip("@")
+            if domain and domain not in seen:
+                seen.append(domain)
+        return ",".join(seen)
+
+    @classmethod
+    def find_public_domains(cls, domains):
+        """Return any public/consumer email domains from an iterable of domains.
+
+        Preserves order and avoids duplicates so callers can report the exact
+        disallowed values back to the user.
+        """
+        flagged = []
+        for domain in domains:
+            normalized = (domain or "").strip().lower().lstrip("@")
+            if normalized in cls.PUBLIC_EMAIL_DOMAINS and normalized not in flagged:
+                flagged.append(normalized)
+        return flagged
 
 
 class SchoolLicenseCode(models.Model):

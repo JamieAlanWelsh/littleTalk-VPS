@@ -1,8 +1,8 @@
 {% extends "base.html" %}
-{% block title %}Chatterdillo | Update School Name{% endblock %}
+{% block title %}Chatterdillo | School Settings{% endblock %}
 
 {% block content %}
-<h1>Update School Name</h1>
+<h1>School Settings</h1>
 
 <div class="container-box container--short">
     <form method="post" class="form-stack">
@@ -16,6 +16,23 @@
             value="{{ school.name }}"
             maxlength="255"
             required
+        >
+
+        <label for="auto_approve_domains" class="label">Auto-approve email domains</label>
+        <p class="small" style="margin-top: 0; margin-bottom: 10px; color: #5f5f5f;">
+            Join requests from these email domains are approved automatically once the
+            user verifies their email. Separate multiple domains with a comma
+            (e.g. <code>meadowpark.sch.uk, example-trust.org</code>). Leave blank to
+            review every request manually. Public email providers
+            (e.g. Gmail, Outlook, Yahoo) are not allowed.
+        </p>
+        <input
+            id="auto_approve_domains"
+            type="text"
+            name="auto_approve_domains"
+            class="input"
+            value="{{ submitted_domains|default:school.auto_approve_domains }}"
+            placeholder="meadowpark.sch.uk, example-trust.org"
         >
 
         <div style="display: flex; gap: 10px; flex-wrap: wrap;">

@@ -16,6 +16,7 @@ from littleTalkApp.models import (
     SkolonUser,
     StaffInvite,
 )
+from littleTalkApp.models import EmailVerificationCode
 from littleTalkApp.tests.base import BaseFlowTestMixin
 from littleTalkApp.utilities import hash_email
 
@@ -40,7 +41,7 @@ class SchoolTypicalFlowTests(BaseFlowTestMixin, TestCase):
         self.assertEqual(response.request["PATH_INFO"], reverse("school"))
         school.refresh_from_db()
         self.assertEqual(school.name, "Renamed School")
-        self.assertContains(response, "School name updated.")
+        self.assertContains(response, "School settings updated.")
 
     def test_team_manager_sees_disabled_update_name_and_cannot_post_update(self):
         manager_user, manager_profile, school = self.create_staff_user_with_school(
@@ -57,7 +58,7 @@ class SchoolTypicalFlowTests(BaseFlowTestMixin, TestCase):
         self.set_selected_school(school.id)
 
         dashboard_response = self.client.get(reverse("school"))
-        self.assertContains(dashboard_response, "Update Name")
+        self.assertContains(dashboard_response, "School Settings")
         self.assertContains(dashboard_response, "school-mgmt-tool-link--disabled")
 
         post_response = self.client.post(
@@ -617,3 +618,174 @@ class JoinRequestFlowTests(BaseFlowTestMixin, TestCase):
         self.assertTrue(membership.is_active)
         self.assertEqual(membership.role, Role.STAFF)
         self.assertGreaterEqual(len(mail.outbox), 1)
+
+
+class DomainAutoApprovalTests(BaseFlowTestMixin, TestCase):
+    def _make_pending_join_requester(self, email, school):
+        user = get_user_model().objects.create_user(
+            username=f"joiner-{email}", password="strongpass123"
+        )
+        user.email_encrypted = email
+        user.email_hash = hash_email(email)
+        user.email_verified = False
+        user.save()
+        profile = Profile.objects.create(user=user, first_name="Domain Joiner")
+        profile.role = Role.STAFF
+        profile.save()
+        SchoolMembership.objects.create(
+            profile=profile, school=school, role=Role.STAFF, is_active=False
+        )
+        join_request = JoinRequest.objects.create(
+            user=user, school=school, status=JoinRequest.Status.PENDING
+        )
+        code = EmailVerificationCode.objects.create(user=user)
+        return user, profile, join_request, code
+
+    def test_normalize_auto_approve_domains(self):
+        self.assertEqual(
+            School.normalize_auto_approve_domains("@Foo.com, bar.com  baz.com"),
+            "foo.com,bar.com,baz.com",
+        )
+        self.assertEqual(
+            School.normalize_auto_approve_domains("Trust.ORG, trust.org"),
+            "trust.org",
+        )
+        self.assertEqual(School.normalize_auto_approve_domains(""), "")
+
+    def test_email_domain_is_auto_approved(self):
+        school = School.objects.create(
+            name="Domain School",
+            is_licensed=True,
+            auto_approve_domains="trusted.org",
+        )
+        self.assertTrue(school.email_domain_is_auto_approved("teacher@trusted.org"))
+        self.assertFalse(school.email_domain_is_auto_approved("teacher@other.org"))
+        self.assertFalse(school.email_domain_is_auto_approved("not-an-email"))
+
+    def test_matching_domain_is_auto_approved_on_verification(self):
+        school = School.objects.create(
+            name="Trusted School",
+            is_licensed=True,
+            auto_approve_domains="trusted.org",
+        )
+        user, profile, join_request, code = self._make_pending_join_requester(
+            "teacher@trusted.org", school
+        )
+
+        self.client.force_login(user)
+        response = self.client.post(
+            reverse("verify_email"),
+            {"action": "verify", "code": code.code},
+            follow=True,
+        )
+
+        self.assertEqual(response.status_code, 200)
+        user.refresh_from_db()
+        join_request.refresh_from_db()
+        self.assertTrue(user.email_verified)
+        self.assertEqual(join_request.status, JoinRequest.Status.APPROVED)
+        self.assertIsNone(join_request.resolved_by)
+        membership = SchoolMembership.objects.get(profile=profile, school=school)
+        self.assertTrue(membership.is_active)
+        self.assertGreaterEqual(len(mail.outbox), 1)
+
+    def test_non_matching_domain_stays_pending_after_verification(self):
+        school = School.objects.create(
+            name="Trusted School 2",
+            is_licensed=True,
+            auto_approve_domains="trusted.org",
+        )
+        user, profile, join_request, code = self._make_pending_join_requester(
+            "teacher@other.org", school
+        )
+
+        self.client.force_login(user)
+        response = self.client.post(
+            reverse("verify_email"),
+            {"action": "verify", "code": code.code},
+            follow=True,
+        )
+
+        self.assertEqual(response.status_code, 200)
+        user.refresh_from_db()
+        join_request.refresh_from_db()
+        self.assertTrue(user.email_verified)
+        self.assertEqual(join_request.status, JoinRequest.Status.PENDING)
+        membership = SchoolMembership.objects.get(profile=profile, school=school)
+        self.assertFalse(membership.is_active)
+
+    def test_unverified_matching_domain_user_is_not_auto_approved(self):
+        school = School.objects.create(
+            name="Trusted School 3",
+            is_licensed=True,
+            auto_approve_domains="trusted.org",
+        )
+        _, profile, join_request, _ = self._make_pending_join_requester(
+            "teacher@trusted.org", school
+        )
+
+        join_request.refresh_from_db()
+        self.assertEqual(join_request.status, JoinRequest.Status.PENDING)
+        membership = SchoolMembership.objects.get(profile=profile, school=school)
+        self.assertFalse(membership.is_active)
+
+    def test_admin_can_save_auto_approve_domains(self):
+        admin_user, _, school = self.create_staff_user_with_school(
+            username="admin_domains", role=Role.ADMIN
+        )
+
+        self.client.force_login(admin_user)
+        self.set_selected_school(school.id)
+
+        response = self.client.post(
+            reverse("update_school_name"),
+            {
+                "school_name": school.name,
+                "auto_approve_domains": "@Foo.com, bar.com",
+            },
+            follow=True,
+        )
+
+        self.assertEqual(response.status_code, 200)
+        school.refresh_from_db()
+        self.assertEqual(school.auto_approve_domains, "foo.com,bar.com")
+
+    def test_public_domains_are_rejected_on_save(self):
+        admin_user, _, school = self.create_staff_user_with_school(
+            username="admin_public_domains", role=Role.ADMIN
+        )
+
+        self.client.force_login(admin_user)
+        self.set_selected_school(school.id)
+
+        response = self.client.post(
+            reverse("update_school_name"),
+            {
+                "school_name": school.name,
+                "auto_approve_domains": "meadowpark.sch.uk, gmail.com",
+            },
+            follow=True,
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Public email providers")
+        self.assertContains(response, "gmail.com")
+        school.refresh_from_db()
+        self.assertEqual(school.auto_approve_domains, "")
+
+    def test_find_public_domains_helper(self):
+        self.assertEqual(
+            School.find_public_domains(["meadowpark.sch.uk", "gmail.com", "yahoo.com"]),
+            ["gmail.com", "yahoo.com"],
+        )
+        self.assertEqual(School.find_public_domains(["trust.org"]), [])
+
+    def test_public_domain_never_auto_approves_even_if_stored(self):
+        school = School.objects.create(
+            name="Leaky School",
+            is_licensed=True,
+            auto_approve_domains="gmail.com",
+        )
+        self.assertFalse(school.email_domain_is_auto_approved("teacher@gmail.com"))
+
+
