@@ -214,17 +214,21 @@ class ParentSignupForm(forms.Form):
 
 
 class LearnerForm(forms.ModelForm):
-    name = forms.CharField(label="Learner's name (or nickname)", required=True)
+    name = forms.CharField(
+        label="Learner's name (or nickname)",
+        required=True,
+        widget=forms.TextInput(attrs={"class": "input"}),
+    )
     date_of_birth = forms.DateField(
         label="Learner DOB",
         required=True,
-        widget=forms.DateInput(attrs={"type": "date"}),
+        widget=forms.DateInput(attrs={"type": "date", "class": "input"}),
     )
     cohort = forms.ModelChoiceField(
         queryset=Cohort.objects.none(),  # override in __init__
         label="Cohort",
         required=False,
-        widget=forms.Select(attrs={"class": "form-control"}),
+        widget=forms.Select(attrs={"class": "select"}),
     )
 
     class Meta:
@@ -305,15 +309,11 @@ class LogEntryForm(forms.ModelForm):
             "notes",
         ]  # Maintain model field names
         widgets = {
-            "title": forms.TextInput(attrs={"class": "form-control"}),
-            "learner": forms.Select(attrs={"class": "form-control"}),
-            "goals": forms.TextInput(
-                attrs={"class": "form-control"}
-            ),  # use TextInput for a CharField-like UI
-            "exercises_practised": forms.Textarea(
-                attrs={"class": "form-control", "rows": 3}
-            ),
-            "notes": forms.Textarea(attrs={"class": "form-control", "rows": 5}),
+            "title": forms.TextInput(attrs={"class": "input"}),
+            "learner": forms.Select(attrs={"class": "select"}),
+            "goals": forms.TextInput(attrs={"class": "input"}),
+            "exercises_practised": forms.Textarea(attrs={"class": "textarea", "rows": 3}),
+            "notes": forms.Textarea(attrs={"class": "textarea", "rows": 5}),
         }
 
 
@@ -322,15 +322,11 @@ class UserUpdateForm(forms.ModelForm):
     first_name = forms.CharField(
         max_length=50,
         required=True,
-        widget=forms.TextInput(
-            attrs={"class": "form-control", "placeholder": "Your Name"}
-        ),
+        widget=forms.TextInput(attrs={"class": "input", "placeholder": "Your Name"}),
     )
     email = forms.EmailField(
         required=True,
-        widget=forms.EmailInput(
-            attrs={"class": "form-control", "placeholder": "Your Email"}
-        ),
+        widget=forms.EmailInput(attrs={"class": "input", "placeholder": "Your Email"}),
     )
 
     class Meta:
@@ -400,13 +396,13 @@ class UserUpdateForm(forms.ModelForm):
 class PasswordUpdateForm(forms.Form):
     current_password = forms.CharField(
         widget=forms.PasswordInput(
-            attrs={"class": "form-control", "placeholder": "Current Password"}
+            attrs={"class": "input", "placeholder": "Current Password"}
         ),
         label="Current Password",
     )
     new_password = forms.CharField(
         widget=forms.PasswordInput(
-            attrs={"class": "form-control", "placeholder": "New Password"}
+            attrs={"class": "input", "placeholder": "New Password"}
         ),
         label="New Password",
     )
@@ -427,8 +423,8 @@ class CohortForm(forms.ModelForm):
         model = Cohort
         fields = ["name", "description"]
         widgets = {
-            "name": forms.TextInput(attrs={"class": "form-control"}),
-            "description": forms.Textarea(attrs={"class": "form-control", "rows": 3}),
+            "name": forms.TextInput(attrs={"class": "input"}),
+            "description": forms.Textarea(attrs={"class": "textarea", "rows": 3}),
         }
 
 
@@ -436,6 +432,10 @@ class StaffInviteForm(forms.ModelForm):
     class Meta:
         model = StaffInvite
         fields = ["email", "role"]
+        widgets = {
+            "email": forms.EmailInput(attrs={"class": "input"}),
+            "role": forms.Select(attrs={"class": "select"}),
+        }
 
     def __init__(self, *args, **kwargs):
         self.school = kwargs.pop("school", None)

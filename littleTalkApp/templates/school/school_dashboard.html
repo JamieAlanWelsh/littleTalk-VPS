@@ -42,12 +42,6 @@
                         <strong>Invite Staff</strong>
                     </span>
                 </a>
-                <button type="button" class="school-mgmt-tool-link" id="share-join-link-btn"
-                        data-join-link="{{ join_link }}">
-                    <span class="school-mgmt-tool-copy">
-                        <strong>Share join link</strong>
-                    </span>
-                </button>
                 {% if current_user_is_admin %}
                     <a href="{% url 'update_school_name' %}" class="school-mgmt-tool-link">
                         <span class="school-mgmt-tool-copy">
@@ -287,39 +281,5 @@
         </div>
     </div>
 </div>
-
-<script>
-    (function () {
-        var btn = document.getElementById("share-join-link-btn");
-        if (!btn) {
-            return;
-        }
-        var label = btn.querySelector("strong");
-        var originalText = label ? label.textContent : "";
-        btn.addEventListener("click", function () {
-            var link = btn.getAttribute("data-join-link") || "";
-            if (!link) {
-                return;
-            }
-
-            function showCopied() {
-                if (label) {
-                    label.textContent = "Link copied!";
-                    setTimeout(function () {
-                        label.textContent = originalText;
-                    }, 2000);
-                }
-            }
-
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(link).then(showCopied, function () {
-                    window.prompt("Copy this join link:", link);
-                });
-            } else {
-                window.prompt("Copy this join link:", link);
-            }
-        });
-    })();
-</script>
 
 {% endblock %}

@@ -34,7 +34,10 @@
 /* Focus styles for all form fields */
 .input:focus,
 .select:focus,
-.textarea:focus {
+.textarea:focus,
+.form-stack .input:focus,
+.form-stack .select:focus,
+.form-stack .textarea:focus {
     border-color: var(--font-color);
     box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
     outline: none;
@@ -109,31 +112,107 @@
     gap: 20px;
 }
 
+.form-stack .input,
+.form-stack .select,
+.form-stack .textarea,
 .form-stack input,
 .form-stack select,
 .form-stack textarea {
+    display: block;
     width: 100%;
-    padding: 10px;
-    font-size: 14px;
-    color: var(--font-color);
-    background-color: white;
-    border-radius: var(--border-radius-light);
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-    transition: border-color 0.3s ease;
+    margin-bottom: 0;
+    line-height: normal;
 }
 
 .form-stack textarea {
     resize: vertical;  /* Optional: allow resizing only vertically */
 }
 
-.form-stack select,
-.form-stack input,
-.form-stack textarea {
-    display: block;
+.form-stack .input,
+.form-stack .select,
+.form-stack .textarea {
+    margin-bottom: 0;
+}
+
+.join-link-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
     width: 100%;
-    margin-bottom: 0px;
-    line-height: normal;
+}
+
+.join-link-row .input {
+    flex: 1 1 320px;
+    max-width: 360px;
+    margin-bottom: 0;
+}
+
+.join-link-row .btn {
+    flex: 0 0 auto;
+}
+
+.join-link-wrapper {
+    margin-bottom: 0;
+}
+
+.invite-staff-card {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.invite-staff-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 0;
+}
+
+.invite-staff-section-title {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--font-color);
+    text-align: left;
+}
+
+.invite-staff-card .label,
+.invite-staff-card .form-hint {
+    margin-left: 0;
+}
+
+.invite-staff-divider {
+    border: 0;
+    border-top: 1px solid #d9d9d9;
+    margin: 0;
+}
+
+.invite-staff-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.invite-staff-field .label {
+    margin-bottom: 0;
+}
+
+.invite-staff-section .btn--full {
+    margin-top: 4px;
+}
+
+.invite-staff-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.form-hint {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #5f5f5f;
 }
 
 @media (max-width: 600px) {
@@ -164,5 +243,27 @@
 
     .form-stack {
         gap: 10px;
+    }
+
+    .join-link-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .join-link-row .input {
+        flex: 1 1 auto;
+        max-width: none;
+    }
+
+    .invite-staff-card {
+        gap: 18px;
+    }
+
+    .invite-staff-section {
+        gap: 10px;
+    }
+
+    .invite-staff-section-title {
+        font-size: 1.15rem;
     }
 }

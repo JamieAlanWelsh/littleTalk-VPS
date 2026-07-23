@@ -729,7 +729,7 @@ class DomainAutoApprovalTests(BaseFlowTestMixin, TestCase):
         membership = SchoolMembership.objects.get(profile=profile, school=school)
         self.assertFalse(membership.is_active)
 
-    def test_admin_can_save_auto_approve_domains(self):
+    def test_admin_can_save_auto_approve_domains_from_invite_staff(self):
         admin_user, _, school = self.create_staff_user_with_school(
             username="admin_domains", role=Role.ADMIN
         )
@@ -738,10 +738,10 @@ class DomainAutoApprovalTests(BaseFlowTestMixin, TestCase):
         self.set_selected_school(school.id)
 
         response = self.client.post(
-            reverse("update_school_name"),
+            reverse("invite_staff"),
             {
-                "school_name": school.name,
                 "auto_approve_domains": "@Foo.com, bar.com",
+                "save_auto_approve_domains": "1",
             },
             follow=True,
         )
@@ -750,7 +750,7 @@ class DomainAutoApprovalTests(BaseFlowTestMixin, TestCase):
         school.refresh_from_db()
         self.assertEqual(school.auto_approve_domains, "foo.com,bar.com")
 
-    def test_public_domains_are_rejected_on_save(self):
+    def test_public_domains_are_rejected_on_invite_staff_save(self):
         admin_user, _, school = self.create_staff_user_with_school(
             username="admin_public_domains", role=Role.ADMIN
         )
@@ -759,10 +759,10 @@ class DomainAutoApprovalTests(BaseFlowTestMixin, TestCase):
         self.set_selected_school(school.id)
 
         response = self.client.post(
-            reverse("update_school_name"),
+            reverse("invite_staff"),
             {
-                "school_name": school.name,
                 "auto_approve_domains": "meadowpark.sch.uk, gmail.com",
+                "save_auto_approve_domains": "1",
             },
             follow=True,
         )
@@ -770,6 +770,33 @@ class DomainAutoApprovalTests(BaseFlowTestMixin, TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Public email providers")
         self.assertContains(response, "gmail.com")
+        school.refresh_from_db()
+        self.assertEqual(school.auto_approve_domains, "")
+
+    def test_team_manager_cannot_update_auto_approve_domains_from_invite_staff(self):
+        manager_user, manager_profile, school = self.create_staff_user_with_school(
+            username="manager_domains", role=Role.TEAM_MANAGER
+        )
+        SchoolMembership.objects.update_or_create(
+            profile=manager_profile,
+            school=school,
+            defaults={"role": Role.TEAM_MANAGER, "is_active": True},
+        )
+
+        self.client.force_login(manager_user)
+        self.set_selected_school(school.id)
+
+        response = self.client.post(
+            reverse("invite_staff"),
+            {
+                "auto_approve_domains": "trusted.org",
+                "save_auto_approve_domains": "1",
+            },
+            follow=True,
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Only admins can update auto-approve domains.")
         school.refresh_from_db()
         self.assertEqual(school.auto_approve_domains, "")
 

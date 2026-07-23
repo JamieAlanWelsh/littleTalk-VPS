@@ -502,20 +502,41 @@ def invite_staff(request):
     ):
         return redirect("school")
 
+    form = StaffInviteForm(user=request.user, school=school)
+    submitted_domains = None
+
     if request.method == "POST":
-        form = StaffInviteForm(request.POST, school=school, user=request.user)
-        if form.is_valid():
-            invite = form.save(commit=False)
-            invite.school = school
-            invite.sent_by = request.user
-            invite.save()
+        if "save_auto_approve_domains" in request.POST:
+            if not profile.is_admin_for_school(school):
+                messages.error(request, "Only admins can update auto-approve domains.")
+                return redirect("invite_staff")
 
-            send_invite_email(invite, school, request)
+            submitted_domains = request.POST.get("auto_approve_domains", "")
+            normalized_domains = School.normalize_auto_approve_domains(submitted_domains)
+            blocked = School.find_public_domains(normalized_domains.split(","))
+            if blocked:
+                messages.error(
+                    request,
+                    "Public email providers can't be used for auto-approval: "
+                    f"{', '.join(blocked)}. Please use a school or organisation domain.",
+                )
+            else:
+                school.auto_approve_domains = normalized_domains
+                school.save(update_fields=["auto_approve_domains"])
+                messages.success(request, "Auto-approve domains updated.")
+                return redirect("invite_staff")
+        else:
+            form = StaffInviteForm(request.POST, school=school, user=request.user)
+            if form.is_valid():
+                invite = form.save(commit=False)
+                invite.school = school
+                invite.sent_by = request.user
+                invite.save()
 
-            messages.success(request, f"Invite sent to {invite.email}")
-            return redirect("invite_staff")
-    else:
-        form = StaffInviteForm(user=request.user, school=school)
+                send_invite_email(invite, school, request)
+
+                messages.success(request, f"Invite sent to {invite.email}")
+                return redirect("invite_staff")
 
     join_link = request.build_absolute_uri(
         reverse("join_via_link", args=[school.join_token])
@@ -526,6 +547,9 @@ def invite_staff(request):
         {
             "form": form,
             "join_link": join_link,
+            "school": school,
+            "submitted_domains": submitted_domains,
+            "can_manage_auto_approve": profile.is_admin_for_school(school),
         },
     )
 
@@ -555,25 +579,7 @@ def update_school_name(request):
             return render(request, "school/update_school_name.html", {"school": school})
 
         school.name = new_name
-        normalized_domains = School.normalize_auto_approve_domains(
-            request.POST.get("auto_approve_domains", "")
-        )
-        blocked = School.find_public_domains(normalized_domains.split(","))
-        if blocked:
-            messages.error(
-                request,
-                "Public email providers can't be used for auto-approval: "
-                f"{', '.join(blocked)}. Please use a school or organisation domain.",
-            )
-            school.name = new_name
-            return render(
-                request,
-                "school/update_school_name.html",
-                {"school": school, "submitted_domains": request.POST.get("auto_approve_domains", "")},
-            )
-
-        school.auto_approve_domains = normalized_domains
-        school.save(update_fields=["name", "auto_approve_domains"])
+        school.save(update_fields=["name"])
         messages.success(request, "School settings updated.")
         return redirect("school")
 

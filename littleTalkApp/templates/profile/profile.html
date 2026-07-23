@@ -145,7 +145,7 @@
             <!-- Edit Learner Button SCHOOL AND STANDALONE ONLY -->
             {% if request.user.profile.role != 'parent' or not selected_learner.school_id %}
                 <div class="edit-learner-btn">
-                    <a href="{% url 'edit_learner' selected_learner.learner_uuid %}" class="button">📝 Edit Learner</a>
+                    <a href="{% url 'edit_learner' selected_learner.learner_uuid %}" class="button">📝 Learner Settings</a>
                 </div>
 
                 <!-- Screener Button -->
