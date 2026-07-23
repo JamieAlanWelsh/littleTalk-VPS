@@ -219,6 +219,7 @@ class RoleSchoolBlockMiddleware:
             "join_pending",
             "verify_email",
             "request_join_school",
+            "join_via_link",
             "school_signup",
             "accept_invite",
         }:

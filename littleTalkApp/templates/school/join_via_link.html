@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load static %}
+{% load honeypot %}
+{% block title %}Chatterdillo | Join {{ school.name }}{% endblock %}
+
+{% block content %}
+<div class="login-container">
+    <!-- logo top left -->
+    <a href="/" class="logo-link">
+        <div class="logo-upper-left">
+            <img src="{% static 'images/chatterdillo_logo_official.png' %}" alt="Chatterdillo Logo">
+        </div>
+    </a>
+
+    <h1 style="text-align: center; font-size: 2rem; margin-bottom: 40px;">Join School</h1>
+
+    {% if link_unavailable %}
+        <p class="register-intro text-center">
+            This join link is not currently available. Please contact your school administrator.
+        </p>
+    {% else %}
+    <form method="post" class="login-form">
+        {% csrf_token %}
+        {% render_honeypot_field %}
+
+        <p class="register-intro">
+            You've been invited to join <strong>{{ school.name }}</strong> on Chatterdillo.
+            Create your account below to join as a staff member.
+        </p>
+
+        <div>
+            <input type="text" name="full_name" class="input" placeholder="Your name"
+                value="{{ form.full_name.value|default_if_none:'' }}" required>
+            {% if form.full_name.errors %}
+                <div class="error-message">{{ form.full_name.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <div>
+            <input type="email" name="email" class="input" placeholder="Email"
+                value="{{ form.email.value|default_if_none:'' }}" required>
+            {% if form.email.errors %}
+                <div class="error-message">{{ form.email.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <div>
+            <input type="password" name="password" class="input" placeholder="Create password"
+                value="{{ form.password.value|default_if_none:'' }}" required>
+            {% if form.password.errors %}
+                <div class="error-message">{{ form.password.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <div>
+            <button type="submit" class="btn btn--yellow btn--full">Sign up &amp; join school</button>
+        </div>
+
+        <p class="text-center" style="margin-top: 20px; margin-bottom: 0; font-size: 0.9rem;">
+            By signing up, you agree to our <a href="/terms/" target="_blank" class="text-link">Terms and Conditions</a>
+        </p>
+
+        {% if form.non_field_errors %}
+            <div class="error-message">{{ form.non_field_errors.0 }}</div>
+        {% endif %}
+    </form>
+    {% endif %}
+</div>
+{% endblock %}

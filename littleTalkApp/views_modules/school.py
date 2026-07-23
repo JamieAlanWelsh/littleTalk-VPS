@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.utils import timezone
 
 from honeypot.decorators import check_honeypot
@@ -17,6 +18,7 @@ from littleTalkApp.forms import (
     CohortForm,
     JoinRequestForm,
     JoinRequestSignupForm,
+    SchoolJoinLinkSignupForm,
     SchoolSignupForm,
     StaffInviteForm,
 )
@@ -44,6 +46,44 @@ def _can_manage_school(profile, school):
     return school and (
         profile.is_admin_for_school(school) or profile.is_manager_for_school(school)
     )
+
+
+def _create_join_request_account(request, email, password, full_name, school):
+    """Create an inactive account + pending join request and start email verification.
+
+    Shared by the self-serve join page and the public shareable join link.
+    """
+
+    user = get_user_model().objects.create_user(
+        username=str(uuid.uuid4()), password=password
+    )
+    user.email_encrypted = email
+    user.email_hash = hash_email(email)
+    user.email_verified = False
+    user.email_verified_at = None
+    user.save()
+
+    profile = Profile.objects.create(user=user, first_name=full_name)
+    profile.role = Role.STAFF
+    profile.save()
+    SchoolMembership.objects.create(
+        profile=profile,
+        school=school,
+        role=Role.STAFF,
+        is_active=False,
+    )
+
+    JoinRequest.objects.create(
+        user=user,
+        school=school,
+        status=JoinRequest.Status.PENDING,
+    )
+    verification_code = EmailVerificationCode.objects.create(user=user)
+    send_email_verification_code(user, verification_code, request)
+
+    login(request, user)
+    return user
+
 
 
 def _handle_school_role_update(request, profile, school):
@@ -440,11 +480,15 @@ def invite_staff(request):
     else:
         form = StaffInviteForm(user=request.user, school=school)
 
+    join_link = request.build_absolute_uri(
+        reverse("join_via_link", args=[school.join_token])
+    )
     return render(
         request,
         "school/invite_staff.html",
         {
             "form": form,
+            "join_link": join_link,
         },
     )
 
@@ -592,6 +636,9 @@ def school_dashboard(request):
             "school_switcher_enabled": school_switcher_enabled,
             "school_switcher_options": school_switcher_options,
             "current_school_id": school.id,
+            "join_link": request.build_absolute_uri(
+                reverse("join_via_link", args=[school.join_token])
+            ),
         },
     )
 
@@ -609,34 +656,8 @@ def request_join_school(request):
             full_name = form.cleaned_data["full_name"]
             school = form.cleaned_data["school"]
 
-            user = get_user_model().objects.create_user(
-                username=str(uuid.uuid4()), password=password
-            )
-            user.email_encrypted = email
-            user.email_hash = hash_email(email)
-            user.email_verified = False
-            user.email_verified_at = None
-            user.save()
+            _create_join_request_account(request, email, password, full_name, school)
 
-            profile = Profile.objects.create(user=user, first_name=full_name)
-            profile.role = Role.STAFF
-            profile.save()
-            membership = SchoolMembership.objects.create(
-                profile=profile,
-                school=school,
-                role=Role.STAFF,
-                is_active=False,
-            )
-
-            JoinRequest.objects.create(
-                user=user,
-                school=school,
-                status=JoinRequest.Status.PENDING,
-            )
-            verification_code = EmailVerificationCode.objects.create(user=user)
-            send_email_verification_code(user, verification_code, request)
-
-            login(request, user)
             messages.info(
                 request,
                 "Please verify your email address before you can access this school.",
@@ -646,6 +667,50 @@ def request_join_school(request):
         form = JoinRequestSignupForm()
 
     return render(request, "school/request_join_school.html", {"form": form})
+
+
+@check_honeypot
+def join_via_link(request, join_token):
+    """Public shareable join link.
+
+    Resolves the school from the link token, locks it, and funnels the visitor
+    into the account-first pending join flow (same as request_join_school).
+    """
+
+    request.hide_sidebar = True
+    school = get_object_or_404(School, join_token=join_token)
+    skolon_org = getattr(school, "skolon_org", None)
+
+    if not school.has_valid_license() or skolon_org is not None:
+        return render(
+            request,
+            "school/join_via_link.html",
+            {"school": school, "form": None, "link_unavailable": True},
+        )
+
+    if request.method == "POST":
+        form = SchoolJoinLinkSignupForm(request.POST, school=school)
+        if form.is_valid():
+            email = form.cleaned_data["email"].lower()
+            password = form.cleaned_data["password"]
+            full_name = form.cleaned_data["full_name"]
+
+            _create_join_request_account(request, email, password, full_name, school)
+
+            messages.info(
+                request,
+                "Please verify your email address before you can access this school.",
+            )
+            return redirect("verify_email")
+    else:
+        form = SchoolJoinLinkSignupForm(school=school)
+
+    return render(
+        request,
+        "school/join_via_link.html",
+        {"school": school, "form": form, "link_unavailable": False},
+    )
+
 
 
 @login_required

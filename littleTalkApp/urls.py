@@ -89,6 +89,7 @@ urlpatterns = [
     path('school/', school_views.school_dashboard, name='school'),
     path('school/update-name/', school_views.update_school_name, name='update_school_name'),
     path('request-join-school/', school_views.request_join_school, name='request_join_school'),
+    path('join/<uuid:join_token>/', school_views.join_via_link, name='join_via_link'),
     path('school/invite-audit/', school_views.invite_audit_trail, name='invite_audit_trail'),
 
     # Generate parent token

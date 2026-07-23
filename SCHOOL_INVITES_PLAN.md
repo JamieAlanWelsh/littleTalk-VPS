@@ -130,11 +130,13 @@ a separate invite-accept step.
 
 ## Phase 2 — Shareable school join link (parallel with Phase 1)
 
+Status note: the account-first join-request flow, pending page, dashboard pending-state handling, and approval/rejection emails are already implemented. Phase 2 now sits on top of that foundation rather than introducing it.
+
 - `School` model (models.py#L17-L34): add `join_token` (uuid, unique, default generated)
   for the public link. Backfill existing schools in the migration.
 - New `/join/<uuid:join_token>/` view: resolve school, render/pre-fill the existing
-  `JoinRequestForm` (forms.py#L461-L471) with the school locked. On submit create a
-  `JoinRequest` (reuse `request_join_school` logic, views_modules/school.py#L547-L569).
+  join-request flow with the school locked, and create a `JoinRequest` on submit.
+  Reuse the existing pending approval flow, pending page, and school-member cleanup.
   Public + honeypot.
 - `school_dashboard` (views_modules/school.py#L442-L545) + template
   `school/school_dashboard.html` management panel: add "Share join link" with a
@@ -145,12 +147,14 @@ a separate invite-accept step.
 
 ## Phase 3 — Domain-based auto-approval (depends on Phase 2 touchpoints)
 
+Status note: this phase should build on the shipped request lifecycle, not on the older direct-to-dashboard flow. The approval/rejection email templates and pending state already exist, so the remaining work is the domain matching and automated approval branch.
+
 - `School` model: add `auto_approve_domains` (simple normalized comma-separated list to
   start; can be promoted to a related table later). Migration.
 - Dashboard settings UI: field for admins to add/edit domain(s), e.g.
   `stbarnabas.sch.uk`. Admin-only.
 - Auto-approval logic: on `JoinRequest` creation (`request_join_school` view + new
-  `/join/` view), if the requester email domain matches a school `auto_approve_domain` →
+  `/join/` view), if the requester email domain matches one of the configured domains →
   immediately run the existing approve path (`_handle_school_join_request_action` approve
   branch, views_modules/school.py#L108-L131): create `StaffInvite(role=staff)` + send
   accept email, set the `JoinRequest` to approved/resolved. Otherwise leave `PENDING`.

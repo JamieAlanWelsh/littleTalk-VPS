@@ -21,6 +21,8 @@ class School(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name="schools_created"
     )
     created_at = models.DateTimeField(auto_now_add=True)
+    # Public shareable join link token
+    join_token = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
     # Licensing fields
     is_licensed = models.BooleanField(default=False)
     license_expires_at = models.DateTimeField(null=True, blank=True)

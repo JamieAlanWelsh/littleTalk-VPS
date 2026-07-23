@@ -12,10 +12,29 @@
             <polyline points="12 19 5 12 12 5"></polyline>
         </svg>
     </a>
+
+    <div class="form-stack" style="margin-bottom: 24px;">
+        <label class="label">School Join Link</label>
+        <p class="small" style="margin-top: 0; margin-bottom: 10px; color: #5f5f5f;">
+            Share this join link with your team to quickly set up a join request.
+        </p>
+        <div style="display: flex; gap: 8px; align-items: center;">
+            <input
+                type="text"
+                class="input"
+                value="{{ join_link }}"
+                readonly
+                aria-label="School join link"
+                style="margin-bottom: 0;"
+            >
+            <button type="button" class="btn btn--green btn--small" id="copy-join-link-btn">Copy</button>
+        </div>
+    </div>
     
     <!-- Invite Form -->
     <form method="post" class="form-stack">
         {% csrf_token %}
+        <label class="label">Send Email Invite</label>
         <div>
             <label for="{{ form.email.id_for_label }}" class="label">Email</label>
             {{ form.email }}
@@ -35,5 +54,33 @@
         <button type="submit" class="btn btn--yellow btn--full">Send Invite</button>
     </form>
 </div>
+
+<script>
+    (function () {
+        var button = document.getElementById("copy-join-link-btn");
+        if (!button) {
+            return;
+        }
+        var originalText = button.textContent;
+        var link = "{{ join_link|escapejs }}";
+
+        function setCopiedText() {
+            button.textContent = "Copied";
+            setTimeout(function () {
+                button.textContent = originalText;
+            }, 1800);
+        }
+
+        button.addEventListener("click", function () {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(link).then(setCopiedText, function () {
+                    window.prompt("Copy this join link:", link);
+                });
+            } else {
+                window.prompt("Copy this join link:", link);
+            }
+        });
+    })();
+</script>
 
 {% endblock %}
