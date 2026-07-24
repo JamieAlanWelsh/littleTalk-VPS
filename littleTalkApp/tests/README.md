@@ -8,7 +8,7 @@ This package contains integration-style regression tests organized by domain.
 - `test_school_flows.py`: Staff invites, school dashboard role updates, and join-request workflows.
 - `test_assessment_flows.py`: Typical screener lifecycle flow.
 - `test_parent_access_flows.py`: Parent signup via PAC and PAC learner-linking constraints.
-- `test_api_security.py`: API nonce replay, timestamp validation, and cross-school permission boundaries.
+- `test_api_security.py`: API nonce replay and cross-school permission boundaries (submit-exercise endpoint).
 - `test_contracts.py`: Import, URL, and template contract checks to catch wiring regressions.
 - `test_forms.py`: Form validation and data-contract checks.
 - `test_models.py`: Core model behavior tests for licensing, role resolution, and age derivation.

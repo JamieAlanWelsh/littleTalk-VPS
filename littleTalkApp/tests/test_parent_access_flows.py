@@ -55,6 +55,8 @@ class ParentAccessFlowTests(BaseFlowTestMixin, TestCase):
 
     def test_parent_add_learner_via_pac_rejects_expired_code(self):
         parent_user, _, parent_profile_obj = self.create_parent_user("parent_two")
+        parent_user.email_verified = True
+        parent_user.save(update_fields=["email_verified"])
         self.client.force_login(parent_user)
 
         staff_user, _, school = self.create_staff_user_with_school(username="staff_for_expired", role=Role.STAFF)

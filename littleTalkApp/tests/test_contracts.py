@@ -51,7 +51,6 @@ class UrlContractsTests(TestCase):
             "view_parent_token": {"learner_uuid": uuid.uuid4()},
             "generate_parent_token": {"learner_uuid": uuid.uuid4()},
             "email_parent_token": {"learner_uuid": uuid.uuid4()},
-            "update_learner_exp": {"learner_uuid": uuid.uuid4()},
             "target_detail": {"target_id": 1},
         }
 
@@ -114,7 +113,6 @@ class UrlContractsTests(TestCase):
             "create_checkout_session",
             "subscribe_success",
             "manage_subscription",
-            "update_learner_exp",
             "get_current_session_learner_context",
             "create_target",
             "target_detail",
