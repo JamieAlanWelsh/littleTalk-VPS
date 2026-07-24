@@ -4,6 +4,7 @@ from django.conf import settings
 def layout_context(request):
     can_access_school_management = False
     is_skolon_user = False
+    is_read_only = False
     if request.user.is_authenticated:
         try:
             profile = request.user.profile
@@ -16,6 +17,7 @@ def layout_context(request):
                     or profile.is_manager_for_school(school)
                 )
             )
+            is_read_only = bool(school and profile.is_read_only_for_school(school))
         except Exception:
             can_access_school_management = False
 
@@ -23,6 +25,7 @@ def layout_context(request):
         'hide_sidebar': getattr(request, 'hide_sidebar', False),
         'can_access_school_management': can_access_school_management,
         'is_skolon_user': is_skolon_user,
+        'is_read_only': is_read_only,
     }
 
 def canonical_url(request):

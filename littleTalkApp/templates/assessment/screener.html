@@ -61,12 +61,14 @@
                 </a>
             {% endif %}
 
+            {% if not is_read_only %}
             <a href="{% url 'start_assessment_v2' %}" class="setup-card">
                 <div class="setup-card-inner">
                     <h2>{% if has_v2_screener %}Submit Re-Screener{% else %}Submit Screener{% endif %}</h2>
                     <p>A short questionnaire to profile needs and get updated exercise recommendations</p>
                 </div>
             </a>
+            {% endif %}
         </div>
 
         <div class="screener-back-button">

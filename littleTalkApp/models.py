@@ -324,6 +324,9 @@ class Profile(models.Model):
     def is_staff_for_school(self, school):
         return self.has_role_for_school(school, Role.STAFF)
 
+    def is_read_only_for_school(self, school):
+        return self.has_role_for_school(school, Role.READ_ONLY)
+
     def has_multiple_schools(self):
         """Return True if this profile has access to multiple schools."""
         return self.get_accessible_schools().count() > 1

@@ -9,10 +9,12 @@
     <!-- Left Column -->
     <div class="left-column">
 
-        {% if request.user.profile.role != 'parent' or learners|length <= 2 %}
-            <div class="add-learner-btn">
-                <a href="{% url 'add_learner' %}" class="button">+ Add Learner</a>
-            </div>
+        {% if not is_read_only %}
+            {% if request.user.profile.role != 'parent' or learners|length <= 2 %}
+                <div class="add-learner-btn">
+                    <a href="{% url 'add_learner' %}" class="button">+ Add Learner</a>
+                </div>
+            {% endif %}
         {% endif %}
 
         <div class="learners-list profile-card">
@@ -144,9 +146,11 @@
 
             <!-- Edit Learner Button SCHOOL AND STANDALONE ONLY -->
             {% if request.user.profile.role != 'parent' or not selected_learner.school_id %}
-                <div class="edit-learner-btn">
-                    <a href="{% url 'edit_learner' selected_learner.learner_uuid %}" class="button">📝 Learner Settings</a>
-                </div>
+                {% if not is_read_only %}
+                    <div class="edit-learner-btn">
+                        <a href="{% url 'edit_learner' selected_learner.learner_uuid %}" class="button">📝 Learner Settings</a>
+                    </div>
+                {% endif %}
 
                 <!-- Screener Button -->
                 <div class="edit-learner-btn">
