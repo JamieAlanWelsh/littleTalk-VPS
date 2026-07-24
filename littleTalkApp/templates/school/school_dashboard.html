@@ -253,7 +253,11 @@
                             <td title="{{ invite.role|capfirst }}">{{ invite.role|capfirst }}</td>
                             <td title="{{ invite.created_at|date:'M j, Y H:i' }}">{{ invite.created_at|date:"M j, Y" }}</td>
                             <td>
-                                <span class="status-badge status-badge--info">Awaiting Response</span>
+                                {% if invite.is_expired %}
+                                    <span class="status-badge status-badge--danger">Expired</span>
+                                {% else %}
+                                    <span class="status-badge status-badge--info">Awaiting Response</span>
+                                {% endif %}
                             </td>
                             <td>
                                 <form method="post" style="display:inline;" class="school-mgmt-inline-actions">
