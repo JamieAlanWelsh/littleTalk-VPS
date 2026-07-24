@@ -702,7 +702,7 @@ def school_dashboard(request):
             school=school, status=JoinRequest.Status.PENDING
         ).order_by("-created_at")[:10]
 
-    school_switcher_options = list(profile.get_accessible_schools().order_by("name"))
+    school_switcher_options = list(profile.get_licensed_schools().order_by("name"))
     school_switcher_enabled = len(school_switcher_options) > 1
 
     return render(
@@ -989,24 +989,31 @@ def select_school(request):
     if profile.is_parent():
         return redirect("profile")
 
-    accessible_schools = profile.get_accessible_schools().order_by("name")
+    licensed_schools = profile.get_licensed_schools().order_by("name")
 
+    # No licensed schools at all: send straight to the lockout page.
+    if not licensed_schools.exists():
+        return redirect("license_expired")
+
+    # Single-school users don't need to choose.
     if not profile.has_multiple_schools():
-        school = accessible_schools.first()
-        if school:
-            request.session["selected_school_id"] = school.id
+        request.session["selected_school_id"] = licensed_schools.first().id
         return redirect("profile")
 
     if request.method == "POST":
         school_id = request.POST.get("school_id")
         next_url = request.POST.get("next", "profile")
 
-        if school_id and school_id.isdigit():
-            if profile.select_school(int(school_id), request):
-                return redirect(next_url)
+        if (
+            school_id
+            and school_id.isdigit()
+            and licensed_schools.filter(id=int(school_id)).exists()
+            and profile.select_school(int(school_id), request)
+        ):
+            return redirect(next_url)
         messages.error(request, "Please select a valid school.")
 
-    schools = accessible_schools
+    schools = licensed_schools
     return render(
         request,
         "school/select_school.html",

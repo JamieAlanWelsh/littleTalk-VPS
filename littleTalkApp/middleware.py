@@ -77,11 +77,13 @@ class AccessControlMiddleware(MiddlewareMixin):
             has_pending_verification = EmailVerificationCode.objects.filter(
                 user=user
             ).exists()
-            if has_accessible_school and not has_pending_verification:
-                return None
-            return redirect("verify_email")
+            # Legacy grandfathered staff (accessible school, no pending code) are
+            # allowed through email verification, but must still pass the
+            # subscription/license checks below rather than bypassing them.
+            if not (has_accessible_school and not has_pending_verification):
+                return redirect("verify_email")
 
-        # --- VERIFIED USER: Continue with subscription/license checks ---
+        # --- VERIFIED (or grandfathered) USER: subscription/license checks ---
         profile = getattr(user, "profile", None)
 
         if not profile:

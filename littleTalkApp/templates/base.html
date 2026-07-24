@@ -126,6 +126,11 @@
                                 <span>Settings</span>
                             </a>
                             {% endif %}
+                            {% if can_change_school %}
+                            <a href="{% url 'select_school' %}" class="dropdown-item">
+                                <span>Change School</span>
+                            </a>
+                            {% endif %}
                             <form method="post" action="{% url 'logout' %}" style="margin: 0;">
                                 {% csrf_token %}
                                 <button type="submit" class="dropdown-item dropdown-item--logout">

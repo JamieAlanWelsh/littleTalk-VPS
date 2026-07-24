@@ -331,6 +331,22 @@ class Profile(models.Model):
         """Return True if this profile has access to multiple schools."""
         return self.get_accessible_schools().count() > 1
 
+    def get_licensed_schools(self):
+        """Return accessible schools that currently hold a valid licence.
+
+        Used to restrict school selection/switching to schools the user is
+        actually allowed to work in.
+        """
+        now = timezone.now()
+        return (
+            self.get_accessible_schools()
+            .filter(is_licensed=True)
+            .filter(
+                models.Q(license_expires_at__isnull=True)
+                | models.Q(license_expires_at__gt=now)
+            )
+        )
+
     def select_school(self, school_id, request=None):
         """
         Set the selected school in session if this profile has access to it.
