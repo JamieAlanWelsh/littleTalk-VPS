@@ -127,5 +127,5 @@ class PractiseRecommendationRotationTests(BaseFlowTestMixin, TestCase):
         response = self.client.get(reverse("practise"))
         self.assertEqual(response.status_code, 200)
         self.assertIsNone(response.context["recommended_exercise_card"])
-        self.assertContains(response, "No recommendation yet")
+        self.assertContains(response, "Need a hand picking an exercise?")
         self.assertContains(response, reverse("start_assessment_v2"))

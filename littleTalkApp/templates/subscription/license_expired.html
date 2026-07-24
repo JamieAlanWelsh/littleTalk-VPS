@@ -1,30 +1,23 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Chatterdillo | School License{% endblock %}
+{% block title %}Chatterdillo | License Expired{% endblock %}
 
 {% block content %}
-<h1>School License</h1>
+<h1>No Active License</h1>
 
 <div class="container-box container--short text-center">
-    <h3>License required to continue</h3>
-    <p>Thanks for using Chatterdillo. Your School needs a license to continue. Don’t worry—your data is safe and you still have limited access while we get things sorted</p>
+    <h3>Your School doesn't hold an active License</h3>
+    <p>Your school needs an active license to continue. Your data is safe and we would love to get your team fully up and running.</p>
 
-    <div class="pricing-card" style="max-width:560px;">
-        <h2>What you can still do</h2>
-        <ul>
-            <li>Access your learners from the Profile page</li>
-            <li>Generate and share Parent Access Codes</li>
-            <li>View existing Logbook entries</li>
-        </ul>
-    </div>
+    <h3>Renew or setup a Free Trial</h3>
+    <p>Book a call with our team and we will help you renew or set up a free trial.</p>
 
-    
-    <h3>Renew or Setup a License</h3>
-    <p>We’d love to get your team fully up and running. Please contact our support team and we’ll help you renew or setup your access</p>
+    <a href="{{ calendly_url }}" class="btn btn--yellow btn--full" target="_blank" rel="noopener noreferrer">Talk to us</a>
 
-    <a href="{% url 'support' %}"class="btn btn--yellow btn--full">Contact Support</a>
-
-    <a href="{% url 'profile' %}" class="btn btn--white btn--full" style="margin-top: 16px;">Back to Learner Profile</a>
+    <form method="post" action="{% url 'logout' %}" style="margin-top: 16px;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn--white btn--full">Logout</button>
+    </form>
 </div>
 {% endblock %}

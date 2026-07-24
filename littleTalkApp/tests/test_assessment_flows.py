@@ -93,7 +93,7 @@ class AssessmentTypicalFlowTests(BaseFlowTestMixin, TestCase):
         learner.refresh_from_db()
         self.assertEqual(
             learner.recommended_exercise_ids,
-            ["whats-in-the-bag", "spot-on", "whos-who"],
+            ["colourful-semantics-early", "whats-in-the-bag", "spot-on"],
         )
         self.assertEqual(learner.secondary_exercise_ids, [])
         self.assertEqual(learner.recommendation_index, 0)

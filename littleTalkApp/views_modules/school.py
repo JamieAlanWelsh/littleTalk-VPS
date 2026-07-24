@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.utils import timezone
 
 from honeypot.decorators import check_honeypot
@@ -16,12 +17,15 @@ from littleTalkApp.forms import (
     AcceptInviteForm,
     CohortForm,
     JoinRequestForm,
+    JoinRequestSignupForm,
+    SchoolJoinLinkSignupForm,
     SchoolSignupForm,
     StaffInviteForm,
 )
 from littleTalkApp.decorators import block_skolon_user
 from littleTalkApp.models import (
     Cohort,
+    EmailVerificationCode,
     JoinRequest,
     Profile,
     Role,
@@ -29,13 +33,73 @@ from littleTalkApp.models import (
     SchoolMembership,
     StaffInvite,
 )
-from littleTalkApp.utilities import hash_email, send_invite_email, send_school_welcome_email
+from littleTalkApp.utilities import (
+    hash_email,
+    send_email_verification_code,
+    send_invite_email,
+    send_join_approved_email,
+    send_join_rejected_email,
+)
 
 
 def _can_manage_school(profile, school):
     return school and (
         profile.is_admin_for_school(school) or profile.is_manager_for_school(school)
     )
+
+
+def _clear_pending_invites_for_email(email):
+    """Mark any pending staff invites for an email as used.
+
+    Called whenever an account exists (or is created) for the email so stale
+    invites stop showing as "Awaiting Response" on the dashboard.
+    """
+    if not email:
+        return
+    StaffInvite.objects.filter(
+        email_hash=hash_email(email),
+        used=False,
+        withdrawn=False,
+    ).update(used=True)
+
+
+def _create_join_request_account(request, email, password, full_name, school):
+    """Create an inactive account + pending join request and start email verification.
+
+    Shared by the self-serve join page and the public shareable join link.
+    """
+
+    user = get_user_model().objects.create_user(
+        username=str(uuid.uuid4()), password=password
+    )
+    user.email_encrypted = email
+    user.email_hash = hash_email(email)
+    user.email_verified = False
+    user.email_verified_at = None
+    user.save()
+
+    profile = Profile.objects.create(user=user, first_name=full_name)
+    profile.role = Role.STAFF
+    profile.save()
+    SchoolMembership.objects.create(
+        profile=profile,
+        school=school,
+        role=Role.STAFF,
+        is_active=False,
+    )
+
+    JoinRequest.objects.create(
+        user=user,
+        school=school,
+        status=JoinRequest.Status.PENDING,
+    )
+    _clear_pending_invites_for_email(email)
+    verification_code = EmailVerificationCode.objects.create(user=user)
+    send_email_verification_code(user, verification_code, request)
+
+    login(request, user)
+    return user
+
 
 
 def _handle_school_role_update(request, profile, school):
@@ -105,35 +169,89 @@ def _handle_school_invite_withdrawal(request, school):
     return redirect("school")
 
 
+def _approve_join_request(join_request, request, resolved_by=None):
+    """Approve a pending join request: activate membership + send approval email.
+
+    Shared by the dashboard admin action and domain-based auto-approval. Pass
+    ``resolved_by=None`` for system (auto) approvals.
+    """
+    school = join_request.school
+    profile = join_request.user.profile
+    membership, created = SchoolMembership.objects.get_or_create(
+        profile=profile,
+        school=school,
+        defaults={"role": Role.STAFF, "is_active": False},
+    )
+    membership.role = Role.STAFF
+    membership.is_active = True
+    membership.save(update_fields=["role", "is_active", "updated_at"])
+
+    if not profile.schools.filter(id=school.id).exists():
+        profile.schools.add(school)
+
+    join_request.status = JoinRequest.Status.APPROVED
+    join_request.resolved_by = resolved_by
+    join_request.resolved_at = timezone.now()
+    join_request.save(update_fields=["status", "resolved_by", "resolved_at"])
+
+    send_join_approved_email(join_request.user, school, request)
+
+
+def _auto_approve_pending_join_requests(user, request):
+    """Auto-approve a verified user's pending join requests when their email
+    domain matches the school's configured auto-approval domains.
+
+    Called after email verification succeeds, so domain trust is only granted
+    once the user has proven ownership of the email. Returns the number of
+    requests approved.
+    """
+    email = getattr(user, "email_encrypted", "") or ""
+    if not email:
+        return 0
+
+    approved = 0
+    pending = JoinRequest.objects.filter(
+        user=user, status=JoinRequest.Status.PENDING
+    ).select_related("school")
+    for join_request in pending:
+        if join_request.school.email_domain_is_auto_approved(email):
+            _approve_join_request(join_request, request, resolved_by=None)
+            approved += 1
+    return approved
+
+
 def _handle_school_join_request_action(request, school):
     join_request_id = request.POST.get("join_request_id")
     join_request = get_object_or_404(
-        JoinRequest, id=join_request_id, school=school, status="pending"
+        JoinRequest, id=join_request_id, school=school, status=JoinRequest.Status.PENDING
     )
 
     if "approve_join_request" in request.POST:
-        invite = StaffInvite.objects.create(
-            email=join_request.email,
-            role="staff",
-            school=school,
-            sent_by=request.user,
-        )
-        send_invite_email(invite, school, request)
-        join_request.status = "accepted"
+        _approve_join_request(join_request, request, resolved_by=request.user)
         messages.success(
             request,
-            f"Join request from {join_request.full_name} approved and invite sent.",
+            f"Join request from {join_request.full_name} approved and the user can access the school.",
         )
     else:
-        join_request.status = "rejected"
+        join_request.status = JoinRequest.Status.REJECTED
+        profile = join_request.user.profile
+        membership = SchoolMembership.objects.filter(
+            profile=profile,
+            school=school,
+        ).first()
+        if membership and not membership.is_active:
+            membership.delete()
+        if profile and profile.schools.filter(id=school.id).exists():
+            profile.schools.remove(school)
+        send_join_rejected_email(join_request.user, school, request)
         messages.info(
             request, f"Join request from {join_request.full_name} was rejected."
         )
-
-    join_request.resolved_by = request.user
-    join_request.resolved_at = timezone.now()
-    join_request.save()
+        join_request.resolved_by = request.user
+        join_request.resolved_at = timezone.now()
+        join_request.save()
     return redirect("school")
+
 
 
 def _handle_school_membership_status_update(request, profile, school):
@@ -158,6 +276,17 @@ def _handle_school_membership_status_update(request, profile, school):
     should_deactivate = "deactivate_membership" in request.POST
     if not (should_activate or should_deactivate):
         return None
+
+    if should_activate and JoinRequest.objects.filter(
+        user=target_profile.user,
+        school=school,
+        status=JoinRequest.Status.PENDING,
+    ).exists():
+        messages.error(
+            request,
+            "This user has a pending join request. Approve or reject it from the Pending Join Requests section instead.",
+        )
+        return redirect("school")
 
     if should_deactivate and target_role == Role.ADMIN and membership.is_active:
         active_admins = SchoolMembership.objects.filter(
@@ -210,8 +339,9 @@ def _handle_school_dashboard_post(request, profile, school):
 def school_signup(request):
     """Renders school/school_signup.html — onboarding form for a new school admin.
 
-    Creates the user account, school, profile, and SchoolMembership records, sends
-    a welcome email, logs the user in, and redirects to the profile page.
+    Creates the user account, school, profile, and SchoolMembership records, then
+    sends a verification email. The user must verify their email before accessing
+    the app. Logs the user in and redirects to the verification page.
     Protected by a honeypot field to deter bots.
     """
 
@@ -253,7 +383,7 @@ def school_signup(request):
             except Exception:
                 pass
 
-            send_school_welcome_email(school, user)
+            _clear_pending_invites_for_email(email)
 
             signup_notice = (
                 "New school sign-up submitted:\n\n"
@@ -270,9 +400,15 @@ def school_signup(request):
                 fail_silently=True,
             )
 
-            login(request, user)
+            # Create email verification code and send verification email
+            verification_code = EmailVerificationCode.objects.create(user=user)
+            send_email_verification_code(user, verification_code, request)
 
-            return redirect("profile")
+            # Log in the user and redirect to email verification
+            login(request, user)
+            messages.info(request, "Please verify your email address to get started.")
+
+            return redirect("verify_email")
     else:
         form = SchoolSignupForm()
 
@@ -306,6 +442,10 @@ def accept_invite(request, token):
 
     email_hash = hash_email(invite.email.lower())
     if email_hash and get_user_model().objects.filter(email_hash=email_hash).first():
+        # The invited person already has an account, so this invite can never be
+        # accepted. Clear any pending invites for this email so they stop showing
+        # as "Awaiting Response" on the dashboard.
+        _clear_pending_invites_for_email(invite.email)
         messages.info(
             request,
             "An account already exists for this invited email. Please log in to continue.",
@@ -324,6 +464,9 @@ def accept_invite(request, token):
             )
             user.email_encrypted = email
             user.email_hash = hash_email(email)
+            # Auto-verify invited users (they proved email ownership by clicking the link)
+            user.email_verified = True
+            user.email_verified_at = timezone.now()
             user.save()
 
             profile = Profile.objects.create(user=user, first_name=full_name)
@@ -347,7 +490,7 @@ def accept_invite(request, token):
             invite.save()
 
             StaffInvite.objects.filter(
-                email__iexact=invite.email,
+                email_hash=hash_email(invite.email),
                 used=False,
                 withdrawn=False,
             ).exclude(id=invite.id).update(used=True)
@@ -381,26 +524,54 @@ def invite_staff(request):
     ):
         return redirect("school")
 
+    form = StaffInviteForm(user=request.user, school=school)
+    submitted_domains = None
+
     if request.method == "POST":
-        form = StaffInviteForm(request.POST, school=school, user=request.user)
-        if form.is_valid():
-            invite = form.save(commit=False)
-            invite.school = school
-            invite.sent_by = request.user
-            invite.save()
+        if "save_auto_approve_domains" in request.POST:
+            if not profile.is_admin_for_school(school):
+                messages.error(request, "Only admins can update auto-approve domains.")
+                return redirect("invite_staff")
 
-            send_invite_email(invite, school, request)
+            submitted_domains = request.POST.get("auto_approve_domains", "")
+            normalized_domains = School.normalize_auto_approve_domains(submitted_domains)
+            blocked = School.find_public_domains(normalized_domains.split(","))
+            if blocked:
+                messages.error(
+                    request,
+                    "Public email providers can't be used for auto-approval: "
+                    f"{', '.join(blocked)}. Please use a school or organisation domain.",
+                )
+            else:
+                school.auto_approve_domains = normalized_domains
+                school.save(update_fields=["auto_approve_domains"])
+                messages.success(request, "Auto-approve domains updated.")
+                return redirect("invite_staff")
+        else:
+            form = StaffInviteForm(request.POST, school=school, user=request.user)
+            if form.is_valid():
+                invite = form.save(commit=False)
+                invite.school = school
+                invite.sent_by = request.user
+                invite.save()
 
-            messages.success(request, f"Invite sent to {invite.email}")
-            return redirect("invite_staff")
-    else:
-        form = StaffInviteForm(user=request.user, school=school)
+                send_invite_email(invite, school, request)
 
+                messages.success(request, f"Invite sent to {invite.email}")
+                return redirect("invite_staff")
+
+    join_link = request.build_absolute_uri(
+        reverse("join_via_link", args=[school.join_token])
+    )
     return render(
         request,
         "school/invite_staff.html",
         {
             "form": form,
+            "join_link": join_link,
+            "school": school,
+            "submitted_domains": submitted_domains,
+            "can_manage_auto_approve": profile.is_admin_for_school(school),
         },
     )
 
@@ -431,7 +602,7 @@ def update_school_name(request):
 
         school.name = new_name
         school.save(update_fields=["name"])
-        messages.success(request, "School name updated.")
+        messages.success(request, "School settings updated.")
         return redirect("school")
 
     return render(request, "school/update_school_name.html", {"school": school})
@@ -475,7 +646,15 @@ def school_dashboard(request):
         .order_by("profile__first_name")
     )
 
+    pending_join_user_ids = set(
+        JoinRequest.objects.filter(
+            school=school,
+            status=JoinRequest.Status.PENDING,
+        ).values_list("user_id", flat=True)
+    )
+
     staff_profiles = []
+    role_labels = dict(Role.CHOICES)
     if memberships.exists():
         for membership in memberships:
             profile_item = membership.profile
@@ -485,7 +664,9 @@ def school_dashboard(request):
                     {
                         "profile": profile_item,
                         "role": role_for,
+                        "role_display": role_labels.get(role_for, role_for),
                         "is_active": membership.is_active,
+                        "pending_join": profile_item.user_id in pending_join_user_ids,
                     }
                 )
     else:
@@ -502,7 +683,9 @@ def school_dashboard(request):
                     {
                         "profile": profile_item,
                         "role": role_for,
+                        "role_display": role_labels.get(role_for, role_for),
                         "is_active": True,
+                        "pending_join": profile_item.user_id in pending_join_user_ids,
                     }
                 )
 
@@ -516,10 +699,10 @@ def school_dashboard(request):
     join_requests = []
     if can_invite_staff:
         join_requests = JoinRequest.objects.filter(
-            school=school, status="pending"
+            school=school, status=JoinRequest.Status.PENDING
         ).order_by("-created_at")[:10]
 
-    school_switcher_options = list(profile.get_accessible_schools().order_by("name"))
+    school_switcher_options = list(profile.get_licensed_schools().order_by("name"))
     school_switcher_enabled = len(school_switcher_options) > 1
 
     return render(
@@ -539,31 +722,99 @@ def school_dashboard(request):
             "school_switcher_enabled": school_switcher_enabled,
             "school_switcher_options": school_switcher_options,
             "current_school_id": school.id,
+            "join_link": request.build_absolute_uri(
+                reverse("join_via_link", args=[school.join_token])
+            ),
         },
     )
 
 
 @check_honeypot
 def request_join_school(request):
-    """Renders school/request_join_school.html — public form for someone to request
-    access to a school without having received an invite. Admins review requests
-    in the school dashboard. Protected by a honeypot field.
-    """
+    """Create an account, create a pending join request, and send verification email."""
 
     request.hide_sidebar = True
     if request.method == "POST":
-        form = JoinRequestForm(request.POST)
+        form = JoinRequestSignupForm(request.POST)
         if form.is_valid():
-            form.save()
-            messages.success(
+            email = form.cleaned_data["email"].lower()
+            password = form.cleaned_data["password"]
+            full_name = form.cleaned_data["full_name"]
+            school = form.cleaned_data["school"]
+
+            _create_join_request_account(request, email, password, full_name, school)
+
+            messages.info(
                 request,
-                "Your request has been submitted. An admin will review it shortly. If approved, you will receive an invite via E-Mail",
+                "Please verify your email address before you can access this school.",
             )
-            return redirect("request_join_school")
+            return redirect("verify_email")
     else:
-        form = JoinRequestForm()
+        form = JoinRequestSignupForm()
 
     return render(request, "school/request_join_school.html", {"form": form})
+
+
+@check_honeypot
+def join_via_link(request, join_token):
+    """Public shareable join link.
+
+    Resolves the school from the link token, locks it, and funnels the visitor
+    into the account-first pending join flow (same as request_join_school).
+    """
+
+    request.hide_sidebar = True
+    school = get_object_or_404(School, join_token=join_token)
+    skolon_org = getattr(school, "skolon_org", None)
+
+    if not school.has_valid_license() or skolon_org is not None:
+        return render(
+            request,
+            "school/join_via_link.html",
+            {"school": school, "form": None, "link_unavailable": True},
+        )
+
+    if request.method == "POST":
+        form = SchoolJoinLinkSignupForm(request.POST, school=school)
+        if form.is_valid():
+            email = form.cleaned_data["email"].lower()
+            password = form.cleaned_data["password"]
+            full_name = form.cleaned_data["full_name"]
+
+            _create_join_request_account(request, email, password, full_name, school)
+
+            messages.info(
+                request,
+                "Please verify your email address before you can access this school.",
+            )
+            return redirect("verify_email")
+    else:
+        form = SchoolJoinLinkSignupForm(school=school)
+
+    return render(
+        request,
+        "school/join_via_link.html",
+        {"school": school, "form": form, "link_unavailable": False},
+    )
+
+
+
+@login_required
+def join_pending(request):
+    request.hide_sidebar = True
+    profile = request.user.profile
+    join_request = (
+        JoinRequest.objects.filter(user=request.user, status=JoinRequest.Status.PENDING)
+        .select_related("school")
+        .first()
+    )
+    if not join_request:
+        return redirect("profile")
+    return render(
+        request,
+        "school/join_pending.html",
+        {"school": join_request.school, "join_request": join_request},
+    )
 
 
 @login_required
@@ -586,7 +837,7 @@ def invite_audit_trail(request):
     )
     join_requests = (
         JoinRequest.objects.filter(school=school)
-        .select_related("resolved_by")
+        .select_related("resolved_by", "user")
         .order_by("-created_at")[:50]
     )
 
@@ -738,24 +989,31 @@ def select_school(request):
     if profile.is_parent():
         return redirect("profile")
 
-    accessible_schools = profile.get_accessible_schools().order_by("name")
+    licensed_schools = profile.get_licensed_schools().order_by("name")
 
+    # No licensed schools at all: send straight to the lockout page.
+    if not licensed_schools.exists():
+        return redirect("license_expired")
+
+    # Single-school users don't need to choose.
     if not profile.has_multiple_schools():
-        school = accessible_schools.first()
-        if school:
-            request.session["selected_school_id"] = school.id
+        request.session["selected_school_id"] = licensed_schools.first().id
         return redirect("profile")
 
     if request.method == "POST":
         school_id = request.POST.get("school_id")
         next_url = request.POST.get("next", "profile")
 
-        if school_id and school_id.isdigit():
-            if profile.select_school(int(school_id), request):
-                return redirect(next_url)
+        if (
+            school_id
+            and school_id.isdigit()
+            and licensed_schools.filter(id=int(school_id)).exists()
+            and profile.select_school(int(school_id), request)
+        ):
+            return redirect(next_url)
         messages.error(request, "Please select a valid school.")
 
-    schools = accessible_schools
+    schools = licensed_schools
     return render(
         request,
         "school/select_school.html",

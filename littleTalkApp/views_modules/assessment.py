@@ -16,6 +16,7 @@ from littleTalkApp.content.assessments_v2 import (
     get_question_by_order,
     validate_v2_exercise_ids,
 )
+from littleTalkApp.decorators import block_read_only
 from littleTalkApp.models import Cohort, Learner, LearnerAssessmentAnswer
 
 
@@ -121,6 +122,7 @@ def start_assessment(request):
 
 
 @login_required
+@block_read_only
 def start_assessment_v2(request):
     """Renders assessment/assessment_form.html for Screener V2."""
 
@@ -167,6 +169,7 @@ def save_all_assessment_answers(request):
 
 
 @login_required
+@block_read_only(api=True)
 def save_all_assessment_answers_v2(request):
     """JSON API (POST): persists submitted Screener V2 answers to the database.
 

@@ -1,7 +1,7 @@
 from django.shortcuts import redirect
 from django.urls import reverse, resolve
 from django.utils.deprecation import MiddlewareMixin
-from .models import Role
+from .models import EmailVerificationCode, JoinRequest, Role
 
 
 class NoCacheHtmlMiddleware:
@@ -27,36 +27,63 @@ class NoCacheHtmlMiddleware:
 
 class AccessControlMiddleware(MiddlewareMixin):
     """
-    Restricts access based on parent subscription or school license.
-    Allows /login/, /logout/, /profile/, /subscribe/, /license-expired/
+    Enforces email verification as a strict gate: unverified authenticated users
+    cannot access anything except /logout/ and /verify-email/ (code entry and link verification).
+    
+    After verification, applies subscription/license restrictions.
     """
 
     def process_view(self, request, view_func, view_args, view_kwargs):
         user = request.user
         path = request.path
 
-        # Allow unauthenticated users to access login/logout
-        allowed_paths = [
+        # --- PUBLIC PATHS (always allowed, no auth required) ---
+        # Informational & gating pages that users must be able to access when redirected
+        public_paths = [
             reverse("login"),
             reverse("logout"),
-            reverse("profile"),
-            reverse("school"),
-            reverse("select_school"),
-            reverse("select_learner"),
-            reverse("subscribe"),
+            reverse("verify_email"),
+            reverse("join_pending"),
             reverse("license_expired"),
-            reverse("settings"),
-            reverse("logbook"),
-            reverse("support"),
+            reverse("subscribe"),
             reverse("access_restricted"),
+            reverse("support"),
         ]
 
-        if any(path.startswith(ap) for ap in allowed_paths):
+        # Allow unauthenticated access and logout for everyone
+        if any(path.startswith(ap) for ap in public_paths):
+            return None
+
+        # Also allow the link-based verification URL (starts with /verify-email/)
+        if path.startswith("/verify-email/"):
             return None
 
         if not user.is_authenticated:
             return None  # Let login-required decorators handle it
 
+        # --- EMAIL VERIFICATION GATE (STRICT) ---
+        # Newly created users should complete verification before proceeding.
+        # Existing staff users who already have an active school membership and
+        # no pending verification code can continue to use the app while legacy
+        # accounts are still being migrated.
+        profile = getattr(user, "profile", None)
+
+        if not user.email_verified:
+            has_accessible_school = bool(
+                profile.get_accessible_schools().exists()
+                if profile and hasattr(profile, "get_accessible_schools")
+                else False
+            )
+            has_pending_verification = EmailVerificationCode.objects.filter(
+                user=user
+            ).exists()
+            # Legacy grandfathered staff (accessible school, no pending code) are
+            # allowed through email verification, but must still pass the
+            # subscription/license checks below rather than bypassing them.
+            if not (has_accessible_school and not has_pending_verification):
+                return redirect("verify_email")
+
+        # --- VERIFIED (or grandfathered) USER: subscription/license checks ---
         profile = getattr(user, "profile", None)
 
         if not profile:
@@ -142,6 +169,10 @@ class SchoolSelectionMiddleware:
             'support',
             'sso_callback',
             'sso_launch',
+            'verify_email',
+            'request_join_school',
+            'school_signup',
+            'accept_invite',
         }
         if url_name in skip_urls:
             return False
@@ -183,14 +214,32 @@ class RoleSchoolBlockMiddleware:
         except Exception:
             url_name = ""
 
-        if url_name in {"access_restricted", "logout", "support"}:
+        if url_name in {
+            "access_restricted",
+            "logout",
+            "support",
+            "join_pending",
+            "verify_email",
+            "request_join_school",
+            "join_via_link",
+            "school_signup",
+            "accept_invite",
+        }:
             return self.get_response(request)
 
         if user.is_authenticated:
             profile = getattr(user, "profile", None)
             if profile:
-                # If this user is staff (non-parent) and has no associated
-                # schools, block access.
+                pending_join_request = JoinRequest.objects.filter(
+                    user=user,
+                    status=JoinRequest.Status.PENDING,
+                ).exists()
+                if (
+                    profile.role != Role.PARENT
+                    and not profile.get_accessible_schools().exists()
+                    and pending_join_request
+                ):
+                    return redirect("join_pending")
                 if profile.role != Role.PARENT and not profile.get_accessible_schools().exists():
                     return redirect("access_restricted")
 

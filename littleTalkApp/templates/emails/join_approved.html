@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+  </head>
+  <body style="margin:0; padding:0; font-family: Arial, sans-serif; background-color:#f6f9fc; color:#1f2937;">
+    <div style="background:#f6f9fc; padding:24px 16px;">
+      <div style="max-width:600px; margin:0 auto; background:#ffffff; border-radius:24px; overflow:hidden;">
+        <div style="background:#8BC2FF; padding:32px 24px; text-align:center;">
+          <h1 style="margin:0; font-size:28px; color:#1f2937;">Your school join request has been approved</h1>
+        </div>
+        <div style="padding:32px 24px; line-height:1.6; color:#1f2937;">
+          <p style="margin:0 0 16px;">Hi there,</p>
+          <p style="margin:0 0 16px;">Your request to join <strong>{{ school.name }}</strong> has been approved.</p>
+          <p style="margin:0 0 16px;">You can sign in and get started here:</p>
+          <p style="margin:0 0 24px;">
+            <a href="{{ login_url }}" style="display:inline-block; background:#f7d46f; color:#1f2937; text-decoration:none; padding:12px 20px; border-radius:999px; font-weight:bold;">Sign in to Chatterdillo</a>
+          </p>
+          <p style="margin:0; color:#4b5563;">Best wishes,<br>The Chatterdillo Team</p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

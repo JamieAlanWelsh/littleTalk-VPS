@@ -5,56 +5,60 @@
 {% block title %}Chatterdillo | Create Your Account{% endblock %}
 
 {% block content %}
+<div class="login-container">
 
-{% comment %} logo top left {% endcomment %}
-<!-- logo top left -->
-<a href="/" class="logo-link">
-    <div class="logo-upper-left">
-        <img src="{% static 'images/chatterdillo_logo_official.png' %}" alt="Chatterdillo Logo">
+    <!-- logo top left -->
+    <a href="/" class="logo-link">
+        <div class="logo-upper-left">
+            <img src="{% static 'images/chatterdillo_logo_official.png' %}" alt="Chatterdillo Logo">
+        </div>
+    </a>
+
+    <!-- Login Button Top Right -->
+    <div class="register-button-container">
+        <a href="{% url 'login' %}" class="btn btn--yellow btn--small">Log in</a>
     </div>
-</a>
 
-<div class="page-heading-with-logo">
-    <h1>Create your account</h1>
-</div>
+    <!-- Header Section -->
+    <h1 style="text-align: center; font-size: 2rem; margin-bottom: 40px;">Create Account & Join School</h1>
 
-<div class="container-box">
-    <h3>You are invited to join {{ school_name }}</h3>
-    <p>This invite was sent to: <strong>{{ email }}</strong></p>
-    <p class="section-note" style="margin-top: 6px;">
-        This page is for first-time account setup. Choose your name and create a new password to join the school.
-    </p>
-
-    <form method="post" class="form-stack">
+    <!-- Accept Invite Form -->
+    <form method="post" class="login-form">
         {% csrf_token %}
         {% render_honeypot_field %}
 
-        <div>
-            <label for="{{ form.full_name.id_for_label }}" class="label">Your Name</label>
-            {{ form.full_name }}
-            {% if form.full_name.errors %}
-                <p class="error-message">{{ form.full_name.errors.0 }}</p>
-            {% endif %}
-        </div>
-
-        <div>
-            <label for="{{ form.password.id_for_label }}" class="label">Create Password</label>
-            {{ form.password }}
-            <p style="margin: 6px 0 0; color: #6c7584; font-size: 0.85rem;">Use at least 6 characters.</p>
-            {% if form.password.errors %}
-                <p class="error-message">{{ form.password.errors.0 }}</p>
-            {% endif %}
-        </div>
-
-        <button type="submit" class="btn btn--yellow btn--full">Create Account &amp; Join School</button>
-
-        <p class="text-center" style="margin-top: 14px; margin-bottom: 0; font-size: 0.9rem;">
-            Already have an account? <a href="{% url 'login' %}" class="text-link">Log in</a>
+        <p class="register-intro">
+            You've been invited to join <strong>{{ school_name }}</strong> as a staff member. Create an account to join the school.
         </p>
+        <p class="register-intro"></p>
+        Setting up an account as: <strong>{{ email }}</strong>
+        </p>
+        <div>
+            <input type="text" name="full_name" class="input" placeholder="Your name"
+                value="{{ form.full_name.value|default_if_none:'' }}" required>
+            {% if form.full_name.errors %}
+                <div class="error-message">{{ form.full_name.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <div>
+            <input type="password" name="password" class="input" placeholder="Create password" required>
+            {% if form.password.errors %}
+                <div class="error-message">{{ form.password.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <div>
+            <button type="submit" class="btn btn--yellow btn--full">Create Account &amp; Join School</button>
+        </div>
 
         <p class="text-center" style="margin-top: 20px; margin-bottom: 0; font-size: 0.9rem;">
-            By creating your account, you agree to our <a href="/terms/" target="_blank" class="text-link">Terms and Conditions</a>
+            By signing up, you agree to our <a href="/terms/" target="_blank" class="text-link">Terms and Conditions</a>
         </p>
+
+        {% if form.non_field_errors %}
+            <div class="error-message">{{ form.non_field_errors.0 }}</div>
+        {% endif %}
     </form>
 </div>
 {% endblock %}

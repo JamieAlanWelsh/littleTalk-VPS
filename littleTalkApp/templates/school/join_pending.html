@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Join Request Pending - Chatterdillo{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'styles/pages/verify_email.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="verify-email-container join-pending-container">
+    <div class="verify-email-card">
+        <div class="verify-email-icon">
+            <img src="{% static 'images/landing/arlo_running.png' %}" alt="Pending request" class="verify-email-arlo">
+        </div>
+
+        <h1 class="verify-email-title">Your school join request is pending</h1>
+
+        <p class="verify-email-description">
+            Your request to join {{ school.name }} is being reviewed by an administrator.
+        </p>
+        <p class="verify-email-description">
+            You will be notified by email once the request is approved.
+        </p>
+
+        <div class="verify-email-links">
+            <a href="{% url 'support' %}" class="verify-email-link">Need help? Contact Support</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

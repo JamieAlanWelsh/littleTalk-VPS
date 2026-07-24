@@ -8,8 +8,8 @@ from django.shortcuts import get_object_or_404, redirect, render
 from honeypot.decorators import check_honeypot
 
 from littleTalkApp.forms import ParentAccessCodeForm, ParentSignupForm
-from littleTalkApp.models import Learner, ParentAccessToken, ParentProfile, Profile, Role
-from littleTalkApp.utilities import hash_email, send_parent_access_email, send_parent_welcome_email
+from littleTalkApp.models import EmailVerificationCode, Learner, ParentAccessToken, ParentProfile, Profile, Role
+from littleTalkApp.utilities import hash_email, send_parent_access_email, send_email_verification_code
 
 
 @login_required
@@ -146,10 +146,14 @@ def parent_signup_view(request):
                 token.used = True
                 token.save()
 
-            send_parent_welcome_email(user)
+            # Create email verification code and send verification email
+            verification_code = EmailVerificationCode.objects.create(user=user)
+            send_email_verification_code(user, verification_code, request)
 
+            # Log in the user and redirect to email verification
             login(request, user)
-            return redirect("profile")
+            messages.info(request, "Please verify your email address to get started.")
+            return redirect("verify_email")
     else:
         form = ParentSignupForm(initial={"access_code": prefill_code})
 

@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
+from django.urls import reverse
 from email.utils import formataddr
 
 from .models import Role
@@ -93,41 +94,66 @@ def send_parent_access_email(token, learner, email, request):
     email.send()
 
 
-# Send school welcome email
+# Send email verification code
 
 
-def send_school_welcome_email(school, user):
+def send_email_verification_code(user, verification_code, request):
+    """Send a 6-digit verification code and a click link to the user."""
     from_email = formataddr(("Chatterdillo Team", "noreply@chatterdillo.com"))
     to_email = [user.email_encrypted]
 
+    # Build the click-link URL
+    verify_url = request.build_absolute_uri(
+        f"/verify-email/{verification_code.link_token}/"
+    )
+
     context = {
         "user": user,
-        "school": school,
+        "code": verification_code.code,
+        "verify_link": verify_url,
     }
 
-    subject = f"Welcome to Chatterdillo, {school.name}!"
-    text_content = render_to_string("emails/school_welcome.txt", context)
-    html_content = render_to_string("emails/school_welcome.html", context)
+    subject = "Verify your Chatterdillo email"
+    text_content = render_to_string("emails/verify_email.txt", context)
+    html_content = render_to_string("emails/verify_email.html", context)
 
     email = EmailMultiAlternatives(subject, text_content, from_email, to_email)
     email.attach_alternative(html_content, "text/html")
     email.send()
 
 
-# Send parent welcome email
-
-
-def send_parent_welcome_email(user):
+def send_join_approved_email(user, school, request):
     from_email = formataddr(("Chatterdillo Team", "noreply@chatterdillo.com"))
     to_email = [user.email_encrypted]
 
     context = {
         "user": user,
+        "school": school,
+        "login_url": request.build_absolute_uri(reverse("login")),
     }
 
-    subject = "Welcome to Chatterdillo!"
-    text_content = render_to_string("emails/parent_welcome.txt", context)
-    html_content = render_to_string("emails/parent_welcome.html", context)
+    subject = f"Your request to join {school.name} has been approved"
+    text_content = render_to_string("emails/join_approved.txt", context)
+    html_content = render_to_string("emails/join_approved.html", context)
+
+    email = EmailMultiAlternatives(subject, text_content, from_email, to_email)
+    email.attach_alternative(html_content, "text/html")
+    email.send()
+
+
+def send_join_rejected_email(user, school, request):
+    from_email = formataddr(("Chatterdillo Team", "noreply@chatterdillo.com"))
+    to_email = [user.email_encrypted]
+
+    context = {
+        "user": user,
+        "school": school,
+        "login_url": request.build_absolute_uri(reverse("login")),
+    }
+
+    subject = f"Your request to join {school.name} was not approved"
+    text_content = render_to_string("emails/join_rejected.txt", context)
+    html_content = render_to_string("emails/join_rejected.html", context)
 
     email = EmailMultiAlternatives(subject, text_content, from_email, to_email)
     email.attach_alternative(html_content, "text/html")

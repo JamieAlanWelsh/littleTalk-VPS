@@ -35,7 +35,7 @@ class LearnerAvatarApiTests(BaseFlowTestMixin, TestCase):
             data=json.dumps(
                 {
                     "avatar_character": "arlo_armadillo",
-                    "avatar_color": "#36A3E2",
+                    "avatar_color": "#7BCFFF",
                 }
             ),
             content_type="application/json",
@@ -44,7 +44,7 @@ class LearnerAvatarApiTests(BaseFlowTestMixin, TestCase):
         self.assertEqual(response.status_code, 200)
         self.learner.refresh_from_db()
         self.assertEqual(self.learner.avatar_character, "arlo_armadillo")
-        self.assertEqual(self.learner.avatar_color, "#36A3E2")
+        self.assertEqual(self.learner.avatar_color, "#7BCFFF")
 
     def test_avatar_update_rejects_invalid_character(self):
         response = self.client.patch(

@@ -45,9 +45,13 @@
                     {% for invite in invites %}
                         <tr>
                             <td title="{{ invite.email }}">{{ invite.email }}</td>
-                            <td title="{{ invite.role|capfirst }}">{{ invite.role|capfirst }}</td>
-                            <td title="{{ invite.sent_by.get_full_name|default:invite.sent_by.username }}">
-                                {{ invite.sent_by.get_full_name|default:invite.sent_by.username }}
+                            <td title="{{ invite.get_role_display }}">{{ invite.get_role_display }}</td>
+                            <td title="{{ invite.sent_by.profile.first_name|default:invite.sent_by.username }}">
+                                {% if invite.sent_by %}
+                                    {{ invite.sent_by.profile.first_name|default:invite.sent_by.username }}
+                                {% else %}
+                                    —
+                                {% endif %}
                             </td>
                             <td title="{{ invite.created_at|date:'M j, Y H:i' }}">{{ invite.created_at|date:"M j, Y" }}</td>
                             <td>

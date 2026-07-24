@@ -4,7 +4,7 @@
 
 <h1>Invite Staff</h1>
 
-<div class="container-box container--short pt-70">
+<div class="container-box container--short pt-70 invite-staff-card">
     <!-- Back arrow button -->
     <a href="{% url 'school' %}" class="back-arrow">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-icon">
@@ -12,11 +12,63 @@
             <polyline points="12 19 5 12 12 5"></polyline>
         </svg>
     </a>
+
+    <section class="invite-staff-section join-link-wrapper" aria-label="School join link section">
+        <h2 class="invite-staff-section-title">School Join Link</h2>
+        <p class="small form-hint">
+            Share this join link with your team to quickly set up a join request.
+        </p>
+        <div class="join-link-row">
+            <input
+                type="text"
+                class="input"
+                value="{{ join_link }}"
+                readonly
+                aria-label="School join link"
+            >
+            <button type="button" class="btn btn--green btn--small" id="copy-join-link-btn">Copy</button>
+        </div>
+    </section>
+
+    {% if can_manage_auto_approve %}
+        <section class="invite-staff-section" aria-label="Auto-approve domains section">
+            <h2 class="invite-staff-section-title">Auto-Approve Join Requests</h2>
+            <p class="small form-hint">
+                Save your school or trust's domain below to auto-approve any incoming join requests with that domain.
+            </p>
+            <p class="small form-hint">
+                Separate multiple domains with commas (e.g. <code>meadowpark.sch.uk, example-trust.org</code>).
+            </p>
+            <form method="post" class="form-stack invite-staff-auto-approve-form" aria-label="Auto-approve domains form">
+                {% csrf_token %}
+                <div class="invite-staff-field">
+                    <label for="auto_approve_domains" class="label">Domains</label>
+                    <input
+                        id="auto_approve_domains"
+                        type="text"
+                        name="auto_approve_domains"
+                        class="input"
+                        value="{{ submitted_domains|default:school.auto_approve_domains }}"
+                        placeholder="meadowpark.sch.uk, example-trust.org"
+                    >
+                </div>
+                <div class="invite-staff-actions">
+                    <button type="submit" name="save_auto_approve_domains" value="1" class="btn btn--yellow btn--small">Save Domains</button>
+                </div>
+            </form>
+        </section>
+    {% endif %}
+
+    <hr class="invite-staff-divider">
     
     <!-- Invite Form -->
-    <form method="post" class="form-stack">
+    <form method="post" class="form-stack invite-staff-section" aria-label="Send email invite form">
         {% csrf_token %}
-        <div>
+        <h2 class="invite-staff-section-title">Invite by Email</h2>
+        <p class="small form-hint">
+            Send a direct email invite to a staff member to join your school. They will receive an email with a link to create an account.
+        </p>
+        <div class="invite-staff-field">
             <label for="{{ form.email.id_for_label }}" class="label">Email</label>
             {{ form.email }}
             {% if form.email.errors %}
@@ -24,7 +76,7 @@
             {% endif %}
         </div>
 
-        <div>
+        <div class="invite-staff-field">
             <label for="{{ form.role.id_for_label }}" class="label">Role</label>
             {{ form.role }}
             {% if form.role.errors %}
@@ -32,8 +84,36 @@
             {% endif %}
         </div>
 
-        <button type="submit" class="btn btn--yellow btn--full">Send Invite</button>
+        <button type="submit" class="btn btn--yellow btn--small">Send Invite</button>
     </form>
 </div>
+
+<script>
+    (function () {
+        var button = document.getElementById("copy-join-link-btn");
+        if (!button) {
+            return;
+        }
+        var originalText = button.textContent;
+        var link = "{{ join_link|escapejs }}";
+
+        function setCopiedText() {
+            button.textContent = "Copied";
+            setTimeout(function () {
+                button.textContent = originalText;
+            }, 1800);
+        }
+
+        button.addEventListener("click", function () {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(link).then(setCopiedText, function () {
+                    window.prompt("Copy this join link:", link);
+                });
+            } else {
+                window.prompt("Copy this join link:", link);
+            }
+        });
+    })();
+</script>
 
 {% endblock %}

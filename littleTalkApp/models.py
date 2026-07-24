@@ -3,8 +3,10 @@ from django.conf import settings
 from encrypted_model_fields.fields import (
     EncryptedCharField,
     EncryptedDateField,
+    EncryptedEmailField,
     EncryptedTextField,
 )
+import hashlib
 import uuid
 from django.utils import timezone
 from datetime import date, timedelta
@@ -21,6 +23,11 @@ class School(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name="schools_created"
     )
     created_at = models.DateTimeField(auto_now_add=True)
+    # Public shareable join link token
+    join_token = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
+    # Comma-separated, normalized list of email domains that are auto-approved
+    # for join requests (e.g. "stbarnabas.sch.uk,example-trust.org").
+    auto_approve_domains = models.TextField(blank=True, default="")
     # Licensing fields
     is_licensed = models.BooleanField(default=False)
     license_expires_at = models.DateTimeField(null=True, blank=True)
@@ -32,6 +39,86 @@ class School(models.Model):
         return self.is_licensed and (
             self.license_expires_at is None or self.license_expires_at > timezone.now()
         )
+
+    # Public/consumer email providers that must never be used for domain
+    # auto-approval (they are not owned by any single school/organisation).
+    PUBLIC_EMAIL_DOMAINS = frozenset(
+        {
+            "gmail.com",
+            "googlemail.com",
+            "outlook.com",
+            "hotmail.com",
+            "hotmail.co.uk",
+            "live.com",
+            "live.co.uk",
+            "msn.com",
+            "yahoo.com",
+            "yahoo.co.uk",
+            "ymail.com",
+            "icloud.com",
+            "me.com",
+            "mac.com",
+            "aol.com",
+            "protonmail.com",
+            "proton.me",
+            "gmx.com",
+            "gmx.co.uk",
+            "mail.com",
+            "zoho.com",
+            "yandex.com",
+            "btinternet.com",
+            "sky.com",
+            "virginmedia.com",
+            "ntlworld.com",
+            "talktalk.net",
+        }
+    )
+
+    def get_auto_approve_domains(self):
+        """Return the configured auto-approval domains as a normalized list."""
+        if not self.auto_approve_domains:
+            return []
+        return [d for d in self.auto_approve_domains.split(",") if d]
+
+    def email_domain_is_auto_approved(self, email):
+        """Return True if the given email's domain is auto-approved for this school."""
+        if not email or "@" not in email:
+            return False
+        domain = email.rsplit("@", 1)[1].strip().lower()
+        if not domain or domain in self.PUBLIC_EMAIL_DOMAINS:
+            return False
+        return domain in self.get_auto_approve_domains()
+
+    @staticmethod
+    def normalize_auto_approve_domains(raw):
+        """Normalize free-text domain input into a deduped comma-separated string.
+
+        Accepts commas/whitespace as separators, lowercases, strips a leading
+        '@', and drops blanks while preserving input order.
+        """
+        if not raw:
+            return ""
+        tokens = raw.replace(",", " ").split()
+        seen = []
+        for token in tokens:
+            domain = token.strip().lower().lstrip("@")
+            if domain and domain not in seen:
+                seen.append(domain)
+        return ",".join(seen)
+
+    @classmethod
+    def find_public_domains(cls, domains):
+        """Return any public/consumer email domains from an iterable of domains.
+
+        Preserves order and avoids duplicates so callers can report the exact
+        disallowed values back to the user.
+        """
+        flagged = []
+        for domain in domains:
+            normalized = (domain or "").strip().lower().lstrip("@")
+            if normalized in cls.PUBLIC_EMAIL_DOMAINS and normalized not in flagged:
+                flagged.append(normalized)
+        return flagged
 
 
 class SchoolLicenseCode(models.Model):
@@ -237,9 +324,28 @@ class Profile(models.Model):
     def is_staff_for_school(self, school):
         return self.has_role_for_school(school, Role.STAFF)
 
+    def is_read_only_for_school(self, school):
+        return self.has_role_for_school(school, Role.READ_ONLY)
+
     def has_multiple_schools(self):
         """Return True if this profile has access to multiple schools."""
         return self.get_accessible_schools().count() > 1
+
+    def get_licensed_schools(self):
+        """Return accessible schools that currently hold a valid licence.
+
+        Used to restrict school selection/switching to schools the user is
+        actually allowed to work in.
+        """
+        now = timezone.now()
+        return (
+            self.get_accessible_schools()
+            .filter(is_licensed=True)
+            .filter(
+                models.Q(license_expires_at__isnull=True)
+                | models.Q(license_expires_at__gt=now)
+            )
+        )
 
     def select_school(self, school_id, request=None):
         """
@@ -440,7 +546,14 @@ def default_expiry():
 
 class StaffInvite(models.Model):
     school = models.ForeignKey(School, on_delete=models.CASCADE, related_name="invites")
-    email = models.EmailField()
+    email = EncryptedEmailField(blank=True, null=True)
+    email_hash = models.CharField(
+        max_length=64,
+        blank=True,
+        null=True,
+        db_index=True,
+        help_text="SHA256 hash of the invited email for lookups.",
+    )
     role = models.CharField(max_length=30, choices=Role.CHOICES)
     token = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     used = models.BooleanField(default=False)
@@ -455,6 +568,15 @@ class StaffInvite(models.Model):
     )
     withdrawn = models.BooleanField(default=False)
 
+    def save(self, *args, **kwargs):
+        # Keep the lookup hash in sync with the (encrypted) email.
+        self.email_hash = (
+            hashlib.sha256(self.email.lower().encode()).hexdigest()
+            if self.email
+            else None
+        )
+        super().save(*args, **kwargs)
+
     def is_expired(self):
         return timezone.now() > self.expires_at
 
@@ -468,8 +590,11 @@ class JoinRequest(models.Model):
         APPROVED = "approved", "Approved"
         REJECTED = "rejected", "Rejected"
 
-    full_name = models.CharField(max_length=255)
-    email = models.EmailField()
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="join_requests",
+    )
     school = models.ForeignKey(School, on_delete=models.CASCADE)
     status = models.CharField(
         max_length=10, choices=Status.choices, default=Status.PENDING
@@ -484,13 +609,120 @@ class JoinRequest(models.Model):
         related_name="handled_join_requests",
     )
 
+    @property
+    def full_name(self):
+        if self.user and getattr(self.user, "profile", None):
+            return self.user.profile.first_name or ""
+        return ""
+
+    @property
+    def email(self):
+        return self.user.email_encrypted if self.user else ""
+
     def __str__(self):
         return f"{self.full_name} ({self.email}) → {self.school.name} [{self.status}]"
 
 
+class EmailVerificationCode(models.Model):
+    """
+    One-time email verification code for new users.
+    Mirrors the ParentAccessToken pattern: 6-digit code + optional click link.
+    """
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="email_verification_code"
+    )
+    code = models.CharField(
+        max_length=6,
+        unique=True,
+        editable=False,
+        help_text="6-character verification code"
+    )
+    link_token = models.UUIDField(
+        unique=True,
+        default=uuid.uuid4,
+        editable=False,
+        help_text="UUID for the click-link verification URL"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    used = models.BooleanField(default=False)
+    attempts = models.IntegerField(
+        default=0,
+        help_text="Number of failed verification attempts"
+    )
+    expires_at = models.DateTimeField(
+        default=default_expiry,
+        help_text="When this code expires"
+    )
+
+    class Meta:
+        indexes = [models.Index(fields=["user", "used"])]
+
+    def is_expired(self):
+        """Check if code is expired or already used."""
+        return self.used or timezone.now() > self.expires_at
+
+    def is_attempt_limit_exceeded(self, max_attempts=5):
+        """Check if max verification attempts have been exceeded."""
+        return self.attempts >= max_attempts
+
+    def increment_attempts(self):
+        """Increment failed attempt counter."""
+        self.attempts += 1
+        self.save(update_fields=["attempts"])
+
+    def mark_used(self):
+        """Mark code as used and set expiry."""
+        self.used = True
+        self.save(update_fields=["used"])
+
+    def regenerate_code(self, resend_cooldown_seconds=60):
+        """
+        Generate a new verification code and reset timestamps.
+        Respects a cooldown to prevent abuse.
+        """
+        # Check cooldown
+        if self.created_at:
+            time_since_creation = timezone.now() - self.created_at
+            if time_since_creation.total_seconds() < resend_cooldown_seconds:
+                raise Exception(
+                    f"Please wait {resend_cooldown_seconds} seconds before requesting a new code."
+                )
+
+        # Generate new unique code
+        for _ in range(10):
+            new_code = generate_short_code()
+            if not EmailVerificationCode.objects.filter(code=new_code).exists():
+                self.code = new_code
+                self.link_token = uuid.uuid4()
+                self.created_at = timezone.now()
+                self.expires_at = default_expiry()
+                self.used = False
+                self.attempts = 0
+                self.save()
+                return
+        raise Exception("Unable to generate unique verification code after multiple attempts")
+
+    def save(self, *args, **kwargs):
+        """Auto-generate code on first save if not set."""
+        if not self.code:
+            for _ in range(10):
+                new_code = generate_short_code()
+                if not EmailVerificationCode.objects.filter(code=new_code).exists():
+                    self.code = new_code
+                    break
+            else:
+                raise Exception("Unable to generate a unique verification code.")
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"Email verification code for {self.user.username}: {self.code}"
+
+
 def generate_short_code(length=6):
-    alphabet = string.ascii_uppercase + string.digits
-    return "".join(random.choices(alphabet, k=length))
+    """Generate a random numeric code (digits only)."""
+    return "".join(random.choices(string.digits, k=length))
 
 
 class ParentAccessToken(models.Model):

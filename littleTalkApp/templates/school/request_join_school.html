@@ -23,6 +23,11 @@
     <form method="post" class="login-form">
         {% csrf_token %}
         {% render_honeypot_field %}
+        
+        <p class="register-intro">
+            If your school is already using Chatterdillo, sign up here to join your school as a staff member.
+        </p>
+
         <div>
             <input type="text" name="full_name" class="input" placeholder="Your name"
                 value="{{ form.full_name.value|default_if_none:'' }}" required>
@@ -36,6 +41,14 @@
                 value="{{ form.email.value|default_if_none:'' }}" required>
             {% if form.email.errors %}
                 <div class="error-message">{{ form.email.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <div>
+            <input type="password" name="password" class="input" placeholder="Create password"
+                value="{{ form.password.value|default_if_none:'' }}" required>
+            {% if form.password.errors %}
+                <div class="error-message">{{ form.password.errors.0 }}</div>
             {% endif %}
         </div>
 
@@ -54,8 +67,12 @@
         </div>
 
         <div>
-            <button type="submit" class="btn btn--yellow btn--full mt-20">Submit Request</button>
+            <button type="submit" class="btn btn--yellow btn--full mt-20">Sign up & join school</button>
         </div>
+
+        <p class="text-center" style="margin-top: 20px; margin-bottom: 0; font-size: 0.9rem;">
+            By signing up, you agree to our <a href="/terms/" target="_blank" class="text-link">Terms and Conditions</a>
+        </p>
 
         {% if form.non_field_errors %}
             <div class="error-message">{{ form.non_field_errors.0 }}</div>

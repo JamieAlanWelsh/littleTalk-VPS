@@ -8,6 +8,7 @@
 @import './components/choice-list.css';
 @import './components/widgets.css';
 @import './pages/login_register.css';
+@import './pages/verify_email.css';
 @import './pages/profile.css';
 @import './pages/practice.css';
 @import './pages/logbook.css';

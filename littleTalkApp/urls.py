@@ -14,6 +14,7 @@ from .views_modules import settings_views as settings_app_views
 from .views_modules import subscription as subscription_views
 from .views_modules import react_exercises as react_exercises_views
 from .views_modules import skolon as skolon_views
+from .views_modules import email_verification as email_verification_views
 
 urlpatterns = [
     # Landing content
@@ -46,6 +47,10 @@ urlpatterns = [
     path('account-setup/', auth_app_views.account_setup_view, name='account_setup'),
     path('sso/launch/', skolon_views.sso_launch, name='sso_launch'),
     path('sso/callback/', skolon_views.sso_callback, name='sso_callback'),
+    
+    # Email verification
+    path('verify-email/', email_verification_views.verify_email_view, name='verify_email'),
+    path('verify-email/<uuid:link_token>/', email_verification_views.verify_email_link_view, name='verify_email_link'),
 
     # Profile and adding learners
     path('profile/', profile_views.profile, name='profile'),
@@ -80,9 +85,11 @@ urlpatterns = [
     path('school-signup/', school_views.school_signup, name='school_signup'),
     path('school/invite-staff/', school_views.invite_staff, name='invite_staff'),
     path('accept-invite/<uuid:token>/', school_views.accept_invite, name='accept_invite'),
+    path('join-pending/', school_views.join_pending, name='join_pending'),
     path('school/', school_views.school_dashboard, name='school'),
     path('school/update-name/', school_views.update_school_name, name='update_school_name'),
     path('request-join-school/', school_views.request_join_school, name='request_join_school'),
+    path('join/<uuid:join_token>/', school_views.join_via_link, name='join_via_link'),
     path('school/invite-audit/', school_views.invite_audit_trail, name='invite_audit_trail'),
 
     # Generate parent token

@@ -51,6 +51,15 @@ class User(AbstractUser):
         db_index=True,
         help_text="SHA256 hash of encrypted email for authentication lookups"
     )
+    email_verified = models.BooleanField(
+        default=False,
+        help_text="Whether the user has verified ownership of their email address"
+    )
+    email_verified_at = models.DateTimeField(
+        blank=True,
+        null=True,
+        help_text="Timestamp when the user verified their email"
+    )
 
     EMAIL_FIELD = "email_encrypted"
     REQUIRED_FIELDS = []

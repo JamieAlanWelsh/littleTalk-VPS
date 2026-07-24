@@ -100,7 +100,9 @@
                     <h3>Need a hand picking an exercise?</h3>
                     <p>Complete our 10-minute screener to get personalised suggestions based on <strong>{{ selected_learner.name }}</strong>'s current skills.</p>
                     <div class="exercise-buttons">
+                        {% if not is_read_only %}
                         <a href="{% url 'start_assessment_v2' %}" class="btn btn--green btn--small btn--short">Start Screener</a>
+                        {% endif %}
                     </div>
                 </div>
             </article>

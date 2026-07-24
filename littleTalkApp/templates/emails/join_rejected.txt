@@ -1,0 +1,10 @@
+Hi there,
+
+Your request to join {{ school.name }} was not approved at this time.
+
+If you think this was a mistake, please contact your school administrator for an update.
+You can still sign in here if you need to review your details:
+{{ login_url }}
+
+Thanks,
+The Chatterdillo Team

@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
 from littleTalkApp.forms import LogEntryForm
+from littleTalkApp.decorators import block_read_only
 from littleTalkApp.models import Cohort, Learner, LogEntry, Role
 from littleTalkApp.utilities import can_edit_or_delete_log
 
@@ -63,6 +64,7 @@ def logbook(request):
 
 
 @login_required
+@block_read_only
 def new_log_entry(request):
     """Renders logbook/new_log_entry.html — form to create a new log entry.
 
@@ -125,6 +127,7 @@ def log_entry_detail(request, entry_id):
 
 
 @login_required
+@block_read_only
 def edit_log_entry(request, entry_id):
     """Renders logbook/new_log_entry.html (in edit mode) — edit an existing log entry.
 

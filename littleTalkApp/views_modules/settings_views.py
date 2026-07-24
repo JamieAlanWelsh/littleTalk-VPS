@@ -5,6 +5,8 @@ from django.shortcuts import redirect, render
 
 from littleTalkApp.decorators import block_skolon_user
 from littleTalkApp.forms import PasswordUpdateForm, UserUpdateForm
+from littleTalkApp.models import EmailVerificationCode
+from littleTalkApp.utilities import send_email_verification_code
 
 
 @login_required
@@ -40,7 +42,17 @@ def change_user_details(request):
         password_form = PasswordUpdateForm(user=request.user)
 
         if user_form.is_valid():
-            user_form.save()
+            user = user_form.save()
+            if user_form.email_changed:
+                # Create or replace verification code and send verification email
+                EmailVerificationCode.objects.filter(user=user).delete()
+                verification_code = EmailVerificationCode.objects.create(user=user)
+                send_email_verification_code(user, verification_code, request)
+                messages.info(
+                    request,
+                    "Your email has been updated. Please check your inbox to verify your new address.",
+                )
+                return redirect("verify_email")
             messages.success(request, "Your details have been updated successfully!")
             return redirect("settings")
 

@@ -6,8 +6,15 @@
 <h1>Settings</h1>
 <div class="container-box container--short">
 
+    <div class="section-header">
+        <div class="section-header-title">
+            <h3>Login Details</h3>
+        </div>
+    </div>
+
     <!-- Change Email Form -->
     {% comment %} <h2>Email</h2> {% endcomment %}
+    <p class="settings-reverify-note">Note: changing your email address will require you to re-verify your account.</p>
     <form method="post" action="{% url 'change_user_details' %}" class="form-stack" id="user-form">
         {% csrf_token %}
         {% for field in user_form %}

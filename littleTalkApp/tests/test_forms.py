@@ -11,6 +11,7 @@ from littleTalkApp.forms import (
     ParentSignupForm,
     JoinRequestForm,
     SchoolSignupForm,
+    StaffInviteForm,
     UserRegistrationForm,
 )
 from littleTalkApp.models import Cohort, Learner, ParentAccessToken, Profile, Role, School, SchoolLicenseCode, SkolonOrg
@@ -199,6 +200,12 @@ class FormValidationTests(TestCase):
             Cohort.objects.filter(id=happy_cohort.id),
             transform=lambda cohort: cohort,
         )
+
+    def test_staff_invite_form_uses_shared_widget_classes(self):
+        form = StaffInviteForm()
+
+        self.assertEqual(form.fields["email"].widget.attrs["class"], "input")
+        self.assertEqual(form.fields["role"].widget.attrs["class"], "select")
 
     def test_join_request_form_excludes_skolon_managed_schools(self):
         regular_school = School.objects.create(name="Regular School")

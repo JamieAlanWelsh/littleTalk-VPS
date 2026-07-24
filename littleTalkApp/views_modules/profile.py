@@ -13,6 +13,7 @@ from littleTalkApp.content.avatars import (
     SELECTABLE_AVATAR_CHARACTERS,
 )
 from littleTalkApp.forms import LearnerForm
+from littleTalkApp.decorators import block_read_only
 from littleTalkApp.models import Cohort, Learner, LogEntry, Role
 
 
@@ -157,6 +158,7 @@ def avatar_editor(request, learner_uuid):
 
 
 @login_required
+@block_read_only
 def add_learner(request):
     """Renders profile/add_learner.html — form to create a new learner record.
 
@@ -204,6 +206,7 @@ def select_learner(request):
 
 
 @login_required
+@block_read_only
 def edit_learner(request, learner_uuid):
     """Renders profile/edit_learner.html — edit a learner's details.
 

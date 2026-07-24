@@ -22,6 +22,7 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model, login
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect
+from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
@@ -319,6 +320,9 @@ def _provision_local_user(skolon_user_obj: SkolonUser) -> "get_user_model()":
     user = User.objects.create_user(username=str(uuid.uuid4()))
     # SSO-only account — no password login.
     user.set_unusable_password()
+    # Auto-verify Skolon SSO users (they authenticated via Skolon)
+    user.email_verified = True
+    user.email_verified_at = timezone.now()
     user.save()
 
     profile = Profile.objects.create(user=user, role=local_role)

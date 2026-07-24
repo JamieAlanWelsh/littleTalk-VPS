@@ -1,5 +1,7 @@
 from django import forms
 from django.contrib.auth import get_user_model
+from django.utils import timezone
+from django.db.models import Q
 from .models import Learner
 from .models import Cohort
 from .models import StaffInvite
@@ -21,7 +23,7 @@ User = get_user_model()
 class SchoolSignupForm(forms.Form):
     full_name = forms.CharField(label="Your name", max_length=100)
     email = forms.EmailField(label="Email")
-    password = forms.CharField(widget=forms.PasswordInput(), label="Password")
+    password = forms.CharField(widget=forms.PasswordInput(), label="Create password")
     school_name = forms.CharField(label="School name", max_length=255)
     license_code = forms.CharField(label="License code", max_length=64, required=False)
 
@@ -212,17 +214,21 @@ class ParentSignupForm(forms.Form):
 
 
 class LearnerForm(forms.ModelForm):
-    name = forms.CharField(label="Learner's name (or nickname)", required=True)
+    name = forms.CharField(
+        label="Learner's name (or nickname)",
+        required=True,
+        widget=forms.TextInput(attrs={"class": "input"}),
+    )
     date_of_birth = forms.DateField(
         label="Learner DOB",
         required=True,
-        widget=forms.DateInput(attrs={"type": "date"}),
+        widget=forms.DateInput(attrs={"type": "date", "class": "input"}),
     )
     cohort = forms.ModelChoiceField(
         queryset=Cohort.objects.none(),  # override in __init__
         label="Cohort",
         required=False,
-        widget=forms.Select(attrs={"class": "form-control"}),
+        widget=forms.Select(attrs={"class": "select"}),
     )
 
     class Meta:
@@ -303,15 +309,11 @@ class LogEntryForm(forms.ModelForm):
             "notes",
         ]  # Maintain model field names
         widgets = {
-            "title": forms.TextInput(attrs={"class": "form-control"}),
-            "learner": forms.Select(attrs={"class": "form-control"}),
-            "goals": forms.TextInput(
-                attrs={"class": "form-control"}
-            ),  # use TextInput for a CharField-like UI
-            "exercises_practised": forms.Textarea(
-                attrs={"class": "form-control", "rows": 3}
-            ),
-            "notes": forms.Textarea(attrs={"class": "form-control", "rows": 5}),
+            "title": forms.TextInput(attrs={"class": "input"}),
+            "learner": forms.Select(attrs={"class": "select"}),
+            "goals": forms.TextInput(attrs={"class": "input"}),
+            "exercises_practised": forms.Textarea(attrs={"class": "textarea", "rows": 3}),
+            "notes": forms.Textarea(attrs={"class": "textarea", "rows": 5}),
         }
 
 
@@ -320,15 +322,11 @@ class UserUpdateForm(forms.ModelForm):
     first_name = forms.CharField(
         max_length=50,
         required=True,
-        widget=forms.TextInput(
-            attrs={"class": "form-control", "placeholder": "Your Name"}
-        ),
+        widget=forms.TextInput(attrs={"class": "input", "placeholder": "Your Name"}),
     )
     email = forms.EmailField(
         required=True,
-        widget=forms.EmailInput(
-            attrs={"class": "form-control", "placeholder": "Your Email"}
-        ),
+        widget=forms.EmailInput(attrs={"class": "input", "placeholder": "Your Email"}),
     )
 
     class Meta:
@@ -371,11 +369,21 @@ class UserUpdateForm(forms.ModelForm):
         user = super().save(commit=False)
         email = self.cleaned_data.get("email", "").lower()
         first_name = self.cleaned_data.get("first_name", "")
-        
+
+        # Detect if email is actually changing
+        old_hash = hash_email(user.email_encrypted or "") if user.email_encrypted else None
+        new_hash = hash_email(email)
+        self.email_changed = (old_hash != new_hash)
+
         # Update email_encrypted and email_hash when email changes
         user.email_encrypted = email
-        user.email_hash = hash_email(email)
-        
+        user.email_hash = new_hash
+
+        # If email changed, revoke verification — middleware will gate until re-verified
+        if self.email_changed:
+            user.email_verified = False
+            user.email_verified_at = None
+
         if commit:
             user.save()
             # Update profile first_name
@@ -388,13 +396,13 @@ class UserUpdateForm(forms.ModelForm):
 class PasswordUpdateForm(forms.Form):
     current_password = forms.CharField(
         widget=forms.PasswordInput(
-            attrs={"class": "form-control", "placeholder": "Current Password"}
+            attrs={"class": "input", "placeholder": "Current Password"}
         ),
         label="Current Password",
     )
     new_password = forms.CharField(
         widget=forms.PasswordInput(
-            attrs={"class": "form-control", "placeholder": "New Password"}
+            attrs={"class": "input", "placeholder": "New Password"}
         ),
         label="New Password",
     )
@@ -415,8 +423,8 @@ class CohortForm(forms.ModelForm):
         model = Cohort
         fields = ["name", "description"]
         widgets = {
-            "name": forms.TextInput(attrs={"class": "form-control"}),
-            "description": forms.Textarea(attrs={"class": "form-control", "rows": 3}),
+            "name": forms.TextInput(attrs={"class": "input"}),
+            "description": forms.Textarea(attrs={"class": "textarea", "rows": 3}),
         }
 
 
@@ -424,6 +432,10 @@ class StaffInviteForm(forms.ModelForm):
     class Meta:
         model = StaffInvite
         fields = ["email", "role"]
+        widgets = {
+            "email": forms.EmailInput(attrs={"class": "input"}),
+            "role": forms.Select(attrs={"class": "select"}),
+        }
 
     def __init__(self, *args, **kwargs):
         self.school = kwargs.pop("school", None)
@@ -446,6 +458,15 @@ class StaffInviteForm(forms.ModelForm):
                     (Role.STAFF, "Staff"),
                 ]
 
+    def clean_email(self):
+        email = self.cleaned_data["email"].lower()
+        email_hash = hash_email(email)
+        if email_hash and get_user_model().objects.filter(email_hash=email_hash).exists():
+            raise forms.ValidationError(
+                "Someone has already signed up with this email address."
+            )
+        return email
+
 
 class AcceptInviteForm(forms.Form):
     full_name = forms.CharField(label="Your name", max_length=100)
@@ -458,16 +479,111 @@ class AcceptInviteForm(forms.Form):
         return password
 
 
-class JoinRequestForm(forms.ModelForm):
-    class Meta:
-        model = JoinRequest
-        fields = ["full_name", "email", "school"]
+class JoinRequestSignupForm(forms.Form):
+    full_name = forms.CharField(label="Your name", max_length=100)
+    email = forms.EmailField(label="Email")
+    password = forms.CharField(widget=forms.PasswordInput(), label="Create password")
+    school = forms.ModelChoiceField(queryset=School.objects.none(), label="School")
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["school"].queryset = School.objects.filter(
-            skolon_org__isnull=True
-        ).order_by("name")
+        now = timezone.now()
+        self.fields["school"].queryset = (
+            School.objects.filter(skolon_org__isnull=True, is_licensed=True)
+            .filter(Q(license_expires_at__isnull=True) | Q(license_expires_at__gt=now))
+            .order_by("name")
+        )
+        self.fields["school"].empty_label = "Select a school"
+
+    def clean_email(self):
+        email = self.cleaned_data["email"].lower()
+        email_hash = hash_email(email)
+        if email_hash and get_user_model().objects.filter(email_hash=email_hash).exists():
+            raise forms.ValidationError("An account with this email already exists.")
+        return email
+
+    def clean_password(self):
+        password = self.cleaned_data["password"]
+        if len(password) < 6:
+            raise forms.ValidationError("Password must be at least 6 characters.")
+        return password
+
+    def clean(self):
+        cleaned_data = super().clean()
+        email = cleaned_data.get("email")
+        school = cleaned_data.get("school")
+        if email and school:
+            email_hash = hash_email(email.lower())
+            existing_pending = JoinRequest.objects.filter(
+                user__email_hash=email_hash,
+                school=school,
+                status=JoinRequest.Status.PENDING,
+            ).exists()
+            if existing_pending:
+                raise forms.ValidationError(
+                    "You already have a pending request for this school."
+                )
+        return cleaned_data
+
+
+class SchoolJoinLinkSignupForm(forms.Form):
+    """Account-first join form used by the public shareable join link.
+
+    The school is fixed by the link token, so there is no school selector.
+    """
+
+    full_name = forms.CharField(label="Your name", max_length=100)
+    email = forms.EmailField(label="Email")
+    password = forms.CharField(widget=forms.PasswordInput(), label="Create password")
+
+    def __init__(self, *args, **kwargs):
+        self.school = kwargs.pop("school", None)
+        super().__init__(*args, **kwargs)
+
+    def clean_email(self):
+        email = self.cleaned_data["email"].lower()
+        email_hash = hash_email(email)
+        if email_hash and get_user_model().objects.filter(email_hash=email_hash).exists():
+            raise forms.ValidationError("An account with this email already exists.")
+        return email
+
+    def clean_password(self):
+        password = self.cleaned_data["password"]
+        if len(password) < 6:
+            raise forms.ValidationError("Password must be at least 6 characters.")
+        return password
+
+    def clean(self):
+        cleaned_data = super().clean()
+        email = cleaned_data.get("email")
+        if email and self.school:
+            email_hash = hash_email(email.lower())
+            existing_pending = JoinRequest.objects.filter(
+                user__email_hash=email_hash,
+                school=self.school,
+                status=JoinRequest.Status.PENDING,
+            ).exists()
+            if existing_pending:
+                raise forms.ValidationError(
+                    "You already have a pending request for this school."
+                )
+        return cleaned_data
+
+
+class JoinRequestForm(forms.Form):
+    full_name = forms.CharField(label="Your name", max_length=100)
+    email = forms.EmailField(label="Email")
+    school = forms.ModelChoiceField(queryset=School.objects.none(), label="School")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        now = timezone.now()
+        self.fields["school"].queryset = (
+            School.objects.filter(skolon_org__isnull=True)
+            .filter(Q(license_expires_at__isnull=True) | Q(license_expires_at__gt=now))
+            .order_by("name")
+        )
+        self.fields["school"].empty_label = "Select a school"
 
 
 class ParentAccessCodeForm(forms.Form):

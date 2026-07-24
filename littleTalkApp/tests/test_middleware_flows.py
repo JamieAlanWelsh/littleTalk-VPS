@@ -11,7 +11,7 @@ class MultiSchoolMiddlewareFlowTests(TestCase):
         self.profile = Profile.objects.create(user=self.user, role=Role.STAFF)
         self.client.force_login(self.user)
 
-    def test_all_unlicensed_multi_school_user_is_redirected_to_select_school(self):
+    def test_all_unlicensed_multi_school_user_is_redirected_to_license_expired(self):
         school_a = School.objects.create(name="School A", is_licensed=False)
         school_b = School.objects.create(name="School B", is_licensed=False)
         self.profile.schools.add(school_a, school_b)
@@ -19,7 +19,7 @@ class MultiSchoolMiddlewareFlowTests(TestCase):
         response = self.client.get(reverse("learner_dashboard"), follow=True)
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.request["PATH_INFO"], reverse("select_school"))
+        self.assertEqual(response.request["PATH_INFO"], reverse("license_expired"))
 
     def test_selected_unlicensed_school_reaches_license_expired_without_loop(self):
         school_a = School.objects.create(name="School A", is_licensed=False)
