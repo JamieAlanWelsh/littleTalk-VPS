@@ -93,11 +93,11 @@
                 </thead>
                 <tbody>
                     {% for item in staff_profiles %}
-                        {% with profile=item.profile role=item.role %}
+                        {% with profile=item.profile role=item.role role_display=item.role_display %}
                         <tr>
                             <td title="{{ profile.first_name }}">{{ profile.first_name }}</td>
                             <td title="{{ profile.user.email_encrypted }}">{{ profile.user.email_encrypted }}</td>
-                            <td title="{{ role|capfirst }}">
+                            <td title="{{ role_display }}">
                                 {% if current_user_is_admin_or_manager %}
                                     {% if profile.user != request.user %}
                                         <form method="post" style="margin: 0;">
@@ -114,10 +114,10 @@
                                             </select>
                                         </form>
                                     {% else %}
-                                        {{ role|capfirst }}
+                                        {{ role_display }}
                                     {% endif %}
                                 {% else %}
-                                    {{ role|capfirst }}
+                                    {{ role_display }}
                                 {% endif %}
                             </td>
                             <td>
@@ -250,7 +250,7 @@
                     {% for invite in invites %}
                         <tr>
                             <td title="{{ invite.email }}">{{ invite.email }}</td>
-                            <td title="{{ invite.role|capfirst }}">{{ invite.role|capfirst }}</td>
+                            <td title="{{ invite.get_role_display }}">{{ invite.get_role_display }}</td>
                             <td title="{{ invite.created_at|date:'M j, Y H:i' }}">{{ invite.created_at|date:"M j, Y" }}</td>
                             <td>
                                 {% if invite.is_expired %}

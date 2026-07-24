@@ -3,8 +3,10 @@ from django.conf import settings
 from encrypted_model_fields.fields import (
     EncryptedCharField,
     EncryptedDateField,
+    EncryptedEmailField,
     EncryptedTextField,
 )
+import hashlib
 import uuid
 from django.utils import timezone
 from datetime import date, timedelta
@@ -525,7 +527,14 @@ def default_expiry():
 
 class StaffInvite(models.Model):
     school = models.ForeignKey(School, on_delete=models.CASCADE, related_name="invites")
-    email = models.EmailField()
+    email = EncryptedEmailField(blank=True, null=True)
+    email_hash = models.CharField(
+        max_length=64,
+        blank=True,
+        null=True,
+        db_index=True,
+        help_text="SHA256 hash of the invited email for lookups.",
+    )
     role = models.CharField(max_length=30, choices=Role.CHOICES)
     token = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     used = models.BooleanField(default=False)
@@ -539,6 +548,15 @@ class StaffInvite(models.Model):
         related_name="sent_invites",
     )
     withdrawn = models.BooleanField(default=False)
+
+    def save(self, *args, **kwargs):
+        # Keep the lookup hash in sync with the (encrypted) email.
+        self.email_hash = (
+            hashlib.sha256(self.email.lower().encode()).hexdigest()
+            if self.email
+            else None
+        )
+        super().save(*args, **kwargs)
 
     def is_expired(self):
         return timezone.now() > self.expires_at

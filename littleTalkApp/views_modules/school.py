@@ -57,7 +57,7 @@ def _clear_pending_invites_for_email(email):
     if not email:
         return
     StaffInvite.objects.filter(
-        email__iexact=email,
+        email_hash=hash_email(email),
         used=False,
         withdrawn=False,
     ).update(used=True)
@@ -490,7 +490,7 @@ def accept_invite(request, token):
             invite.save()
 
             StaffInvite.objects.filter(
-                email__iexact=invite.email,
+                email_hash=hash_email(invite.email),
                 used=False,
                 withdrawn=False,
             ).exclude(id=invite.id).update(used=True)
@@ -654,6 +654,7 @@ def school_dashboard(request):
     )
 
     staff_profiles = []
+    role_labels = dict(Role.CHOICES)
     if memberships.exists():
         for membership in memberships:
             profile_item = membership.profile
@@ -663,6 +664,7 @@ def school_dashboard(request):
                     {
                         "profile": profile_item,
                         "role": role_for,
+                        "role_display": role_labels.get(role_for, role_for),
                         "is_active": membership.is_active,
                         "pending_join": profile_item.user_id in pending_join_user_ids,
                     }
@@ -681,6 +683,7 @@ def school_dashboard(request):
                     {
                         "profile": profile_item,
                         "role": role_for,
+                        "role_display": role_labels.get(role_for, role_for),
                         "is_active": True,
                         "pending_join": profile_item.user_id in pending_join_user_ids,
                     }
