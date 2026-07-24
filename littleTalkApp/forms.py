@@ -458,6 +458,15 @@ class StaffInviteForm(forms.ModelForm):
                     (Role.STAFF, "Staff"),
                 ]
 
+    def clean_email(self):
+        email = self.cleaned_data["email"].lower()
+        email_hash = hash_email(email)
+        if email_hash and get_user_model().objects.filter(email_hash=email_hash).exists():
+            raise forms.ValidationError(
+                "Someone has already signed up with this email address."
+            )
+        return email
+
 
 class AcceptInviteForm(forms.Form):
     full_name = forms.CharField(label="Your name", max_length=100)

@@ -48,6 +48,21 @@ def _can_manage_school(profile, school):
     )
 
 
+def _clear_pending_invites_for_email(email):
+    """Mark any pending staff invites for an email as used.
+
+    Called whenever an account exists (or is created) for the email so stale
+    invites stop showing as "Awaiting Response" on the dashboard.
+    """
+    if not email:
+        return
+    StaffInvite.objects.filter(
+        email__iexact=email,
+        used=False,
+        withdrawn=False,
+    ).update(used=True)
+
+
 def _create_join_request_account(request, email, password, full_name, school):
     """Create an inactive account + pending join request and start email verification.
 
@@ -78,6 +93,7 @@ def _create_join_request_account(request, email, password, full_name, school):
         school=school,
         status=JoinRequest.Status.PENDING,
     )
+    _clear_pending_invites_for_email(email)
     verification_code = EmailVerificationCode.objects.create(user=user)
     send_email_verification_code(user, verification_code, request)
 
@@ -367,6 +383,8 @@ def school_signup(request):
             except Exception:
                 pass
 
+            _clear_pending_invites_for_email(email)
+
             signup_notice = (
                 "New school sign-up submitted:\n\n"
                 f"School: {school_name}\n"
@@ -424,6 +442,10 @@ def accept_invite(request, token):
 
     email_hash = hash_email(invite.email.lower())
     if email_hash and get_user_model().objects.filter(email_hash=email_hash).first():
+        # The invited person already has an account, so this invite can never be
+        # accepted. Clear any pending invites for this email so they stop showing
+        # as "Awaiting Response" on the dashboard.
+        _clear_pending_invites_for_email(invite.email)
         messages.info(
             request,
             "An account already exists for this invited email. Please log in to continue.",
