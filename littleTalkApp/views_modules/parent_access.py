@@ -9,7 +9,7 @@ from honeypot.decorators import check_honeypot
 
 from littleTalkApp.forms import ParentAccessCodeForm, ParentSignupForm
 from littleTalkApp.models import EmailVerificationCode, Learner, ParentAccessToken, ParentProfile, Profile, Role
-from littleTalkApp.utilities import hash_email, send_parent_access_email, send_parent_welcome_email, send_email_verification_code
+from littleTalkApp.utilities import hash_email, send_parent_access_email, send_email_verification_code
 
 
 @login_required
@@ -145,8 +145,6 @@ def parent_signup_view(request):
                 parent_profile.learners.add(learner)
                 token.used = True
                 token.save()
-
-            send_parent_welcome_email(user)
 
             # Create email verification code and send verification email
             verification_code = EmailVerificationCode.objects.create(user=user)
