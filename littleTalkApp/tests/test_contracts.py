@@ -1,5 +1,6 @@
 import importlib
 import uuid
+from unittest.mock import patch
 
 from django.test import TestCase
 from django.urls import reverse
@@ -64,6 +65,7 @@ class UrlContractsTests(TestCase):
             "terms",
             "privacy",
             "data_policy",
+            "cookie_policy",
             "support",
             "send_support_email",
             "screener",
@@ -141,7 +143,6 @@ class TemplateContractsTests(TestCase):
             ("about", {}, "public/about.html"),
             ("terms", {}, "public/legal/terms.html"),
             ("privacy", {}, "public/legal/privacy.html"),
-            ("data_policy", {}, "public/legal/data-policy.html"),
             ("login", {}, "auth/login.html"),
             ("account_setup", {}, "auth/account_setup.html"),
             ("school_signup", {}, "school/school_signup.html"),
@@ -154,6 +155,54 @@ class TemplateContractsTests(TestCase):
                 self.assertEqual(response.status_code, 200)
                 if template:
                     self.assertTemplateUsed(response, template)
+
+    def test_shared_templates_gate_analytics_without_global_company_disclosure(self):
+        for name in ("home", "login"):
+            with self.subTest(name=name):
+                response = self.client.get(reverse(name))
+                content = response.content.decode()
+
+                self.assertNotIn("https://www.googletagmanager.com/gtag/js", content)
+                self.assertContains(response, 'id="cookie-consent"')
+                self.assertContains(response, 'data-consent-action="accept"')
+                self.assertContains(response, 'data-consent-action="reject"')
+                self.assertNotContains(response, 'class="cookie-settings-button"')
+                self.assertNotContains(response, "Registered office:")
+
+    def test_cookie_settings_can_only_be_reopened_from_privacy_policy(self):
+        privacy = self.client.get(reverse("privacy"))
+
+        self.assertContains(privacy, 'data-cookie-settings')
+        self.assertContains(privacy, "Adjust your cookie settings")
+
+    def test_legacy_legal_routes_redirect_to_combined_privacy_policy(self):
+        for name in ("data_policy", "cookie_policy"):
+            with self.subTest(name=name):
+                response = self.client.get(reverse(name))
+                self.assertRedirects(response, reverse("privacy") + "#cookies")
+
+    def test_legal_notices_do_not_make_unsupported_claims(self):
+        privacy = self.client.get(reverse("privacy"))
+        terms = self.client.get(reverse("terms"))
+
+        content = privacy.content.decode()
+        self.assertNotIn("multi-factor authentication", content)
+        self.assertNotIn("stored exclusively within the European Economic Area", content)
+        self.assertNotIn("We have appointed a Data Protection Officer", content)
+        self.assertNotIn("Continued use of the Service after changes constitutes acceptance", content)
+
+        for provider in ("Google Analytics", "Stripe", "Zoho", "Skolon"):
+            self.assertContains(privacy, provider)
+
+        self.assertContains(privacy, "Data & Privacy Policy")
+        self.assertContains(privacy, "Registered office: 19 Ganghill, Guildford, Surrey, GU1 1XE")
+        self.assertContains(privacy, "Our Privacy Lead oversees data protection matters")
+        self.assertContains(privacy, 'id="cookies"')
+        self.assertContains(privacy, "Information Commissioner")
+        self.assertContains(privacy, "category-level retention")
+        self.assertContains(terms, "statutory rights")
+        self.assertNotContains(terms, "sole discretion")
+        self.assertNotContains(terms, "resolved through arbitration")
 
     def test_accept_invite_template_renders_for_valid_token(self):
         sender = User.objects.create_user(username="sender", password="password123")
@@ -169,3 +218,48 @@ class TemplateContractsTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "school/accept_invite.html")
+
+    def test_signup_pages_link_terms_and_privacy_notice(self):
+        for name in ("account_setup", "school_signup", "request_join_school", "parent_signup"):
+            with self.subTest(name=name):
+                response = self.client.get(reverse(name))
+                self.assertContains(response, reverse("terms"))
+                self.assertContains(response, reverse("privacy"))
+
+
+class SubscriptionContractsTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username="subscriber",
+            email_encrypted="subscriber@example.com",
+            password="password123",
+        )
+        self.client.force_login(self.user)
+
+    def test_checkout_requires_post_and_service_start_acknowledgement(self):
+        checkout_url = reverse("create_checkout_session")
+
+        self.assertEqual(self.client.get(checkout_url).status_code, 405)
+
+        response = self.client.post(checkout_url)
+        self.assertRedirects(response, reverse("subscribe"))
+
+    @patch("littleTalkApp.views_modules.subscription.stripe.checkout.Session.create")
+    def test_checkout_records_legal_acknowledgements_in_stripe(self, create_session):
+        create_session.return_value.url = "https://checkout.stripe.test/session"
+
+        response = self.client.post(
+            reverse("create_checkout_session"),
+            {"start_immediately": "yes", "accept_terms": "yes"},
+        )
+
+        self.assertRedirects(
+            response,
+            "https://checkout.stripe.test/session",
+            fetch_redirect_response=False,
+        )
+        create_session.assert_called_once()
+        metadata = create_session.call_args.kwargs["metadata"]
+        self.assertEqual(metadata["service_start_requested"], "true")
+        self.assertEqual(metadata["terms_version"], "2026-07-26")
+        self.assertEqual(metadata["privacy_version"], "2026-07-26")

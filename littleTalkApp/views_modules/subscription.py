@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 
 import stripe
 
@@ -42,13 +43,22 @@ def access_restricted(request):
 
 
 @login_required
+@require_POST
 def create_checkout_session(request):
     """Creates a Stripe Checkout session for the parent subscription plan and
     redirects the user to the Stripe-hosted payment page.
     """
 
+    if not request.POST.get("accept_terms") or not request.POST.get("start_immediately"):
+        messages.error(
+            request,
+            "Please accept the terms and confirm when you want the subscription to start.",
+        )
+        return redirect("subscribe")
+
     checkout_session = stripe.checkout.Session.create(
         customer_email=request.user.email_encrypted,
+        client_reference_id=str(request.user.pk),
         payment_method_types=["card"],
         line_items=[
             {
@@ -57,6 +67,11 @@ def create_checkout_session(request):
             }
         ],
         mode="subscription",
+        metadata={
+            "service_start_requested": "true",
+            "terms_version": "2026-07-26",
+            "privacy_version": "2026-07-26",
+        },
         success_url=request.build_absolute_uri("/subscribe/success/"),
         cancel_url=request.build_absolute_uri("/subscribe/"),
     )

@@ -27,6 +27,7 @@ urlpatterns = [
     path('terms/', public_views.terms_and_conditions, name='terms'),
     path('privacy/', public_views.privacy_policy, name='privacy'),
     path('data-policy/', public_views.data_policy, name='data_policy'),
+    path('cookies/', public_views.cookie_policy, name='cookie_policy'),
 
     # Support
     path('support/', public_views.support, name='support'),

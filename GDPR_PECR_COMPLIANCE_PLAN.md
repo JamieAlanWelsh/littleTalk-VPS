@@ -181,8 +181,8 @@ This plan is based on repository evidence, the deployed public site, and ICO/GOV
 
 ## Implementation Touchpoints
 
-- [littleTalkApp/templates/base.html](littleTalkApp/templates/base.html) and [littleTalkApp/templates/landing_base.html](littleTalkApp/templates/landing_base.html): remove unconditional GA; host shared consent controls, cookie-settings links, and company disclosures.
-- [littleTalkApp/templates/public/legal/privacy.html](littleTalkApp/templates/public/legal/privacy.html), [littleTalkApp/templates/public/legal/data-policy.html](littleTalkApp/templates/public/legal/data-policy.html), and [littleTalkApp/templates/public/legal/terms.html](littleTalkApp/templates/public/legal/terms.html): replace inaccurate/overlapping notices and commercial terms after legal decisions.
+- [littleTalkApp/templates/base.html](littleTalkApp/templates/base.html) and [littleTalkApp/templates/landing_base.html](littleTalkApp/templates/landing_base.html): remove unconditional GA and host shared consent controls and cookie-settings links.
+- [littleTalkApp/templates/public/legal/privacy.html](littleTalkApp/templates/public/legal/privacy.html) and [littleTalkApp/templates/public/legal/terms.html](littleTalkApp/templates/public/legal/terms.html): maintain the combined Data & Privacy Policy and Terms & Conditions. Legacy `/data-policy/` and `/cookies/` URLs redirect to the combined policy.
 - [littleTalkApp/urls.py](littleTalkApp/urls.py) and [littleTalkApp/views_modules/public.py](littleTalkApp/views_modules/public.py): cookie/privacy/children/rights routes and a consent preference endpoint if server-side evidence is used.
 - [littleTalkApp/forms.py](littleTalkApp/forms.py) and relevant signup, invitation, parent, learner, screener, support, and subscription templates: just-in-time notices and separate terms/marketing choices.
 - [littleTalkApp/models.py](littleTalkApp/models.py) and [accounts/models.py](accounts/models.py): relationship inventory and minimal rights/consent/audit records after retention and controller decisions.

@@ -174,14 +174,19 @@ def terms_and_conditions(request):
 
 
 def privacy_policy(request):
-    """Renders public/legal/privacy.html — the Privacy Policy page."""
+    """Renders the combined Data & Privacy Policy page."""
 
     request.hide_sidebar = True
     return render(request, "public/legal/privacy.html")
 
 
 def data_policy(request):
-    """Renders public/legal/data-policy.html — the Data Policy page."""
+    """Redirects the retired Data Policy URL to the combined privacy policy."""
 
-    request.hide_sidebar = True
-    return render(request, "public/legal/data-policy.html")
+    return redirect(f"{reverse('privacy')}#cookies")
+
+
+def cookie_policy(request):
+    """Redirects the retired Cookie Policy URL to the combined privacy policy."""
+
+    return redirect(f"{reverse('privacy')}#cookies")

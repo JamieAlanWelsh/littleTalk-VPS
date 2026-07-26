@@ -11,6 +11,7 @@
     <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@700&family=Roboto:wght@400&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{% static 'styles/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/cookie-consent.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant&display=swap" rel="stylesheet">
     <!-- response control e.g. mobile view -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,19 +23,6 @@
     <meta property="og:url" content="https://chatterdillo.com/">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
-
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZGXMZKE8JF"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'G-ZGXMZKE8JF');
-    </script>
-
-    
-    
 
     {% comment %} For search widget (at request join school) {% endcomment %}
     
@@ -148,6 +136,7 @@
             </div>
         </div>
     </div>
+    {% include "includes/cookie_consent.html" %}
 </body>
 </html>
 
