@@ -4,7 +4,7 @@
 **Company number:** 16333340  
 **Registered office:** 19 Ganghill, Guildford, Surrey, GU1 1XE  
 **Plan date:** 26 July 2026  
-**Status:** Draft for implementation and legal review
+**Status:** Implementation in progress; legal and governance review outstanding
 
 ## Purpose
 
@@ -12,7 +12,9 @@ LITTLETALK SLT LIMITED should execute a containment-first programme: immediately
 
 This plan is based on repository evidence, the deployed public site, and ICO/GOV.UK guidance reviewed on 26 July 2026. The ICO notes that relevant guidance is being reviewed following the Data (Use and Access) Act. A UK privacy solicitor or qualified data protection adviser must approve legal positions, contracts, and notices before publication. This plan is not legal advice or a certification of compliance.
 
-## Confirmed Baseline
+## Initial Audit Baseline
+
+This section records the position found at the start of the review. Items subsequently remediated are checked in the progress checkpoint below.
 
 - The business has supplied the legal operator as LITTLETALK SLT LIMITED, company number 16333340, with registered office at 19 Ganghill, Guildford, Surrey, GU1 1XE. Confirm the Companies House record states "registered in England and Wales" before publishing that jurisdiction.
 - There are no known Data Processing Agreements (DPAs), Record of Processing Activities (ROPA), Data Protection Impact Assessment (DPIA), Legitimate Interests Assessment (LIA), processor/transfer register, retention procedure, rights procedure, or breach procedure.
@@ -32,6 +34,43 @@ This plan is based on repository evidence, the deployed public site, and ICO/GOV
 4. Privacy notices must describe actual production behaviour. Unsupported security, location, retention, or governance claims must not be published.
 5. Non-essential tracking must remain disabled until the user takes an affirmative, informed action.
 
+## Progress Checkpoint: 26 July 2026
+
+### Completed in the Repository
+
+- [x] Removed unconditional GA4 loading from shared public and authenticated layouts.
+- [x] Added first-visit analytics controls with reject, customise, and accept choices; analytics is off until affirmative opt-in.
+- [x] Added versioned browser preference storage containing the analytics choice, policy version, and update timestamp.
+- [x] Added analytics withdrawal and preference reopening from **Data & Privacy Policy** under **Cookies and Browser Storage**.
+- [x] Added best-effort removal of GA cookies after analytics is rejected or withdrawn.
+- [x] Documented Django session and CSRF cookies, consent preference storage, GA cookies, purposes, and withdrawal behaviour.
+- [x] Removed the always-visible cookie settings control so returning visitors with a current preference are not repeatedly prompted.
+- [x] Consolidated the maintained public legal surface into **Terms & Conditions** and **Data & Privacy Policy**.
+- [x] Preserved legacy `/data-policy/` and `/cookies/` URLs by redirecting them to the combined policy's cookie section.
+- [x] Removed company/address disclosures from shared and authenticated layouts and placed the registered office in the privacy policy's **Contacting Us** section.
+- [x] Published the company identity, company number, registered office, registration jurisdiction, support contact, and privacy contact in the maintained legal documents.
+- [x] Replaced an unsupported statutory DPO claim with accurate **Privacy Lead** wording.
+- [x] Removed or qualified identified unsupported claims concerning MFA, access logging, audits, EEA-only processing, secure deletion, and fixed retention.
+- [x] Removed wording that treated continued use as acceptance of the privacy notice.
+- [x] Replaced contradictory six-month/two-year deletion promises with interim retention wording pending an approved schedule.
+- [x] Updated the public footer to the two maintained legal links and corrected its copyright year.
+- [x] Added or revised just-in-time privacy wording across school, parent, learner, screener, support, invitation, and join-request collection points.
+- [x] Changed subscription checkout initiation to a CSRF-protected POST requiring terms acknowledgement and an explicit immediate-service-start request.
+- [x] Added terms/privacy versions and the immediate-service-start request to Stripe checkout metadata.
+- [x] Removed discretionary-only refund and mandatory arbitration wording while preserving statutory consumer rights.
+- [x] Added focused contract coverage for legal routes, legacy redirects, pre-consent analytics blocking, cookie controls, public claims, and checkout metadata.
+- [x] Documented that production secrets are supplied through the Nginx/Gunicorn environment rather than treating repository development defaults as evidence of exposed production credentials.
+
+### Partially Complete or Awaiting Evidence
+
+- [ ] **Browser verification:** inspect production network requests and browser storage before choice, after rejection, after acceptance, and after withdrawal on public/authenticated desktop and mobile pages.
+- [ ] **Cookie inventory:** verify all production cookies, storage, remote scripts, fonts, CDNs, and embeds in a clean browser against the published policy.
+- [ ] **Legal review:** obtain qualified review of the combined policy, terms, controller/processor positions, lawful bases, children's approach, and subscription wording.
+- [ ] **Collection points:** recheck every current collection template before release; repository contract coverage has identified that account setup no longer links to both maintained legal documents.
+- [ ] **Consumer contracting:** confirm total-price/tax presentation, cancellation mechanics, model cancellation form, complaints process, and durable post-order confirmation against the live Stripe/email journey.
+- [ ] **Production security evidence:** verify deployed `DEBUG`, host, HTTPS/HSTS, cookie, CSRF, secret injection, access-control, backup, logging, and monitoring settings. Environment-based secret injection is reported in place but has not been independently inspected in this review.
+- [ ] **Governance and lifecycle controls:** Phase 1 records/contracts and the Phase 3 access, erasure, restriction, retention, and audit workflows remain outstanding.
+
 ## Phase 0: Contain Public Exposure
 
 **Target:** First release, days 1-3  
@@ -39,11 +78,11 @@ This plan is based on repository evidence, the deployed public site, and ICO/GOV
 
 1. Change the shared public and authenticated layouts so GA4 and its remote script are never loaded until the user affirmatively accepts analytics.
 2. Provide an accessible first-layer control with equally prominent **Accept analytics** and **Reject analytics** choices, granular settings, and no preselected non-essential purposes.
-3. Persist a versioned preference and provide an always-available **Cookie settings** link. Do not treat continued browsing, signup, or another unrelated action as consent.
+3. Persist a versioned preference and provide a **Cookie settings** link from the Data & Privacy Policy. Do not treat continued browsing, signup, or another unrelated action as consent.
 4. Add a cookie inventory and policy covering Django session and CSRF cookies, the consent preference, GA4 cookies/identifiers, provider, purpose, duration, and withdrawal.
 5. Inventory cookies, browser storage, remote scripts, fonts, CDNs, and embedded services in a clean browser before finalising the policy. Classify only genuinely essential service or security storage as strictly necessary.
 6. Retain proportionate evidence of the policy/CMP version, choice, and timestamp without unnecessarily identifying anonymous visitors.
-7. Publish the verified company particulars site-wide: full registered name including LIMITED, company number, registered office, and registration jurisdiction. Include direct business and privacy contact details.
+7. Publish verified company particulars in the maintained public legal documents: full registered name including LIMITED, company number, registered office, and registration jurisdiction. Include direct business and privacy contact details without adding the registered office to authenticated layouts.
 8. Add a VAT number only if the business is VAT-registered. Do not publish selected director names unless all directors are listed. Correct the stale copyright year.
 9. Remove or qualify unsupported claims about MFA, profile access logging, exclusive EEA processing, regular audits, secure deletion, DPO appointment, and fixed retention.
 10. Remove wording that treats continued use as acceptance of a privacy notice. A privacy notice provides information; it is not contractual consent.
@@ -104,7 +143,7 @@ This plan is based on repository evidence, the deployed public site, and ICO/GOV
    - Required/optional data and consequences of not providing it.
    - Data sources, including schools and Skolon.
    - Meaningful information about screener/recommendation logic and expected effects.
-2. Keep the cookie policy separate and clearly linked.
+2. Maintain a clearly linked **Cookies and Browser Storage** section within the combined Data & Privacy Policy.
 3. Add point-of-collection notices at school signup, join requests, staff invitations/acceptance, parent signup/access, learner creation, screener start, support, and payment.
 4. Version the terms/notices accepted or displayed. Do not add mandatory "I consent to the privacy policy" checkboxes. Use terms acknowledgment and separate optional consent only where consent is the selected lawful basis.
 5. Produce a concise child-accessible notice appropriate for ages 2-11 and a fuller adult/guardian notice.
