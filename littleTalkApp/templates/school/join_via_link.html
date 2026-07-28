@@ -46,13 +46,15 @@
 
         <div>
             <input type="password" name="password" class="input" placeholder="Create password"
-                value="{{ form.password.value|default_if_none:'' }}" required>
+                value="{{ form.password.value|default_if_none:'' }}" data-password-requirements required>
             {% if form.password.errors %}
                 <div class="error-message">{{ form.password.errors.0 }}</div>
             {% endif %}
         </div>
 
-        <div>
+        {% include "partials/password_requirements.html" %}
+
+        <div style="margin-top: 20px;">
             <button type="submit" class="btn btn--yellow btn--full">Sign up &amp; join school</button>
         </div>
 
@@ -66,4 +68,6 @@
     </form>
     {% endif %}
 </div>
+
+<script src="{% static 'non_react_js/password-requirements.js' %}"></script>
 {% endblock %}

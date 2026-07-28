@@ -2,6 +2,8 @@ from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.urls import reverse
+from django.contrib.auth.password_validation import validate_password
+from django import forms
 from email.utils import formataddr
 
 from .models import Role
@@ -14,6 +16,28 @@ def hash_email(email):
     if not email:
         return None
     return hashlib.sha256(email.lower().encode()).hexdigest()
+
+
+def validate_password_strength(password, user=None):
+    """
+    Validate password strength using AUTH_PASSWORD_VALIDATORS.
+    Raises forms.ValidationError with all validation errors.
+    
+    Args:
+        password (str): The password to validate.
+        user (User, optional): The user object for context-aware validation.
+    
+    Raises:
+        forms.ValidationError: If password fails any validator.
+    """
+    try:
+        validate_password(password, user=user)
+    except forms.ValidationError:
+        # Re-raise as-is; validate_password already returns forms.ValidationError
+        raise
+    except Exception as e:
+        # Catch any other validation errors and convert to forms.ValidationError
+        raise forms.ValidationError(str(e))
 
 
 # permissions

@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Chatterdillo | Settings{% endblock %}
 
@@ -35,11 +36,18 @@
         {% for field in password_form %}
             <div>
                 <label for="{{ field.id_for_label }}" class="label">{{ field.label }}</label>
-                {{ field }}
+                {% if field.name == 'new_password' %}
+                    <input type="password" id="{{ field.id_for_label }}" name="{{ field.name }}" class="input" placeholder="New Password" data-password-requirements required>
+                {% else %}
+                    {{ field }}
+                {% endif %}
                 {% if field.errors %}
                     <div class="error-message">{{ field.errors.0 }}</div>
                 {% endif %}
             </div>
+            {% if field.name == 'new_password' %}
+                {% include "partials/password_requirements.html" %}
+            {% endif %}
         {% endfor %}
         <button type="submit" class="btn btn--grey btn--small mb-40" id="password-save-btn" disabled>Save Changes</button>
     </form>
@@ -85,4 +93,6 @@
         trackChanges("password-form", "password-save-btn");
     });
 </script>
+
+<script src="{% static 'non_react_js/password-requirements.js' %}"></script>
 {% endblock %}
