@@ -3,21 +3,36 @@
 
 {% block title %}Chatterdillo | License Expired{% endblock %}
 
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'styles/pages/verify_email.css' %}">
+{% endblock %}
+
 {% block content %}
-<h1>No Active License</h1>
+<div class="verify-email-container">
+    <div class="verify-email-card">
+        <div class="verify-email-icon">
+            <img src="{% static 'images/landing/arlo_butterfly.png' %}" alt="School license" class="verify-email-arlo">
+        </div>
 
-<div class="container-box container--short text-center">
-    <h3>Your School doesn't hold an active License</h3>
-    <p>Your school needs an active license to continue. Your data is safe and we would love to get your team fully up and running.</p>
+        <h1 class="verify-email-title">No Active License</h1>
 
-    <h3>Renew or setup a Free Trial</h3>
-    <p>Book a call with our team and we will help you renew or set up a free trial.</p>
+        <p class="verify-email-description">
+            Your school doesn't hold an active license, so its tools are temporarily unavailable.
+        </p>
+        <p class="verify-email-description">
+            Your data is safe and we'd love to get your team fully up and running. Book a call with
+            our team and we'll help you renew or set up a free trial.
+        </p>
 
-    <a href="{{ calendly_url }}" class="btn btn--yellow btn--full" target="_blank" rel="noopener noreferrer">Talk to us</a>
+        <form method="post" action="{% url 'logout' %}" class="verify-email-form">
+            {% csrf_token %}
+            <a href="{{ calendly_url }}" class="btn btn--yellow btn--full" target="_blank" rel="noopener noreferrer">Talk to us</a>
+            <button type="submit" class="btn btn--white btn--full" style="margin-top: 12px;">Logout</button>
+        </form>
 
-    <form method="post" action="{% url 'logout' %}" style="margin-top: 16px;">
-        {% csrf_token %}
-        <button type="submit" class="btn btn--white btn--full">Logout</button>
-    </form>
+        <div class="verify-email-links">
+            <a href="{% url 'support' %}" class="verify-email-link">Need help? Contact Support</a>
+        </div>
+    </div>
 </div>
 {% endblock %}

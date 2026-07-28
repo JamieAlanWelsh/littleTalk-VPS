@@ -241,17 +241,25 @@ class SubscriptionContractsTests(TestCase):
 
         self.assertEqual(self.client.get(checkout_url).status_code, 405)
 
-        response = self.client.post(checkout_url)
-        self.assertRedirects(response, reverse("subscribe"))
+        with patch(
+            "littleTalkApp.views_modules.subscription.stripe.checkout.Session.create"
+        ) as create_session:
+            create_session.return_value.url = "https://checkout.stripe.test/session"
+
+            response = self.client.post(checkout_url)
+
+        self.assertRedirects(
+            response,
+            "https://checkout.stripe.test/session",
+            fetch_redirect_response=False,
+        )
+        create_session.assert_called_once()
 
     @patch("littleTalkApp.views_modules.subscription.stripe.checkout.Session.create")
     def test_checkout_records_legal_acknowledgements_in_stripe(self, create_session):
         create_session.return_value.url = "https://checkout.stripe.test/session"
 
-        response = self.client.post(
-            reverse("create_checkout_session"),
-            {"start_immediately": "yes", "accept_terms": "yes"},
-        )
+        response = self.client.post(reverse("create_checkout_session"))
 
         self.assertRedirects(
             response,

@@ -3,34 +3,44 @@
 
 {% block title %}Chatterdillo | Subscribe{% endblock %}
 
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'styles/pages/verify_email.css' %}">
+{% endblock %}
+
 {% block content %}
-<h1>Subscribe to Chatterdillo</h1>
+<div class="verify-email-container">
+    <div class="verify-email-card">
+        <div class="verify-email-icon">
+            <img src="{% static 'images/landing/arlo_waving.png' %}" alt="Subscribe" class="verify-email-arlo">
+        </div>
 
-<div class="container-box container--short text-center">
-    <h3>Thank you so much for trying Chatterdillo! 💛</h3>
-    <p>Please subscribe if you would like to continue</p>
-    
-    <div class="pricing-card">
-        <h2>Parent Subscription</h2>
-        <p class="price">£9.99<span>/month</span></p>
-        <form method="post" action="{% url 'create_checkout_session' %}">
-            {% csrf_token %}
-            <div class="checkbox-wrapper">
-                <input type="checkbox" name="accept_terms" id="accept_terms" value="yes" required>
-                <label for="accept_terms">
-                    I agree to the <a href="{% url 'terms' %}" target="_blank" rel="noopener noreferrer" class="text-link">Terms and Conditions</a>.
-                </label>
-            </div>
-            <button type="submit" class="btn btn--yellow btn--full">Continue to secure checkout</button>
-        </form>
+        <h1 class="verify-email-title">Subscription Expired</h1>
+
+        <p class="verify-email-description">
+            Please renew your subscription to continue using Chatterdillo. Your data is safe and
+            will be restored when you reactivate your account.
+        </p>
+
+        <div class="subscription-summary">
+            <p class="subscription-summary__label">Parent Subscription</p>
+            <p class="subscription-summary__price">£9.99<span>/month</span></p>
+            <form method="post" action="{% url 'create_checkout_session' %}">
+                {% csrf_token %}
+                <p class="subscription-summary__terms-note">
+                    Review our <a href="{% url 'terms' %}" target="_blank" rel="noopener noreferrer" class="text-link">Terms and Conditions</a>.
+                </p>
+                <button type="submit" class="btn btn--yellow btn--full">Continue to secure checkout</button>
+            </form>
+            <form method="post" action="{% url 'logout' %}" class="subscription-summary__logout-form">
+                {% csrf_token %}
+                <button type="submit" class="btn btn--white btn--full">Logout</button>
+            </form>
+        </div>
+
+        <div class="verify-email-links">
+            <a href="{% url 'support' %}" class="verify-email-link">Need help? Contact Support</a>
+        </div>
     </div>
-
-    <div class="trust-section">
-        <p>✔ Secure payments powered by Stripe</p>
-    </div>
-
-    <a href="{% url 'profile' %}" class="btn btn--white btn--full" style="margin-top: 10px;">Back to Profile</a>
-
 </div>
 {% endblock %}
 
