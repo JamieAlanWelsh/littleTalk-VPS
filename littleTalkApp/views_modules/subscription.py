@@ -1,5 +1,4 @@
 from django.conf import settings
-from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
@@ -48,13 +47,6 @@ def create_checkout_session(request):
     """Creates a Stripe Checkout session for the parent subscription plan and
     redirects the user to the Stripe-hosted payment page.
     """
-
-    if not request.POST.get("accept_terms") or not request.POST.get("start_immediately"):
-        messages.error(
-            request,
-            "Please accept the terms and confirm when you want the subscription to start.",
-        )
-        return redirect("subscribe")
 
     checkout_session = stripe.checkout.Session.create(
         customer_email=request.user.email_encrypted,

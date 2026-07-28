@@ -3,27 +3,35 @@
 
 {% block title %}Chatterdillo | Access Restricted{% endblock %}
 
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'styles/pages/verify_email.css' %}">
+{% endblock %}
+
 {% block content %}
-<h1>Access Restricted</h1>
+<div class="verify-email-container">
+    <div class="verify-email-card">
+        <div class="verify-email-icon">
+            <img src="{% static 'images/landing/arlo_butterfly.png' %}" alt="Access paused" class="verify-email-arlo">
+        </div>
 
-<div class="container-box container--short text-center" style="max-width: 620px;">
-    <h3>Access to this account is currently paused</h3>
-    <p>
-        Your school membership is currently inactive, so school tools are temporarily unavailable.
-        Your school admin can reactivate access at any time.
-    </p>
+        <h1 class="verify-email-title">Access Restricted</h1>
 
-    <div class="pricing-card" style="max-width:560px; margin-top: 18px; margin-bottom: 22px; text-align: left;">
-        <h2 style="margin-top: 0;">What to do next</h2>
-        <ul>
-            <li>Contact your school admin to request reactivation</li>
-            <li>If you think this is an error, email support@chatterdillo.com</li>
-        </ul>
+        <p class="verify-email-description">
+            Your school membership is currently inactive, so school tools are temporarily unavailable.
+        </p>
+        <p class="verify-email-description">
+            Your school admin can reactivate access at any time. Contact your admin to request
+            reactivation.
+        </p>
+
+        <form method="post" action="{% url 'logout' %}" class="verify-email-form">
+            {% csrf_token %}
+            <button type="submit" class="btn btn--yellow btn--full">Log Out</button>
+        </form>
+
+        <div class="verify-email-links">
+            <a href="{% url 'support' %}" class="verify-email-link">Need help? Contact Support</a>
+        </div>
     </div>
-
-    <form method="post" action="{% url 'logout' %}" style="margin: 0 auto; max-width: 320px;">
-        {% csrf_token %}
-        <button type="submit" class="btn btn--yellow btn--full">Log Out</button>
-    </form>
 </div>
 {% endblock %}
