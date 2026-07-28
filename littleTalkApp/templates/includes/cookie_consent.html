@@ -1,0 +1,41 @@
+{% load static %}
+<div
+    id="cookie-consent"
+    class="cookie-consent"
+    data-measurement-id="G-ZGXMZKE8JF"
+    data-policy-version="2026-07-26"
+    hidden
+>
+    <div class="cookie-consent__panel" role="dialog" aria-modal="true" aria-labelledby="cookie-consent-title" aria-describedby="cookie-consent-description" tabindex="-1">
+        <div class="cookie-consent__copy">
+            <h2 id="cookie-consent-title">Your cookie choices</h2>
+            <p id="cookie-consent-description">
+                We use essential cookies to keep Chatterdillo secure. With your permission, we also use Google Analytics to understand how the service is used.
+                <a href="{% url 'privacy' %}#cookies">Read our data and privacy policy</a>.
+            </p>
+        </div>
+        <div class="cookie-consent__actions">
+            <button type="button" class="cookie-consent__button cookie-consent__button--secondary" data-consent-action="reject">Reject analytics</button>
+            <button type="button" class="cookie-consent__button cookie-consent__button--secondary" data-consent-action="customise" aria-expanded="false" aria-controls="cookie-preferences">Customise</button>
+            <button type="button" class="cookie-consent__button cookie-consent__button--primary" data-consent-action="accept">Accept analytics</button>
+        </div>
+        <div id="cookie-preferences" class="cookie-consent__preferences" hidden>
+            <label class="cookie-consent__preference">
+                <span>
+                    <strong>Essential cookies</strong>
+                    <small>Required for security, sessions, and your cookie choice.</small>
+                </span>
+                <input type="checkbox" checked disabled>
+            </label>
+            <label class="cookie-consent__preference">
+                <span>
+                    <strong>Analytics cookies</strong>
+                    <small>Allow Google Analytics to measure use of the service.</small>
+                </span>
+                <input type="checkbox" data-consent-analytics>
+            </label>
+            <button type="button" class="cookie-consent__button cookie-consent__button--primary" data-consent-action="save">Save choices</button>
+        </div>
+    </div>
+</div>
+<script src="{% static 'js/cookie-consent.js' %}" defer></script>

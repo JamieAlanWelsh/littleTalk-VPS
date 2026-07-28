@@ -11,6 +11,7 @@
     <title>{% block title %}Chatterdillo – Speech and Language Support Made Simple{% endblock %}</title>
     <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
     <link rel="stylesheet" href="{% static 'styles/landing.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/cookie-consent.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Roboto&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,15 +24,6 @@
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
     
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZGXMZKE8JF"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'G-ZGXMZKE8JF');
-    </script>
     {% block extra_head %}{% endblock %}
 
 </head>
@@ -191,16 +183,16 @@
                     <h4>Legal</h4>
                     <ul>
                         <li><a href="/terms/">Terms & Conditions</a></li>
-                        <li><a href="/privacy/">Privacy Policy</a></li>
-                        <li><a href="/data-policy/">Data Policy</a></li>
+                        <li><a href="{% url 'privacy' %}">Data & Privacy Policy</a></li>
                     </ul>
                 </div>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2025 Chatterdillo. All rights reserved.</p>
+            <p>&copy; 2026 Chatterdillo. All rights reserved.</p>
         </div>
     </footer>
+    {% include "includes/cookie_consent.html" %}
     {% block extra_scripts %}{% endblock %}
 </body>
 </html>
