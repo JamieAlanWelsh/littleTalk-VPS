@@ -123,6 +123,9 @@ CACHES = {
     }
 }
 
+# Rate limiting (django-ratelimit)
+RATELIMIT_ENABLE = True
+RATELIMIT_IP_META_KEY = "HTTP_X_REAL_IP"
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -145,9 +148,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'accounts.password_validation.NumberOrSpecialCharacterValidator',
     },
 ]
-
-# Rate limiting (django-ratelimit)
-RATELIMIT_ENABLE = True
 
 
 # Internationalization
