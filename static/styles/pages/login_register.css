@@ -40,6 +40,12 @@
     right: 20px;
 }
 
+.login-container h1 {
+    text-align: center;
+    font-size: 2.2rem;
+    margin-bottom: 40px;
+}
+
 /* account setup */
 
 .account-setup-wider-container {
