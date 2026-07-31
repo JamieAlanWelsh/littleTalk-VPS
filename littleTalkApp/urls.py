@@ -15,6 +15,7 @@ from .views_modules import subscription as subscription_views
 from .views_modules import react_exercises as react_exercises_views
 from .views_modules import skolon as skolon_views
 from .views_modules import email_verification as email_verification_views
+from .views_modules import password_reset as password_reset_views
 
 urlpatterns = [
     # Landing content
@@ -52,6 +53,8 @@ urlpatterns = [
     # Email verification
     path('verify-email/', email_verification_views.verify_email_view, name='verify_email'),
     path('verify-email/<uuid:link_token>/', email_verification_views.verify_email_link_view, name='verify_email_link'),
+    path('reset-password/', password_reset_views.password_reset_request_view, name='password_reset'),
+    path('reset-password/<uuid:link_token>/', password_reset_views.password_reset_confirm_view, name='password_reset_confirm'),
 
     # Profile and adding learners
     path('profile/', profile_views.profile, name='profile'),

@@ -15,7 +15,7 @@ from .models import LogEntry
 import re
 from django.core.exceptions import ValidationError
 from datetime import date
-from .utilities import hash_email
+from .utilities import hash_email, validate_password_strength
 
 User = get_user_model()
 
@@ -34,6 +34,14 @@ class SchoolSignupForm(forms.Form):
         if email_hash and get_user_model().objects.filter(email_hash=email_hash).exists():
             raise forms.ValidationError("An account with this email already exists.")
         return email
+
+    def clean_password(self):
+        password = self.cleaned_data["password"]
+        try:
+            validate_password_strength(password)
+        except forms.ValidationError as e:
+            raise e
+        return password
 
     def clean_license_code(self):
         code = (self.cleaned_data.get("license_code") or "").strip().upper()
@@ -107,6 +115,26 @@ class CustomAuthenticationForm(AuthenticationForm):
         return self.cleaned_data
 
 
+class PasswordResetRequestForm(forms.Form):
+    email = forms.EmailField(label="Email", widget=forms.EmailInput(attrs={"class": "input", "placeholder": "Email"}))
+
+
+class PasswordResetConfirmForm(forms.Form):
+    new_password = forms.CharField(
+        widget=forms.PasswordInput(attrs={"class": "input", "placeholder": "New Password"}),
+        label="New Password",
+    )
+
+    def clean_new_password(self):
+        new_password = self.cleaned_data.get("new_password")
+        if new_password:
+            try:
+                validate_password_strength(new_password)
+            except forms.ValidationError as e:
+                raise e
+        return new_password
+
+
 class UserRegistrationForm(forms.ModelForm):
     email = forms.EmailField(required=True, label="Email")
     first_name = forms.CharField(max_length=50, required=True, label="Your Name")
@@ -153,6 +181,11 @@ class UserRegistrationForm(forms.ModelForm):
         password2 = self.cleaned_data.get("password2")
         if password1 and password2 and password1 != password2:
             raise forms.ValidationError("Passwords do not match")
+        if password1:
+            try:
+                validate_password_strength(password1)
+            except forms.ValidationError as e:
+                raise e
         return password2
 
     def clean_first_name(self):
@@ -197,6 +230,14 @@ class ParentSignupForm(forms.Form):
         if email_hash and get_user_model().objects.filter(email_hash=email_hash).exists():
             raise forms.ValidationError("An account with this email already exists.")
         return email
+
+    def clean_password(self):
+        password = self.cleaned_data["password"]
+        try:
+            validate_password_strength(password)
+        except forms.ValidationError as e:
+            raise e
+        return password
 
     def clean_access_code(self):
         code = self.cleaned_data.get("access_code", "").strip()
@@ -417,6 +458,15 @@ class PasswordUpdateForm(forms.Form):
             raise forms.ValidationError("Incorrect current password.")
         return current_password
 
+    def clean_new_password(self):
+        new_password = self.cleaned_data.get("new_password")
+        if new_password:
+            try:
+                validate_password_strength(new_password, user=self.user)
+            except forms.ValidationError as e:
+                raise e
+        return new_password
+
 
 class CohortForm(forms.ModelForm):
     class Meta:
@@ -474,8 +524,10 @@ class AcceptInviteForm(forms.Form):
 
     def clean_password(self):
         password = self.cleaned_data["password"]
-        if len(password) < 6:
-            raise forms.ValidationError("Password must be at least 6 characters.")
+        try:
+            validate_password_strength(password)
+        except forms.ValidationError as e:
+            raise e
         return password
 
 
@@ -504,8 +556,10 @@ class JoinRequestSignupForm(forms.Form):
 
     def clean_password(self):
         password = self.cleaned_data["password"]
-        if len(password) < 6:
-            raise forms.ValidationError("Password must be at least 6 characters.")
+        try:
+            validate_password_strength(password)
+        except forms.ValidationError as e:
+            raise e
         return password
 
     def clean(self):
@@ -549,8 +603,10 @@ class SchoolJoinLinkSignupForm(forms.Form):
 
     def clean_password(self):
         password = self.cleaned_data["password"]
-        if len(password) < 6:
-            raise forms.ValidationError("Password must be at least 6 characters.")
+        try:
+            validate_password_strength(password)
+        except forms.ValidationError as e:
+            raise e
         return password
 
     def clean(self):

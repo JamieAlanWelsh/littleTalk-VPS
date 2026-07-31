@@ -20,7 +20,7 @@
     </div>
 
     <!-- Header Section -->
-    <h1 style="text-align: center; font-size: 2rem; margin-bottom: 40px;">Create Account & Join School</h1>
+    <h1>Create Account & Join School</h1>
 
     <!-- Accept Invite Form -->
     <form method="post" class="login-form">
@@ -42,13 +42,15 @@
         </div>
 
         <div>
-            <input type="password" name="password" class="input" placeholder="Create password" required>
+            <input type="password" name="password" class="input" placeholder="Create password" data-password-requirements required>
             {% if form.password.errors %}
                 <div class="error-message">{{ form.password.errors.0 }}</div>
             {% endif %}
         </div>
 
-        <div>
+        {% include "partials/password_requirements.html" %}
+
+        <div style="margin-top: 10px;">
             <button type="submit" class="btn btn--yellow btn--full">Create Account &amp; Join School</button>
         </div>
 
@@ -61,4 +63,6 @@
         {% endif %}
     </form>
 </div>
+
+<script src="{% static 'non_react_js/password-requirements.js' %}"></script>
 {% endblock %}

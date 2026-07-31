@@ -44,7 +44,13 @@
         >
 
         <!-- Login Button -->
-        <button type="submit" class="btn btn--yellow btn--full">Login</button>
+        <div style="margin-top: 10px;">
+            <button type="submit" class="btn btn--yellow btn--full">Login</button>
+        </div>
+
+        <p class="text-center" style="margin-top: 20px; margin-bottom: 0; font-size: 0.9rem;">
+            <a href="{% url 'password_reset' %}" class="text-link">Forgot Password?</a>
+        </p>
     </form>
 
     <!-- Error Message -->

@@ -2,6 +2,8 @@ from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.urls import reverse
+from django.contrib.auth.password_validation import validate_password
+from django import forms
 from email.utils import formataddr
 
 from .models import Role
@@ -14,6 +16,28 @@ def hash_email(email):
     if not email:
         return None
     return hashlib.sha256(email.lower().encode()).hexdigest()
+
+
+def validate_password_strength(password, user=None):
+    """
+    Validate password strength using AUTH_PASSWORD_VALIDATORS.
+    Raises forms.ValidationError with all validation errors.
+    
+    Args:
+        password (str): The password to validate.
+        user (User, optional): The user object for context-aware validation.
+    
+    Raises:
+        forms.ValidationError: If password fails any validator.
+    """
+    try:
+        validate_password(password, user=user)
+    except forms.ValidationError:
+        # Re-raise as-is; validate_password already returns forms.ValidationError
+        raise
+    except Exception as e:
+        # Catch any other validation errors and convert to forms.ValidationError
+        raise forms.ValidationError(str(e))
 
 
 # permissions
@@ -95,6 +119,27 @@ def send_parent_access_email(token, learner, email, request):
 
 
 # Send email verification code
+
+
+def send_password_reset_email(user, reset_token, request):
+    """Send a password reset link to the user."""
+    from_email = formataddr(("Chatterdillo Team", "noreply@chatterdillo.com"))
+    to_email = [user.email_encrypted]
+
+    reset_url = request.build_absolute_uri(f"/reset-password/{reset_token.link_token}/")
+
+    context = {
+        "user": user,
+        "reset_link": reset_url,
+    }
+
+    subject = "Reset your Chatterdillo password"
+    text_content = render_to_string("emails/reset_password.txt", context)
+    html_content = render_to_string("emails/reset_password.html", context)
+
+    email = EmailMultiAlternatives(subject, text_content, from_email, to_email)
+    email.attach_alternative(html_content, "text/html")
+    email.send()
 
 
 def send_email_verification_code(user, verification_code, request):

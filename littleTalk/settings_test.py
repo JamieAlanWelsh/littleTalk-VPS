@@ -23,6 +23,13 @@ DATABASES = {
 EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles_test")
 
+# Use an in-memory cache in tests so no cache table needs creating.
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+    }
+}
+
 # Speed up tests while preserving behavior checks.
 PASSWORD_HASHERS = [
     "django.contrib.auth.hashers.MD5PasswordHasher",

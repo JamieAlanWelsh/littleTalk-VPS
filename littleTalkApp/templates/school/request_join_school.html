@@ -18,7 +18,7 @@
         <a href="{% url 'school_signup' %}" class="btn btn--yellow btn--small">School Setup</a>
     </div>
 
-    <h1 style="text-align: center; font-size: 2rem; margin-bottom: 40px;">Join a School</h1>
+    <h1>Join a School</h1>
 
     <form method="post" class="login-form">
         {% csrf_token %}
@@ -46,13 +46,15 @@
 
         <div>
             <input type="password" name="password" class="input" placeholder="Create password"
-                value="{{ form.password.value|default_if_none:'' }}" required>
+                value="{{ form.password.value|default_if_none:'' }}" data-password-requirements required>
             {% if form.password.errors %}
                 <div class="error-message">{{ form.password.errors.0 }}</div>
             {% endif %}
         </div>
 
-        <div>
+        {% include "partials/password_requirements.html" %}
+
+        <div style="margin-top: 10px;">
             <select name="school" class="input school-select" required>
                 <option value="">Search for your school</option>
                 {% for school in form.school.field.queryset %}
@@ -81,6 +83,7 @@
 </div>
 
 {% comment %} for searching for school {% endcomment %}
+<script src="{% static 'non_react_js/password-requirements.js' %}"></script>
 <script>
     $(document).ready(function() {
         $('.school-select').select2({

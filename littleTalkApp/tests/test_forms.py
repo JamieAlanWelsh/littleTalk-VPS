@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from django.test import RequestFactory, TestCase
+from django.test import RequestFactory, TestCase, override_settings
 from django.utils import timezone
 
 from accounts.models import User
@@ -134,11 +134,32 @@ class FormValidationTests(TestCase):
         self.assertFalse(form.is_valid())
         self.assertIn("learner_dob", form.errors)
 
-    def test_accept_invite_requires_min_password_length(self):
-        form = AcceptInviteForm(data={"full_name": "Invitee", "password": "12345"})
-
+    @override_settings(
+        AUTH_PASSWORD_VALIDATORS=[
+            {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
+            {"NAME": "accounts.password_validation.AlphabeticalCharacterValidator"},
+            {"NAME": "accounts.password_validation.NumberOrSpecialCharacterValidator"},
+        ]
+    )
+    def test_accept_invite_enforces_password_rules(self):
+        # Too short
+        form = AcceptInviteForm(data={"full_name": "Invitee", "password": "ab1"})
         self.assertFalse(form.is_valid())
         self.assertIn("password", form.errors)
+
+        # No alphabetical character
+        form = AcceptInviteForm(data={"full_name": "Invitee", "password": "12345678"})
+        self.assertFalse(form.is_valid())
+        self.assertIn("password", form.errors)
+
+        # No number or special character
+        form = AcceptInviteForm(data={"full_name": "Invitee", "password": "abcdefgh"})
+        self.assertFalse(form.is_valid())
+        self.assertIn("password", form.errors)
+
+        # Meets all three rules
+        form = AcceptInviteForm(data={"full_name": "Invitee", "password": "abcdefg1"})
+        self.assertTrue(form.is_valid())
 
     def test_parent_signup_form_returns_token_object_for_valid_access_code(self):
         staff = User.objects.create_user(username="staff1", password="password123")
