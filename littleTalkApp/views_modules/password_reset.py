@@ -4,6 +4,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils import timezone
 from django.http import Http404
+from django_ratelimit.decorators import ratelimit
 
 from littleTalkApp.forms import PasswordResetConfirmForm, PasswordResetRequestForm
 from littleTalkApp.models import PasswordResetToken
@@ -11,39 +12,47 @@ from littleTalkApp.utilities import hash_email, send_password_reset_email
 
 User = get_user_model()
 
+RESET_REQUEST_GENERIC_MESSAGE = (
+    "If an account exists for that email, we have sent a password reset link."
+)
 
+
+@ratelimit(key="ip", rate="5/h", method="POST", block=False)
 def password_reset_request_view(request):
     request.hide_sidebar = True
     if request.method == "POST":
         form = PasswordResetRequestForm(request.POST)
         if form.is_valid():
-            email = form.cleaned_data["email"]
-            user = User.objects.filter(email_hash=hash_email(email)).first()
+            # Throttled clients get the same generic response — no enumeration signal.
+            if not getattr(request, "limited", False):
+                _issue_reset_link(form.cleaned_data["email"], request)
 
-            if user:
-                try:
-                    token = user.password_reset_token
-                except PasswordResetToken.DoesNotExist:
-                    token = PasswordResetToken.objects.create(user=user)
-                else:
-                    try:
-                        token.regenerate()
-                    except Exception as exc:
-                        messages.error(request, str(exc))
-                        return render(request, "auth/password_reset_request.html", {"form": form})
-
-                send_password_reset_email(user, token, request)
-
-            messages.success(
-                request,
-                "If an account exists for that email, we have sent a password reset link.",
-            )
+            messages.success(request, RESET_REQUEST_GENERIC_MESSAGE)
             return render(request, "auth/password_reset_request.html", {"form": form, "submitted": True})
 
         return render(request, "auth/password_reset_request.html", {"form": form})
 
     form = PasswordResetRequestForm()
     return render(request, "auth/password_reset_request.html", {"form": form})
+
+
+def _issue_reset_link(email, request):
+    user = User.objects.filter(email_hash=hash_email(email)).first()
+    if not user:
+        return
+
+    try:
+        token = user.password_reset_token
+    except PasswordResetToken.DoesNotExist:
+        token = PasswordResetToken.objects.create(user=user)
+    else:
+        try:
+            token.regenerate()
+        except Exception:
+            # Within cooldown window — stay silent to avoid leaking account existence.
+            return
+
+    send_password_reset_email(user, token, request)
 
 
 def password_reset_confirm_view(request, link_token):

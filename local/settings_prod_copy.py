@@ -25,7 +25,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 if not SECRET_KEY:
     raise ValueError("Missing DJANGO_SECRET_KEY environment variable")
 
-# SECURITY WARNING: DEBUG MUST REMAIN TRUE IN PRODUCTION
+# SECURITY WARNING: DEBUG MUST REMAIN FALSE IN PRODUCTION
 DEBUG = False
 
 ALLOWED_HOSTS = [
@@ -114,23 +114,40 @@ DATABASES = {
 AUTH_USER_MODEL = 'accounts.User'
 
 
+# Cache — database-backed so rate limits are shared across gunicorn workers.
+# Run `python manage.py createcachetable` once per environment.
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+        "LOCATION": "littletalk_cache",
+    }
+}
+
+
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
+# Enforced rules (consistent with UI):
+# 1. At least 8 characters
+# 2. At least 1 alphabetical character
+# 3. At least 1 number or special character
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS': {
+            'min_length': 8,
+        }
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'NAME': 'accounts.password_validation.AlphabeticalCharacterValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME': 'accounts.password_validation.NumberOrSpecialCharacterValidator',
     },
 ]
+
+# Rate limiting (django-ratelimit)
+RATELIMIT_ENABLE = True
 
 
 # Internationalization

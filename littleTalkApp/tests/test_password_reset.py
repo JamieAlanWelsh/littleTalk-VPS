@@ -1,4 +1,5 @@
 from django.core import mail
+from django.core.cache import cache
 from django.test import TestCase, override_settings
 from django.urls import reverse
 
@@ -10,6 +11,7 @@ from littleTalkApp.utilities import hash_email
 @override_settings(EMAIL_BACKEND="django.core.mail.backends.locmem.EmailBackend")
 class PasswordResetFlowTests(TestCase):
     def setUp(self):
+        cache.clear()
         self.user = User.objects.create_user(username="reset-user", password="Password123!")
         self.user.email_encrypted = "reset@example.com"
         self.user.email_hash = hash_email("reset@example.com")
@@ -46,3 +48,35 @@ class PasswordResetFlowTests(TestCase):
         self.assertEqual(response.status_code, 302)
         self.user.refresh_from_db()
         self.assertTrue(self.user.check_password("NewPassword123!"))
+
+    def test_cooldown_is_silent_and_sends_no_second_email(self):
+        token = PasswordResetToken.objects.create(user=self.user)
+        original_link_token = token.link_token
+
+        response = self.client.post(
+            reverse("password_reset"),
+            {"email": "reset@example.com"},
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "If an account exists")
+        self.assertNotContains(response, "60 seconds")
+        self.assertEqual(len(mail.outbox), 0)
+        token.refresh_from_db()
+        self.assertEqual(token.link_token, original_link_token)
+
+    def test_ip_rate_limit_blocks_after_threshold(self):
+        for _ in range(5):
+            self.client.post(reverse("password_reset"), {"email": "reset@example.com"})
+
+        mail.outbox.clear()
+
+        response = self.client.post(
+            reverse("password_reset"),
+            {"email": "reset@example.com"},
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "If an account exists")
+        self.assertEqual(len(mail.outbox), 0)
+
