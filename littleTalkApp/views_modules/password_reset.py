@@ -26,7 +26,11 @@ def password_reset_request_view(request):
                 except PasswordResetToken.DoesNotExist:
                     token = PasswordResetToken.objects.create(user=user)
                 else:
-                    token.regenerate()
+                    try:
+                        token.regenerate()
+                    except Exception as exc:
+                        messages.error(request, str(exc))
+                        return render(request, "auth/password_reset_request.html", {"form": form})
 
                 send_password_reset_email(user, token, request)
 
