@@ -623,6 +623,54 @@ class JoinRequest(models.Model):
         return f"{self.full_name} ({self.email}) → {self.school.name} [{self.status}]"
 
 
+class PasswordResetToken(models.Model):
+    """One-time password reset token for users."""
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="password_reset_token",
+    )
+    link_token = models.UUIDField(
+        unique=True,
+        default=uuid.uuid4,
+        editable=False,
+        help_text="UUID for the password reset link",
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    used = models.BooleanField(default=False)
+    expires_at = models.DateTimeField(
+        default=default_expiry,
+        help_text="When this reset link expires",
+    )
+
+    class Meta:
+        indexes = [models.Index(fields=["user", "used"])]
+
+    def is_expired(self):
+        return self.used or timezone.now() > self.expires_at
+
+    def mark_used(self):
+        self.used = True
+        self.save(update_fields=["used"])
+
+    def regenerate(self, cooldown_seconds=60):
+        if self.created_at:
+            time_since_creation = timezone.now() - self.created_at
+            if time_since_creation.total_seconds() < cooldown_seconds:
+                raise Exception(
+                    f"Please wait {cooldown_seconds} seconds before requesting a new reset link."
+                )
+
+        self.link_token = uuid.uuid4()
+        self.created_at = timezone.now()
+        self.expires_at = default_expiry()
+        self.used = False
+        self.save()
+
+    def __str__(self):
+        return f"Password reset token for {self.user.username}" 
+
+
 class EmailVerificationCode(models.Model):
     """
     One-time email verification code for new users.

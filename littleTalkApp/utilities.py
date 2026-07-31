@@ -121,6 +121,27 @@ def send_parent_access_email(token, learner, email, request):
 # Send email verification code
 
 
+def send_password_reset_email(user, reset_token, request):
+    """Send a password reset link to the user."""
+    from_email = formataddr(("Chatterdillo Team", "noreply@chatterdillo.com"))
+    to_email = [user.email_encrypted]
+
+    reset_url = request.build_absolute_uri(f"/reset-password/{reset_token.link_token}/")
+
+    context = {
+        "user": user,
+        "reset_link": reset_url,
+    }
+
+    subject = "Reset your Chatterdillo password"
+    text_content = render_to_string("emails/reset_password.txt", context)
+    html_content = render_to_string("emails/reset_password.html", context)
+
+    email = EmailMultiAlternatives(subject, text_content, from_email, to_email)
+    email.attach_alternative(html_content, "text/html")
+    email.send()
+
+
 def send_email_verification_code(user, verification_code, request):
     """Send a 6-digit verification code and a click link to the user."""
     from_email = formataddr(("Chatterdillo Team", "noreply@chatterdillo.com"))

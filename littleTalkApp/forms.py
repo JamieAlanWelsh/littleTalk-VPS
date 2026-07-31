@@ -115,6 +115,26 @@ class CustomAuthenticationForm(AuthenticationForm):
         return self.cleaned_data
 
 
+class PasswordResetRequestForm(forms.Form):
+    email = forms.EmailField(label="Email", widget=forms.EmailInput(attrs={"class": "input", "placeholder": "Email"}))
+
+
+class PasswordResetConfirmForm(forms.Form):
+    new_password = forms.CharField(
+        widget=forms.PasswordInput(attrs={"class": "input", "placeholder": "New Password"}),
+        label="New Password",
+    )
+
+    def clean_new_password(self):
+        new_password = self.cleaned_data.get("new_password")
+        if new_password:
+            try:
+                validate_password_strength(new_password)
+            except forms.ValidationError as e:
+                raise e
+        return new_password
+
+
 class UserRegistrationForm(forms.ModelForm):
     email = forms.EmailField(required=True, label="Email")
     first_name = forms.CharField(max_length=50, required=True, label="Your Name")
