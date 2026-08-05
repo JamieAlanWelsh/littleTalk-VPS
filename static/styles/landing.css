@@ -481,7 +481,7 @@ body {
     width: var(--testimonial-avatar-size);
     height: var(--testimonial-avatar-size);
     border-radius: 50%;
-    background-color: var(--accent-color);
+    background-color: var(--testimonial-avatar-color, var(--accent-color));
     display: flex;
     align-items: center;
     justify-content: center;
@@ -490,14 +490,9 @@ body {
 }
 
 .testimonial-avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.testimonial-initials {
-    font-weight: 700;
-    font-size: 0.95rem;
+    width: 82%;
+    height: 82%;
+    object-fit: contain;
 }
 
 .testimonial-name {

@@ -135,12 +135,8 @@
                 <article class="testimonial-card">
                     <p class="testimonial-quote">“{{ testimonial.quote }}”</p>
                     <div class="testimonial-card-header">
-                        <div class="testimonial-avatar" aria-hidden="true">
-                            {% if testimonial.image %}
-                                <img src="{% static testimonial.image %}" alt="{{ testimonial.name }}">
-                            {% else %}
-                                <span class="testimonial-initials">{{ testimonial.initials }}</span>
-                            {% endif %}
+                        <div class="testimonial-avatar" style="--testimonial-avatar-color: {{ testimonial.avatar_background_color }};" aria-hidden="true">
+                            <img src="{{ testimonial.avatar_image_url }}" alt="">
                         </div>
                         <div class="testimonial-meta">
                             <h3 class="testimonial-name">{{ testimonial.name }}</h3>
