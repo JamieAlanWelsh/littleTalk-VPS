@@ -858,6 +858,85 @@ body {
     margin: 2rem auto;
 }
 
+.logo-marquee {
+    padding: 3rem 1rem 1rem;
+    background-color: white;
+    text-align: center;
+}
+
+.logo-marquee-title {
+    margin: 0 0 3rem;
+    font-size: 1.2rem;
+    color: var(--font-color);
+}
+
+.logo-marquee-track {
+    position: relative;
+    overflow: hidden;
+    max-width: 66rem;
+    margin: 0 auto;
+}
+
+.logo-marquee-track::before,
+.logo-marquee-track::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 3.5rem;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.logo-marquee-track::before {
+    left: 0;
+    background: linear-gradient(to right, white, transparent);
+}
+
+.logo-marquee-track::after {
+    right: 0;
+    background: linear-gradient(to left, white, transparent);
+}
+
+.logo-marquee-row {
+    display: flex;
+    width: max-content;
+    animation: logo-marquee-scroll 42s linear infinite;
+}
+
+.logo-marquee-set {
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+    padding-right: 2.5rem;
+    flex-shrink: 0;
+}
+
+.logo-marquee-set img {
+    display: block;
+    width: auto;
+    height: 5.5rem;
+    object-fit: contain;
+}
+
+.logo-marquee-track:hover .logo-marquee-row {
+    animation-play-state: paused;
+}
+
+.logo-marquee-button {
+    margin-top: 3rem;
+}
+
+@keyframes logo-marquee-scroll {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-50%);
+    }
+}
+
 .character-wrapper {
     position: relative;
     overflow: hidden;
@@ -1027,6 +1106,37 @@ body {
     .hero-widget img {
         width: min(100%, 19rem);
     }
+
+    .logo-marquee {
+        padding: 2.25rem 0.75rem 2.25rem;
+    }
+
+    .logo-marquee-title {
+        font-size: 1.35rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .logo-marquee-track::before,
+    .logo-marquee-track::after {
+        width: 1.5rem;
+    }
+
+    .logo-marquee-set {
+        gap: 1.5rem;
+        padding-right: 1.5rem;
+    }
+
+    .logo-marquee-set img {
+        height: 4rem;
+    }
+
+    .logo-marquee-row {
+        animation-duration: 34s;
+    }
+
+    .logo-marquee-button {
+        margin-top: 1.5rem;
+    }
     
     .talk-team-subtitle {
         margin-bottom: 1.5rem;
@@ -1039,6 +1149,18 @@ body {
 
 @media (max-width: 900px) {
     .character {
+        display: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .logo-marquee-row {
+        animation: none;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .logo-marquee-set[aria-hidden="true"] {
         display: none;
     }
 }
