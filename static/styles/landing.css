@@ -232,7 +232,7 @@ body {
 
 .content-split-image img {
     width: 100%;
-    max-width: 500px;
+    max-width: 550px;
     height: auto;
     border-radius: 1rem;
     object-fit: cover;
@@ -564,6 +564,88 @@ body {
     border-radius: var(--border-radius);
     overflow: hidden;
     width: 100%;
+}
+
+/* our team section */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 3rem 4rem;
+    max-width: 1080px;
+    margin: 0 auto;
+}
+
+.team-member {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+}
+
+.team-member-image {
+    flex: 0 0 auto;
+}
+
+.team-member-image img {
+    width: 180px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 1rem;
+}
+
+.team-member-body {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.team-member-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.team-member-name {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 0 0 0.25rem;
+    color: var(--font-color);
+    line-height: 1.3;
+}
+
+.team-member-role {
+    font-size: 1.1rem;
+    font-style: italic;
+    margin: 0;
+    color: var(--font-color);
+    line-height: 1.4;
+}
+
+.team-member-linkedin {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    color: #2f7bf6;
+    transition: color 0.15s ease;
+}
+
+.team-member-linkedin:hover {
+    color: #1b5fd6;
+}
+
+.team-member-linkedin svg {
+    width: 100%;
+    height: 100%;
+    border-radius: 3px;
+}
+
+.team-member-bio {
+    font-size: 1.1rem;
+    color: var(--font-color);
+    line-height: 1.6;
+    margin: 1.25rem 0 0;
 }
 
 .footer-cta {
@@ -1052,6 +1134,11 @@ body {
     
     .split-body {
         font-size: 0.9rem;
+    }
+
+    .team-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 2.5rem;
     }
 
     .footer-heading {
