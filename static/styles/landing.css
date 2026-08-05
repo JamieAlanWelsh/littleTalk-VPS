@@ -232,7 +232,7 @@ body {
 
 .content-split-image img {
     width: 100%;
-    max-width: 550px;
+    max-width: 500px;
     height: auto;
     border-radius: 1rem;
     object-fit: cover;
@@ -580,6 +580,15 @@ body {
 .footer-heading {
     font-size: 2.5rem;
     font-weight: bold;
+    margin-bottom: 3rem;
+}
+
+.footer-cta-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.25rem;
+    flex-wrap: wrap;
 }
 
 .footer-cta-button {
@@ -604,12 +613,12 @@ body {
 }
 
 .footer-icon-wrapper {
-    margin-top: 30px;
+    margin-top: 60px;
 }
 
 .footer-icon {
-    width: 18rem;
-    height: 18rem;
+    width: 15rem;
+    height: 15rem;
     object-fit: cover;
     border-radius: 12px;
 }

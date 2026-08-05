@@ -147,6 +147,18 @@
     </script>
     {% block content %}{% endblock %}
 
+    {% comment %} universal landing call to action {% endcomment %}
+    <div class="footer-cta">
+        <h1 class="footer-heading">Give every child the support they deserve.</h1>
+        <div class="footer-cta-actions">
+            <a href="{{ calendly_url }}" class="cta-button white-button main-button" target="_blank" rel="noopener noreferrer">Book a Demo</a>
+            <a href="/account-setup/" class="cta-button main-button">Get Started</a>
+        </div>
+        <div class="footer-icon-wrapper">
+            <img src="{% static 'images/landing/arlo_clear.png' %}" alt="Chatterdillo icon" class="footer-icon">
+        </div>
+    </div>
+
     {% comment %} Footer Border {% endcomment %}
     <footer class="site-footer">
         <div class="footer-container">

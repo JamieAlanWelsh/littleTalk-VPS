@@ -66,53 +66,58 @@
 <div class="content-split white">
     <div class="content-split-header">
         <h2 class="split-heading">
-            Speech and Language Resources Designed for Busy Schools
+            Built for busy SEND teams
         </h2>
     </div>
     <div class="content-split-main">
         <div class="content-split-image">
-            <img src="{% static 'images/landing/chatterdillo_exercises.png' %}" alt="Flexible routines"/>
+            <img src="{% static 'images/landing/landingwidget1.png' %}" alt="Landing Widget 1"/>
         </div>
         <div class="content-split-text">
-            <h3 class="split-small-heading">Deliver interventions quickly, at any time</h3>
+            <h3 class="split-small-heading">Identify needs in just 10 minutes</h3>
             <p class="split-body">
-                Busy schedule? We get it. Let our app recommend suitable exercises using our in-built screener and deliver them directly through the platform - no training, no prep.
+                Get started with a short pupil screener that identifies each child's language needs and recommends where to begin.
             </p>
-            <h3 class="split-small-heading">3x Faster Progress with frequent Speech and Language Practise</h3>
+            <h3 class="split-small-heading">Start interventions straight away</h3>
             <p class="split-body">
-                Research shows that consistent, high-frequency practise can triple the rate of learning in speech and language development!
+                Teaching assistants can begin personalised interventions immediately, following screener recommendations or choosing activities from our Early Years to Key Stage 2 exercise library.
             </p>
-            <h3 class="split-small-heading">Easy for You, Fun for Them</h3>
+            <h3 class="split-small-heading">Track progress automatically</h3>
             <p class="split-body">
-                Students learn through play by earning EXP points as they practise - turning speech and language therapy into a game they want to play. It’s motivating, rewarding, and totally child-friendly.
+                Every session is automatically logged, making it easy for SEND teams to monitor progress, evidence interventions and demonstrate impact over time.
             </p>
             <p class="split-body">
-                <strong><a href="/method/" class="text-link">Learn more about our method ></a></strong>
+                <strong><a href="/method/" class="text-link">Explore the platform ></a></strong>
             </p>
         </div>
     </div>
 </div>
 {% comment %} Benefits Section 2 {% endcomment %}
 <div class="content-split white content-split-reverse">
+    <div class="content-split-header">
+        <h2 class="split-heading">
+            Why schools choose Chatterdillo
+        </h2>
+    </div>
     <div class="content-split-main">
         <div class="content-split-image">
-            <img src="{% static 'images/landing/chatterdillo_progress.png' %}" alt="Flexible routines"/>
+            <img src="{% static 'images/landing/landingwidget2.png' %}" alt="Landing Widget 2"/>
         </div>
         <div class="content-split-text">
-            <h3 class="split-small-heading">Keep Staff Aligned and Informed</h3>
+            <h3 class="split-small-heading">Support more pupils with the same capacity</h3>
             <p class="split-body">
-                Track progress in real time and ensure team coordinators and support staff stay informed about each child’s development and support plan.
+                Chatterdillo is easy to use and requires no specialist training, allowing teaching assistants to get started immediately. Group interventions enable staff to support multiple pupils at once, helping schools maximise limited capacity.
             </p>
-            <h3 class="split-small-heading">Boost Productivity, Improve Outcomes</h3>
+            <h3 class="split-small-heading">Save time and reduce admin</h3>
             <p class="split-body">
-                Support more children, more often with streamlined tools and ready-to-use resources. Parents can also securely access practise activities from home using a unique access code, reinforcing progress and increasing impact between sessions.
+                Schools using Chatterdillo have reported saving up to 3 hours each week on planning, resource preparation and admin, freeing up more time to support pupils.
             </p>
-            <h3 class="split-small-heading">Made by Speech and Language Therapists</h3>
+            <h3 class="split-small-heading">Developed by Speech and Language Therapists.</h3>
             <p class="split-body">
-                Developed by licensed Speech and Language Therapists, our activities are evidence-based, easy to implement, and designed to support meaningful progress.
+                Our activities are developed by Speech and Language Therapists using evidence-based approaches and recognised clinical frameworks, including Blank's Levels of Questioning, adapted for use in schools.
             </p>
             <p class="split-body">
-                <strong><a href="/account-setup/" class="text-link">Set up an account ></a></strong>
+                <strong><a href="/about/" class="text-link">Learn more about us > ></a></strong>
             </p>
         </div>
     </div>
@@ -161,15 +166,6 @@
         <div class="calendly-inline-widget" data-url="{{ calendly_url }}" style="min-width:320px;height:700px;"></div>
     </div>
 </div>
-{% comment %} final call to action footer {% endcomment %}
-<div class="footer-cta">
-    <h1 class="footer-heading">Let’s Build Language Skills Together!</h1>
-    <a href="/account-setup/" class="cta-button main-button">Set up a Free Account</a>
-    <div class="footer-icon-wrapper">
-        <img src="{% static 'images/landing/arlo_waving.png' %}" alt="Chatterdillo icon" class="footer-icon">
-    </div>
-</div>
-
 {% endblock %}
 
 {% block extra_scripts %}
