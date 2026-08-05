@@ -18,45 +18,29 @@
 
         <!-- Top Text and CTA -->
         <div class="intro-section">
-            <h1 class="landing-title">Speech and Language Support Made Simple</h1>
+            <h1 class="landing-title">
+                <span class="landing-title-line">Speech and Language Support</span>
+                <span class="landing-title-line landing-title-line--accent">
+                    <span class="hero-underline">Made Simple.</span>
+                </span>
+            </h1>
             <p class="landing-subtitle">
-                A powerful new app offering evidence-based speech and language activities 
-                <strong>for children aged 2–11 with speech and language needs</strong>.
+                Web-based speech and language intervention and screener - Designed by Speech and Language Therapists for Busy Schools
             </p>
-            <p class="landing-subtitle">
-                <strong>Designed by licensed Speech and Language Therapists for use in schools and at home.</strong>
-            </p>
-        </div>
-        <!-- Role Cards -->
-        <div class="account-setup-container">
-            <h2 class="account-header">Get Started as a...</h2>
-
-            <div class="card-row">
-                <!-- School Leader -->
-                <a href="{% url 'school_signup' %}" class="setup-card">
-                    <div class="setup-card-inner">
-                        <h2>School</h2>
-                        <p>Setup a new school as an administrator</p>
-                    </div>
-                </a>
-                <!-- Teacher -->
-                <a href="{% url 'request_join_school' %}" class="setup-card">
-                    <div class="setup-card-inner">
-                        <h2>Teacher</h2>
-                        <p>Make a request to join an existing school</p>
-                    </div>
-                </a>
-                <!-- Parent -->
-                <a href="{% url 'parent_signup' %}?standalone=true" class="setup-card">
-                    <div class="setup-card-inner">
-                        <h2>Individual</h2>
-                        <p>Learn at home through a school or individually</p>
-                    </div>
-                </a>
+            <div class="hero-cta">
+                <a href="{{ calendly_url }}" class="cta-button white-button main-button" target="_blank" rel="noopener noreferrer">Book a Demo</a>
+                <a href="/account-setup/" class="cta-button main-button">Get Started</a>
             </div>
-            <!-- Login button under cards -->
-            <div class="already-have-account">
-                <a href="{% url 'login' %}" class="cta-button white-button">I already have an account</a>
+            <div class="hero-endorsements" aria-label="Endorsements and awards">
+                <span>Proudly endorsed by Naomie Harris OBE</span>
+                <span>Voted best start up: Let&apos;s Fund Her Comp</span>
+                <span>Built by speech and language therapists</span>
+            </div>
+        </div>
+        <div class="hero-widget-shell" aria-hidden="true">
+            <div class="hero-widget-backdrop"></div>
+            <div class="hero-widget">
+                <img src="{% static 'images/landing/frontpagewidget.png' %}" alt="Chatterdillo screener and exercise preview">
             </div>
         </div>
     </div>

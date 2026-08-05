@@ -760,35 +760,102 @@ body {
 
 .landing-full-container {
     text-align: center;
-    padding: 60px 20px;
-    background-color: var(--bg-color);
+    padding: 4rem 1.25rem 0;
+    background-color: var(--background-color);
     position: relative;
     z-index: 1;
 }
 
 .intro-section {
-    max-width: 700px;
-    margin: 0 auto 0 auto;
+    margin: 0 auto;
 }
 
 .landing-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
     font-size: 4rem;
-    margin-bottom: 60px;
+    line-height: 1.1;
+    margin: 0 0 1.75rem;
+}
+
+.landing-title-line {
+    display: block;
+}
+
+.landing-title-line--accent {
+    position: relative;
+}
+
+.hero-underline {
+    display: inline-block;
+    border-radius: 0.5rem;
+    background-image: linear-gradient(
+        transparent calc(100% - 0.75rem),
+        var(--yellow-button-color) calc(100% - 1rem)
+    );
 }
 
 .landing-subtitle {
     font-size: 1.2rem;
-    margin-bottom: 60px;
+    line-height: 1.6;
+    max-width: 620px;
+    margin: 0 auto 2.25rem;
     color: var(--font-color);
 }
 
-.account-header {
-    font-size: 1.6rem;
-    margin-bottom: 20px;
+.hero-cta {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
 }
 
-.already-have-account {
-    margin-top: 30px;
+.hero-endorsements {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    max-width: 900px;
+    margin: 0 auto 1.75rem;
+    font-size: 0.92rem;
+    line-height: 1.5;
+    color: rgba(32, 13, 42, 0.85);
+}
+
+.hero-widget-shell {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    min-height: 25rem;
+    margin-top: 1rem;
+}
+
+.hero-widget-backdrop {
+    position: absolute;
+    left: 50%;
+    bottom: -52rem;
+    width: min(110vw, 70rem);
+    aspect-ratio: 1 / 1;
+    transform: translateX(-50%);
+    background-color: var(--yellow-button-color);
+    border-radius: 50%;
+}
+
+.hero-widget {
+    position: relative;
+    z-index: 1;
+}
+
+.hero-widget img {
+    display: block;
+    width: min(100%, 45rem);
+    margin: 2rem auto;
 }
 
 .character-wrapper {
@@ -802,7 +869,7 @@ body {
     top: 130px;
     width: 200px;
     max-width: 30vw;
-    z-index: 0;
+    z-index: 2;
     pointer-events: none;
 }
 
@@ -825,7 +892,7 @@ body {
     }
 
     .landing-full-container {
-        padding-top: 0.5rem;
+        padding: 1.25rem 1rem 0;
     }
 
     .main-header {
@@ -839,22 +906,6 @@ body {
   
     .header-right {
         display: none;
-    }
-
-    .button-group {
-        width: 90%;
-        max-width: 25rem;
-        margin-left: auto;
-        margin-right: auto;
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .get-started-button,
-    .login-button {
-        padding: 0.5rem 1rem;
-        font-size: 0.9rem;
     }
 
     .content-items {
@@ -940,12 +991,41 @@ body {
 
     .landing-title {
         font-size: 2rem;
-        margin-bottom: 30px;
+        margin-bottom: 1.25rem;
     }
 
     .landing-subtitle {
         font-size: 1rem;
-        margin-bottom: 30px;
+        margin-bottom: 1.5rem;
+    }
+
+    .hero-cta {
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .hero-cta .cta-button {
+        width: min(100%, 16rem);
+    }
+
+    .hero-endorsements {
+        gap: 0.75rem 1.5rem;
+        font-size: 0.78rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .hero-widget-shell {
+        min-height: 14rem;
+        margin-top: 0.5rem;
+    }
+
+    .hero-widget-backdrop {
+        bottom: -8rem;
+        width: min(130vw, 34rem);
+    }
+
+    .hero-widget img {
+        width: min(100%, 19rem);
     }
     
     .talk-team-subtitle {
@@ -957,7 +1037,7 @@ body {
     }
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 900px) {
     .character {
         display: none;
     }

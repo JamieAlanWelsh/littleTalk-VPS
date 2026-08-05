@@ -226,6 +226,17 @@ class TemplateContractsTests(TestCase):
                 self.assertContains(response, reverse("terms"))
                 self.assertContains(response, reverse("privacy"))
 
+    def test_home_landing_hero_renders_primary_ctas_and_widget(self):
+        response = self.client.get(reverse("home"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Speech and Language Support")
+        self.assertContains(response, "Made Simple.")
+        self.assertContains(response, "Book a Demo")
+        self.assertContains(response, "Get Started")
+        self.assertContains(response, "Naomie Harris OBE")
+        self.assertContains(response, "images/landing/frontpagewidget.png")
+
 
 class SubscriptionContractsTests(TestCase):
     def setUp(self):
