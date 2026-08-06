@@ -123,13 +123,14 @@ def send_support_email(request):
     return redirect("support")
 
 
-def tips(request):
-    """Renders public/tips.html — a static tips and best-practise page."""
+def case_studies(request):
+    """Renders public/case_studies.html for the landing-page flow."""
 
-    return render(request, "public/tips.html", {})
+    request.hide_sidebar = True
+    return render(request, "public/case_studies.html", {})
 
 
-def method(request):
+def exercises(request):
     """Renders public/method.html — an overview of the educational methodology,
     including descriptions of all available games.
     """
@@ -158,6 +159,13 @@ def method(request):
         "method_stages": method_stages,
     }
     return render(request, "public/method.html", context)
+
+
+def how_it_works(request):
+    """Renders public/how_it_works.html for the landing-page flow."""
+
+    request.hide_sidebar = True
+    return render(request, "public/how_it_works.html")
 
 
 def about(request):

@@ -1,0 +1,88 @@
+<!-- templates/landing.html -->
+{% extends "landing_base.html" %}
+
+{% block title %}Chatterdillo | Method{% endblock %}
+{% load static %}
+
+{% block content %}
+
+{% comment %} about us intro and video {% endcomment %}
+<div class="content-split white">
+    <div class="content-split-header">
+        <h2 class="split-heading">How Chatterdillo Works</h2>
+        <p class="split-body talk-team-subtitle">From identifying needs to delivering interventions and tracking progress, Chatterdillo helps schools provide evidence-based speech and language support in just a few simple steps.</p>
+    </div>
+</div>
+
+<div class="content-split text-only grey">
+    <div class="content-split-text">
+        <!-- Identify Needs -->
+        <h3 class="split-heading">
+            Identify needs in just 10 minutes
+        </h3>
+        <p class="split-body">
+            Complete a short pupil screener that identifies language needs and recommends where to begin.
+        </p>
+        <div class="inline-full-image">
+            <img src="{% static 'images/landing/app_screenshots/screener.png' %}" alt="Screener screenshot">
+        </div>
+
+
+        <!-- Deliver Interventions -->
+        <h3 class="split-heading">
+            Deliver personalised interventions
+        </h3>
+        <p class="split-body">
+            Teaching assistants can immediately begin interventions using recommended activities or browse the full exercise library.
+        </p>
+        <div class="inline-full-image">
+            <img src="{% static 'images/landing/app_screenshots/exercises.png' %}" alt="Activities screenshot">
+        </div>
+
+        <!-- Interactive Activities -->
+        <h3 class="split-heading">
+            Interactive activities that keep children engaged
+        </h3>
+        <p class="split-body">
+            Children complete colourful, interactive activities tailored to their level. Chatterdillo models language throughout, while adults can reinforce learning by guiding children through each activity. Our group intervention feature also enables staff to support multiple pupils at once, helping maximise capacity and save time.
+        </p>
+        <p class="split-body">
+            <strong><a href="/exercises/" class="text-link">Explore our activity range ></a></strong>
+        </p>
+        <div class="inline-full-image">
+            <img src="{% static 'exercise_screenshots/colourful_semantics_screenshot.webp' %}" alt="Colourful Semantics screenshot">
+        </div>
+
+        <!-- Monitor Progress -->
+        <h3 class="split-heading">
+            Monitor Progress
+        </h3>
+        <p class="split-body">
+            Every session is logged automatically, making it easy to monitor recent sessions and progress, and to evidence interventions. We also support re-screening, custom targets and a centralised logbook, all to keep track of progress.
+        </p>
+        <div class="inline-full-image">
+            <img src="{% static 'images/landing/app_screenshots/progress.png' %}" alt="Progress Dashboard screenshot">
+        </div>
+
+        <!-- The Result -->
+        <section class="how-result" aria-labelledby="how-result-title">
+            <h3 id="how-result-title" class="split-heading">
+                The Result
+            </h3>
+            <p class="split-body how-result-tagline">
+                More support. Less admin. Better outcomes.
+            </p>
+            <p class="split-body how-result-intro">
+                <strong>Schools using Chatterdillo have reported:</strong>
+            </p>
+            <ul class="split-list how-result-list">
+                <li><span class="how-result-item-label">Up to 3 hours saved</span> per staff member each week</li>
+                <li><span class="how-result-item-label">Capacity for more pupils</span> supported each year</li>
+                <li><span class="how-result-item-label">Higher confidence</span> in delivering interventions</li>
+                <li><span class="how-result-item-label">Stronger pupil engagement</span> during sessions</li>
+                <li><span class="how-result-item-label">Evidence ready</span> for reviews and inspections</li>
+            </ul>
+        </section>
+    </div>
+</div>
+{% endblock %}
