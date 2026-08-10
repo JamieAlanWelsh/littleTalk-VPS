@@ -1163,7 +1163,7 @@ body {
 
 .hero-widget img {
     display: block;
-    width: min(100%, 45rem);
+    width: min(100%, 50rem);
     margin: 2rem auto;
 }
 
@@ -1273,7 +1273,7 @@ body {
 
 /* MOBILE CSS */
 
-@media (max-width: 768px) {
+@media (max-width: 1025px) {
 
     .testimonials-section {
         --testimonial-inline-pad: 2rem;
@@ -1342,7 +1342,6 @@ body {
 
     .split-list {
         font-size: 0.9rem;
-        padding-left: 1rem;
     }
 
     .stage-tabs {
@@ -1426,7 +1425,7 @@ body {
     }
 
     .hero-widget img {
-        width: min(100%, 19rem);
+        width: min(100%, 35rem);
     }
 
     .logo-marquee {
@@ -1467,11 +1466,11 @@ body {
     .talk-team-widget-wrapper .calendly-inline-widget {
         height: 680px !important;
     }
-}
-
-@media (max-width: 900px) {
     .character {
         display: none;
+    }
+    .content-split-image img {
+        margin-bottom: 1.5rem;
     }
 }
 
