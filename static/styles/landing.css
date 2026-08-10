@@ -1421,8 +1421,8 @@ body {
     }
 
     .hero-widget-backdrop {
-        bottom: -8rem;
-        width: min(130vw, 34rem);
+        bottom: -30rem;
+        width: min(150vw, 40rem);
     }
 
     .hero-widget img {
