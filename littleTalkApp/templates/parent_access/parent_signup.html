@@ -14,13 +14,17 @@
         </div>
     </a>
     <!-- Header Section -->
-    <h1>Individual Account Setup</h1>
+    <h1>Parent Account Signup</h1>
 
     <!-- Signup Form -->
     <form method="post" class="login-form">
 
         {% csrf_token %}
         {% render_honeypot_field %}
+
+        <p class="register-intro">
+            Have a Parent Code? Enter it below to connect to your child, or add them later once you're logged in.
+        </p>
 
         <div>
             <input type="text" name="first_name" class="input" placeholder="Your name"
