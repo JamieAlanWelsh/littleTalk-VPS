@@ -4,10 +4,62 @@
 {% block title %}Chatterdillo | Case Studies{% endblock %}
 
 {% block content %}
-<div class="content-split text-only white">
-    <div class="content-split-text">
-        <h1 class="split-heading">Case Studies</h1>
-        <p class="split-body">This page is ready for your case study content.</p>
+<div class="content-split white">
+    <div class="content-split-header">
+        <h1 class="split-heading">Case studies</h1>
+        <p class="split-body talk-team-subtitle">
+            Discover how schools are using Chatterdillo to reach more pupils, support staff with confidence,
+            and build stronger speech and language provision.
+        </p>
     </div>
 </div>
+
+<div class="content-split grey">
+    <div class="case-study-grid">
+        {% for case_study in case_studies %}
+        <a href="{% url 'case_study_detail' slug=case_study.slug %}" class="case-study-card">
+            <div class="case-study-card-image">
+                <img src="{{ case_study.image }}" alt="{{ case_study.school_name }}">
+            </div>
+            <div class="case-study-card-body">
+                <p class="case-study-card-meta">{{ case_study.location|default:"School pilot" }}</p>
+                <h2 class="split-heading case-study-card-title">{{ case_study.school_name }}</h2>
+                <p class="split-body case-study-card-copy">{{ case_study.headline }}</p>
+                <p class="text-link case-study-card-link">Read case study &gt;</p>
+            </div>
+        </a>
+        {% empty %}
+        <p class="split-body">Case studies will appear here soon.</p>
+        {% endfor %}
+    </div>
+</div>
+
+{% comment %} Marquee Section {% endcomment %}
+<section class="logo-marquee" aria-label="Schools using Chatterdillo">
+    <p class="logo-marquee-title">Join over 50 schools already using Chatterdillo</p>
+    <div class="logo-marquee-track">
+        <div class="logo-marquee-row">
+            <div class="logo-marquee-set">
+                <img src="{% static 'images/landing/school_logos/schoollogo1.webp' %}" alt="Partner school logo">
+                <img src="{% static 'images/landing/school_logos/schoollogo2.webp' %}" alt="Partner school logo">
+                <img src="{% static 'images/landing/school_logos/schoollogo3.webp' %}" alt="Partner school logo">
+                <img src="{% static 'images/landing/school_logos/schoollogo4.webp' %}" alt="Partner school logo">
+                <img src="{% static 'images/landing/school_logos/schoollogo5.webp' %}" alt="Partner school logo">
+                <img src="{% static 'images/landing/school_logos/schoollogo6.webp' %}" alt="Partner school logo">
+                <img src="{% static 'images/landing/school_logos/schoollogo7.webp' %}" alt="Partner school logo">
+                <img src="{% static 'images/landing/school_logos/schoollogo8.webp' %}" alt="Partner school logo">
+            </div>
+            <div class="logo-marquee-set" aria-hidden="true">
+                <img src="{% static 'images/landing/school_logos/schoollogo1.webp' %}" alt="">
+                <img src="{% static 'images/landing/school_logos/schoollogo2.webp' %}" alt="">
+                <img src="{% static 'images/landing/school_logos/schoollogo3.webp' %}" alt="">
+                <img src="{% static 'images/landing/school_logos/schoollogo4.webp' %}" alt="">
+                <img src="{% static 'images/landing/school_logos/schoollogo5.webp' %}" alt="">
+                <img src="{% static 'images/landing/school_logos/schoollogo6.webp' %}" alt="">
+                <img src="{% static 'images/landing/school_logos/schoollogo7.webp' %}" alt="">
+                <img src="{% static 'images/landing/school_logos/schoollogo8.webp' %}" alt="">
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}

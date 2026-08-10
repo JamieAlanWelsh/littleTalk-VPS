@@ -1,0 +1,67 @@
+{% extends "landing_base.html" %}
+{% load static %}
+
+{% block title %}Chatterdillo | {{ case_study.school_name }}{% endblock %}
+
+{% block content %}
+<div class="content-split white">
+    <div class="content-split-header">
+        <p class="case-study-eyebrow">Case study</p>
+        <h1 class="split-heading">{{ case_study.school_name }}</h1>
+        <p class="split-body talk-team-subtitle">{{ case_study.intro }}</p>
+    </div>
+    <div class="inline-full-image" style="max-width: 980px; margin: 2rem auto 0;">
+        <img src="{{ case_study.image }}" alt="{{ case_study.school_name }}">
+    </div>
+</div>
+
+<div class="content-split grey">
+    <div class="case-study-stats">
+        {% for result in case_study.results %}
+        <div class="case-study-stat">
+            <div class="case-study-stat-value">{{ result.value }}</div>
+            <div class="case-study-stat-label">{{ result.label }}</div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="content-split text-only white">
+    <div class="content-split-text">
+        <h2 class="split-heading">The challenge</h2>
+        <p class="split-body">{{ case_study.challenge }}</p>
+
+        <h2 class="split-heading">The approach</h2>
+        <p class="split-body">{{ case_study.approach }}</p>
+
+        <h2 class="split-heading">What changed</h2>
+        {% for paragraph in case_study.results_copy %}
+        <p class="split-body">{{ paragraph }}</p>
+        {% endfor %}
+
+        {% if case_study.quotes %}
+        <div class="case-study-quote-list">
+            {% for quote in case_study.quotes %}
+            <blockquote class="case-study-quote">
+                <p>“{{ quote.quote }}”</p>
+                <footer>{{ quote.name }} — {{ quote.role }}</footer>
+            </blockquote>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="case-study-ofsted-list">
+            {% for item in case_study.ofsted %}
+            <div class="case-study-ofsted">
+                <h3>{{ item.title }}</h3>
+                <p>{{ item.text }}</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <p class="split-body">
+            <strong><a href="/case-studies/" class="text-link">Back to case studies ></a></strong>
+        </p>
+    </div>
+</div>
+{% endblock %}

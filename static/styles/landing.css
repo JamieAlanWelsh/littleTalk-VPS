@@ -655,6 +655,153 @@ body {
     margin: 0 auto;
 }
 
+.case-study-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.case-study-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border-radius: 1.25rem;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: var(--box-shadow);
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s ease;
+}
+
+.case-study-card:hover {
+    transform: translateY(-3px);
+}
+
+.case-study-card-image img {
+    display: block;
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
+
+.case-study-card-body {
+    padding: 1.5rem 1.5rem 1.75rem;
+}
+
+.case-study-card-meta {
+    margin: 0 0 0.4rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #5f6b7a;
+}
+
+.case-study-card-title {
+    font-size: 1.4rem;
+    margin: 0 0 0.75rem;
+}
+
+.case-study-card-copy {
+    margin: 0 0 1rem;
+}
+
+.case-study-card-link {
+    margin: 0;
+}
+
+.case-study-eyebrow {
+    display: inline-block;
+    margin: 0 0 0.75rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #5f6b7a;
+}
+
+.case-study-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+    max-width: 980px;
+    margin: 0 auto;
+}
+
+.case-study-stat {
+    background: #ffffff;
+    border-radius: 1rem;
+    padding: 1.5rem 1rem;
+    box-shadow: var(--box-shadow);
+    text-align: center;
+}
+
+.case-study-stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--font-color);
+}
+
+.case-study-stat-label {
+    margin-top: 0.6rem;
+    font-size: 1rem;
+    color: #4c5666;
+}
+
+.case-study-quote-list {
+    display: grid;
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.case-study-quote {
+    margin: 0;
+    padding: 1.25rem 1.5rem;
+    border-left: 4px solid var(--accent-color);
+    background: #f7f9fc;
+    border-radius: 0.75rem;
+}
+
+.case-study-quote p {
+    margin: 0 0 0.65rem;
+    font-size: 1.05rem;
+    line-height: 1.7;
+}
+
+.case-study-quote footer {
+    font-weight: 700;
+    color: #4c5666;
+}
+
+.case-study-ofsted-list {
+    display: grid;
+    gap: 1rem;
+    margin: 2rem 0 1.5rem;
+}
+
+.case-study-ofsted {
+    padding: 1.1rem 1.2rem;
+    border-radius: 0.9rem;
+    background: #f7f9fc;
+    border: 1px solid rgba(31, 58, 93, 0.1);
+}
+
+.case-study-ofsted h3 {
+    margin: 0 0 0.4rem;
+    font-size: 1.05rem;
+}
+
+.case-study-ofsted p {
+    margin: 0;
+    color: #4c5666;
+    line-height: 1.6;
+}
+
 .team-member {
     display: flex;
     align-items: flex-start;
@@ -1021,7 +1168,7 @@ body {
 }
 
 .logo-marquee {
-    padding: 3rem 1rem 1rem;
+    padding: 3rem 1rem 3rem;
     background-color: white;
     text-align: center;
 }
@@ -1174,6 +1321,14 @@ body {
     .content-split {
         padding: 2rem 2rem;
         background-color: var(--yellow-button-color); /* or white via modifier */
+    }
+
+    .case-study-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .case-study-stats {
+        grid-template-columns: 1fr;
     }
 
     .content-split-main {

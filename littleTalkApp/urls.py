@@ -23,6 +23,7 @@ urlpatterns = [
     path('exercise/<str:game_name>/', public_views.game_description, name='game_description'),
     path('practise/', practise_views.practise, name='practise'),
     path('case-studies/', public_views.case_studies, name='case_studies'),
+    path('case-studies/<slug:slug>/', public_views.case_study_detail, name='case_study_detail'),
     path('exercises/', public_views.exercises, name='exercises'),
     path('how-it-works/', public_views.how_it_works, name='how_it_works'),
     path('about/', public_views.about, name='about'),

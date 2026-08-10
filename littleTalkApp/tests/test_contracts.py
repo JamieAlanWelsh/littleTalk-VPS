@@ -40,6 +40,7 @@ class UrlContractsTests(TestCase):
     def test_named_urls_reverse(self):
         url_kwargs = {
             "game_description": {"game_name": "matching-sounds"},
+            "case_study_detail": {"slug": "kings-furlong"},
             "accept_invite": {"token": uuid.uuid4()},
             "edit_learner": {"learner_uuid": uuid.uuid4()},
             "confirm_delete_learner": {"learner_uuid": uuid.uuid4()},
@@ -60,6 +61,7 @@ class UrlContractsTests(TestCase):
             "game_description",
             "practise",
             "case_studies",
+            "case_study_detail",
             "exercises",
             "how_it_works",
             "about",
@@ -140,6 +142,7 @@ class TemplateContractsTests(TestCase):
             ("home", {}, "public/landing.html"),
             ("support", {}, "public/support.html"),
             ("case_studies", {}, "public/case_studies.html"),
+            ("case_study_detail", {"slug": "kings-furlong"}, "public/case_study_detail.html"),
             ("exercises", {}, "public/method.html"),
             ("how_it_works", {}, "public/how_it_works.html"),
             ("about", {}, "public/about.html"),

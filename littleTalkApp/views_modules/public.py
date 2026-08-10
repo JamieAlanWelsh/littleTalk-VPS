@@ -1,12 +1,14 @@
 from django.conf import settings
 from django.contrib import messages
 from django.core.mail import send_mail
+from django.http import Http404
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
 from honeypot.decorators import check_honeypot
 
 from littleTalkApp.decorators import valid_game_required
+from littleTalkApp.content.case_studies import get_case_study, get_case_studies
 from littleTalkApp.content.game_descriptions import GAME_DESCRIPTIONS
 from littleTalkApp.content.testimonials import get_landing_testimonials
 from littleTalkApp.views_modules.practise import PRACTISE_STAGES
@@ -127,7 +129,26 @@ def case_studies(request):
     """Renders public/case_studies.html for the landing-page flow."""
 
     request.hide_sidebar = True
-    return render(request, "public/case_studies.html", {})
+    return render(
+        request,
+        "public/case_studies.html",
+        {"case_studies": get_case_studies()},
+    )
+
+
+def case_study_detail(request, slug):
+    """Renders a public case study detail page for a given slug."""
+
+    request.hide_sidebar = True
+    case_study = get_case_study(slug)
+    if case_study is None:
+        raise Http404()
+
+    return render(
+        request,
+        "public/case_study_detail.html",
+        {"case_study": case_study},
+    )
 
 
 def exercises(request):
