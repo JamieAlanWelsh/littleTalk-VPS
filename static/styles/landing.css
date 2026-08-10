@@ -114,13 +114,7 @@ body {
 .white-button {
     background-color: white;
     color: var(--font-color);
-    /* border: 2px solid var(--yellow-button-hover); */
 }
-
-/* .white-button:hover {
-    background-color: var(--font-color);
-    color: white;
-} */
 
 .main-button {
     font-size: 1.2rem;
@@ -387,25 +381,6 @@ body {
     font-weight: 700;
 }
 
-@media (max-width: 768px) {
-    .how-result {
-        padding: 1.35rem;
-    }
-
-    .how-result-tagline {
-        font-size: 1.17rem;
-    }
-
-    .how-result-list li {
-        padding: 0.8rem 0.85rem 0.8rem 2.55rem;
-    }
-
-    .how-result-list li::before {
-        left: 0.8rem;
-        top: 0.78rem;
-    }
-}
-
 .method-stage-tabs {
     width: min(100%, 760px);
     margin: 0 0 2rem;
@@ -517,35 +492,6 @@ body {
     box-shadow: var(--box-shadow);
     padding: 1.625rem;
     scroll-snap-align: start;
-}
-
-@media (max-width: 1024px) {
-    .testimonial-rail {
-        gap: 1rem;
-        padding-left: 0;
-        padding-right: 0;
-        padding-bottom: 0.5rem;
-        scroll-snap-type: x mandatory;
-        scroll-padding-left: 50%;
-        scroll-padding-right: 50%;
-    }
-
-    .testimonial-card {
-        flex: 0 0 var(--testimonial-card-mobile-width);
-        max-width: var(--testimonial-card-mobile-max);
-        min-height: auto;
-        scroll-snap-align: center;
-    }
-}
-
-@media (min-width: 1025px) {
-    .testimonial-rail {
-        scroll-snap-type: none;
-    }
-
-    .testimonial-card {
-        scroll-snap-align: none;
-    }
 }
 
 .testimonial-card-header {
@@ -1271,9 +1217,24 @@ body {
     right: 0;
 }
 
-/* MOBILE CSS */
+/* ============================================================
+   RESPONSIVE
+   Breakpoints: 1024px (tablet & below), 768px (small mobile).
+   ============================================================ */
 
-@media (max-width: 1025px) {
+/* Testimonial rail — desktop only (no scroll-snap) */
+@media (min-width: 1025px) {
+    .testimonial-rail {
+        scroll-snap-type: none;
+    }
+
+    .testimonial-card {
+        scroll-snap-align: none;
+    }
+}
+
+/* Tablet and below */
+@media (max-width: 1024px) {
 
     .testimonials-section {
         --testimonial-inline-pad: 2rem;
@@ -1472,8 +1433,26 @@ body {
     .content-split-image img {
         margin-bottom: 1.5rem;
     }
+
+    .testimonial-rail {
+        gap: 1rem;
+        padding-left: 0;
+        padding-right: 0;
+        padding-bottom: 0.5rem;
+        scroll-snap-type: x mandatory;
+        scroll-padding-left: 50%;
+        scroll-padding-right: 50%;
+    }
+
+    .testimonial-card {
+        flex: 0 0 var(--testimonial-card-mobile-width);
+        max-width: var(--testimonial-card-mobile-max);
+        min-height: auto;
+        scroll-snap-align: center;
+    }
 }
 
+/* Reduced motion — disable marquee animation */
 @media (prefers-reduced-motion: reduce) {
     .logo-marquee-row {
         animation: none;
@@ -1585,7 +1564,25 @@ body {
     color: #666;
 }
 
+/* Small mobile */
 @media (max-width: 768px) {
+    .how-result {
+        padding: 1.35rem;
+    }
+
+    .how-result-tagline {
+        font-size: 1.17rem;
+    }
+
+    .how-result-list li {
+        padding: 0.8rem 0.85rem 0.8rem 2.55rem;
+    }
+
+    .how-result-list li::before {
+        left: 0.8rem;
+        top: 0.78rem;
+    }
+
     .footer-container {
         flex-direction: column;
         text-align: center;
