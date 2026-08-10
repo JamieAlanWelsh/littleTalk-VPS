@@ -4,48 +4,59 @@ from django.templatetags.static import static
 CASE_STUDIES = [
     {
         "slug": "pdet-trust",
-        "school_name": "PDET Trust Schools",
-        "location": "Peterborough Diocese Education Trust",
+        "school_name": "Peterborough Diocese Education Trust",
+        "location": "Trust-wide pilot",
         "image": static("images/landing/about/our_mission.JPG"),
-        "headline": "13 schools, 6 weeks, 58 children, 676 exercise sessions",
+        "headline": "How 13 schools delivered 676 speech and language sessions in six weeks",
         "intro": (
-            "PDET used Chatterdillo to explore a trust-wide approach to speech and language support, "
-            "bringing consistent, accessible intervention into multiple schools without adding complexity."
+            "A six-week pilot across Peterborough Diocese Education Trust showed what becomes possible "
+            "when schools share one practical approach to identifying needs, delivering interventions "
+            "and evidencing progress."
         ),
         "challenge": (
-            "The trust wanted to improve access to high-quality SLCN support across 13 schools without "
-            "requiring extra staff, specialist knowledge, or complex systems."
+            "PDET wanted to widen access to speech, language and communication support across its schools "
+            "without creating another complex system for staff to manage. The solution needed to work for "
+            "non-specialists, fit around existing classroom routines and give leaders useful evidence of "
+            "pupil participation and progress."
         ),
         "approach": (
-            "The pilot used a coordinated trust-level rollout with group feedback sessions, allowing schools "
-            "to screen pupils and deliver activities quickly. Chatterdillo’s built-in screener and session "
-            "tracking made the process simple for non-specialist staff and gave leaders evidence they could use."
+            "Thirteen schools joined a coordinated pilot shaped by regular group check-ins and direct feedback "
+            "from SENCOs. Staff used Chatterdillo's screener to identify suitable activities, delivered short "
+            "intervention sessions and recorded activity automatically. Schools were able to get started "
+            "without a training day or specialist delivery team."
         ),
         "results": [
             {"value": "13", "label": "participating schools"},
             {"value": "58", "label": "children screened"},
-            {"value": "676", "label": "sessions completed"},
+            {"value": "100%", "label": "consistent pupil engagement"},
         ],
         "results_copy": [
             (
-                "The six-week pilot involved 13 PDET schools, screening 58 children and completing 676 "
-                "exercise sessions across regular group feedback sessions."
+                "In six weeks, participating schools screened 58 children and completed 676 exercise sessions. "
+                "The level of participation demonstrated that a shared model could work across a diverse group "
+                "of schools, rather than being limited to a single enthusiastic setting."
             ),
             (
-                "Pupil engagement was especially strong, with 100% of pupils showing consistent engagement "
-                "and staff reporting that the activities felt enjoyable, motivating, and easy to use."
+                "Every pupil showed consistent engagement. Children described how the activities made them feel "
+                "and how they supported their learning, while staff saw improvements in confidence and willingness "
+                "to communicate. 89 perecent of staff felt Chatterdillo had a positive impact on learning "
+                "outcomes and progress."
             ),
             (
-                "The trust also saw meaningful time savings, with 78% of staff reporting up to two hours "
-                "saved per week on resource preparation and a clear case for wider rollout across the trust."
+                "The pilot also addressed a pressure every school leader recognises: staff time. Seventy-eight per "
+                "cent of staff reported saving up to two hours a week on resource preparation. For a five-person "
+                "team, the report estimates that this could return around 100 hours to the school each year."
             ),
         ],
         "quotes": [
             {
-                "quote": (
-                    "The app saves time and planning in the classroom, and it was easy to get started quickly."
-                ),
-                "name": "Staff feedback",
+                "quote": "I liked the colourful semantics because it helped me make a sentence.",
+                "name": "Pupil",
+                "role": "PDET pilot",
+            },
+            {
+                "quote": "Children who were struggling to read and say sentences are improving.",
+                "name": "Teacher",
                 "role": "PDET pilot",
             }
         ],
@@ -53,134 +64,78 @@ CASE_STUDIES = [
             {
                 "title": "Inclusion",
                 "text": (
-                    "The pilot demonstrated a coordinated trust-level commitment to providing high-quality "
-                    "support for pupils with SEND."
+                    "A common screening and intervention pathway helps schools show how pupils with SLCN are "
+                    "identified, supported and included in learning across the trust."
                 ),
             },
             {
                 "title": "Leadership & Governance",
                 "text": (
-                    "The work showed how leaders can manage staff workload more sustainably while building "
-                    "a stronger evidence base for SEND provision."
+                    "Automated recommendations, session records and progress dashboards give leaders a clearer "
+                    "view of provision while reducing preparation and reporting demands on staff."
+                ),
+            },
+            {
+                "title": "Personal Development",
+                "text": (
+                    "The pilot captured strong pupil voice and sustained participation, including children asking "
+                    "to repeat activities rather than needing incentives to take part."
                 ),
             },
         ],
         "summary": (
-            "The pilot supported the case for a trust-wide rollout, showing that Chatterdillo can help "
-            "multiple schools deliver consistent, engaging support at scale."
-        ),
-    },
-    {
-        "slug": "kings-furlong",
-        "school_name": "Kings Furlong Infant School & Nursery",
-        "location": "Basingstoke",
-        "image": static("images/landing/about/our_mission.JPG"),
-        "headline": "7 pupils supported with confident staff-led intervention",
-        "intro": (
-            "Kings Furlong used Chatterdillo to strengthen early identification of speech and "
-            "language needs and bring more consistent support into the classroom."
-        ),
-        "challenge": (
-            "The school wanted to improve how it identified pupils who needed support and make "
-            "sure that interventions were easy to deliver without adding pressure to already busy staff."
-        ),
-        "approach": (
-            "Using the screener, staff could quickly spot needs and start evidence-based activities "
-            "with minimal specialist input. The school also used the dashboard to keep track of "
-            "progress and make interventions feel manageable for teaching staff."
-        ),
-        "results": [
-            {"value": "7", "label": "pupils supported"},
-            {"value": "4.3/5", "label": "staff confidence"},
-            {"value": "2 hrs", "label": "saved per week"},
-        ],
-        "results_copy": [
-            (
-                "Seven pupils received language intervention through Chatterdillo, with support "
-                "delivered by three members of staff."
-            ),
-            (
-                "Staff rated the platform 4.3/5 for ease of delivery and reported that the "
-                "training videos and progress dashboard made it much easier to use confidently."
-            ),
-            (
-                "The team also reported saving around two hours per week in preparation and admin, "
-                "which could add up to more than two working weeks across a school year."
-            ),
-        ],
-        "quotes": [
-            {
-                "quote": (
-                    "The screener successfully helped to identify support areas, and the exercises "
-                    "were engaging and easy to deliver."
-                ),
-                "name": "Teaching Assistant",
-                "role": "Kings Furlong",
-            }
-        ],
-        "ofsted": [
-            {
-                "title": "Inclusion",
-                "text": (
-                    "The pilot provided evidence of high-quality support for pupils with SEND and "
-                    "disadvantaged backgrounds."
-                ),
-            },
-            {
-                "title": "Curriculum & Teaching",
-                "text": (
-                    "The work showed how leaders can develop staff and equip them with the right tools "
-                    "to address needs effectively."
-                ),
-            },
-        ],
-        "summary": (
-            "The pilot demonstrated that Chatterdillo can help schools widen access to early support, "
-            "improve staff confidence, and create a more inclusive learning environment."
+            "PDET's pilot suggests that trusts can create more consistent SLCN provision without imposing a "
+            "heavy implementation burden on schools. Shared tools, comparable evidence and lower preparation "
+            "time give trust leaders a practical route from isolated interventions to a coordinated strategy."
         ),
     },
     {
         "slug": "watling-primary",
         "school_name": "Watling Primary",
-        "location": "Milton Keynes",
-        "image": static("images/landing/about/our_mission.JPG"),
-        "headline": "13 pupils reached through a low-staffing, high-impact pilot",
+        "location": "Primary school pilot",
+        "image": static("images/landing/about/our_impact.png"),
+        "headline": "How one teaching assistant helped 13 pupils avoid months on a waiting list without training",
         "intro": (
-            "Watling Primary used Chatterdillo to deliver speech and language support without "
-            "relying on specialist staff to lead every session."
+            "At Watling Primary, pupils who might otherwise have waited until September began receiving speech "
+            "and language support during the summer term. One teaching assistant delivered the intervention "
+            "confidently, without previous specialist training."
         ),
         "challenge": (
-            "The school needed to reduce the growing waitlist for support while ensuring interventions "
-            "could be delivered with limited staff time and no specialist training."
+            "Demand for speech and language support was growing faster than specialist capacity. The school needed "
+            "a way to act sooner for pupils on the waiting list, without releasing staff for extensive training "
+            "or disrupting the school day."
         ),
         "approach": (
-            "A teaching assistant used the platform to identify needs and run interventions with a "
-            "small group of pupils, supported by an easy-to-use interface and activities that kept "
-            "children engaged."
+            "A speech and language therapist coordinated the pilot, while a teaching assistant used Chatterdillo "
+            "to identify needs and deliver activities day to day. The platform provided the intervention material "
+            "and structure, enabling support to continue independently with minimal coordinating time."
         ),
         "results": [
             {"value": "13", "label": "pupils supported"},
             {"value": "9/10", "label": "ease of use"},
-            {"value": "10/10", "label": "delivery confidence"},
+            {"value": "10/10", "label": "ease of delivering materials"},
         ],
         "results_copy": [
             (
-                "One teaching assistant used Chatterdillo to identify and carry out interventions for "
-                "13 pupils, despite having no previous specialist experience."
+                "Thirteen pupils received intervention before the end of term instead of remaining on a waiting "
+                "list until September. This was achieved by one teaching assistant with no previous specialist "
+                "experience, working within the school's existing staffing arrangements."
             ),
             (
-                "Staff rated the platform 9/10 for ease of use and 10/10 for ease of delivering "
-                "intervention material."
+                "The platform scored 9 out of 10 for ease of use and 10 out of 10 for ease of delivering the "
+                "materials. As her confidence grew, the teaching assistant independently identified three more "
+                "pupils who could benefit and added them to the intervention."
             ),
             (
-                "Pupil engagement was reported as strong, with staff noting that children stayed focused "
-                "even when adults needed to step away briefly to support others."
+                "Pupil engagement scored 8 out of 10. Although the small pilot was not designed to provide robust "
+                "long-term attainment data, staff saw children remain focused enough to continue activities when "
+                "the adult briefly needed to support another pupil: a meaningful practical benefit in a busy classroom."
             ),
         ],
         "quotes": [
             {
                 "quote": (
-                    "It’s nice that I can leave momentarily and the child can continue working through "
+                    "It's nice that I can leave momentarily and the child can continue working through "
                     "an exercise without losing engagement or focus."
                 ),
                 "name": "Teaching Assistant",
@@ -191,21 +146,113 @@ CASE_STUDIES = [
             {
                 "title": "Inclusion",
                 "text": (
-                    "The pilot helped the school support more pupils earlier, including those who would "
-                    "otherwise have waited until the next term."
+                    "The school converted waiting-list demand into timely support, giving 13 pupils earlier access "
+                    "to intervention without requiring additional specialist capacity."
                 ),
             },
             {
                 "title": "Curriculum & Teaching",
                 "text": (
-                    "The approach showed how schools can build staff confidence and distribute support "
-                    "across the team more sustainably."
+                    "A non-specialist member of staff delivered intervention confidently and independently, "
+                    "showing how the right resources can distribute expertise more effectively across a school."
+                ),
+            },
+            {
+                "title": "Achievement & Curriculum",
+                "text": (
+                    "Engagement data and an automatic record of intervention sessions gave the school an evidence "
+                    "trail while creating the conditions for progress through consistent use."
                 ),
             },
         ],
         "summary": (
-            "The pilot showed that Chatterdillo can help schools manage growing demand, reduce waitlists, "
-            "and ensure support is delivered with confidence and consistency."
+            "Watling Primary demonstrated a practical answer to a familiar capacity problem: give support staff "
+            "the structure and materials to intervene confidently, so pupils can begin receiving help while they "
+            "wait for specialist input rather than losing valuable months."
+        ),
+    },
+    {
+        "slug": "kings-furlong",
+        "school_name": "Kings Furlong Infant School & Nursery",
+        "location": "Infant school and nursery pilot",
+        "image": static("images/landing/about/jamie_presenting.jpg"),
+        "headline": "Earlier identification, confident staff and more pupils receiving support",
+        "intro": (
+            "Kings Furlong set out to identify speech and language needs earlier and make high-quality "
+            "intervention easier for school staff to deliver. By the end of the pilot, the school had exceeded "
+            "its pupil target and staff wanted to continue using the platform."
+        ),
+        "challenge": (
+            "The school wanted to support six pupils identified by its SENCo, while building the confidence of "
+            "teachers and teaching assistants to recognise needs and respond effectively. Any approach had to "
+            "be engaging for young children, straightforward for staff and realistic within the working week."
+        ),
+        "approach": (
+            "Three members of staff used Chatterdillo to screen pupils and deliver targeted language activities. "
+            "Built-in training videos helped them introduce exercises with confidence, while the progress dashboard "
+            "kept improvements and completed sessions visible without a separate record-keeping process."
+        ),
+        "results": [
+            {"value": "7", "label": "pupils supported"},
+            {"value": "4.3/5", "label": "ease of delivering support"},
+            {"value": "2 hrs", "label": "saved weekly by most respondents"},
+        ],
+        "results_copy": [
+            (
+                "Seven pupils received intervention during the summer term, exceeding the school's original "
+                "target of six. Crucially, support was delivered by three teachers and support staff rather than "
+                "depending on one specialist practitioner."
+            ),
+            (
+                "Staff rated both ease of delivery and pupil engagement at 4.3 out of 5. They reported improved "
+                "grammar and independence, and saw children apply skills from Colourful Semantics and sequencing "
+                "activities in English lessons and spoken explanations."
+            ),
+            (
+                "Two of the three survey respondents saved two hours a week on preparation and related admin. "
+                "Sustained across the school year, that is up to 78 hours returned to each member of staff: time "
+                "that can be spent supporting pupils rather than assembling resources."
+            ),
+        ],
+        "quotes": [
+            {
+                "quote": "It's very visual and the children enjoy it.",
+                "name": "Member of staff",
+                "role": "Kings Furlong",
+            },
+            {
+                "quote": "Because it's fun.",
+                "name": "Pupil, explaining why they wanted to use Chatterdillo again",
+                "role": "Kings Furlong",
+            }
+        ],
+        "ofsted": [
+            {
+                "title": "Inclusion",
+                "text": (
+                    "More pupils received early, targeted support through a model that could be delivered by the "
+                    "staff already around them, helping prevent needs from becoming a barrier to classroom learning."
+                ),
+            },
+            {
+                "title": "Curriculum & Teaching",
+                "text": (
+                    "Training within the platform and clear activity recommendations helped staff develop the "
+                    "confidence to deliver intervention independently."
+                ),
+            },
+            {
+                "title": "Achievement & Curriculum",
+                "text": (
+                    "Staff observations, session records and progress tracking provided evidence of engagement "
+                    "and of language skills transferring into wider classroom learning."
+                ),
+            },
+        ],
+        "summary": (
+            "Kings Furlong's experience shows how a school can extend early language support without adding a "
+            "new specialist dependency. Staff gained a usable intervention pathway, pupils enjoyed taking part, "
+            "and the school supported more children than it initially set out to reach."
         ),
     },
 ]

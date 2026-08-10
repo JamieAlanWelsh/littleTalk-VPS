@@ -10,7 +10,7 @@
         <h1 class="split-heading">{{ case_study.school_name }}</h1>
         <p class="split-body talk-team-subtitle">{{ case_study.intro }}</p>
     </div>
-    <div class="inline-full-image" style="max-width: 980px; margin: 2rem auto 0;">
+    <div class="inline-full-image" style="max-width: 800px; margin: 2rem auto 0;">
         <img src="{{ case_study.image }}" alt="{{ case_study.school_name }}">
     </div>
 </div>
@@ -50,6 +50,7 @@
         </div>
         {% endif %}
 
+        <h2 class="split-heading">Ofsted Alignment</h2>
         <div class="case-study-ofsted-list">
             {% for item in case_study.ofsted %}
             <div class="case-study-ofsted">
@@ -58,6 +59,9 @@
             </div>
             {% endfor %}
         </div>
+
+        <h2 class="split-heading">The takeaway</h2>
+        <p class="split-body">{{ case_study.summary }}</p>
 
         <p class="split-body">
             <strong><a href="/case-studies/" class="text-link">Back to case studies ></a></strong>
