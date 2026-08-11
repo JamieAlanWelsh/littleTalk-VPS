@@ -1,12 +1,14 @@
 from django.conf import settings
 from django.contrib import messages
 from django.core.mail import send_mail
+from django.http import Http404
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
 from honeypot.decorators import check_honeypot
 
 from littleTalkApp.decorators import valid_game_required
+from littleTalkApp.content.case_studies import get_case_study, get_case_studies
 from littleTalkApp.content.game_descriptions import GAME_DESCRIPTIONS
 from littleTalkApp.content.testimonials import get_landing_testimonials
 from littleTalkApp.views_modules.practise import PRACTISE_STAGES
@@ -123,13 +125,33 @@ def send_support_email(request):
     return redirect("support")
 
 
-def tips(request):
-    """Renders public/tips.html — a static tips and best-practise page."""
+def case_studies(request):
+    """Renders public/case_studies.html for the landing-page flow."""
 
-    return render(request, "public/tips.html", {})
+    request.hide_sidebar = True
+    return render(
+        request,
+        "public/case_studies.html",
+        {"case_studies": get_case_studies()},
+    )
 
 
-def method(request):
+def case_study_detail(request, slug):
+    """Renders a public case study detail page for a given slug."""
+
+    request.hide_sidebar = True
+    case_study = get_case_study(slug)
+    if case_study is None:
+        raise Http404()
+
+    return render(
+        request,
+        "public/case_study_detail.html",
+        {"case_study": case_study},
+    )
+
+
+def exercises(request):
     """Renders public/method.html — an overview of the educational methodology,
     including descriptions of all available games.
     """
@@ -158,6 +180,13 @@ def method(request):
         "method_stages": method_stages,
     }
     return render(request, "public/method.html", context)
+
+
+def how_it_works(request):
+    """Renders public/how_it_works.html for the landing-page flow."""
+
+    request.hide_sidebar = True
+    return render(request, "public/how_it_works.html")
 
 
 def about(request):

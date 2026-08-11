@@ -40,6 +40,7 @@ class UrlContractsTests(TestCase):
     def test_named_urls_reverse(self):
         url_kwargs = {
             "game_description": {"game_name": "matching-sounds"},
+            "case_study_detail": {"slug": "kings-furlong"},
             "accept_invite": {"token": uuid.uuid4()},
             "edit_learner": {"learner_uuid": uuid.uuid4()},
             "confirm_delete_learner": {"learner_uuid": uuid.uuid4()},
@@ -59,8 +60,10 @@ class UrlContractsTests(TestCase):
             "home",
             "game_description",
             "practise",
-            "tips",
-            "method",
+            "case_studies",
+            "case_study_detail",
+            "exercises",
+            "how_it_works",
             "about",
             "terms",
             "privacy",
@@ -138,8 +141,10 @@ class TemplateContractsTests(TestCase):
         cases = [
             ("home", {}, "public/landing.html"),
             ("support", {}, "public/support.html"),
-            ("tips", {}, "public/tips.html"),
-            ("method", {}, "public/method.html"),
+            ("case_studies", {}, "public/case_studies.html"),
+            ("case_study_detail", {"slug": "kings-furlong"}, "public/case_study_detail.html"),
+            ("exercises", {}, "public/method.html"),
+            ("how_it_works", {}, "public/how_it_works.html"),
             ("about", {}, "public/about.html"),
             ("terms", {}, "public/legal/terms.html"),
             ("privacy", {}, "public/legal/privacy.html"),
@@ -225,6 +230,17 @@ class TemplateContractsTests(TestCase):
                 response = self.client.get(reverse(name))
                 self.assertContains(response, reverse("terms"))
                 self.assertContains(response, reverse("privacy"))
+
+    def test_home_landing_hero_renders_primary_ctas_and_widget(self):
+        response = self.client.get(reverse("home"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Speech and Language Support")
+        self.assertContains(response, "Made Simple.")
+        self.assertContains(response, "Book a Demo")
+        self.assertContains(response, "Get Started")
+        self.assertContains(response, "Naomie Harris OBE")
+        self.assertContains(response, "images/landing/frontpagewidget.png")
 
 
 class SubscriptionContractsTests(TestCase):

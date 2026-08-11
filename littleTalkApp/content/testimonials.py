@@ -1,3 +1,10 @@
+import hashlib
+
+from django.templatetags.static import static
+
+from littleTalkApp.content.avatars import AVATAR_COLORS, SELECTABLE_AVATAR_CHARACTERS
+
+
 LANDING_TESTIMONIALS = [
     {
         "quote": (
@@ -169,11 +176,22 @@ LANDING_TESTIMONIALS = [
 ]
 
 
+def _pick_avatar_variant(seed_value, variants):
+    digest = hashlib.sha256(seed_value.encode("utf-8")).hexdigest()
+    return variants[int(digest, 16) % len(variants)]
+
+
 def get_landing_testimonials():
     testimonials = []
     for testimonial in LANDING_TESTIMONIALS:
         item = testimonial.copy()
-        name_parts = item["name"].split()
-        item["initials"] = "".join(part[0] for part in name_parts[:2]).upper()
+        avatar_seed = f"{item['name']}|{item['quote']}"
+        avatar_character = _pick_avatar_variant(avatar_seed, SELECTABLE_AVATAR_CHARACTERS)
+        avatar_color = _pick_avatar_variant(avatar_seed[::-1], AVATAR_COLORS)
+
+        item["avatar_image_url"] = static(
+            f"exercise_assets/characters/{avatar_character['image_filename']}"
+        )
+        item["avatar_background_color"] = avatar_color
         testimonials.append(item)
     return testimonials
