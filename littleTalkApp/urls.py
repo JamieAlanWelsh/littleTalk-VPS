@@ -72,12 +72,7 @@ urlpatterns = [
     path('profile/cohorts/<int:cohort_id>/add-learner/', profile_cohort_views.profile_cohort_add_learner, name='profile_cohort_add_learner'),
     path('profile/cohorts/<int:cohort_id>/remove-learner/', profile_cohort_views.profile_cohort_remove_learner, name='profile_cohort_remove_learner'),
 
-    # Cohorts
-    path('school/cohorts/', school_views.cohort_list, name='cohort_list'),
-    path('school/cohorts/new/', school_views.cohort_create, name='cohort_create'),
     path('select-school/', school_views.select_school, name='select_school'),
-    path('school/cohorts/<int:cohort_id>/edit/', school_views.cohort_edit, name='cohort_edit'),
-    path('school/cohorts/<int:cohort_id>/delete/', school_views.cohort_delete, name='cohort_delete'),
 
     # Logbook
     path('logbook/', logbook_views.logbook, name='logbook'),

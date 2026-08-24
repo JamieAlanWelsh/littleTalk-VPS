@@ -40,7 +40,7 @@ class MultiSchoolMiddlewareFlowTests(TestCase):
         school_b = School.objects.create(name="School B", is_licensed=True)
         self.profile.schools.add(school_a, school_b)
 
-        response = self.client.get(reverse("cohort_list"), follow=True)
+        response = self.client.get(reverse("school"), follow=True)
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.request["PATH_INFO"], reverse("select_school"))
