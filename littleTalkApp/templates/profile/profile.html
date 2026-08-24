@@ -20,6 +20,13 @@
         >
             Cohorts
         </button>
+        <button
+            type="button"
+            class="profile-tab"
+            data-profile-tab="groups"
+        >
+            Group Intervention
+        </button>
     </section>
 
     <section class="profile-panels-wrap">
@@ -28,6 +35,9 @@
         </div>
         <div class="profile-panel" data-profile-panel="cohorts">
             {% include "profile/_cohorts_dashboard.html" %}
+        </div>
+        <div class="profile-panel" data-profile-panel="groups">
+            {% include "profile/_groups_dashboard.html" %}
         </div>
     </section>
 {% else %}
@@ -47,5 +57,6 @@
 {% if is_staff_profile %}
 <script src="{% static 'js/profile_tabs.js' %}"></script>
 <script src="{% static 'js/profile_cohorts.js' %}"></script>
+<script src="{% static 'js/profile_groups.js' %}"></script>
 {% endif %}
 {% endblock %}

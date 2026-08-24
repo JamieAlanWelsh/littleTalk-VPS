@@ -76,6 +76,10 @@
     max-height: 76vh;
 }
 
+.groups-list-card {
+    max-height: 76vh;
+}
+
 .learner-button.cohort-select-button--active {
     background-color: var(--font-color);
     color: white;
@@ -85,11 +89,30 @@
     color: white;
 }
 
+.learner-button.group-select-button--active {
+    background-color: var(--font-color);
+    color: white;
+}
+
+.learner-button.group-select-button--active .learner-button__name {
+    color: white;
+}
+
 .cohort-panel {
     display: none;
 }
 
 .cohort-panel--active {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.group-panel {
+    display: none;
+}
+
+.group-panel--active {
     display: flex;
     flex-direction: column;
     gap: 20px;

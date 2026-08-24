@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Chatterdillo | Group Intervention{% endblock %}
+
+{% block content %}
+<h1>{% if mode == "edit" %}Edit Group{% else %}Add Group{% endif %}</h1>
+
+<div class="container-box container--short">
+  <form method="post" class="form-stack">
+    {% csrf_token %}
+
+    {% for field in form %}
+      <div class="form-field">
+        <label for="{{ field.id_for_label }}" class="label">{{ field.label }}</label>
+        {{ field }}
+        {% if field.errors %}
+          <div class="error-message">{{ field.errors.0 }}</div>
+        {% endif %}
+      </div>
+    {% endfor %}
+
+    <button type="submit" class="btn btn--yellow btn--full">Save</button>
+
+    <a href="{% url 'profile' %}" class="btn btn--white btn--full cancel-btn">
+      Cancel
+    </a>
+  </form>
+</div>
+{% endblock %}

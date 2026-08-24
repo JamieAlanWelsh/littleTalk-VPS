@@ -16,7 +16,7 @@ from littleTalkApp.content.avatars import (
 )
 from littleTalkApp.forms import LearnerForm
 from littleTalkApp.decorators import block_read_only
-from littleTalkApp.models import Cohort, Learner, LogEntry, Role
+from littleTalkApp.models import Cohort, InterventionGroup, Learner, LogEntry, Role
 
 
 def _learner_is_accessible_by_user(user, request, learner):
@@ -69,6 +69,10 @@ def profile(request):
         manage_cohorts = []
         school_learners = []
         can_edit_cohorts = False
+        manage_groups = []
+        school_group_learners = []
+        can_edit_groups = False
+        selected_group_id = None
 
         on_trial = parent_profile.on_trial()
         trial_days_left = parent_profile.trial_days_left()
@@ -79,6 +83,7 @@ def profile(request):
             all_learners = Learner.objects.filter(school=user_school, deleted=False)
             cohorts = Cohort.objects.filter(school=user_school).distinct()
             can_edit_cohorts = profile_obj.is_admin_for_school(user_school) or profile_obj.is_manager_for_school(user_school)
+            can_edit_groups = can_edit_cohorts
 
             cohort_learners = Learner.objects.filter(school=user_school, deleted=False)
             manage_cohorts = list(
@@ -94,17 +99,52 @@ def profile(request):
             )
             school_learners = [_decorate_learner_avatar(learner) for learner in cohort_learners]
 
+            group_learners = Learner.objects.filter(school=user_school, deleted=False)
+            manage_groups = list(
+                InterventionGroup.objects.filter(school=user_school)
+                .order_by("name")
+                .prefetch_related(
+                    Prefetch(
+                        "learners",
+                        queryset=group_learners,
+                        to_attr="active_learners",
+                    )
+                )
+            )
+            school_group_learners = [_decorate_learner_avatar(learner) for learner in group_learners]
+
             for cohort in manage_cohorts:
                 cohort.active_learners = [
                     _decorate_learner_avatar(learner)
                     for learner in cohort.active_learners
                 ]
+            for group in manage_groups:
+                group.active_learners = [
+                    _decorate_learner_avatar(learner)
+                    for learner in group.active_learners
+                ]
+                group.active_learner_ids = [learner.id for learner in group.active_learners]
+
+            selected_group_id = request.session.get("selected_group_id")
+            if selected_group_id not in [None, ""]:
+                try:
+                    selected_group_id = int(selected_group_id)
+                    if not any(group.id == selected_group_id for group in manage_groups):
+                        selected_group_id = None
+                except ValueError:
+                    selected_group_id = None
+            if selected_group_id is None and manage_groups:
+                selected_group_id = manage_groups[0].id
         else:
             all_learners = Learner.objects.none()
             cohorts = Cohort.objects.none()
             manage_cohorts = []
             school_learners = []
             can_edit_cohorts = False
+            manage_groups = []
+            school_group_learners = []
+            can_edit_groups = False
+            selected_group_id = None
 
     selected_cohort = request.GET.get("cohort")
     try:
@@ -150,6 +190,10 @@ def profile(request):
             "manage_cohorts": manage_cohorts,
             "school_learners": school_learners,
             "can_edit_cohorts": can_edit_cohorts,
+            "manage_groups": manage_groups,
+            "school_group_learners": school_group_learners,
+            "can_edit_groups": can_edit_groups,
+            "selected_group_id": selected_group_id,
         },
     )
 
@@ -216,6 +260,7 @@ def add_learner(request):
             learner.save()
 
             request.session["selected_learner_id"] = learner.id
+            request.session.pop("selected_group_id", None)
 
             return redirect("profile")
     else:
@@ -240,16 +285,22 @@ def select_learner(request):
     learner_id = request.POST.get("learner_id")
     is_ajax = request.headers.get("x-requested-with") == "XMLHttpRequest"
 
+    try:
+        learner_id_int = int(learner_id) if learner_id not in [None, ""] else None
+    except (TypeError, ValueError):
+        learner_id_int = None
+
     if not is_ajax:
-        if learner_id:
-            request.session["selected_learner_id"] = learner_id
+        if learner_id_int is not None:
+            request.session["selected_learner_id"] = learner_id_int
+            request.session.pop("selected_group_id", None)
         return HttpResponseRedirect(reverse("profile"))
 
-    if not learner_id:
+    if learner_id_int is None:
         return JsonResponse({"error": "Missing learner_id."}, status=400)
 
     try:
-        learner = Learner.objects.get(id=int(learner_id), deleted=False)
+        learner = Learner.objects.get(id=learner_id_int, deleted=False)
     except (ValueError, Learner.DoesNotExist):
         return JsonResponse({"error": "Learner not found."}, status=404)
 
@@ -257,6 +308,7 @@ def select_learner(request):
         return JsonResponse({"error": "You cannot access this learner."}, status=403)
 
     request.session["selected_learner_id"] = learner.id
+    request.session.pop("selected_group_id", None)
     _decorate_learner_avatar(learner)
 
     context = {"selected_learner": learner}
@@ -371,6 +423,7 @@ def confirm_delete_learner(request, learner_uuid):
             LogEntry.objects.filter(learner=learner, deleted=False).update(deleted=True)
 
             del request.session["selected_learner_id"]
+            request.session.pop("selected_group_id", None)
             return redirect("profile")
 
         error_message = "Please type DELETE to confirm deletion. It is case-sensitive."

@@ -1,0 +1,126 @@
+<div class="profile-container">
+    <div class="left-column">
+        {% if can_edit_groups and not is_read_only %}
+            <div class="add-learner-btn">
+                <a href="{% url 'profile_group_create' %}" class="button">+ Add Group</a>
+            </div>
+        {% endif %}
+
+        <div class="learners-list profile-card groups-list-card">
+            <div class="profile-card__header">
+                <h3 class="profile-card__title">Group Intervention</h3>
+            </div>
+            {% if manage_groups %}
+                <ul>
+                    {% for group in manage_groups %}
+                        <li class="learner-item">
+                            <form method="post" action="{% url 'profile_group_select' %}">
+                                {% csrf_token %}
+                                <button
+                                    type="submit"
+                                    name="group_id"
+                                    value="{{ group.id }}"
+                                    data-group-select="{{ group.id }}"
+                                    class="learner-button group-select-button {% if group.id == selected_group_id %}group-select-button--active{% endif %}"
+                                >
+                                    <span class="learner-button__content">
+                                        <span class="learner-button__name">{{ group.name }}</span>
+                                    </span>
+                                </button>
+                            </form>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="cohort-empty-message">No intervention groups created yet.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="right-column">
+        {% if manage_groups %}
+            {% for group in manage_groups %}
+                <div
+                    class="group-panel {% if group.id == selected_group_id %}group-panel--active{% endif %}"
+                    data-group-panel="{{ group.id }}"
+                    data-group-add-url="{% url 'profile_group_add_learner' group.id %}"
+                    data-group-remove-url="{% url 'profile_group_remove_learner' group.id %}"
+                >
+                    <div class="profile-card profile-card--details profile-card--padded">
+                        <div class="profile-card__header">
+                            <h3 class="profile-card__title">{{ group.name }}</h3>
+                            {% if can_edit_groups and not is_read_only %}
+                                <div class="cohort-actions">
+                                    <a href="{% url 'profile_group_edit' group.id %}" class="button-secondary">Edit</a>
+                                    <a href="{% url 'profile_group_delete' group.id %}" class="button-secondary">Delete</a>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <p class="cohort-description">{{ group.description|default:"No description yet." }}</p>
+                    </div>
+
+                    <div class="profile-card profile-card--padded">
+                        <div class="profile-card__header">
+                            <h3 class="profile-card__title">Learners in Group</h3>
+                        </div>
+
+                        <div class="cohort-members" data-group-members="{{ group.id }}">
+                            {% if group.active_learners %}
+                                {% for learner in group.active_learners %}
+                                    <span class="cohort-member-chip" data-learner-id="{{ learner.id }}" data-learner-name="{{ learner.name|lower }}" data-avatar-color="{{ learner.avatar_display_color }}" data-avatar-image-url="{{ learner.avatar_image_url }}">
+                                        <span class="cohort-member-chip__avatar" style="--avatar-color: {{ learner.avatar_display_color }};">
+                                            <img src="{{ learner.avatar_image_url }}" alt="{{ learner.name }} avatar" class="cohort-member-chip__image">
+                                        </span>
+                                        <span class="cohort-member-chip__name">{{ learner.name }}</span>
+                                        {% if can_edit_groups and not is_read_only %}
+                                            <button type="button" class="cohort-member-chip__remove" data-group-remove-btn data-learner-id="{{ learner.id }}" aria-label="Remove {{ learner.name }} from {{ group.name }}">×</button>
+                                        {% endif %}
+                                    </span>
+                                {% endfor %}
+                            {% else %}
+                                <p class="cohort-empty-message" data-group-empty>No learners in this group yet.</p>
+                            {% endif %}
+                        </div>
+
+                        {% if can_edit_groups and not is_read_only %}
+                            <div class="cohort-manage-controls">
+                                <label class="sample-target-label" for="group-learner-select-{{ group.id }}">Find learner</label>
+                                <div class="cohort-add-row">
+                                    <select
+                                        id="group-learner-select-{{ group.id }}"
+                                        class="select cohort-learner-select cohort-learner-select--searchable"
+                                        data-group-learner-select
+                                        data-group-id="{{ group.id }}"
+                                        data-placeholder="Search for a learner"
+                                    >
+                                        <option value=""></option>
+                                        {% for learner in school_group_learners %}
+                                            {% if learner.id not in group.active_learner_ids %}
+                                                <option
+                                                    value="{{ learner.id }}"
+                                                    data-learner-name="{{ learner.name|lower }}"
+                                                    data-avatar-color="{{ learner.avatar_display_color }}"
+                                                    data-avatar-image-url="{{ learner.avatar_image_url }}"
+                                                >
+                                                    {{ learner.name }}
+                                                </option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                    <button type="button" class="button-secondary" data-group-add-btn data-group-id="{{ group.id }}">Add Learner</button>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="profile-card profile-card--details profile-card--padded">
+                <div class="profile-card__header">
+                    <h3 class="profile-card__title">Group Intervention</h3>
+                </div>
+                <p class="cohort-empty-message">Create a group to begin organising learners for intervention.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>

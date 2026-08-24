@@ -9,6 +9,7 @@ from .views_modules import logbook as logbook_views
 from .views_modules import parent_access as parent_access_views
 from .views_modules import profile as profile_views
 from .views_modules import profile_cohorts as profile_cohort_views
+from .views_modules import profile_groups as profile_group_views
 from .views_modules import public as public_views
 from .views_modules import school as school_views
 from .views_modules import settings_views as settings_app_views
@@ -71,6 +72,12 @@ urlpatterns = [
     path('profile/cohorts/<int:cohort_id>/delete/', profile_cohort_views.profile_cohort_delete, name='profile_cohort_delete'),
     path('profile/cohorts/<int:cohort_id>/add-learner/', profile_cohort_views.profile_cohort_add_learner, name='profile_cohort_add_learner'),
     path('profile/cohorts/<int:cohort_id>/remove-learner/', profile_cohort_views.profile_cohort_remove_learner, name='profile_cohort_remove_learner'),
+    path('profile/groups/select/', profile_group_views.profile_group_select, name='profile_group_select'),
+    path('profile/groups/new/', profile_group_views.profile_group_create, name='profile_group_create'),
+    path('profile/groups/<int:group_id>/edit/', profile_group_views.profile_group_edit, name='profile_group_edit'),
+    path('profile/groups/<int:group_id>/delete/', profile_group_views.profile_group_delete, name='profile_group_delete'),
+    path('profile/groups/<int:group_id>/add-learner/', profile_group_views.profile_group_add_learner, name='profile_group_add_learner'),
+    path('profile/groups/<int:group_id>/remove-learner/', profile_group_views.profile_group_remove_learner, name='profile_group_remove_learner'),
 
     path('select-school/', school_views.select_school, name='select_school'),
 
