@@ -6,31 +6,31 @@
     {
       "id": "arlo",
       "name": "Arlo Armadillo",
-      "imageUrl": "/static/exercise_assets/characters/arlo_armadillo.png",
+      "imageUrl": "/static/exercise_assets/characters/arlo_armadillo.webp",
       "altText": "Arlo Armadillo character"
     },
     {
       "id": "maya",
       "name": "Humble Hedgehog",
-      "imageUrl": "/static/exercise_assets/characters/humble_hedgehog.png",
+      "imageUrl": "/static/exercise_assets/characters/humble_hedgehog.webp",
       "altText": "Humble Hedgehog character"
     },
     {
       "id": "pip",
       "name": "Muddles Mole",
-      "imageUrl": "/static/exercise_assets/characters/muddles_mole.png",
+      "imageUrl": "/static/exercise_assets/characters/muddles_mole.webp",
       "altText": "Muddles Mole character"
     },
     {
       "id": "zed",
       "name": "Peppy Pigeon",
-      "imageUrl": "/static/exercise_assets/characters/peppy_pigeon.png",
+      "imageUrl": "/static/exercise_assets/characters/peppy_pigeon.webp",
       "altText": "Peppy Pigeon character"
     },
     {
       "id": "nala",
       "name": "Resilient Red Panda",
-      "imageUrl": "/static/exercise_assets/characters/resilient_red_panda.png",
+      "imageUrl": "/static/exercise_assets/characters/resilient_red_panda.webp",
       "altText": "Resilient Red Panda character"
     }
   ],
@@ -38,61 +38,61 @@
     {
       "id": "bookshelf",
       "name": "bookshelf",
-      "imageUrl": "/static/exercise_assets/spot_on/objects/bookshelf.png",
+      "imageUrl": "/static/exercise_assets/spot_on/objects/bookshelf.webp",
       "altText": "A bookshelf"
     },
     {
       "id": "box",
       "name": "box",
-      "imageUrl": "/static/exercise_assets/spot_on/objects/box.png",
+      "imageUrl": "/static/exercise_assets/spot_on/objects/box.webp",
       "altText": "A box"
     },
     {
       "id": "chair",
       "name": "chair",
-      "imageUrl": "/static/exercise_assets/spot_on/objects/chair.png",
+      "imageUrl": "/static/exercise_assets/spot_on/objects/chair.webp",
       "altText": "A chair"
     },
     {
       "id": "table",
       "name": "table",
-      "imageUrl": "/static/exercise_assets/spot_on/objects/table.png",
+      "imageUrl": "/static/exercise_assets/spot_on/objects/table.webp",
       "altText": "A table"
     },
     {
       "id": "armchair",
       "name": "armchair",
-      "imageUrl": "/static/exercise_assets/spot_on/objects/armchair.png",
+      "imageUrl": "/static/exercise_assets/spot_on/objects/armchair.webp",
       "altText": "An armchair"
     },
     {
       "id": "bed",
       "name": "bed",
-      "imageUrl": "/static/exercise_assets/spot_on/objects/bed.png",
+      "imageUrl": "/static/exercise_assets/spot_on/objects/bed.webp",
       "altText": "A bed"
     },
     {
       "id": "present",
       "name": "present",
-      "imageUrl": "/static/exercise_assets/spot_on/objects/present.png",
+      "imageUrl": "/static/exercise_assets/spot_on/objects/present.webp",
       "altText": "A present"
     },
     {
       "id": "sofa",
       "name": "sofa",
-      "imageUrl": "/static/exercise_assets/spot_on/objects/sofa.png",
+      "imageUrl": "/static/exercise_assets/spot_on/objects/sofa.webp",
       "altText": "A sofa"
     },
     {
       "id": "toybox",
       "name": "toybox",
-      "imageUrl": "/static/exercise_assets/spot_on/objects/toybox.png",
+      "imageUrl": "/static/exercise_assets/spot_on/objects/toybox.webp",
       "altText": "A toybox"
     },
     {
       "id": "fridge",
       "name": "fridge",
-      "imageUrl": "/static/exercise_assets/spot_on/objects/fridge.png",
+      "imageUrl": "/static/exercise_assets/spot_on/objects/fridge.webp",
       "altText": "A fridge"
     }
   ],

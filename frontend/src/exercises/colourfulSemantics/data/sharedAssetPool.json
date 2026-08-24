@@ -2,194 +2,194 @@
   "who": [
     {
       "id": "who-baby",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/child.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/child.webp",
       "label": "The child",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/child.wav"
     },
     {
       "id": "who-baker",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/baker.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/baker.webp",
       "label": "The baker",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/baker.wav"
     },
     {
       "id": "who-boy",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/boy.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/boy.webp",
       "label": "The boy",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/boy.wav"
     },
     {
       "id": "who-butterfly",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/butterfly.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/butterfly.webp",
       "label": "The butterfly",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/butterfly.wav"
     },
     {
       "id": "who-captain",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/captain.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/captain.webp",
       "label": "The captain",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/captain.wav"
     },
     {
       "id": "who-cat",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/cat.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/cat.webp",
       "label": "The cat",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/cat.wav"
     },
     {
       "id": "who-children",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/children.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/children.webp",
       "label": "The children",
       "isPlural": true,
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/children.wav"
     },
     {
       "id": "who-dad",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/dad.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/dad.webp",
       "label": "Dad",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/dad.wav"
     },
     {
       "id": "who-dinosaur",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/dinosaur.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/dinosaur.webp",
       "label": "The dinosaur",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/dinosaur.wav"
     },
     {
       "id": "who-doctor",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/doctor.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/doctor.webp",
       "label": "The doctor",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/doctor.wav"
     },
     {
       "id": "who-dog",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/dog.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/dog.webp",
       "label": "The dog",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/dog.wav"
     },
     {
       "id": "who-family",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/family.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/family.webp",
       "label": "Family",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/family.wav"
     },
     {
       "id": "who-farmer",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/farmer.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/farmer.webp",
       "label": "The farmer",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/farmer.wav"
     },
     {
       "id": "who-firefighter",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/firefighter.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/firefighter.webp",
       "label": "The firefighter",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/firefighter.wav"
     },
     {
       "id": "who-fox",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/fox.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/fox.webp",
       "label": "The fox",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/fox.wav"
     },
     {
       "id": "who-frog",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/frog.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/frog.webp",
       "label": "The frog",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/frog.wav"
     },
     {
       "id": "who-gardener",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/gardener.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/gardener.webp",
       "label": "The gardener",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/gardener.wav"
     },
     {
       "id": "who-girl",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/girl.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/girl.webp",
       "label": "The girl",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/girl.wav"
     },
     {
       "id": "who-grandma",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/grandma.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/grandma.webp",
       "label": "Grandma",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/grandma.wav"
     },
     {
       "id": "who-horse",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/horse.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/horse.webp",
       "label": "The horse",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/horse.wav"
     },
     {
       "id": "who-lady",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/lady.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/lady.webp",
       "label": "The lady",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/lady.wav"
     },
     {
       "id": "who-librarian",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/librarian.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/librarian.webp",
       "label": "The librarian",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/librarian.wav"
     },
     {
       "id": "who-man",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/man.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/man.webp",
       "label": "The man",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/man.wav"
     },
     {
       "id": "who-monkey",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/monkey.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/monkey.webp",
       "label": "The monkey",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/monkey.wav"
     },
     {
       "id": "who-mouse",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/mouse.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/mouse.webp",
       "label": "The mouse",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/mouse.wav"
     },
     {
       "id": "who-mum",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/mum.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/mum.webp",
       "label": "Mum",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/mum.wav"
     },
     {
       "id": "who-pirate",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/pirate.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/pirate.webp",
       "label": "The pirate",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/pirate.wav"
     },
     {
       "id": "who-rabbit",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/rabbit.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/rabbit.webp",
       "label": "The rabbit",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/rabbit.wav"
     },
     {
       "id": "who-shopkeeper",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/shopkeeper.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/shopkeeper.webp",
       "label": "The shopkeeper",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/shopkeeper.wav"
     },
     {
       "id": "who-teacher",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/teacher.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/teacher.webp",
       "label": "The teacher",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/teacher.wav"
     },
     {
       "id": "who-vet",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/vet.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/vet.webp",
       "label": "The vet",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/vet.wav"
     },
     {
       "id": "who-visitor",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/visitor.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/visitor.webp",
       "label": "The visitors",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/visitor.wav"
     }
@@ -197,7 +197,7 @@
   "doing": [
     {
       "id": "doing-opening",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/opening.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/opening.webp",
       "label": "is opening",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/opening.wav",
       "pluralLabel": "are opening",
@@ -207,7 +207,7 @@
     },
     {
       "id": "doing-hugging",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/hugging.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/hugging.webp",
       "label": "is hugging",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/hugging.wav",
       "pluralLabel": "are hugging",
@@ -217,7 +217,7 @@
     },
     {
       "id": "doing-admiring",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/admired.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/admired.webp",
       "label": "is admiring",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/admired.wav",
       "pluralLabel": "are admiring",
@@ -227,7 +227,7 @@
     },
     {
       "id": "doing-answering",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/answering.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/answering.webp",
       "label": "is answering",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/answering.wav",
       "pluralLabel": "are answering",
@@ -237,7 +237,7 @@
     },
     {
       "id": "doing-asking",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/asking.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/asking.webp",
       "label": "is asking",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/asking.wav",
       "pluralLabel": "are asking",
@@ -247,7 +247,7 @@
     },
     {
       "id": "doing-baking",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/baking.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/baking.webp",
       "label": "is baking",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/baking.wav",
       "pluralLabel": "are baking",
@@ -257,7 +257,7 @@
     },
     {
       "id": "doing-blowing",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/blowing.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/blowing.webp",
       "label": "is blowing",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/blowing.wav",
       "pluralLabel": "are blowing",
@@ -267,7 +267,7 @@
     },
     {
       "id": "doing-bringing",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/brought.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/brought.webp",
       "label": "is bringing",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/brought.wav",
       "pluralLabel": "are bringing",
@@ -277,7 +277,7 @@
     },
     {
       "id": "doing-brushing",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/brushing.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/brushing.webp",
       "label": "is brushing",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/brushing.wav",
       "pluralLabel": "are brushing",
@@ -287,7 +287,7 @@
     },
     {
       "id": "doing-building",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/building.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/building.webp",
       "label": "is building",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/building.wav",
       "pluralLabel": "are building",
@@ -297,7 +297,7 @@
     },
     {
       "id": "doing-carrying",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/carrying.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/carrying.webp",
       "label": "is carrying",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/carrying.wav",
       "pluralLabel": "are carrying",
@@ -307,7 +307,7 @@
     },
     {
       "id": "doing-catching",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/catching.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/catching.webp",
       "label": "is catching",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/catching.wav",
       "pluralLabel": "are catching",
@@ -317,7 +317,7 @@
     },
     {
       "id": "doing-celebrating",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/celebrating.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/celebrating.webp",
       "label": "is celebrating",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/celebrating.wav",
       "pluralLabel": "are celebrating",
@@ -327,7 +327,7 @@
     },
     {
       "id": "doing-cheering",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/cheering.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/cheering.webp",
       "label": "is cheering",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/cheering.wav",
       "pluralLabel": "are cheering",
@@ -337,7 +337,7 @@
     },
     {
       "id": "doing-climbing",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/climbing.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/climbing.webp",
       "label": "is climbing",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/climbing.wav",
       "pluralLabel": "are climbing",
@@ -347,7 +347,7 @@
     },
     {
       "id": "doing-comforting",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/comforting.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/comforting.webp",
       "label": "is comforting",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/comforting.wav",
       "pluralLabel": "are comforting",
@@ -357,7 +357,7 @@
     },
     {
       "id": "doing-competing",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/competing.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/competing.webp",
       "label": "is competing",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/competing.wav",
       "pluralLabel": "are competing",
@@ -367,7 +367,7 @@
     },
     {
       "id": "doing-cooking",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/cooking.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/cooking.webp",
       "label": "is cooking",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/cooking.wav",
       "pluralLabel": "are cooking",
@@ -377,7 +377,7 @@
     },
     {
       "id": "doing-crying",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/crying.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/crying.webp",
       "label": "is crying",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/crying.wav",
       "pluralLabel": "are crying",
@@ -387,7 +387,7 @@
     },
     {
       "id": "doing-cycling",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/cycling.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/cycling.webp",
       "label": "is riding",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/riding.wav",
       "pluralLabel": "are riding",
@@ -397,7 +397,7 @@
     },
     {
       "id": "doing-dancing",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/dancing.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/dancing.webp",
       "label": "is dancing",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/dancing.wav",
       "pluralLabel": "are dancing",
@@ -407,7 +407,7 @@
     },
     {
       "id": "doing-delivering",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/delivering.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/delivering.webp",
       "label": "is delivering",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/delivering.wav",
       "pluralLabel": "are delivering",
@@ -417,7 +417,7 @@
     },
     {
       "id": "doing-digging",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/digging.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/digging.webp",
       "label": "is digging",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/digging.wav",
       "pluralLabel": "are digging",
@@ -427,7 +427,7 @@
     },
     {
       "id": "doing-drinking",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/drinking.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/drinking.webp",
       "label": "is drinking",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/drinking.wav",
       "pluralLabel": "are drinking",
@@ -437,7 +437,7 @@
     },
     {
       "id": "doing-driving",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/driving.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/driving.webp",
       "label": "is driving",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/driving.wav",
       "pluralLabel": "are driving",
@@ -447,7 +447,7 @@
     },
     {
       "id": "doing-eating",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/eating.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/eating.webp",
       "label": "is eating",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/eating.wav",
       "pluralLabel": "are eating",
@@ -457,7 +457,7 @@
     },
     {
       "id": "doing-escaping",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/escaped.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/escaped.webp",
       "label": "is escaping",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/escaped.wav",
       "pluralLabel": "are escaping",
@@ -467,7 +467,7 @@
     },
     {
       "id": "doing-explaining",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/explaining.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/explaining.webp",
       "label": "is explaining",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/explaining.wav",
       "pluralLabel": "are explaining",
@@ -477,7 +477,7 @@
     },
     {
       "id": "doing-exploring",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/exploring.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/exploring.webp",
       "label": "is exploring",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/exploring.wav",
       "pluralLabel": "are exploring",
@@ -487,7 +487,7 @@
     },
     {
       "id": "doing-feeding",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/feeding.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/feeding.webp",
       "label": "is feeding",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/feeding.wav",
       "pluralLabel": "are feeding",
@@ -497,7 +497,7 @@
     },
     {
       "id": "doing-finding",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/finding.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/finding.webp",
       "label": "is finding",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/finding.wav",
       "pluralLabel": "are finding",
@@ -507,7 +507,7 @@
     },
     {
       "id": "doing-finished",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/finished.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/finished.webp",
       "label": "finished",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/finished.wav",
       "pluralLabel": "finished",
@@ -517,7 +517,7 @@
     },
     {
       "id": "doing-fixing",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/fixing.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/fixing.webp",
       "label": "is fixing",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/fixing.wav",
       "pluralLabel": "are fixing",
@@ -527,7 +527,7 @@
     },
     {
       "id": "doing-flying",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/flying.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/flying.webp",
       "label": "is flying",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/flying.wav",
       "pluralLabel": "are flying",
@@ -537,7 +537,7 @@
     },
     {
       "id": "doing-folding",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/folding.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/folding.webp",
       "label": "is folding",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/folding.wav",
       "pluralLabel": "are folding",
@@ -547,7 +547,7 @@
     },
     {
       "id": "doing-finding",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/found.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/found.webp",
       "label": "is finding",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/found.wav",
       "pluralLabel": "are finding",
@@ -557,7 +557,7 @@
     },
     {
       "id": "doing-gardening",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/gardening.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/gardening.webp",
       "label": "is gardening",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/gardening.wav",
       "pluralLabel": "are gardening",
@@ -567,7 +567,7 @@
     },
     {
       "id": "doing-giving",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/gave.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/gave.webp",
       "label": "is giving",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/gave.wav",
       "pluralLabel": "are giving",
@@ -577,7 +577,7 @@
     },
     {
       "id": "doing-going",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/going.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/going.webp",
       "label": "is going",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/going.wav",
       "pluralLabel": "are going",
@@ -587,7 +587,7 @@
     },
     {
       "id": "doing-handing",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/handed.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/handed.webp",
       "label": "is handing",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/handed.wav",
       "pluralLabel": "are handing",
@@ -597,7 +597,7 @@
     },
     {
       "id": "doing-holding",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/holding.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/holding.webp",
       "label": "is holding",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/holding.wav",
       "pluralLabel": "are holding",
@@ -607,7 +607,7 @@
     },
     {
       "id": "doing-jumping",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/jumping.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/jumping.webp",
       "label": "is jumping",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/jumping.wav",
       "pluralLabel": "are jumping",
@@ -617,7 +617,7 @@
     },
     {
       "id": "doing-kicking",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/kicking.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/kicking.webp",
       "label": "is kicking",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/kicking.wav",
       "pluralLabel": "are kicking",
@@ -627,7 +627,7 @@
     },
     {
       "id": "doing-learning",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/learning.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/learning.webp",
       "label": "is learning",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/learning.wav",
       "pluralLabel": "are learning",
@@ -637,7 +637,7 @@
     },
     {
       "id": "doing-licking",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/licking.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/licking.webp",
       "label": "is licking",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/licking.wav",
       "pluralLabel": "are licking",
@@ -647,7 +647,7 @@
     },
     {
       "id": "doing-listening",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/listening.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/listening.webp",
       "label": "is listening to",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/listening.wav",
       "pluralLabel": "are listening to",
@@ -657,7 +657,7 @@
     },
     {
       "id": "doing-looking",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/looking.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/looking.webp",
       "label": "is looking at",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/looking.wav",
       "pluralLabel": "are looking at",
@@ -667,7 +667,7 @@
     },
     {
       "id": "doing-lying",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/lying.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/lying.webp",
       "label": "is lying on",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/lying.wav",
       "pluralLabel": "are lying on",
@@ -677,7 +677,7 @@
     },
     {
       "id": "doing-organising",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/organising.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/organising.webp",
       "label": "is organising",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/organising.wav",
       "pluralLabel": "are organising",
@@ -687,7 +687,7 @@
     },
     {
       "id": "doing-packing",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/packing.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/packing.webp",
       "label": "is packing",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/packing.wav",
       "pluralLabel": "are packing",
@@ -697,7 +697,7 @@
     },
     {
       "id": "doing-painting",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/painting.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/painting.webp",
       "label": "is painting",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/painting.wav",
       "pluralLabel": "are painting",
@@ -707,7 +707,7 @@
     },
     {
       "id": "doing-passing",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/passing.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/passing.webp",
       "label": "is passing",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/passing.wav",
       "pluralLabel": "are passing",
@@ -717,7 +717,7 @@
     },
     {
       "id": "doing-picking-up",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/picked_up.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/picked_up.webp",
       "label": "is picking up",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/picked_up.wav",
       "pluralLabel": "are picking up",
@@ -727,7 +727,7 @@
     },
     {
       "id": "doing-planting",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/planting.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/planting.webp",
       "label": "is planting",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/planting.wav",
       "pluralLabel": "are planting",
@@ -737,7 +737,7 @@
     },
     {
       "id": "doing-playing",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/playing.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/playing.webp",
       "label": "is playing with",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/playing.wav",
       "pluralLabel": "are playing with",
@@ -747,7 +747,7 @@
     },
     {
       "id": "doing-presenting",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/presented.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/presented.webp",
       "label": "is presenting",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/presented.wav",
       "pluralLabel": "are presenting",
@@ -757,7 +757,7 @@
     },
     {
       "id": "doing-racing",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/racing.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/racing.webp",
       "label": "is racing",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/racing.wav",
       "pluralLabel": "are racing",
@@ -767,7 +767,7 @@
     },
     {
       "id": "doing-reading",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/reading.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/reading.webp",
       "label": "is reading",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/reading.wav",
       "pluralLabel": "are reading",
@@ -777,7 +777,7 @@
     },
     {
       "id": "doing-returning",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/returning.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/returning.webp",
       "label": "is returning",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/returning.wav",
       "pluralLabel": "are returning",
@@ -787,7 +787,7 @@
     },
     {
       "id": "doing-riding",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/riding.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/riding.webp",
       "label": "is riding",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/riding.wav",
       "pluralLabel": "are riding",
@@ -797,7 +797,7 @@
     },
     {
       "id": "doing-running",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/running.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/running.webp",
       "label": "is running",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/running.wav",
       "pluralLabel": "are running",
@@ -807,7 +807,7 @@
     },
     {
       "id": "doing-sending",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/sending.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/sending.webp",
       "label": "is sending",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/sending.wav",
       "pluralLabel": "are sending",
@@ -817,7 +817,7 @@
     },
     {
       "id": "doing-sharing",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/sharing.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/sharing.webp",
       "label": "is sharing",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/sharing.wav",
       "pluralLabel": "are sharing",
@@ -827,7 +827,7 @@
     },
     {
       "id": "doing-shouting",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/shouting.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/shouting.webp",
       "label": "is shouting",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/shouting.wav",
       "pluralLabel": "are shouting",
@@ -837,7 +837,7 @@
     },
     {
       "id": "doing-showing",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/showing.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/showing.webp",
       "label": "is showing",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/showing.wav",
       "pluralLabel": "are showing",
@@ -847,7 +847,7 @@
     },
     {
       "id": "doing-sitting",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/sitting.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/sitting.webp",
       "label": "is sitting on",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/sitting.wav",
       "pluralLabel": "are sitting on",
@@ -857,7 +857,7 @@
     },
     {
       "id": "doing-smelling",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/smelling.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/smelling.webp",
       "label": "is smelling",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/smelling.wav",
       "pluralLabel": "are smelling",
@@ -867,7 +867,7 @@
     },
     {
       "id": "doing-stroking",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/stroked.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/stroked.webp",
       "label": "is stroking",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/stroked.wav",
       "pluralLabel": "are stroking",
@@ -877,7 +877,7 @@
     },
     {
       "id": "doing-sweeping",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/sweeping.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/sweeping.webp",
       "label": "is sweeping",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/sweeping.wav",
       "pluralLabel": "are sweeping",
@@ -887,7 +887,7 @@
     },
     {
       "id": "doing-swimming",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/swimming.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/swimming.webp",
       "label": "is swimming",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/swimming.wav",
       "pluralLabel": "are swimming",
@@ -897,7 +897,7 @@
     },
     {
       "id": "doing-talking",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/talking.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/talking.webp",
       "label": "is talking",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/talking.wav",
       "pluralLabel": "are talking",
@@ -907,7 +907,7 @@
     },
     {
       "id": "doing-throwing",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/throwing.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/throwing.webp",
       "label": "is throwing",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/throwing.wav",
       "pluralLabel": "are throwing",
@@ -917,7 +917,7 @@
     },
     {
       "id": "doing-tidying",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/tidying.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/tidying.webp",
       "label": "is tidying",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/tidying.wav",
       "pluralLabel": "are tidying",
@@ -927,7 +927,7 @@
     },
     {
       "id": "doing-unpacking",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/unpacking.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/unpacking.webp",
       "label": "is unpacking",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/unpacking.wav",
       "pluralLabel": "are unpacking",
@@ -937,7 +937,7 @@
     },
     {
       "id": "doing-walked-through",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/walking.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/walking.webp",
       "label": "is walking through",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/walking.wav",
       "pluralLabel": "are walking through",
@@ -947,7 +947,7 @@
     },
     {
       "id": "doing-walking",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/walking.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/walking.webp",
       "label": "is walking",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/walking.wav",
       "pluralLabel": "are walking",
@@ -957,7 +957,7 @@
     },
     {
       "id": "doing-washing",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/washing.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/washing.webp",
       "label": "is washing",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/washing.wav",
       "pluralLabel": "are washing",
@@ -967,7 +967,7 @@
     },
     {
       "id": "doing-watering",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/watering.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/watering.webp",
       "label": "is watering",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/watering.wav",
       "pluralLabel": "are watering",
@@ -977,7 +977,7 @@
     },
     {
       "id": "doing-welcoming",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/welcoming.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/welcoming.webp",
       "label": "is welcoming",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/welcoming.wav",
       "pluralLabel": "are welcoming",
@@ -987,7 +987,7 @@
     },
     {
       "id": "doing-whispering",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/whispering.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/whispering.webp",
       "label": "is whispering",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/whispering.wav",
       "pluralLabel": "are whispering",
@@ -997,7 +997,7 @@
     },
     {
       "id": "doing-winning",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/won.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/won.webp",
       "label": "is winning",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/won.wav",
       "pluralLabel": "are winning",
@@ -1007,7 +1007,7 @@
     },
     {
       "id": "doing-writing",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/writing.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/writing.webp",
       "label": "is writing",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/writing.wav",
       "pluralLabel": "are writing",
@@ -1019,556 +1019,556 @@
   "what": [
     {
       "id": "what-apple",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/apple.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/apple.webp",
       "label": "the apple",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/apple.wav",
       "whatLikeVariantLabel": "apple"
     },
     {
       "id": "what-bag",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/bag.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/bag.webp",
       "label": "the bag",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/bag.wav",
       "whatLikeVariantLabel": "bag"
     },
     {
       "id": "what-ball",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/ball.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/ball.webp",
       "label": "the ball",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/ball.wav",
       "whatLikeVariantLabel": "ball"
     },
     {
       "id": "what-bed",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/bed.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/bed.webp",
       "label": "the bed",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/bed.wav",
       "whatLikeVariantLabel": "bed"
     },
     {
       "id": "what-bike",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/bike.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/bike.webp",
       "label": "the bike",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/bike.wav",
       "whatLikeVariantLabel": "bike"
     },
     {
       "id": "what-blanket",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/blanket.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/blanket.webp",
       "label": "the blanket",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/blanket.wav",
       "whatLikeVariantLabel": "blanket"
     },
     {
       "id": "what-book",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/book.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/book.webp",
       "label": "the book",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/book.wav",
       "whatLikeVariantLabel": "book"
     },
     {
       "id": "what-box",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/box.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/box.webp",
       "label": "the box",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/box.wav",
       "whatLikeVariantLabel": "box"
     },
     {
       "id": "what-bubbles",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/bubble.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/bubble.webp",
       "label": "the bubbles",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/bubble.wav",
       "whatLikeVariantLabel": "bubbles"
     },
     {
       "id": "what-bucket",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/bucket.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/bucket.webp",
       "label": "the bucket",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/bucket.wav",
       "whatLikeVariantLabel": "bucket"
     },
     {
       "id": "what-car",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/car.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/car.webp",
       "label": "the car",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/car.wav",
       "whatLikeVariantLabel": "car"
     },
     {
       "id": "what-carrot",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/carrot.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/carrot.webp",
       "label": "the carrot",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/carrot.wav",
       "whatLikeVariantLabel": "carrot"
     },
     {
       "id": "what-cat",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/cat.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/cat.webp",
       "label": "the cat",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/cat.wav",
       "whatLikeVariantLabel": "cat"
     },
     {
       "id": "what-chair",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/chair.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/chair.webp",
       "label": "the chair",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/chair.wav",
       "whatLikeVariantLabel": "chair"
     },
     {
       "id": "what-crown",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/crown.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/crown.webp",
       "label": "the crown",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/crown.wav",
       "whatLikeVariantLabel": "crown"
     },
     {
       "id": "what-cupcake",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/cupcake.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/cupcake.webp",
       "label": "the cupcake",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/cupcake.wav",
       "whatLikeVariantLabel": "cupcake"
     },
     {
       "id": "what-dentist",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/dentist.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/dentist.webp",
       "label": "the dentist",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/dentist.wav",
       "whatLikeVariantLabel": "dentist"
     },
     {
       "id": "what-desk",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/desk.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/desk.webp",
       "label": "the desk",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/desk.wav",
       "whatLikeVariantLabel": "desk"
     },
     {
       "id": "what-dinner",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/dinner.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/dinner.webp",
       "label": "the dinner",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/dinner.wav",
       "whatLikeVariantLabel": "dinner"
     },
     {
       "id": "what-doctor",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/doctor.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/doctor.webp",
       "label": "the doctor",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/doctor.wav",
       "whatLikeVariantLabel": "doctor"
     },
     {
       "id": "what-dog",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/dog.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/dog.webp",
       "label": "the dog",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/dog.wav",
       "whatLikeVariantLabel": "dog"
     },
     {
       "id": "what-doll",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/doll.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/doll.webp",
       "label": "the doll",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/doll.wav",
       "whatLikeVariantLabel": "doll"
     },
     {
       "id": "what-firefighter",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/firefighter.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/firefighter.webp",
       "label": "the firefighter",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/firefighter.wav",
       "whatLikeVariantLabel": "firefighter"
     },
     {
       "id": "what-field",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/field.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/field.webp",
       "label": "the field",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/field.wav",
       "whatLikeVariantLabel": "field"
     },
     {
       "id": "what-park",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/park.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/park.webp",
       "label": "the park",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/park.wav",
       "whatLikeVariantLabel": "park"
     },
     {
       "id": "what-flower",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/flower.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/flower.webp",
       "label": "the flower",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/flower.wav",
       "whatLikeVariantLabel": "flower"
     },
     {
       "id": "what-flowers",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/flowers.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/flowers.webp",
       "label": "the flowers",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/flowers.wav",
       "whatLikeVariantLabel": "flowers"
     },
     {
       "id": "what-football",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/football.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/football.webp",
       "label": "the football",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/football.wav",
       "whatLikeVariantLabel": "football"
     },
     {
       "id": "what-friend-female",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/friend_female.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/friend_female.webp",
       "label": "her friend",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/friend_female.wav",
       "whatLikeVariantLabel": "her friend"
     },
     {
       "id": "what-friend-male",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/friend_male.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/friend_male.webp",
       "label": "his friend",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/friend_male.wav",
       "whatLikeVariantLabel": "his friend"
     },
     {
       "id": "what-game",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/game.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/game.webp",
       "label": "the game",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/game.wav",
       "whatLikeVariantLabel": "game"
     },
     {
       "id": "what-grass",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/grass.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/grass.webp",
       "label": "the grass",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/grass.wav",
       "whatLikeVariantLabel": "grass"
     },
     {
       "id": "what-her-teeth",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/teeth.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/teeth.webp",
       "label": "her teeth",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/teeth_her.wav"
     },
     {
       "id": "what-his-teeth",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/teeth.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/teeth.webp",
       "label": "his teeth",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/teeth_his.wav"
     },
     {
       "id": "what-homework",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/homework.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/homework.webp",
       "label": "the homework",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/homework.wav",
       "whatLikeVariantLabel": "homework"
     },
     {
       "id": "what-horse",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/horse.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/horse.webp",
       "label": "the horse",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/horse.wav",
       "whatLikeVariantLabel": "horse"
     },
     {
       "id": "what-hot-chocolate",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/hot_chocolate.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/hot_chocolate.webp",
       "label": "the hot chocolate",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/hot_chocolate.wav",
       "whatLikeVariantLabel": "hot chocolate"
     },
     {
       "id": "what-ice-cream",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/ice_cream.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/ice_cream.webp",
       "label": "the ice cream",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/ice_cream.wav",
       "whatLikeVariantLabel": "ice cream"
     },
     {
       "id": "what-in-puddle",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/puddle.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/puddle.webp",
       "label": "in the puddle",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/puddle.wav"
     },
     {
       "id": "what-in-sand",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/sand.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/sand.webp",
       "label": "the sand",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/sand.wav",
       "whatLikeVariantLabel": "sand"
     },
     {
       "id": "what-ipad",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/ipad.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/ipad.webp",
       "label": "the ipad",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/ipad.wav",
       "whatLikeVariantLabel": "ipad"
     },
     {
       "id": "what-jumper",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/jumper.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/jumper.webp",
       "label": "the jumper",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/jumper.wav",
       "whatLikeVariantLabel": "jumper"
     },
     {
       "id": "what-kite",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/kite.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/kite.webp",
       "label": "the kite",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/kite.wav",
       "whatLikeVariantLabel": "kite"
     },
     {
       "id": "what-kitten",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/kitten.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/kitten.webp",
       "label": "the kitten",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/kitten.wav",
       "whatLikeVariantLabel": "kitten"
     },
     {
       "id": "what-leaves",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/leaves.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/leaves.webp",
       "label": "the leaves",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/leaves.wav",
       "whatLikeVariantLabel": "leaves"
     },
     {
       "id": "what-lilypad",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/lilypad.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/lilypad.webp",
       "label": "the lilypad",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/lilypad.wav",
       "whatLikeVariantLabel": "lilypad"
     },
     {
       "id": "what-lost-game",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/lost_game.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/lost_game.webp",
       "label": "the lost game",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/lost_game.wav",
       "whatLikeVariantLabel": "lost game"
     },
     {
       "id": "what-lost-item",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/lost_item.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/lost_item.webp",
       "label": "the lost item",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/lost_item.wav",
       "whatLikeVariantLabel": "lost item"
     },
     {
       "id": "what-mat",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/mat.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/mat.webp",
       "label": "the mat",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/mat.wav",
       "whatLikeVariantLabel": "mat"
     },
     {
       "id": "what-mouse",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/mouse.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/mouse.webp",
       "label": "the mouse",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/mouse.wav",
       "whatLikeVariantLabel": "mouse"
     },
     {
       "id": "what-music",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/music.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/music.webp",
       "label": "the music",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/music.wav",
       "whatLikeVariantLabel": "music"
     },
     {
       "id": "what-nurse",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/nurse.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/nurse.webp",
       "label": "the nurse",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/nurse.wav",
       "whatLikeVariantLabel": "nurse"
     },
     {
       "id": "what-on-path",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/path.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/path.webp",
       "label": "on the path",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/path.wav"
     },
     {
       "id": "what-pencil",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/pencil.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/pencil.webp",
       "label": "the pencil",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/pencil.wav",
       "whatLikeVariantLabel": "pencil"
     },
     {
       "id": "what-picture",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/picture.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/picture.webp",
       "label": "the picture",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/picture.wav",
       "whatLikeVariantLabel": "picture"
     },
     {
       "id": "what-pizza",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/pizza.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/pizza.webp",
       "label": "the pizza",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/pizza.wav",
       "whatLikeVariantLabel": "pizza"
     },
     {
       "id": "what-plates",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/plates.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/plates.webp",
       "label": "the plates",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/plates.wav",
       "whatLikeVariantLabel": "plates"
     },
     {
       "id": "what-police-officer",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/police_officer.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/police_officer.webp",
       "label": "the police officer",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/police_officer.wav",
       "whatLikeVariantLabel": "police officer"
     },
     {
       "id": "what-postman",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/postman.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/postman.webp",
       "label": "the postman",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/postman.wav",
       "whatLikeVariantLabel": "postman"
     },
     {
       "id": "what-potatoes",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/potatoes.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/potatoes.webp",
       "label": "the potatoes",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/potatoes.wav",
       "whatLikeVariantLabel": "potatoes"
     },
     {
       "id": "what-present",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/present.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/present.webp",
       "label": "the present",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/present.wav",
       "whatLikeVariantLabel": "present"
     },
     {
       "id": "what-pumpkin",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/pumpkin.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/pumpkin.webp",
       "label": "the pumpkin",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/pumpkin.wav",
       "whatLikeVariantLabel": "pumpkin"
     },
     {
       "id": "what-rabbit",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/rabbit.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/rabbit.webp",
       "label": "the rabbit",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/rabbit.wav",
       "whatLikeVariantLabel": "rabbit"
     },
     {
       "id": "what-sandcastle",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/sandcastle.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/sandcastle.webp",
       "label": "the sandcastle",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/sandcastle.wav",
       "whatLikeVariantLabel": "sandcastle"
     },
     {
       "id": "what-seed",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/seed.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/seed.webp",
       "label": "the seed",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/seed.wav",
       "whatLikeVariantLabel": "seed"
     },
     {
       "id": "what-seedling",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/seedling.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/seedling.webp",
       "label": "the seedling",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/seedling.wav",
       "whatLikeVariantLabel": "seedling"
     },
     {
       "id": "what-shoe",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/shoe.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/shoe.webp",
       "label": "the shoe",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/shoe.wav",
       "whatLikeVariantLabel": "shoe"
     },
     {
       "id": "what-shopping-bag",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/shopping_bag.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/shopping_bag.webp",
       "label": "the shopping bag",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/shopping_bag.wav",
       "whatLikeVariantLabel": "shopping bag"
     },
     {
       "id": "what-singing",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/singing.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/singing.webp",
       "label": "the singing",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/singing.wav",
       "whatLikeVariantLabel": "singing"
     },
     {
       "id": "what-snowman",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/snowman.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/snowman.webp",
       "label": "the snowman",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/snowman.wav",
       "whatLikeVariantLabel": "snowman"
     },
     {
       "id": "what-soap",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/soap.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/soap.webp",
       "label": "the soap",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/soap.wav",
       "whatLikeVariantLabel": "soap"
     },
     {
       "id": "what-sticker",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/sticker.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/sticker.webp",
       "label": "the sticker",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/sticker.wav",
       "whatLikeVariantLabel": "sticker"
     },
     {
       "id": "what-teddy-bear",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/teddy_bear.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/teddy_bear.webp",
       "label": "the teddy bear",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/teddy_bear.wav",
       "whatLikeVariantLabel": "teddy bear"
     },
     {
       "id": "what-tower",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/tower.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/tower.webp",
       "label": "the tower",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/tower.wav",
       "whatLikeVariantLabel": "tower"
     },
     {
       "id": "what-toys",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/toys.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/toys.webp",
       "label": "the toys",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/toys.wav",
       "whatLikeVariantLabel": "toys"
     },
     {
       "id": "what-tray",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/tray.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/tray.webp",
       "label": "the tray",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/tray.wav",
       "whatLikeVariantLabel": "tray"
     },
     {
       "id": "what-tree",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/tree.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/tree.webp",
       "label": "the tree",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/tree.wav",
       "whatLikeVariantLabel": "tree"
     },
     {
       "id": "what-trophy",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/trophy.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/trophy.webp",
       "label": "the trophy",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/trophy.wav",
       "whatLikeVariantLabel": "trophy"
     },
     {
       "id": "what-vegetables",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/vegetables.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/vegetables.webp",
       "label": "the vegetables",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/vegetables.wav",
       "whatLikeVariantLabel": "vegetables"
     },
     {
       "id": "what-water-bottle",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/water_bottle.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/water_bottle.webp",
       "label": "the water bottle",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/water_bottle.wav",
       "whatLikeVariantLabel": "water bottle"
@@ -1577,235 +1577,235 @@
   "where": [
     {
       "id": "where-bakery",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/bakery.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/bakery.webp",
       "label": "in the bakery",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/bakery.wav"
     },
     {
       "id": "where-bathroom",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/toilet.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/toilet.webp",
       "label": "in the bathroom",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/toilet.wav"
     },
     {
       "id": "where-beach",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/beach.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/beach.webp",
       "label": "at the beach",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/beach.wav"
     },
     {
       "id": "where-bedroom",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/bedroom.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/bedroom.webp",
       "label": "in the bedroom",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/bedroom.wav"
     },
     {
       "id": "where-cinema",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/cinema.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/cinema.webp",
       "label": "at the cinema",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/cinema.wav"
     },
     {
       "id": "where-dinner-table",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/dinner_table.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/dinner_table.webp",
       "label": "at the dinner table",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/dinner_table.wav"
     },
     {
       "id": "where-doctors",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/doctor_location.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/doctor_location.webp",
       "label": "at the doctor's",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/doctor_location.wav"
     },
     {
       "id": "where-farm",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/farm.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/farm.webp",
       "label": "on the farm",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/farm.wav"
     },
     {
       "id": "where-farm-field",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/field.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/field.webp",
       "label": "in the field",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/field.wav"
     },
     {
       "id": "where-field",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/field.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/field.webp",
       "label": "in the field",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/field.wav"
     },
     {
       "id": "where-flower",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/flower.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/flower.webp",
       "label": "the flower",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/flower.wav"
     },
     {
       "id": "where-football-pitch",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/football_pitch.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/football_pitch.webp",
       "label": "at the football pitch",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/football_pitch.wav"
     },
     {
       "id": "where-garage",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/garage.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/garage.webp",
       "label": "into the garage",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/garage.wav"
     },
     {
       "id": "where-garden",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/garden.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/garden.webp",
       "label": "in the garden",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/garden.wav"
     },
     {
       "id": "where-greenhouse",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/greenhouse.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/greenhouse.webp",
       "label": "in the greenhouse",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/greenhouse.wav"
     },
     {
       "id": "where-hallway",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/hallway.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/hallway.webp",
       "label": "in the hallway",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/hallway.wav"
     },
     {
       "id": "where-home",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/house.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/house.webp",
       "label": "at home",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/house.wav"
     },
     {
       "id": "where-hutch",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/hutch.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/hutch.webp",
       "label": "in the hutch",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/hutch.wav"
     },
     {
       "id": "where-in-sand",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/sand.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/sand.webp",
       "label": "in the sand",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/sand.wav"
     },
     {
       "id": "where-jungle",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/jungle.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/jungle.webp",
       "label": "in the jungle",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/jungle.wav"
     },
     {
       "id": "where-kitchen",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/kitchen.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/kitchen.webp",
       "label": "in the kitchen",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/kitchen.wav"
     },
     {
       "id": "where-living-room",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/living_room.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/living_room.webp",
       "label": "in the living room",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/living_room.wav"
     },
     {
       "id": "where-library",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/library.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/library.webp",
       "label": "in the library",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/library.wav"
     },
     {
       "id": "where-on-bed",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/bed.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/bed.webp",
       "label": "on the bed",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/bed.wav"
     },
     {
       "id": "where-on-chair",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/chair.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/chair.webp",
       "label": "on the chair",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/chair.wav"
     },
     {
       "id": "where-on-mat",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/mat.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/mat.webp",
       "label": "on the mat",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/mat.wav"
     },
     {
       "id": "where-on-path",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/path.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/path.webp",
       "label": "on the path",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/path.wav"
     },
     {
       "id": "where-park",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/park.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/park.webp",
       "label": "at the park",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/park.wav"
     },
     {
       "id": "where-river",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/river.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/river.webp",
       "label": "in the river",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/river.wav"
     },
     {
       "id": "where-road",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/road.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/road.webp",
       "label": "on the road",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/road.wav"
     },
     {
       "id": "where-sandpit",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/sandpit.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/sandpit.webp",
       "label": "in the sandpit",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/sandpit.wav"
     },
     {
       "id": "where-school",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/classroom.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/classroom.webp",
       "label": "at school",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/classroom.wav"
     },
     {
       "id": "where-sea",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/sea.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/sea.webp",
       "label": "in the sea",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/sea.wav"
     },
     {
       "id": "where-ship",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/ship.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/ship.webp",
       "label": "on the ship",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/ship.wav"
     },
     {
       "id": "where-shop",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/shop.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/shop.webp",
       "label": "in the shop",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/shop.wav"
     },
     {
       "id": "where-supermarket",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/supermarket.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/supermarket.webp",
       "label": "in the supermarket",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/supermarket.wav"
     },
     {
       "id": "where-swimming-pool",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/swimming_pool.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/swimming_pool.webp",
       "label": "in the swimming pool",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/swimming_pool.wav"
     },
     {
       "id": "where-vet-location",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/vet_location.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/vet_location.webp",
       "label": "at the vet",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/vet_location.wav"
     },
     {
       "id": "where-woods",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/forest.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/forest.webp",
       "label": "in the woods",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/forest.wav"
     }
@@ -1813,121 +1813,121 @@
   "to-who": [
     {
       "id": "to-who-friend-female",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/friend_female.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/friend_female.webp",
       "label": "to her friend",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/friend_female.wav"
     },
     {
       "id": "to-who-friend-male",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/friend_male.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/friend_male.webp",
       "label": "to his friend",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/friend_male.wav"
     },
     {
       "id": "to-who-basket",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/basket.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/basket.webp",
       "label": "into the basket",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/basket.wav"
     },
     {
       "id": "to-who-baby",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/baby.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/baby.webp",
       "label": "to its baby",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/baby.wav"
     },
     {
       "id": "to-who-baker",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/baker.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/baker.webp",
       "label": "to the baker",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/baker.wav"
     },
     {
       "id": "to-who-boy",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/boy.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/boy.webp",
       "label": "to the boy",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/boy.wav"
     },
     {
       "id": "to-who-captain",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/captain.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/captain.webp",
       "label": "to the captain",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/captain.wav"
     },
     {
       "id": "to-who-children",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/children.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/children.webp",
       "label": "to the children",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/children.wav"
     },
     {
       "id": "to-who-dad",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/dad.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/dad.webp",
       "label": "to their dad",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/dad.wav"
     },
     {
       "id": "to-who-dog",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/dog.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/dog.webp",
       "label": "to the dog",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/dog.wav"
     },
     {
       "id": "to-who-family",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/family.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/family.webp",
       "label": "to family",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/family.wav"
     },
     {
       "id": "to-who-gardener",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/gardener.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/gardener.webp",
       "label": "to the gardener",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/gardener.wav"
     },
     {
       "id": "to-who-girl",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/girl.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/girl.webp",
       "label": "to the girl",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/girl.wav"
     },
     {
       "id": "to-who-grandma",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/grandma.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/grandma.webp",
       "label": "to grandma",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/grandma.wav"
     },
     {
       "id": "to-who-lady",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/lady.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/lady.webp",
       "label": "to the lady",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/lady.wav"
     },
     {
       "id": "to-who-librarian",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/librarian.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/librarian.webp",
       "label": "to the librarian",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/librarian.wav"
     },
     {
       "id": "to-who-mum",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/mum.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/mum.webp",
       "label": "to their mum",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/mum.wav"
     },
     {
       "id": "to-who-shopkeeper",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/shopkeeper.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/shopkeeper.webp",
       "label": "for the shopkeeper",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/shopkeeper.wav"
     },
     {
       "id": "to-who-teacher",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/teacher.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/teacher.webp",
       "label": "to the teacher",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/teacher.wav"
     },
     {
       "id": "to-who-visitors",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/visitor.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/visitor.webp",
       "label": "to the visitors",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/visitor.wav"
     }
@@ -1935,121 +1935,121 @@
   "when": [
     {
       "id": "when-after-his-appointment",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/appointment.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/appointment.webp",
       "label": "after his appointment",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/appointment.wav"
     },
     {
       "id": "when-after-her-appointment",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/appointment.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/appointment.webp",
       "label": "after her appointment",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/appointment.wav"
     },
     {
       "id": "when-after-competition",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/competing.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/competing.webp",
       "label": "after the competition",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/competing.wav"
     },
     {
       "id": "when-dinner-time",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/dinner_time.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/dinner_time.webp",
       "label": "at dinner time",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/dinner_time.wav"
     },
     {
       "id": "when-lunch-time",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/lunch_time.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/lunch_time.webp",
       "label": "at lunch time",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/lunch_time.wav"
     },
     {
       "id": "when-bed-time",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/bed_time.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/bed_time.webp",
       "label": "at bed time",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/bed_time.wav"
     },
     {
       "id": "when-breakfast-time",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/breakfast_time.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/breakfast_time.webp",
       "label": "at breakfast time",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/breakfast_time.wav"
     },
     {
       "id": "when-at-night",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/bedroom.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/bedroom.webp",
       "label": "at night",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/bedroom.wav"
     },
     {
       "id": "when-at-sunset",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/sunset.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/sunset.webp",
       "label": "at sunset",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/sunset.wav"
     },
     {
       "id": "when-autumn",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/autumn.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/autumn.webp",
       "label": "in the autumn",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/autumn.wav"
     },
     {
       "id": "when-birthday",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/birthday.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/birthday.webp",
       "label": "on their birthday",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/birthday.wav"
     },
     {
       "id": "when-morning",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/morning.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/morning.webp",
       "label": "in the morning",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/morning.wav"
     },
     {
       "id": "when-afternoon",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/afternoon.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/afternoon.webp",
       "label": "in the afternoon",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/afternoon.wav"
     },
     {
       "id": "when-night-time",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/night.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/night.webp",
       "label": "at night time",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/night.wav"
     },
     {
       "id": "when-day-time",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/day.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/day.webp",
       "label": "in the day time",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/day.wav"
     },
     {
       "id": "when-evening",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/evening.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/evening.webp",
       "label": "in the evening",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/evening.wav"
     },
     {
       "id": "when-sunny-day",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/sunny.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/sunny.webp",
       "label": "on a sunny day",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/sunny.wav"
     },
     {
       "id": "when-spring",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/spring.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/spring.webp",
       "label": "in the spring",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/spring.wav"
     },
     {
       "id": "when-summer",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/summer.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/summer.webp",
       "label": "in the summer",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/summer.wav"
     },
     {
       "id": "when-winter",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/winter.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/winter.webp",
       "label": "in the winter",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/winter.wav"
     }
@@ -2057,451 +2057,451 @@
   "what-like": [
     {
       "id": "what-like-completed",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/completed.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/completed.webp",
       "label": "the completed",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/completed.wav"
     },
     {
       "id": "what-like-big",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/big.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/big.webp",
       "label": "the big",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/big.wav"
     },
     {
       "id": "what-like-black",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/black.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/black.webp",
       "label": "the black",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/black.wav"
     },
     {
       "id": "what-like-blue",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/blue.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/blue.webp",
       "label": "the blue",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/blue.wav"
     },
     {
       "id": "what-like-brave",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/brave.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/brave.webp",
       "label": "the brave",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/brave.wav"
     },
     {
       "id": "what-like-brown",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/brown.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/brown.webp",
       "label": "the brown",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/brown.wav"
     },
     {
       "id": "what-like-busy",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/busy.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/busy.webp",
       "label": "the busy",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/busy.wav"
     },
     {
       "id": "what-like-caring",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/caring.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/caring.webp",
       "label": "the caring",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/caring.wav"
     },
     {
       "id": "what-like-checked",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/checked.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/checked.webp",
       "label": "the checked",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/checked.wav"
     },
     {
       "id": "what-like-clean",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/clean.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/clean.webp",
       "label": "the clean",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/clean.wav"
     },
     {
       "id": "what-like-colourful",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/colourful.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/colourful.webp",
       "label": "the colourful",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/colourful.wav"
     },
     {
       "id": "what-like-crunchy",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/crunchy.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/crunchy.webp",
       "label": "the crunchy",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/crunchy.wav"
     },
     {
       "id": "what-like-dirty",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/dirty.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/dirty.webp",
       "label": "the dirty",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/dirty.wav"
     },
     {
       "id": "what-like-dry",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/dry.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/dry.webp",
       "label": "the dry",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/dry.wav"
     },
     {
       "id": "what-like-dull",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/dull.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/dull.webp",
       "label": "the dull",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/dull.wav"
     },
     {
       "id": "what-like-empty",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/empty.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/empty.webp",
       "label": "the empty",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/empty.wav"
     },
     {
       "id": "what-like-enormous",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/enormous.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/enormous.webp",
       "label": "the enormous",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/enormous.wav"
     },
     {
       "id": "what-like-fallen",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/fallen.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/fallen.webp",
       "label": "the fallen",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/fallen.wav"
     },
     {
       "id": "what-like-fast",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/fast.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/fast.webp",
       "label": "the fast",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/fast.wav"
     },
     {
       "id": "what-like-fluffy",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/fluffy.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/fluffy.webp",
       "label": "the fluffy",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/fluffy.wav"
     },
     {
       "id": "what-like-foggy",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/foggy.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/foggy.webp",
       "label": "the foggy",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/foggy.wav"
     },
     {
       "id": "what-like-friendly",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/friendly.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/friendly.webp",
       "label": "the friendly",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/friendly.wav"
     },
     {
       "id": "what-like-frosty",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/frosty.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/frosty.webp",
       "label": "the frosty",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/frosty.wav"
     },
     {
       "id": "what-like-full",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/full.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/full.webp",
       "label": "the full",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/full.wav"
     },
     {
       "id": "what-like-furry",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/furry.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/furry.webp",
       "label": "the furry",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/furry.wav"
     },
     {
       "id": "what-like-glass",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/glass.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/glass.webp",
       "label": "the glass",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/glass.wav"
     },
     {
       "id": "what-like-gold",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/gold.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/gold.webp",
       "label": "the gold",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/gold.wav"
     },
     {
       "id": "what-like-green",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/green.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/green.webp",
       "label": "the green",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/green.wav"
     },
     {
       "id": "what-like-hard",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/hard.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/hard.webp",
       "label": "the hard",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/hard.wav"
     },
     {
       "id": "what-like-heavy",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/heavy.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/heavy.webp",
       "label": "the heavy",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/heavy.wav"
     },
     {
       "id": "what-like-jewelled",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/jewelled.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/jewelled.webp",
       "label": "the jewelled",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/jewelled.wav"
     },
     {
       "id": "what-like-long",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/long.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/long.webp",
       "label": "the long",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/long.wav"
     },
     {
       "id": "what-like-mashed",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/mashed.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/mashed.webp",
       "label": "the mashed",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/mashed.wav"
     },
     {
       "id": "what-like-messy",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/messy.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/messy.webp",
       "label": "the messy",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/messy.wav"
     },
     {
       "id": "what-like-metal",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/metal.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/metal.webp",
       "label": "the metal",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/metal.wav"
     },
     {
       "id": "what-like-muddy",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/muddy.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/muddy.webp",
       "label": "the muddy",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/muddy.wav"
     },
     {
       "id": "what-like-orange",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/orange.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/orange.webp",
       "label": "the orange",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/orange.wav"
     },
     {
       "id": "what-like-patterned",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/patterned.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/patterned.webp",
       "label": "the patterned",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/patterned.wav"
     },
     {
       "id": "what-like-pink",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/pink.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/pink.webp",
       "label": "the pink",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/pink.wav"
     },
     {
       "id": "what-like-plain",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/plain.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/plain.webp",
       "label": "the plain",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/plain.wav"
     },
     {
       "id": "what-like-plastic",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/plastic.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/plastic.webp",
       "label": "the plastic",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/plastic.wav"
     },
     {
       "id": "what-like-pointy",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/pointy.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/pointy.webp",
       "label": "the pointy",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/pointy.wav"
     },
     {
       "id": "what-like-purple",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/purple.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/purple.webp",
       "label": "the purple",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/purple.wav"
     },
     {
       "id": "what-like-quick",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/quick.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/quick.webp",
       "label": "the quick",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/quick.wav"
     },
     {
       "id": "what-like-happy",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/happily.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/happily.webp",
       "label": "the happy",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/happily.wav"
     },
     {
       "id": "what-like-rainbow",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/rainbow.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/rainbow.webp",
       "label": "the rainbow",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/rainbow.wav"
     },
     {
       "id": "what-like-rainy",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/rainy.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/rainy.webp",
       "label": "the rainy",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/rainy.wav"
     },
     {
       "id": "what-like-red",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/red.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/red.webp",
       "label": "the red",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/red.wav"
     },
     {
       "id": "what-like-rescued",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/rescued.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/rescued.webp",
       "label": "the rescued",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/rescued.wav"
     },
     {
       "id": "what-like-shiny",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/shiny.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/shiny.webp",
       "label": "the shiny",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/shiny.wav"
     },
     {
       "id": "what-like-short",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/short.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/short.webp",
       "label": "the short",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/short.wav"
     },
     {
       "id": "what-like-silly",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/silly.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/silly.webp",
       "label": "the silly",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/silly.wav"
     },
     {
       "id": "what-like-silver",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/silver.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/silver.webp",
       "label": "the silver",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/silver.wav"
     },
     {
       "id": "what-like-sleepy",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/sleepy.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/sleepy.webp",
       "label": "the sleepy",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/sleepy.wav"
     },
     {
       "id": "what-like-slippery",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/slippery.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/slippery.webp",
       "label": "the slippery",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/slippery.wav"
     },
     {
       "id": "what-like-slow",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/slow.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/slow.webp",
       "label": "the slow",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/slow.wav"
     },
     {
       "id": "what-like-small",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/small.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/small.webp",
       "label": "the small",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/small.wav"
     },
     {
       "id": "what-like-snowy",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/snowy.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/snowy.webp",
       "label": "the snowy",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/snowy.wav"
     },
     {
       "id": "what-like-soft",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/soft.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/soft.webp",
       "label": "the soft",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/soft.wav"
     },
     {
       "id": "what-like-spiky",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/spiky.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/spiky.webp",
       "label": "the spiky",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/spiky.wav"
     },
     {
       "id": "what-like-spotted",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/spotted.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/spotted.webp",
       "label": "the spotted",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/spotted.wav"
     },
     {
       "id": "what-like-stormy",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/stormy.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/stormy.webp",
       "label": "the stormy",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/stormy.wav"
     },
     {
       "id": "what-like-striped",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/striped.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/striped.webp",
       "label": "the striped",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/striped.wav"
     },
     {
       "id": "what-like-tall",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/tall.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/tall.webp",
       "label": "the tall",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/tall.wav"
     },
     {
       "id": "what-like-thick",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/thick.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/thick.webp",
       "label": "the thick",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/thick.wav"
     },
     {
       "id": "what-like-thin",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/thin.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/thin.webp",
       "label": "the thin",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/thin.wav"
     },
     {
       "id": "what-like-tidy",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/tidy.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/tidy.webp",
       "label": "the tidy",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/tidy.wav"
     },
     {
       "id": "what-like-tiny",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/tiny.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/tiny.webp",
       "label": "the tiny",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/tiny.wav"
     },
     {
       "id": "what-like-tired",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/tired.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/tired.webp",
       "label": "the tired",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/tired.wav"
     },
     {
       "id": "what-like-wet",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/wet.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/wet.webp",
       "label": "the wet",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/wet.wav"
     },
     {
       "id": "what-like-white",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/white.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/white.webp",
       "label": "the white",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/white.wav"
     },
     {
       "id": "what-like-windy",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/windy.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/windy.webp",
       "label": "the windy",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/windy.wav"
     },
     {
       "id": "what-like-wooden",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/wooden.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/wooden.webp",
       "label": "the wooden",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/wooden.wav"
     },
     {
       "id": "what-like-wool",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/wool.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/wool.webp",
       "label": "the wool",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/wool.wav"
     },
     {
       "id": "what-like-yellow",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/yellow.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/yellow.webp",
       "label": "the yellow",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/yellow.wav"
     }
@@ -2509,153 +2509,153 @@
   "how": [
     {
       "id": "how-patiently",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/patiently.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/patiently.webp",
       "label": "patiently",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/patiently.wav"
     },
     {
       "id": "how-quickly",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/quick.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/quick.webp",
       "label": "quickly",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/quick.wav"
     },
 
     {
       "id": "how-slowly",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/slow.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/slow.webp",
       "label": "slowly",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/slow.wav"
     },
     {
       "id": "how-adventurously",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/adventurous.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/adventurous.webp",
       "label": "adventurously",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/adventurous.wav"
     },
     {
       "id": "how-cleverly",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/clever.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/clever.webp",
       "label": "cleverly",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/clever.wav",
       "whatLikeVariantLabel": "clever"
     },
     {
       "id": "how-angrily",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/angrily.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/angrily.webp",
       "label": "angrily",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/angrily.wav"
     },
     {
       "id": "how-calmly",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/calmly.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/calmly.webp",
       "label": "calmly",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/calmly.wav"
     },
     {
       "id": "how-carefully",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/carefully.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/carefully.webp",
       "label": "carefully",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/carefully.wav"
     },
     {
       "id": "how-cheerfully",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/cheerfully.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/cheerfully.webp",
       "label": "cheerfully",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/cheerfully.wav"
     },
     {
       "id": "how-confidently",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/brave.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/brave.webp",
       "label": "confidently",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/brave.wav"
     },
     {
       "id": "how-curiously",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/curiously.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/curiously.webp",
       "label": "curiously",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/curiously.wav"
     },
     {
       "id": "how-excitedly",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/excitedly.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/excitedly.webp",
       "label": "excitedly",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/excitedly.wav"
     },
     {
       "id": "how-gently",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/gently.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/gently.webp",
       "label": "gently",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/gently.wav"
     },
     {
       "id": "how-happily",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/happily.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/happily.webp",
       "label": "happily",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/happily.wav"
     },
     {
       "id": "how-helpfully",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/helpfully.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/helpfully.webp",
       "label": "helpfully",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/helpfully.wav"
     },
     {
       "id": "how-independently",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/independently.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/independently.webp",
       "label": "independently",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/independently.wav"
     },
     {
       "id": "how-kindly",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/kindly.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/kindly.webp",
       "label": "kindly",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/kindly.wav"
     },
     {
       "id": "how-nervously",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/nervously.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/nervously.webp",
       "label": "nervously",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/nervously.wav"
     },
     {
       "id": "how-playfully",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/playing.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/playing.webp",
       "label": "playfully",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/playing.wav"
     },
     {
       "id": "how-politely",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/politely.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/politely.webp",
       "label": "politely",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/politely.wav"
     },
     {
       "id": "how-proudly",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/proudly.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/proudly.webp",
       "label": "proudly",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/proudly.wav"
     },
     {
       "id": "how-reassuringly",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/helpfully.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/helpfully.webp",
       "label": "reassuringly",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/helpfully.png"
+      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/helpfully.webp"
     },
     {
       "id": "how-sadly",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/sadly.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/sadly.webp",
       "label": "sadly",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/sadly.wav"
     },
     {
       "id": "how-safely",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/safely.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/safely.webp",
       "label": "safely",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/safely.wav"
     },
     {
       "id": "how-thoughtfully",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/thoughtfully.png",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/thoughtfully.webp",
       "label": "thoughtfully",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/thoughtfully.wav"
     }
