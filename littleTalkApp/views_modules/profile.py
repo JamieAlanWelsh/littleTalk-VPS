@@ -1,8 +1,9 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Prefetch
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.template.loader import render_to_string
 from django.urls import reverse
 from django.templatetags.static import static
 
@@ -130,9 +131,6 @@ def profile(request):
         request.session["selected_learner_id"] = selected_learner.id
 
     learners_list = [_decorate_learner_avatar(learner) for learner in learners]
-    if selected_learner and selected_learner in learners_list:
-        learners_list.remove(selected_learner)
-        learners_list.insert(0, selected_learner)
 
     if selected_learner:
         selected_learner = _decorate_learner_avatar(selected_learner)
@@ -231,14 +229,52 @@ def select_learner(request):
     """Stores the chosen learner ID in the session and redirects back to the profile page.
 
     Intended to be called via a POST form on the profile page when the user switches
-    between learners.
+    between learners. When called with an ``XMLHttpRequest`` header, updates the
+    session and returns the rendered right-column detail partial as JSON so the page
+    can switch learners without a full reload.
     """
 
-    if request.method == "POST":
-        learner_id = request.POST.get("learner_id")
+    if request.method != "POST":
+        return HttpResponseRedirect(reverse("profile"))
+
+    learner_id = request.POST.get("learner_id")
+    is_ajax = request.headers.get("x-requested-with") == "XMLHttpRequest"
+
+    if not is_ajax:
         if learner_id:
             request.session["selected_learner_id"] = learner_id
-    return HttpResponseRedirect(reverse("profile"))
+        return HttpResponseRedirect(reverse("profile"))
+
+    if not learner_id:
+        return JsonResponse({"error": "Missing learner_id."}, status=400)
+
+    try:
+        learner = Learner.objects.get(id=int(learner_id), deleted=False)
+    except (ValueError, Learner.DoesNotExist):
+        return JsonResponse({"error": "Learner not found."}, status=404)
+
+    if not _learner_is_accessible_by_user(request.user, request, learner):
+        return JsonResponse({"error": "You cannot access this learner."}, status=403)
+
+    request.session["selected_learner_id"] = learner.id
+    _decorate_learner_avatar(learner)
+
+    context = {"selected_learner": learner}
+    profile_obj = request.user.profile
+    if profile_obj.is_parent():
+        parent_profile = profile_obj.parent_profile
+        context["on_trial"] = parent_profile.on_trial()
+        context["trial_days_left"] = parent_profile.trial_days_left()
+        context["is_subscribed"] = parent_profile.is_subscribed
+
+    html = render_to_string("profile/_learner_detail.html", context, request=request)
+    return JsonResponse(
+        {
+            "html": html,
+            "learner_id": learner.id,
+            "learner_uuid": str(learner.learner_uuid),
+        }
+    )
 
 
 @login_required

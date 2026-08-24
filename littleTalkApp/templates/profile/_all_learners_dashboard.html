@@ -38,6 +38,8 @@
                                     type="submit"
                                     name="learner_id"
                                     value="{{ learner.id }}"
+                                    data-learner-select="{{ learner.id }}"
+                                    data-learner-uuid="{{ learner.learner_uuid }}"
                                     class="learner-button {% if learner.id == selected_learner.id %}selected{% endif %}"
                                 >
                                     <span class="learner-button__content">
@@ -55,124 +57,7 @@
         </div>
     </div>
 
-    <div class="right-column">
-        {% if selected_learner %}
-            <div class="profile-card profile-card--details">
-                <div class="profile-card__header">
-                    <h3 class="profile-card__title">Learner Details:</h3>
-                </div>
-                <div class="learner-details-body">
-                    <div class="learner-details-copy">
-                        <p><strong>Name:</strong> {{ selected_learner.name }}</p>
-                        {% if selected_learner.cohort %}
-                            <p><strong>Cohort:</strong> {{ selected_learner.cohort }}</p>
-                        {% endif %}
-                        <p><strong>Exp:</strong> {{ selected_learner.exp }}</p>
-                    </div>
-                    <a href="{% url 'avatar_editor' selected_learner.learner_uuid %}" class="learner-avatar-link" aria-label="Edit {{ selected_learner.name }} avatar">
-                        <span class="learner-avatar learner-avatar--details" style="--avatar-color: {{ selected_learner.avatar_display_color }};">
-                            <img src="{{ selected_learner.avatar_image_url }}" alt="{{ selected_learner.name }} avatar" class="learner-avatar__image">
-                        </span>
-                    </a>
-                </div>
-                {% if request.user.profile.role == 'parent' and selected_learner.school_id %}
-                    <div class="recommendation-info no-print" style="margin-top: 16px; margin-bottom: 20px; padding: 12px; background: #f0f3ff; border-radius: 8px; display: flex; gap: 8px; align-items: flex-start;">
-                        <span style="font-weight: 600; color: #0066cc;">i</span>
-                        <div>
-                            <p style="margin: 0; font-size: 0.95rem;">This learner is being managed by {{ selected_learner.school.name }}</p>
-                        </div>
-                    </div>
-                {% endif %}
-            </div>
-
-            {% if request.user.profile.role != 'parent' %}
-            <div class="profile-card profile-card--targets profile-card--padded">
-                <div class="profile-card__header">
-                    <h3 class="profile-card__title">Targets:</h3>
-                    <div class="section-filter">
-                        <select id="targets-filter" class="select section-filter__select">
-                            <option value="all" selected>All Targets</option>
-                            <option value="achieved">Achieved</option>
-                            <option value="ongoing">Ongoing</option>
-                            <option value="not_achieved">Not Achieved</option>
-                            <option value="---">----</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="targets-container" id="targets-container">
-                    {% if selected_learner.targets.all %}
-                        {% for target in selected_learner.targets.all %}
-                            <div class="target-card target-status-{{ target.status }}" data-target-id="{{ target.id }}" data-status="{{ target.status }}">
-                                <div class="target-content">
-                                    <span class="target-text">{{ target.text }}</span>
-                                    <textarea
-                                        class="target-text-input"
-                                        data-target-id="{{ target.id }}"
-                                        maxlength="255"
-                                        aria-label="Edit target"
-                                        rows="3"
-                                    >{{ target.text }}</textarea>
-                                    <select class="target-status-dropdown" data-target-id="{{ target.id }}">
-                                        <option value="---" {% if target.status == '---' %}selected{% endif %}>----</option>
-                                        <option value="achieved" {% if target.status == 'achieved' %}selected{% endif %}>Achieved</option>
-                                        <option value="not_achieved" {% if target.status == 'not_achieved' %}selected{% endif %}>Not Achieved</option>
-                                        <option value="ongoing" {% if target.status == 'ongoing' %}selected{% endif %}>Ongoing</option>
-                                    </select>
-                                </div>
-                                <button class="target-delete-btn" data-target-id="{{ target.id }}" title="Delete target">×</button>
-                            </div>
-                        {% endfor %}
-                    {% else %}
-                        <p class="no-targets-message">No targets added yet.</p>
-                    {% endif %}
-                </div>
-
-                <div class="targets-actions">
-                    <button class="button-secondary" id="new-target-btn">+ New Target</button>
-                    <button class="button-secondary" id="edit-targets-btn">Edit Targets</button>
-                </div>
-            </div>
-            {% endif %}
-
-            {% if request.user.profile.role != 'parent' or not selected_learner.school_id %}
-                {% if not is_read_only %}
-                    <div class="edit-learner-btn">
-                        <a href="{% url 'edit_learner' selected_learner.learner_uuid %}" class="button">📝 Learner Settings</a>
-                    </div>
-                {% endif %}
-
-                <div class="edit-learner-btn">
-                    <a href="{% url 'screener' %}" class="button">📋 Screener</a>
-                </div>
-            {% endif %}
-
-            {% if request.user.profile.role != 'parent' %}
-                <div class="edit-learner-btn">
-                    <a href="{% url 'view_parent_token' selected_learner.learner_uuid %}" class="button">💌 Parent Invite</a>
-                </div>
-            {% endif %}
-        {% endif %}
-
-        {% if request.user.profile.role == 'parent' %}
-        <div class="profile-card profile-card--details">
-            <div class="profile-card__header">
-                <h3 class="profile-card__title">Subscription</h3>
-            </div>
-            <p>
-                {% if is_subscribed %}
-                    Active Parent Plan - 3 Learners
-                {% elif on_trial %}
-                    Free Trial - {{ trial_days_left }} days left
-                {% else %}
-                    Inactive
-                {% endif %}
-            </p>
-        </div>
-
-        <div class="edit-learner-btn">
-            <a href="{% url 'manage_subscription' %}" class="button">⚙ Manage Subscription</a>
-        </div>
-        {% endif %}
+    <div class="right-column" data-learner-detail>
+        {% include "profile/_learner_detail.html" %}
     </div>
 </div>
