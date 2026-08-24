@@ -12,12 +12,12 @@
     display: flex;
     justify-content: space-between;
     margin: 50px auto;
-    max-width: 800px;
+    max-width: 1000px;
 }
 
 /* Not sure this is doing anything */
 .left-column {
-    width: 40%;
+    width: 28%;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -26,7 +26,7 @@
 }
 
 .right-column {
-    width: 55%;
+    width: 70%;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -232,7 +232,9 @@
 }
 
 .add-learner-btn a {
-    width: 270px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
     background-color: var(--yellow-button-color);
     text-decoration: none;
 }
