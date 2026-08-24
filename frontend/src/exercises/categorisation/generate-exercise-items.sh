@@ -6,11 +6,11 @@
 # Input directory structure:
 #   /path/to/categories/
 #     ├── farmyard-animals/
-#     │   ├── cow.png
-#     │   └── pig.png
+#     │   ├── cow.webp
+#     │   └── pig.webp
 #     └── exotic-animals/
-#         ├── lion.png
-#         └── zebra.png
+#         ├── lion.webp
+#         └── zebra.webp
 
 if [ $# -eq 0 ]; then
   echo "Usage: $0 <path-to-categories-directory>"
@@ -36,7 +36,7 @@ for category_dir in "$CATEGORIES_DIR"/*/; do
   first=true
   
   # Loop through image files in the category
-  for image_file in "$category_dir"*.png; do
+  for image_file in "$category_dir"*.webp; do
     if [ -f "$image_file" ]; then
       filename=$(basename "$image_file")
       id="${filename%.*}"  # Remove extension

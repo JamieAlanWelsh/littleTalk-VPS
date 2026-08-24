@@ -1,8 +1,8 @@
 {
   "rounds": 5,
   "bagImages": {
-    "closedImageUrl": "/static/exercise_assets/whats_in_the_bag/bag/bag_closed.png",
-    "openImageUrl": "/static/exercise_assets/whats_in_the_bag/bag/bag_open.png",
+    "closedImageUrl": "/static/exercise_assets/whats_in_the_bag/bag/bag_closed.webp",
+    "openImageUrl": "/static/exercise_assets/whats_in_the_bag/bag/bag_open.webp",
     "closedAltText": "A closed mystery bag",
     "openAltText": "An open mystery bag"
   },

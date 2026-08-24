@@ -6,7 +6,7 @@ CASE_STUDIES = [
         "slug": "pdet-trust",
         "school_name": "Peterborough Diocese Education Trust",
         "location": "Trust-wide pilot",
-        "image": static("images/landing/about/our_mission.JPG"),
+        "image": static("images/landing/about/our_mission.webp"),
         "headline": "How 13 schools delivered 676 speech and language sessions in six weeks",
         "intro": (
             "A six-week pilot across Peterborough Diocese Education Trust showed what becomes possible "
@@ -93,7 +93,7 @@ CASE_STUDIES = [
         "slug": "watling-primary",
         "school_name": "Watling Primary",
         "location": "Primary school pilot",
-        "image": static("images/landing/about/our_impact.png"),
+        "image": static("images/landing/about/our_impact.webp"),
         "headline": "How one teaching assistant helped 13 pupils avoid months on a waiting list without training",
         "intro": (
             "At Watling Primary, pupils who might otherwise have waited until September began receiving speech "
@@ -175,7 +175,7 @@ CASE_STUDIES = [
         "slug": "kings-furlong",
         "school_name": "Kings Furlong Infant School & Nursery",
         "location": "Infant school and nursery pilot",
-        "image": static("images/landing/about/jamie_presenting.jpg"),
+        "image": static("images/landing/about/jamie_presenting.webp"),
         "headline": "Earlier identification, confident staff and more pupils receiving support",
         "intro": (
             "Kings Furlong set out to identify speech and language needs earlier and make high-quality "

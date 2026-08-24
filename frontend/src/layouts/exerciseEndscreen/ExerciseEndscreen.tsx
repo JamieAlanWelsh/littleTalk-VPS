@@ -94,7 +94,7 @@ export const ExerciseEndscreen = ({
             {/* Celebrating mascot */}
             <div className={styles.logoContainer}>
                 <img
-                    src="/static/images/arlo_celebrating.png"
+                    src="/static/images/arlo_celebrating.webp"
                     alt="Arlo is celebrating"
                     className={styles.logo}
                 />

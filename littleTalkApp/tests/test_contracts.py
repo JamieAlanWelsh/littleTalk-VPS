@@ -240,7 +240,7 @@ class TemplateContractsTests(TestCase):
         self.assertContains(response, "Book a Demo")
         self.assertContains(response, "Get Started")
         self.assertContains(response, "Naomie Harris OBE")
-        self.assertContains(response, "images/landing/frontpagewidget.png")
+        self.assertContains(response, "images/landing/frontpagewidget.webp")
 
 
 class SubscriptionContractsTests(TestCase):

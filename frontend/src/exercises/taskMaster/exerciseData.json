@@ -880,32 +880,32 @@
     {
       "id": "arlo_armadillo",
       "label": "Arlo Armadillo",
-      "imageUrl": "/static/exercise_assets/characters/arlo_armadillo.png"
+      "imageUrl": "/static/exercise_assets/characters/arlo_armadillo.webp"
     },
     {
       "id": "humble_hedgehog",
       "label": "Humble Hedgehog",
-      "imageUrl": "/static/exercise_assets/characters/humble_hedgehog.png"
+      "imageUrl": "/static/exercise_assets/characters/humble_hedgehog.webp"
     },
     {
       "id": "muddles_mole",
       "label": "Muddles Mole",
-      "imageUrl": "/static/exercise_assets/characters/muddles_mole.png"
+      "imageUrl": "/static/exercise_assets/characters/muddles_mole.webp"
     },
     {
       "id": "peppy_pigeon",
       "label": "Peppy Pigeon",
-      "imageUrl": "/static/exercise_assets/characters/peppy_pigeon.png"
+      "imageUrl": "/static/exercise_assets/characters/peppy_pigeon.webp"
     },
     {
       "id": "resilient_red_panda",
       "label": "Resilient Red Panda",
-      "imageUrl": "/static/exercise_assets/characters/resilient_red_panda.png"
+      "imageUrl": "/static/exercise_assets/characters/resilient_red_panda.webp"
     },
     {
       "id": "thoughtful_tortoise",
       "label": "Thoughtful Tortoise",
-      "imageUrl": "/static/exercise_assets/characters/thoughtful_tortoise.png"
+      "imageUrl": "/static/exercise_assets/characters/thoughtful_tortoise.webp"
     }
   ]
 }
