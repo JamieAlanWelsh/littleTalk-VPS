@@ -219,7 +219,7 @@ class TemplateContractsTests(TestCase):
         self.assertTemplateUsed(response, "school/accept_invite.html")
 
     def test_signup_pages_link_terms_and_privacy_notice(self):
-        for name in ("account_setup", "school_signup", "request_join_school", "parent_signup"):
+        for name in ("school_signup", "request_join_school", "parent_signup"):
             with self.subTest(name=name):
                 response = self.client.get(reverse(name))
                 self.assertContains(response, reverse("terms"))

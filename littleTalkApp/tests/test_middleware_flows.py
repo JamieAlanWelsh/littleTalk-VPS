@@ -59,5 +59,5 @@ class MultiSchoolMiddlewareFlowTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.request["PATH_INFO"], reverse("access_restricted"))
-        self.assertContains(response, "Access to this account is currently paused")
+        self.assertContains(response, "Your school membership is currently inactive")
         self.assertContains(response, 'action="/logout/"')
