@@ -21,7 +21,6 @@
                             >
                                 <span class="learner-button__content">
                                     <span class="learner-button__name">{{ cohort.name }}</span>
-                                    <span class="cohort-pill">{{ cohort.active_learners|length }}</span>
                                 </span>
                             </button>
                         </li>
@@ -80,18 +79,16 @@
 
                         {% if can_edit_cohorts and not is_read_only %}
                             <div class="cohort-manage-controls">
-                                <label class="sample-target-label" for="cohort-search-{{ cohort.id }}">Find learner</label>
-                                <input
-                                    id="cohort-search-{{ cohort.id }}"
-                                    type="text"
-                                    class="input cohort-search-input"
-                                    placeholder="Search by learner name"
-                                    data-cohort-search
-                                    data-cohort-id="{{ cohort.id }}"
-                                >
+                                <label class="sample-target-label" for="cohort-learner-select-{{ cohort.id }}">Find learner</label>
                                 <div class="cohort-add-row">
-                                    <select class="select cohort-learner-select" data-cohort-learner-select data-cohort-id="{{ cohort.id }}">
-                                        <option value="">Select learner to add</option>
+                                    <select
+                                        id="cohort-learner-select-{{ cohort.id }}"
+                                        class="select cohort-learner-select cohort-learner-select--searchable"
+                                        data-cohort-learner-select
+                                        data-cohort-id="{{ cohort.id }}"
+                                        data-placeholder="Search for a learner"
+                                    >
+                                        <option value=""></option>
                                         {% for learner in school_learners %}
                                             {% if learner.cohort_id != cohort.id %}
                                                 <option
