@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.db.models import Prefetch
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
@@ -64,14 +65,45 @@ def profile(request):
         parent_profile = profile_obj.parent_profile
         all_learners = profile_obj.parent_profile.learners.filter(deleted=False)
         cohorts = Cohort.objects.none()
+        manage_cohorts = []
+        school_learners = []
+        can_edit_cohorts = False
 
         on_trial = parent_profile.on_trial()
         trial_days_left = parent_profile.trial_days_left()
         is_subscribed = parent_profile.is_subscribed
     else:
         user_school = profile_obj.get_current_school(request)
-        all_learners = Learner.objects.filter(school=user_school, deleted=False)
-        cohorts = Cohort.objects.filter(school=user_school).distinct()
+        if user_school:
+            all_learners = Learner.objects.filter(school=user_school, deleted=False)
+            cohorts = Cohort.objects.filter(school=user_school).distinct()
+            can_edit_cohorts = profile_obj.is_admin_for_school(user_school) or profile_obj.is_manager_for_school(user_school)
+
+            cohort_learners = Learner.objects.filter(school=user_school, deleted=False)
+            manage_cohorts = list(
+                Cohort.objects.filter(school=user_school)
+                .order_by("name")
+                .prefetch_related(
+                    Prefetch(
+                        "learner_set",
+                        queryset=cohort_learners,
+                        to_attr="active_learners",
+                    )
+                )
+            )
+            school_learners = [_decorate_learner_avatar(learner) for learner in cohort_learners]
+
+            for cohort in manage_cohorts:
+                cohort.active_learners = [
+                    _decorate_learner_avatar(learner)
+                    for learner in cohort.active_learners
+                ]
+        else:
+            all_learners = Learner.objects.none()
+            cohorts = Cohort.objects.none()
+            manage_cohorts = []
+            school_learners = []
+            can_edit_cohorts = False
 
     selected_cohort = request.GET.get("cohort")
     try:
@@ -116,6 +148,10 @@ def profile(request):
             "on_trial": on_trial,
             "trial_days_left": trial_days_left,
             "is_subscribed": is_subscribed,
+            "is_staff_profile": not profile_obj.is_parent(),
+            "manage_cohorts": manage_cohorts,
+            "school_learners": school_learners,
+            "can_edit_cohorts": can_edit_cohorts,
         },
     )
 

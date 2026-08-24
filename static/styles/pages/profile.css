@@ -15,6 +15,46 @@
     max-width: 1000px;
 }
 
+.profile-tabs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: min(100%, 700px);
+    margin: 25px auto 6px;
+    padding: 10px;
+    background: var(--accent-color);
+    box-shadow: var(--box-shadow);
+    border-radius: 999px;
+}
+
+.profile-tab {
+    flex: 1 1 0;
+    min-width: 0;
+    border: 1.5px solid var(--border-grey);
+    background: white;
+    color: var(--font-color);
+    border-radius: 999px;
+    padding: 7px 12px;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+    white-space: nowrap;
+    font-family: var(--font-outfit);
+}
+
+.profile-tab--active {
+    background: #f4d95b;
+}
+
+.profile-panel {
+    display: none;
+}
+
+.profile-panel--active {
+    display: block;
+}
+
 /* Not sure this is doing anything */
 .left-column {
     width: 28%;
@@ -30,6 +70,136 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
+}
+
+.cohorts-list-card {
+    max-height: 76vh;
+}
+
+.cohort-select-button--active {
+    background-color: var(--font-color);
+    color: white;
+}
+
+.cohort-pill {
+    align-items: center;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 999px;
+    display: inline-flex;
+    font-size: 0.8rem;
+    font-weight: 700;
+    justify-content: center;
+    min-width: 34px;
+    padding: 3px 10px;
+}
+
+.cohort-select-button--active .cohort-pill {
+    border-color: rgba(255, 255, 255, 0.45);
+}
+
+.cohort-panel {
+    display: none;
+}
+
+.cohort-panel--active {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.cohort-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.cohort-description {
+    margin: 0;
+    color: var(--font-color);
+}
+
+.cohort-members {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+.cohort-member-chip {
+    align-items: center;
+    background: white;
+    border: 1px solid var(--border-grey);
+    border-radius: var(--border-radius-light);
+    display: inline-flex;
+    gap: 10px;
+    padding: 8px 12px;
+    box-shadow: var(--box-shadow);
+}
+
+.cohort-member-chip__name {
+    color: var(--font-color);
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.cohort-member-chip__avatar {
+    align-items: center;
+    background-color: var(--avatar-color, #f2f2f2);
+    border-radius: var(--border-radius-light);
+    display: inline-flex;
+    height: 42px;
+    justify-content: center;
+    overflow: hidden;
+    width: 42px;
+}
+
+.cohort-member-chip__image {
+    height: 38px;
+    object-fit: contain;
+    width: 38px;
+}
+
+.cohort-member-chip__remove {
+    align-items: center;
+    background: transparent;
+    border: none;
+    border-radius: 999px;
+    color: var(--button-red);
+    cursor: pointer;
+    display: inline-flex;
+    font-size: 1.3rem;
+    font-weight: 700;
+    height: 28px;
+    justify-content: center;
+}
+
+.cohort-member-chip__remove:hover {
+    background: #fdeceb;
+}
+
+.cohort-manage-controls {
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+    padding-top: 16px;
+}
+
+.cohort-search-input {
+    margin-bottom: 10px;
+}
+
+.cohort-add-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.cohort-learner-select {
+    margin-bottom: 0;
+    flex: 1;
+}
+
+.cohort-empty-message {
+    color: #888;
+    margin: 0;
+    padding: 10px 15px 20px;
 }
 
 /* -----------------------------
@@ -285,6 +455,15 @@
 ------------------------------ */
 
 @media (max-width: 800px) {
+    .profile-tabs {
+        justify-content: flex-start;
+        overflow-x: auto;
+    }
+
+    .profile-tab {
+        flex: 0 0 auto;
+    }
+
     .profile-container {
         flex-direction: column;
         align-items: stretch;
@@ -303,6 +482,11 @@
 
     .learner-details-body {
         align-items: flex-start;
+    }
+
+    .cohort-add-row {
+        flex-direction: column;
+        align-items: stretch;
     }
 }
 

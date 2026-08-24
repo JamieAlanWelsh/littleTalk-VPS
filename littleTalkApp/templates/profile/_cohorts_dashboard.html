@@ -1,0 +1,124 @@
+<div class="profile-container">
+    <div class="left-column">
+        {% if can_edit_cohorts and not is_read_only %}
+            <div class="add-learner-btn">
+                <a href="{% url 'profile_cohort_create' %}" class="button">+ Add Cohort</a>
+            </div>
+        {% endif %}
+
+        <div class="learners-list profile-card cohorts-list-card">
+            <div class="profile-card__header">
+                <h3 class="profile-card__title">Cohorts</h3>
+            </div>
+            {% if manage_cohorts %}
+                <ul>
+                    {% for cohort in manage_cohorts %}
+                        <li class="learner-item">
+                            <button
+                                type="button"
+                                class="learner-button cohort-select-button {% if forloop.first %}cohort-select-button--active{% endif %}"
+                                data-cohort-select="{{ cohort.id }}"
+                            >
+                                <span class="learner-button__content">
+                                    <span class="learner-button__name">{{ cohort.name }}</span>
+                                    <span class="cohort-pill">{{ cohort.active_learners|length }}</span>
+                                </span>
+                            </button>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="cohort-empty-message">No cohorts created yet.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="right-column">
+        {% if manage_cohorts %}
+            {% for cohort in manage_cohorts %}
+                <div
+                    class="cohort-panel {% if forloop.first %}cohort-panel--active{% endif %}"
+                    data-cohort-panel="{{ cohort.id }}"
+                    data-cohort-add-url="{% url 'profile_cohort_add_learner' cohort.id %}"
+                    data-cohort-remove-url="{% url 'profile_cohort_remove_learner' cohort.id %}"
+                >
+                    <div class="profile-card profile-card--details profile-card--padded">
+                        <div class="profile-card__header">
+                            <h3 class="profile-card__title">{{ cohort.name }}</h3>
+                            {% if can_edit_cohorts and not is_read_only %}
+                                <div class="cohort-actions">
+                                    <a href="{% url 'profile_cohort_edit' cohort.id %}" class="button-secondary">Edit</a>
+                                    <a href="{% url 'profile_cohort_delete' cohort.id %}" class="button-secondary">Delete</a>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <p class="cohort-description">{{ cohort.description|default:"No description yet." }}</p>
+                    </div>
+
+                    <div class="profile-card profile-card--padded">
+                        <div class="profile-card__header">
+                            <h3 class="profile-card__title">Learners in Cohort</h3>
+                        </div>
+
+                        <div class="cohort-members" data-cohort-members="{{ cohort.id }}">
+                            {% if cohort.active_learners %}
+                                {% for learner in cohort.active_learners %}
+                                    <span class="cohort-member-chip" data-learner-id="{{ learner.id }}" data-learner-name="{{ learner.name|lower }}" data-avatar-color="{{ learner.avatar_display_color }}" data-avatar-image-url="{{ learner.avatar_image_url }}">
+                                        <span class="cohort-member-chip__avatar" style="--avatar-color: {{ learner.avatar_display_color }};">
+                                            <img src="{{ learner.avatar_image_url }}" alt="{{ learner.name }} avatar" class="cohort-member-chip__image">
+                                        </span>
+                                        <span class="cohort-member-chip__name">{{ learner.name }}</span>
+                                        {% if can_edit_cohorts and not is_read_only %}
+                                            <button type="button" class="cohort-member-chip__remove" data-cohort-remove-btn data-learner-id="{{ learner.id }}" aria-label="Remove {{ learner.name }} from {{ cohort.name }}">×</button>
+                                        {% endif %}
+                                    </span>
+                                {% endfor %}
+                            {% else %}
+                                <p class="cohort-empty-message" data-cohort-empty>No learners in this cohort yet.</p>
+                            {% endif %}
+                        </div>
+
+                        {% if can_edit_cohorts and not is_read_only %}
+                            <div class="cohort-manage-controls">
+                                <label class="sample-target-label" for="cohort-search-{{ cohort.id }}">Find learner</label>
+                                <input
+                                    id="cohort-search-{{ cohort.id }}"
+                                    type="text"
+                                    class="input cohort-search-input"
+                                    placeholder="Search by learner name"
+                                    data-cohort-search
+                                    data-cohort-id="{{ cohort.id }}"
+                                >
+                                <div class="cohort-add-row">
+                                    <select class="select cohort-learner-select" data-cohort-learner-select data-cohort-id="{{ cohort.id }}">
+                                        <option value="">Select learner to add</option>
+                                        {% for learner in school_learners %}
+                                            {% if learner.cohort_id != cohort.id %}
+                                                <option
+                                                    value="{{ learner.id }}"
+                                                    data-learner-name="{{ learner.name|lower }}"
+                                                    data-avatar-color="{{ learner.avatar_display_color }}"
+                                                    data-avatar-image-url="{{ learner.avatar_image_url }}"
+                                                >
+                                                    {{ learner.name }}
+                                                </option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                    <button type="button" class="button-secondary" data-cohort-add-btn data-cohort-id="{{ cohort.id }}">Add Learner</button>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="profile-card profile-card--details profile-card--padded">
+                <div class="profile-card__header">
+                    <h3 class="profile-card__title">Cohorts</h3>
+                </div>
+                <p class="cohort-empty-message">Create a cohort to begin organising your learners.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>

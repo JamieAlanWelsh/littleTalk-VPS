@@ -8,6 +8,7 @@ from .views_modules import practise as practise_views
 from .views_modules import logbook as logbook_views
 from .views_modules import parent_access as parent_access_views
 from .views_modules import profile as profile_views
+from .views_modules import profile_cohorts as profile_cohort_views
 from .views_modules import public as public_views
 from .views_modules import school as school_views
 from .views_modules import settings_views as settings_app_views
@@ -65,6 +66,11 @@ urlpatterns = [
     path('profile/edit_learner/<uuid:learner_uuid>/', profile_views.edit_learner, name='edit_learner'),
     path('profile/avatar/<uuid:learner_uuid>/', profile_views.avatar_editor, name='avatar_editor'),
     path('profile/edit_learner/confirm_delete_learner/<uuid:learner_uuid>/', profile_views.confirm_delete_learner, name='confirm_delete_learner'),
+    path('profile/cohorts/new/', profile_cohort_views.profile_cohort_create, name='profile_cohort_create'),
+    path('profile/cohorts/<int:cohort_id>/edit/', profile_cohort_views.profile_cohort_edit, name='profile_cohort_edit'),
+    path('profile/cohorts/<int:cohort_id>/delete/', profile_cohort_views.profile_cohort_delete, name='profile_cohort_delete'),
+    path('profile/cohorts/<int:cohort_id>/add-learner/', profile_cohort_views.profile_cohort_add_learner, name='profile_cohort_add_learner'),
+    path('profile/cohorts/<int:cohort_id>/remove-learner/', profile_cohort_views.profile_cohort_remove_learner, name='profile_cohort_remove_learner'),
 
     # Cohorts
     path('school/cohorts/', school_views.cohort_list, name='cohort_list'),
