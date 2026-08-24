@@ -62,7 +62,7 @@
                                 <option value="ongoing" {% if target.status == 'ongoing' %}selected{% endif %}>Ongoing</option>
                             </select>
                         </div>
-                        <button class="target-delete-btn" data-target-id="{{ target.id }}" title="Delete target">×</button>
+                        <button class="cohort-member-chip__remove target-delete-btn" data-target-id="{{ target.id }}" title="Delete target">×</button>
                     </div>
                 {% endfor %}
             {% else %}

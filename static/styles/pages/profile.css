@@ -147,7 +147,8 @@
     width: 38px;
 }
 
-.cohort-member-chip__remove {
+.cohort-member-chip__remove,
+.target-delete-btn {
     align-items: center;
     background: transparent;
     border: none;
@@ -159,10 +160,15 @@
     font-weight: 700;
     height: 28px;
     justify-content: center;
+    padding: 0;
+    width: 28px;
+    transition: background-color 0.3s, color 0.3s;
 }
 
-.cohort-member-chip__remove:hover {
+.cohort-member-chip__remove:hover,
+.target-delete-btn:hover {
     background: #fdeceb;
+    color: #d32f2f;
 }
 
 .cohort-manage-controls {
@@ -703,25 +709,9 @@
 }
 
 .target-delete-btn {
-    background-color: transparent;
-    border: none;
-    color: #f44336;
-    font-size: 24px;
-    cursor: pointer;
-    padding: 0;
-    margin-left: 10px;
-    width: 30px;
-    height: 30px;
     display: none;
-    align-items: center;
-    justify-content: center;
-    border-radius: 4px;
-    transition: background-color 0.3s, color 0.3s;
-}
-
-.target-delete-btn:hover {
-    background-color: #ffebee;
-    color: #d32f2f;
+    margin-left: 10px;
+    flex: 0 0 auto;
 }
 
 .no-targets-message {
@@ -745,7 +735,7 @@
 }
 
 .profile-card--targets.edit-mode .target-delete-btn {
-    display: flex;
+    display: inline-flex;
 }
 
 .profile-card--targets.edit-mode .target-text {
