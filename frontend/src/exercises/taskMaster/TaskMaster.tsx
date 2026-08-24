@@ -8,8 +8,10 @@
 import { useState } from "react";
 import ExerciseStartScreen from "../../layouts/exerciseStartScreen/ExerciseStartScreen";
 import TaskMasterGame from "./TaskMasterGame";
+import { useGroupContextValue } from "../../contexts/GroupContext";
 import { generateQuestions } from "./utils";
 import type { TaskMasterQuestion } from "./types";
+import { TASK_MASTER_QUESTIONS_PER_SCENE } from "./constants";
 
 const EXERCISE_METADATA = {
     setupTitle: "Task Master Setup",
@@ -27,11 +29,15 @@ export interface TaskMasterPayload {
 }
 
 export const TaskMaster = () => {
+    const { groupLearners, isGroupMode } = useGroupContextValue();
     const [hasStarted, setHasStarted] = useState(false);
     const [questions, setQuestions] = useState<TaskMasterQuestion[]>([]);
+    const requestedQuestionCount = isGroupMode
+        ? Math.max(TASK_MASTER_QUESTIONS_PER_SCENE, groupLearners.length * 2)
+        : TASK_MASTER_QUESTIONS_PER_SCENE;
 
     const handleStartExercise = () => {
-        setQuestions(generateQuestions());
+        setQuestions(generateQuestions(requestedQuestionCount));
         setHasStarted(true);
     };
 
@@ -50,7 +56,8 @@ export const TaskMaster = () => {
                 }}
             >
                 <p style={{ margin: 0 }}>
-                    You will complete 5 instructions in one scene.
+                    You will complete {requestedQuestionCount} instructions in
+                    one scene.
                 </p>
                 <p style={{ margin: 0 }}>
                     Drag the character into the best matching box for each

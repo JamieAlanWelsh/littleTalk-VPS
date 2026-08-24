@@ -3,7 +3,9 @@ import ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "../style.css";
 import { LearnerContextProvider } from "../contexts/LearnerContext";
+import { GroupContextProvider } from "../contexts/GroupContext";
 import ColourfulSemanticsExercise from "../exercises/colourfulSemantics/ColourfulSemantics";
+import { getExerciseMountContext } from "../lib/bootstrap";
 import {
     getColourfulSemanticsVariantData,
     resolveColourfulSemanticsVariantId,
@@ -22,19 +24,24 @@ if (!mountElement) {
         );
         const { payload, variant } =
             getColourfulSemanticsVariantData(variantId);
-        const learnerUUID =
-            mountElement.getAttribute("data-learner-uuid") || null;
+        const { learnerUUID, groupId, groupLearners } =
+            getExerciseMountContext(mountElement);
 
         const root = ReactDOM.createRoot(mountElement);
         root.render(
             <React.StrictMode>
                 <QueryClientProvider client={queryClient}>
-                    <LearnerContextProvider learnerUUID={learnerUUID}>
-                        <ColourfulSemanticsExercise
-                            payload={payload}
-                            variant={variant}
-                        />
-                    </LearnerContextProvider>
+                    <GroupContextProvider
+                        groupId={groupId}
+                        groupLearners={groupLearners}
+                    >
+                        <LearnerContextProvider learnerUUID={learnerUUID}>
+                            <ColourfulSemanticsExercise
+                                payload={payload}
+                                variant={variant}
+                            />
+                        </LearnerContextProvider>
+                    </GroupContextProvider>
                 </QueryClientProvider>
             </React.StrictMode>,
         );

@@ -55,3 +55,38 @@ export async function submitExerciseResult(
         );
     }
 }
+
+export async function submitGroupExerciseResult(
+    groupId: number,
+    payload: SubmitExerciseResultPayload,
+    csrfToken: string,
+): Promise<void> {
+    const response = await fetch(`/api/groups/${groupId}/submit-exercise/`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrfToken,
+        },
+        credentials: "include",
+        body: JSON.stringify({
+            nonce: payload.nonce,
+            exp: payload.exp,
+            total_exercises: payload.totalExercises,
+            exercise_id: payload.exerciseId,
+            difficulty_level: payload.difficultyLevel,
+            difficulty_label: payload.difficultyLabel,
+            started_at: payload.startedAt,
+            completed_at: payload.completedAt,
+            total_questions: payload.totalQuestions,
+            incorrect_answers: payload.incorrectAnswers,
+            attempts_per_question: payload.attemptsPerQuestion,
+        }),
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(
+            `Failed to submit group exercise result: ${errorData.detail || response.statusText}`,
+        );
+    }
+}

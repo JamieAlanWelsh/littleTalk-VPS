@@ -5,7 +5,7 @@ from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
 
-from littleTalkApp.models import Learner, LearnerAssessmentAnswer, Role
+from littleTalkApp.models import InterventionGroup, Learner, LearnerAssessmentAnswer, Role
 from littleTalkApp.tests.base import BaseFlowTestMixin
 from littleTalkApp.views_modules.practise import resolve_recommendation_index
 
@@ -129,3 +129,63 @@ class PractiseRecommendationRotationTests(BaseFlowTestMixin, TestCase):
         self.assertIsNone(response.context["recommended_exercise_card"])
         self.assertContains(response, "Need a hand picking an exercise?")
         self.assertContains(response, reverse("start_assessment_v2"))
+
+
+class PractiseGroupRecommendationTests(BaseFlowTestMixin, TestCase):
+    def setUp(self):
+        self.user, _, self.school = self.create_staff_user_with_school(
+            username="group_practise_staff", role=Role.ADMIN
+        )
+        self.learner_a = Learner.objects.create(
+            user=self.user,
+            school=self.school,
+            name="Group Alpha",
+            recommended_exercise_ids=["whats-in-the-bag", "story-train"],
+        )
+        self.learner_b = Learner.objects.create(
+            user=self.user,
+            school=self.school,
+            name="Group Beta",
+            recommended_exercise_ids=["whats-in-the-bag", "in-the-know"],
+        )
+        self.group = InterventionGroup.objects.create(school=self.school, name="Practise Group")
+        self.group.learners.add(self.learner_a, self.learner_b)
+
+        self.client.force_login(self.user)
+        self.set_selected_school(self.school.id)
+        session = self.client.session
+        session["selected_group_id"] = self.group.id
+        session["selected_learner_id"] = self.learner_a.id
+        session.save()
+
+        LearnerAssessmentAnswer.objects.create(
+            learner=self.learner_a,
+            question_id=1,
+            topic="Blank Level 1",
+            skill="Naming common objects",
+            text="Can the child name familiar objects in pictures?",
+            answer="No",
+            session_id=uuid.uuid4(),
+            screener_version=2,
+        )
+
+    def test_practise_context_aggregates_group_recommendations(self):
+        response = self.client.get(reverse("practise"))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["recommended_exercise_keys"][0], "whats_in_the_bag_vocabulary_builder")
+        self.assertEqual(response.context["selected_group"].id, self.group.id)
+        self.assertEqual(
+            [learner.id for learner in response.context["selected_group_learners"]],
+            [self.learner_a.id, self.learner_b.id],
+        )
+
+    def test_practise_context_shows_group_empty_state_when_no_recommendations_exist(self):
+        self.learner_a.recommended_exercise_ids = []
+        self.learner_a.save(update_fields=["recommended_exercise_ids"])
+        self.learner_b.recommended_exercise_ids = []
+        self.learner_b.save(update_fields=["recommended_exercise_ids"])
+
+        response = self.client.get(reverse("practise"))
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.context["group_recommendation_empty_state"])
+        self.assertContains(response, "No recommendations yet")

@@ -1,0 +1,53 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    text-align: center;
+    width: min(30rem, 100%);
+}
+
+.containerClosing {
+    animation: turnModalFadeOut 0.2s ease-in forwards;
+}
+
+.avatarShell {
+    display: grid;
+    place-items: center;
+}
+
+.avatar {
+    width: 9rem;
+    height: 9rem;
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+}
+
+.avatarImage {
+    width: 80%;
+    height: 80%;
+    object-fit: cover;
+}
+
+.title {
+    margin: 0;
+    font-size: 1.5rem;
+    line-height: 1.1;
+}
+
+.buttonGroup {
+    width: 100%;
+}
+
+@keyframes turnModalFadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(12px) scale(0.98);
+    }
+}

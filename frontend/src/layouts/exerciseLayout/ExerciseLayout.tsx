@@ -12,6 +12,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import styles from "./exerciseLayout.module.css";
 import ExerciseActionBar from "../../components/ExerciseActionBar/ExerciseActionBar";
 import ConfirmationModal from "../../components/ConfirmationModal/ConfirmationModal";
+import GroupTurnModal from "../../components/GroupTurnModal/GroupTurnModal";
 import type {
     AnswerState,
     ExerciseDifficulty,
@@ -20,6 +21,7 @@ import type {
 import { useExerciseTracking, useSubmitExerciseResult } from "../../hooks";
 import ExerciseEndscreen from "../exerciseEndscreen/ExerciseEndscreen";
 import { useAudio } from "../../hooks/useAudio";
+import { useGroupContextValue } from "../../contexts/GroupContext";
 
 const EXP_FLOOR = 200;
 const EXP_ACCURACY_RANGE = 80; // accuracy contributes 0–80
@@ -111,12 +113,14 @@ export const ExerciseLayout = <AnswerType,>({
     difficulty = DEFAULT_EXERCISE_DIFFICULTY,
     children,
 }: ExerciseLayoutProps<AnswerType>) => {
+    const { isGroupMode, turnOrder } = useGroupContextValue();
     const scaleAreaRef = useRef<HTMLDivElement | null>(null);
     const [currentQuestionStateIndex, setCurrentQuestionStateIndex] =
         useState<number>(0);
     const [showExitConfirmation, setShowExitConfirmation] = useState(false);
     const [showSettingsConfirmation, setShowSettingsConfirmation] =
         useState(false);
+    const [isTurnStarted, setIsTurnStarted] = useState(() => !isGroupMode);
     const [endscreenMetrics, setEndscreenMetrics] = useState<{
         expGained: number;
         accuracyPercent: number;
@@ -131,8 +135,16 @@ export const ExerciseLayout = <AnswerType,>({
     const isLastQuestion = currentQuestionStateIndex === questions.length - 1;
     const currentQuestion = questions[currentQuestionStateIndex];
     const promptText = promptOverride ?? currentQuestion?.prompt ?? "";
+    const currentGroupLearner =
+        isGroupMode && turnOrder.length > 0
+            ? turnOrder[currentQuestionStateIndex % turnOrder.length]
+            : null;
 
     const { play } = useAudio();
+
+    useEffect(() => {
+        setIsTurnStarted(!isGroupMode);
+    }, [currentQuestionStateIndex, isGroupMode]);
 
     useEffect(() => {
         if (isComplete) {
@@ -406,6 +418,10 @@ export const ExerciseLayout = <AnswerType,>({
         onResetQuestion();
     };
 
+    const handleStartTurn = () => {
+        setIsTurnStarted(true);
+    };
+
     const handleEndSession = () => {
         window.location.href = "/practise/";
     };
@@ -531,6 +547,18 @@ export const ExerciseLayout = <AnswerType,>({
                     </div>
                 </>
             )}
+            {isGroupMode &&
+                !isComplete &&
+                currentGroupLearner &&
+                !isTurnStarted && (
+                    <GroupTurnModal
+                        isOpen={true}
+                        learnerName={currentGroupLearner.name}
+                        avatarImageUrl={currentGroupLearner.avatar_image_url}
+                        avatarColor={currentGroupLearner.avatar_color}
+                        onStart={handleStartTurn}
+                    />
+                )}
             <ConfirmationModal
                 isOpen={showExitConfirmation}
                 title="Exit session?"

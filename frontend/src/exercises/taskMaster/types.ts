@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { TASK_MASTER_QUESTIONS_PER_SCENE } from "./constants";
 
 export const TaskMasterTaskQuestionDataSchema = z.object({
     id: z.string(),
@@ -17,9 +16,7 @@ export const TaskMasterTaskDataSchema = z.object({
         .string()
         .regex(/^\/static\/exercise_assets\/task_master\/.+\.webp$/i),
     altText: z.string().optional(),
-    questions: z
-        .array(TaskMasterTaskQuestionDataSchema)
-        .length(TASK_MASTER_QUESTIONS_PER_SCENE),
+    questions: z.array(TaskMasterTaskQuestionDataSchema).min(1),
 });
 
 export type TaskMasterTaskData = z.infer<typeof TaskMasterTaskDataSchema>;

@@ -133,6 +133,7 @@ urlpatterns = [
 
     # API endpoints
     path('api/learners/<uuid:learner_uuid>/submit-exercise/', api_views.SubmitExerciseView.as_view(), name='submit_exercise'),
+    path('api/groups/<int:group_id>/submit-exercise/', api_views.SubmitGroupExerciseView.as_view(), name='submit_group_exercise'),
     path('api/learners/<uuid:learner_uuid>/avatar/', api_views.UpdateLearnerAvatarView.as_view(), name='update_learner_avatar'),
     path('api/selected-learner/', api_views.get_current_session_learner_context, name='get_current_session_learner_context'),
     path('api/targets/', api_views.create_target, name='create_target'),
