@@ -4,7 +4,7 @@
 {% block title %}Chatterdillo | Profile{% endblock %}
 
 {% block content %}
-<div class="learner-context-bar">
+<div class="learner-context-bar{% if animate_context_bar %} learner-context-bar--bounce{% endif %}">
     {% if practise_group %}
         <div class="learner-context-avatar" style="background-color: #fff;" aria-hidden="true">
             <img src="{% static 'images/arlo_and_friends.webp' %}" alt="">
@@ -34,16 +34,16 @@
         <button
             type="button"
             class="profile-tab"
-            data-profile-tab="groups"
+            data-profile-tab="cohorts"
         >
-            Group Intervention
+            Cohorts
         </button>
         <button
             type="button"
             class="profile-tab"
-            data-profile-tab="cohorts"
+            data-profile-tab="groups"
         >
-            Cohorts
+            Group Intervention
         </button>
     </section>
 

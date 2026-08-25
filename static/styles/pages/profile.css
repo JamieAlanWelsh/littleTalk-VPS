@@ -29,6 +29,32 @@
     border-radius: 999px;
 }
 
+.learner-context-bar--bounce {
+    animation: learner-context-bounce 0.55s ease-out;
+    transform-origin: center;
+}
+
+@keyframes learner-context-bounce {
+    0% {
+        transform: translateY(0) scale(1);
+    }
+    35% {
+        transform: translateY(-6px) scale(1.015);
+    }
+    65% {
+        transform: translateY(2px) scale(0.995);
+    }
+    100% {
+        transform: translateY(0) scale(1);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .learner-context-bar--bounce {
+        animation: none;
+    }
+}
+
 .profile-tab {
     flex: 1 1 0;
     min-width: 0;
@@ -87,6 +113,7 @@
 .learner-button.learner-button--viewing {
     border-color: var(--yellow-button-color);
     border-width: 3px;
+    box-shadow: none;
 }
 
 .cohort-panel {
@@ -439,6 +466,7 @@
 .learner-button.selected {
     background-color: var(--font-color);
     color: white;
+    box-shadow: none;
 }
 
 .learner-button__content {
@@ -497,6 +525,13 @@
     margin-bottom: 0;
 }
 
+.learner-details-avatar-actions {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+}
+
 .learner-avatar-link {
     border-radius: 16px;
     display: inline-block;
@@ -513,6 +548,11 @@
 
 .learner-avatar-link:focus-visible {
     box-shadow: 0 0 0 3px rgba(54, 163, 226, 0.45);
+}
+
+.learner-avatar-change-btn {
+    font-size: 13px;
+    padding: 6px 14px;
 }
 
 .learner-avatar {
@@ -829,7 +869,7 @@
     padding: 8px 20px;
     border: 1px solid var(--border-grey);
     border-radius: var(--border-radius);
-    background-color: var(--yellow-button-color);
+    background-color: var(--button-green);
     color: var(--font-color);
     font-family: var(--font-outfit);
     font-weight: 600;
@@ -841,8 +881,8 @@
 
 .button-select-practise:hover:not(:disabled) {
     background-color: white;
-    color: var(--yellow-button-hover);
-    border-color: var(--yellow-button-hover);
+    color: var(--button-green);
+    border-color: var(--button-green);
 }
 
 .button-select-practise--active,

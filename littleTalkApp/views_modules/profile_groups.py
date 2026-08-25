@@ -53,6 +53,7 @@ def profile_group_select(request):
 
     request.session["selected_group_id"] = group.id
     request.session["selected_learner_id"] = selected_learner.id
+    request.session["animate_profile_context_bar"] = True
     return redirect("profile")
 
 

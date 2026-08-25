@@ -187,6 +187,7 @@ def profile(request):
         practise_group = next((group for group in manage_groups if group.id == selected_group_id), None)
 
     is_selected_for_practise = bool(selected_learner) and not practise_group
+    animate_context_bar = request.session.pop("animate_profile_context_bar", False)
 
     return render(
         request,
@@ -211,6 +212,7 @@ def profile(request):
             "viewed_group_id": viewed_group_id,
             "practise_group": practise_group,
             "is_selected_for_practise": is_selected_for_practise,
+            "animate_context_bar": animate_context_bar,
         },
     )
 
@@ -315,6 +317,7 @@ def select_learner(request):
         if learner_id_int is not None:
             request.session["selected_learner_id"] = learner_id_int
             request.session.pop("selected_group_id", None)
+            request.session["animate_profile_context_bar"] = True
         return HttpResponseRedirect(reverse("profile"))
 
     if learner_id_int is None:

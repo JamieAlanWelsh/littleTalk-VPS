@@ -30,11 +30,14 @@
                     <p><strong>Estimated Stage:</strong> {{ recommended_stage_label }}</p>
                 {% endif %}
             </div>
-            <a href="{% url 'avatar_editor' selected_learner.learner_uuid %}" class="learner-avatar-link" aria-label="Edit {{ selected_learner.name }} avatar">
-                <span class="learner-avatar learner-avatar--details" style="--avatar-color: {{ selected_learner.avatar_display_color }};">
-                    <img src="{{ selected_learner.avatar_image_url }}" alt="{{ selected_learner.name }} avatar" class="learner-avatar__image">
-                </span>
-            </a>
+            <div class="learner-details-avatar-actions">
+                <a href="{% url 'avatar_editor' selected_learner.learner_uuid %}" class="learner-avatar-link" aria-label="Edit {{ selected_learner.name }} avatar">
+                    <span class="learner-avatar learner-avatar--details" style="--avatar-color: {{ selected_learner.avatar_display_color }};">
+                        <img src="{{ selected_learner.avatar_image_url }}" alt="{{ selected_learner.name }} avatar" class="learner-avatar__image">
+                    </span>
+                </a>
+                <a href="{% url 'avatar_editor' selected_learner.learner_uuid %}" class="button-secondary learner-avatar-change-btn">Change Avatar</a>
+            </div>
         </div>
         {% if request.user.profile.role == 'parent' and selected_learner.school_id %}
             <div class="recommendation-info no-print" style="margin-top: 16px; margin-bottom: 20px; padding: 12px; background: #f0f3ff; border-radius: 8px; display: flex; gap: 8px; align-items: flex-start;">
