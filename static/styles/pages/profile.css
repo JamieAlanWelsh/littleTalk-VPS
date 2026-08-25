@@ -471,7 +471,7 @@
     display: flex;
     gap: 18px;
     justify-content: space-between;
-    margin-bottom: 6px;
+    margin-bottom: 15px;
 }
 
 .learner-details-copy {
@@ -491,6 +491,13 @@
     display: inline-block;
     margin-bottom: 8px;
     outline: none;
+}
+
+.learner-avatar-edit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 24px;
 }
 
 .learner-avatar-link:focus-visible {
@@ -795,6 +802,7 @@
     font-weight: 600;
     font-size: 14px;
     cursor: pointer;
+    text-decoration: none;
     transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 }
 

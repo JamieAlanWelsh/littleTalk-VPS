@@ -27,8 +27,10 @@
                 {% endif %}
             </div>
         {% endfor %}
-        <button type="submit" class="btn btn--grey btn--small mb-40" id="email-save-btn" disabled>Save Changes</button>
+        <button type="submit" class="btn btn--grey btn--small" id="email-save-btn" disabled>Save Changes</button>
     </form>
+
+    <hr class="form-divider">
 
     {% comment %} <h2>Change Password</h2> {% endcomment %}
     <form method="post" action="{% url 'change_password' %}" class="form-stack" id="password-form">
@@ -49,8 +51,10 @@
                 {% include "partials/password_requirements.html" %}
             {% endif %}
         {% endfor %}
-        <button type="submit" class="btn btn--grey btn--small mb-40" id="password-save-btn" disabled>Save Changes</button>
+        <button type="submit" class="btn btn--grey btn--small" id="password-save-btn" disabled>Save Changes</button>
     </form>
+
+    <hr class="form-divider">
 
     <!-- Logout Form (POST request) -->
     <form method="post" action="{% url 'logout' %}" class="logout-form">

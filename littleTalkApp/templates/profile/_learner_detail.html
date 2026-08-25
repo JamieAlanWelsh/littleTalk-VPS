@@ -26,6 +26,9 @@
                     <p><strong>Cohort:</strong> {{ selected_learner.cohort }}</p>
                 {% endif %}
                 <p><strong>Exp:</strong> {{ selected_learner.exp }}</p>
+                {% if recommended_stage_label %}
+                    <p><strong>Estimated Stage:</strong> {{ recommended_stage_label }}</p>
+                {% endif %}
             </div>
             <a href="{% url 'avatar_editor' selected_learner.learner_uuid %}" class="learner-avatar-link" aria-label="Edit {{ selected_learner.name }} avatar">
                 <span class="learner-avatar learner-avatar--details" style="--avatar-color: {{ selected_learner.avatar_display_color }};">

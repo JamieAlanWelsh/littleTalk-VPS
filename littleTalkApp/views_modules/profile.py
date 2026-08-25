@@ -401,7 +401,7 @@ def edit_learner(request, learner_uuid):
 
     context = {
         "form": form,
-        "learner": learner,
+        "learner": _decorate_learner_avatar(learner),
         "can_delete": can_delete,
     }
     return render(request, "profile/edit_learner.html", context)

@@ -257,12 +257,12 @@ class ParentSignupForm(forms.Form):
 
 class LearnerForm(forms.ModelForm):
     name = forms.CharField(
-        label="Learner's name (or nickname)",
+        label="Name (or nickname)",
         required=True,
         widget=forms.TextInput(attrs={"class": "input"}),
     )
     date_of_birth = forms.DateField(
-        label="Learner DOB",
+        label="Date of Birth",
         required=True,
         widget=forms.DateInput(attrs={"type": "date", "class": "input"}),
     )

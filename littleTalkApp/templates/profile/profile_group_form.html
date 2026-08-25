@@ -19,17 +19,19 @@
       </div>
     {% endfor %}
 
-    <button type="submit" class="btn btn--yellow btn--full">Save</button>
+    <div class="form-actions">
+      <button type="submit" class="btn btn--yellow">Save</button>
+      <a href="{% url 'profile' %}" class="btn btn--white cancel-btn">
+        Cancel
+      </a>
+    </div>
 
     {% if mode == "edit" %}
+      <hr class="form-divider form-divider--less-margin">
       <a href="{% url 'profile_group_delete' group.id %}" class="btn btn--red btn--full">
         Delete Group
       </a>
     {% endif %}
-
-    <a href="{% url 'profile' %}" class="btn btn--white btn--full cancel-btn">
-      Cancel
-    </a>
   </form>
 </div>
 {% endblock %}

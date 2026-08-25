@@ -189,6 +189,22 @@
     margin: 0;
 }
 
+.form-divider {
+    border: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.212);
+    margin: 30px 0;
+}
+
+.form-divider--less-margin {
+    margin: 10px 0;
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
 .invite-staff-field {
     display: flex;
     flex-direction: column;
