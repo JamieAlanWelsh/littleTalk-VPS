@@ -11,7 +11,7 @@
 .profile-container {
     display: flex;
     justify-content: space-between;
-    margin: 50px auto;
+    margin: 30px auto;
     max-width: 1000px;
 }
 
@@ -303,24 +303,44 @@
     Cohort Filter (inside learners list)
 ------------------------------ */
 
-.section-filter {
+.learner-section-filter {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    align-items: left;
+    justify-content: left;
     gap: 12px;
     color: var(--font-color);
     font-size: 14px;
+    width: 100%;
 }
 
-.section-filter__label {
+.learner-section-filter__label {
     margin: 0;
     font-weight: 600;
     color: var(--font-color);
 }
 
+.learner-section-filter__select {
+    width: 100%;
+    min-width: 200px;
+    margin-bottom: 0;
+    font-size: 14px;
+}
+
+/* -----------------------------
+    Targets Filter (inside learner detail card)
+------------------------------ */
+
+.section-filter {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--font-color);
+    font-size: 14px;
+}
+
 .section-filter__select {
     width: auto;
-    min-width: 200px;
+    min-width: 160px;
     margin-bottom: 0;
     font-size: 14px;
 }

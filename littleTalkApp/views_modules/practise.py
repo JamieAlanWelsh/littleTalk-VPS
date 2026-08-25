@@ -226,6 +226,34 @@ def resolve_recommendation_index(learner):
     return current_index
 
 
+def get_recommended_stage_label(learner):
+    """Return the label of the practise stage currently recommended for a learner, if any."""
+
+    has_completed_screener_v2 = learner.answers.filter(screener_version=2).exists()
+    if not has_completed_screener_v2 or not learner.recommended_exercise_ids:
+        return None
+
+    current_index = resolve_recommendation_index(learner)
+    if current_index is None:
+        return None
+
+    recommendation_ids = learner.recommended_exercise_ids
+    ordered_current = recommendation_ids[current_index:] + recommendation_ids[:current_index]
+
+    recommended_exercise_key = None
+    for exercise_id in ordered_current:
+        practise_key = CANONICAL_TO_PRACTISE_KEY.get(exercise_id)
+        if practise_key:
+            recommended_exercise_key = practise_key
+            break
+
+    if not recommended_exercise_key:
+        return None
+
+    recommended_stage_number = PRACTISE_KEY_TO_STAGE.get(recommended_exercise_key)
+    return PRACTISE_STAGES.get(recommended_stage_number, {}).get("label")
+
+
 def build_recommendation_explanation(learner, current_exercise_id):
     """Build a short human-readable explanation for the current recommendation."""
 

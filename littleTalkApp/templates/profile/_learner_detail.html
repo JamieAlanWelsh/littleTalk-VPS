@@ -1,7 +1,7 @@
 {% if selected_learner %}
     <div class="profile-card profile-card--details">
         <div class="profile-card__header">
-            <h3 class="profile-card__title">Learner Details:</h3>
+            <h3 class="profile-card__title">{{ selected_learner.name }}</h3>
             <div class="cohort-actions">
                 {% if not is_read_only %}
                     <a href="{% url 'edit_learner' selected_learner.learner_uuid %}" class="button-secondary">Edit</a>
@@ -19,7 +19,9 @@
         </div>
         <div class="learner-details-body">
             <div class="learner-details-copy">
-                <p><strong>Name:</strong> {{ selected_learner.name }}</p>
+                {% if selected_learner.age_group %}
+                    <p><strong>Year Group:</strong> {{ selected_learner.get_age_group_display }}</p>
+                {% endif %}
                 {% if selected_learner.cohort %}
                     <p><strong>Cohort:</strong> {{ selected_learner.cohort }}</p>
                 {% endif %}

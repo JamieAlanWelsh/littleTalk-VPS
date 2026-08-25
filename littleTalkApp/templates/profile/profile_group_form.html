@@ -21,6 +21,12 @@
 
     <button type="submit" class="btn btn--yellow btn--full">Save</button>
 
+    {% if mode == "edit" %}
+      <a href="{% url 'profile_group_delete' group.id %}" class="btn btn--red btn--full">
+        Delete Group
+      </a>
+    {% endif %}
+
     <a href="{% url 'profile' %}" class="btn btn--white btn--full cancel-btn">
       Cancel
     </a>

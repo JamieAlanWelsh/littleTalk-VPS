@@ -11,9 +11,8 @@
         <div class="learners-list profile-card">
             {% if request.user.profile.role != 'parent' %}
                 <div class="profile-card__header">
-                    <h3 class="profile-card__title">Cohort:</h3>
-                    <form method="get" action="" class="section-filter">
-                        <select name="cohort" id="cohort" class="select section-filter__select" onchange="this.form.submit()">
+                    <form method="get" action="" class="learner-section-filter">
+                        <select name="cohort" id="cohort" class="select learner-section-filter__select" onchange="this.form.submit()">
                             <option value="">All Cohorts</option>
                             {% for cohort in cohorts %}
                                 <option value="{{ cohort.id }}" {% if cohort.id == selected_cohort %}selected{% endif %}>

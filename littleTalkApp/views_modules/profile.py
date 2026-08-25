@@ -17,6 +17,7 @@ from littleTalkApp.content.avatars import (
 from littleTalkApp.forms import LearnerForm
 from littleTalkApp.decorators import block_read_only
 from littleTalkApp.models import Cohort, InterventionGroup, Learner, LogEntry, Role
+from littleTalkApp.views_modules.practise import get_recommended_stage_label
 
 
 def _learner_is_accessible_by_user(user, request, learner):
@@ -175,8 +176,10 @@ def profile(request):
 
     learners_list = [_decorate_learner_avatar(learner) for learner in learners]
 
+    recommended_stage_label = None
     if selected_learner:
         selected_learner = _decorate_learner_avatar(selected_learner)
+        recommended_stage_label = get_recommended_stage_label(selected_learner)
 
     # The group set as the practise selection (if any) takes priority over the individual learner.
     practise_group = None
@@ -191,6 +194,7 @@ def profile(request):
         {
             "learners": learners_list,
             "selected_learner": selected_learner,
+            "recommended_stage_label": recommended_stage_label,
             "cohorts": cohorts,
             "selected_cohort": selected_cohort_id,
             "on_trial": on_trial,
@@ -331,7 +335,11 @@ def select_learner(request):
         and str(request.session.get("selected_learner_id")) == str(learner.id)
     )
 
-    context = {"selected_learner": learner, "is_selected_for_practise": is_selected_for_practise}
+    context = {
+        "selected_learner": learner,
+        "is_selected_for_practise": is_selected_for_practise,
+        "recommended_stage_label": get_recommended_stage_label(learner),
+    }
     profile_obj = request.user.profile
     if profile_obj.is_parent():
         parent_profile = profile_obj.parent_profile

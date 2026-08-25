@@ -10,7 +10,6 @@
             <img src="{% static 'images/arlo_and_friends.webp' %}" alt="">
         </div>
         <p class="learner-context-text">Currently selected: <strong>{{ practise_group.name }}</strong></p>
-        <p class="learner-context-stage">{{ practise_group.active_learners|length }} learners</p>
     {% elif selected_learner %}
         <div class="learner-context-avatar" style="--avatar-color: {{ selected_learner.avatar_display_color }};" aria-hidden="true">
             <img src="{{ selected_learner.avatar_image_url }}" alt="">
@@ -35,16 +34,16 @@
         <button
             type="button"
             class="profile-tab"
-            data-profile-tab="cohorts"
+            data-profile-tab="groups"
         >
-            Cohorts
+            Group Intervention
         </button>
         <button
             type="button"
             class="profile-tab"
-            data-profile-tab="groups"
+            data-profile-tab="cohorts"
         >
-            Group Intervention
+            Cohorts
         </button>
     </section>
 
@@ -52,11 +51,11 @@
         <div class="profile-panel profile-panel--active" data-profile-panel="learners">
             {% include "profile/_all_learners_dashboard.html" %}
         </div>
-        <div class="profile-panel" data-profile-panel="cohorts">
-            {% include "profile/_cohorts_dashboard.html" %}
-        </div>
         <div class="profile-panel" data-profile-panel="groups">
             {% include "profile/_groups_dashboard.html" %}
+        </div>
+        <div class="profile-panel" data-profile-panel="cohorts">
+            {% include "profile/_cohorts_dashboard.html" %}
         </div>
     </section>
 {% else %}
