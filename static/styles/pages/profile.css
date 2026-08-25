@@ -82,7 +82,7 @@
 
 .learner-button.learner-button--viewing {
     border-color: var(--yellow-button-color);
-    border-width: 2px;
+    border-width: 3px;
 }
 
 .cohort-panel {
