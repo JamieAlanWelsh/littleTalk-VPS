@@ -4,6 +4,25 @@
 {% block title %}Chatterdillo | Profile{% endblock %}
 
 {% block content %}
+<div class="learner-context-bar">
+    {% if practise_group %}
+        <div class="learner-context-avatar" style="background-color: #fff;" aria-hidden="true">
+            <img src="{% static 'images/arlo_and_friends.webp' %}" alt="">
+        </div>
+        <p class="learner-context-text">Currently selected: <strong>{{ practise_group.name }}</strong></p>
+        <p class="learner-context-stage">{{ practise_group.active_learners|length }} learners</p>
+    {% elif selected_learner %}
+        <div class="learner-context-avatar" style="--avatar-color: {{ selected_learner.avatar_display_color }};" aria-hidden="true">
+            <img src="{{ selected_learner.avatar_image_url }}" alt="">
+        </div>
+        <p class="learner-context-text">Currently selected: <strong>{{ selected_learner.name }}</strong></p>
+    {% else %}
+        <div class="learner-context-avatar" aria-hidden="true"></div>
+        <p class="learner-context-text">Currently selected: <strong>None selected</strong></p>
+    {% endif %}
+    <a href="{% url 'practise' %}" class="learner-context-change">Go to practise</a>
+</div>
+
 {% if is_staff_profile %}
     <section class="profile-tabs" aria-label="Profile tabs">
         <button

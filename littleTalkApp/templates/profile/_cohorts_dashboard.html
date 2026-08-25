@@ -16,7 +16,7 @@
                         <li class="learner-item">
                             <button
                                 type="button"
-                                class="learner-button cohort-select-button {% if forloop.first %}cohort-select-button--active{% endif %}"
+                                class="learner-button{% if forloop.first %} learner-button--viewing{% endif %}"
                                 data-cohort-select="{{ cohort.id }}"
                             >
                                 <span class="learner-button__content">

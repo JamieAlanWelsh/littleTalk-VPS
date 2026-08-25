@@ -133,8 +133,10 @@ def profile(request):
                         selected_group_id = None
                 except ValueError:
                     selected_group_id = None
-            if selected_group_id is None and manage_groups:
-                selected_group_id = manage_groups[0].id
+            # The group panel/nav shown by default when nothing is being viewed yet.
+            viewed_group_id = selected_group_id
+            if viewed_group_id is None and manage_groups:
+                viewed_group_id = manage_groups[0].id
         else:
             all_learners = Learner.objects.none()
             cohorts = Cohort.objects.none()
@@ -145,6 +147,7 @@ def profile(request):
             school_group_learners = []
             can_edit_groups = False
             selected_group_id = None
+            viewed_group_id = None
 
     selected_cohort = request.GET.get("cohort")
     try:
@@ -175,6 +178,13 @@ def profile(request):
     if selected_learner:
         selected_learner = _decorate_learner_avatar(selected_learner)
 
+    # The group set as the practise selection (if any) takes priority over the individual learner.
+    practise_group = None
+    if selected_group_id:
+        practise_group = next((group for group in manage_groups if group.id == selected_group_id), None)
+
+    is_selected_for_practise = bool(selected_learner) and not practise_group
+
     return render(
         request,
         "profile/profile.html",
@@ -194,6 +204,9 @@ def profile(request):
             "school_group_learners": school_group_learners,
             "can_edit_groups": can_edit_groups,
             "selected_group_id": selected_group_id,
+            "viewed_group_id": viewed_group_id,
+            "practise_group": practise_group,
+            "is_selected_for_practise": is_selected_for_practise,
         },
     )
 
@@ -271,12 +284,16 @@ def add_learner(request):
 
 @login_required
 def select_learner(request):
-    """Stores the chosen learner ID in the session and redirects back to the profile page.
+    """Sets the practise selection or previews a learner's details, depending on the request.
 
-    Intended to be called via a POST form on the profile page when the user switches
-    between learners. When called with an ``XMLHttpRequest`` header, updates the
-    session and returns the rendered right-column detail partial as JSON so the page
-    can switch learners without a full reload.
+    A standard (non-AJAX) POST form submit — used by the "Select for practise" button —
+    stores the chosen learner ID in the session as the practise selection and redirects
+    back to the profile page.
+
+    An AJAX POST (``X-Requested-With: XMLHttpRequest``) — used by the left-column nav —
+    only previews the learner's details without changing the practise selection, and
+    returns the rendered right-column detail partial as JSON so the page can switch
+    the displayed learner without a full reload.
     """
 
     if request.method != "POST":
@@ -307,11 +324,14 @@ def select_learner(request):
     if not _learner_is_accessible_by_user(request.user, request, learner):
         return JsonResponse({"error": "You cannot access this learner."}, status=403)
 
-    request.session["selected_learner_id"] = learner.id
-    request.session.pop("selected_group_id", None)
     _decorate_learner_avatar(learner)
 
-    context = {"selected_learner": learner}
+    is_selected_for_practise = (
+        not request.session.get("selected_group_id")
+        and str(request.session.get("selected_learner_id")) == str(learner.id)
+    )
+
+    context = {"selected_learner": learner, "is_selected_for_practise": is_selected_for_practise}
     profile_obj = request.user.profile
     if profile_obj.is_parent():
         parent_profile = profile_obj.parent_profile

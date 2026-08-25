@@ -2,6 +2,20 @@
     <div class="profile-card profile-card--details">
         <div class="profile-card__header">
             <h3 class="profile-card__title">Learner Details:</h3>
+            <div class="cohort-actions">
+                {% if not is_read_only %}
+                    <a href="{% url 'edit_learner' selected_learner.learner_uuid %}" class="button-secondary">Edit</a>
+                {% endif %}
+                <form method="POST" action="{% url 'select_learner' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="learner_id" value="{{ selected_learner.id }}">
+                    {% if is_selected_for_practise %}
+                        <button type="button" class="button-select-practise button-select-practise--active" disabled>&#10003; Selected for practise</button>
+                    {% else %}
+                        <button type="submit" class="button-select-practise">Select for practise</button>
+                    {% endif %}
+                </form>
+            </div>
         </div>
         <div class="learner-details-body">
             <div class="learner-details-copy">
@@ -78,12 +92,6 @@
     {% endif %}
 
     {% if request.user.profile.role != 'parent' or not selected_learner.school_id %}
-        {% if not is_read_only %}
-            <div class="edit-learner-btn">
-                <a href="{% url 'edit_learner' selected_learner.learner_uuid %}" class="button">📝 Learner Settings</a>
-            </div>
-        {% endif %}
-
         <div class="edit-learner-btn">
             <a href="{% url 'screener' %}" class="button">📋 Screener</a>
         </div>

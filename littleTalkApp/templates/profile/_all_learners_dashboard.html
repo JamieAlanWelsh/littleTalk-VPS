@@ -40,7 +40,7 @@
                                     value="{{ learner.id }}"
                                     data-learner-select="{{ learner.id }}"
                                     data-learner-uuid="{{ learner.learner_uuid }}"
-                                    class="learner-button {% if learner.id == selected_learner.id %}selected{% endif %}"
+                                    class="learner-button{% if learner.id == selected_learner.id %} learner-button--viewing{% endif %}{% if learner.id == selected_learner.id and not practise_group %} selected{% endif %}"
                                 >
                                     <span class="learner-button__content">
                                         <span class="learner-button__name">{{ learner.name }}</span>
