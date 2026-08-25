@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	const readStoredStage = () => {
 		try {
 			return window.localStorage.getItem(STORAGE_KEY);
-		} catch (error) {
+		} catch {
 			return null;
 		}
 	};
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	const writeStoredStage = (stageNumber) => {
 		try {
 			window.localStorage.setItem(STORAGE_KEY, stageNumber);
-		} catch (error) {
+		} catch {
 			// Ignore storage failures (e.g. private mode).
 		}
 	};
@@ -65,8 +65,13 @@ document.addEventListener("DOMContentLoaded", () => {
 			whyThisToggle.setAttribute("aria-expanded", "false");
 		};
 
-		typeof whyThisToggle.addEventListener === "function" && whyThisToggle.addEventListener("click", openPopup);
-		typeof whyThisClose?.addEventListener === "function" && whyThisClose.addEventListener("click", closePopup);
+		if (typeof whyThisToggle.addEventListener === "function") {
+			whyThisToggle.addEventListener("click", openPopup);
+		}
+
+		if (typeof whyThisClose?.addEventListener === "function") {
+			whyThisClose.addEventListener("click", closePopup);
+		}
 
 		whyThisPopup.addEventListener("click", (event) => {
 			if (event.target === whyThisPopup) {
