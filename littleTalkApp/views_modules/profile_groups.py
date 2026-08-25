@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from littleTalkApp.decorators import block_read_only
 from littleTalkApp.forms import InterventionGroupForm
 from littleTalkApp.models import InterventionGroup, Learner
+from littleTalkApp.views_modules.profile import _get_avatar_image_url
 
 
 def _get_school_for_request(request):
@@ -24,7 +25,7 @@ def _avatar_payload(learner):
         "id": learner.id,
         "name": learner.name,
         "avatar_color": learner.avatar_color,
-        "avatar_image_url": getattr(learner, "avatar_image_url", ""),
+        "avatar_image_url": _get_avatar_image_url(learner.avatar_character),
     }
 
 
