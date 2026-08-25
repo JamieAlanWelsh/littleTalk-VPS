@@ -3,6 +3,7 @@ import logging
 
 from django.core.cache import cache
 from django.contrib.auth.decorators import login_required
+from django.db import transaction
 from django.http import JsonResponse
 from django.middleware.csrf import get_token
 from django.shortcuts import get_object_or_404
@@ -14,6 +15,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from littleTalkApp.models import ExerciseSession, Learner
+from littleTalkApp.models import InterventionGroup
 from littleTalkApp.serializers import (
     SubmitExerciseSerializer,
     LearnerAvatarSerializer,
@@ -22,6 +24,49 @@ from littleTalkApp.serializers import (
 from littleTalkApp.views_modules.practise import resolve_recommendation_index
 
 logger = logging.getLogger(__name__)
+
+
+def _apply_exercise_submission(learner, validated_data):
+    new_exp = validated_data["exp"]
+    new_total_exercises = validated_data["total_exercises"]
+
+    learner.exp += new_exp
+    learner.total_exercises += new_total_exercises
+    learner.save(update_fields=["exp", "total_exercises"])
+
+    if "exercise_id" not in validated_data:
+        return learner
+
+    submitted_exercise_id = validated_data["exercise_id"]
+    ExerciseSession.objects.create(
+        learner=learner,
+        exercise_id=submitted_exercise_id,
+        difficulty_selected=str(validated_data.get("difficulty_level", 0)),
+        difficulty_label=validated_data.get("difficulty_label", ""),
+        started_at=validated_data["started_at"],
+        completed_at=validated_data["completed_at"],
+        total_questions=validated_data["total_questions"],
+        incorrect_answers=validated_data["incorrect_answers"],
+        attempts_per_question=validated_data["attempts_per_question"],
+        learner_total_exp_after_session=learner.exp,
+    )
+
+    recommendation_ids = learner.recommended_exercise_ids or []
+    if recommendation_ids:
+        current_index = resolve_recommendation_index(learner)
+        if current_index is not None:
+            current_exercise_id = recommendation_ids[current_index]
+            if submitted_exercise_id == current_exercise_id:
+                learner.recommendation_index = (current_index + 1) % len(recommendation_ids)
+                learner.recommendation_index_updated_at = timezone.now()
+                learner.save(
+                    update_fields=[
+                        "recommendation_index",
+                        "recommendation_index_updated_at",
+                    ]
+                )
+
+    return learner
 
 
 class CanUpdateLearnerPermission(BasePermission):
@@ -74,39 +119,8 @@ class SubmitExerciseView(APIView):
         new_exp = input_serializer.validated_data["exp"]
         new_total_exercises = input_serializer.validated_data["total_exercises"]
 
-        learner.exp += new_exp
-        learner.total_exercises += new_total_exercises
-        learner.save()
-
-        if "exercise_id" in input_serializer.validated_data:
-            submitted_exercise_id = input_serializer.validated_data["exercise_id"]
-            ExerciseSession.objects.create(
-                learner=learner,
-                exercise_id=submitted_exercise_id,
-                difficulty_selected=str(input_serializer.validated_data.get("difficulty_level", 0)),
-                difficulty_label=input_serializer.validated_data.get("difficulty_label", ""),
-                started_at=input_serializer.validated_data["started_at"],
-                completed_at=input_serializer.validated_data["completed_at"],
-                total_questions=input_serializer.validated_data["total_questions"],
-                incorrect_answers=input_serializer.validated_data["incorrect_answers"],
-                attempts_per_question=input_serializer.validated_data["attempts_per_question"],
-                learner_total_exp_after_session=learner.exp,
-            )
-
-            recommendation_ids = learner.recommended_exercise_ids or []
-            if recommendation_ids:
-                current_index = resolve_recommendation_index(learner)
-                if current_index is not None:
-                    current_exercise_id = recommendation_ids[current_index]
-                    if submitted_exercise_id == current_exercise_id:
-                        learner.recommendation_index = (current_index + 1) % len(recommendation_ids)
-                        learner.recommendation_index_updated_at = timezone.now()
-                        learner.save(
-                            update_fields=[
-                                "recommendation_index",
-                                "recommendation_index_updated_at",
-                            ]
-                        )
+        with transaction.atomic():
+            _apply_exercise_submission(learner, input_serializer.validated_data)
 
         cache.set(cache_key, True, 600)
 
@@ -120,6 +134,45 @@ class SubmitExerciseView(APIView):
 
         serializer = LearnerExpUpdateSerializer(learner)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class SubmitGroupExerciseView(APIView):
+    """API endpoint (POST /api/groups/<group_id>/submit-exercise/) that applies the same
+    exercise completion payload to every learner in a group.
+    """
+
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, group_id):
+        input_serializer = SubmitExerciseSerializer(data=request.data)
+        if not input_serializer.is_valid():
+            return Response(input_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        profile = getattr(request.user, "profile", None)
+        current_school = profile.get_current_school(request) if profile else None
+        if not profile or not current_school:
+            return Response({"detail": "Permission denied."}, status=status.HTTP_403_FORBIDDEN)
+
+        if not (profile.is_admin_for_school(current_school) or profile.is_manager_for_school(current_school)):
+            return Response({"detail": "Permission denied."}, status=status.HTTP_403_FORBIDDEN)
+
+        group = get_object_or_404(InterventionGroup, id=group_id, school=current_school)
+        learners = list(group.learners.filter(deleted=False, school=current_school).order_by("id"))
+        if not learners:
+            return Response({"detail": "Group has no learners."}, status=status.HTTP_400_BAD_REQUEST)
+
+        nonce = input_serializer.validated_data["nonce"]
+        cache_key = f"nonce_{request.user.id}_{nonce}"
+        if cache.get(cache_key):
+            return Response({"detail": "Nonce already used."}, status=status.HTTP_400_BAD_REQUEST)
+
+        with transaction.atomic():
+            for learner in learners:
+                _apply_exercise_submission(learner, input_serializer.validated_data)
+
+        cache.set(cache_key, True, 600)
+        return Response({"ok": True, "learners_updated": len(learners)}, status=status.HTTP_200_OK)
 
 
 class UpdateLearnerAvatarView(APIView):

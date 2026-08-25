@@ -24,11 +24,35 @@ document.addEventListener("DOMContentLoaded", () => {
 		});
 	};
 
+	const STORAGE_KEY = "practiseActiveStage";
+
+	const readStoredStage = () => {
+		try {
+			return window.localStorage.getItem(STORAGE_KEY);
+		} catch {
+			return null;
+		}
+	};
+
+	const writeStoredStage = (stageNumber) => {
+		try {
+			window.localStorage.setItem(STORAGE_KEY, stageNumber);
+		} catch {
+			// Ignore storage failures (e.g. private mode).
+		}
+	};
+
 	stageTabs.forEach((tab) => {
 		tab.addEventListener("click", () => {
+			writeStoredStage(tab.dataset.stageTab);
 			activateStage(tab.dataset.stageTab);
 		});
 	});
+
+	const storedStage = readStoredStage();
+	if (storedStage && stageTabs.some((tab) => tab.dataset.stageTab === storedStage)) {
+		activateStage(storedStage);
+	}
 
 	if (whyThisToggle && whyThisPopup) {
 		const openPopup = () => {
@@ -41,8 +65,13 @@ document.addEventListener("DOMContentLoaded", () => {
 			whyThisToggle.setAttribute("aria-expanded", "false");
 		};
 
-		typeof whyThisToggle.addEventListener === "function" && whyThisToggle.addEventListener("click", openPopup);
-		typeof whyThisClose?.addEventListener === "function" && whyThisClose.addEventListener("click", closePopup);
+		if (typeof whyThisToggle.addEventListener === "function") {
+			whyThisToggle.addEventListener("click", openPopup);
+		}
+
+		if (typeof whyThisClose?.addEventListener === "function") {
+			whyThisClose.addEventListener("click", closePopup);
+		}
 
 		whyThisPopup.addEventListener("click", (event) => {
 			if (event.target === whyThisPopup) {

@@ -15,14 +15,22 @@
 <!-- Learner Selected -->
 {% else %}
     <div class="learner-context-bar">
-        <div class="learner-context-avatar" style="--avatar-color: {{ selected_learner.avatar_display_color }};" aria-hidden="true">
-            <img src="{{ selected_learner.avatar_image_url }}" alt="">
-        </div>
-        <p class="learner-context-text">practising with: <strong>{{ selected_learner.name }}</strong></p>
-        {% if recommended_stage_label %}
-            <p class="learner-context-stage">{{ recommended_stage_label }}</p>
+        {% if selected_group %}
+            <div class="learner-context-avatar" style="background-color: #fff;" aria-hidden="true">
+                <img src="{% static 'images/arlo_and_friends.webp' %}" alt="">
+            </div>
+            <p class="learner-context-text">practising with group: <strong>{{ selected_group.name }}</strong></p>
+            <p class="learner-context-stage">{{ selected_group_learners|length }} learners</p>
+        {% else %}
+            <div class="learner-context-avatar" style="--avatar-color: {{ selected_learner.avatar_display_color }};" aria-hidden="true">
+                <img src="{{ selected_learner.avatar_image_url }}" alt="">
+            </div>
+            <p class="learner-context-text">practising with: <strong>{{ selected_learner.name }}</strong></p>
+            {% if recommended_stage_label %}
+                <p class="learner-context-stage">{{ recommended_stage_label }}</p>
+            {% endif %}
         {% endif %}
-        <a href="{% url 'profile' %}" class="learner-context-change">Change Learner</a>
+        <a href="{% url 'profile' %}" class="learner-context-change">Change selection</a>
     </div>
 
     {% if recommended_exercise_card %}
@@ -97,13 +105,18 @@
                     <img src="{% static 'images/landing/arlo_butterfly.webp' %}" alt="Arlo mascot">
                 </div>
                 <div class="recommendation-fallback-content">
-                    <h3>Need a hand picking an exercise?</h3>
-                    <p>Complete our 10-minute screener to get personalised suggestions based on <strong>{{ selected_learner.name }}</strong>'s current skills.</p>
-                    <div class="exercise-buttons">
-                        {% if not is_read_only %}
-                        <a href="{% url 'start_assessment_v2' %}" class="btn btn--green btn--small btn--short">Start Screener</a>
-                        {% endif %}
-                    </div>
+                    {% if selected_group and group_recommendation_empty_state %}
+                        <h3>No recommendations yet</h3>
+                        <p>No pupils in this group have completed a screener yet. Once they have, we'll be able to recommend exercises for them.</p>
+                    {% else %}
+                        <h3>Need a hand picking an exercise?</h3>
+                        <p>Complete our 10-minute screener to get personalised suggestions based on <strong>{{ selected_learner.name }}</strong>'s current skills.</p>
+                        <div class="exercise-buttons">
+                            {% if not is_read_only %}
+                                <a href="{% url 'start_assessment_v2' %}" class="btn btn--green btn--small btn--short">Start Screener</a>
+                            {% endif %}
+                        </div>
+                    {% endif %}
                 </div>
             </article>
         </section>
@@ -161,6 +174,6 @@
         {% endfor %}
     </section>
 
-    <script src="{% static 'js/practise.js' %}"></script>
+    <script src="{% static 'non_react_js/practise.js' %}"></script>
     {% endif %}
 {% endblock %}

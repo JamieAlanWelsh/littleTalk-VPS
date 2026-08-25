@@ -12,6 +12,11 @@ import "../style.css";
 import Categorisation from "../exercises/categorisation/Categorisation";
 import { CategorisationExercisePayloadSchema } from "../exercises/categorisation/types";
 import { LearnerContextProvider } from "../contexts/LearnerContext";
+import { GroupContextProvider } from "../contexts/GroupContext";
+import {
+    applyGroupRoundScaling,
+    getExerciseMountContext,
+} from "../lib/bootstrap";
 import exerciseData from "../exercises/categorisation/exerciseData.json";
 
 // Create a QueryClient instance
@@ -26,18 +31,25 @@ if (!mountElement) {
     try {
         // Parse and validate exercise data
         const payload = CategorisationExercisePayloadSchema.parse(exerciseData);
-
-        // Extract learnerUUID from the exercise-root div's data attribute
-        const learnerUUID =
-            mountElement?.getAttribute("data-learner-uuid") || null;
+        const { learnerUUID, groupId, groupLearners } =
+            getExerciseMountContext(mountElement);
+        const adjustedPayload = applyGroupRoundScaling(
+            payload,
+            groupLearners.length,
+        );
 
         const root = ReactDOM.createRoot(mountElement);
         root.render(
             <React.StrictMode>
                 <QueryClientProvider client={queryClient}>
-                    <LearnerContextProvider learnerUUID={learnerUUID}>
-                        <Categorisation payload={payload} />
-                    </LearnerContextProvider>
+                    <GroupContextProvider
+                        groupId={groupId}
+                        groupLearners={groupLearners}
+                    >
+                        <LearnerContextProvider learnerUUID={learnerUUID}>
+                            <Categorisation payload={adjustedPayload} />
+                        </LearnerContextProvider>
+                    </GroupContextProvider>
                 </QueryClientProvider>
             </React.StrictMode>,
         );

@@ -3,6 +3,7 @@ import ExerciseStartScreen from "../../layouts/exerciseStartScreen/ExerciseStart
 import ExerciseEndscreen from "../../layouts/exerciseEndscreen/ExerciseEndscreen";
 import ColourfulSemanticsSettingsScreen from "./ColourfulSemanticsSettingsScreen";
 import ColourfulSemanticsGame from "./ColourfulSemanticsGame";
+import { useGroupContextValue } from "../../contexts/GroupContext";
 import {
     getDefaultOptionsForVariant,
     pickRandomScene,
@@ -27,6 +28,7 @@ export const ColourfulSemanticsExercise = ({
     payload,
     variant,
 }: ColourfulSemanticsExerciseProps) => {
+    const { groupLearners, isGroupMode } = useGroupContextValue();
     const [hasStarted, setHasStarted] = useState(false);
     const [options, setOptions] = useState<ColourfulSemanticsOptions>(() =>
         sanitizeOptionsForVariant({
@@ -48,6 +50,9 @@ export const ColourfulSemanticsExercise = ({
             incorrectAnswers: 0,
             attemptsPerQuestion: [],
         });
+    const totalRepetitions = isGroupMode
+        ? Math.max(TOTAL_REPETITIONS, groupLearners.length * 2)
+        : TOTAL_REPETITIONS;
 
     useEffect(() => {
         setOptions((currentOptions) => {
@@ -120,7 +125,7 @@ export const ColourfulSemanticsExercise = ({
 
         setUsedSceneIds(nextUsedSceneIds);
         setRepetitionCount(nextRep);
-        if (nextRep < TOTAL_REPETITIONS) {
+        if (nextRep < totalRepetitions) {
             setSelectedScene(
                 pickRandomScene(
                     payload.scenes,
@@ -169,10 +174,10 @@ export const ColourfulSemanticsExercise = ({
         );
     }
 
-    if (repetitionCount >= TOTAL_REPETITIONS) {
+    if (repetitionCount >= totalRepetitions) {
         return (
             <ExerciseEndscreen
-                expGained={TOTAL_REPETITIONS * 10}
+                expGained={totalRepetitions * 10}
                 onReturnHome={handleEndscreenReturn}
             />
         );
@@ -188,11 +193,11 @@ export const ColourfulSemanticsExercise = ({
             payload={payload}
             scene={selectedScene!}
             variant={variant}
-            isFinalRepetition={repetitionCount + 1 >= TOTAL_REPETITIONS}
+            isFinalRepetition={repetitionCount + 1 >= totalRepetitions}
             sessionStartedAt={sessionStartedAt}
             cumulativeRoundStats={cumulativeRoundStats}
-            progressBase={repetitionCount / TOTAL_REPETITIONS}
-            progressScale={1 / TOTAL_REPETITIONS}
+            progressBase={repetitionCount / totalRepetitions}
+            progressScale={1 / totalRepetitions}
         />
     );
 };

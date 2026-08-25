@@ -4,191 +4,66 @@
 {% block title %}Chatterdillo | Profile{% endblock %}
 
 {% block content %}
-<!-- <h1>Learner Profile</h1> -->
-<div class="profile-container">
-    <!-- Left Column -->
-    <div class="left-column">
-
-        {% if not is_read_only %}
-            {% if request.user.profile.role != 'parent' or learners|length <= 2 %}
-                <div class="add-learner-btn">
-                    <a href="{% url 'add_learner' %}" class="button">+ Add Learner</a>
-                </div>
-            {% endif %}
-        {% endif %}
-
-        <div class="learners-list profile-card">
-            {% if request.user.profile.role != 'parent' %}
-                <div class="profile-card__header">
-                    <h3 class="profile-card__title">Cohort:</h3>
-                    <form method="get" action="" class="section-filter">
-                        <select name="cohort" id="cohort" class="select section-filter__select" onchange="this.form.submit()">
-                            <option value="">All Cohorts</option>
-                            {% for cohort in cohorts %}
-                                <option value="{{ cohort.id }}" {% if cohort.id == selected_cohort %}selected{% endif %}>
-                                    {{ cohort.name }}
-                                </option>
-                            {% endfor %}
-                        </select>
-                    </form>
-                </div>
-            {% else %}
-                <div class="profile-card__header">
-                    <h3 class="profile-card__title">Select Learner</h3>
-                </div>
-            {% endif %}
-            {% if learners %}
-                <ul>
-                    {% for learner in learners %}
-                        <li class="learner-item">
-                            <form method="POST" action="{% url 'select_learner' %}">
-                                {% csrf_token %}
-                                <button type="submit" name="learner_id" value="{{ learner.id }}" 
-                                        class="learner-button {% if learner.id == selected_learner.id %}selected{% endif %}">
-                                    <span class="learner-button__content">
-                                        <span class="learner-button__name">{{ learner.name }}</span>
-                                        <span class="learner-avatar-chip" style="--avatar-color: {{ learner.avatar_display_color }};">
-                                            <img src="{{ learner.avatar_image_url }}" alt="{{ learner.name }} avatar" class="learner-avatar-chip__image">
-                                        </span>
-                                    </span>
-                                </button>
-                            </form>
-                        </li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
+<div class="learner-context-bar{% if animate_context_bar %} learner-context-bar--bounce{% endif %}">
+    {% if practise_group %}
+        <div class="learner-context-avatar" style="background-color: #fff;" aria-hidden="true">
+            <img src="{% static 'images/arlo_and_friends.webp' %}" alt="">
         </div>
-    </div>
-
-    <!-- Right Column -->
-    <div class="right-column">
-        <!-- Learning Level Section -->
-        {% if selected_learner %}
-            <!-- Total Experience Section -->
-            <div class="profile-card profile-card--details">
-                <div class="profile-card__header">
-                    <h3 class="profile-card__title">Learner Details:</h3>
-                </div>
-                <div class="learner-details-body">
-                    <div class="learner-details-copy">
-                        <p><strong>Name:</strong> {{ selected_learner.name }}</p>
-                        {% if selected_learner.cohort %}
-                            <p><strong>Cohort:</strong> {{ selected_learner.cohort }}</p>
-                        {% endif %}
-                        <p><strong>Exp:</strong> {{ selected_learner.exp }}</p>
-                    </div>
-                    <a href="{% url 'avatar_editor' selected_learner.learner_uuid %}" class="learner-avatar-link" aria-label="Edit {{ selected_learner.name }} avatar">
-                        <span class="learner-avatar learner-avatar--details" style="--avatar-color: {{ selected_learner.avatar_display_color }};">
-                            <img src="{{ selected_learner.avatar_image_url }}" alt="{{ selected_learner.name }} avatar" class="learner-avatar__image">
-                        </span>
-                    </a>
-                </div>
-                {% if request.user.profile.role == 'parent' and selected_learner.school_id %}
-                    <div class="recommendation-info no-print" style="margin-top: 16px; margin-bottom: 20px; padding: 12px; background: #f0f3ff; border-radius: 8px; display: flex; gap: 8px; align-items: flex-start;">
-                        <span style="font-weight: 600; color: #0066cc;">i</span>
-                        <div>
-                            <p style="margin: 0; font-size: 0.95rem;">This learner is being managed by {{ selected_learner.school.name }}</p>
-                        </div>
-                    </div>
-                {% endif %}
-            </div>
-
-            <!-- Targets Section - SCHOOL STAFF ONLY -->
-            {% if request.user.profile.role != 'parent' %}
-            <div class="profile-card profile-card--targets profile-card--padded">
-                <div class="profile-card__header">
-                    <h3 class="profile-card__title">Targets:</h3>
-                    <div class="section-filter">
-                        <select id="targets-filter" class="select section-filter__select">
-                            <option value="all" selected>All Targets</option>
-                            <option value="achieved">Achieved</option>
-                            <option value="ongoing">Ongoing</option>
-                            <option value="not_achieved">Not Achieved</option>
-                            <option value="---">----</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="targets-container" id="targets-container">
-                    {% if selected_learner.targets.all %}
-                        {% for target in selected_learner.targets.all %}
-                            <div class="target-card target-status-{{ target.status }}" data-target-id="{{ target.id }}" data-status="{{ target.status }}">
-                                <div class="target-content">
-                                    <span class="target-text">{{ target.text }}</span>
-                                    <textarea
-                                        class="target-text-input"
-                                        data-target-id="{{ target.id }}"
-                                        maxlength="255"
-                                        aria-label="Edit target"
-                                        rows="3"
-                                    >{{ target.text }}</textarea>
-                                    <select class="target-status-dropdown" data-target-id="{{ target.id }}">
-                                        <option value="---" {% if target.status == '---' %}selected{% endif %}>----</option>
-                                        <option value="achieved" {% if target.status == 'achieved' %}selected{% endif %}>Achieved</option>
-                                        <option value="not_achieved" {% if target.status == 'not_achieved' %}selected{% endif %}>Not Achieved</option>
-                                        <option value="ongoing" {% if target.status == 'ongoing' %}selected{% endif %}>Ongoing</option>
-                                    </select>
-                                </div>
-                                <button class="target-delete-btn" data-target-id="{{ target.id }}" title="Delete target">×</button>
-                            </div>
-                        {% endfor %}
-                    {% else %}
-                        <p class="no-targets-message">No targets added yet.</p>
-                    {% endif %}
-                </div>
-
-                <div class="targets-actions">
-                    <button class="button-secondary" id="new-target-btn">+ New Target</button>
-                    <button class="button-secondary" id="edit-targets-btn">Edit Targets</button>
-                </div>
-            </div>
-            {% endif %}
-
-            <!-- Edit Learner Button SCHOOL AND STANDALONE ONLY -->
-            {% if request.user.profile.role != 'parent' or not selected_learner.school_id %}
-                {% if not is_read_only %}
-                    <div class="edit-learner-btn">
-                        <a href="{% url 'edit_learner' selected_learner.learner_uuid %}" class="button">📝 Learner Settings</a>
-                    </div>
-                {% endif %}
-
-                <!-- Screener Button -->
-                <div class="edit-learner-btn">
-                    <a href="{% url 'screener' %}" class="button">📋 Screener</a>
-                </div>
-            {% endif %}
-
-            <!-- Generate Access Code Button SCHOOL ONLY -->
-            {% if request.user.profile.role != 'parent' %}
-                <div class="edit-learner-btn">
-                    <a href="{% url 'view_parent_token' selected_learner.learner_uuid %}" class="button">💌 Parent Invite</a>
-                </div>
-            {% endif %}
-        {% endif %}
-
-        <!-- Subscription Details - PARENT ONLY -->
-        {% if request.user.profile.role == 'parent' %}
-        <div class="profile-card profile-card--details">
-            <div class="profile-card__header">
-                <h3 class="profile-card__title">Subscription</h3>
-            </div>
-            <p>
-                {% if is_subscribed %}
-                    Active Parent Plan - 3 Learners
-                {% elif on_trial %}
-                    Free Trial - {{ trial_days_left }} days left
-                {% else %}
-                    Inactive
-                {% endif %}
-            </p>
+        <p class="learner-context-text">Currently selected: <strong>{{ practise_group.name }}</strong></p>
+    {% elif selected_learner %}
+        <div class="learner-context-avatar" style="--avatar-color: {{ selected_learner.avatar_display_color }};" aria-hidden="true">
+            <img src="{{ selected_learner.avatar_image_url }}" alt="">
         </div>
-
-        <div class="edit-learner-btn">
-            <a href="{% url 'manage_subscription' %}" class="button">⚙ Manage Subscription</a>
-        </div>
-        {% endif %} 
-    </div>
+        <p class="learner-context-text">Currently selected: <strong>{{ selected_learner.name }}</strong></p>
+    {% else %}
+        <div class="learner-context-avatar" aria-hidden="true"></div>
+        <p class="learner-context-text">Currently selected: <strong>None selected</strong></p>
+    {% endif %}
+    <a href="{% url 'practise' %}" class="learner-context-change">Go to practise</a>
 </div>
+
+{% if is_staff_profile %}
+    <section class="profile-tabs" aria-label="Profile tabs">
+        <button
+            type="button"
+            class="profile-tab profile-tab--active"
+            data-profile-tab="learners"
+            title="Select individual learners for one-to-one practice."
+        >
+            All Learners
+        </button>
+        <button
+            type="button"
+            class="profile-tab"
+            data-profile-tab="cohorts"
+            title="Organise learners into cohorts for filtering, reporting, and classroom management."
+        >
+            Cohorts
+        </button>
+        <button
+            type="button"
+            class="profile-tab"
+            data-profile-tab="groups"
+            title="Create groups for shared intervention sessions."
+        >
+            Group Intervention
+        </button>
+    </section>
+
+    <section class="profile-panels-wrap">
+        <div class="profile-panel profile-panel--active" data-profile-panel="learners">
+            {% include "profile/_all_learners_dashboard.html" %}
+        </div>
+        <div class="profile-panel" data-profile-panel="groups">
+            {% include "profile/_groups_dashboard.html" %}
+        </div>
+        <div class="profile-panel" data-profile-panel="cohorts">
+            {% include "profile/_cohorts_dashboard.html" %}
+        </div>
+    </section>
+{% else %}
+    {% include "profile/_all_learners_dashboard.html" %}
+{% endif %}
 
 <!-- Pass learner UUID to JavaScript -->
 {% if selected_learner %}
@@ -197,6 +72,12 @@
 </script>
 {% endif %}
 
-<script src="{% static 'js/targets_samples.js' %}"></script>
-<script src="{% static 'js/targets_management.js' %}"></script>
+<script src="{% static 'non_react_js/targets_samples.js' %}"></script>
+<script src="{% static 'non_react_js/targets_management.js' %}"></script>
+<script src="{% static 'non_react_js/profile_learner_select.js' %}"></script>
+{% if is_staff_profile %}
+<script src="{% static 'non_react_js/profile_tabs.js' %}"></script>
+<script src="{% static 'non_react_js/profile_cohorts.js' %}"></script>
+<script src="{% static 'non_react_js/profile_groups.js' %}"></script>
+{% endif %}
 {% endblock %}

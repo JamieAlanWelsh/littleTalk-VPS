@@ -1,7 +1,9 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.db.models import Prefetch
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.template.loader import render_to_string
 from django.urls import reverse
 from django.templatetags.static import static
 
@@ -14,7 +16,8 @@ from littleTalkApp.content.avatars import (
 )
 from littleTalkApp.forms import LearnerForm
 from littleTalkApp.decorators import block_read_only
-from littleTalkApp.models import Cohort, Learner, LogEntry, Role
+from littleTalkApp.models import Cohort, InterventionGroup, Learner, LogEntry, Role
+from littleTalkApp.views_modules.practise import get_recommended_stage_label
 
 
 def _learner_is_accessible_by_user(user, request, learner):
@@ -64,14 +67,88 @@ def profile(request):
         parent_profile = profile_obj.parent_profile
         all_learners = profile_obj.parent_profile.learners.filter(deleted=False)
         cohorts = Cohort.objects.none()
+        manage_cohorts = []
+        school_learners = []
+        can_edit_cohorts = False
+        manage_groups = []
+        school_group_learners = []
+        can_edit_groups = False
+        selected_group_id = None
 
         on_trial = parent_profile.on_trial()
         trial_days_left = parent_profile.trial_days_left()
         is_subscribed = parent_profile.is_subscribed
     else:
         user_school = profile_obj.get_current_school(request)
-        all_learners = Learner.objects.filter(school=user_school, deleted=False)
-        cohorts = Cohort.objects.filter(school=user_school).distinct()
+        if user_school:
+            all_learners = Learner.objects.filter(school=user_school, deleted=False)
+            cohorts = Cohort.objects.filter(school=user_school).distinct()
+            can_edit_cohorts = profile_obj.is_admin_for_school(user_school) or profile_obj.is_manager_for_school(user_school)
+            can_edit_groups = can_edit_cohorts
+
+            cohort_learners = Learner.objects.filter(school=user_school, deleted=False)
+            manage_cohorts = list(
+                Cohort.objects.filter(school=user_school)
+                .order_by("name")
+                .prefetch_related(
+                    Prefetch(
+                        "learner_set",
+                        queryset=cohort_learners,
+                        to_attr="active_learners",
+                    )
+                )
+            )
+            school_learners = [_decorate_learner_avatar(learner) for learner in cohort_learners]
+
+            group_learners = Learner.objects.filter(school=user_school, deleted=False)
+            manage_groups = list(
+                InterventionGroup.objects.filter(school=user_school)
+                .order_by("name")
+                .prefetch_related(
+                    Prefetch(
+                        "learners",
+                        queryset=group_learners,
+                        to_attr="active_learners",
+                    )
+                )
+            )
+            school_group_learners = [_decorate_learner_avatar(learner) for learner in group_learners]
+
+            for cohort in manage_cohorts:
+                cohort.active_learners = [
+                    _decorate_learner_avatar(learner)
+                    for learner in cohort.active_learners
+                ]
+            for group in manage_groups:
+                group.active_learners = [
+                    _decorate_learner_avatar(learner)
+                    for learner in group.active_learners
+                ]
+                group.active_learner_ids = [learner.id for learner in group.active_learners]
+
+            selected_group_id = request.session.get("selected_group_id")
+            if selected_group_id not in [None, ""]:
+                try:
+                    selected_group_id = int(selected_group_id)
+                    if not any(group.id == selected_group_id for group in manage_groups):
+                        selected_group_id = None
+                except ValueError:
+                    selected_group_id = None
+            # The group panel/nav shown by default when nothing is being viewed yet.
+            viewed_group_id = selected_group_id
+            if viewed_group_id is None and manage_groups:
+                viewed_group_id = manage_groups[0].id
+        else:
+            all_learners = Learner.objects.none()
+            cohorts = Cohort.objects.none()
+            manage_cohorts = []
+            school_learners = []
+            can_edit_cohorts = False
+            manage_groups = []
+            school_group_learners = []
+            can_edit_groups = False
+            selected_group_id = None
+            viewed_group_id = None
 
     selected_cohort = request.GET.get("cohort")
     try:
@@ -98,12 +175,19 @@ def profile(request):
         request.session["selected_learner_id"] = selected_learner.id
 
     learners_list = [_decorate_learner_avatar(learner) for learner in learners]
-    if selected_learner and selected_learner in learners_list:
-        learners_list.remove(selected_learner)
-        learners_list.insert(0, selected_learner)
 
+    recommended_stage_label = None
     if selected_learner:
         selected_learner = _decorate_learner_avatar(selected_learner)
+        recommended_stage_label = get_recommended_stage_label(selected_learner)
+
+    # The group set as the practise selection (if any) takes priority over the individual learner.
+    practise_group = None
+    if selected_group_id:
+        practise_group = next((group for group in manage_groups if group.id == selected_group_id), None)
+
+    is_selected_for_practise = bool(selected_learner) and not practise_group
+    animate_context_bar = request.session.pop("animate_profile_context_bar", False)
 
     return render(
         request,
@@ -111,11 +195,24 @@ def profile(request):
         {
             "learners": learners_list,
             "selected_learner": selected_learner,
+            "recommended_stage_label": recommended_stage_label,
             "cohorts": cohorts,
             "selected_cohort": selected_cohort_id,
             "on_trial": on_trial,
             "trial_days_left": trial_days_left,
             "is_subscribed": is_subscribed,
+            "is_staff_profile": not profile_obj.is_parent(),
+            "manage_cohorts": manage_cohorts,
+            "school_learners": school_learners,
+            "can_edit_cohorts": can_edit_cohorts,
+            "manage_groups": manage_groups,
+            "school_group_learners": school_group_learners,
+            "can_edit_groups": can_edit_groups,
+            "selected_group_id": selected_group_id,
+            "viewed_group_id": viewed_group_id,
+            "practise_group": practise_group,
+            "is_selected_for_practise": is_selected_for_practise,
+            "animate_context_bar": animate_context_bar,
         },
     )
 
@@ -182,6 +279,7 @@ def add_learner(request):
             learner.save()
 
             request.session["selected_learner_id"] = learner.id
+            request.session.pop("selected_group_id", None)
 
             return redirect("profile")
     else:
@@ -192,17 +290,74 @@ def add_learner(request):
 
 @login_required
 def select_learner(request):
-    """Stores the chosen learner ID in the session and redirects back to the profile page.
+    """Sets the practise selection or previews a learner's details, depending on the request.
 
-    Intended to be called via a POST form on the profile page when the user switches
-    between learners.
+    A standard (non-AJAX) POST form submit — used by the "Select for practise" button —
+    stores the chosen learner ID in the session as the practise selection and redirects
+    back to the profile page.
+
+    An AJAX POST (``X-Requested-With: XMLHttpRequest``) — used by the left-column nav —
+    only previews the learner's details without changing the practise selection, and
+    returns the rendered right-column detail partial as JSON so the page can switch
+    the displayed learner without a full reload.
     """
 
-    if request.method == "POST":
-        learner_id = request.POST.get("learner_id")
-        if learner_id:
-            request.session["selected_learner_id"] = learner_id
-    return HttpResponseRedirect(reverse("profile"))
+    if request.method != "POST":
+        return HttpResponseRedirect(reverse("profile"))
+
+    learner_id = request.POST.get("learner_id")
+    is_ajax = request.headers.get("x-requested-with") == "XMLHttpRequest"
+
+    try:
+        learner_id_int = int(learner_id) if learner_id not in [None, ""] else None
+    except (TypeError, ValueError):
+        learner_id_int = None
+
+    if not is_ajax:
+        if learner_id_int is not None:
+            request.session["selected_learner_id"] = learner_id_int
+            request.session.pop("selected_group_id", None)
+            request.session["animate_profile_context_bar"] = True
+        return HttpResponseRedirect(reverse("profile"))
+
+    if learner_id_int is None:
+        return JsonResponse({"error": "Missing learner_id."}, status=400)
+
+    try:
+        learner = Learner.objects.get(id=learner_id_int, deleted=False)
+    except (ValueError, Learner.DoesNotExist):
+        return JsonResponse({"error": "Learner not found."}, status=404)
+
+    if not _learner_is_accessible_by_user(request.user, request, learner):
+        return JsonResponse({"error": "You cannot access this learner."}, status=403)
+
+    _decorate_learner_avatar(learner)
+
+    is_selected_for_practise = (
+        not request.session.get("selected_group_id")
+        and str(request.session.get("selected_learner_id")) == str(learner.id)
+    )
+
+    context = {
+        "selected_learner": learner,
+        "is_selected_for_practise": is_selected_for_practise,
+        "recommended_stage_label": get_recommended_stage_label(learner),
+    }
+    profile_obj = request.user.profile
+    if profile_obj.is_parent():
+        parent_profile = profile_obj.parent_profile
+        context["on_trial"] = parent_profile.on_trial()
+        context["trial_days_left"] = parent_profile.trial_days_left()
+        context["is_subscribed"] = parent_profile.is_subscribed
+
+    html = render_to_string("profile/_learner_detail.html", context, request=request)
+    return JsonResponse(
+        {
+            "html": html,
+            "learner_id": learner.id,
+            "learner_uuid": str(learner.learner_uuid),
+        }
+    )
 
 
 @login_required
@@ -249,7 +404,7 @@ def edit_learner(request, learner_uuid):
 
     context = {
         "form": form,
-        "learner": learner,
+        "learner": _decorate_learner_avatar(learner),
         "can_delete": can_delete,
     }
     return render(request, "profile/edit_learner.html", context)
@@ -299,6 +454,7 @@ def confirm_delete_learner(request, learner_uuid):
             LogEntry.objects.filter(learner=learner, deleted=False).update(deleted=True)
 
             del request.session["selected_learner_id"]
+            request.session.pop("selected_group_id", None)
             return redirect("profile")
 
         error_message = "Please type DELETE to confirm deletion. It is case-sensitive."

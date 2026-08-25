@@ -8,7 +8,7 @@
     {% vite_hmr_client %}
 </head>
 <body class="exercise-page">
-    <div id="exercise-root" data-learner-uuid="{{ learner_uuid }}"></div>
+    <div id="exercise-root" data-learner-uuid="{{ learner_uuid }}" data-group-id="{{ selected_group_id|default:'' }}" data-group-learners="{{ group_learners_json|default:'[]'|escape }}"></div>
 
     {% vite_react_refresh %}
     {% vite_asset 'frontend/src/entrypoints/task-master.tsx' %}

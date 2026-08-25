@@ -3,7 +3,7 @@
  * Handles adding, editing, and deleting targets for learners
  */
 
-document.addEventListener('DOMContentLoaded', function() {
+function initTargetsManagement() {
     const newTargetBtn = document.getElementById('new-target-btn');
     const editTargetsBtn = document.getElementById('edit-targets-btn');
     const targetsContainer = document.getElementById('targets-container');
@@ -508,7 +508,10 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('Failed to update target text');
         });
     }
-});
+}
+
+document.addEventListener('DOMContentLoaded', initTargetsManagement);
+window.initTargetsManagement = initTargetsManagement;
 
 /**
  * Get CSRF token from cookies

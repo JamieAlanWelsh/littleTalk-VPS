@@ -8,6 +8,8 @@ from .views_modules import practise as practise_views
 from .views_modules import logbook as logbook_views
 from .views_modules import parent_access as parent_access_views
 from .views_modules import profile as profile_views
+from .views_modules import profile_cohorts as profile_cohort_views
+from .views_modules import profile_groups as profile_group_views
 from .views_modules import public as public_views
 from .views_modules import school as school_views
 from .views_modules import settings_views as settings_app_views
@@ -65,13 +67,19 @@ urlpatterns = [
     path('profile/edit_learner/<uuid:learner_uuid>/', profile_views.edit_learner, name='edit_learner'),
     path('profile/avatar/<uuid:learner_uuid>/', profile_views.avatar_editor, name='avatar_editor'),
     path('profile/edit_learner/confirm_delete_learner/<uuid:learner_uuid>/', profile_views.confirm_delete_learner, name='confirm_delete_learner'),
+    path('profile/cohorts/new/', profile_cohort_views.profile_cohort_create, name='profile_cohort_create'),
+    path('profile/cohorts/<int:cohort_id>/edit/', profile_cohort_views.profile_cohort_edit, name='profile_cohort_edit'),
+    path('profile/cohorts/<int:cohort_id>/delete/', profile_cohort_views.profile_cohort_delete, name='profile_cohort_delete'),
+    path('profile/cohorts/<int:cohort_id>/add-learner/', profile_cohort_views.profile_cohort_add_learner, name='profile_cohort_add_learner'),
+    path('profile/cohorts/<int:cohort_id>/remove-learner/', profile_cohort_views.profile_cohort_remove_learner, name='profile_cohort_remove_learner'),
+    path('profile/groups/select/', profile_group_views.profile_group_select, name='profile_group_select'),
+    path('profile/groups/new/', profile_group_views.profile_group_create, name='profile_group_create'),
+    path('profile/groups/<int:group_id>/edit/', profile_group_views.profile_group_edit, name='profile_group_edit'),
+    path('profile/groups/<int:group_id>/delete/', profile_group_views.profile_group_delete, name='profile_group_delete'),
+    path('profile/groups/<int:group_id>/add-learner/', profile_group_views.profile_group_add_learner, name='profile_group_add_learner'),
+    path('profile/groups/<int:group_id>/remove-learner/', profile_group_views.profile_group_remove_learner, name='profile_group_remove_learner'),
 
-    # Cohorts
-    path('school/cohorts/', school_views.cohort_list, name='cohort_list'),
-    path('school/cohorts/new/', school_views.cohort_create, name='cohort_create'),
     path('select-school/', school_views.select_school, name='select_school'),
-    path('school/cohorts/<int:cohort_id>/edit/', school_views.cohort_edit, name='cohort_edit'),
-    path('school/cohorts/<int:cohort_id>/delete/', school_views.cohort_delete, name='cohort_delete'),
 
     # Logbook
     path('logbook/', logbook_views.logbook, name='logbook'),
@@ -125,6 +133,7 @@ urlpatterns = [
 
     # API endpoints
     path('api/learners/<uuid:learner_uuid>/submit-exercise/', api_views.SubmitExerciseView.as_view(), name='submit_exercise'),
+    path('api/groups/<int:group_id>/submit-exercise/', api_views.SubmitGroupExerciseView.as_view(), name='submit_group_exercise'),
     path('api/learners/<uuid:learner_uuid>/avatar/', api_views.UpdateLearnerAvatarView.as_view(), name='update_learner_avatar'),
     path('api/selected-learner/', api_views.get_current_session_learner_context, name='get_current_session_learner_context'),
     path('api/targets/', api_views.create_target, name='create_target'),

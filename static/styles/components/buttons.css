@@ -10,7 +10,7 @@
     text-decoration: none;
     width: 200px;
     text-align: center; /* Center text within buttons */
-    font-size: 1.2rem;
+    font-size: 1rem;
     padding: 10px 20px;
     /* border: 1px solid transparent; */
     border: 1.5px solid #ccc;
@@ -77,12 +77,14 @@
     border: 1.5px solid var(--button-green);
 }
 
-.btn--red { 
-    background-color: white; 
-    color: var(--font-color)
+.btn--red {
+    border: 1.5px solid var(--button-red-base);
+    background-color: white;
+    color: var(--button-red-base);
 }
 
 .btn--red:hover { 
+    
     background-color: var(--button-red);
     color: white;
 }

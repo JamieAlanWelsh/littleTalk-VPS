@@ -354,7 +354,7 @@
     border: 1px solid var(--border-grey);
     box-shadow: var(--box-shadow);
     border-radius: 25px;
-    background: white;
+    background: var(--accent-color);
 }
 
 .school-mgmt-current-row {
@@ -464,7 +464,7 @@
 .dashboard-section {
     margin-top: 32px;
     padding: 24px;
-    background: #ffffff;
+    background: var(--accent-color);
     border: 1px solid var(--border-grey);
     border-radius: 25px;
     box-shadow: var(--box-shadow);
@@ -714,7 +714,7 @@
 .comparison-subtitle {
     margin: 0 0 20px 0;
     padding: 12px;
-    background: #f0f3ff;
+    background: white;
     border-radius: 8px;
     font-size: 0.9rem;
     color: var(--font-color);

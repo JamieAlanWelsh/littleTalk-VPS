@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.models import Group
-from .models import Profile, School, ParentProfile, Learner, JoinRequest, SchoolMembership, ExerciseSession, LogEntry, Target, SchoolLicenseCode, SkolonSyncCursor, SkolonOrg, SkolonUser
+from .models import Profile, School, ParentProfile, Learner, JoinRequest, SchoolMembership, ExerciseSession, LogEntry, Target, SchoolLicenseCode, SkolonSyncCursor, SkolonOrg, SkolonUser, InterventionGroup
 
 # unregister groups
 admin.site.unregister(Group)
@@ -165,6 +165,14 @@ class LearnerAdmin(admin.ModelAdmin):
         return obj.user.email_encrypted or "—"
     user_email.short_description = "User Email" 
     user_email.admin_order_field = "user__email_encrypted"
+
+
+@admin.register(InterventionGroup)
+class InterventionGroupAdmin(admin.ModelAdmin):
+    list_display = ("name", "school", "created_at")
+    search_fields = ("name", "school__name")
+    list_filter = ("school", "created_at")
+    filter_horizontal = ("learners",)
 
 
 @admin.register(JoinRequest)

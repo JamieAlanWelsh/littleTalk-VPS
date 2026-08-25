@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.templatetags.static import static
@@ -11,7 +13,7 @@ from littleTalkApp.content.avatars import (
     DEFAULT_AVATAR_CHARACTER,
     DEFAULT_AVATAR_COLOR,
 )
-from littleTalkApp.models import Learner
+from littleTalkApp.models import InterventionGroup, Learner
 
 
 PRACTISE_STAGES = {
@@ -94,6 +96,12 @@ PRACTISE_KEY_TO_STAGE = {
     for exercise_key in stage_data.get("exercises", [])
 }
 
+PRACTISE_KEY_ORDER = {
+    exercise_key: index
+    for stage_data in PRACTISE_STAGES.values()
+    for index, exercise_key in enumerate(stage_data.get("exercises", []))
+}
+
 CANONICAL_TO_SKILLS = {
     "whats-in-the-bag": ["Naming common objects", "Vocabulary development"],
     "spot-on": ["Understanding prepositions"],
@@ -133,6 +141,62 @@ def _decorate_learner_avatar(learner):
     return learner
 
 
+def _get_selected_group(request):
+    selected_group_id = request.session.get("selected_group_id")
+    if selected_group_id in [None, ""]:
+        return None
+
+    school = request.user.profile.get_current_school(request)
+    if not school:
+        return None
+
+    try:
+        selected_group_id = int(selected_group_id)
+    except (TypeError, ValueError):
+        return None
+
+    group = (
+        InterventionGroup.objects.filter(id=selected_group_id, school=school)
+        .prefetch_related("learners")
+        .first()
+    )
+    if not group:
+        return None
+
+    group.active_learners = [
+        _decorate_learner_avatar(learner)
+        for learner in group.learners.filter(deleted=False).order_by("id")
+    ]
+    group.active_learner_ids = [learner.id for learner in group.active_learners]
+    return group
+
+
+def _build_group_recommendations(group, exercise_cards_by_key):
+    votes = defaultdict(int)
+
+    for learner in getattr(group, "active_learners", []):
+        seen = set()
+        for exercise_id in learner.recommended_exercise_ids or []:
+            if exercise_id in seen:
+                continue
+            seen.add(exercise_id)
+            practise_key = CANONICAL_TO_PRACTISE_KEY.get(exercise_id)
+            if practise_key in exercise_cards_by_key:
+                votes[practise_key] += 1
+
+    ranked_keys = sorted(
+        votes,
+        key=lambda practise_key: (
+            -votes[practise_key],
+            PRACTISE_KEY_TO_STAGE.get(practise_key, 999),
+            PRACTISE_KEY_ORDER.get(practise_key, 999),
+            practise_key,
+        ),
+    )
+
+    return ranked_keys[:3]
+
+
 def resolve_recommendation_index(learner):
     """Return current recommendation index and apply 24h fallback rotation."""
 
@@ -160,6 +224,34 @@ def resolve_recommendation_index(learner):
     learner.recommendation_index_updated_at = now
     learner.save(update_fields=["recommendation_index", "recommendation_index_updated_at"])
     return current_index
+
+
+def get_recommended_stage_label(learner):
+    """Return the label of the practise stage currently recommended for a learner, if any."""
+
+    has_completed_screener_v2 = learner.answers.filter(screener_version=2).exists()
+    if not has_completed_screener_v2 or not learner.recommended_exercise_ids:
+        return None
+
+    current_index = resolve_recommendation_index(learner)
+    if current_index is None:
+        return None
+
+    recommendation_ids = learner.recommended_exercise_ids
+    ordered_current = recommendation_ids[current_index:] + recommendation_ids[:current_index]
+
+    recommended_exercise_key = None
+    for exercise_id in ordered_current:
+        practise_key = CANONICAL_TO_PRACTISE_KEY.get(exercise_id)
+        if practise_key:
+            recommended_exercise_key = practise_key
+            break
+
+    if not recommended_exercise_key:
+        return None
+
+    recommended_stage_number = PRACTISE_KEY_TO_STAGE.get(recommended_exercise_key)
+    return PRACTISE_STAGES.get(recommended_stage_number, {}).get("label")
 
 
 def build_recommendation_explanation(learner, current_exercise_id):
@@ -242,6 +334,9 @@ def practise(request):
     recommendation_explanation = None
     recommended_stage_label = None
     has_completed_screener_v2 = False
+    selected_group = None
+    selected_group_learners = []
+    group_recommendation_empty_state = False
 
     stage_numbers = sorted(PRACTISE_STAGES.keys())
     default_stage_number = stage_numbers[0] if stage_numbers else None
@@ -368,7 +463,83 @@ def practise(request):
                             recommendation_explanation["stage"]
                         ].get("label")
 
-    if recommended_exercise_keys:
+    selected_group = _get_selected_group(request)
+    if selected_group:
+        selected_group_learners = selected_group.active_learners
+        if selected_group_learners:
+            selected_learner = selected_group_learners[0]
+            learner_selected = True
+            has_completed_screener_v2 = any(
+                learner.answers.filter(screener_version=2).exists()
+                for learner in selected_group_learners
+            )
+
+            group_recommended_keys = _build_group_recommendations(
+                selected_group,
+                exercise_cards_by_key,
+            )
+            stage_library = [
+                stage_entry
+                for stage_entry in stage_library
+                if stage_entry.get("number") != "recommended"
+            ]
+            recommended_exercise_keys = group_recommended_keys
+            secondary_exercise_keys = []
+            recommended_exercise_card = None
+            recommended_stage_numbers = sorted(
+                {
+                    PRACTISE_KEY_TO_STAGE[key]
+                    for key in group_recommended_keys
+                    if key in PRACTISE_KEY_TO_STAGE
+                }
+            )
+
+            if group_recommended_keys:
+                recommended_exercise_key = group_recommended_keys[0]
+                recommended_stage_number = PRACTISE_KEY_TO_STAGE.get(recommended_exercise_key)
+                if recommended_stage_number in PRACTISE_STAGES:
+                    recommended_stage_label = PRACTISE_STAGES[recommended_stage_number].get(
+                        "label"
+                    )
+            else:
+                group_recommendation_empty_state = True
+                recommended_stage_number = None
+                recommended_stage_label = None
+
+            recommendation_explanation = None
+            has_recommended_filter = bool(group_recommended_keys)
+            if has_recommended_filter:
+                recommended_cards = [
+                    exercise_cards_by_key[key]
+                    for key in group_recommended_keys
+                    if key in exercise_cards_by_key
+                ]
+                if recommended_cards:
+                    stage_library.insert(
+                        0,
+                        {
+                            "number": "recommended",
+                            "label": "Recommended",
+                            "exercise_cards": recommended_cards,
+                        },
+                    )
+
+            active_stage_number = (
+                "recommended"
+                if has_recommended_filter
+                else (recommended_stage_number or default_stage_number)
+            )
+        else:
+            recommended_exercise_keys = []
+            secondary_exercise_keys = []
+            recommended_exercise_card = None
+            recommended_stage_numbers = []
+            group_recommendation_empty_state = True
+            recommendation_explanation = None
+            recommended_stage_label = None
+            recommended_stage_number = None
+
+    if recommended_exercise_keys and not selected_group:
         suggested_keys = recommended_exercise_keys + [
             key for key in secondary_exercise_keys if key not in recommended_exercise_keys
         ]
@@ -406,6 +577,9 @@ def practise(request):
         "recommendation_explanation": recommendation_explanation,
         "recommended_stage_label": recommended_stage_label,
         "active_stage_number": active_stage_number,
+        "selected_group": selected_group,
+        "selected_group_learners": selected_group_learners,
+        "group_recommendation_empty_state": group_recommendation_empty_state,
     }
 
     return render(request, "practise/practise.html", context)

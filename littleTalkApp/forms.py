@@ -4,6 +4,7 @@ from django.utils import timezone
 from django.db.models import Q
 from .models import Learner
 from .models import Cohort
+from .models import InterventionGroup
 from .models import StaffInvite
 from .models import Role
 from .models import JoinRequest
@@ -256,12 +257,12 @@ class ParentSignupForm(forms.Form):
 
 class LearnerForm(forms.ModelForm):
     name = forms.CharField(
-        label="Learner's name (or nickname)",
+        label="Name (or nickname)",
         required=True,
         widget=forms.TextInput(attrs={"class": "input"}),
     )
     date_of_birth = forms.DateField(
-        label="Learner DOB",
+        label="Date of Birth",
         required=True,
         widget=forms.DateInput(attrs={"type": "date", "class": "input"}),
     )
@@ -471,6 +472,16 @@ class PasswordUpdateForm(forms.Form):
 class CohortForm(forms.ModelForm):
     class Meta:
         model = Cohort
+        fields = ["name", "description"]
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "input"}),
+            "description": forms.Textarea(attrs={"class": "textarea", "rows": 3}),
+        }
+
+
+class InterventionGroupForm(forms.ModelForm):
+    class Meta:
+        model = InterventionGroup
         fields = ["name", "description"]
         widgets = {
             "name": forms.TextInput(attrs={"class": "input"}),

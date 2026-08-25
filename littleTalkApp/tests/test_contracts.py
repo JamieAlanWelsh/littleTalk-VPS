@@ -44,8 +44,6 @@ class UrlContractsTests(TestCase):
             "accept_invite": {"token": uuid.uuid4()},
             "edit_learner": {"learner_uuid": uuid.uuid4()},
             "confirm_delete_learner": {"learner_uuid": uuid.uuid4()},
-            "cohort_edit": {"cohort_id": 1},
-            "cohort_delete": {"cohort_id": 1},
             "log_entry_detail": {"entry_id": 1},
             "edit_log_entry": {"entry_id": 1},
             "delete_log_entry": {"entry_id": 1},
@@ -86,11 +84,7 @@ class UrlContractsTests(TestCase):
             "select_learner",
             "edit_learner",
             "confirm_delete_learner",
-            "cohort_list",
-            "cohort_create",
             "select_school",
-            "cohort_edit",
-            "cohort_delete",
             "logbook",
             "new_log_entry",
             "log_entry_detail",
@@ -225,7 +219,7 @@ class TemplateContractsTests(TestCase):
         self.assertTemplateUsed(response, "school/accept_invite.html")
 
     def test_signup_pages_link_terms_and_privacy_notice(self):
-        for name in ("account_setup", "school_signup", "request_join_school", "parent_signup"):
+        for name in ("school_signup", "request_join_school", "parent_signup"):
             with self.subTest(name=name):
                 response = self.client.get(reverse(name))
                 self.assertContains(response, reverse("terms"))

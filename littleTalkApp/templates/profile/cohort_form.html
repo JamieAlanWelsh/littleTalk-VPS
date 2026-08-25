@@ -3,7 +3,6 @@
 {% block title %}Chatterdillo | Cohorts{% endblock %}
 
 {% block content %}
-
 <h1>{% if is_editing %}Edit Cohort{% else %}Add Cohort{% endif %}</h1>
 
 <div class="container-box container--short">
@@ -20,12 +19,11 @@
       </div>
     {% endfor %}
 
-      <button type="submit" class="btn btn--yellow btn--full">Save</button>
+    <button type="submit" class="btn btn--yellow btn--full">Save</button>
 
-      <a href="{% url 'cohort_list' %}" class="btn btn--white btn--full cancel-btn">
-        Cancel
-      </a>
+    <a href="{% url 'profile' %}" class="btn btn--white btn--full cancel-btn">
+      Cancel
+    </a>
   </form>
 </div>
-
 {% endblock %}

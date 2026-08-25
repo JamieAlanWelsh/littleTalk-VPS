@@ -25,6 +25,7 @@ const pickRandom = <T>(items: readonly T[]): T =>
 const buildQuestionsForScene = (
     scene: TaskMasterTaskData,
     allObjects: ReadonlyArray<{ label: string; imageUrl: string }>,
+    questionCount: number,
 ): TaskMasterQuestion[] => {
     const objectCount = Math.min(
         TASK_MASTER_MAX_OBJECTS_PER_SCENE,
@@ -33,12 +34,17 @@ const buildQuestionsForScene = (
     const sceneObjects = shuffleArray([...allObjects]).slice(0, objectCount);
     const shuffledQuestions = shuffleArray(scene.questions);
 
-    return shuffledQuestions.map((question, index) => {
+    const repeatedQuestions = Array.from(
+        { length: Math.max(1, questionCount) },
+        (_, index) => shuffledQuestions[index % shuffledQuestions.length],
+    );
+
+    return repeatedQuestions.map((question, index) => {
         const object =
             sceneObjects[index % sceneObjects.length] ?? pickRandom(allObjects);
 
         return {
-            id: `${scene.id}-${question.id}`,
+            id: `${scene.id}-${question.id}-${index}`,
             prompt: `Put ${object.label} ${question.question}.`,
             character: scene.altText ?? scene.id,
             answer: question.answer,
@@ -49,7 +55,9 @@ const buildQuestionsForScene = (
     });
 };
 
-export const generateQuestions = (): TaskMasterQuestion[] => {
+export const generateQuestions = (
+    questionCount = TASK_MASTER_QUESTIONS_PER_SCENE,
+): TaskMasterQuestion[] => {
     const parseResult = TaskMasterExerciseDataSchema.safeParse(exerciseData);
 
     if (!parseResult.success) {
@@ -72,5 +80,5 @@ export const generateQuestions = (): TaskMasterQuestion[] => {
         return [];
     }
 
-    return buildQuestionsForScene(selectedScene, data.objects);
+    return buildQuestionsForScene(selectedScene, data.objects, questionCount);
 };
