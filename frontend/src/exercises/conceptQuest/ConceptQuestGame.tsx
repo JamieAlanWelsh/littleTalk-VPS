@@ -116,8 +116,7 @@ const buildRounds = (
             supportedComplexities[
                 Math.floor(Math.random() * supportedComplexities.length)
             ];
-        const candidateSets =
-            complexity === 5 ? payload.imageSets : compatibleSets;
+        const candidateSets = compatibleSets;
         const imageSet =
             candidateSets[Math.floor(Math.random() * candidateSets.length)];
         const availableConcepts = imageSet.supportedConcepts.filter((concept) =>
