@@ -89,6 +89,8 @@ const buildQuestions = (scene: ConfiguredColourfulSemanticsScene): Question[] =>
         correctIconIds: [step.correctOptionId],
     }));
 
+const AFFIRMATION_PREFIX = "That's right!";
+
 const buildAffirmationPrompt = ({
     lockedSelectionIds,
     itemsById,
@@ -108,7 +110,7 @@ const buildAffirmationPrompt = ({
         selectionIds: lockedSelectionIds,
     });
 
-    const sentence = scene.steps
+    const wordLabels = scene.steps
         .map((step, stepIndex) => {
             const selectionId = lockedSelectionIds[stepIndex];
 
@@ -130,17 +132,22 @@ const buildAffirmationPrompt = ({
                 useWhatLikeVariantLabel,
             }).label;
         })
-        .filter(Boolean)
-        .join(" ")
-        .trim();
+        .filter(Boolean);
+
+    const sentence = wordLabels.join(" ").trim();
 
     const sentenceWithPunctuation = /[.!?]$/.test(sentence)
         ? sentence
         : `${sentence}.`;
 
-    return sentence
-        ? `That's right! ${sentenceWithPunctuation}`
-        : "That's right!";
+    const text = sentence
+        ? `${AFFIRMATION_PREFIX} ${sentenceWithPunctuation}`
+        : AFFIRMATION_PREFIX;
+
+    // The full sentence has no single matching audio clip, so speak it as separate pre-generated word clips.
+    const speechSequence = [AFFIRMATION_PREFIX, ...wordLabels];
+
+    return { text, speechSequence };
 };
 
 const buildCorrectnessMap = ({
@@ -246,7 +253,7 @@ export const ColourfulSemanticsGame = ({
           }
         : undefined;
 
-    const completionAffirmationPrompt = useMemo(
+    const completionAffirmation = useMemo(
         () =>
             buildAffirmationPrompt({
                 lockedSelectionIds,
@@ -337,9 +344,15 @@ export const ColourfulSemanticsGame = ({
             }}
             onResetQuestion={onResetQuestion}
             onSettingsRequested={onSettingsRequested}
+            isVoiceMuted={variant.id === "advanced" || options.isVoiceMuted}
             promptOverride={
                 showCompletionAffirmation
-                    ? completionAffirmationPrompt
+                    ? completionAffirmation.text
+                    : undefined
+            }
+            promptSpeechOverride={
+                showCompletionAffirmation
+                    ? completionAffirmation.speechSequence
                     : undefined
             }
             questions={questions}

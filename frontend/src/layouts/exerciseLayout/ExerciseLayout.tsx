@@ -8,7 +8,13 @@
  * and feedback/progress indicators internally.
  */
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import {
+    useCallback,
+    useEffect,
+    useRef,
+    useState,
+    type ReactNode,
+} from "react";
 import styles from "./exerciseLayout.module.css";
 import ExerciseActionBar from "../../components/ExerciseActionBar/ExerciseActionBar";
 import ConfirmationModal from "../../components/ConfirmationModal/ConfirmationModal";
@@ -21,6 +27,7 @@ import type {
 import { useExerciseTracking, useSubmitExerciseResult } from "../../hooks";
 import ExerciseEndscreen from "../exerciseEndscreen/ExerciseEndscreen";
 import { useAudio } from "../../hooks/useAudio";
+import { useTts } from "../../hooks/useTts";
 import { useGroupContextValue } from "../../contexts/GroupContext";
 
 const EXP_FLOOR = 200;
@@ -70,6 +77,9 @@ interface ExerciseLayoutProps<AnswerType> {
     }) => "proceed" | "hold";
     onSettingsRequested?: () => void;
     promptOverride?: string;
+    /** Overrides how the prompt is spoken, e.g. a runtime-composed sentence with no single matching audio clip. */
+    promptSpeechOverride?: Array<string | null | undefined>;
+    isVoiceMuted?: boolean;
     disableCheck?: boolean;
     showSkip?: boolean;
     onSkipRequested?: () => void;
@@ -104,6 +114,8 @@ export const ExerciseLayout = <AnswerType,>({
     onBeforeContinue,
     onSettingsRequested,
     promptOverride,
+    promptSpeechOverride,
+    isVoiceMuted = false,
     disableCheck = false,
     showSkip = true,
     onSkipRequested,
@@ -141,10 +153,24 @@ export const ExerciseLayout = <AnswerType,>({
             : null;
 
     const { play } = useAudio();
+    const { speak, speakSequence } = useTts();
+
+    const speakPrompt = useCallback(() => {
+        if (promptSpeechOverride) {
+            speakSequence(promptSpeechOverride, { isMuted: isVoiceMuted });
+            return;
+        }
+        speak(promptText, { isMuted: isVoiceMuted });
+    }, [promptSpeechOverride, promptText, isVoiceMuted, speak, speakSequence]);
 
     useEffect(() => {
         setIsTurnStarted(!isGroupMode);
     }, [currentQuestionStateIndex, isGroupMode]);
+
+    useEffect(() => {
+        if (isComplete) return;
+        speakPrompt();
+    }, [isComplete, speakPrompt]);
 
     useEffect(() => {
         if (isComplete) {
@@ -498,6 +524,14 @@ export const ExerciseLayout = <AnswerType,>({
                                     <span className={styles.exercisePromptText}>
                                         {promptText}
                                     </span>
+                                    <button
+                                        className={styles.promptReplayButton}
+                                        onClick={speakPrompt}
+                                        title="Read prompt aloud"
+                                        type="button"
+                                    >
+                                        🔊
+                                    </button>
                                 </h2>
                             </div>
 

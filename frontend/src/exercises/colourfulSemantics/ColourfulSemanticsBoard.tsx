@@ -12,7 +12,7 @@ import { DragImageOverlay } from "../../components/DragImageOverlay/DragImageOve
 import { DraggableImage } from "../../components/DraggableImage/DraggableImage";
 import { DroppableImageZone } from "../../components/DroppableImageZone/DroppableImageZone";
 import { PoolTray } from "../../components/PoolTray/PoolTray";
-import useAudio from "../../hooks/useAudio";
+import useTts from "../../hooks/useTts";
 import styles from "./colourfulSemantics.module.css";
 import { getIsPluralSubject, resolveOptionPresentation } from "./presentation";
 import { COLOURFUL_SEMANTICS_SLOT_METADATA } from "./slotMetadata";
@@ -106,7 +106,7 @@ export const ColourfulSemanticsBoard = ({
     showAllSlotsVisible = false,
     showFeedback = false,
 }: ColourfulSemanticsBoardProps) => {
-    const { play } = useAudio();
+    const { speak } = useTts();
     const useWhatLikeVariantLabel =
         isPastTense && scene.steps.some((step) => step.slot === "what-like");
     const isPluralSubject = getIsPluralSubject({
@@ -125,7 +125,7 @@ export const ColourfulSemanticsBoard = ({
         item: ColourfulSemanticsOption,
         slot: ConfiguredColourfulSemanticsScene["steps"][number]["slot"],
     ) => {
-        const { sfxUrl } = resolveOptionPresentation({
+        const { label } = resolveOptionPresentation({
             item,
             slot,
             isPluralSubject,
@@ -133,15 +133,7 @@ export const ColourfulSemanticsBoard = ({
             useWhatLikeVariantLabel,
         });
 
-        if (!sfxUrl) {
-            return;
-        }
-
-        if (isVoiceMuted) {
-            return;
-        }
-
-        play(sfxUrl);
+        speak(label, { isMuted: isVoiceMuted });
     };
 
     const renderImage = (
