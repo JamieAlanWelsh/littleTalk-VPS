@@ -20,17 +20,11 @@ import { ImageOption } from "../../components/ImageOption";
 import { useExerciseTracking } from "../../hooks";
 import ExerciseLayout from "../../layouts/exerciseLayout/ExerciseLayout";
 import { shuffleArray } from "../../utils/shuffleArray";
+import useTts from "../../hooks/useTts";
+import { getDescriptivePrompt, getPrompt } from "./promptBuilder";
 import styles from "./conceptQuest.module.css";
 
 const EXERCISE_ID = "concept-quest";
-
-const WORD_FORMS: Record<ConceptQuestConcept, [string, string, string]> = {
-    big: ["big", "bigger", "biggest"],
-    small: ["small", "smaller", "smallest"],
-    short: ["short", "shorter", "shortest"],
-    long: ["long", "longer", "longest"],
-    tall: ["tall", "taller", "tallest"],
-};
 
 const getComplexityLabel = (complexity: ConceptQuestComplexity): string => {
     switch (complexity) {
@@ -59,15 +53,10 @@ interface ConceptQuestAnswer {
 }
 
 const isLowEndConcept = (concept: ConceptQuestConcept) =>
-    concept === "small" || concept === "short";
+    concept === "small" || concept === "short" || concept === "thin";
 
 const getOptionCount = (complexity: ConceptQuestComplexity) =>
     complexity === 2 ? 2 : complexity === 3 ? 4 : complexity === 5 ? 5 : 3;
-
-const getMiddlePrompt = (concept: ConceptQuestConcept) => {
-    const [, comparative, superlative] = WORD_FORMS[concept];
-    return `${comparative} but not ${superlative}`;
-};
 
 const toPicture = (item: ConceptQuestItem): Picture => ({
     id: item.id,
@@ -75,18 +64,6 @@ const toPicture = (item: ConceptQuestItem): Picture => ({
     label: item.label,
     altText: item.altText,
 });
-
-const getPrompt = (
-    concept: ConceptQuestConcept,
-    complexity: ConceptQuestComplexity,
-    subject: string,
-) =>
-    complexity === 4
-        ? `Which ${subject} is ${getMiddlePrompt(concept)}?`
-        : `Which ${subject} is ${WORD_FORMS[concept][complexity - 1]}?`;
-
-const getDescriptivePrompt = (item: ConceptQuestItem) =>
-    `Can you show me ${item.altText ?? item.label}?`;
 
 const buildRounds = (
     payload: ConceptQuestPayload,
@@ -114,8 +91,7 @@ const buildRounds = (
             supportedComplexities[
                 Math.floor(Math.random() * supportedComplexities.length)
             ];
-        const candidateSets =
-            complexity === 5 ? payload.imageSets : compatibleSets;
+        const candidateSets = compatibleSets;
         const imageSet =
             candidateSets[Math.floor(Math.random() * candidateSets.length)];
         const availableConcepts = imageSet.supportedConcepts.filter((concept) =>
@@ -197,6 +173,8 @@ export const ConceptQuestGame = ({
         selectedIconIds: [],
         answerState: "notAnswered",
     });
+
+    const { speak } = useTts();
 
     const gameData = useMemo(
         () => buildRounds(payload, options),
@@ -286,12 +264,13 @@ export const ConceptQuestGame = ({
                                     questionState.answerState !==
                                         "notAnswered" && !isSelected
                                 }
-                                onClick={() =>
+                                onClick={() => {
+                                    speak(picture.label);
                                     setQuestionState((previousState) => ({
                                         ...previousState,
                                         selectedIconIds: [picture.id],
-                                    }))
-                                }
+                                    }));
+                                }}
                             />
                         );
                     })}

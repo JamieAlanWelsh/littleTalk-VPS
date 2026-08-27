@@ -7,6 +7,8 @@
     "build": "tcm frontend/src && vite build",
     "preview": "vite preview",
     "validate:task-master": "node scripts/validate-task-master-data.mjs",
+    "tts:generate": "tsx scripts/generate-tts.ts",
+    "tts:list": "tsx scripts/generate-tts.ts --dry-run",
     "prepare": "husky"
   },
   "dependencies": {
@@ -41,6 +43,7 @@
     "husky": "^9.1.7",
     "jiti": "^2.6.1",
     "prettier": "^3.8.1",
+    "tsx": "^4.23.12",
     "typed-css-modules": "^0.9.1",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.58.1",

@@ -13,6 +13,7 @@ import {
     type BoardState,
 } from "./boardUtils";
 import StoryTrainBoard from "./StoryTrainBoard";
+import { buildStoryTrainPrompt } from "./promptBuilder";
 import type { StoryTrainSet, StoryTrainStep } from "./types";
 
 const getExerciseIdForVariant = (
@@ -37,7 +38,7 @@ interface StoryTrainAnswer {
 const buildQuestions = (selectedSets: StoryTrainSet[]): Question[] =>
     selectedSets.map((storySet) => ({
         id: storySet.id,
-        prompt: `Can you put the story about ${storySet.title} in order?`,
+        prompt: buildStoryTrainPrompt(storySet.title),
         correctIconIds: storySet.steps
             .slice()
             .sort((left, right) => left.order - right.order)

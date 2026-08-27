@@ -11,8 +11,10 @@ import type {
 const PRONOUN_TO_TARGET_ROLE: Record<WhosWhoPronoun, WhosWhoTargetRole> = {
     he: "boy",
     him: "boy",
+    his: "boy",
     she: "girl",
     her: "girl",
+    her_possessive: "girl",
     they: "group",
     them: "group",
 };
@@ -35,12 +37,12 @@ const shuffleItems = <T>(items: T[]): T[] => {
     return shuffled;
 };
 
-const toPromptItemText = (item: WhosWhoItem) => {
+export const toPromptItemText = (item: WhosWhoItem) => {
     const withoutArticle = item.label.replace(/^The\s+/i, "").trim();
     return withoutArticle.toLowerCase();
 };
 
-const buildPrompt = (
+export const buildPrompt = (
     pronoun: WhosWhoPronoun,
     item: WhosWhoItem,
     templatesByPronoun: WhosWhoExercisePayload["generationConfig"]["promptTemplates"],
@@ -96,7 +98,16 @@ export const generateWhosWhoScenarios = ({
     const pronounPool =
         selectedPronouns.length > 0
             ? selectedPronouns
-            : (["he", "she", "him", "her", "they", "them"] as const);
+            : ([
+                  "he",
+                  "she",
+                  "him",
+                  "his",
+                  "her",
+                  "her_possessive",
+                  "they",
+                  "them",
+              ] as const);
 
     const itemPool = shuffleItems(payload.items);
     let itemCursor = 0;

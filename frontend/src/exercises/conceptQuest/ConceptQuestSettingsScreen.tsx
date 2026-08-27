@@ -22,6 +22,8 @@ const CONCEPT_OPTIONS: Array<{ label: string; value: ConceptQuestConcept }> = [
     { label: "Short", value: "short" },
     { label: "Long", value: "long" },
     { label: "Tall", value: "tall" },
+    { label: "Thick", value: "thick" },
+    { label: "Thin", value: "thin" },
 ];
 
 const COMPLEXITY_OPTIONS: Array<{
@@ -35,9 +37,7 @@ const COMPLEXITY_OPTIONS: Array<{
     { label: "descriptive e.g. almost biggest (hard)", value: 5 },
 ];
 
-const DEFAULT_CONCEPTS: ConceptQuestConcept[] = CONCEPT_OPTIONS.map(
-    (option) => option.value,
-);
+const DEFAULT_CONCEPTS: ConceptQuestConcept[] = ["big", "small"];
 
 export const ConceptQuestSettingsScreen = ({
     onSetOptions,

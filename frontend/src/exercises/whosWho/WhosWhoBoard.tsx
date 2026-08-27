@@ -5,6 +5,7 @@ import {
     pointerWithin,
     rectIntersection,
     type DragEndEvent,
+    type DragStartEvent,
     useSensor,
     useSensors,
 } from "@dnd-kit/core";
@@ -13,7 +14,9 @@ import { DragImageOverlay } from "../../components/DragImageOverlay/DragImageOve
 import { DraggableImage } from "../../components/DraggableImage/DraggableImage";
 import { DroppableImageZone } from "../../components/DroppableImageZone/DroppableImageZone";
 import { PoolTray } from "../../components/PoolTray/PoolTray";
+import useTts from "../../hooks/useTts";
 import type { AnswerState } from "../../lib/types";
+import { toPromptItemText } from "./scenarioGenerator";
 import type { WhosWhoItem, WhosWhoScenario, WhosWhoTarget } from "./types";
 import styles from "./WhosWhoBoard.module.css";
 
@@ -39,6 +42,7 @@ const renderTrayItem = (
     itemById: Record<string, WhosWhoItem>,
     answerState: AnswerState,
     scenario: WhosWhoScenario,
+    speak: (text: string) => void,
 ) => {
     const item = itemById[itemId];
 
@@ -64,7 +68,9 @@ const renderTrayItem = (
             isCorrect={isCorrect}
             isSelected={false}
             isDisabled={isAnswerChecked}
-            onClick={() => {}}
+            onClick={() => {
+                speak(toPromptItemText(item));
+            }}
         />
     );
 };
@@ -73,6 +79,7 @@ const renderAttachedItem = (
     itemId: string,
     itemById: Record<string, WhosWhoItem>,
     answerState: AnswerState,
+    speak: (text: string) => void,
 ) => {
     const item = itemById[itemId];
 
@@ -96,7 +103,9 @@ const renderAttachedItem = (
                 isSelected={false}
                 isDisabled={answerState !== "notAnswered"}
                 isBorderless={true}
-                onClick={() => {}}
+                onClick={() => {
+                    speak(toPromptItemText(item));
+                }}
             />
         </div>
     );
@@ -135,6 +144,7 @@ export const WhosWhoBoard = ({
     onDragEnd,
 }: WhosWhoBoardProps) => {
     const [isDragging, setIsDragging] = useState(false);
+    const { speak } = useTts();
 
     const sensors = useSensors(
         useSensor(PointerSensor, {
@@ -143,12 +153,17 @@ export const WhosWhoBoard = ({
         useSensor(KeyboardSensor),
     );
 
-    const handleDragStart = () => {
+    const handleDragStart = (event: DragStartEvent) => {
         if (answerState !== "notAnswered") {
             return;
         }
 
         setIsDragging(true);
+
+        const item = itemById[String(event.active.id)];
+        if (item) {
+            speak(toPromptItemText(item));
+        }
     };
 
     const handleDragEnd = (event: DragEndEvent) => {
@@ -215,6 +230,7 @@ export const WhosWhoBoard = ({
                                                       ),
                                                       itemById,
                                                       answerState,
+                                                      speak,
                                                   )
                                                 : null}
                                         </div>
@@ -229,7 +245,13 @@ export const WhosWhoBoard = ({
                     id="tray"
                     itemIds={currentRoundState.trayItemIds}
                     renderItem={(itemId) =>
-                        renderTrayItem(itemId, itemById, answerState, scenario)
+                        renderTrayItem(
+                            itemId,
+                            itemById,
+                            answerState,
+                            scenario,
+                            speak,
+                        )
                     }
                     itemsById={itemById}
                 />

@@ -5,7 +5,7 @@
  * Allows users to select which categories to include.
  */
 
-import { useState, useEffect, type ChangeEvent } from "react";
+import { useState, useEffect } from "react";
 import type {
     CategorisationExercisePayload,
     CategorisationOptions,
@@ -65,8 +65,6 @@ export const CategorisationSettingsScreen = ({
             ),
         ),
     );
-    const [isSfxMuted, setIsSfxMuted] = useState(false);
-
     const maxItemsPerCategory = Math.min(
         MAX_ITEMS_PER_CATEGORY,
         getMaxItemsPerCategory(selectedCategoryIds, payload.categories),
@@ -87,18 +85,13 @@ export const CategorisationSettingsScreen = ({
             return;
         }
 
-        onSetOptions({ selectedCategoryIds, itemsPerCategory, isSfxMuted });
+        onSetOptions({ selectedCategoryIds, itemsPerCategory });
     }, [
         selectedCategoryIds,
         itemsPerCategory,
-        isSfxMuted,
         maxItemsPerCategory,
         onSetOptions,
     ]);
-
-    const onMuteSfxToggle = (event: ChangeEvent<HTMLInputElement>) => {
-        setIsSfxMuted(event.target.checked);
-    };
 
     const toggleCategory = (categoryId: string) => {
         setSelectedCategoryIds((currentCategoryIds) =>
@@ -176,17 +169,6 @@ export const CategorisationSettingsScreen = ({
                         )}
                     </select>
                 </div>
-            </div>
-
-            <div className={settingsStyles.section}>
-                <label className={settingsStyles.muteToggleRow}>
-                    <input
-                        type="checkbox"
-                        checked={isSfxMuted}
-                        onChange={onMuteSfxToggle}
-                    />
-                    Mute Voice
-                </label>
             </div>
         </div>
     );

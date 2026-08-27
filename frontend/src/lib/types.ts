@@ -118,6 +118,8 @@ export const ConceptQuestConceptSchema = z.enum([
     "short",
     "long",
     "tall",
+    "thick",
+    "thin",
 ]);
 
 export type ConceptQuestConcept = z.infer<typeof ConceptQuestConceptSchema>;

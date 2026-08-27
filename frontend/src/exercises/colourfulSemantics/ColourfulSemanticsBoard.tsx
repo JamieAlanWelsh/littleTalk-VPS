@@ -5,6 +5,7 @@ import {
     pointerWithin,
     rectIntersection,
     type DragEndEvent,
+    type DragStartEvent,
     useSensor,
     useSensors,
 } from "@dnd-kit/core";
@@ -12,7 +13,7 @@ import { DragImageOverlay } from "../../components/DragImageOverlay/DragImageOve
 import { DraggableImage } from "../../components/DraggableImage/DraggableImage";
 import { DroppableImageZone } from "../../components/DroppableImageZone/DroppableImageZone";
 import { PoolTray } from "../../components/PoolTray/PoolTray";
-import useAudio from "../../hooks/useAudio";
+import useTts from "../../hooks/useTts";
 import styles from "./colourfulSemantics.module.css";
 import { getIsPluralSubject, resolveOptionPresentation } from "./presentation";
 import { COLOURFUL_SEMANTICS_SLOT_METADATA } from "./slotMetadata";
@@ -30,7 +31,6 @@ interface ColourfulSemanticsBoardProps {
     boardState: SentenceBoardState;
     hideTray?: boolean;
     isPastTense?: boolean;
-    isVoiceMuted?: boolean;
     itemCorrectnessMap?: Record<string, boolean>;
     isReadOnly?: boolean;
     itemsById: Record<string, ColourfulSemanticsOption>;
@@ -97,7 +97,6 @@ export const ColourfulSemanticsBoard = ({
     boardState,
     hideTray = false,
     isPastTense = false,
-    isVoiceMuted = false,
     itemCorrectnessMap = {},
     isReadOnly = false,
     itemsById,
@@ -106,7 +105,7 @@ export const ColourfulSemanticsBoard = ({
     showAllSlotsVisible = false,
     showFeedback = false,
 }: ColourfulSemanticsBoardProps) => {
-    const { play } = useAudio();
+    const { speak } = useTts();
     const useWhatLikeVariantLabel =
         isPastTense && scene.steps.some((step) => step.slot === "what-like");
     const isPluralSubject = getIsPluralSubject({
@@ -125,7 +124,7 @@ export const ColourfulSemanticsBoard = ({
         item: ColourfulSemanticsOption,
         slot: ConfiguredColourfulSemanticsScene["steps"][number]["slot"],
     ) => {
-        const { sfxUrl } = resolveOptionPresentation({
+        const { label } = resolveOptionPresentation({
             item,
             slot,
             isPluralSubject,
@@ -133,15 +132,24 @@ export const ColourfulSemanticsBoard = ({
             useWhatLikeVariantLabel,
         });
 
-        if (!sfxUrl) {
-            return;
-        }
+        speak(label);
+    };
 
-        if (isVoiceMuted) {
-            return;
-        }
+    const handleDragStart = (event: DragStartEvent) => {
+        const itemId = String(event.active.id);
+        const item = itemsById[itemId];
 
-        play(sfxUrl);
+        if (!item) return;
+
+        const stepIndex = boardState.slotItemIds.findIndex(
+            (slotItemId) => slotItemId === itemId,
+        );
+        const slot =
+            stepIndex !== -1
+                ? scene.steps[stepIndex].slot
+                : (scene.steps[activeStepIndex]?.slot ?? "doing");
+
+        playItemSfx(item, slot);
     };
 
     const renderImage = (
@@ -176,11 +184,6 @@ export const ColourfulSemanticsBoard = ({
                 onClick={() => {
                     playItemSfx(item, slot);
                 }}
-                onPointerEnter={(event) => {
-                    if (event.pointerType === "mouse") {
-                        playItemSfx(item, slot);
-                    }
-                }}
             />
         );
     };
@@ -194,6 +197,7 @@ export const ColourfulSemanticsBoard = ({
                     ? pointerCollisions
                     : rectIntersection(args);
             }}
+            onDragStart={handleDragStart}
             onDragEnd={onDragEnd}
         >
             <DragImageOverlay />

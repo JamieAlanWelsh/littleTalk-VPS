@@ -10,6 +10,7 @@ import {
     pointerWithin,
     rectIntersection,
     type DragEndEvent,
+    type DragStartEvent,
     useSensor,
     useSensors,
 } from "@dnd-kit/core";
@@ -17,7 +18,7 @@ import { DragImageOverlay } from "../../components/DragImageOverlay/DragImageOve
 import { CategoryBox } from "../../components/CategoryBox/CategoryBox";
 import { DraggableImage } from "../../components/DraggableImage/DraggableImage";
 import { PoolTray } from "../../components/PoolTray/PoolTray";
-import useAudio from "../../hooks/useAudio";
+import useTts from "../../hooks/useTts";
 import type { CategorisationItem } from "./types";
 import type { BoardState } from "./boardUtils";
 
@@ -25,7 +26,6 @@ interface CategorisationBoardProps {
     boardState: BoardState;
     itemsById: Record<string, CategorisationItem>;
     categoryTitleImages?: Record<string, string>;
-    isSfxMuted?: boolean;
     onDragEnd: (event: DragEndEvent) => void;
     itemCorrectnessMap?: Record<string, boolean>;
     showFeedback?: boolean;
@@ -43,12 +43,11 @@ export const CategorisationBoard = ({
     boardState,
     itemsById,
     categoryTitleImages = {},
-    isSfxMuted = false,
     onDragEnd,
     itemCorrectnessMap = {},
     showFeedback = false,
 }: CategorisationBoardProps) => {
-    const { play } = useAudio();
+    const { speak } = useTts();
     const sensors = useSensors(
         useSensor(PointerSensor, {
             activationConstraint: { distance: 1 },
@@ -57,11 +56,15 @@ export const CategorisationBoard = ({
     );
 
     const playItemSfx = (item: CategorisationItem) => {
-        if (isSfxMuted || !item.sfxUrl) {
-            return;
-        }
+        speak(item.label);
+    };
 
-        play(item.sfxUrl);
+    const handleDragStart = (event: DragStartEvent) => {
+        const item = itemsById[String(event.active.id)];
+
+        if (item) {
+            playItemSfx(item);
+        }
     };
 
     const renderImage = (itemId: string) => {
@@ -76,11 +79,6 @@ export const CategorisationBoard = ({
                 isSelected={false}
                 onClick={() => {
                     playItemSfx(item);
-                }}
-                onPointerEnter={(event) => {
-                    if (event.pointerType === "mouse") {
-                        playItemSfx(item);
-                    }
                 }}
             />
         );
@@ -101,6 +99,7 @@ export const CategorisationBoard = ({
                         ? pointerCollisions
                         : rectIntersection(args);
                 }}
+                onDragStart={handleDragStart}
                 onDragEnd={onDragEnd}
             >
                 <DragImageOverlay />

@@ -1,4 +1,5 @@
 import type { AnswerState } from "../../lib/types";
+import useTts from "../../hooks/useTts";
 import styles from "./TextOptionGroup.module.css";
 
 export interface TextOption {
@@ -21,6 +22,7 @@ export const TextOptionGroup = ({
     disabled = false,
     onSelect,
 }: TextOptionGroupProps) => {
+    const { speak } = useTts();
     const layoutClassName =
         options.length === 1
             ? styles.oneOption
@@ -53,6 +55,7 @@ export const TextOptionGroup = ({
                                 return;
                             }
 
+                            speak(option.label);
                             onSelect(option.id);
                         }}
                     >

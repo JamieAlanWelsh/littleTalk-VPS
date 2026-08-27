@@ -70,7 +70,7 @@
     },
     {
       "id": "item-cap",
-      "imageUrl": "/static/exercise_assets/early_years_image_options/hat.webp",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/cap.webp",
       "label": "The Cap"
     },
     {
@@ -498,16 +498,22 @@
         "She wants the {item}."
       ],
       "him": [
-        "Give the {item} to him"
+        "Give the {item} to him."
+      ],
+      "his": [
+        "Give him his {item}."
       ],
       "her": [
-        "Give the {item} to her"
+        "Give the {item} to her."
+      ],
+      "her_possessive": [
+        "Give her her {item}."
       ],
       "they": [
         "They want the {item}."
       ],
       "them": [
-        "Give the {item} to them"
+        "Give the {item} to them."
       ]
     },
     "targetPools": {

@@ -120,7 +120,6 @@ export interface ColourfulSemanticsOptions {
     presetId: ColourfulSemanticsPresetId;
     numberOfOptions: number;
     enabledOptionalSlotIds: ColourfulSemanticsOptionalSlot[];
-    isVoiceMuted: boolean;
 }
 
 export interface ColourfulSemanticsRoundStats {

@@ -19,24 +19,11 @@ import ExerciseLayout from "../../layouts/exerciseLayout/ExerciseLayout";
 import { ImageOption } from "../../components/ImageOption";
 import { useExerciseTracking } from "../../hooks";
 import { shuffleArray } from "../../utils/shuffleArray";
+import useTts from "../../hooks/useTts";
+import { randomPrompt } from "./promptBuilder";
 import styles from "./thinkAndFind.module.css";
 
 const EXERCISE_ID = "think-and-find";
-
-const PROMPT_PHRASINGS = [
-    "Where is the",
-    "Can you find the",
-    "Do you see the",
-    "Can you spot the",
-];
-
-const randomPrompt = (basePrompt: string): string => {
-    // basePrompt is stored as "Find the {descriptor}." — extract the descriptor
-    const descriptor = basePrompt.replace(/^Find the /i, "").replace(/\.$/, "");
-    const phrasing =
-        PROMPT_PHRASINGS[Math.floor(Math.random() * PROMPT_PHRASINGS.length)];
-    return `${phrasing} ${descriptor}?`;
-};
 
 interface ThinkAndFindGameProps {
     payload: ThinkAndFindPayload;
@@ -116,6 +103,8 @@ export const ThinkAndFindGame = ({
     };
     const tracking = useExerciseTracking(gameData.questions.length);
 
+    const { speak } = useTts();
+
     const onCheckAnswer = (question: Question) => {
         if (questionState.selectedIconIds.length === 0) return;
 
@@ -182,12 +171,13 @@ export const ThinkAndFindGame = ({
                                 isCorrect={isCorrect}
                                 isSelected={isSelected}
                                 isDisabled={isDisabled}
-                                onClick={() =>
+                                onClick={() => {
+                                    speak(picture.label);
                                     setQuestionState((prev) => ({
                                         ...prev,
                                         selectedIconIds: [picture.id],
-                                    }))
-                                }
+                                    }));
+                                }}
                             />
                         );
                     })}
