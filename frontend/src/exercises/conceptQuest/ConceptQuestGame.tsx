@@ -30,6 +30,8 @@ const WORD_FORMS: Record<ConceptQuestConcept, [string, string, string]> = {
     short: ["short", "shorter", "shortest"],
     long: ["long", "longer", "longest"],
     tall: ["tall", "taller", "tallest"],
+    thick: ["thick", "thicker", "thickest"],
+    thin: ["thin", "thinner", "thinnest"],
 };
 
 const getComplexityLabel = (complexity: ConceptQuestComplexity): string => {
@@ -59,7 +61,7 @@ interface ConceptQuestAnswer {
 }
 
 const isLowEndConcept = (concept: ConceptQuestConcept) =>
-    concept === "small" || concept === "short";
+    concept === "small" || concept === "short" || concept === "thin";
 
 const getOptionCount = (complexity: ConceptQuestComplexity) =>
     complexity === 2 ? 2 : complexity === 3 ? 4 : complexity === 5 ? 5 : 3;

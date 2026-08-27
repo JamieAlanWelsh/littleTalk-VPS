@@ -266,6 +266,84 @@
           "altText": "the tallest tree"
         }
       ]
+    },
+    {
+      "id": "book-set1",
+      "name": "Books - set 1",
+      "subject": "book",
+      "supportedConcepts": ["thick", "thin"],
+      "items": [
+        {"id": "book-set1-thinnest", "imageUrl": "/static/exercise_assets/concept_quest/book/book_thinnest_set1.webp", "label": "Thinnest book", "altText": "the thinnest book"},
+        {"id": "book-set1-second-thinnest", "imageUrl": "/static/exercise_assets/concept_quest/book/book_second_thinnest_set1.webp", "label": "Second thinnest book", "altText": "a book that is a little thicker than the thinnest book"},
+        {"id": "book-set1-medium", "imageUrl": "/static/exercise_assets/concept_quest/book/book_medium_set1.webp", "label": "Medium book", "altText": "a medium-thickness book"},
+        {"id": "book-set1-second-thickest", "imageUrl": "/static/exercise_assets/concept_quest/book/book_second_thickest_set1.webp", "label": "Second thickest book", "altText": "a book that is almost the thickest"},
+        {"id": "book-set1-thickest", "imageUrl": "/static/exercise_assets/concept_quest/book/book_thickest_set1.webp", "label": "Thickest book", "altText": "the thickest book"}
+      ]
+    },
+    {
+      "id": "book-set2",
+      "name": "Books - set 2",
+      "subject": "book",
+      "supportedConcepts": ["thick", "thin"],
+      "items": [
+        {"id": "book-set2-thinnest", "imageUrl": "/static/exercise_assets/concept_quest/book/book_thinnest_set2.webp", "label": "Thinnest book", "altText": "the thinnest book"},
+        {"id": "book-set2-second-thinnest", "imageUrl": "/static/exercise_assets/concept_quest/book/book_second_thinnest_set2.webp", "label": "Second thinnest book", "altText": "a book that is a little thicker than the thinnest book"},
+        {"id": "book-set2-medium", "imageUrl": "/static/exercise_assets/concept_quest/book/book_medium_set2.webp", "label": "Medium book", "altText": "a medium-thickness book"},
+        {"id": "book-set2-second-thickest", "imageUrl": "/static/exercise_assets/concept_quest/book/book_second_thickest_set2.webp", "label": "Second thickest book", "altText": "a book that is almost the thickest"},
+        {"id": "book-set2-thickest", "imageUrl": "/static/exercise_assets/concept_quest/book/book_thickest_set2.webp", "label": "Thickest book", "altText": "the thickest book"}
+      ]
+    },
+    {
+      "id": "book-set3",
+      "name": "Books - set 3",
+      "subject": "book",
+      "supportedConcepts": ["thick", "thin"],
+      "items": [
+        {"id": "book-set3-thinnest", "imageUrl": "/static/exercise_assets/concept_quest/book/book_thinnest_set3.webp", "label": "Thinnest book", "altText": "the thinnest book"},
+        {"id": "book-set3-second-thinnest", "imageUrl": "/static/exercise_assets/concept_quest/book/book_second_thinnest_set3.webp", "label": "Second thinnest book", "altText": "a book that is a little thicker than the thinnest book"},
+        {"id": "book-set3-medium", "imageUrl": "/static/exercise_assets/concept_quest/book/book_medium_set3.webp", "label": "Medium book", "altText": "a medium-thickness book"},
+        {"id": "book-set3-second-thickest", "imageUrl": "/static/exercise_assets/concept_quest/book/book_second_thickest_set3.webp", "label": "Second thickest book", "altText": "a book that is almost the thickest"},
+        {"id": "book-set3-thickest", "imageUrl": "/static/exercise_assets/concept_quest/book/book_thickest_set3.webp", "label": "Thickest book", "altText": "the thickest book"}
+      ]
+    },
+    {
+      "id": "book-set4",
+      "name": "Books - set 4",
+      "subject": "book",
+      "supportedConcepts": ["thick", "thin"],
+      "items": [
+        {"id": "book-set4-thinnest", "imageUrl": "/static/exercise_assets/concept_quest/book/book_thinnest_set4.webp", "label": "Thinnest book", "altText": "the thinnest book"},
+        {"id": "book-set4-second-thinnest", "imageUrl": "/static/exercise_assets/concept_quest/book/book_second_thinnest_set4.webp", "label": "Second thinnest book", "altText": "a book that is a little thicker than the thinnest book"},
+        {"id": "book-set4-medium", "imageUrl": "/static/exercise_assets/concept_quest/book/book_medium_set4.webp", "label": "Medium book", "altText": "a medium-thickness book"},
+        {"id": "book-set4-second-thickest", "imageUrl": "/static/exercise_assets/concept_quest/book/book_second_thickest_set4.webp", "label": "Second thickest book", "altText": "a book that is almost the thickest"},
+        {"id": "book-set4-thickest", "imageUrl": "/static/exercise_assets/concept_quest/book/book_thickest_set4.webp", "label": "Thickest book", "altText": "the thickest book"}
+      ]
+    },
+    {
+      "id": "book-set5",
+      "name": "Books - set 5",
+      "subject": "book",
+      "supportedConcepts": ["thick", "thin"],
+      "items": [
+        {"id": "book-set5-thinnest", "imageUrl": "/static/exercise_assets/concept_quest/book/book_thinnest_set5.webp", "label": "Thinnest book", "altText": "the thinnest book"},
+        {"id": "book-set5-second-thinnest", "imageUrl": "/static/exercise_assets/concept_quest/book/book_second_thinnest_set5.webp", "label": "Second thinnest book", "altText": "a book that is a little thicker than the thinnest book"},
+        {"id": "book-set5-medium", "imageUrl": "/static/exercise_assets/concept_quest/book/book_medium_set5.webp", "label": "Medium book", "altText": "a medium-thickness book"},
+        {"id": "book-set5-second-thickest", "imageUrl": "/static/exercise_assets/concept_quest/book/book_second_thickest_set5.webp", "label": "Second thickest book", "altText": "a book that is almost the thickest"},
+        {"id": "book-set5-thickest", "imageUrl": "/static/exercise_assets/concept_quest/book/book_thickest_set5.webp", "label": "Thickest book", "altText": "the thickest book"}
+      ]
+    },
+    {
+      "id": "book-mixed",
+      "name": "Books - mixed set",
+      "subject": "book",
+      "supportedConcepts": ["thick", "thin"],
+      "items": [
+        {"id": "book-mixed-thinnest", "imageUrl": "/static/exercise_assets/concept_quest/book/book_thinnest_set1.webp", "label": "Thinnest book", "altText": "the thinnest book"},
+        {"id": "book-mixed-second-thinnest", "imageUrl": "/static/exercise_assets/concept_quest/book/book_second_thinnest_set2.webp", "label": "Second thinnest book", "altText": "a book that is a little thicker than the thinnest book"},
+        {"id": "book-mixed-medium", "imageUrl": "/static/exercise_assets/concept_quest/book/book_medium_set3.webp", "label": "Medium book", "altText": "a medium-thickness book"},
+        {"id": "book-mixed-second-thickest", "imageUrl": "/static/exercise_assets/concept_quest/book/book_second_thickest_set4.webp", "label": "Second thickest book", "altText": "a book that is almost the thickest"},
+        {"id": "book-mixed-thickest", "imageUrl": "/static/exercise_assets/concept_quest/book/book_thickest_set5.webp", "label": "Thickest book", "altText": "the thickest book"}
+      ]
     }
   ]
 }
