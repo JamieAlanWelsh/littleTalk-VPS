@@ -176,7 +176,14 @@ export const ExerciseLayout = <AnswerType,>({
     useEffect(() => {
         if (isComplete) return;
         speakPromptRef.current();
-    }, [isComplete, currentQuestionStateIndex]);
+        // Re-runs when the prompt text/sequence changes (e.g. a completion affirmation appears on
+        // the same question index), but not when only isVoiceMuted toggles.
+    }, [
+        isComplete,
+        currentQuestionStateIndex,
+        promptText,
+        promptSpeechOverride,
+    ]);
 
     useEffect(() => {
         if (isComplete) {
