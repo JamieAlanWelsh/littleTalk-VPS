@@ -6,13 +6,16 @@ Exercises now speak the exercise prompt and word options using an AI voice gener
 [ElevenLabs](https://elevenlabs.io), instead of hand-recorded `.wav` files. This replaces the old
 per-word sound effects with a consistent voice across all exercises.
 
-Rolled out first to **Colourful Semantics**:
-- The prompt (e.g. "What is she doing?") auto-plays when a question appears, and can be replayed
-  with the 🔊 button next to it.
-- Word options speak their (contextual) label on hover/press instead of playing a `.wav` file.
-- The end-of-round affirmation ("That's right! The teacher is reading the book at school.") is
-  spoken by stitching together the fixed phrase "That's right!" with the individual pre-generated
-  word clips, since that full sentence is composed at runtime and has no single matching clip.
+Rolled out to **all exercises**:
+- The prompt auto-plays when a question appears, and can be replayed with the 🔊 button next to it
+  (handled centrally by `ExerciseLayout`).
+- Word options, draggables, and text-answer buttons speak their label on click or drag-start (never
+  on hover) instead of playing a `.wav` file.
+- Runtime-composed affirmations/end-screens (e.g. Colourful Semantics' "That's right! The teacher
+  is reading the book at school.") are spoken by stitching together fixed phrases with individually
+  pre-generated word clips via `speakSequence`, since the full sentence has no single matching clip.
+  Simpler per-round affirmations (e.g. In the Know's "That's right! They feel scared.") are
+  generated as a single full clip instead, since the full sentence is deterministic per round.
 
 ## How it works
 
@@ -98,17 +101,23 @@ Regenerate whenever you:
 ## Extending to other exercises
 
 The same `useTts` / `getTtsAudioUrl` primitives are exercise-agnostic, and every exercise already
-has a `tts.ts` collector registered in [scripts/ttsCollectors.ts](../../scripts/ttsCollectors.ts) —
-most currently return an empty array and are filled in as each exercise is rolled out. To wire up
-an exercise:
-1. Implement `getSpeakableStrings()` in that exercise's `tts.ts`, reading its data file(s) with
-   `node:fs` (see colourfulSemantics's for a real example). If the prompt is composed at runtime
-   from multiple pieces, extract that logic into a pure `promptBuilder.ts` (no React/CSS imports)
-   first, so the collector can enumerate every possible sentence using the exact same logic the
-   exercise uses — see `conceptQuest`, `thinkAndFind`, and `storyTrain` for examples.
+has a `tts.ts` collector registered in [scripts/ttsCollectors.ts](../../scripts/ttsCollectors.ts).
+To add speakable text to an exercise (new prompt, new word option, new text button):
+1. Add the string(s) to that exercise's `tts.ts` `getSpeakableStrings()`, reading its data file(s)
+   with `node:fs` (see colourfulSemantics's for a real example). If the prompt is composed at
+   runtime from multiple pieces, extract that logic into a pure `promptBuilder.ts` (no React/CSS
+   imports) first, so the collector can enumerate every possible sentence using the exact same
+   logic the exercise uses — see `conceptQuest`, `thinkAndFind`, and `storyTrain` for examples.
 2. Run `pnpm tts:list` to sanity-check what got collected, then `pnpm tts:generate`.
 3. Call `speak(text)` (or `speakSequence([...])` for runtime-composed sentences) from the
-   exercise's board/game component instead of playing a hardcoded `sfxUrl`.
+   exercise's board/game component on click or drag-start (never hover) — see `ColourfulSemanticsBoard.tsx`,
+   `WhosWhoBoard.tsx`, or `TextOptionGroup.tsx` for examples.
+
+**Important**: the text passed to `speak()` at runtime must exactly match (after normalization) a
+string produced by that exercise's `tts.ts` collector, or playback fails silently. If an exercise's
+display label differs from what's spoken elsewhere in a sentence (e.g. Who's Who strips "The" and
+lowercases the item before building sentences), speak the same transformed text the collector
+generated — see `toPromptItemText` usage in `WhosWhoBoard.tsx` for an example of getting this right.
 
 ## Deploying to production
 

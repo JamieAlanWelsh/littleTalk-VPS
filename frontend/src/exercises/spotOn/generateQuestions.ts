@@ -11,16 +11,26 @@ export const buildPrompt = (
     objectName: string,
 ) => `Put ${characterName} ${preposition} the ${objectName}.`;
 
+// Irregular plurals that naive "+s" pluralization gets wrong.
+const IRREGULAR_PLURAL_OBJECT_NAMES: Record<string, string> = {
+    box: "boxes",
+    bookshelf: "bookshelves",
+};
+
 // "between" needs a plural object name, e.g. "between the chairs".
 export const getPromptObjectName = (
     preposition: SpotOnPreposition,
     objectName: string,
-) =>
-    preposition === "between"
-        ? objectName.endsWith("s")
-            ? objectName
-            : `${objectName}s`
-        : objectName;
+) => {
+    if (preposition !== "between") {
+        return objectName;
+    }
+
+    return (
+        IRREGULAR_PLURAL_OBJECT_NAMES[objectName] ??
+        (objectName.endsWith("s") ? objectName : `${objectName}s`)
+    );
+};
 
 const pickRandom = <T>(items: T[]): T =>
     items[Math.floor(Math.random() * items.length)];
