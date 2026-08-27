@@ -5,6 +5,7 @@ import {
     pointerWithin,
     rectIntersection,
     type DragEndEvent,
+    type DragStartEvent,
     useSensor,
     useSensors,
 } from "@dnd-kit/core";
@@ -136,6 +137,23 @@ export const ColourfulSemanticsBoard = ({
         speak(label, { isMuted: isVoiceMuted });
     };
 
+    const handleDragStart = (event: DragStartEvent) => {
+        const itemId = String(event.active.id);
+        const item = itemsById[itemId];
+
+        if (!item) return;
+
+        const stepIndex = boardState.slotItemIds.findIndex(
+            (slotItemId) => slotItemId === itemId,
+        );
+        const slot =
+            stepIndex !== -1
+                ? scene.steps[stepIndex].slot
+                : (scene.steps[activeStepIndex]?.slot ?? "doing");
+
+        playItemSfx(item, slot);
+    };
+
     const renderImage = (
         itemId: string,
         slot: ConfiguredColourfulSemanticsScene["steps"][number]["slot"],
@@ -168,11 +186,6 @@ export const ColourfulSemanticsBoard = ({
                 onClick={() => {
                     playItemSfx(item, slot);
                 }}
-                onPointerEnter={(event) => {
-                    if (event.pointerType === "mouse") {
-                        playItemSfx(item, slot);
-                    }
-                }}
             />
         );
     };
@@ -186,6 +199,7 @@ export const ColourfulSemanticsBoard = ({
                     ? pointerCollisions
                     : rectIntersection(args);
             }}
+            onDragStart={handleDragStart}
             onDragEnd={onDragEnd}
         >
             <DragImageOverlay />
