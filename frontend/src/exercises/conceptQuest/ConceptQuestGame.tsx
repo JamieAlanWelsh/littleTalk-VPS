@@ -20,6 +20,7 @@ import { ImageOption } from "../../components/ImageOption";
 import { useExerciseTracking } from "../../hooks";
 import ExerciseLayout from "../../layouts/exerciseLayout/ExerciseLayout";
 import { shuffleArray } from "../../utils/shuffleArray";
+import useTts from "../../hooks/useTts";
 import { getDescriptivePrompt, getPrompt } from "./promptBuilder";
 import styles from "./conceptQuest.module.css";
 
@@ -173,6 +174,8 @@ export const ConceptQuestGame = ({
         answerState: "notAnswered",
     });
 
+    const { speak } = useTts();
+
     const gameData = useMemo(
         () => buildRounds(payload, options),
         [options, payload],
@@ -261,12 +264,13 @@ export const ConceptQuestGame = ({
                                     questionState.answerState !==
                                         "notAnswered" && !isSelected
                                 }
-                                onClick={() =>
+                                onClick={() => {
+                                    speak(picture.label);
                                     setQuestionState((previousState) => ({
                                         ...previousState,
                                         selectedIconIds: [picture.id],
-                                    }))
-                                }
+                                    }));
+                                }}
                             />
                         );
                     })}

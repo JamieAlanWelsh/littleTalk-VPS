@@ -5,6 +5,7 @@ import {
     pointerWithin,
     rectIntersection,
     type DragEndEvent,
+    type DragStartEvent,
     useSensor,
     useSensors,
 } from "@dnd-kit/core";
@@ -13,6 +14,7 @@ import { DragImageOverlay } from "../../components/DragImageOverlay/DragImageOve
 import { DraggableImage } from "../../components/DraggableImage/DraggableImage";
 import { DroppableImageZone } from "../../components/DroppableImageZone/DroppableImageZone";
 import { useExerciseTracking } from "../../hooks";
+import useTts from "../../hooks/useTts";
 import ExerciseLayout from "../../layouts/exerciseLayout/ExerciseLayout";
 import type { ExerciseDifficulty, QuestionState } from "../../lib/types";
 import type {
@@ -175,6 +177,7 @@ export const SpotOnGame = ({
 }: SpotOnGameProps) => {
     const tracking = useExerciseTracking(questions.length);
     const difficulty = getDifficultyFromPrepositions(selectedPrepositions);
+    const { speak } = useTts();
     const [questionState, setQuestionState] = useState<QuestionState>({
         selectedIconIds: [],
         answerState: "notAnswered",
@@ -301,6 +304,14 @@ export const SpotOnGame = ({
                                 ? pointerCollisions
                                 : rectIntersection(args);
                         }}
+                        onDragStart={(event: DragStartEvent) => {
+                            if (
+                                String(event.active.id) ===
+                                `character:${question.id}`
+                            ) {
+                                speak(question.character.name);
+                            }
+                        }}
                         onDragEnd={onDragEnd}
                     >
                         <DragImageOverlay />
@@ -405,7 +416,13 @@ export const SpotOnGame = ({
                                                                     "notAnswered"
                                                                 }
                                                                 isBorderless
-                                                                onClick={() => {}}
+                                                                onClick={() => {
+                                                                    speak(
+                                                                        question
+                                                                            .character
+                                                                            .name,
+                                                                    );
+                                                                }}
                                                             />
                                                         </div>
                                                     ) : null}

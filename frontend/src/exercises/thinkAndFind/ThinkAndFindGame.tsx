@@ -19,6 +19,7 @@ import ExerciseLayout from "../../layouts/exerciseLayout/ExerciseLayout";
 import { ImageOption } from "../../components/ImageOption";
 import { useExerciseTracking } from "../../hooks";
 import { shuffleArray } from "../../utils/shuffleArray";
+import useTts from "../../hooks/useTts";
 import { randomPrompt } from "./promptBuilder";
 import styles from "./thinkAndFind.module.css";
 
@@ -102,6 +103,8 @@ export const ThinkAndFindGame = ({
     };
     const tracking = useExerciseTracking(gameData.questions.length);
 
+    const { speak } = useTts();
+
     const onCheckAnswer = (question: Question) => {
         if (questionState.selectedIconIds.length === 0) return;
 
@@ -168,12 +171,13 @@ export const ThinkAndFindGame = ({
                                 isCorrect={isCorrect}
                                 isSelected={isSelected}
                                 isDisabled={isDisabled}
-                                onClick={() =>
+                                onClick={() => {
+                                    speak(picture.label);
                                     setQuestionState((prev) => ({
                                         ...prev,
                                         selectedIconIds: [picture.id],
-                                    }))
-                                }
+                                    }));
+                                }}
                             />
                         );
                     })}
