@@ -16,6 +16,7 @@ import { DroppableImageZone } from "../../components/DroppableImageZone/Droppabl
 import { PoolTray } from "../../components/PoolTray/PoolTray";
 import useTts from "../../hooks/useTts";
 import type { AnswerState } from "../../lib/types";
+import { toPromptItemText } from "./scenarioGenerator";
 import type { WhosWhoItem, WhosWhoScenario, WhosWhoTarget } from "./types";
 import styles from "./WhosWhoBoard.module.css";
 
@@ -68,7 +69,7 @@ const renderTrayItem = (
             isSelected={false}
             isDisabled={isAnswerChecked}
             onClick={() => {
-                speak(item.label);
+                speak(toPromptItemText(item));
             }}
         />
     );
@@ -103,7 +104,7 @@ const renderAttachedItem = (
                 isDisabled={answerState !== "notAnswered"}
                 isBorderless={true}
                 onClick={() => {
-                    speak(item.label);
+                    speak(toPromptItemText(item));
                 }}
             />
         </div>
@@ -161,7 +162,7 @@ export const WhosWhoBoard = ({
 
         const item = itemById[String(event.active.id)];
         if (item) {
-            speak(item.label);
+            speak(toPromptItemText(item));
         }
     };
 
