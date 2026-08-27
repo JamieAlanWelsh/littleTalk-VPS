@@ -18,6 +18,13 @@ export const getSpeakableStrings = (): string[] => {
             if (round.completionPrompt) {
                 strings.add(`That's right! ${round.completionPrompt}`);
             }
+            // TextOptionGroup options speak these exact labels on click.
+            if (round.correctOptionLabel) {
+                strings.add(round.correctOptionLabel);
+            }
+            for (const label of round.distractorOptionLabels ?? []) {
+                strings.add(label);
+            }
         }
     }
 

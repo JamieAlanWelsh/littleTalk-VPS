@@ -19,6 +19,11 @@ export const getSpeakableStrings = (): string[] => {
         }
     }
 
+    // TextOptionGroup options speak this exact label on click.
+    for (const option of data.options ?? []) {
+        if (option.label) strings.add(option.label);
+    }
+
     return [...strings];
 };
 

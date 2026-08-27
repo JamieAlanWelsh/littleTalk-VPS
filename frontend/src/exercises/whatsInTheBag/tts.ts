@@ -17,6 +17,8 @@ export const getSpeakableStrings = (): string[] => {
     for (const item of data.items ?? []) {
         const promptLabel = item.altText ?? item.label;
         if (promptLabel) strings.add(`That's right! It's ${promptLabel}`);
+        // TextOptionGroup word options speak this exact label on click.
+        if (item.label) strings.add(item.label);
     }
 
     return [...strings];
