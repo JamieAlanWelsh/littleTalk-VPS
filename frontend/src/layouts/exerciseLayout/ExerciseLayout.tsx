@@ -64,6 +64,8 @@ const DEFAULT_EXERCISE_DIFFICULTY: ExerciseDifficulty = {
     label: "Standard",
 };
 
+const VOICE_MUTED_STORAGE_KEY = "exerciseVoiceMuted";
+
 interface ExerciseLayoutProps<AnswerType> {
     exerciseId: string;
     actionBarPhase: AnswerState;
@@ -131,7 +133,10 @@ export const ExerciseLayout = <AnswerType,>({
     const [showExitConfirmation, setShowExitConfirmation] = useState(false);
     const [showSettingsConfirmation, setShowSettingsConfirmation] =
         useState(false);
-    const [isVoiceMuted, setIsVoiceMuted] = useState(false);
+    // Persisted in sessionStorage so it survives the exercise remounting between rounds/sentence blocks.
+    const [isVoiceMuted, setIsVoiceMuted] = useState(
+        () => sessionStorage.getItem(VOICE_MUTED_STORAGE_KEY) === "true",
+    );
     const [isTurnStarted, setIsTurnStarted] = useState(() => !isGroupMode);
     const [endscreenMetrics, setEndscreenMetrics] = useState<{
         expGained: number;
@@ -503,7 +508,14 @@ export const ExerciseLayout = <AnswerType,>({
                             <button
                                 className={styles.muteButton}
                                 onClick={() =>
-                                    setIsVoiceMuted((current) => !current)
+                                    setIsVoiceMuted((current) => {
+                                        const next = !current;
+                                        sessionStorage.setItem(
+                                            VOICE_MUTED_STORAGE_KEY,
+                                            String(next),
+                                        );
+                                        return next;
+                                    })
                                 }
                                 title={
                                     isVoiceMuted ? "Unmute voice" : "Mute voice"
