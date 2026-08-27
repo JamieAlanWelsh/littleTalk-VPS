@@ -5,11 +5,22 @@ import {
     type SpotOnQuestion,
 } from "./types";
 
-const buildPrompt = (
+export const buildPrompt = (
     characterName: string,
     preposition: SpotOnPreposition,
     objectName: string,
 ) => `Put ${characterName} ${preposition} the ${objectName}.`;
+
+// "between" needs a plural object name, e.g. "between the chairs".
+export const getPromptObjectName = (
+    preposition: SpotOnPreposition,
+    objectName: string,
+) =>
+    preposition === "between"
+        ? objectName.endsWith("s")
+            ? objectName
+            : `${objectName}s`
+        : objectName;
 
 const pickRandom = <T>(items: T[]): T =>
     items[Math.floor(Math.random() * items.length)];
@@ -69,13 +80,7 @@ export const generateSpotOnQuestions = (
         }
         const object = pickRandom(allowedObjects);
 
-        // Pluralize object name for 'between' prompt
-        let promptObjectName = object.name;
-        if (preposition === "between") {
-            promptObjectName = object.name.endsWith("s")
-                ? object.name
-                : object.name + "s";
-        }
+        const promptObjectName = getPromptObjectName(preposition, object.name);
         return {
             id: `spoton-${index + 1}-${preposition.replace(/\s+/g, "-")}`,
             prompt: buildPrompt(character.name, preposition, promptObjectName),

@@ -2,23 +2,17 @@
 import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
+import { collectAllSpeakableStrings } from "./ttsCollectors";
 
 const WORKSPACE_ROOT = process.cwd();
 const ENV_FILE = path.join(WORKSPACE_ROOT, ".env");
-const OUTPUT_DIR = path.join(
-    WORKSPACE_ROOT,
-    "static/exercise_assets/tts",
-);
+const OUTPUT_DIR = path.join(WORKSPACE_ROOT, "static/exercise_assets/tts");
 const MANIFEST_FILE = path.join(
     WORKSPACE_ROOT,
     "frontend/src/lib/ttsManifest.json",
 );
-const COLOURFUL_SEMANTICS_DATA_DIR = path.join(
-    WORKSPACE_ROOT,
-    "frontend/src/exercises/colourfulSemantics/data",
-);
 
-const loadEnvFile = (filePath) => {
+const loadEnvFile = (filePath: string) => {
     if (!fs.existsSync(filePath)) return;
     const raw = fs.readFileSync(filePath, "utf8");
     for (const line of raw.split("\n")) {
@@ -39,11 +33,10 @@ loadEnvFile(ENV_FILE);
 const API_KEY = process.env.ELEVENLABS_API_KEY;
 const VOICE_ID = process.env.ELEVENLABS_VOICE_ID;
 const MODEL_ID = process.env.ELEVENLABS_MODEL_ID || "eleven_multilingual_v2";
+const isDryRun = process.argv.includes("--dry-run");
 
-if (!API_KEY || !VOICE_ID) {
-    console.error(
-        "Missing ELEVENLABS_API_KEY or ELEVENLABS_VOICE_ID in .env",
-    );
+if (!isDryRun && (!API_KEY || !VOICE_ID)) {
+    console.error("Missing ELEVENLABS_API_KEY or ELEVENLABS_VOICE_ID in .env");
     process.exit(1);
 }
 
@@ -54,66 +47,22 @@ const VOICE_SETTINGS = {
     style: 0.75,
 };
 
-export const normalizeTtsText = (text) =>
+export const normalizeTtsText = (text: string) =>
     text.trim().toLowerCase().replace(/\s+/g, " ");
 
-const hashText = (normalizedText) =>
+const hashText = (normalizedText: string) =>
     crypto.createHash("sha1").update(normalizedText).digest("hex");
 
-// Fixed phrases spoken outside of exercise JSON, e.g. composed at runtime alongside word clips.
-const FIXED_SPEAKABLE_STRINGS = ["That's right!"];
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-const collectSpeakableStrings = () => {
-    const strings = new Set(FIXED_SPEAKABLE_STRINGS);
-
-    const variantFiles = [
-        "standardVariant.json",
-        "earlyYearsVariant.json",
-        "advancedVariant.json",
-    ];
-    for (const fileName of variantFiles) {
-        const filePath = path.join(COLOURFUL_SEMANTICS_DATA_DIR, fileName);
-        const data = JSON.parse(fs.readFileSync(filePath, "utf8"));
-        for (const scene of data.scenes ?? []) {
-            for (const step of scene.steps ?? []) {
-                if (step.prompt) strings.add(step.prompt);
-            }
-        }
-    }
-
-    const assetPool = JSON.parse(
-        fs.readFileSync(
-            path.join(COLOURFUL_SEMANTICS_DATA_DIR, "sharedAssetPool.json"),
-            "utf8",
-        ),
-    );
-    const labelFields = [
-        "label",
-        "pluralLabel",
-        "pastTenseLabel",
-        "whatLikeVariantLabel",
-    ];
-    for (const options of Object.values(assetPool)) {
-        for (const option of options) {
-            for (const field of labelFields) {
-                if (option[field]) strings.add(option[field]);
-            }
-        }
-    }
-
-    return [...strings];
-};
-
-const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-const requestTtsAudio = async (text, attempt = 1) => {
+const requestTtsAudio = async (text: string, attempt = 1): Promise<Buffer> => {
     try {
         const response = await fetch(
             `https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`,
             {
                 method: "POST",
                 headers: {
-                    "xi-api-key": API_KEY,
+                    "xi-api-key": API_KEY as string,
                     "Content-Type": "application/json",
                     Accept: "audio/mpeg",
                 },
@@ -141,10 +90,19 @@ const requestTtsAudio = async (text, attempt = 1) => {
 };
 
 const main = async () => {
-    const speakableStrings = collectSpeakableStrings();
+    const speakableStrings = collectAllSpeakableStrings();
+
+    if (isDryRun) {
+        console.log(`Collected ${speakableStrings.length} speakable strings:`);
+        for (const text of speakableStrings) {
+            console.log(`  "${text}"`);
+        }
+        return;
+    }
+
     fs.mkdirSync(OUTPUT_DIR, { recursive: true });
 
-    const manifest = fs.existsSync(MANIFEST_FILE)
+    const manifest: Record<string, string> = fs.existsSync(MANIFEST_FILE)
         ? JSON.parse(fs.readFileSync(MANIFEST_FILE, "utf8"))
         : {};
 

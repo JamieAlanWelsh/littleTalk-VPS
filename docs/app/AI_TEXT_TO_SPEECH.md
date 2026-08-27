@@ -18,19 +18,38 @@ Rolled out first to **Colourful Semantics**:
 
 Audio is **pre-generated at build time**, not generated live at runtime:
 
-1. [scripts/generate-tts.mjs](../../scripts/generate-tts.mjs) collects every speakable string from
-   the Colourful Semantics data files (prompts + word labels/variants) plus a small list of fixed
-   phrases (e.g. `"That's right!"`).
-2. For each unique (normalized) string, it calls the ElevenLabs TTS API and saves the resulting
-   mp3 to `static/exercise_assets/tts/`, skipping any file that's already generated.
-3. It writes a manifest, [frontend/src/lib/ttsManifest.json](../../frontend/src/lib/ttsManifest.json),
+1. Each exercise has a `tts.ts` file (e.g.
+   [frontend/src/exercises/colourfulSemantics/tts.ts](../../frontend/src/exercises/colourfulSemantics/tts.ts))
+   exporting `getSpeakableStrings(): string[]` — every prompt and word label that exercise can
+   speak.
+2. [scripts/ttsCollectors.ts](../../scripts/ttsCollectors.ts) aggregates all exercises'
+   `getSpeakableStrings()` plus a small list of fixed phrases (e.g. `"That's right!"`) spoken
+   outside of exercise data.
+3. [scripts/generate-tts.ts](../../scripts/generate-tts.ts) (run via `tsx`, so it can import real
+   exercise TypeScript modules) takes that combined list and, for each unique (normalized) string,
+   calls the ElevenLabs TTS API and saves the resulting mp3 to `static/exercise_assets/tts/`,
+   skipping any file that's already generated.
+4. It writes a manifest, [frontend/src/lib/ttsManifest.json](../../frontend/src/lib/ttsManifest.json),
    mapping normalized text → static mp3 URL.
-4. At runtime, [useTts](../../frontend/src/hooks/useTts.ts) looks up that manifest and plays the
+5. At runtime, [useTts](../../frontend/src/hooks/useTts.ts) looks up that manifest and plays the
    matching clip via [useAudio](../../frontend/src/hooks/useAudio.ts). `speakSequence` chains
    multiple clips together for sentences composed at runtime.
 
 Because generation happens ahead of time, the ElevenLabs API key is never needed in the browser
 and there's no per-play latency or cost.
+
+### Runtime-composed prompts
+
+Some exercises build their prompt sentence at runtime from multiple pieces (e.g. Concept Quest's
+"Which bear is bigger?"). Rather than duplicating that logic in the generator (risking drift), the
+prompt-building logic lives in a plain TypeScript module with no React/CSS imports — e.g.
+[frontend/src/exercises/conceptQuest/promptBuilder.ts](../../frontend/src/exercises/conceptQuest/promptBuilder.ts) —
+so both the exercise component and that exercise's `tts.ts` collector import the same function and
+enumerate every possible sentence.
+
+`tts.ts` files are Node-only (they use `node:fs`/`path`/`url` to read JSON data) and are excluded
+from the frontend TypeScript project (`**/tts.ts` in [tsconfig.json](../../tsconfig.json)) since
+they're never bundled for the browser.
 
 ## Local setup
 
@@ -39,7 +58,7 @@ and there's no per-play latency or cost.
    - `ELEVENLABS_VOICE_ID`
    - `ELEVENLABS_MODEL_ID` (defaults to `eleven_multilingual_v2` if unset)
 2. Voice settings (speed, stability, similarity, style) are hardcoded in
-   `VOICE_SETTINGS` at the top of [scripts/generate-tts.mjs](../../scripts/generate-tts.mjs). Adjust
+   `VOICE_SETTINGS` at the top of [scripts/generate-tts.ts](../../scripts/generate-tts.ts). Adjust
    there if the voice needs retuning, then regenerate.
 
 ## Generating / regenerating audio
@@ -54,6 +73,13 @@ This is incremental — it only calls ElevenLabs for strings that don't already 
 in `static/exercise_assets/tts/` and manifest entry, so re-running after adding new exercise
 content or wording is cheap. Progress is logged with a running percentage.
 
+To see exactly what strings would be sent to ElevenLabs without calling the API or spending any
+credits (useful when adding/editing a collector), run:
+
+```bash
+pnpm tts:list
+```
+
 When you need to force full regeneration (e.g. after changing voice settings or the voice itself),
 delete the output directory and manifest first, then regenerate:
 
@@ -64,18 +90,23 @@ pnpm tts:generate
 ```
 
 Regenerate whenever you:
-- Add or edit a Colourful Semantics prompt or word label (any variant file or
-  `sharedAssetPool.json`).
+- Add or edit a prompt or word label in any exercise's data file.
 - Change the voice, model, or voice settings.
-- Add a new fixed phrase to `FIXED_SPEAKABLE_STRINGS` in the script.
+- Add a new fixed phrase to `FIXED_SPEAKABLE_STRINGS` in
+  [scripts/ttsCollectors.ts](../../scripts/ttsCollectors.ts).
 
 ## Extending to other exercises
 
-The same `useTts` / `getTtsAudioUrl` primitives are exercise-agnostic. To wire up another
-exercise:
-1. Add its speakable strings (prompts/labels) to `collectSpeakableStrings()` in
-   [scripts/generate-tts.mjs](../../scripts/generate-tts.mjs).
-2. Run `pnpm tts:generate`.
+The same `useTts` / `getTtsAudioUrl` primitives are exercise-agnostic, and every exercise already
+has a `tts.ts` collector registered in [scripts/ttsCollectors.ts](../../scripts/ttsCollectors.ts) —
+most currently return an empty array and are filled in as each exercise is rolled out. To wire up
+an exercise:
+1. Implement `getSpeakableStrings()` in that exercise's `tts.ts`, reading its data file(s) with
+   `node:fs` (see colourfulSemantics's for a real example). If the prompt is composed at runtime
+   from multiple pieces, extract that logic into a pure `promptBuilder.ts` (no React/CSS imports)
+   first, so the collector can enumerate every possible sentence using the exact same logic the
+   exercise uses — see `conceptQuest`, `thinkAndFind`, and `storyTrain` for examples.
+2. Run `pnpm tts:list` to sanity-check what got collected, then `pnpm tts:generate`.
 3. Call `speak(text)` (or `speakSequence([...])` for runtime-composed sentences) from the
    exercise's board/game component instead of playing a hardcoded `sfxUrl`.
 

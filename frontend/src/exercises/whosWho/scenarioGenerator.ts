@@ -37,12 +37,12 @@ const shuffleItems = <T>(items: T[]): T[] => {
     return shuffled;
 };
 
-const toPromptItemText = (item: WhosWhoItem) => {
+export const toPromptItemText = (item: WhosWhoItem) => {
     const withoutArticle = item.label.replace(/^The\s+/i, "").trim();
     return withoutArticle.toLowerCase();
 };
 
-const buildPrompt = (
+export const buildPrompt = (
     pronoun: WhosWhoPronoun,
     item: WhosWhoItem,
     templatesByPronoun: WhosWhoExercisePayload["generationConfig"]["promptTemplates"],
