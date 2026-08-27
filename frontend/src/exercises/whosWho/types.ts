@@ -4,7 +4,9 @@ export const WhosWhoPronounSchema = z.enum([
     "he",
     "she",
     "him",
+    "his",
     "her",
+    "her_possessive",
     "they",
     "them",
 ]);
@@ -76,7 +78,9 @@ export const WhosWhoPromptTemplatesSchema = z.object({
     he: z.array(z.string()).min(1),
     she: z.array(z.string()).min(1),
     him: z.array(z.string()).min(1),
+    his: z.array(z.string()).min(1),
     her: z.array(z.string()).min(1),
+    her_possessive: z.array(z.string()).min(1),
     they: z.array(z.string()).min(1),
     them: z.array(z.string()).min(1),
 });

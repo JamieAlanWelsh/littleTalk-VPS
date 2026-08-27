@@ -51,6 +51,8 @@ const PRONOUN_DIFFICULTY_MAP: Record<WhosWhoPronoun, ExerciseDifficulty> = {
     him: { level: 2, label: "3rd person pronouns" },
     her: { level: 2, label: "3rd person pronouns" },
     them: { level: 2, label: "3rd person pronouns" },
+    his: { level: 3, label: "Possessive pronouns" },
+    her_possessive: { level: 3, label: "Possessive pronouns" },
 };
 
 const DEFAULT_PRONOUN_DIFFICULTY: ExerciseDifficulty = {

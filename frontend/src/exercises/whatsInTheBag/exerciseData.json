@@ -200,6 +200,12 @@
       "altText": "a hat"
     },
     {
+      "id": "cap",
+      "imageUrl": "/static/exercise_assets/early_years_image_options/cap.webp",
+      "label": "A cap",
+      "altText": "a cap"
+    },
+    {
       "id": "helicopter",
       "imageUrl": "/static/exercise_assets/early_years_image_options/helicopter.webp",
       "label": "A helicopter",

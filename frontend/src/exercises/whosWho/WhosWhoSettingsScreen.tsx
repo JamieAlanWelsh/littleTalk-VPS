@@ -14,9 +14,14 @@ const PRONOUN_DETAILS: Record<
 > = {
     he: { label: "He", example: "He wants the ball" },
     she: { label: "She", example: "She wants the dress" },
-    they: { label: "They", example: "They want the apple" },
     him: { label: "Him", example: "Give the ball to him" },
-    her: { label: "Her", example: "Give the hat to her" },
+    his: { label: "His", example: "Give him his ball" },
+    her: { label: "Her - receiving", example: "Give the hat to her" },
+    her_possessive: {
+        label: "Her - belonging",
+        example: "Give her her ball",
+    },
+    they: { label: "They", example: "They want the apple" },
     them: { label: "Them", example: "Give the orange to them" },
 };
 
