@@ -31,7 +31,6 @@ interface ColourfulSemanticsBoardProps {
     boardState: SentenceBoardState;
     hideTray?: boolean;
     isPastTense?: boolean;
-    isVoiceMuted?: boolean;
     itemCorrectnessMap?: Record<string, boolean>;
     isReadOnly?: boolean;
     itemsById: Record<string, ColourfulSemanticsOption>;
@@ -98,7 +97,6 @@ export const ColourfulSemanticsBoard = ({
     boardState,
     hideTray = false,
     isPastTense = false,
-    isVoiceMuted = false,
     itemCorrectnessMap = {},
     isReadOnly = false,
     itemsById,
@@ -134,7 +132,7 @@ export const ColourfulSemanticsBoard = ({
             useWhatLikeVariantLabel,
         });
 
-        speak(label, { isMuted: isVoiceMuted });
+        speak(label);
     };
 
     const handleDragStart = (event: DragStartEvent) => {

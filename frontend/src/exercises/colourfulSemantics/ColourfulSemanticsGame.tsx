@@ -344,7 +344,6 @@ export const ColourfulSemanticsGame = ({
             }}
             onResetQuestion={onResetQuestion}
             onSettingsRequested={onSettingsRequested}
-            isVoiceMuted={options.isVoiceMuted}
             promptOverride={
                 showCompletionAffirmation
                     ? completionAffirmation.text
@@ -428,7 +427,6 @@ export const ColourfulSemanticsGame = ({
                         boardState={boardState}
                         hideTray={isFinalAffirmationView}
                         isPastTense={variant.id === "advanced"}
-                        isVoiceMuted={options.isVoiceMuted}
                         isReadOnly={isFinalAffirmationView}
                         itemCorrectnessMap={itemCorrectnessMap}
                         itemsById={itemsById}

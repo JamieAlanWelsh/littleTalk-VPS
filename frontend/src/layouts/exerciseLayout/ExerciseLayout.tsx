@@ -28,6 +28,7 @@ import { useExerciseTracking, useSubmitExerciseResult } from "../../hooks";
 import ExerciseEndscreen from "../exerciseEndscreen/ExerciseEndscreen";
 import { useAudio } from "../../hooks/useAudio";
 import { useTts } from "../../hooks/useTts";
+import { VoiceMuteProvider } from "../../contexts/VoiceMuteContext";
 import { useGroupContextValue } from "../../contexts/GroupContext";
 
 const EXP_FLOOR = 200;
@@ -79,7 +80,6 @@ interface ExerciseLayoutProps<AnswerType> {
     promptOverride?: string;
     /** Overrides how the prompt is spoken, e.g. a runtime-composed sentence with no single matching audio clip. */
     promptSpeechOverride?: Array<string | null | undefined>;
-    isVoiceMuted?: boolean;
     disableCheck?: boolean;
     showSkip?: boolean;
     onSkipRequested?: () => void;
@@ -115,7 +115,6 @@ export const ExerciseLayout = <AnswerType,>({
     onSettingsRequested,
     promptOverride,
     promptSpeechOverride,
-    isVoiceMuted = false,
     disableCheck = false,
     showSkip = true,
     onSkipRequested,
@@ -132,6 +131,7 @@ export const ExerciseLayout = <AnswerType,>({
     const [showExitConfirmation, setShowExitConfirmation] = useState(false);
     const [showSettingsConfirmation, setShowSettingsConfirmation] =
         useState(false);
+    const [isVoiceMuted, setIsVoiceMuted] = useState(false);
     const [isTurnStarted, setIsTurnStarted] = useState(() => !isGroupMode);
     const [endscreenMetrics, setEndscreenMetrics] = useState<{
         expGained: number;
@@ -163,14 +163,20 @@ export const ExerciseLayout = <AnswerType,>({
         speak(promptText, { isMuted: isVoiceMuted });
     }, [promptSpeechOverride, promptText, isVoiceMuted, speak, speakSequence]);
 
+    // Kept in a ref so the auto-play effect below only re-runs on question change, not on mute toggles.
+    const speakPromptRef = useRef(speakPrompt);
+    useEffect(() => {
+        speakPromptRef.current = speakPrompt;
+    }, [speakPrompt]);
+
     useEffect(() => {
         setIsTurnStarted(!isGroupMode);
     }, [currentQuestionStateIndex, isGroupMode]);
 
     useEffect(() => {
         if (isComplete) return;
-        speakPrompt();
-    }, [isComplete, speakPrompt]);
+        speakPromptRef.current();
+    }, [isComplete, currentQuestionStateIndex]);
 
     useEffect(() => {
         if (isComplete) {
@@ -453,7 +459,7 @@ export const ExerciseLayout = <AnswerType,>({
     };
 
     return (
-        <>
+        <VoiceMuteProvider value={isVoiceMuted}>
             {isComplete ? (
                 <div className={styles.exerciseLayoutWrapper}>
                     <ExerciseEndscreen
@@ -487,6 +493,18 @@ export const ExerciseLayout = <AnswerType,>({
                                     style={{ width: `${progress * 100}%` }}
                                 ></div>
                             </div>
+                            <button
+                                className={styles.muteButton}
+                                onClick={() =>
+                                    setIsVoiceMuted((current) => !current)
+                                }
+                                title={
+                                    isVoiceMuted ? "Unmute voice" : "Mute voice"
+                                }
+                                type="button"
+                            >
+                                {isVoiceMuted ? "🔇" : "🔊"}
+                            </button>
                             {onSettingsRequested ? (
                                 <button
                                     className={styles.settingsButton}
@@ -525,7 +543,7 @@ export const ExerciseLayout = <AnswerType,>({
                                         {promptText}
                                     </span>
                                     <button
-                                        className={styles.promptReplayButton}
+                                        className={`${styles.promptReplayButton} ${isVoiceMuted ? styles.promptReplayButtonMuted : ""}`.trim()}
                                         onClick={speakPrompt}
                                         title="Read prompt aloud"
                                         type="button"
@@ -618,7 +636,7 @@ export const ExerciseLayout = <AnswerType,>({
                     }}
                 />
             )}
-        </>
+        </VoiceMuteProvider>
     );
 };
 

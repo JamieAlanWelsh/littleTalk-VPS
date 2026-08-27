@@ -10,7 +10,6 @@ import { z } from "zod";
 export interface CategorisationOptions {
     selectedCategoryIds: string[];
     itemsPerCategory: number;
-    isSfxMuted: boolean;
 }
 
 export const CategorisationItemSchema = z.object({

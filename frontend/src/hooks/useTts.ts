@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import { useAudio } from "./useAudio";
 import { getTtsAudioUrl } from "../lib/getTtsAudioUrl";
+import { useVoiceMuted } from "../contexts/VoiceMuteContext";
 
 const playAndWait = (audioUrl: string) =>
     new Promise<void>((resolve) => {
@@ -13,17 +14,18 @@ const playAndWait = (audioUrl: string) =>
 // Speaks exercise text via pre-generated ElevenLabs audio, falling back silently if not yet generated.
 export const useTts = () => {
     const { play } = useAudio();
+    const isVoiceMuted = useVoiceMuted();
 
     const speak = useCallback(
         (text: string | null | undefined, options?: { isMuted?: boolean }) => {
-            if (!text || options?.isMuted) return;
+            if (!text || isVoiceMuted || options?.isMuted) return;
 
             const audioUrl = getTtsAudioUrl(text);
             if (!audioUrl) return;
 
             play(audioUrl);
         },
-        [play],
+        [play, isVoiceMuted],
     );
 
     // Speaks a sequence of separately generated clips back-to-back, e.g. for sentences built at runtime.
@@ -32,7 +34,7 @@ export const useTts = () => {
             texts: Array<string | null | undefined>,
             options?: { isMuted?: boolean },
         ) => {
-            if (options?.isMuted) return;
+            if (isVoiceMuted || options?.isMuted) return;
 
             const audioUrls = texts
                 .map((text) => (text ? getTtsAudioUrl(text) : null))
@@ -42,7 +44,7 @@ export const useTts = () => {
                 await playAndWait(audioUrl);
             }
         },
-        [],
+        [isVoiceMuted],
     );
 
     return { speak, speakSequence };

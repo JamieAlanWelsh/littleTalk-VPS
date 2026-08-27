@@ -22,7 +22,6 @@ import type { ExerciseDifficulty, QuestionState } from "../../lib/types";
 interface CategorisationGameProps {
     categories: Record<CategoryId, CategorisationItem[]>;
     categoryTitleImages?: Record<CategoryId, string>;
-    isSfxMuted?: boolean;
     onSettingsRequested?: () => void;
 }
 
@@ -35,7 +34,6 @@ const EXERCISE_METADATA = {
 export const CategorisationGame = ({
     categories,
     categoryTitleImages = {},
-    isSfxMuted = false,
     onSettingsRequested,
 }: CategorisationGameProps) => {
     const categoryCount = Object.keys(categories).length;
@@ -196,7 +194,6 @@ export const CategorisationGame = ({
                 boardState={boardState}
                 itemsById={itemsById}
                 categoryTitleImages={categoryTitleImages}
-                isSfxMuted={isSfxMuted}
                 onDragEnd={handleDragEnd}
                 itemCorrectnessMap={
                     questionState.answerState !== "notAnswered"
