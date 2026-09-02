@@ -17,7 +17,11 @@ def _get_school_for_request(request):
 def _can_edit_groups(profile, school):
     if not school:
         return False
-    return profile.is_admin_for_school(school) or profile.is_manager_for_school(school)
+    return (
+        profile.is_admin_for_school(school)
+        or profile.is_manager_for_school(school)
+        or profile.is_staff_for_school(school)
+    )
 
 
 def _avatar_payload(learner):
@@ -110,10 +114,20 @@ def profile_group_delete(request, group_id):
         return redirect("profile")
 
     if request.method == "POST":
-        group.delete()
-        if request.session.get("selected_group_id") == group_id:
-            request.session.pop("selected_group_id", None)
-        return redirect("profile")
+        confirmation = (request.POST.get("confirmation") or "").strip()
+
+        if confirmation == "DELETE":
+            group.delete()
+            if request.session.get("selected_group_id") == group_id:
+                request.session.pop("selected_group_id", None)
+            return redirect("profile")
+
+        error_message = "Please type DELETE to confirm deletion. It is case-sensitive."
+        return render(
+            request,
+            "profile/profile_group_confirm_delete.html",
+            {"group": group, "error_message": error_message},
+        )
 
     return render(request, "profile/profile_group_confirm_delete.html", {"group": group})
 

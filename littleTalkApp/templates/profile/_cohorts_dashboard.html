@@ -105,6 +105,8 @@
                                     <button type="button" class="button-secondary" data-cohort-add-btn data-cohort-id="{{ cohort.id }}">Add Learner</button>
                                 </div>
                             </div>
+                        {% elif can_view_cohort_restriction_note %}
+                            <p class="cohort-management-note">Cohort management is restricted to team manager roles only.</p>
                         {% endif %}
                     </div>
                 </div>

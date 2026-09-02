@@ -222,6 +222,14 @@
     padding-top: 16px;
 }
 
+.cohort-management-note {
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+    color: #888;
+    font-size: 0.9rem;
+    margin: 0;
+    padding-top: 16px;
+}
+
 .cohort-search-input {
     margin-bottom: 10px;
 }

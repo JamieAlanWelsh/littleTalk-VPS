@@ -73,6 +73,7 @@ def profile(request):
         manage_groups = []
         school_group_learners = []
         can_edit_groups = False
+        can_view_cohort_restriction_note = False
         selected_group_id = None
 
         on_trial = parent_profile.on_trial()
@@ -84,7 +85,8 @@ def profile(request):
             all_learners = Learner.objects.filter(school=user_school, deleted=False)
             cohorts = Cohort.objects.filter(school=user_school).distinct()
             can_edit_cohorts = profile_obj.is_admin_for_school(user_school) or profile_obj.is_manager_for_school(user_school)
-            can_edit_groups = can_edit_cohorts
+            can_edit_groups = can_edit_cohorts or profile_obj.is_staff_for_school(user_school)
+            can_view_cohort_restriction_note = profile_obj.is_staff_for_school(user_school)
 
             cohort_learners = Learner.objects.filter(school=user_school, deleted=False)
             manage_cohorts = list(
@@ -147,6 +149,7 @@ def profile(request):
             manage_groups = []
             school_group_learners = []
             can_edit_groups = False
+            can_view_cohort_restriction_note = False
             selected_group_id = None
             viewed_group_id = None
 
@@ -205,6 +208,7 @@ def profile(request):
             "manage_cohorts": manage_cohorts,
             "school_learners": school_learners,
             "can_edit_cohorts": can_edit_cohorts,
+            "can_view_cohort_restriction_note": can_view_cohort_restriction_note,
             "manage_groups": manage_groups,
             "school_group_learners": school_group_learners,
             "can_edit_groups": can_edit_groups,

@@ -52,11 +52,25 @@
                         </li>
                     {% endfor %}
                 </ul>
+            {% else %}
+                <p class="cohort-empty-message">No learners created yet.</p>
             {% endif %}
         </div>
     </div>
 
     <div class="right-column" data-learner-detail>
         {% include "profile/_learner_detail.html" %}
+        {% if not selected_learner %}
+            <div class="profile-card profile-card--details profile-card--padded">
+                <div class="profile-card__header">
+                    <h3 class="profile-card__title">Learners</h3>
+                </div>
+                {% if not is_read_only %}
+                    <p class="cohort-empty-message">Create a learner to begin practising.</p>
+                {% else %}
+                    <p class="cohort-empty-message">No learners are available yet.</p>
+                {% endif %}
+            </div>
+        {% endif %}
     </div>
 </div>
