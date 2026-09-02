@@ -36,10 +36,10 @@ const SLOT_COLOURS: Record<ColourfulSemanticsSlot, string> = {
 };
 
 const OPTIONAL_SLOT_LABELS: Record<ColourfulSemanticsOptionalSlot, string> = {
-    "to-who": "To Who",
+    "to-who": "To who",
     when: "When",
-    "what-like": "What like?",
-    how: "How?",
+    "what-like": "What like",
+    how: "How",
 };
 
 interface ColourfulSemanticsSettingsScreenProps {
