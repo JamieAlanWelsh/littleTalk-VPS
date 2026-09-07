@@ -17,7 +17,7 @@ class ParentAccessFlowTests(BaseFlowTestMixin, TestCase):
             user=staff_user,
             school=school,
             name="Learner PAC",
-            date_of_birth=timezone.now().date() - timedelta(days=365 * 6),
+            age=6,
         )
         token = ParentAccessToken.objects.create(learner=learner)
 
@@ -64,7 +64,7 @@ class ParentAccessFlowTests(BaseFlowTestMixin, TestCase):
             user=staff_user,
             school=school,
             name="Learner Expired PAC",
-            date_of_birth=timezone.now().date() - timedelta(days=365 * 7),
+            age=7,
         )
         token = ParentAccessToken.objects.create(
             learner=learner,

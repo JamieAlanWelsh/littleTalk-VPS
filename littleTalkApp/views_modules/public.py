@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.http import Http404
 from django.shortcuts import redirect, render
@@ -87,13 +88,14 @@ def game_description(request, game_name):
     )
 
 
+@login_required
 def support(request):
-    """Renders public/support.html — the public support / help page."""
+    """Renders public/support.html — the support / help page for logged-in users."""
 
-    request.hide_sidebar = True
     return render(request, "public/support.html", {})
 
 
+@login_required
 @check_honeypot
 def send_support_email(request):
     """Handles POST from the support contact form, sends an email to the support
@@ -186,7 +188,11 @@ def how_it_works(request):
     """Renders public/how_it_works.html for the landing-page flow."""
 
     request.hide_sidebar = True
-    return render(request, "public/how_it_works.html")
+    return render(
+        request,
+        "public/how_it_works.html",
+        {"testimonials": get_landing_testimonials()},
+    )
 
 
 def about(request):

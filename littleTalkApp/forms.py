@@ -142,12 +142,12 @@ class UserRegistrationForm(forms.ModelForm):
     password1 = forms.CharField(widget=forms.PasswordInput, label="Password")
     password2 = forms.CharField(widget=forms.PasswordInput, label="Confirm Password")
     learner_name = forms.CharField(label="Learner's Name", required=True)
-    learner_dob = forms.DateField(
-        label="Learner DOB",
+    learner_age = forms.IntegerField(
+        label="Learner age",
         required=True,
-        widget=forms.DateInput(
-            attrs={"type": "date", "placeholder": "Learner date of birth"}
-        ),
+        min_value=1,
+        max_value=19,
+        widget=forms.NumberInput(attrs={"min": 1, "max": 19}),
     )
     hear_about = forms.ChoiceField(
         choices=[
@@ -198,11 +198,8 @@ class UserRegistrationForm(forms.ModelForm):
         sanity_check_name(first_name)
         return first_name
 
-    def clean_learner_dob(self):
-        dob = self.cleaned_data.get("learner_dob")
-        if dob and dob > date.today():
-            raise ValidationError("Learner's date of birth cannot be in the future.")
-        return dob
+    def clean_learner_age(self):
+        return self.cleaned_data.get("learner_age")
 
     def clean_learner_name(self):
         learner_name = self.cleaned_data.get("learner_name", "").strip()
@@ -261,10 +258,12 @@ class LearnerForm(forms.ModelForm):
         required=True,
         widget=forms.TextInput(attrs={"class": "input"}),
     )
-    date_of_birth = forms.DateField(
-        label="Date of Birth",
+    age = forms.IntegerField(
+        label="Age",
         required=True,
-        widget=forms.DateInput(attrs={"type": "date", "class": "input"}),
+        min_value=1,
+        max_value=19,
+        widget=forms.NumberInput(attrs={"min": 1, "max": 19, "class": "input"}),
     )
     cohort = forms.ModelChoiceField(
         queryset=Cohort.objects.none(),  # override in __init__
@@ -275,7 +274,7 @@ class LearnerForm(forms.ModelForm):
 
     class Meta:
         model = Learner
-        fields = ["name", "date_of_birth", "cohort"]
+        fields = ["name", "age", "cohort"]
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop("user", None)
@@ -301,15 +300,8 @@ class LearnerForm(forms.ModelForm):
         sanity_check_name(name)
         return name
 
-    def clean_date_of_birth(self):
-        dob = self.cleaned_data.get("date_of_birth")
-        if not dob:
-            raise forms.ValidationError("Date of birth is required.")
-        if dob > date.today():
-            raise forms.ValidationError(
-                "Learner's date of birth cannot be in the future."
-            )
-        return dob
+    def clean_age(self):
+        return self.cleaned_data.get("age")
 
 
 class LogEntryForm(forms.ModelForm):

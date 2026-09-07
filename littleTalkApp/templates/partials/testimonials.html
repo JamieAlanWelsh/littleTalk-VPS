@@ -1,0 +1,31 @@
+{% comment %} Testimonials Section — include with heading / testimonials context var {% endcomment %}
+<div class="content-split testimonials-section">
+    <div class="content-split-header">
+        <h2 class="split-heading">
+            {{ heading|default:"Chatter from the Dillo Community" }}
+        </h2>
+        <p class="split-body">How Chatterdillo helps with speech and language support in schools and at home.</p>
+    </div>
+    <div class="testimonial-rail-shell">
+        <div class="testimonial-rail" id="testimonial-rail">
+            {% for testimonial in testimonials %}
+                <article class="testimonial-card">
+                    <p class="testimonial-quote">“{{ testimonial.quote }}”</p>
+                    <div class="testimonial-card-header">
+                        <div class="testimonial-avatar" style="--testimonial-avatar-color: {{ testimonial.avatar_background_color }};" aria-hidden="true">
+                            <img src="{{ testimonial.avatar_image_url }}" alt="">
+                        </div>
+                        <div class="testimonial-meta">
+                            <h3 class="testimonial-name">{{ testimonial.name }}</h3>
+                            <p class="testimonial-role">{{ testimonial.role }} · {{ testimonial.occupation }}</p>
+                        </div>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+        <div class="testimonial-controls">
+            <button type="button" class="testimonial-scroll-btn" data-scroll-direction="left" aria-label="Scroll testimonials left">&#8249;</button>
+            <button type="button" class="testimonial-scroll-btn" data-scroll-direction="right" aria-label="Scroll testimonials right">&#8250;</button>
+        </div>
+    </div>
+</div>

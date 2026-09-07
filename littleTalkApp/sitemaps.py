@@ -9,7 +9,6 @@ class StaticViewSitemap(Sitemap):
         return [
             'home',
             'about',
-            'support',
             'how_it_works',
             'case_studies',
             'exercises',

@@ -1,0 +1,13 @@
+{% load static %}
+{% comment %} Calendly widget section — include with optional id_attr (defaults to book-demo) {% endcomment %}
+<div class="content-split white calendly-character-wrapper" id="{{ id_attr|default:"book-demo" }}">
+    <img src="{% static 'images/landing/arlo_left_crop.webp' %}" alt="" class="character character-left" aria-hidden="true">
+    <img src="{% static 'images/landing/arlo_right_crop.webp' %}" alt="" class="character character-right" aria-hidden="true">
+    <div class="content-split-header" style="margin-bottom: 0;">
+        <h2 class="split-heading">Talk to our team</h2>
+        <p class="split-body talk-team-subtitle">Book a short call to see how Chatterdillo could support your school’s needs.</p>
+    </div>
+    <div class="talk-team-widget-wrapper">
+        <div class="calendly-inline-widget" data-url="{{ calendly_url }}" style="min-width:320px;height:700px;"></div>
+    </div>
+</div>

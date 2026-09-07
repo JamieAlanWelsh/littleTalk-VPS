@@ -18,7 +18,7 @@ class SubmitExerciseApiTests(BaseFlowTestMixin, TestCase):
             user=self.user,
             school=self.school,
             name="Submit API Learner",
-            date_of_birth=timezone.now().date() - timedelta(days=365 * 7),
+            age=7,
         )
         self.client.force_login(self.user)
         self.set_selected_school(self.school.id)

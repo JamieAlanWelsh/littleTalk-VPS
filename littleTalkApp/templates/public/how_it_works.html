@@ -4,15 +4,35 @@
 {% block title %}Chatterdillo | Method{% endblock %}
 {% load static %}
 
+{% block extra_head %}
+<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
 
-{% comment %} about us intro and video {% endcomment %}
+{% comment %} hero heading and video {% endcomment %}
 <div class="content-split white">
     <div class="content-split-header">
-        <h2 class="split-heading">How Chatterdillo Works</h2>
-        <p class="split-body talk-team-subtitle">From identifying needs to delivering interventions and tracking progress, Chatterdillo helps schools provide evidence-based speech and language support in just a few simple steps.</p>
+        <h2 class="split-heading">A Clearer Way to Support<br>Every Child’s Communication</h2>
+        <p class="split-body talk-team-subtitle">Chatterdillo helps schools provide speech and language support in just a few simple steps.</p>
+    </div>
+    <div style="text-align: center; margin: 2rem auto 2.4rem;">
+        <a href="#book-demo" class="cta-button main-button">Book a demo</a>
+    </div>
+    <div class="inline-full-image" style="max-width: 900px; margin: 2rem auto 0;">
+        <iframe
+            src="https://www.youtube.com/embed/3eu8LeQmbxs"
+            title="Chatterdillo introduction video"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+            style="display: block; width: 100%; aspect-ratio: 53.5 / 33.2; border: 0; border-radius: var(--border-radius);">
+        </iframe>
     </div>
 </div>
+
+{% include "partials/logo_marquee.html" with cta_href="/case-studies/" cta_label="Discover how we help schools" %}
 
 <div class="content-split text-only grey">
     <div class="content-split-text">
@@ -33,7 +53,7 @@
             Deliver personalised interventions
         </h3>
         <p class="split-body">
-            Teaching assistants can immediately begin interventions using recommended activities or browse the full exercise library.
+            Teaching assistants can immediately begin interventions using recommended activities or browse the full exercise library. We also support group interventions, so that you can make the most out of your teaching resources.
         </p>
         <div class="inline-full-image">
             <img src="{% static 'images/landing/app_screenshots/exercises.webp' %}" alt="Activities screenshot">
@@ -86,32 +106,12 @@
     </div>
 </div>
 
-{% comment %} Marquee Section {% endcomment %}
-<section class="logo-marquee" aria-label="Schools using Chatterdillo">
-    <p class="logo-marquee-title">Join over 50 schools already using Chatterdillo</p>
-    <div class="logo-marquee-track">
-        <div class="logo-marquee-row">
-            <div class="logo-marquee-set">
-                <img src="{% static 'images/landing/school_logos/schoollogo1.webp' %}" alt="Partner school logo">
-                <img src="{% static 'images/landing/school_logos/schoollogo2.webp' %}" alt="Partner school logo">
-                <img src="{% static 'images/landing/school_logos/schoollogo3.webp' %}" alt="Partner school logo">
-                <img src="{% static 'images/landing/school_logos/schoollogo4.webp' %}" alt="Partner school logo">
-                <img src="{% static 'images/landing/school_logos/schoollogo5.webp' %}" alt="Partner school logo">
-                <img src="{% static 'images/landing/school_logos/schoollogo6.webp' %}" alt="Partner school logo">
-                <img src="{% static 'images/landing/school_logos/schoollogo7.webp' %}" alt="Partner school logo">
-                <img src="{% static 'images/landing/school_logos/schoollogo8.webp' %}" alt="Partner school logo">
-            </div>
-            <div class="logo-marquee-set" aria-hidden="true">
-                <img src="{% static 'images/landing/school_logos/schoollogo1.webp' %}" alt="">
-                <img src="{% static 'images/landing/school_logos/schoollogo2.webp' %}" alt="">
-                <img src="{% static 'images/landing/school_logos/schoollogo3.webp' %}" alt="">
-                <img src="{% static 'images/landing/school_logos/schoollogo4.webp' %}" alt="">
-                <img src="{% static 'images/landing/school_logos/schoollogo5.webp' %}" alt="">
-                <img src="{% static 'images/landing/school_logos/schoollogo6.webp' %}" alt="">
-                <img src="{% static 'images/landing/school_logos/schoollogo7.webp' %}" alt="">
-                <img src="{% static 'images/landing/school_logos/schoollogo8.webp' %}" alt="">
-            </div>
-        </div>
-    </div>
-</section>
+{% include "partials/testimonials.html" with heading="Why schools choose Chatterdillo" %}
+
+{% include "partials/calendly_widget.html" %}
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+{% include "partials/testimonials_script.html" %}
 {% endblock %}

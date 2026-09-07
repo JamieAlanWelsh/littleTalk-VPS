@@ -1,0 +1,145 @@
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const rail = document.getElementById('testimonial-rail');
+        if (!rail) {
+            return;
+        }
+
+        const controls = document.querySelectorAll('.testimonial-scroll-btn');
+        const originalCards = Array.from(rail.querySelectorAll('.testimonial-card'));
+
+        if (!originalCards.length) {
+            return;
+        }
+
+        const cloneCard = (card) => {
+            const clone = card.cloneNode(true);
+            clone.setAttribute('aria-hidden', 'true');
+            return clone;
+        };
+
+        const prependClones = originalCards.map(cloneCard);
+        const appendClones = originalCards.map(cloneCard);
+
+        prependClones.slice().reverse().forEach((clone) => {
+            rail.insertBefore(clone, rail.firstChild);
+        });
+
+        appendClones.forEach((clone) => {
+            rail.appendChild(clone);
+        });
+
+        const getGap = () => {
+            const railStyle = window.getComputedStyle(rail);
+            return parseFloat(railStyle.columnGap || railStyle.gap || '0') || 0;
+        };
+
+        const getSetSpan = () => {
+            if (!appendClones.length || !originalCards.length) {
+                return 0;
+            }
+            return appendClones[0].offsetLeft - originalCards[0].offsetLeft;
+        };
+
+        const getMiddleStart = () => {
+            if (!originalCards.length) {
+                return 0;
+            }
+            return originalCards[0].offsetLeft;
+        };
+
+        const getInitialScroll = () => {
+            const middleStart = getMiddleStart();
+            const firstCard = originalCards[0];
+
+            if (!firstCard) {
+                return middleStart;
+            }
+
+            const gap = getGap();
+            const cardWidth = firstCard.offsetWidth;
+            const cardSpan = cardWidth + gap;
+            const isDesktop = window.matchMedia('(min-width: 1025px)').matches;
+            const maxScroll = rail.scrollWidth - rail.clientWidth;
+
+            if (!isDesktop) {
+                const centeredSingleCardScroll = middleStart - ((rail.clientWidth - cardWidth) / 2);
+                return Math.min(Math.max(centeredSingleCardScroll, 0), maxScroll);
+            }
+
+            const pairWidth = (cardWidth * 2) + gap;
+            const secondCardTargetLeft = (rail.clientWidth - pairWidth) / 2;
+            const centeredPairScroll = middleStart + cardSpan - secondCardTargetLeft;
+
+            return Math.min(Math.max(centeredPairScroll, 0), maxScroll);
+        };
+
+        const scrollToInitial = () => {
+            rail.scrollLeft = getInitialScroll();
+        };
+
+        scrollToInitial();
+
+        let isNormalizing = false;
+        const normalizeAtHardEdges = () => {
+            if (isNormalizing) {
+                return;
+            }
+
+            const setSpan = getSetSpan();
+            if (!setSpan) {
+                return;
+            }
+
+            const minScroll = 0;
+            const maxScroll = rail.scrollWidth - rail.clientWidth;
+            const edgeBuffer = 2;
+
+            if (rail.scrollLeft <= minScroll + edgeBuffer || rail.scrollLeft >= maxScroll - edgeBuffer) {
+                isNormalizing = true;
+                if (rail.scrollLeft <= minScroll + edgeBuffer) {
+                    rail.scrollLeft += setSpan;
+                } else {
+                    rail.scrollLeft -= setSpan;
+                }
+                isNormalizing = false;
+            }
+        };
+
+        rail.addEventListener('scroll', () => {
+            window.requestAnimationFrame(normalizeAtHardEdges);
+        }, { passive: true });
+
+        controls.forEach((button) => {
+            button.addEventListener('click', () => {
+                const setSpan = getSetSpan();
+                const initialScroll = getInitialScroll();
+                const edgeBuffer = 2;
+                const maxScroll = rail.scrollWidth - rail.clientWidth;
+                const direction = button.dataset.scrollDirection;
+
+                if (setSpan) {
+                    if (direction === 'left' && rail.scrollLeft <= initialScroll + edgeBuffer) {
+                        rail.scrollLeft += setSpan;
+                    }
+                    if (direction === 'right' && rail.scrollLeft >= maxScroll - setSpan - edgeBuffer) {
+                        rail.scrollLeft -= setSpan;
+                    }
+                }
+
+                const gap = getGap();
+                const firstCard = originalCards[0];
+                const scrollAmount = firstCard ? firstCard.offsetWidth + gap : 360;
+
+                rail.scrollBy({
+                    left: direction === 'left' ? -scrollAmount : scrollAmount,
+                    behavior: 'smooth',
+                });
+            });
+        });
+
+        window.addEventListener('resize', () => {
+            scrollToInitial();
+        });
+    });
+</script>

@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.core.validators import MaxValueValidator, MinValueValidator
 from encrypted_model_fields.fields import (
     EncryptedCharField,
     EncryptedDateField,
@@ -159,34 +160,6 @@ class Role:
         (STAFF, "Staff"),
         (READ_ONLY, "Read Only"),
     ]
-
-
-class AgeGroup:
-    GROUP_1 = 1
-    GROUP_2 = 2
-    GROUP_3 = 3
-    GROUP_4 = 4
-    GROUP_5 = 5
-
-    CHOICES = [
-        (GROUP_1, "0-2"),
-        (GROUP_2, "3-4"),
-        (GROUP_3, "5-8"),
-        (GROUP_4, "9-11"),
-        (GROUP_5, "12+"),
-    ]
-
-    @classmethod
-    def from_age(cls, age_years):
-        if age_years <= 2:
-            return cls.GROUP_1
-        if age_years <= 4:
-            return cls.GROUP_2
-        if age_years <= 8:
-            return cls.GROUP_3
-        if age_years <= 11:
-            return cls.GROUP_4
-        return cls.GROUP_5
 
 
 class Profile(models.Model):
@@ -485,47 +458,19 @@ class Learner(models.Model):
     recommendation_index = models.IntegerField(default=0)
     recommendation_index_updated_at = models.DateTimeField(blank=True, null=True)
     deleted = models.BooleanField(default=False)
-    date_of_birth = EncryptedDateField(null=True, blank=True)
-    avatar_character = models.CharField(max_length=64, default=DEFAULT_AVATAR_CHARACTER)
-    avatar_color = models.CharField(max_length=7, default=DEFAULT_AVATAR_COLOR)
-    age_group = models.PositiveSmallIntegerField(
+    age = models.PositiveSmallIntegerField(
         null=True,
         blank=True,
-        choices=AgeGroup.CHOICES,
-        help_text="Derived age bucket for reporting",
+        validators=[MinValueValidator(1), MaxValueValidator(19)],
     )
+    avatar_character = models.CharField(max_length=64, default=DEFAULT_AVATAR_CHARACTER)
+    avatar_color = models.CharField(max_length=7, default=DEFAULT_AVATAR_COLOR)
     assessment1 = models.IntegerField(blank=True, null=True)
     assessment2 = models.IntegerField(blank=True, null=True)
     cohort = models.ForeignKey(Cohort, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.name
-
-    @staticmethod
-    def derive_age_group(dob, today=None):
-        if not dob:
-            return None
-
-        today = today or timezone.now().date()
-        if dob > today:
-            return None
-
-        age_years = today.year - dob.year - (
-            (today.month, today.day) < (dob.month, dob.day)
-        )
-        return AgeGroup.from_age(age_years)
-
-    def save(self, *args, **kwargs):
-        self.age_group = self.derive_age_group(self.date_of_birth)
-
-        update_fields = kwargs.get("update_fields")
-        if update_fields is not None:
-            update_fields = set(update_fields)
-            update_fields.add("age_group")
-            kwargs["update_fields"] = update_fields
-
-        super().save(*args, **kwargs)
-
 
 class LogEntry(models.Model):
     user = models.ForeignKey(

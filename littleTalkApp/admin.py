@@ -153,12 +153,12 @@ class LearnerAdmin(admin.ModelAdmin):
         "total_exercises",
         "recommendation_level",
         "deleted",
-        "age_group",
+        "age",
         "cohort",
     )
-    list_filter = ("age_group", "deleted", "school")
+    list_filter = ("age", "deleted", "school")
     search_fields = ("user__username", "user__email_encrypted", "learner_uuid")
-    exclude = ("name", "date_of_birth")
+    exclude = ("name",)
 
     def user_email(self, obj):
         """Display the encrypted email of the user"""

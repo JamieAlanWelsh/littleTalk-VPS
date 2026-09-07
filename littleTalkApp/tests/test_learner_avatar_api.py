@@ -19,7 +19,7 @@ class LearnerAvatarApiTests(BaseFlowTestMixin, TestCase):
             user=self.user,
             school=self.school,
             name="Avatar Learner",
-            date_of_birth=timezone.now().date() - timedelta(days=365 * 7),
+            age=7,
         )
 
         self.client.force_login(self.user)

@@ -246,7 +246,7 @@ body {
 }
 
 .split-heading {
-    font-size: 2.5rem;
+    font-size: 3rem;
     font-weight: 700;
     margin-top: 0;
     margin-bottom: 2rem;
@@ -263,7 +263,7 @@ body {
 }
 
 .split-body {
-    font-size: 1.125rem;
+    font-size: 1.15rem;
     color: var(--font-color);
     line-height: 1.6;
 }
@@ -577,6 +577,32 @@ body {
 .talk-team-subtitle {
     max-width: 860px;
     margin: 0 auto;
+}
+
+#book-demo {
+    scroll-margin-top: 100px;
+}
+
+.calendly-character-wrapper {
+    position: relative;
+    overflow: hidden;
+}
+
+.calendly-character-wrapper .character {
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.calendly-character-wrapper .talk-team-widget-wrapper {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* below this width there isn't enough room either side of the widget for the mascots without overlapping it */
+@media (max-width: 1200px) {
+    .calendly-character-wrapper .character {
+        display: none;
+    }
 }
 
 .talk-team-widget-wrapper {
