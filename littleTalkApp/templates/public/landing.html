@@ -2,10 +2,6 @@
 {% extends "landing_base.html" %}
 {% load static %}
 
-{% block extra_head %}
-<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
-{% endblock %}
-
 {% block content %}
 <div class="character-wrapper">
     <!-- Left Character -->
@@ -28,7 +24,7 @@
                 Web-based speech and language intervention and screener - Designed by Speech and Language Therapists for Busy Schools
             </p>
             <div class="hero-cta">
-                <a href="{{ calendly_url }}" class="cta-button white-button main-button" target="_blank" rel="noopener noreferrer">Book a Demo</a>
+                <a href="/how-it-works/#book-demo" class="cta-button white-button main-button">Book a Demo</a>
                 <a href="/account-setup/" class="cta-button main-button">Get Started</a>
             </div>
             <div class="hero-endorsements" aria-label="Endorsements and awards">
@@ -46,35 +42,7 @@
     </div>
 </div>
 
-{% comment %} Marquee Section {% endcomment %}
-<section class="logo-marquee" aria-label="Schools using Chatterdillo">
-    <p class="logo-marquee-title">Join over 50 schools already using Chatterdillo</p>
-    <div class="logo-marquee-track">
-        <div class="logo-marquee-row">
-            <div class="logo-marquee-set">
-                <img src="{% static 'images/landing/school_logos/schoollogo1.webp' %}" alt="Partner school logo">
-                <img src="{% static 'images/landing/school_logos/schoollogo2.webp' %}" alt="Partner school logo">
-                <img src="{% static 'images/landing/school_logos/schoollogo3.webp' %}" alt="Partner school logo">
-                <img src="{% static 'images/landing/school_logos/schoollogo4.webp' %}" alt="Partner school logo">
-                <img src="{% static 'images/landing/school_logos/schoollogo5.webp' %}" alt="Partner school logo">
-                <img src="{% static 'images/landing/school_logos/schoollogo6.webp' %}" alt="Partner school logo">
-                <img src="{% static 'images/landing/school_logos/schoollogo7.webp' %}" alt="Partner school logo">
-                <img src="{% static 'images/landing/school_logos/schoollogo8.webp' %}" alt="Partner school logo">
-            </div>
-            <div class="logo-marquee-set" aria-hidden="true">
-                <img src="{% static 'images/landing/school_logos/schoollogo1.webp' %}" alt="">
-                <img src="{% static 'images/landing/school_logos/schoollogo2.webp' %}" alt="">
-                <img src="{% static 'images/landing/school_logos/schoollogo3.webp' %}" alt="">
-                <img src="{% static 'images/landing/school_logos/schoollogo4.webp' %}" alt="">
-                <img src="{% static 'images/landing/school_logos/schoollogo5.webp' %}" alt="">
-                <img src="{% static 'images/landing/school_logos/schoollogo6.webp' %}" alt="">
-                <img src="{% static 'images/landing/school_logos/schoollogo7.webp' %}" alt="">
-                <img src="{% static 'images/landing/school_logos/schoollogo8.webp' %}" alt="">
-            </div>
-        </div>
-    </div>
-    <a href="/case-studies/" class="cta-button main-button logo-marquee-button">Discover how we help schools</a>
-</section>
+{% include "partials/logo_marquee.html" with cta_href="/case-studies/" cta_label="Discover how we help schools" %}
 
 {% comment %} Benefits Section {% endcomment %}
 <div class="content-split white">
@@ -136,193 +104,9 @@
         </div>
     </div>
 </div>
-<div class="content-split testimonials-section">
-    <div class="content-split-header">
-        <h2 class="split-heading">
-            Chatter from the Dillo Community
-        </h2>
-        <p class="split-body">How Chatterdillo helps with speech and language support in schools and at home.</p>
-    </div>
-    <div class="testimonial-rail-shell">
-        <div class="testimonial-rail" id="testimonial-rail">
-            {% for testimonial in testimonials %}
-                <article class="testimonial-card">
-                    <p class="testimonial-quote">“{{ testimonial.quote }}”</p>
-                    <div class="testimonial-card-header">
-                        <div class="testimonial-avatar" style="--testimonial-avatar-color: {{ testimonial.avatar_background_color }};" aria-hidden="true">
-                            <img src="{{ testimonial.avatar_image_url }}" alt="">
-                        </div>
-                        <div class="testimonial-meta">
-                            <h3 class="testimonial-name">{{ testimonial.name }}</h3>
-                            <p class="testimonial-role">{{ testimonial.role }} · {{ testimonial.occupation }}</p>
-                        </div>
-                    </div>
-                </article>
-            {% endfor %}
-        </div>
-        <div class="testimonial-controls">
-            <button type="button" class="testimonial-scroll-btn" data-scroll-direction="left" aria-label="Scroll testimonials left">&#8249;</button>
-            <button type="button" class="testimonial-scroll-btn" data-scroll-direction="right" aria-label="Scroll testimonials right">&#8250;</button>
-        </div>
-    </div>
-</div>
-{% comment %} Talk to our team section {% endcomment %}
-<div class="content-split white">
-    <div class="content-split-header" style="margin-bottom: 0;">
-        <h2 class="split-heading">Talk to our team</h2>
-        <p class="split-body talk-team-subtitle">Book a short call to see how Chatterdillo could support your school’s needs.</p>
-    </div>
-    <div class="talk-team-widget-wrapper">
-        <div class="calendly-inline-widget" data-url="{{ calendly_url }}" style="min-width:320px;height:700px;"></div>
-    </div>
-</div>
+{% include "partials/testimonials.html" %}
 {% endblock %}
 
 {% block extra_scripts %}
-<script src="https://assets.calendly.com/assets/external/widget.js" async></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const rail = document.getElementById('testimonial-rail');
-        if (!rail) {
-            return;
-        }
-
-        const controls = document.querySelectorAll('.testimonial-scroll-btn');
-        const originalCards = Array.from(rail.querySelectorAll('.testimonial-card'));
-
-        if (!originalCards.length) {
-            return;
-        }
-
-        const cloneCard = (card) => {
-            const clone = card.cloneNode(true);
-            clone.setAttribute('aria-hidden', 'true');
-            return clone;
-        };
-
-        const prependClones = originalCards.map(cloneCard);
-        const appendClones = originalCards.map(cloneCard);
-
-        prependClones.slice().reverse().forEach((clone) => {
-            rail.insertBefore(clone, rail.firstChild);
-        });
-
-        appendClones.forEach((clone) => {
-            rail.appendChild(clone);
-        });
-
-        const getGap = () => {
-            const railStyle = window.getComputedStyle(rail);
-            return parseFloat(railStyle.columnGap || railStyle.gap || '0') || 0;
-        };
-
-        const getSetSpan = () => {
-            if (!appendClones.length || !originalCards.length) {
-                return 0;
-            }
-            return appendClones[0].offsetLeft - originalCards[0].offsetLeft;
-        };
-
-        const getMiddleStart = () => {
-            if (!originalCards.length) {
-                return 0;
-            }
-            return originalCards[0].offsetLeft;
-        };
-
-        const getInitialScroll = () => {
-            const middleStart = getMiddleStart();
-            const firstCard = originalCards[0];
-
-            if (!firstCard) {
-                return middleStart;
-            }
-
-            const gap = getGap();
-            const cardWidth = firstCard.offsetWidth;
-            const cardSpan = cardWidth + gap;
-            const isDesktop = window.matchMedia('(min-width: 1025px)').matches;
-            const maxScroll = rail.scrollWidth - rail.clientWidth;
-
-            if (!isDesktop) {
-                const centeredSingleCardScroll = middleStart - ((rail.clientWidth - cardWidth) / 2);
-                return Math.min(Math.max(centeredSingleCardScroll, 0), maxScroll);
-            }
-
-            const pairWidth = (cardWidth * 2) + gap;
-            const secondCardTargetLeft = (rail.clientWidth - pairWidth) / 2;
-            const centeredPairScroll = middleStart + cardSpan - secondCardTargetLeft;
-
-            return Math.min(Math.max(centeredPairScroll, 0), maxScroll);
-        };
-
-        const scrollToInitial = () => {
-            rail.scrollLeft = getInitialScroll();
-        };
-
-        scrollToInitial();
-
-        let isNormalizing = false;
-        const normalizeAtHardEdges = () => {
-            if (isNormalizing) {
-                return;
-            }
-
-            const setSpan = getSetSpan();
-            if (!setSpan) {
-                return;
-            }
-
-            const minScroll = 0;
-            const maxScroll = rail.scrollWidth - rail.clientWidth;
-            const edgeBuffer = 2;
-
-            if (rail.scrollLeft <= minScroll + edgeBuffer || rail.scrollLeft >= maxScroll - edgeBuffer) {
-                isNormalizing = true;
-                if (rail.scrollLeft <= minScroll + edgeBuffer) {
-                    rail.scrollLeft += setSpan;
-                } else {
-                    rail.scrollLeft -= setSpan;
-                }
-                isNormalizing = false;
-            }
-        };
-
-        rail.addEventListener('scroll', () => {
-            window.requestAnimationFrame(normalizeAtHardEdges);
-        }, { passive: true });
-
-        controls.forEach((button) => {
-            button.addEventListener('click', () => {
-                const setSpan = getSetSpan();
-                const initialScroll = getInitialScroll();
-                const edgeBuffer = 2;
-                const maxScroll = rail.scrollWidth - rail.clientWidth;
-                const direction = button.dataset.scrollDirection;
-
-                if (setSpan) {
-                    if (direction === 'left' && rail.scrollLeft <= initialScroll + edgeBuffer) {
-                        rail.scrollLeft += setSpan;
-                    }
-                    if (direction === 'right' && rail.scrollLeft >= maxScroll - setSpan - edgeBuffer) {
-                        rail.scrollLeft -= setSpan;
-                    }
-                }
-
-                const gap = getGap();
-                const firstCard = originalCards[0];
-                const scrollAmount = firstCard ? firstCard.offsetWidth + gap : 360;
-
-                rail.scrollBy({
-                    left: direction === 'left' ? -scrollAmount : scrollAmount,
-                    behavior: 'smooth',
-                });
-            });
-        });
-
-        window.addEventListener('resize', () => {
-            scrollToInitial();
-        });
-    });
-</script>
+{% include "partials/testimonials_script.html" %}
 {% endblock %}

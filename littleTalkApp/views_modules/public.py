@@ -186,7 +186,11 @@ def how_it_works(request):
     """Renders public/how_it_works.html for the landing-page flow."""
 
     request.hide_sidebar = True
-    return render(request, "public/how_it_works.html")
+    return render(
+        request,
+        "public/how_it_works.html",
+        {"testimonials": get_landing_testimonials()},
+    )
 
 
 def about(request):
