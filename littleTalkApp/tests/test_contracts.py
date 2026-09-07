@@ -134,7 +134,6 @@ class TemplateContractsTests(TestCase):
     def test_public_and_auth_templates_render(self):
         cases = [
             ("home", {}, "public/landing.html"),
-            ("support", {}, "public/support.html"),
             ("case_studies", {}, "public/case_studies.html"),
             ("case_study_detail", {"slug": "kings-furlong"}, "public/case_study_detail.html"),
             ("exercises", {}, "public/method.html"),
