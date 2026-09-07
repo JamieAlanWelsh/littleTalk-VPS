@@ -43,7 +43,6 @@ class AccessControlMiddleware(MiddlewareMixin):
             reverse("login"),
             reverse("logout"),
             reverse("verify_email"),
-            reverse("join_pending"),
             reverse("license_expired"),
             reverse("subscribe"),
             reverse("access_restricted"),
@@ -80,7 +79,9 @@ class AccessControlMiddleware(MiddlewareMixin):
             # Legacy grandfathered staff (accessible school, no pending code) are
             # allowed through email verification, but must still pass the
             # subscription/license checks below rather than bypassing them.
-            if not (has_accessible_school and not has_pending_verification):
+            if path == reverse("join_pending") or not (
+                has_accessible_school and not has_pending_verification
+            ):
                 return redirect("verify_email")
 
         # --- VERIFIED (or grandfathered) USER: subscription/license checks ---

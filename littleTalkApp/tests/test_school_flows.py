@@ -463,7 +463,7 @@ class JoinRequestFlowTests(BaseFlowTestMixin, TestCase):
         self.assertContains(response, 'Sign up & join school')
         self.assertContains(response, 'Terms and Conditions')
 
-    def test_pending_join_request_user_can_view_pending_page(self):
+    def test_unverified_pending_join_request_user_is_sent_to_email_verification(self):
         school = School.objects.create(name="Pending School", is_licensed=True)
         user = get_user_model().objects.create_user(username="pending-user", password="strongpass123")
         user.email_encrypted = "pending@example.com"
@@ -478,9 +478,8 @@ class JoinRequestFlowTests(BaseFlowTestMixin, TestCase):
         response = self.client.get(reverse("join_pending"), follow=True)
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.request["PATH_INFO"], reverse("join_pending"))
-        self.assertContains(response, "Your school join request is pending")
-        self.assertContains(response, "join-pending-container")
+        self.assertEqual(response.request["PATH_INFO"], reverse("verify_email"))
+        self.assertContains(response, "Verify Your Email")
 
     def test_request_join_school_creates_user_and_pending_request(self):
         school = School.objects.create(name="Join School", is_licensed=True)
