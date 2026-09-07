@@ -593,6 +593,18 @@ body {
     transform: translateY(-50%);
 }
 
+.calendly-character-wrapper .talk-team-widget-wrapper {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* below this width there isn't enough room either side of the widget for the mascots without overlapping it */
+@media (max-width: 1200px) {
+    .calendly-character-wrapper .character {
+        display: none;
+    }
+}
+
 .talk-team-widget-wrapper {
     margin: 0 0 0 auto;
     max-width: 100%;
