@@ -33,7 +33,7 @@ class ApiTypicalFlowTests(BaseFlowTestMixin, TestCase):
             user=user,
             school=school,
             name="Api Learner",
-            date_of_birth=timezone.now().date() - timedelta(days=365 * 7),
+            age=7,
         )
 
         self.client.force_login(user)
@@ -56,7 +56,7 @@ class ApiTypicalFlowTests(BaseFlowTestMixin, TestCase):
             user=user_b,
             school=school_b,
             name="Foreign Learner",
-            date_of_birth=timezone.now().date() - timedelta(days=365 * 8),
+            age=8,
         )
 
         self.client.force_login(user_a)

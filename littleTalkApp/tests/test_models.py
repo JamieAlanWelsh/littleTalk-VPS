@@ -4,7 +4,7 @@ from django.test import RequestFactory, TestCase
 from django.utils import timezone
 
 from accounts.models import User
-from littleTalkApp.models import AgeGroup, Learner, Profile, Role, School, SchoolMembership
+from littleTalkApp.models import Learner, Profile, Role, School, SchoolMembership
 
 
 class SchoolModelTests(TestCase):
@@ -32,34 +32,19 @@ class SchoolModelTests(TestCase):
         self.assertTrue(school.has_valid_license())
 
 
-class AgeGroupModelTests(TestCase):
-    def test_from_age_boundaries(self):
-        self.assertEqual(AgeGroup.from_age(2), AgeGroup.GROUP_1)
-        self.assertEqual(AgeGroup.from_age(3), AgeGroup.GROUP_2)
-        self.assertEqual(AgeGroup.from_age(5), AgeGroup.GROUP_3)
-        self.assertEqual(AgeGroup.from_age(9), AgeGroup.GROUP_4)
-        self.assertEqual(AgeGroup.from_age(12), AgeGroup.GROUP_5)
-
-
 class LearnerModelTests(TestCase):
-    def test_derive_age_group_returns_none_for_future_dob(self):
-        future_date = timezone.now().date() + timedelta(days=1)
-
-        self.assertIsNone(Learner.derive_age_group(future_date))
-
-    def test_save_populates_age_group(self):
+    def test_age_is_stored_as_an_integer(self):
         user = User.objects.create_user(username="learner-owner", password="password123")
         school = School.objects.create(name="Learner School")
-        dob = timezone.now().date() - timedelta(days=365 * 6)
 
         learner = Learner.objects.create(
             user=user,
             school=school,
             name="Learner",
-            date_of_birth=dob,
+            age=6,
         )
 
-        self.assertEqual(learner.age_group, AgeGroup.GROUP_3)
+        self.assertEqual(learner.age, 6)
 
 
 class ProfileModelTests(TestCase):

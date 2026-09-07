@@ -22,7 +22,7 @@ class LegacyExerciseSessionMigrationTests(BaseFlowTestMixin, TestCase):
             user=self.user,
             school=self.school,
             name="Legacy Migration Learner",
-            date_of_birth=timezone.now().date() - timedelta(days=365 * 8),
+            age=8,
         )
 
     def _create_session(self, exercise_id, difficulty_selected, difficulty_label=""):

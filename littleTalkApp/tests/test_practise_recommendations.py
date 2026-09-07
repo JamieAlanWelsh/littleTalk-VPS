@@ -19,7 +19,7 @@ class PractiseRecommendationRotationTests(BaseFlowTestMixin, TestCase):
             user=self.user,
             school=self.school,
             name="Practise Learner",
-            date_of_birth=timezone.now().date() - timedelta(days=365 * 7),
+            age=7,
             recommended_exercise_ids=["whats-in-the-bag", "story-train-plus", "in-the-know"],
             secondary_exercise_ids=["concept-quest"],
             recommendation_index=0,
@@ -116,7 +116,7 @@ class PractiseRecommendationRotationTests(BaseFlowTestMixin, TestCase):
             user=self.user,
             school=self.school,
             name="Legacy Learner",
-            date_of_birth=timezone.now().date() - timedelta(days=365 * 8),
+            age=8,
             recommendation_level=2,
         )
 

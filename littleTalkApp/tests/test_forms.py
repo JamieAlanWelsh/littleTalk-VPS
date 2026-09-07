@@ -111,15 +111,14 @@ class FormValidationTests(TestCase):
                 "password1": "password123",
                 "password2": "password123",
                 "learner_name": "Learner Name",
-                "learner_dob": "2019-01-01",
+                "learner_age": 7,
             }
         )
 
         self.assertFalse(form.is_valid())
         self.assertIn("first_name", form.errors)
 
-    def test_user_registration_rejects_future_learner_dob(self):
-        future_date = (timezone.now().date() + timedelta(days=1)).isoformat()
+    def test_user_registration_rejects_out_of_range_learner_age(self):
         form = UserRegistrationForm(
             data={
                 "email": "new2@example.com",
@@ -127,12 +126,12 @@ class FormValidationTests(TestCase):
                 "password1": "password123",
                 "password2": "password123",
                 "learner_name": "Learner Name",
-                "learner_dob": future_date,
+                "learner_age": 20,
             }
         )
 
         self.assertFalse(form.is_valid())
-        self.assertIn("learner_dob", form.errors)
+        self.assertIn("learner_age", form.errors)
 
     @override_settings(
         AUTH_PASSWORD_VALIDATORS=[
@@ -168,7 +167,7 @@ class FormValidationTests(TestCase):
             user=staff,
             school=school,
             name="PAC Learner",
-            date_of_birth=timezone.now().date() - timedelta(days=365 * 7),
+            age=7,
         )
         token = ParentAccessToken.objects.create(learner=learner)
 
@@ -192,7 +191,7 @@ class FormValidationTests(TestCase):
             user=staff,
             school=school,
             name="Expired PAC Learner",
-            date_of_birth=timezone.now().date() - timedelta(days=365 * 8),
+            age=8,
         )
         token = ParentAccessToken.objects.create(learner=learner, used=True)
 
@@ -221,6 +220,13 @@ class FormValidationTests(TestCase):
             Cohort.objects.filter(id=happy_cohort.id),
             transform=lambda cohort: cohort,
         )
+
+    def test_learner_form_rejects_age_outside_supported_range(self):
+        for age in (0, 20):
+            form = LearnerForm(data={"name": "Learner", "age": age})
+
+            self.assertFalse(form.is_valid())
+            self.assertIn("age", form.errors)
 
     def test_staff_invite_form_uses_shared_widget_classes(self):
         form = StaffInviteForm()

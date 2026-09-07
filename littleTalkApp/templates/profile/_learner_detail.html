@@ -19,8 +19,8 @@
         </div>
         <div class="learner-details-body">
             <div class="learner-details-copy">
-                {% if selected_learner.age_group %}
-                    <p><strong>Year Group:</strong> {{ selected_learner.get_age_group_display }}</p>
+                {% if selected_learner.age %}
+                    <p><strong>Age:</strong> {{ selected_learner.age }}</p>
                 {% endif %}
                 {% if selected_learner.cohort %}
                     <p><strong>Cohort:</strong> {{ selected_learner.cohort }}</p>

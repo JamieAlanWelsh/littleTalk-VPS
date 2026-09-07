@@ -21,7 +21,7 @@ class AssessmentTypicalFlowTests(BaseFlowTestMixin, TestCase):
             user=user,
             school=school,
             name="Learner One",
-            date_of_birth=timezone.now().date() - timedelta(days=365 * 6),
+            age=6,
         )
 
         self.client.force_login(user)
@@ -60,7 +60,7 @@ class AssessmentTypicalFlowTests(BaseFlowTestMixin, TestCase):
             user=user,
             school=school,
             name="Learner Two",
-            date_of_birth=timezone.now().date() - timedelta(days=365 * 7),
+            age=7,
         )
 
         self.client.force_login(user)
