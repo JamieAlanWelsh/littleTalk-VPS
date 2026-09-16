@@ -3,6 +3,104 @@ from django.templatetags.static import static
 
 CASE_STUDIES = [
     {
+        "slug": "south-view-primary",
+        "school_name": "South View Primary School & Pre-School",
+        "location": "Mainstream primary school",
+        "image": static("images/landing/about/corrine_shot.webp"),
+        "video_embed_url": "https://www.youtube.com/embed/nL9_MQl5tt8?si=XbA_2FSPtvjTK1ZR",
+        "headline": "Whole-school training and consistent intervention helped put speech and language first",
+        "intro": (
+            "South View Primary School & Pre-School wanted to respond earlier to its biggest area of need: "
+            "speech and language. By giving staff a practical way to screen pupils, deliver regular intervention "
+            "and track next steps, the school has made communication support part of everyday practice."
+        ),
+        "challenge": (
+            "Speech and language is South View's largest area of need. SENDCo Corrine Mitcham sees early support "
+            "as essential not only for learning, but also for children's confidence, behaviour and ability to "
+            "communicate how they feel. The school needed an approach that could reach children from pre-school "
+            "onwards while fitting into days in which teachers and teaching assistants were already stretched."
+        ),
+        "approach": (
+            "South View introduced Chatterdillo across its pre-school and primary provision. Pre-school staff, "
+            "teachers and teaching assistants received the same training, while short built-in tutorials made it "
+            "easy to revisit individual activities. Staff use the screener to identify needs and next steps, then "
+            "deliver focused activities on familiar classroom technology. For pupils who need greater intensity, "
+            "that can include short daily sessions with a teaching assistant."
+        ),
+        "results": [
+            {"value": "Daily", "label": "targeted intervention where needed"},
+            {"value": "Whole school", "label": "staff trained across every setting"},
+            {"value": "Full sentences", "label": "reached by one high-needs pupil"},
+        ],
+        "results_copy": [
+            (
+                "One pupil arrived in early years using labelling language and received daily intervention, with "
+                "Colourful Semantics at its core and other activities added for breadth. By the end of Year 2, he "
+                "was mostly speaking in full sentences. He can now explain what he thinks and feels, contribute in "
+                "class and put his hand up to share rather than shying away."
+            ),
+            (
+                "Corrine credits the consistency of the intervention and the teaching assistant's language "
+                "modelling with helping him make that journey. Chatterdillo also lets staff return to the screener "
+                "to review progress and identify the next step, helping support continue to evolve when access to "
+                "external speech and language services is limited."
+            ),
+            (
+                "The impact extends beyond individual sessions. Because staff across the school have been trained, "
+                "speech and language is now more visible in classroom thinking. Teachers and teaching assistants "
+                "are more likely to notice a possible need, explore it through the screener and put support in "
+                "place. Corrine also sees group interventions as a practical way to reach several pupils in one "
+                "10-to-15-minute slot while making careful use of staff time."
+            ),
+        ],
+        "quotes": [
+            {
+                "quote": (
+                    "He can now share exactly what he's thinking and what he's feeling. He can contribute in "
+                    "class, and the power that gives him is incredible."
+                ),
+                "name": "Corrine Mitcham",
+                "role": "SENDCo, South View Primary School & Pre-School",
+            },
+            {
+                "quote": (
+                    "For our teachers who are already spinning so many plates, this has brought speech and "
+                    "language to the fore."
+                ),
+                "name": "Corrine Mitcham",
+                "role": "SENDCo, South View Primary School & Pre-School",
+            },
+        ],
+        "ofsted": [
+            {
+                "title": "Inclusion",
+                "text": (
+                    "Screening and intervention from pre-school onwards help staff identify communication needs "
+                    "early and put support in place before they become a wider barrier to learning and participation."
+                ),
+            },
+            {
+                "title": "Curriculum & Teaching",
+                "text": (
+                    "Shared training and concise tutorials give teachers and teaching assistants a consistent, "
+                    "practical approach to modelling language and delivering targeted activities."
+                ),
+            },
+            {
+                "title": "Personal Development",
+                "text": (
+                    "Helping pupils express their thoughts and feelings supports confidence, classroom contribution "
+                    "and the development of communication skills they can carry into later life."
+                ),
+            },
+        ],
+        "summary": (
+            "South View's experience shows what can happen when speech and language becomes a shared whole-school "
+            "priority. Accessible training, flexible screening and manageable interventions help staff act earlier, "
+            "sustain support and give pupils a stronger voice in the classroom."
+        ),
+    },
+    {
         "slug": "pdet-trust",
         "school_name": "Peterborough Diocese Education Trust",
         "location": "Trust-wide pilot",

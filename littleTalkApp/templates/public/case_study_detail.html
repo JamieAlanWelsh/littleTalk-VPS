@@ -11,7 +11,19 @@
         <p class="split-body talk-team-subtitle">{{ case_study.intro }}</p>
     </div>
     <div class="inline-full-image" style="max-width: 800px; margin: 2rem auto 0;">
+        {% if case_study.video_embed_url %}
+        <iframe
+            src="{{ case_study.video_embed_url }}"
+            title="{{ case_study.school_name }} case study video"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+            style="display: block; width: 100%; aspect-ratio: 53.5 / 33.2; border: 0; border-radius: var(--border-radius);">
+        </iframe>
+        {% else %}
         <img src="{{ case_study.image }}" alt="{{ case_study.school_name }}">
+        {% endif %}
     </div>
 </div>
 
