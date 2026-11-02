@@ -14,11 +14,16 @@
     box-shadow: var(--box-shadow);
     font-family: var(--font-roboto);
     color: var(--font-color);
-    /* Keep end screen responsive like settings: apply a lighter zoom curve
-       derived from global exercise zoom, and propagate scale to shared buttons. */
+    /* Keep end screen responsive like settings: apply a lighter scale curve
+       derived from global exercise zoom, and propagate scale to shared buttons.
+       Uses `transform: scale()` (not CSS `zoom`) for consistent Chrome/Safari
+       sizing; the margin reserves the scaled height so flow stays correct. */
     --endscreen-zoom: calc((var(--exercise-zoom, 1) * 0.55) + 0.5);
-    zoom: var(--endscreen-zoom);
+    transform: scale(var(--endscreen-zoom));
     transform-origin: top center;
+    margin-bottom: calc(
+        var(--endscreen-natural-height, 0px) * (var(--endscreen-zoom) - 1)
+    );
     --button-scale: var(--endscreen-zoom);
 }
 

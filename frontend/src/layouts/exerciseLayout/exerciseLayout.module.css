@@ -12,13 +12,23 @@
 /* Holds the prompt + interactive board. On short viewports `--exercise-zoom`
    (set responsively in style.css) shrinks this whole area like a browser
    "zoom out", so tall exercises stay on screen. The fixed header and action
-   bar live outside this element and keep their full, tappable size. */
+   bar live outside this element and keep their full, tappable size.
+   We use `transform: scale()` rather than CSS `zoom` because `zoom` and the
+   way browsers report sizes under it diverge between Chrome and Safari,
+   which made exercises render out of proportion on Safari/iPad. A transform
+   scales identically everywhere; the `margin-bottom` compensates for the fact
+   that a transform does not reflow, keeping the board centred and on screen. */
 .exerciseScaleArea {
     display: flex;
     flex-direction: column;
     gap: 1rem;
     width: 100%;
-    zoom: var(--exercise-zoom, 1);
+    transform: scale(var(--exercise-zoom, 1));
+    transform-origin: top center;
+    margin-bottom: calc(
+        var(--exercise-scale-natural-height, 0px) *
+            (var(--exercise-zoom, 1) - 1)
+    );
 }
 
 .exercisePromptCard,

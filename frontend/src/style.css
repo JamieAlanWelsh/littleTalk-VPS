@@ -91,6 +91,9 @@ body.exercise-page {
     );
     padding-bottom: var(--exercise-actionbar-reserved-height);
     min-height: 100vh;
+    /* dvh tracks the iPad Safari dynamic toolbar so the usable height (and the
+       adaptive fit) stays stable as the toolbar shows/hides. */
+    min-height: 100dvh;
     display: flex;
     align-items: center;
     justify-content: center;
