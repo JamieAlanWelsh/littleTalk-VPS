@@ -6,6 +6,7 @@ def layout_context(request):
     is_skolon_user = False
     is_read_only = False
     can_change_school = False
+    can_view_multischool_dashboard = False
     if request.user.is_authenticated:
         try:
             profile = request.user.profile
@@ -23,6 +24,7 @@ def layout_context(request):
                 not profile.is_parent()
                 and profile.get_licensed_schools().count() > 1
             )
+            can_view_multischool_dashboard = profile.can_view_multischool_dashboard()
         except Exception:
             can_access_school_management = False
 
@@ -32,6 +34,7 @@ def layout_context(request):
         'is_skolon_user': is_skolon_user,
         'is_read_only': is_read_only,
         'can_change_school': can_change_school,
+        'can_view_multischool_dashboard': can_view_multischool_dashboard,
     }
 
 def canonical_url(request):

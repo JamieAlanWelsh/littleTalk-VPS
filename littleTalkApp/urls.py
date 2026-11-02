@@ -141,8 +141,11 @@ urlpatterns = [
     path('api/onboarding-tour/', api_views.update_onboarding_tour, name='update_onboarding_tour'),
 
     # Dashboard
+    path('dashboard/progress/', dashboard_views.progress_hub, name='progress_hub'),
     path('dashboard/learner/', dashboard_views.learner_dashboard, name='learner_dashboard'),
     path('api/dashboard/progress-data/', dashboard_views.learner_progress_data, name='learner_progress_data'),
+    path('dashboard/multischool/', dashboard_views.multischool_dashboard, name='multischool_dashboard'),
+    path('api/dashboard/multischool-progress-data/', dashboard_views.multischool_progress_data, name='multischool_progress_data'),
 
     # React exercise routes (canonical)
     path('exercises/categorisation/', react_exercises_views.categorisation_example, name='categorisation_example'),

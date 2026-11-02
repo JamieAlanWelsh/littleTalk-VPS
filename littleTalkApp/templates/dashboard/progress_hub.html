@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Chatterdillo | Progress{% endblock %}
+
+{% block content %}
+<div class="screener-container">
+    <h1>Progress Reports</h1>
+
+    <div class="card-row">
+        <a href="{% url 'multischool_dashboard' %}" class="setup-card">
+            <div class="setup-card-inner">
+                <h2>Multi-School Reporting</h2>
+                <p>Compare across all the schools you have access to.</p>
+            </div>
+        </a>
+        <a href="{% url 'learner_dashboard' %}" class="setup-card">
+            <div class="setup-card-inner">
+                <h2>Individual School Reports</h2>
+                <p>View progress for a single school, switching schools as needed.</p>
+            </div>
+        </a>
+    </div>
+
+    <div class="screener-back-button">
+        <a href="{% url 'profile' %}" class="btn btn--white btn--small">Back to Profile</a>
+    </div>
+</div>
+{% endblock %}

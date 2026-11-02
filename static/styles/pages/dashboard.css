@@ -943,3 +943,60 @@
         gap: 0;
     }
 }
+
+/* =========================================================================
+   Multi-school (cross-school) dashboard
+   ========================================================================= */
+
+.multischool-summary-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 16px;
+}
+
+.multischool-summary-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 20px 16px;
+    background: #ffffff;
+    border: 1px solid var(--border-grey);
+    border-radius: var(--border-radius-light);
+    box-shadow: var(--box-shadow);
+    text-align: center;
+}
+
+.multischool-summary-value {
+    font-size: 1.8rem;
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--font-color);
+}
+
+.multischool-summary-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #6b6476;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+@media (max-width: 600px) {
+    .multischool-summary-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .multischool-summary-value {
+        font-size: 1.4rem;
+    }
+}
+
+@media print {
+    .multischool-summary-card {
+        box-shadow: none;
+        border: 1px solid #ccc;
+    }
+}
+

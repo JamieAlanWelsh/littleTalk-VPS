@@ -350,6 +350,21 @@ class Profile(models.Model):
             )
         )
 
+    def can_view_multischool_dashboard(self):
+        """Return True if this profile is a trust lead eligible for the
+        cross-school (multi-school) dashboard: admin or manager in at least one
+        school and licensed in two or more schools.
+        """
+        if self.is_parent():
+            return False
+        licensed_schools = list(self.get_licensed_schools())
+        if len(licensed_schools) < 2:
+            return False
+        return any(
+            self.is_admin_for_school(school) or self.is_manager_for_school(school)
+            for school in licensed_schools
+        )
+
     def select_school(self, school_id, request=None):
         """
         Set the selected school in session if this profile has access to it.

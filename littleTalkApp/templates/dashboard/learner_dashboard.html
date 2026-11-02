@@ -20,6 +20,18 @@
             <div class="dashboard-top-layout">
                 <div class="dashboard-top-left">
                     <div class="dashboard-top-row dashboard-top-row--selectors">
+                        {% if show_school_switcher %}
+                        <div class="header-learner-section">
+                            <label class="header-label" for="school-select">School:</label>
+                            <select id="school-select" class="select" style="margin-bottom: 0;">
+                                {% for school in schools %}
+                                    <option value="{{ school.id }}" {% if selected_school and school.id == selected_school.id %}selected{% endif %}>
+                                        {{ school.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        {% endif %}
                         {% if request.user.profile.role != 'parent' and cohorts %}
                         <div class="header-learner-section">
                             <label class="header-label" for="cohort-select">Cohort:</label>
@@ -306,6 +318,7 @@
 
 
 <script src="{% static 'js/learner_dashboard.js' %}"></script>
+<script src="{% static 'non_react_js/dashboard_school_switcher.js' %}"></script>
 <script>
 // Target filter functionality
 document.addEventListener("DOMContentLoaded", () => {
