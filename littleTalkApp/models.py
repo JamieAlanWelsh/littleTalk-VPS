@@ -192,6 +192,16 @@ class Profile(models.Model):
     def is_parent(self):
         return self.role == Role.PARENT
 
+    def onboarding_ready(self):
+        """True once the user has full app access (email verified and, for staff,
+        an active school membership) — used to delay the onboarding tour until
+        email verification and any join-request approval are complete."""
+        if not getattr(self.user, "email_verified", False):
+            return False
+        if self.is_parent():
+            return True
+        return self.get_accessible_schools().exists()
+
     def is_skolon_user(self):
         skolon_user = getattr(self.user, "skolon_user", None)
         return skolon_user is not None and not skolon_user.is_deleted

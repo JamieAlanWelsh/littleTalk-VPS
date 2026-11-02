@@ -242,7 +242,7 @@
         skip.className = "ob-tour-tooltip__skip";
         skip.textContent = "Skip tour";
         skip.addEventListener("click", function () {
-            complete("skipped");
+            finishTour("skipped");
         });
 
         var primary = document.createElement("button");
