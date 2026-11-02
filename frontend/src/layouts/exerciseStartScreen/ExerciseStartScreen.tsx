@@ -10,6 +10,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import Button from "../../components/Button/Button";
 import { useAudio } from "../../hooks/useAudio";
+import { useScaledHeightVar } from "../../hooks";
 import styles from "./ExerciseStartScreen.module.css";
 
 const CLOSE_ANIMATION_MS = 420;
@@ -31,7 +32,10 @@ export const ExerciseStartScreen = ({
 }: ExerciseStartScreenProps) => {
     const [isClosing, setIsClosing] = useState(false);
     const closeTimeoutRef = useRef<number | null>(null);
+    const containerRef = useRef<HTMLDivElement | null>(null);
     const { play } = useAudio();
+
+    useScaledHeightVar(containerRef, "--settings-natural-height");
 
     useEffect(() => {
         play("/static/audio/swish.wav");
@@ -63,6 +67,7 @@ export const ExerciseStartScreen = ({
         >
             <div
                 className={`${styles.container} ${isClosing ? styles.containerClosing : ""}`.trim()}
+                ref={containerRef}
             >
                 {/* Zone 1: Title Card */}
                 <div className={styles.card}>

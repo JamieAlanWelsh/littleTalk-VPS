@@ -6,10 +6,10 @@
  * Displays confetti animation on mount.
  */
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./exerciseEndscreen.module.css";
 import { Button } from "../../components/Button/Button";
-import { useConfetti } from "../../hooks";
+import { useConfetti, useScaledHeightVar } from "../../hooks";
 import { useAudio } from "../../hooks/useAudio";
 
 const COUNT_ANIMATION_DURATION_MS = 1000;
@@ -48,9 +48,12 @@ export const ExerciseEndscreen = ({
 }: ExerciseEndscreenProps) => {
     const { triggerConfetti } = useConfetti();
     const { play } = useAudio();
+    const containerRef = useRef<HTMLDivElement | null>(null);
     const [animatedExp, setAnimatedExp] = useState(0);
     const [animatedAccuracy, setAnimatedAccuracy] = useState(0);
     const [animatedElapsedSeconds, setAnimatedElapsedSeconds] = useState(0);
+
+    useScaledHeightVar(containerRef, "--endscreen-natural-height");
 
     useEffect(() => {
         triggerConfetti();
@@ -87,7 +90,7 @@ export const ExerciseEndscreen = ({
     }, [accuracyPercent, elapsedTimeLabel, expGained]);
 
     return (
-        <div className={styles.endscreenContainer}>
+        <div className={styles.endscreenContainer} ref={containerRef}>
             {/* Congratulations message */}
             <h1 className={styles.congratsMessage}>Great Job!</h1>
 

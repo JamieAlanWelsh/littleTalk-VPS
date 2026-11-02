@@ -193,6 +193,9 @@ export const ExerciseLayout = <AnswerType,>({
     useEffect(() => {
         if (isComplete) {
             document.body.style.removeProperty("--exercise-zoom-auto");
+            document.body.style.removeProperty(
+                "--exercise-scale-natural-height",
+            );
             return;
         }
 
@@ -245,14 +248,6 @@ export const ExerciseLayout = <AnswerType,>({
 
             const body = document.body;
             const bodyStyles = window.getComputedStyle(body);
-            const zoomBase =
-                Number.parseFloat(
-                    bodyStyles.getPropertyValue("--exercise-zoom-base"),
-                ) || 1;
-            const currentZoom =
-                Number.parseFloat(
-                    bodyStyles.getPropertyValue("--exercise-zoom"),
-                ) || zoomBase;
 
             const reservedTop = Number.parseFloat(bodyStyles.paddingTop) || 0;
             const reservedBottom =
@@ -265,17 +260,28 @@ export const ExerciseLayout = <AnswerType,>({
                 reservedTop -
                 reservedBottom -
                 contentBottomGap;
-            if (availableHeight <= 0 || currentZoom <= 0) {
+            if (availableHeight <= 0) {
                 return;
             }
 
-            const scaledHeight = scaleArea.getBoundingClientRect().height;
-            if (scaledHeight <= 0) {
+            // `offsetHeight` is the natural, pre-transform layout height. Unlike
+            // `getBoundingClientRect()` under CSS zoom, it is reported
+            // consistently across Chrome and Safari, so the fit math behaves
+            // identically on iPad instead of rendering out of proportion.
+            const naturalHeight = scaleArea.offsetHeight;
+            if (naturalHeight <= 0) {
                 return;
             }
 
-            const unscaledHeight = scaledHeight / currentZoom;
-            const fitZoom = availableHeight / unscaledHeight;
+            // Publish the natural height so the CSS margin can reserve the
+            // scaled height; a transform alone does not reflow surrounding
+            // layout, so without this the board would not stay centred.
+            body.style.setProperty(
+                "--exercise-scale-natural-height",
+                `${naturalHeight}px`,
+            );
+
+            const fitZoom = availableHeight / naturalHeight;
             // Snap to a quantum so subpixel reflow differences collapse to the
             // same target instead of producing a slightly different value each
             // pass.
@@ -364,6 +370,9 @@ export const ExerciseLayout = <AnswerType,>({
             headObserver.disconnect();
             window.cancelAnimationFrame(frameId);
             document.body.style.removeProperty("--exercise-zoom-auto");
+            document.body.style.removeProperty(
+                "--exercise-scale-natural-height",
+            );
         };
     }, [actionBarPhase, currentQuestionStateIndex, isComplete, promptText]);
 

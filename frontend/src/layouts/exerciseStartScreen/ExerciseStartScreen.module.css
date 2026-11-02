@@ -27,10 +27,16 @@
     gap: 1.25rem;
     width: min(100%, 500px);
     font-family: var(--font-roboto);
-    /* Settings should still scale, but much less aggressively than gameplay. */
+    /* Settings should still scale, but much less aggressively than gameplay.
+       Uses `transform: scale()` (not CSS `zoom`) for consistent Chrome/Safari
+       sizing; the margin reserves the scaled height so the overlay can still
+       scroll to reveal the whole panel. */
     --settings-zoom: calc((var(--exercise-zoom, 1) * 0.55) + 0.5);
-    zoom: var(--settings-zoom);
+    transform: scale(var(--settings-zoom));
     transform-origin: top center;
+    margin-bottom: calc(
+        var(--settings-natural-height, 0px) * (var(--settings-zoom) - 1)
+    );
     /* Keep shared Button sizing in sync with the lighter settings zoom. */
     --button-scale: var(--settings-zoom);
 }
