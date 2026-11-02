@@ -56,6 +56,18 @@
 
     <hr class="form-divider">
 
+    {% if request.user.profile.onboarding_ready %}
+    <div class="section-header">
+        <div class="section-header-title">
+            <h3>Guided Tour</h3>
+        </div>
+    </div>
+    <p class="settings-reverify-note">New to Chatterdillo? Replay the guided tour to walk through adding a pupil, running a screener, and starting an exercise.</p>
+    <button type="button" class="btn btn--white btn--small" id="replay-tour-btn">Replay tour</button>
+
+    <hr class="form-divider">
+    {% endif %}
+
     <!-- Logout Form (POST request) -->
     <form method="post" action="{% url 'logout' %}" class="logout-form">
         {% csrf_token %}
@@ -95,6 +107,15 @@
         // Apply the tracking function to both forms
         trackChanges("user-form", "email-save-btn");
         trackChanges("password-form", "password-save-btn");
+
+        const replayBtn = document.getElementById("replay-tour-btn");
+        if (replayBtn) {
+            replayBtn.addEventListener("click", function () {
+                if (window.chatterdilloOnboardingTour) {
+                    window.chatterdilloOnboardingTour.replay();
+                }
+            });
+        }
     });
 </script>
 

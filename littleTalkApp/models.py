@@ -162,6 +162,20 @@ class Role:
     ]
 
 
+class OnboardingTourStatus:
+    NOT_OFFERED = "not_offered"
+    IN_PROGRESS = "in_progress"
+    DECLINED = "declined"
+    COMPLETED = "completed"
+
+    CHOICES = [
+        (NOT_OFFERED, "Not offered"),
+        (IN_PROGRESS, "In progress"),
+        (DECLINED, "Declined"),
+        (COMPLETED, "Completed"),
+    ]
+
+
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="profile")
     first_name = EncryptedCharField(max_length=50, blank=True, null=True)
@@ -173,6 +187,12 @@ class Profile(models.Model):
     # Support multiple schools per user via M2M relation.
     schools = models.ManyToManyField(School, blank=True, related_name="profiles")
     role = models.CharField(max_length=20, choices=Role.CHOICES, default=Role.PARENT)
+    onboarding_tour_status = models.CharField(
+        max_length=20,
+        choices=OnboardingTourStatus.CHOICES,
+        default=OnboardingTourStatus.NOT_OFFERED,
+    )
+    onboarding_tour_step = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return f"{self.user.username}'s Profile"
@@ -191,6 +211,16 @@ class Profile(models.Model):
 
     def is_parent(self):
         return self.role == Role.PARENT
+
+    def onboarding_ready(self):
+        """True once the user has full app access (email verified and, for staff,
+        an active school membership) — used to delay the onboarding tour until
+        email verification and any join-request approval are complete."""
+        if not getattr(self.user, "email_verified", False):
+            return False
+        if self.is_parent():
+            return True
+        return self.get_accessible_schools().exists()
 
     def is_skolon_user(self):
         skolon_user = getattr(self.user, "skolon_user", None)

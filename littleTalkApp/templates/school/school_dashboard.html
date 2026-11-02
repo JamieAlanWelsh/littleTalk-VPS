@@ -174,6 +174,13 @@
                 <span class="status-badge status-badge--warning">{{ join_requests|length }} pending</span>
             </div>
 
+            <div class="join-requests-helper">
+                <p class="join-requests-helper-text">
+                    Tired of approving requests manually? Set up <strong>auto-approved join requests</strong> so teachers from your school's email domains are approved automatically.
+                </p>
+                <a href="{% url 'invite_staff' %}" class="btn btn--white btn--small join-requests-helper-btn">Set up auto-approval</a>
+            </div>
+
             <div class="table-wrapper">
                 <table class="dashboard-table">
                     <thead>

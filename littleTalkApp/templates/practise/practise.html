@@ -34,7 +34,7 @@
     </div>
 
     {% if recommended_exercise_card %}
-        <section class="recommendation-box">
+        <section class="recommendation-box" data-tour="first-exercise">
             <div class="recommendation-header-row">
                 <p class="recommendation-header-label">SUGGESTED FOR TODAY</p>
                 {% if recommendation_explanation %}
@@ -96,7 +96,7 @@
             {% endif %}
         </section>
     {% else %}
-        <section class="recommendation-box">
+        <section class="recommendation-box" data-tour="first-exercise">
             <div class="recommendation-header-row">
                 <p class="recommendation-header-label">SUGGESTED FOR TODAY</p>
             </div>

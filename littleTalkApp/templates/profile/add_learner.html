@@ -14,7 +14,7 @@
     </a>
 
 
-    <form method="post" class="form-stack">
+    <form method="post" class="form-stack" data-tour="learner-form">
         {% csrf_token %}
         {% for field in form %}
             {% if field.name != "cohort" or request.user.profile.role != 'parent' %}

@@ -3,7 +3,7 @@
         {% if not is_read_only %}
             {% if request.user.profile.role != 'parent' or learners|length <= 2 %}
                 <div class="add-learner-btn">
-                    <a href="{% url 'add_learner' %}" class="button">+ Add Learner</a>
+                    <a href="{% url 'add_learner' %}" class="button" data-tour="add-learner">+ Add Learner</a>
                 </div>
             {% endif %}
         {% endif %}
