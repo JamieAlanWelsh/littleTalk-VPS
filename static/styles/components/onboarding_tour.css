@@ -1,0 +1,107 @@
+/* Onboarding guided tour overlay */
+
+.ob-tour-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 4000;
+    pointer-events: none;
+}
+
+/* Dim layer with a transparent spotlight cutout created via large box-shadow */
+.ob-tour-spotlight {
+    position: fixed;
+    z-index: 4001;
+    border-radius: 14px;
+    box-shadow: 0 0 0 9999px rgba(32, 13, 42, 0.62);
+    pointer-events: none;
+    transition: all 0.25s ease;
+}
+
+.ob-tour-spotlight--novalue {
+    /* Centred fallback when no target element is available */
+    left: 50%;
+    top: 40%;
+    width: 1px;
+    height: 1px;
+}
+
+.ob-tour-tooltip {
+    position: fixed;
+    z-index: 4002;
+    max-width: 340px;
+    width: calc(100vw - 40px);
+    box-sizing: border-box;
+    background: #ffffff;
+    border: 1px solid var(--border-grey);
+    border-radius: 18px;
+    box-shadow: var(--box-shadow);
+    padding: 20px 22px;
+    font-family: var(--font-roboto);
+    color: var(--font-color);
+    pointer-events: auto;
+}
+
+.ob-tour-tooltip__step {
+    display: block;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #6c6c6c;
+    margin-bottom: 6px;
+}
+
+.ob-tour-tooltip__title {
+    margin: 0 0 8px 0;
+    font-size: 1.15rem;
+    font-family: var(--font-outfit);
+    color: var(--font-color);
+}
+
+.ob-tour-tooltip__body {
+    margin: 0 0 18px 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #4a4a4a;
+}
+
+.ob-tour-tooltip__actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.ob-tour-tooltip__skip {
+    background: none;
+    border: none;
+    padding: 4px;
+    font-family: var(--font-roboto);
+    font-size: 0.85rem;
+    color: #6c6c6c;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.ob-tour-tooltip__skip:hover {
+    color: var(--font-color);
+}
+
+.ob-tour-tooltip__next {
+    flex-shrink: 0;
+    width: auto;
+}
+
+/* Pulsing ring to draw the eye to the active target */
+.ob-tour-highlight {
+    position: relative;
+    z-index: 4001;
+}
+
+@media (max-width: 600px) {
+    .ob-tour-tooltip {
+        left: 20px !important;
+        right: 20px;
+        max-width: none;
+        width: auto;
+    }
+}

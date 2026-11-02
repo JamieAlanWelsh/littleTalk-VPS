@@ -12,6 +12,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@700&family=Roboto:wght@400&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{% static 'styles/style.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'styles/cookie-consent.css' %}">
+    {% if request.user.is_authenticated %}
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/components/onboarding_tour.css' %}">
+    {% endif %}
     <link href="https://fonts.googleapis.com/css2?family=Cormorant&display=swap" rel="stylesheet">
     <!-- response control e.g. mobile view -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -36,7 +39,7 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 </head>
-<body>
+<body{% if request.user.is_authenticated %} data-ob-tour="enabled"{% endif %}>
     {% if messages %}
         <div class="message-container">
             {% for message in messages %}
@@ -137,6 +140,9 @@
         </div>
     </div>
     {% include "includes/cookie_consent.html" %}
+    {% if request.user.is_authenticated %}
+    <script src="{% static 'non_react_js/onboarding_tour.js' %}"></script>
+    {% endif %}
 </body>
 </html>
 
