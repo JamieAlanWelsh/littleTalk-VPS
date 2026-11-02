@@ -39,7 +39,7 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 </head>
-<body{% if request.user.is_authenticated and request.user.profile.onboarding_ready %} data-ob-tour="enabled" data-ob-tour-start="{% url 'profile' %}"{% endif %}>
+<body{% if request.user.is_authenticated and request.user.profile.onboarding_ready %} data-ob-tour="enabled" data-ob-tour-start="{% url 'profile' %}" data-ob-tour-update-url="{% url 'update_onboarding_tour' %}" data-ob-tour-status="{{ request.user.profile.onboarding_tour_status }}" data-ob-tour-step="{{ request.user.profile.onboarding_tour_step }}"{% endif %}>
     {% if messages %}
         <div class="message-container">
             {% for message in messages %}

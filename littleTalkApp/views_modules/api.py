@@ -16,6 +16,7 @@ from rest_framework.views import APIView
 
 from littleTalkApp.models import ExerciseSession, Learner
 from littleTalkApp.models import InterventionGroup
+from littleTalkApp.models import OnboardingTourStatus
 from littleTalkApp.serializers import (
     SubmitExerciseSerializer,
     LearnerAvatarSerializer,
@@ -328,3 +329,38 @@ def target_detail(request, target_id):
         return JsonResponse({"status": "deleted"}, status=204)
 
     return JsonResponse({"error": "Method not allowed"}, status=405)
+
+
+@login_required
+def update_onboarding_tour(request):
+    """JSON API (POST): persist the signed-in user's onboarding tour progress.
+
+    State lives on the Profile so it is per-user and survives shared devices.
+    Accepts {status, step} and updates only request.user.profile.
+    """
+
+    if request.method != "POST":
+        return JsonResponse({"error": "Method not allowed"}, status=405)
+
+    try:
+        data = json.loads(request.body or "{}")
+    except json.JSONDecodeError:
+        return JsonResponse({"error": "Invalid JSON"}, status=400)
+
+    valid_statuses = {choice[0] for choice in OnboardingTourStatus.CHOICES}
+    status_value = data.get("status")
+    if status_value not in valid_statuses:
+        return JsonResponse({"error": "Invalid status"}, status=400)
+
+    try:
+        step_value = int(data.get("step", 0))
+    except (TypeError, ValueError):
+        return JsonResponse({"error": "Invalid step"}, status=400)
+    step_value = max(0, step_value)
+
+    profile = request.user.profile
+    profile.onboarding_tour_status = status_value
+    profile.onboarding_tour_step = step_value
+    profile.save(update_fields=["onboarding_tour_status", "onboarding_tour_step"])
+
+    return JsonResponse({"status": status_value, "step": step_value})

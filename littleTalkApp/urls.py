@@ -138,6 +138,7 @@ urlpatterns = [
     path('api/selected-learner/', api_views.get_current_session_learner_context, name='get_current_session_learner_context'),
     path('api/targets/', api_views.create_target, name='create_target'),
     path('api/targets/<int:target_id>/', api_views.target_detail, name='target_detail'),
+    path('api/onboarding-tour/', api_views.update_onboarding_tour, name='update_onboarding_tour'),
 
     # Dashboard
     path('dashboard/learner/', dashboard_views.learner_dashboard, name='learner_dashboard'),

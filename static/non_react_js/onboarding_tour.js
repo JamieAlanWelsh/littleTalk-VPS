@@ -1,9 +1,8 @@
 /* Chatterdillo new-user guided tour.
-   State is kept in localStorage; steps are anchored to pages via data-tour selectors. */
+   State is persisted per-user on the server (shared-device safe); the current status/step
+   are read from body data-* attributes and steps are anchored to pages via data-tour selectors. */
 (function () {
     "use strict";
-
-    var STORAGE_KEY = "chatterdilloOnboardingTour";
 
     // Linear tour. Each step is tied to a page (path) and a target selector.
     // action: how the primary button behaves,
@@ -83,26 +82,34 @@
             body: "Press START on any exercise to begin. That's it, you're all set up. Enjoy exploring Chatterdillo!",
             primaryLabel: "Finish",
             action: "finish",
-            isLast: true,
         },
     ];
 
-    function readState() {
-        try {
-            var raw = window.localStorage.getItem(STORAGE_KEY);
-            if (!raw) return null;
-            return JSON.parse(raw);
-        } catch (e) {
-            return null;
-        }
+    function getCsrfToken() {
+        var match = document.cookie
+            .split("; ")
+            .find(function (chunk) {
+                return chunk.startsWith("csrftoken=");
+            });
+        return match ? match.split("=")[1] : "";
     }
 
-    function writeState(state) {
-        try {
-            window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-        } catch (e) {
-            /* storage unavailable, tour simply won't persist */
-        }
+    // Persist tour state on the server (per-user) so it is correct on shared devices.
+    function postState(status, step) {
+        var url = document.body.dataset.obTourUpdateUrl;
+        if (!url) return null;
+        // Network failures are ignored; the UI stays optimistic.
+        return fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": getCsrfToken(),
+            },
+            body: JSON.stringify({ status: status, step: step }),
+            keepalive: true,
+        }).catch(function () {
+            return null;
+        });
     }
 
     function currentPath() {
@@ -126,7 +133,7 @@
     var els = {};
 
     function removeOverlay() {
-        ["backdrop", "spotlight", "tooltip"].forEach(function (key) {
+        ["spotlight", "tooltip"].forEach(function (key) {
             if (els[key] && els[key].parentNode) {
                 els[key].parentNode.removeChild(els[key]);
             }
@@ -139,12 +146,7 @@
     var activeTarget = null;
 
     function positionSpotlight() {
-        if (!els.spotlight) return;
-        if (!activeTarget) {
-            els.spotlight.classList.add("ob-tour-spotlight--novalue");
-            return;
-        }
-        els.spotlight.classList.remove("ob-tour-spotlight--novalue");
+        if (!els.spotlight || !activeTarget) return;
         var rect = activeTarget.getBoundingClientRect();
         var pad = 8;
         els.spotlight.style.left = rect.left - pad + "px";
@@ -154,16 +156,10 @@
     }
 
     function positionTooltip() {
-        if (!els.tooltip) return;
+        if (!els.tooltip || !activeTarget) return;
         var tip = els.tooltip;
         var tipRect = tip.getBoundingClientRect();
         var margin = 14;
-
-        if (!activeTarget) {
-            tip.style.left = Math.max(20, (window.innerWidth - tipRect.width) / 2) + "px";
-            tip.style.top = Math.max(20, (window.innerHeight - tipRect.height) / 2) + "px";
-            return;
-        }
 
         var rect = activeTarget.getBoundingClientRect();
         var spaceBelow = window.innerHeight - rect.bottom;
@@ -188,15 +184,14 @@
     }
 
     function finishTour(status) {
-        writeState({ status: status, step: STEPS.length });
+        postState(status, STEPS.length);
         removeOverlay();
     }
 
     function advanceInPage(fromIndex) {
         var nextIndex = fromIndex + 1;
-        var nextState = { status: "active", step: nextIndex };
-        writeState(nextState);
-        var resolved = resolveStep(nextState);
+        postState("in_progress", nextIndex);
+        var resolved = resolveStep({ step: nextIndex });
         if (resolved) {
             renderStep(resolved);
         } else {
@@ -209,10 +204,7 @@
         activeTarget = resolved.target;
         var step = resolved.step;
 
-        writeState({ status: "active", step: resolved.index });
-
-        var backdrop = document.createElement("div");
-        backdrop.className = "ob-tour-backdrop";
+        postState("in_progress", resolved.index);
 
         var spotlight = document.createElement("div");
         spotlight.className = "ob-tour-spotlight";
@@ -273,10 +265,8 @@
         tooltip.appendChild(body);
         tooltip.appendChild(actions);
 
-        document.body.appendChild(backdrop);
         document.body.appendChild(spotlight);
         document.body.appendChild(tooltip);
-        els.backdrop = backdrop;
         els.spotlight = spotlight;
         els.tooltip = tooltip;
 
@@ -287,13 +277,20 @@
 
     function startTour() {
         var startUrl = document.body.dataset.obTourStart;
-        writeState({ status: "active", step: 0 });
-        if (startUrl && currentPath() !== startUrl) {
-            window.location.assign(startUrl);
-            return;
+        var pending = postState("in_progress", 0);
+        var begin = function () {
+            if (startUrl && currentPath() !== startUrl) {
+                window.location.assign(startUrl);
+                return;
+            }
+            var resolved = resolveStep({ step: 0 });
+            if (resolved) renderStep(resolved);
+        };
+        if (pending && pending.then) {
+            pending.then(begin, begin);
+        } else {
+            begin();
         }
-        var resolved = resolveStep({ status: "active", step: 0 });
-        if (resolved) renderStep(resolved);
     }
 
     function showInviteBanner() {
@@ -326,7 +323,7 @@
         no.className = "btn btn--white btn--small ob-tour-invite__btn";
         no.textContent = "No thanks";
         no.addEventListener("click", function () {
-            writeState({ status: "declined", step: 0 });
+            postState("declined", 0);
             if (banner.parentNode) banner.parentNode.removeChild(banner);
         });
 
@@ -349,25 +346,24 @@
     function init() {
         if (document.body.dataset.obTour !== "enabled") return;
 
-        var state = readState();
-        if (
-            state &&
-            (state.status === "completed" ||
-                state.status === "skipped" ||
-                state.status === "declined")
-        ) {
-            return;
-        }
+        var status = document.body.dataset.obTourStatus;
+        var step = parseInt(document.body.dataset.obTourStep, 10);
+        if (isNaN(step)) step = 0;
 
-        if (state && state.status === "active") {
-            var resolved = resolveStep(state);
+        if (status === "completed" || status === "declined") return;
+
+        if (status === "in_progress") {
+            var resolved = resolveStep({ step: step });
             if (resolved) renderStep(resolved);
             return;
         }
 
-        // No prior response yet, invite the user to take the tour.
+        // not_offered - invite the user to take the tour.
         showInviteBanner();
     }
+
+    // Allow other pages (e.g. Settings) to restart the tour on demand.
+    window.chatterdilloOnboardingTour = { replay: startTour };
 
     if (document.readyState === "loading") {
         document.addEventListener("DOMContentLoaded", init);

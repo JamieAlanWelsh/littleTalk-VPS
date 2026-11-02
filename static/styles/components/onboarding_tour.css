@@ -1,12 +1,5 @@
 /* Onboarding guided tour overlay */
 
-.ob-tour-backdrop {
-    position: fixed;
-    inset: 0;
-    z-index: 4000;
-    pointer-events: none;
-}
-
 /* Dim layer with a transparent spotlight cutout created via large box-shadow */
 .ob-tour-spotlight {
     position: fixed;
@@ -15,14 +8,6 @@
     box-shadow: 0 0 0 9999px rgba(32, 13, 42, 0.62);
     pointer-events: none;
     transition: all 0.25s ease;
-}
-
-.ob-tour-spotlight--novalue {
-    /* Centred fallback when no target element is available */
-    left: 50%;
-    top: 40%;
-    width: 1px;
-    height: 1px;
 }
 
 .ob-tour-tooltip {
@@ -89,12 +74,6 @@
 .ob-tour-tooltip__next {
     flex-shrink: 0;
     width: auto;
-}
-
-/* Pulsing ring to draw the eye to the active target */
-.ob-tour-highlight {
-    position: relative;
-    z-index: 4001;
 }
 
 @media (max-width: 600px) {
