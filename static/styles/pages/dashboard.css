@@ -524,6 +524,38 @@
     font-weight: 600;
 }
 
+.join-requests-helper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    padding: 14px 18px;
+    background: #ffffff;
+    border: 1px solid var(--border-grey);
+    border-radius: 15px;
+}
+
+.join-requests-helper-text {
+    margin: 0;
+    flex: 1;
+    min-width: 220px;
+    color: #6c6c6c;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.join-requests-helper-text strong {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.join-requests-helper-btn {
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
 @media (max-width: 940px) {
     .school-mgmt-current-row {
         flex-direction: column;
