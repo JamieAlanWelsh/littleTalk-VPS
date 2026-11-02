@@ -119,6 +119,14 @@ def learner_dashboard(request):
         messages.info(request, "Dashboard access is not available for parent accounts.")
         return redirect("profile")
 
+    # Multi-school users can switch the school they're viewing via a ?school= param.
+    school_param = request.GET.get("school")
+    if school_param:
+        try:
+            profile.select_school(int(school_param), request)
+        except (TypeError, ValueError):
+            pass
+
     user_school = profile.get_current_school(request)
     if not user_school:
         messages.error(request, "No school assigned to your profile.")
@@ -152,6 +160,14 @@ def learner_dashboard(request):
                 selected_learner = accessible_learners.get(id=selected_learner_id)
             except Learner.DoesNotExist:
                 pass
+
+    # Auto-select a learner (e.g. on first load or after switching school) so the
+    # dashboard doesn't show the "select a learner" prompt unnecessarily.
+    if not selected_learner:
+        selected_learner = accessible_learners.first()
+
+    if selected_learner:
+        request.session["selected_learner_id"] = selected_learner.id
 
     exercise_counts = {}
     if selected_learner:
@@ -235,6 +251,14 @@ def learner_dashboard(request):
 
     recent_sessions = _build_recent_sessions(selected_learner)
 
+    # Only offer schools that have at least one active learner to switch to.
+    switcher_schools = list(
+        profile.get_licensed_schools()
+        .filter(learners__deleted=False)
+        .distinct()
+        .order_by("name")
+    )
+
     context = {
         "learners": accessible_learners,
         "selected_learner": selected_learner,
@@ -245,6 +269,9 @@ def learner_dashboard(request):
         "targets_data": targets_data,
         "screener_data": screener_data,
         "recent_sessions": recent_sessions,
+        "schools": switcher_schools,
+        "selected_school": user_school,
+        "show_school_switcher": len(switcher_schools) > 1,
     }
 
     return render(request, "dashboard/learner_dashboard.html", context)
@@ -385,12 +412,26 @@ def learner_progress_data(request):
     return JsonResponse(response_data)
 
 
+@login_required
+def progress_hub(request):
+    """Entry point for the Progress nav item. Trust leads (admins/managers with
+    multiple licensed schools) choose between multi-school and individual-school
+    reporting; everyone else goes straight to the learner dashboard.
+    """
+    profile = request.user.profile
+    if profile.is_parent():
+        return redirect("profile")
+    if profile.can_view_multischool_dashboard():
+        return render(request, "dashboard/progress_hub.html")
+    return redirect("learner_dashboard")
+
+
 # =============================================================================
-# MAT-level (cross-school) dashboard
+# Multi-school (cross-school) dashboard
 # =============================================================================
 
 
-def _mat_parse_date_range(request):
+def _multischool_parse_date_range(request):
     date_end = timezone.now().date()
     date_range = request.GET.get("date_range", "all")
     if date_range == "all":
@@ -402,7 +443,7 @@ def _mat_parse_date_range(request):
     return date_end - timedelta(days=days), date_end
 
 
-def _mat_sessions_for_learners(learner_ids, date_start, date_end):
+def _multischool_sessions_for_learners(learner_ids, date_start, date_end):
     sessions = ExerciseSession.objects.filter(learner_id__in=learner_ids)
     if date_start is not None:
         sessions = sessions.filter(created_at__date__gte=date_start)
@@ -410,7 +451,7 @@ def _mat_sessions_for_learners(learner_ids, date_start, date_end):
     return sessions
 
 
-def _mat_avg_accuracy(sessions):
+def _multischool_avg_accuracy(sessions):
     result = (
         sessions.filter(total_questions__gt=0)
         .annotate(
@@ -425,7 +466,7 @@ def _mat_avg_accuracy(sessions):
     return round(value, 1) if value is not None else None
 
 
-def _mat_skills_gained_total(learner_ids):
+def _multischool_skills_gained_total(learner_ids):
     total = 0
     for learner in Learner.objects.filter(id__in=learner_ids):
         comparison = get_screener_comparison_data(learner, screener_version=2)
@@ -434,13 +475,13 @@ def _mat_skills_gained_total(learner_ids):
     return total
 
 
-def _build_mat_school_summary(school, date_start, date_end):
+def _build_multischool_school_summary(school, date_start, date_end):
     """Build an aggregated summary row for a single school."""
     learner_ids = list(
         Learner.objects.filter(school=school, deleted=False).values_list("id", flat=True)
     )
     active_learners = len(learner_ids)
-    sessions = _mat_sessions_for_learners(learner_ids, date_start, date_end)
+    sessions = _multischool_sessions_for_learners(learner_ids, date_start, date_end)
     session_count = sessions.count()
     total_xp = (
         Learner.objects.filter(id__in=learner_ids).aggregate(total=Sum("exp"))["total"] or 0
@@ -450,7 +491,7 @@ def _build_mat_school_summary(school, date_start, date_end):
     targets_percentage = None
     skills_gained = None
     if learner_ids:
-        avg_accuracy = _mat_avg_accuracy(sessions)
+        avg_accuracy = _multischool_avg_accuracy(sessions)
 
         targets = Target.objects.filter(learner_id__in=learner_ids)
         total_targets = targets.count()
@@ -459,7 +500,7 @@ def _build_mat_school_summary(school, date_start, date_end):
             round(achieved_targets / total_targets * 100) if total_targets > 0 else 0
         )
 
-        skills_gained = _mat_skills_gained_total(learner_ids)
+        skills_gained = _multischool_skills_gained_total(learner_ids)
 
     return {
         "school_id": school.id,
@@ -474,23 +515,23 @@ def _build_mat_school_summary(school, date_start, date_end):
 
 
 @login_required
-def mat_dashboard(request):
-    """Renders dashboard/mat_dashboard.html — the cross-school (MAT-level) overview
+def multischool_dashboard(request):
+    """Renders dashboard/multischool_dashboard.html — the cross-school (multi-school) overview
     for trust leads. Aggregates progress across the licensed schools the profile can
     access, showing school-level roll-ups only (no individual pupil data).
     """
 
     profile = request.user.profile
 
-    if not profile.can_view_mat_dashboard():
+    if not profile.can_view_multischool_dashboard():
         messages.error(request, "The cross-school dashboard is not available for your account.")
         return redirect("profile")
 
-    date_start, date_end = _mat_parse_date_range(request)
+    date_start, date_end = _multischool_parse_date_range(request)
 
     schools = list(profile.get_licensed_schools().order_by("name"))
     school_rows = [
-        _build_mat_school_summary(school, date_start, date_end) for school in schools
+        _build_multischool_school_summary(school, date_start, date_end) for school in schools
     ]
 
     totals = {
@@ -513,29 +554,40 @@ def mat_dashboard(request):
     context = {
         "school_rows": school_rows,
         "totals": totals,
+        "schools": schools,
         "selected_date_range": request.GET.get("date_range", "all"),
     }
-    return render(request, "dashboard/mat_dashboard.html", context)
+    return render(request, "dashboard/multischool_dashboard.html", context)
 
 
 @login_required
-def mat_progress_data(request):
-    """JSON API: per-school daily trend series for the MAT dashboard chart.
+def multischool_progress_data(request):
+    """JSON API: per-school daily trend series for the multi-school dashboard chart.
 
-    Query params: date_range (days or 'all'), metric (sessions | accuracy | difficulty).
+    Query params: date_range (days or 'all'), metric (sessions | accuracy | difficulty),
+    school (optional school id to restrict the trend to a single school).
     Returns one series per licensed school.
     """
 
     profile = request.user.profile
-    if not profile.can_view_mat_dashboard():
+    if not profile.can_view_multischool_dashboard():
         return JsonResponse({"error": "Access denied"}, status=403)
 
     metric = request.GET.get("metric", "sessions")
     if metric not in {"sessions", "accuracy", "difficulty"}:
         metric = "sessions"
 
-    date_start, date_end = _mat_parse_date_range(request)
+    date_start, date_end = _multischool_parse_date_range(request)
     schools = list(profile.get_licensed_schools().order_by("name"))
+
+    # Optional single-school filter for a quick snapshot of one school.
+    school_param = request.GET.get("school")
+    if school_param:
+        try:
+            school_id = int(school_param)
+            schools = [school for school in schools if school.id == school_id]
+        except (TypeError, ValueError):
+            pass
 
     # Establish the date axis. For 'all', derive from the earliest session across schools.
     if date_start is None:
@@ -564,7 +616,7 @@ def mat_progress_data(request):
             Learner.objects.filter(school=school, deleted=False).values_list("id", flat=True)
         )
 
-        sessions = _mat_sessions_for_learners(learner_ids, date_start, date_end).order_by(
+        sessions = _multischool_sessions_for_learners(learner_ids, date_start, date_end).order_by(
             "completed_at"
         )
 

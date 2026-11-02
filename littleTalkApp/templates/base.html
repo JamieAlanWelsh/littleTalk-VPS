@@ -80,18 +80,17 @@
                     </li>
                     {% if request.user.profile.role != 'parent' %}
                     <li class="sidebar-dashboard">
+                        {% if can_view_multischool_dashboard %}
+                        <a href="{% url 'progress_hub' %}">
+                            <img src="{% static 'icons/graph.webp' %}" alt="Dashboard" class="sidebar-icon">
+                            <span>Progress</span>
+                        </a>
+                        {% else %}
                         <a href="{% url 'learner_dashboard' %}{% if selected_learner %}?learner={{ selected_learner.learner_uuid }}{% endif %}">
                             <img src="{% static 'icons/graph.webp' %}" alt="Dashboard" class="sidebar-icon">
                             <span>Progress</span>
                         </a>
-                    </li>
-                    {% endif %}
-                    {% if can_view_mat_dashboard %}
-                    <li class="sidebar-mat-dashboard">
-                        <a href="{% url 'mat_dashboard' %}">
-                            <img src="{% static 'icons/graph.webp' %}" alt="Across Schools" class="sidebar-icon">
-                            <span>Across Schools</span>
-                        </a>
+                        {% endif %}
                     </li>
                     {% endif %}
                     <li>

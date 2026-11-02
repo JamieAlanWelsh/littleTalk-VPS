@@ -1,9 +1,10 @@
 /* global Chart */
 document.addEventListener("DOMContentLoaded", () => {
-    const dateRangeSelect = document.getElementById("mat-date-range");
-    const metricButtons = document.querySelectorAll("[data-mat-metric]");
-    const messageEl = document.getElementById("mat-dashboard-message");
-    const canvas = document.getElementById("mat-progress-chart");
+    const dateRangeSelect = document.getElementById("multischool-date-range");
+    const schoolSelect = document.getElementById("multischool-school-filter");
+    const metricButtons = document.querySelectorAll("[data-multischool-metric]");
+    const messageEl = document.getElementById("multischool-dashboard-message");
+    const canvas = document.getElementById("multischool-progress-chart");
 
     if (!canvas) {
         return;
@@ -18,12 +19,6 @@ document.addEventListener("DOMContentLoaded", () => {
         "#E17055", "#00CEC9", "#FDCB6E", "#0984E3", "#D63031",
     ];
 
-    const metricLabels = {
-        sessions: "Sessions Completed",
-        accuracy: "Accuracy (%)",
-        difficulty: "Difficulty Level",
-    };
-
     function setMessage(text, isError = false) {
         if (!messageEl) {
             return;
@@ -34,15 +29,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function getSelectedMetric() {
-        const active = document.querySelector("[data-mat-metric].active");
-        return active ? active.dataset.matMetric : "sessions";
+        const active = document.querySelector("[data-multischool-metric].active");
+        return active ? active.dataset.multischoolMetric : "sessions";
     }
 
     function getSelectedDateRange() {
         return dateRangeSelect ? dateRangeSelect.value : "all";
     }
 
-    function buildChart(labels, series, metric) {
+    function getSelectedSchool() {
+        return schoolSelect ? schoolSelect.value : "";
+    }
+
+    function buildChart(labels, series) {
         if (progressChart) {
             progressChart.destroy();
         }
@@ -59,8 +58,29 @@ document.addEventListener("DOMContentLoaded", () => {
                 pointRadius: 2,
                 pointHoverRadius: 4,
                 spanGaps: true,
+                borderWidth: 2,
             };
         });
+
+        const xAxisConfig = {
+            ticks: {
+                maxRotation: 0,
+                minRotation: 0,
+                callback: (value) => {
+                    const label = labels[value];
+                    if (!label) {
+                        return "";
+                    }
+
+                    const totalPoints = labels.length;
+                    const showFrequency = Math.max(1, Math.ceil(totalPoints / 10));
+                    if (value === 0 || value === totalPoints - 1 || value % showFrequency === 0) {
+                        return label.split(" ")[0];
+                    }
+                    return "";
+                },
+            },
+        };
 
         progressChart = new Chart(chartCtx, {
             type: "line",
@@ -68,16 +88,20 @@ document.addEventListener("DOMContentLoaded", () => {
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                interaction: { mode: "index", intersect: false },
-                plugins: {
-                    legend: { position: "bottom" },
-                    title: {
-                        display: true,
-                        text: metricLabels[metric] || "Progress",
-                    },
-                },
                 scales: {
-                    y: { beginAtZero: metric === "sessions" },
+                    x: xAxisConfig,
+                    y: { beginAtZero: true },
+                },
+                interaction: { mode: "nearest", intersect: false },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: "top",
+                    },
+                    tooltip: {
+                        mode: "index",
+                        intersect: false,
+                    },
                 },
             },
         });
@@ -86,12 +110,16 @@ document.addEventListener("DOMContentLoaded", () => {
     async function loadData() {
         const metric = getSelectedMetric();
         const dateRange = getSelectedDateRange();
+        const school = getSelectedSchool();
         setMessage("Loading…");
 
         const params = new URLSearchParams({ metric, date_range: dateRange });
+        if (school) {
+            params.set("school", school);
+        }
 
         try {
-            const response = await fetch(`/api/dashboard/mat-progress-data/?${params.toString()}`, {
+            const response = await fetch(`/api/dashboard/multischool-progress-data/?${params.toString()}`, {
                 credentials: "include",
             });
             if (!response.ok) {
@@ -109,7 +137,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             setMessage("");
-            buildChart(data.dates, data.series, data.metric);
+            buildChart(data.dates, data.series);
         } catch {
             setMessage("Unable to load trend data. Please try again.", true);
         }
@@ -125,6 +153,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (dateRangeSelect) {
         dateRangeSelect.addEventListener("change", loadData);
+    }
+
+    if (schoolSelect) {
+        schoolSelect.addEventListener("change", loadData);
     }
 
     const printButton = document.getElementById("print-dashboard");

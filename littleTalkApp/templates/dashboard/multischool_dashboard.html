@@ -11,60 +11,38 @@
 
 {% block content %}
 <h1>Across Schools</h1>
-<p class="section-note no-print">
-    Aggregated progress across the {{ totals.school_count }} school{{ totals.school_count|pluralize }} you have access to.
-    Figures are school-level roll-ups.
-</p>
 
 <div class="container-box container--dash container--dash-no-bg">
-    <div class="dashboard-section dashboard-top-section no-print">
-        <div class="dashboard-top-layout">
-            <div class="dashboard-top-left">
-                <div class="dashboard-top-row dashboard-top-row--filters">
-                    <div class="section-header-actions">
-                        <label class="label" for="mat-date-range">Date Range:</label>
-                        <select id="mat-date-range" class="select" style="margin-bottom: 0;">
-                            <option value="all" {% if selected_date_range == 'all' %}selected{% endif %}>Full History</option>
-                            <option value="7" {% if selected_date_range == '7' %}selected{% endif %}>Last 7 Days</option>
-                            <option value="30" {% if selected_date_range == '30' %}selected{% endif %}>Last 30 Days</option>
-                            <option value="90" {% if selected_date_range == '90' %}selected{% endif %}>Last 90 Days</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="dashboard-top-right">
-                <button id="print-dashboard" class="btn btn--white btn--small btn--border no-print" title="Print this dashboard">🖨 Print Selection</button>
-            </div>
-        </div>
-    </div>
-
     <!-- Summary cards -->
     <div class="dashboard-section">
         <div class="section-header">
             <h3>Multi-School Summary 🏫</h3>
+            <div class="section-header-actions no-print">
+                <button id="print-dashboard" class="btn btn--white btn--small btn--border" title="Print this dashboard">🖨 Print Selection</button>
+            </div>
         </div>
-        <div class="mat-summary-cards">
-            <div class="mat-summary-card">
-                <span class="mat-summary-value">{{ totals.school_count }}</span>
-                <span class="mat-summary-label">Schools</span>
+        <div class="multischool-summary-cards">
+            <div class="multischool-summary-card">
+                <span class="multischool-summary-value">{{ totals.school_count }}</span>
+                <span class="multischool-summary-label">Schools</span>
             </div>
-            <div class="mat-summary-card">
-                <span class="mat-summary-value">{{ totals.active_learners }}</span>
-                <span class="mat-summary-label">Active Learners</span>
+            <div class="multischool-summary-card">
+                <span class="multischool-summary-value">{{ totals.active_learners }}</span>
+                <span class="multischool-summary-label">Active Learners</span>
             </div>
-            <div class="mat-summary-card">
-                <span class="mat-summary-value">{{ totals.session_count }}</span>
-                <span class="mat-summary-label">Sessions Completed</span>
+            <div class="multischool-summary-card">
+                <span class="multischool-summary-value">{{ totals.session_count }}</span>
+                <span class="multischool-summary-label">Sessions Completed</span>
             </div>
-            <div class="mat-summary-card">
-                <span class="mat-summary-value">{{ totals.skills_gained }}</span>
-                <span class="mat-summary-label">Skills Gained</span>
+            <div class="multischool-summary-card">
+                <span class="multischool-summary-value">{{ totals.skills_gained }}</span>
+                <span class="multischool-summary-label">Skills Gained</span>
             </div>
-            <div class="mat-summary-card">
-                <span class="mat-summary-value">
+            <div class="multischool-summary-card">
+                <span class="multischool-summary-value">
                     {% if totals.avg_targets_percentage is not None %}{{ totals.avg_targets_percentage }}%{% else %}—{% endif %}
                 </span>
-                <span class="mat-summary-label">Avg Targets Achieved</span>
+                <span class="multischool-summary-label">Avg Targets Achieved</span>
             </div>
         </div>
     </div>
@@ -76,17 +54,31 @@
                 <h3>Trends by School 📈</h3>
             </div>
             <div class="section-header-actions">
-                <div class="chart-filter-buttons">
-                    <button class="filter-btn active" data-mat-metric="sessions">Sessions</button>
-                    <button class="filter-btn" data-mat-metric="accuracy">Accuracy (%)</button>
-                    <button class="filter-btn" data-mat-metric="difficulty">Difficulty Selected</button>
-                </div>
+                <label class="label" for="multischool-date-range">Date Range:</label>
+                <select id="multischool-date-range" class="select" style="margin-bottom: 0;">
+                    <option value="all" {% if selected_date_range == 'all' %}selected{% endif %}>Full History</option>
+                    <option value="7" {% if selected_date_range == '7' %}selected{% endif %}>Last 7 Days</option>
+                    <option value="30" {% if selected_date_range == '30' %}selected{% endif %}>Last 30 Days</option>
+                    <option value="90" {% if selected_date_range == '90' %}selected{% endif %}>Last 90 Days</option>
+                </select>
+                <label class="label" for="multischool-school-filter">School:</label>
+                <select id="multischool-school-filter" class="select" style="margin-bottom: 0;">
+                    <option value="">All Schools</option>
+                    {% for school in schools %}
+                        <option value="{{ school.id }}">{{ school.name }}</option>
+                    {% endfor %}
+                </select>
             </div>
         </div>
-        <div class="dashboard-chart-container">
-            <canvas id="mat-progress-chart" height="120"></canvas>
+        <div class="chart-filter-buttons" style="margin-bottom: 16px;">
+            <button class="filter-btn active" data-multischool-metric="sessions">Sessions</button>
+            <button class="filter-btn" data-multischool-metric="accuracy">Accuracy (%)</button>
+            <button class="filter-btn" data-multischool-metric="difficulty">Difficulty Selected</button>
         </div>
-        <div class="dashboard-message" id="mat-dashboard-message"></div>
+        <div class="dashboard-chart-container">
+            <canvas id="multischool-progress-chart" height="120"></canvas>
+        </div>
+        <div class="dashboard-message" id="multischool-dashboard-message"></div>
     </div>
 
     <!-- Per-school comparison / league table -->
@@ -94,8 +86,8 @@
         <div class="section-header">
             <h3>School Comparison 📊</h3>
         </div>
-        <div class="table-wrapper">
-            <table class="dashboard-table">
+        <div class="recent-exercises-table-wrap">
+            <table class="recent-exercises-table">
                 <thead>
                     <tr>
                         <th>School</th>
@@ -129,5 +121,5 @@
     </div>
 </div>
 
-<script src="{% static 'non_react_js/mat_dashboard.js' %}"></script>
+<script src="{% static 'non_react_js/multischool_dashboard.js' %}"></script>
 {% endblock %}

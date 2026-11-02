@@ -15,7 +15,7 @@ from littleTalkApp.models import (
 from littleTalkApp.tests.base import BaseFlowTestMixin
 
 
-class MatDashboardTests(BaseFlowTestMixin, TestCase):
+class MultiSchoolDashboardTests(BaseFlowTestMixin, TestCase):
     def _add_licensed_school(self, profile, name, role=Role.ADMIN):
         school = School.objects.create(
             name=name,
@@ -49,11 +49,11 @@ class MatDashboardTests(BaseFlowTestMixin, TestCase):
         user, profile, school = self.create_staff_user_with_school(
             username="single_admin", role=Role.ADMIN
         )
-        self.assertFalse(profile.can_view_mat_dashboard())
+        self.assertFalse(profile.can_view_multischool_dashboard())
 
         self.client.force_login(user)
         self.set_selected_school(school.id)
-        response = self.client.get(reverse("mat_dashboard"), follow=True)
+        response = self.client.get(reverse("multischool_dashboard"), follow=True)
         self.assertEqual(response.request["PATH_INFO"], reverse("profile"))
 
     def test_gate_hidden_for_multi_school_staff(self):
@@ -61,18 +61,18 @@ class MatDashboardTests(BaseFlowTestMixin, TestCase):
             username="multi_staff", role=Role.STAFF
         )
         self._add_licensed_school(profile, "Second School", role=Role.STAFF)
-        self.assertFalse(profile.can_view_mat_dashboard())
+        self.assertFalse(profile.can_view_multischool_dashboard())
 
     def test_gate_visible_for_multi_school_admin(self):
         user, profile, first_school = self.create_staff_user_with_school(
             username="trust_lead", role=Role.ADMIN
         )
         self._add_licensed_school(profile, "Second School", role=Role.ADMIN)
-        self.assertTrue(profile.can_view_mat_dashboard())
+        self.assertTrue(profile.can_view_multischool_dashboard())
 
         self.client.force_login(user)
         self.set_selected_school(first_school.id)
-        response = self.client.get(reverse("mat_dashboard"))
+        response = self.client.get(reverse("multischool_dashboard"))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Across Schools")
         self.assertContains(response, "Second School")
@@ -90,7 +90,7 @@ class MatDashboardTests(BaseFlowTestMixin, TestCase):
 
         self.client.force_login(user)
         self.set_selected_school(first_school.id)
-        response = self.client.get(reverse("mat_dashboard"))
+        response = self.client.get(reverse("multischool_dashboard"))
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["totals"]["active_learners"], 10)
@@ -110,7 +110,7 @@ class MatDashboardTests(BaseFlowTestMixin, TestCase):
 
         self.client.force_login(user)
         self.set_selected_school(first_school.id)
-        response = self.client.get(reverse("mat_dashboard"))
+        response = self.client.get(reverse("multischool_dashboard"))
 
         rows = {row["school_name"]: row for row in response.context["school_rows"]}
         self.assertEqual(rows["Tiny School"]["avg_accuracy"], 100.0)
@@ -127,7 +127,7 @@ class MatDashboardTests(BaseFlowTestMixin, TestCase):
         self.client.force_login(user)
         self.set_selected_school(first_school.id)
         response = self.client.get(
-            reverse("mat_progress_data"), {"metric": "sessions", "date_range": "30"}
+            reverse("multischool_progress_data"), {"metric": "sessions", "date_range": "30"}
         )
 
         self.assertEqual(response.status_code, 200)
@@ -147,7 +147,7 @@ class MatDashboardTests(BaseFlowTestMixin, TestCase):
         self.client.force_login(user)
         self.set_selected_school(first_school.id)
         response = self.client.get(
-            reverse("mat_progress_data"), {"metric": "accuracy", "date_range": "30"}
+            reverse("multischool_progress_data"), {"metric": "accuracy", "date_range": "30"}
         )
 
         data = response.json()
@@ -155,13 +155,32 @@ class MatDashboardTests(BaseFlowTestMixin, TestCase):
         self.assertIn(first_school.name, series_names)
         self.assertIn("API Tiny", series_names)
 
+    def test_progress_api_school_filter_limits_to_one_school(self):
+        user, profile, first_school = self.create_staff_user_with_school(
+            username="api_school_filter", role=Role.ADMIN
+        )
+        second_school = self._add_licensed_school(profile, "Filter Second", role=Role.ADMIN)
+        self._add_learner_with_sessions(user, first_school, "FirstPupil", sessions=2)
+        self._add_learner_with_sessions(user, second_school, "SecondPupil", sessions=2)
+
+        self.client.force_login(user)
+        self.set_selected_school(first_school.id)
+        response = self.client.get(
+            reverse("multischool_progress_data"),
+            {"metric": "sessions", "date_range": "30", "school": second_school.id},
+        )
+
+        data = response.json()
+        series_names = {s["school_name"] for s in data["series"]}
+        self.assertEqual(series_names, {"Filter Second"})
+
     def test_progress_api_denied_for_single_school(self):
         user, profile, school = self.create_staff_user_with_school(
             username="api_denied", role=Role.ADMIN
         )
         self.client.force_login(user)
         self.set_selected_school(school.id)
-        response = self.client.get(reverse("mat_progress_data"))
+        response = self.client.get(reverse("multischool_progress_data"))
         self.assertEqual(response.status_code, 403)
 
     def test_targets_percentage_aggregated(self):
@@ -178,7 +197,135 @@ class MatDashboardTests(BaseFlowTestMixin, TestCase):
 
         self.client.force_login(user)
         self.set_selected_school(first_school.id)
-        response = self.client.get(reverse("mat_dashboard"))
+        response = self.client.get(reverse("multischool_dashboard"))
 
         rows = {row["school_name"]: row for row in response.context["school_rows"]}
         self.assertEqual(rows[first_school.name]["targets_percentage"], 50)
+
+
+class ProgressHubFlowTests(BaseFlowTestMixin, TestCase):
+    def _add_licensed_school(self, profile, name, role=Role.ADMIN):
+        school = School.objects.create(
+            name=name,
+            is_licensed=True,
+            license_expires_at=timezone.now() + timedelta(days=30),
+        )
+        profile.schools.add(school)
+        SchoolMembership.objects.create(
+            profile=profile, school=school, role=role, is_active=True
+        )
+        return school
+
+    def test_progress_hub_shows_choice_for_multi_school_admin(self):
+        user, profile, first_school = self.create_staff_user_with_school(
+            username="hub_admin", role=Role.ADMIN
+        )
+        self._add_licensed_school(profile, "Hub Second", role=Role.ADMIN)
+
+        self.client.force_login(user)
+        self.set_selected_school(first_school.id)
+        response = self.client.get(reverse("progress_hub"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Multi-School Reporting")
+        self.assertContains(response, "Individual School Reports")
+
+    def test_progress_hub_redirects_single_school_user(self):
+        user, _, school = self.create_staff_user_with_school(
+            username="hub_single", role=Role.ADMIN
+        )
+        self.client.force_login(user)
+        self.set_selected_school(school.id)
+        response = self.client.get(reverse("progress_hub"), follow=True)
+        self.assertEqual(response.request["PATH_INFO"], reverse("learner_dashboard"))
+
+    def test_progress_hub_redirects_multi_school_staff(self):
+        user, profile, first_school = self.create_staff_user_with_school(
+            username="hub_staff", role=Role.STAFF
+        )
+        self._add_licensed_school(profile, "Hub Staff Second", role=Role.STAFF)
+        self.client.force_login(user)
+        self.set_selected_school(first_school.id)
+        response = self.client.get(reverse("progress_hub"), follow=True)
+        self.assertEqual(response.request["PATH_INFO"], reverse("learner_dashboard"))
+
+    def test_sidebar_shows_single_progress_link_to_hub_for_trust_lead(self):
+        user, profile, first_school = self.create_staff_user_with_school(
+            username="hub_sidebar", role=Role.ADMIN
+        )
+        self._add_licensed_school(profile, "Sidebar Second", role=Role.ADMIN)
+        learner = Learner.objects.create(user=user, school=first_school, name="Pupil")
+
+        self.client.force_login(user)
+        self.set_selected_school(first_school.id)
+        response = self.client.get(
+            reverse("learner_dashboard"), {"learner": str(learner.learner_uuid)}
+        )
+        self.assertContains(response, reverse("progress_hub"))
+
+    def test_school_switcher_changes_active_school(self):
+        user, profile, first_school = self.create_staff_user_with_school(
+            username="switcher_admin", role=Role.ADMIN
+        )
+        second_school = self._add_licensed_school(profile, "Switch Second", role=Role.ADMIN)
+        Learner.objects.create(user=user, school=first_school, name="FirstPupil")
+        Learner.objects.create(user=user, school=second_school, name="SecondPupil")
+
+        self.client.force_login(user)
+        self.set_selected_school(first_school.id)
+
+        response = self.client.get(reverse("learner_dashboard"), {"school": second_school.id})
+
+        self.assertEqual(response.context["selected_school"].id, second_school.id)
+        self.assertTrue(response.context["show_school_switcher"])
+        learner_names = {learner.name for learner in response.context["learners"]}
+        self.assertIn("SecondPupil", learner_names)
+        self.assertNotIn("FirstPupil", learner_names)
+
+    def test_school_switcher_excludes_schools_without_active_learners(self):
+        user, profile, first_school = self.create_staff_user_with_school(
+            username="switcher_filter_admin", role=Role.ADMIN
+        )
+        empty_school = self._add_licensed_school(profile, "Empty School", role=Role.ADMIN)
+        deleted_only_school = self._add_licensed_school(profile, "Deleted Only", role=Role.ADMIN)
+        Learner.objects.create(user=user, school=first_school, name="ActivePupil")
+        Learner.objects.create(
+            user=user, school=deleted_only_school, name="GonePupil", deleted=True
+        )
+
+        self.client.force_login(user)
+        self.set_selected_school(first_school.id)
+        response = self.client.get(reverse("learner_dashboard"))
+
+        switcher_names = {school.name for school in response.context["schools"]}
+        self.assertIn(first_school.name, switcher_names)
+        self.assertNotIn("Empty School", switcher_names)
+        self.assertNotIn("Deleted Only", switcher_names)
+        # Only one school has active learners, so the switcher stays hidden.
+        self.assertFalse(response.context["show_school_switcher"])
+
+    def test_learner_auto_selected_on_load_and_after_school_switch(self):
+        user, profile, first_school = self.create_staff_user_with_school(
+            username="autoselect_admin", role=Role.ADMIN
+        )
+        second_school = self._add_licensed_school(profile, "Auto Second", role=Role.ADMIN)
+        Learner.objects.create(user=user, school=first_school, name="FirstPupil")
+        Learner.objects.create(user=user, school=second_school, name="SecondPupil")
+
+        self.client.force_login(user)
+        self.set_selected_school(first_school.id)
+
+        # First load with no learner selected auto-selects one from the current school.
+        first_response = self.client.get(reverse("learner_dashboard"))
+        self.assertIsNotNone(first_response.context["selected_learner"])
+        self.assertEqual(first_response.context["selected_learner"].name, "FirstPupil")
+
+        # Switching school (no learner param) auto-selects a learner from the new school.
+        switch_response = self.client.get(
+            reverse("learner_dashboard"), {"school": second_school.id}
+        )
+        self.assertIsNotNone(switch_response.context["selected_learner"])
+        self.assertEqual(switch_response.context["selected_learner"].name, "SecondPupil")
+
+
+

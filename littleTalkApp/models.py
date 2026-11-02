@@ -320,9 +320,9 @@ class Profile(models.Model):
             )
         )
 
-    def can_view_mat_dashboard(self):
+    def can_view_multischool_dashboard(self):
         """Return True if this profile is a trust lead eligible for the
-        cross-school (MAT-level) dashboard: admin or manager in at least one
+        cross-school (multi-school) dashboard: admin or manager in at least one
         school and licensed in two or more schools.
         """
         if self.is_parent():

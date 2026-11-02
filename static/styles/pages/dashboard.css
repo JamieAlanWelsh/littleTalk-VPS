@@ -913,16 +913,16 @@
 }
 
 /* =========================================================================
-   MAT-level (cross-school) dashboard
+   Multi-school (cross-school) dashboard
    ========================================================================= */
 
-.mat-summary-cards {
+.multischool-summary-cards {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 16px;
 }
 
-.mat-summary-card {
+.multischool-summary-card {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -936,14 +936,14 @@
     text-align: center;
 }
 
-.mat-summary-value {
+.multischool-summary-value {
     font-size: 1.8rem;
     font-weight: 800;
     line-height: 1.1;
     color: var(--font-color);
 }
 
-.mat-summary-label {
+.multischool-summary-label {
     font-size: 0.8rem;
     font-weight: 600;
     color: #6b6476;
@@ -952,17 +952,17 @@
 }
 
 @media (max-width: 600px) {
-    .mat-summary-cards {
+    .multischool-summary-cards {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    .mat-summary-value {
+    .multischool-summary-value {
         font-size: 1.4rem;
     }
 }
 
 @media print {
-    .mat-summary-card {
+    .multischool-summary-card {
         box-shadow: none;
         border: 1px solid #ccc;
     }
