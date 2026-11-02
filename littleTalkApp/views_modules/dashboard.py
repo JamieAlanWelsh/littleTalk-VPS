@@ -4,13 +4,13 @@ from datetime import timedelta
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db import models
-from django.db.models import Count, DurationField, ExpressionWrapper
+from django.db.models import Avg, Count, DurationField, ExpressionWrapper, F, FloatField, Sum
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.utils import timezone
 
 from littleTalkApp.content import GAME_DESCRIPTIONS
-from littleTalkApp.models import Cohort, ExerciseSession, Learner
+from littleTalkApp.models import Cohort, ExerciseSession, Learner, Target
 from littleTalkApp.views_modules.practise import (
     CANONICAL_TO_PRACTISE_KEY,
     PRACTISE_STAGES,
@@ -167,8 +167,6 @@ def learner_dashboard(request):
 
     targets_data = None
     if selected_learner:
-        from littleTalkApp.models import Target
-
         targets = Target.objects.filter(learner=selected_learner).order_by("-created_at")
 
         total_targets = targets.count()
@@ -385,3 +383,226 @@ def learner_progress_data(request):
     }
 
     return JsonResponse(response_data)
+
+
+# =============================================================================
+# MAT-level (cross-school) dashboard
+# =============================================================================
+
+
+def _mat_parse_date_range(request):
+    date_end = timezone.now().date()
+    date_range = request.GET.get("date_range", "all")
+    if date_range == "all":
+        return None, date_end
+    try:
+        days = int(date_range)
+    except (TypeError, ValueError):
+        days = 30
+    return date_end - timedelta(days=days), date_end
+
+
+def _mat_sessions_for_learners(learner_ids, date_start, date_end):
+    sessions = ExerciseSession.objects.filter(learner_id__in=learner_ids)
+    if date_start is not None:
+        sessions = sessions.filter(created_at__date__gte=date_start)
+    sessions = sessions.filter(created_at__date__lte=date_end)
+    return sessions
+
+
+def _mat_avg_accuracy(sessions):
+    result = (
+        sessions.filter(total_questions__gt=0)
+        .annotate(
+            accuracy=ExpressionWrapper(
+                (F("total_questions") - F("incorrect_answers")) * 100.0 / F("total_questions"),
+                output_field=FloatField(),
+            )
+        )
+        .aggregate(avg=Avg("accuracy"))
+    )
+    value = result.get("avg")
+    return round(value, 1) if value is not None else None
+
+
+def _mat_skills_gained_total(learner_ids):
+    total = 0
+    for learner in Learner.objects.filter(id__in=learner_ids):
+        comparison = get_screener_comparison_data(learner, screener_version=2)
+        if comparison and comparison.get("has_previous"):
+            total += len(comparison.get("skills_gained", []))
+    return total
+
+
+def _build_mat_school_summary(school, date_start, date_end):
+    """Build an aggregated summary row for a single school."""
+    learner_ids = list(
+        Learner.objects.filter(school=school, deleted=False).values_list("id", flat=True)
+    )
+    active_learners = len(learner_ids)
+    sessions = _mat_sessions_for_learners(learner_ids, date_start, date_end)
+    session_count = sessions.count()
+    total_xp = (
+        Learner.objects.filter(id__in=learner_ids).aggregate(total=Sum("exp"))["total"] or 0
+    )
+
+    avg_accuracy = None
+    targets_percentage = None
+    skills_gained = None
+    if learner_ids:
+        avg_accuracy = _mat_avg_accuracy(sessions)
+
+        targets = Target.objects.filter(learner_id__in=learner_ids)
+        total_targets = targets.count()
+        achieved_targets = targets.filter(status=Target.Status.ACHIEVED).count()
+        targets_percentage = (
+            round(achieved_targets / total_targets * 100) if total_targets > 0 else 0
+        )
+
+        skills_gained = _mat_skills_gained_total(learner_ids)
+
+    return {
+        "school_id": school.id,
+        "school_name": school.name,
+        "active_learners": active_learners,
+        "session_count": session_count,
+        "total_xp": total_xp,
+        "avg_accuracy": avg_accuracy,
+        "targets_percentage": targets_percentage,
+        "skills_gained": skills_gained,
+    }
+
+
+@login_required
+def mat_dashboard(request):
+    """Renders dashboard/mat_dashboard.html — the cross-school (MAT-level) overview
+    for trust leads. Aggregates progress across the licensed schools the profile can
+    access, showing school-level roll-ups only (no individual pupil data).
+    """
+
+    profile = request.user.profile
+
+    if not profile.can_view_mat_dashboard():
+        messages.error(request, "The cross-school dashboard is not available for your account.")
+        return redirect("profile")
+
+    date_start, date_end = _mat_parse_date_range(request)
+
+    schools = list(profile.get_licensed_schools().order_by("name"))
+    school_rows = [
+        _build_mat_school_summary(school, date_start, date_end) for school in schools
+    ]
+
+    totals = {
+        "school_count": len(school_rows),
+        "active_learners": sum(row["active_learners"] for row in school_rows),
+        "session_count": sum(row["session_count"] for row in school_rows),
+        "total_xp": sum(row["total_xp"] for row in school_rows),
+        "skills_gained": sum(row["skills_gained"] or 0 for row in school_rows),
+    }
+
+    reported_targets = [
+        row["targets_percentage"]
+        for row in school_rows
+        if row["targets_percentage"] is not None
+    ]
+    totals["avg_targets_percentage"] = (
+        round(sum(reported_targets) / len(reported_targets)) if reported_targets else None
+    )
+
+    context = {
+        "school_rows": school_rows,
+        "totals": totals,
+        "selected_date_range": request.GET.get("date_range", "all"),
+    }
+    return render(request, "dashboard/mat_dashboard.html", context)
+
+
+@login_required
+def mat_progress_data(request):
+    """JSON API: per-school daily trend series for the MAT dashboard chart.
+
+    Query params: date_range (days or 'all'), metric (sessions | accuracy | difficulty).
+    Returns one series per licensed school.
+    """
+
+    profile = request.user.profile
+    if not profile.can_view_mat_dashboard():
+        return JsonResponse({"error": "Access denied"}, status=403)
+
+    metric = request.GET.get("metric", "sessions")
+    if metric not in {"sessions", "accuracy", "difficulty"}:
+        metric = "sessions"
+
+    date_start, date_end = _mat_parse_date_range(request)
+    schools = list(profile.get_licensed_schools().order_by("name"))
+
+    # Establish the date axis. For 'all', derive from the earliest session across schools.
+    if date_start is None:
+        all_learner_ids = list(
+            Learner.objects.filter(school__in=schools, deleted=False).values_list("id", flat=True)
+        )
+        earliest = (
+            ExerciseSession.objects.filter(learner_id__in=all_learner_ids)
+            .order_by("created_at")
+            .values_list("created_at", flat=True)
+            .first()
+        )
+        date_start = earliest.date() if earliest else date_end
+
+    date_axis = []
+    cursor = date_start
+    while cursor <= date_end:
+        date_axis.append(cursor)
+        cursor += timedelta(days=1)
+    date_labels = [d.strftime("%Y-%m-%d") for d in date_axis]
+    date_index = {d: i for i, d in enumerate(date_axis)}
+
+    series = []
+    for school in schools:
+        learner_ids = list(
+            Learner.objects.filter(school=school, deleted=False).values_list("id", flat=True)
+        )
+
+        sessions = _mat_sessions_for_learners(learner_ids, date_start, date_end).order_by(
+            "completed_at"
+        )
+
+        if metric == "sessions":
+            values = [0 for _ in date_axis]
+            for session in sessions:
+                idx = date_index.get(session.completed_at.date())
+                if idx is not None:
+                    values[idx] += 1
+        else:
+            buckets = {i: [] for i in range(len(date_axis))}
+            for session in sessions:
+                idx = date_index.get(session.completed_at.date())
+                if idx is None:
+                    continue
+                if metric == "accuracy":
+                    if session.total_questions > 0:
+                        correct = session.total_questions - session.incorrect_answers
+                        buckets[idx].append((correct / session.total_questions) * 100)
+                else:
+                    try:
+                        buckets[idx].append(float(session.difficulty_selected))
+                    except (TypeError, ValueError):
+                        continue
+            values = [
+                round(sum(vals) / len(vals), 1) if vals else None
+                for idx, vals in buckets.items()
+            ]
+
+        series.append({"school_name": school.name, "values": values})
+
+    return JsonResponse(
+        {
+            "metric": metric,
+            "dates": date_labels,
+            "series": series,
+            "date_start": date_start.strftime("%Y-%m-%d"),
+            "date_end": date_end.strftime("%Y-%m-%d"),
+        }
+    )
+

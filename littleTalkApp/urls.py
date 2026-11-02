@@ -142,6 +142,8 @@ urlpatterns = [
     # Dashboard
     path('dashboard/learner/', dashboard_views.learner_dashboard, name='learner_dashboard'),
     path('api/dashboard/progress-data/', dashboard_views.learner_progress_data, name='learner_progress_data'),
+    path('dashboard/mat/', dashboard_views.mat_dashboard, name='mat_dashboard'),
+    path('api/dashboard/mat-progress-data/', dashboard_views.mat_progress_data, name='mat_progress_data'),
 
     # React exercise routes (canonical)
     path('exercises/categorisation/', react_exercises_views.categorisation_example, name='categorisation_example'),

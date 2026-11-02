@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Chatterdillo | Across Schools{% endblock %}
+
+{% block head_extra %}
+    {{ block.super }}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<h1>Across Schools</h1>
+<p class="section-note no-print">
+    Aggregated progress across the {{ totals.school_count }} school{{ totals.school_count|pluralize }} you have access to.
+    Figures are school-level roll-ups.
+</p>
+
+<div class="container-box container--dash container--dash-no-bg">
+    <div class="dashboard-section dashboard-top-section no-print">
+        <div class="dashboard-top-layout">
+            <div class="dashboard-top-left">
+                <div class="dashboard-top-row dashboard-top-row--filters">
+                    <div class="section-header-actions">
+                        <label class="label" for="mat-date-range">Date Range:</label>
+                        <select id="mat-date-range" class="select" style="margin-bottom: 0;">
+                            <option value="all" {% if selected_date_range == 'all' %}selected{% endif %}>Full History</option>
+                            <option value="7" {% if selected_date_range == '7' %}selected{% endif %}>Last 7 Days</option>
+                            <option value="30" {% if selected_date_range == '30' %}selected{% endif %}>Last 30 Days</option>
+                            <option value="90" {% if selected_date_range == '90' %}selected{% endif %}>Last 90 Days</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="dashboard-top-right">
+                <button id="print-dashboard" class="btn btn--white btn--small btn--border no-print" title="Print this dashboard">🖨 Print Selection</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Summary cards -->
+    <div class="dashboard-section">
+        <div class="section-header">
+            <h3>Multi-School Summary 🏫</h3>
+        </div>
+        <div class="mat-summary-cards">
+            <div class="mat-summary-card">
+                <span class="mat-summary-value">{{ totals.school_count }}</span>
+                <span class="mat-summary-label">Schools</span>
+            </div>
+            <div class="mat-summary-card">
+                <span class="mat-summary-value">{{ totals.active_learners }}</span>
+                <span class="mat-summary-label">Active Learners</span>
+            </div>
+            <div class="mat-summary-card">
+                <span class="mat-summary-value">{{ totals.session_count }}</span>
+                <span class="mat-summary-label">Sessions Completed</span>
+            </div>
+            <div class="mat-summary-card">
+                <span class="mat-summary-value">{{ totals.skills_gained }}</span>
+                <span class="mat-summary-label">Skills Gained</span>
+            </div>
+            <div class="mat-summary-card">
+                <span class="mat-summary-value">
+                    {% if totals.avg_targets_percentage is not None %}{{ totals.avg_targets_percentage }}%{% else %}—{% endif %}
+                </span>
+                <span class="mat-summary-label">Avg Targets Achieved</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Trend chart -->
+    <div class="dashboard-section" data-section="chart">
+        <div class="section-header">
+            <div class="section-header-title">
+                <h3>Trends by School 📈</h3>
+            </div>
+            <div class="section-header-actions">
+                <div class="chart-filter-buttons">
+                    <button class="filter-btn active" data-mat-metric="sessions">Sessions</button>
+                    <button class="filter-btn" data-mat-metric="accuracy">Accuracy (%)</button>
+                    <button class="filter-btn" data-mat-metric="difficulty">Difficulty Selected</button>
+                </div>
+            </div>
+        </div>
+        <div class="dashboard-chart-container">
+            <canvas id="mat-progress-chart" height="120"></canvas>
+        </div>
+        <div class="dashboard-message" id="mat-dashboard-message"></div>
+    </div>
+
+    <!-- Per-school comparison / league table -->
+    <div class="dashboard-section">
+        <div class="section-header">
+            <h3>School Comparison 📊</h3>
+        </div>
+        <div class="table-wrapper">
+            <table class="dashboard-table">
+                <thead>
+                    <tr>
+                        <th>School</th>
+                        <th>Active Learners</th>
+                        <th>Sessions</th>
+                        <th>Total XP</th>
+                        <th>Avg Accuracy</th>
+                        <th>Targets Achieved</th>
+                        <th>Skills Gained</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in school_rows %}
+                    <tr>
+                        <td title="{{ row.school_name }}">{{ row.school_name }}</td>
+                        <td>{{ row.active_learners }}</td>
+                        <td>{{ row.session_count }}</td>
+                        <td>{{ row.total_xp }}</td>
+                        <td>{% if row.avg_accuracy is not None %}{{ row.avg_accuracy }}%{% else %}—{% endif %}</td>
+                        <td>{% if row.targets_percentage is not None %}{{ row.targets_percentage }}%{% else %}—{% endif %}</td>
+                        <td>{{ row.skills_gained }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="school-mgmt-empty">No schools available.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'non_react_js/mat_dashboard.js' %}"></script>
+{% endblock %}

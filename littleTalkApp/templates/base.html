@@ -86,6 +86,14 @@
                         </a>
                     </li>
                     {% endif %}
+                    {% if can_view_mat_dashboard %}
+                    <li class="sidebar-mat-dashboard">
+                        <a href="{% url 'mat_dashboard' %}">
+                            <img src="{% static 'icons/graph.webp' %}" alt="Across Schools" class="sidebar-icon">
+                            <span>Across Schools</span>
+                        </a>
+                    </li>
+                    {% endif %}
                     <li>
                         <a href="{% url 'logbook' %}">
                             <img src="{% static 'icons/diary.webp' %}" alt="Logbook" class="sidebar-icon">
