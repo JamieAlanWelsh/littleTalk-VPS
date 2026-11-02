@@ -6,26 +6,20 @@
     var STORAGE_KEY = "chatterdilloOnboardingTour";
 
     // Linear tour. Each step is tied to a page (path) and a target selector.
-    // primaryClicksTarget: the tooltip's primary button triggers the real element,
-    // so the tour can be driven either by the page CTA or the tooltip.
+    // action: how the primary button behaves,
+    //   "click-target" triggers the real page element (usually navigation),
+    //   "next-step" advances to the next step on the same page,
+    //   "dismiss" hides the overlay but keeps the tour active,
+    //   "finish" ends the tour without triggering the target.
     var STEPS = [
-        {
-            id: "dashboard-welcome",
-            path: "/dashboard/learner/",
-            selector: '[data-tour="go-to-learners"]',
-            title: "Welcome to Chatterdillo!",
-            body: "Let's set up your first pupil together. We'll walk you through adding a learner, running a quick screener, and starting your first exercise.",
-            primaryLabel: "Add a pupil",
-            primaryClicksTarget: true,
-        },
         {
             id: "profile-add-learner",
             path: "/profile/",
             selector: '[data-tour="add-learner"]',
-            title: "Add your first pupil",
-            body: "Click here to create a learner. You can use a real pupil or an example to explore with.",
+            title: "Welcome to Chatterdillo!",
+            body: "Let's set up your first pupil together. Click here to add a learner. You can use a real pupil or an example to explore with.",
             primaryLabel: "Add a pupil",
-            primaryClicksTarget: true,
+            action: "click-target",
         },
         {
             id: "learner-form",
@@ -34,16 +28,16 @@
             title: "Tell us about your pupil",
             body: "Enter a name (or nickname) and age, then submit. We'll bring you back to your profile.",
             primaryLabel: "Got it",
-            primaryClicksTarget: false,
+            action: "dismiss",
         },
         {
             id: "profile-screener",
             path: "/profile/",
             selector: ".sidebar-screener a",
             title: "Now run a screener",
-            body: "Great — your pupil is added! Next, open the Screener to profile their needs and get exercise recommendations.",
+            body: "Great, your pupil is added! Next, open the Screener to profile their needs and get exercise recommendations.",
             primaryLabel: "Open screener",
-            primaryClicksTarget: true,
+            action: "click-target",
         },
         {
             id: "start-screener",
@@ -52,34 +46,43 @@
             title: "Start the screener",
             body: "This short questionnaire takes about 10 minutes and tailors exercise suggestions to your pupil.",
             primaryLabel: "Start screener",
-            primaryClicksTarget: true,
+            action: "click-target",
         },
         {
-            id: "screener-answers",
+            id: "screener-window",
             path: "/screener/v2/start/",
-            selector: '[data-tour="screener-answers"]',
+            selector: '[data-tour="screener-window"]',
             title: "Answer each question",
-            body: "Tap Yes or No for each question about your pupil. When you're done we'll show you a results summary.",
+            body: "Work through the questionnaire about your pupil. When you're done we'll show you a results summary.",
             primaryLabel: "Got it",
-            primaryClicksTarget: false,
+            action: "dismiss",
+        },
+        {
+            id: "summary-review",
+            path: "/screener/summary/",
+            selector: '[data-tour="screener-summary"]',
+            title: "Your screener summary",
+            body: "This is your screener summary, you can review this at any point.",
+            primaryLabel: "Next",
+            action: "next-step",
         },
         {
             id: "summary-practise",
             path: "/screener/summary/",
             selector: '[data-tour="practise-cta"]',
-            title: "Here are the results",
-            body: "These are your pupil's strengths and areas for support. Now head to Practise to pick an exercise.",
+            title: "Time to practise",
+            body: "Head to Practise to view exercise recommendations and pick an exercise.",
             primaryLabel: "Go to Practise",
-            primaryClicksTarget: true,
+            action: "click-target",
         },
         {
             id: "first-exercise",
             path: "/practise/",
             selector: '[data-tour="first-exercise"]',
             title: "Start your first exercise",
-            body: "Press START to begin. That's it — you're all set up. Enjoy exploring Chatterdillo!",
+            body: "Press START on any exercise to begin. That's it, you're all set up. Enjoy exploring Chatterdillo!",
             primaryLabel: "Finish",
-            primaryClicksTarget: false,
+            action: "finish",
             isLast: true,
         },
     ];
@@ -98,7 +101,7 @@
         try {
             window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
         } catch (e) {
-            /* storage unavailable — tour simply won't persist */
+            /* storage unavailable, tour simply won't persist */
         }
     }
 
@@ -184,12 +187,24 @@
         positionTooltip();
     }
 
-    function complete(status) {
+    function finishTour(status) {
         writeState({ status: status, step: STEPS.length });
         removeOverlay();
     }
 
-    function renderStep(resolved, state) {
+    function advanceInPage(fromIndex) {
+        var nextIndex = fromIndex + 1;
+        var nextState = { status: "active", step: nextIndex };
+        writeState(nextState);
+        var resolved = resolveStep(nextState);
+        if (resolved) {
+            renderStep(resolved);
+        } else {
+            removeOverlay();
+        }
+    }
+
+    function renderStep(resolved) {
         removeOverlay();
         activeTarget = resolved.target;
         var step = resolved.step;
@@ -235,15 +250,19 @@
         primary.className = "btn btn--yellow btn--small ob-tour-tooltip__next";
         primary.textContent = step.primaryLabel || "Next";
         primary.addEventListener("click", function () {
-            if (step.isLast) {
-                complete("completed");
-                if (resolved.target) resolved.target.click();
-                return;
-            }
-            if (step.primaryClicksTarget && resolved.target) {
-                resolved.target.click();
-            } else {
-                removeOverlay();
+            switch (step.action) {
+                case "finish":
+                    finishTour("completed");
+                    break;
+                case "click-target":
+                    if (resolved.target) resolved.target.click();
+                    else removeOverlay();
+                    break;
+                case "next-step":
+                    advanceInPage(resolved.index);
+                    break;
+                default:
+                    removeOverlay();
             }
         });
 
@@ -261,38 +280,93 @@
         els.spotlight = spotlight;
         els.tooltip = tooltip;
 
-        // On the final step, completing the tour the moment the real CTA is used.
-        if (step.isLast && resolved.target) {
-            resolved.target.addEventListener(
-                "click",
-                function () {
-                    complete("completed");
-                },
-                { once: true }
-            );
-        }
-
         reposition();
         window.addEventListener("resize", reposition);
         window.addEventListener("scroll", reposition, true);
+    }
+
+    function startTour() {
+        var startUrl = document.body.dataset.obTourStart;
+        writeState({ status: "active", step: 0 });
+        if (startUrl && currentPath() !== startUrl) {
+            window.location.assign(startUrl);
+            return;
+        }
+        var resolved = resolveStep({ status: "active", step: 0 });
+        if (resolved) renderStep(resolved);
+    }
+
+    function showInviteBanner() {
+        var banner = document.createElement("div");
+        banner.className = "ob-tour-invite";
+        banner.setAttribute("role", "dialog");
+        banner.setAttribute("aria-labelledby", "ob-tour-invite-title");
+
+        var copy = document.createElement("div");
+        copy.className = "ob-tour-invite__copy";
+
+        var title = document.createElement("h2");
+        title.id = "ob-tour-invite-title";
+        title.className = "ob-tour-invite__title";
+        title.textContent = "Welcome to Chatterdillo!";
+
+        var text = document.createElement("p");
+        text.className = "ob-tour-invite__text";
+        text.textContent =
+            "We noticed it's your first login. Would you like a quick tour to get started? (about 10 minutes)";
+
+        copy.appendChild(title);
+        copy.appendChild(text);
+
+        var actions = document.createElement("div");
+        actions.className = "ob-tour-invite__actions";
+
+        var no = document.createElement("button");
+        no.type = "button";
+        no.className = "btn btn--white btn--small ob-tour-invite__btn";
+        no.textContent = "No thanks";
+        no.addEventListener("click", function () {
+            writeState({ status: "declined", step: 0 });
+            if (banner.parentNode) banner.parentNode.removeChild(banner);
+        });
+
+        var yes = document.createElement("button");
+        yes.type = "button";
+        yes.className = "btn btn--yellow btn--small ob-tour-invite__btn";
+        yes.textContent = "Yes, show me around";
+        yes.addEventListener("click", function () {
+            if (banner.parentNode) banner.parentNode.removeChild(banner);
+            startTour();
+        });
+
+        actions.appendChild(no);
+        actions.appendChild(yes);
+        banner.appendChild(copy);
+        banner.appendChild(actions);
+        document.body.appendChild(banner);
     }
 
     function init() {
         if (document.body.dataset.obTour !== "enabled") return;
 
         var state = readState();
-        if (state && (state.status === "completed" || state.status === "skipped")) {
+        if (
+            state &&
+            (state.status === "completed" ||
+                state.status === "skipped" ||
+                state.status === "declined")
+        ) {
             return;
         }
-        if (!state) {
-            state = { status: "active", step: 0 };
-            writeState(state);
+
+        if (state && state.status === "active") {
+            var resolved = resolveStep(state);
+            if (resolved) renderStep(resolved);
+            return;
         }
 
-        var resolved = resolveStep(state);
-        if (resolved) {
-            renderStep(resolved, state);
-        }
+        // No prior response yet, invite the user to take the tour.
+        showInviteBanner();
     }
 
     if (document.readyState === "loading") {

@@ -28,7 +28,7 @@
     <progress id="progress-bar" max="100" value="{{ current_question_index|default_if_none:1 }}"></progress>
 </div>
 
-<div class="container-box container--white container--edgy">
+<div class="container-box container--white container--edgy" data-tour="screener-window">
     <p class="assessment-intro">
         Tell us more about the child that will be using Chatterdillo. Answers are saved to recommend educational activities and show progress to authorised users.
     </p>
@@ -37,7 +37,7 @@
 
         <h2 id="question-text">{{ question.text }}</h2>
 
-        <div class="answer-button-group" data-tour="screener-answers">
+        <div class="answer-button-group">
             <button type="button" class="answer-button" data-value="Yes">Yes</button>
             <button type="button" class="answer-button" data-value="No">No</button>
         </div>

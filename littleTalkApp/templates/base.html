@@ -39,7 +39,7 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 </head>
-<body{% if request.user.is_authenticated %} data-ob-tour="enabled"{% endif %}>
+<body{% if request.user.is_authenticated %} data-ob-tour="enabled" data-ob-tour-start="{% url 'profile' %}"{% endif %}>
     {% if messages %}
         <div class="message-container">
             {% for message in messages %}

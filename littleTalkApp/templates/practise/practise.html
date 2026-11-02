@@ -34,7 +34,7 @@
     </div>
 
     {% if recommended_exercise_card %}
-        <section class="recommendation-box">
+        <section class="recommendation-box" data-tour="first-exercise">
             <div class="recommendation-header-row">
                 <p class="recommendation-header-label">SUGGESTED FOR TODAY</p>
                 {% if recommendation_explanation %}
@@ -65,7 +65,7 @@
                         </ul>
                     </div>
                     <div class="exercise-buttons">
-                        <a href="{{ recommended_exercise_card.start_url }}" class="btn btn--green btn--small btn--short" data-tour="first-exercise">START</a>
+                        <a href="{{ recommended_exercise_card.start_url }}" class="btn btn--green btn--small btn--short">START</a>
                         <a href="{% url 'game_description' recommended_exercise_card.key %}" class="btn btn--white btn--small btn--short">Tutorial</a>
                     </div>
                 </div>
@@ -96,7 +96,7 @@
             {% endif %}
         </section>
     {% else %}
-        <section class="recommendation-box">
+        <section class="recommendation-box" data-tour="first-exercise">
             <div class="recommendation-header-row">
                 <p class="recommendation-header-label">SUGGESTED FOR TODAY</p>
             </div>
@@ -164,7 +164,7 @@
                                 </ul>
                             </div>
                             <div class="exercise-buttons">
-                                <a href="{{ card.start_url }}" class="btn btn--green btn--small btn--short" data-tour="first-exercise">START</a>
+                                <a href="{{ card.start_url }}" class="btn btn--green btn--small btn--short">START</a>
                                 <a href="{% url 'game_description' card.key %}" class="btn btn--white btn--small btn--short">Tutorial</a>
                             </div>
                         </div>
