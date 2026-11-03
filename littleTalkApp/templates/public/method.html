@@ -1,16 +1,17 @@
 <!-- templates/landing.html -->
 {% extends "landing_base.html" %}
 
-{% block title %}Chatterdillo | Method{% endblock %}
+{% block title %}Speech & Language Activities for Schools | Chatterdillo{% endblock %}
+{% block meta_description %}Explore Chatterdillo's speech and language activities for schools, developed by speech and language therapists to support children's communication.{% endblock %}
 {% load static %}
 
 {% block content %}
 
 <div class="content-split text-only white">
     <div class="content-split-text">
-        <h2 class="split-heading">
+        <h1 class="split-heading">
             Our Activity Range
-        </h2>
+        </h1>
         <p class="split-body" style="margin-bottom: 2rem;">
             Developed by licensed Speech and Language Therapists, our interventions are evidence-based, and designed to fit into your existing school curriculum.
         </p>
@@ -25,7 +26,7 @@
         {% for stage in method_stages %}
             {% for game in stage.exercises %}
                 <article class="method-exercise" data-method-stage="{{ stage.number }}">
-                    <h3 class="split-heading">{{ game.title }} - {{ game.target }}</h3>
+                    <h2 class="split-heading">{{ game.title }} - {{ game.target }}</h2>
                     <p class="split-body">{{ game.description }}</p>
                     <p class="split-body"><strong>Develops ability to:</strong></p>
 

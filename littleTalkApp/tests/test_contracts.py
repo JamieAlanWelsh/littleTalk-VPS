@@ -1,4 +1,5 @@
 import importlib
+import re
 import uuid
 from unittest.mock import patch
 
@@ -153,6 +154,36 @@ class TemplateContractsTests(TestCase):
                 self.assertEqual(response.status_code, 200)
                 if template:
                     self.assertTemplateUsed(response, template)
+
+    def test_public_landing_pages_have_unique_metadata_and_one_main_heading(self):
+        routes = (
+            "home",
+            "case_studies",
+            "case_study_detail",
+            "exercises",
+            "how_it_works",
+            "about",
+            "terms",
+            "privacy",
+        )
+        titles = set()
+
+        for name in routes:
+            kwargs = {"slug": "kings-furlong"} if name == "case_study_detail" else {}
+            with self.subTest(route=name):
+                response = self.client.get(reverse(name, kwargs=kwargs))
+                content = response.content.decode()
+                title = re.search(r"<title>([^<]+)</title>", content)
+                description = re.search(
+                    r'<meta name="description" content="([^"]+)"', content
+                )
+
+                self.assertIsNotNone(title)
+                self.assertIsNotNone(description)
+                self.assertTrue(description.group(1).strip())
+                self.assertNotIn(title.group(1), titles)
+                self.assertEqual(len(re.findall(r"<h1(?:\s|>)", content)), 1)
+                titles.add(title.group(1))
 
     def test_shared_templates_gate_analytics_without_global_company_disclosure(self):
         for name in ("home", "login"):

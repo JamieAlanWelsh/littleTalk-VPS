@@ -1,7 +1,8 @@
 {% extends "landing_base.html" %}
 {% load static %}
 
-{% block title %}Chatterdillo | {{ case_study.school_name }}{% endblock %}
+{% block title %}{{ case_study.school_name }} | Chatterdillo Case Study{% endblock %}
+{% block meta_description %}{{ case_study.intro|truncatechars:160 }}{% endblock %}
 
 {% block content %}
 <div class="content-split white">
