@@ -1,7 +1,8 @@
 {% extends "landing_base.html" %}
 {% load static %}
 
-{% block title %}Chatterdillo | Case Studies{% endblock %}
+{% block title %}School Case Studies | Chatterdillo{% endblock %}
+{% block meta_description %}See how schools use Chatterdillo to identify speech and language needs, support pupils, and build confident, consistent provision.{% endblock %}
 
 {% block content %}
 <div class="content-split white">
@@ -19,7 +20,7 @@
         {% for case_study in case_studies %}
         <a href="{% url 'case_study_detail' slug=case_study.slug %}" class="case-study-card">
             <div class="case-study-card-image">
-                <img src="{{ case_study.image }}" alt="{{ case_study.school_name }}">
+                <img src="{{ case_study.image }}" alt="{{ case_study.school_name }}" width="{{ case_study.image_width }}" height="{{ case_study.image_height }}">
             </div>
             <div class="case-study-card-body">
                 <p class="case-study-card-meta">{{ case_study.location|default:"School pilot" }}</p>

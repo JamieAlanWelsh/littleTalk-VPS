@@ -1,8 +1,9 @@
 import importlib
+import re
 import uuid
 from unittest.mock import patch
 
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.urls import reverse
 
 from accounts.models import User
@@ -153,6 +154,77 @@ class TemplateContractsTests(TestCase):
                 self.assertEqual(response.status_code, 200)
                 if template:
                     self.assertTemplateUsed(response, template)
+
+    def test_public_landing_pages_have_unique_metadata_and_one_main_heading(self):
+        routes = (
+            "home",
+            "case_studies",
+            "case_study_detail",
+            "exercises",
+            "how_it_works",
+            "about",
+            "terms",
+            "privacy",
+            "login",
+            "account_setup",
+            "school_signup",
+            "request_join_school",
+            "parent_signup",
+            "password_reset",
+        )
+        titles = set()
+
+        for name in routes:
+            kwargs = {"slug": "kings-furlong"} if name == "case_study_detail" else {}
+            with self.subTest(route=name):
+                response = self.client.get(reverse(name, kwargs=kwargs))
+                content = response.content.decode()
+                title = re.search(r"<title>([^<]+)</title>", content)
+                description = re.search(
+                    r'<meta name="description" content="([^"]+)"', content
+                )
+
+                self.assertIsNotNone(title)
+                self.assertIsNotNone(description)
+                self.assertTrue(description.group(1).strip())
+                self.assertNotIn(title.group(1), titles)
+                self.assertEqual(len(re.findall(r"<h1(?:\s|>)", content)), 1)
+                titles.add(title.group(1))
+
+    def test_sitemap_includes_public_case_studies_not_retired_or_private_pages(self):
+        response = self.client.get(reverse("sitemap"))
+        self.assertEqual(response.status_code, 200)
+
+        for slug in ("south-view-primary", "pdet-trust", "watling-primary", "kings-furlong"):
+            with self.subTest(slug=slug):
+                self.assertContains(
+                    response,
+                    f"{reverse('case_study_detail', kwargs={'slug': slug})}</loc>",
+                )
+
+        self.assertNotContains(response, "/support/")
+        self.assertNotContains(response, "/tips/")
+
+    @override_settings(
+        CANONICAL_BASE_URL="https://chatterdillo.com",
+        ALLOWED_HOSTS=["chatterdillo.com", "www.chatterdillo.com"],
+    )
+    def test_canonical_and_sitemap_urls_use_canonical_host_from_www(self):
+        about = self.client.get(reverse("about"), HTTP_HOST="www.chatterdillo.com")
+        self.assertContains(
+            about, '<link rel="canonical" href="https://chatterdillo.com/about/">'
+        )
+
+        sitemap = self.client.get(reverse("sitemap"), HTTP_HOST="www.chatterdillo.com")
+        self.assertContains(sitemap, "<loc>https://chatterdillo.com/about/</loc>")
+        self.assertNotContains(sitemap, "www.chatterdillo.com")
+
+    def test_retired_tips_route_is_gone_and_support_requires_authentication(self):
+        self.assertEqual(self.client.get("/tips/").status_code, 404)
+
+        support = self.client.get(reverse("support"))
+        self.assertEqual(support.status_code, 302)
+        self.assertTrue(support["Location"].startswith(reverse("login")))
 
     def test_shared_templates_gate_analytics_without_global_company_disclosure(self):
         for name in ("home", "login"):

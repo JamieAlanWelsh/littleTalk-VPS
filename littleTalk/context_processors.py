@@ -37,8 +37,17 @@ def layout_context(request):
         'can_view_multischool_dashboard': can_view_multischool_dashboard,
     }
 
+def get_canonical_base_url():
+    base_url = getattr(settings, 'CANONICAL_BASE_URL', '') or ''
+    return base_url.rstrip('/')
+
+
 def canonical_url(request):
-    canonical = request.build_absolute_uri(request.path)
+    base_url = get_canonical_base_url()
+    if base_url:
+        canonical = f'{base_url}{request.path}'
+    else:
+        canonical = request.build_absolute_uri(request.path)
     return {'canonical_url': canonical}
 
 

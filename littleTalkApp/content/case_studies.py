@@ -7,6 +7,8 @@ CASE_STUDIES = [
         "school_name": "South View Primary School & Pre-School",
         "location": "Mainstream primary school",
         "image": static("images/landing/about/corrine_shot.webp"),
+        "image_width": 1000,
+        "image_height": 563,
         "video_embed_url": "https://www.youtube.com/embed/nL9_MQl5tt8?si=XbA_2FSPtvjTK1ZR",
         "headline": "Whole-school training and consistent intervention helped put speech and language first",
         "intro": (
@@ -105,6 +107,8 @@ CASE_STUDIES = [
         "school_name": "Peterborough Diocese Education Trust",
         "location": "Trust-wide pilot",
         "image": static("images/landing/about/our_mission.webp"),
+        "image_width": 1600,
+        "image_height": 1069,
         "headline": "How 13 schools delivered 676 speech and language sessions in six weeks",
         "intro": (
             "A six-week pilot across Peterborough Diocese Education Trust showed what becomes possible "
@@ -192,6 +196,8 @@ CASE_STUDIES = [
         "school_name": "Watling Primary",
         "location": "Primary school pilot",
         "image": static("images/landing/about/our_impact.webp"),
+        "image_width": 1376,
+        "image_height": 911,
         "headline": "How one teaching assistant helped 13 pupils avoid months on a waiting list without training",
         "intro": (
             "At Watling Primary, pupils who might otherwise have waited until September began receiving speech "
@@ -274,6 +280,8 @@ CASE_STUDIES = [
         "school_name": "Kings Furlong Infant School & Nursery",
         "location": "Infant school and nursery pilot",
         "image": static("images/landing/about/jamie_presenting.webp"),
+        "image_width": 1600,
+        "image_height": 900,
         "headline": "Earlier identification, confident staff and more pupils receiving support",
         "intro": (
             "Kings Furlong set out to identify speech and language needs earlier and make high-quality "

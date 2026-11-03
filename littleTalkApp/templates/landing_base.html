@@ -9,6 +9,7 @@
 
     <meta charset="UTF-8">
     <title>{% block title %}Chatterdillo – Speech and Language Support Made Simple{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}Evidence-based speech and language activities for children aged 3–11 with speech and language needs.{% endblock %}">
     <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
     <link rel="stylesheet" href="{% static 'styles/landing.css' %}">
     <link rel="stylesheet" href="{% static 'styles/cookie-consent.css' %}">
@@ -37,7 +38,7 @@
         </div>
         <div class="header-center">
             <a href="/" class="logo-link">
-                <img src="{% static 'images/chatterdillo_logo_official.webp' %}" alt="Chatterdillo Logo" class="header-logo">
+                <img src="{% static 'images/chatterdillo_logo_official.webp' %}" alt="Chatterdillo Logo" width="1119" height="150" class="header-logo">
             </a>
         </div>
         <div class="header-right">
@@ -148,13 +149,13 @@
 
     {% comment %} universal landing call to action {% endcomment %}
     <div class="footer-cta">
-        <h1 class="footer-heading">Give every child the support they deserve.</h1>
+        <h2 class="footer-heading">Give every child the support they deserve.</h2>
         <div class="footer-cta-actions">
             <a href="/how-it-works/#book-demo" class="cta-button white-button main-button">Book a Demo</a>
             <a href="/account-setup/" class="cta-button main-button">Get Started</a>
         </div>
         <div class="footer-icon-wrapper">
-            <img src="{% static 'images/landing/arlo_clear.webp' %}" alt="Chatterdillo icon" class="footer-icon">
+            <img src="{% static 'images/landing/arlo_clear.webp' %}" alt="" aria-hidden="true" width="804" height="804" class="footer-icon">
         </div>
     </div>
 
@@ -162,7 +163,7 @@
     <footer class="site-footer">
         <div class="footer-container">
             <div class="footer-logo">
-                <img src="{% static 'images/chatterdillo_logo_official.webp' %}" alt="Chatterdillo Logo">
+                <img src="{% static 'images/chatterdillo_logo_official.webp' %}" alt="Chatterdillo Logo" width="1119" height="150">
             </div>
             <div class="footer-links">
                 <div class="footer-section">
