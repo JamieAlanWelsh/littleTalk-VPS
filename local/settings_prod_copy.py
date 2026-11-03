@@ -38,6 +38,9 @@ ALLOWED_HOSTS = [
     "116.203.197.92",
 ]
 
+# Single public host used for <link rel="canonical"> and sitemap URLs.
+CANONICAL_BASE_URL = "https://chatterdillo.com"
+
 
 # Application definition
 

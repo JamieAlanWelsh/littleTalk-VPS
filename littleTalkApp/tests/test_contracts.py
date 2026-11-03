@@ -3,7 +3,7 @@ import re
 import uuid
 from unittest.mock import patch
 
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.urls import reverse
 
 from accounts.models import User
@@ -204,6 +204,20 @@ class TemplateContractsTests(TestCase):
 
         self.assertNotContains(response, "/support/")
         self.assertNotContains(response, "/tips/")
+
+    @override_settings(
+        CANONICAL_BASE_URL="https://chatterdillo.com",
+        ALLOWED_HOSTS=["chatterdillo.com", "www.chatterdillo.com"],
+    )
+    def test_canonical_and_sitemap_urls_use_canonical_host_from_www(self):
+        about = self.client.get(reverse("about"), HTTP_HOST="www.chatterdillo.com")
+        self.assertContains(
+            about, '<link rel="canonical" href="https://chatterdillo.com/about/">'
+        )
+
+        sitemap = self.client.get(reverse("sitemap"), HTTP_HOST="www.chatterdillo.com")
+        self.assertContains(sitemap, "<loc>https://chatterdillo.com/about/</loc>")
+        self.assertNotContains(sitemap, "www.chatterdillo.com")
 
     def test_retired_tips_route_is_gone_and_support_requires_authentication(self):
         self.assertEqual(self.client.get("/tips/").status_code, 404)
