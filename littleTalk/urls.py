@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.contrib.sitemaps.views import sitemap
-from littleTalkApp.sitemaps import StaticViewSitemap
+from littleTalkApp.sitemaps import CaseStudySitemap, StaticViewSitemap
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,6 +26,7 @@ urlpatterns = [
 
 sitemaps = {
     'static': StaticViewSitemap,
+    'case_studies': CaseStudySitemap,
 }
 
 urlpatterns += [

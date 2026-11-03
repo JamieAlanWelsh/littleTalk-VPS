@@ -165,6 +165,12 @@ class TemplateContractsTests(TestCase):
             "about",
             "terms",
             "privacy",
+            "login",
+            "account_setup",
+            "school_signup",
+            "request_join_school",
+            "parent_signup",
+            "password_reset",
         )
         titles = set()
 
@@ -184,6 +190,27 @@ class TemplateContractsTests(TestCase):
                 self.assertNotIn(title.group(1), titles)
                 self.assertEqual(len(re.findall(r"<h1(?:\s|>)", content)), 1)
                 titles.add(title.group(1))
+
+    def test_sitemap_includes_public_case_studies_not_retired_or_private_pages(self):
+        response = self.client.get(reverse("sitemap"))
+        self.assertEqual(response.status_code, 200)
+
+        for slug in ("south-view-primary", "pdet-trust", "watling-primary", "kings-furlong"):
+            with self.subTest(slug=slug):
+                self.assertContains(
+                    response,
+                    f"{reverse('case_study_detail', kwargs={'slug': slug})}</loc>",
+                )
+
+        self.assertNotContains(response, "/support/")
+        self.assertNotContains(response, "/tips/")
+
+    def test_retired_tips_route_is_gone_and_support_requires_authentication(self):
+        self.assertEqual(self.client.get("/tips/").status_code, 404)
+
+        support = self.client.get(reverse("support"))
+        self.assertEqual(support.status_code, 302)
+        self.assertTrue(support["Location"].startswith(reverse("login")))
 
     def test_shared_templates_gate_analytics_without_global_company_disclosure(self):
         for name in ("home", "login"):

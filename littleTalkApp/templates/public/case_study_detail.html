@@ -23,7 +23,7 @@
             style="display: block; width: 100%; aspect-ratio: 53.5 / 33.2; border: 0; border-radius: var(--border-radius);">
         </iframe>
         {% else %}
-        <img src="{{ case_study.image }}" alt="{{ case_study.school_name }}">
+        <img src="{{ case_study.image }}" alt="{{ case_study.school_name }}" width="{{ case_study.image_width }}" height="{{ case_study.image_height }}">
         {% endif %}
     </div>
 </div>
