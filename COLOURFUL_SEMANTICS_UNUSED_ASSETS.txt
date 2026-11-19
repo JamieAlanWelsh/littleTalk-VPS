@@ -1,0 +1,28 @@
+Colourful Semantics: Removed Unused Word Option Images
+
+The following .webp files were confirmed unreferenced in the current game data and removed from static/exercise_assets/colourful_semantics/word_options/.
+
+Count: 22
+
+exercise_assets/colourful_semantics/word_options/aeroplane.webp
+exercise_assets/colourful_semantics/word_options/boat.webp
+exercise_assets/colourful_semantics/word_options/countryside.webp
+exercise_assets/colourful_semantics/word_options/eating_animal.webp
+exercise_assets/colourful_semantics/word_options/letter.webp
+exercise_assets/colourful_semantics/word_options/nectar.webp
+exercise_assets/colourful_semantics/word_options/newspaper.webp
+exercise_assets/colourful_semantics/word_options/pilot.webp
+exercise_assets/colourful_semantics/word_options/post_office.webp
+exercise_assets/colourful_semantics/word_options/postbox.webp
+exercise_assets/colourful_semantics/word_options/prey.webp
+exercise_assets/colourful_semantics/word_options/rain.webp
+exercise_assets/colourful_semantics/word_options/sailing.webp
+exercise_assets/colourful_semantics/word_options/school.webp
+exercise_assets/colourful_semantics/word_options/sitting_chair.webp
+exercise_assets/colourful_semantics/word_options/skateboard.webp
+exercise_assets/colourful_semantics/word_options/sky.webp
+exercise_assets/colourful_semantics/word_options/standing.webp
+exercise_assets/colourful_semantics/word_options/stroking.webp
+exercise_assets/colourful_semantics/word_options/tractor.webp
+exercise_assets/colourful_semantics/word_options/trees.webp
+exercise_assets/colourful_semantics/word_options/walked_through.webp
