@@ -38,6 +38,45 @@ inputs. If a batch fails after writing some files, inspect or clear that
 specific staging directory before rerunning. Only files directly inside the
 input directory are processed; subdirectories are not scanned.
 
+### Optional padding and background cleanup
+
+For word-option artwork that has transparent padding, opt in explicitly:
+
+```sh
+mkdir -p /tmp/colourful-semantics-trimmed
+bash scripts/convert-images-to-webp-staged.sh \
+  "/path/to/image-only originals" /tmp/colourful-semantics-trimmed 256 75 --trim
+```
+
+Node.js and `dwebp` are also required for this mode. The input directory must
+contain only supported image files; copy images into a separate input directory
+if it also contains files such as `desktop.ini`. Never remove the originals to
+prepare a batch.
+
+The opt-in mode finds pixels with alpha greater than 8/255, keeps a four-pixel
+margin at the source resolution, and removes only edge-connected background
+pixels with alpha at most 8/255 that are more than four pixels from visible
+artwork. It skips images whose visible artwork touches an edge, have no
+detectable foreground, or would lose more than 0.5% of their total alpha. It
+does not identify opaque backgrounds or guarantee that faint pixels are
+unimportant. An image marked `SKIP` has no staged output: keep the current
+deployed image and review it separately.
+
+The width argument is the longest-side limit in trim mode (rather than an
+exact width), preserving the cropped artwork's aspect ratio. Reports include
+crop coordinates, estimated size gain under `object-fit: contain`, discarded
+low-alpha pixel counts and file sizes. Review the results on the actual tile
+colours and at desktop, mobile, and high-density sizes before copying them.
+Keep or restore the existing file whenever details are lost or the result is
+uncertain. Trimming alone may produce little or no visible enlargement,
+especially for full-frame or tall narrow images.
+
+For future title/slot image replacements, stage the new source files
+separately and use the same opt-in command with appropriate dimensions and
+quality. Match reviewed outputs to the eight files under
+`static/exercise_assets/colourful_semantics/level_icons/` before replacing
+anything. The current level icons are not modified by the conversion script.
+
 Compare the staged names against the currently referenced image names and
 explicitly account for missing, extra, or renamed images before deployment.
 Check actual formats and decode errors with `webpinfo` or `dwebp`, inspect
@@ -47,7 +86,7 @@ affected metadata references. Keep old images where no replacement is
 available; do not delete audio files. Run:
 
 ```sh
-node --test scripts/tests/colourful-semantics-assets.test.mjs
+node --test scripts/tests/colourful-semantics-assets.test.mjs scripts/tests/trim-image-padding.test.mjs
 npm run build
 ```
 
