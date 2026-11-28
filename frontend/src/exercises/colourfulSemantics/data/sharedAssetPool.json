@@ -1441,13 +1441,13 @@
   "to-who": [
     {
       "id": "to-who-friend-female",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/friend_female.webp",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/friend.webp",
       "label": "to her friend",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/friend_female.wav"
     },
     {
       "id": "to-who-friend-male",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/friend_male.webp",
+      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/friend.webp",
       "label": "to his friend",
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/friend_male.wav"
     },
