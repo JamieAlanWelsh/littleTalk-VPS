@@ -1252,12 +1252,6 @@
       "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/farm.wav"
     },
     {
-      "id": "where-farm-field",
-      "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/field.webp",
-      "label": "in the field",
-      "sfxUrl": "/static/exercise_assets/colourful_semantics/word_options/field.wav"
-    },
-    {
       "id": "where-field",
       "imageUrl": "/static/exercise_assets/colourful_semantics/word_options/field.webp",
       "label": "in the field",

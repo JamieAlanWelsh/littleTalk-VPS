@@ -255,7 +255,7 @@
           "id": "boy-jumping-puddle-field-where",
           "slot": "where",
           "prompt": "Where is he?",
-          "correctOptionId": "where-farm-field"
+          "correctOptionId": "where-field"
         }
       ]
     },
@@ -454,7 +454,7 @@
           "id": "children-running-field-where",
           "slot": "where",
           "prompt": "Where are they?",
-          "correctOptionId": "where-farm-field"
+          "correctOptionId": "where-field"
         }
       ]
     },
@@ -585,7 +585,7 @@
           "id": "fox-running-field-where",
           "slot": "where",
           "prompt": "Where is it?",
-          "correctOptionId": "where-farm-field"
+          "correctOptionId": "where-field"
         }
       ]
     },
@@ -815,7 +815,7 @@
           "id": "horse-eating-grass-field-where",
           "slot": "where",
           "prompt": "Where is it?",
-          "correctOptionId": "where-farm-field"
+          "correctOptionId": "where-field"
         }
       ]
     },
@@ -1248,7 +1248,6 @@
       "where-woods",
       "where-home",
       "where-beach",
-      "where-field",
       "where-flower",
       "where-on-path",
       "where-kitchen",
@@ -1258,7 +1257,7 @@
       "where-farm",
       "where-garden",
       "where-sandpit",
-      "where-farm-field",
+      "where-field",
       "where-in-sand",
       "where-sea",
       "where-living-room",

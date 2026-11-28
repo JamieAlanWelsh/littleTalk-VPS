@@ -91,6 +91,39 @@ test("friend options share one image and retain their distinct answers and speec
     }
 });
 
+test("each variant has only one in-the-field location option", () => {
+    const pool = loadJson(path.join(dataDir, "sharedAssetPool.json"));
+    for (const name of [
+        "standardVariant",
+        "earlyYearsVariant",
+        "advancedVariant",
+    ]) {
+        const variant = loadJson(path.join(dataDir, `${name}.json`));
+        const allowlist = variant.optionAllowlistBySlot?.where;
+        const available = pool.where.filter(
+            (option) => !allowlist || allowlist.includes(option.id),
+        );
+        assert.equal(
+            available.filter((option) => option.label === "in the field")
+                .length,
+            1,
+            name,
+        );
+        assert.equal(
+            available.find((option) => option.label === "in the field")?.id,
+            "where-field",
+            name,
+        );
+        if (allowlist) {
+            const ids = new Set(pool.where.map((option) => option.id));
+            assert.ok(
+                allowlist.every((id) => ids.has(id)),
+                name,
+            );
+        }
+    }
+});
+
 test("converter handles mislabeled files and refuses collisions and overwrites", () => {
     const temporary = mkdtempSync(
         path.join(tmpdir(), "colourful-semantics-test-"),
