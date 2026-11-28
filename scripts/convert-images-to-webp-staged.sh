@@ -16,7 +16,7 @@ if ! command -v cwebp >/dev/null 2>&1; then
   exit 1
 fi
 if [[ ! -d "$input_dir" || ! -d "$output_dir" ]]; then
-  echo "Input and output directories must already exist." >&2
+  echo "Input and output image directories must already exist." >&2
   exit 1
 fi
 if [[ ! "$width" =~ ^[1-9][0-9]*$ || ! "$quality" =~ ^[0-9]+$ ]] || (( 10#$quality > 100 )); then

@@ -13,9 +13,13 @@ new, empty staging directory outside the source and destination directories:
 
 ```sh
 mkdir -p /tmp/colourful-semantics-staging
-bash scripts/convert-colourful-semantics-images.sh \
+bash scripts/convert-images-to-webp-staged.sh \
   "CS new symbols" /tmp/colourful-semantics-staging 256 75
 ```
+
+The staged converter is general-purpose and can also be used for other
+exercises. It is separate from the older `convert-images-to-webp.sh` script,
+which scans static directories and deletes source files.
 
 The last two arguments are output width in pixels and lossy quality (0–100);
 they default to 256 and 75. Height is scaled proportionally, small inputs can
@@ -59,7 +63,7 @@ for the larger scene display, for example:
 
 ```sh
 mkdir -p /tmp/colourful-semantics-target-staging
-bash scripts/convert-colourful-semantics-images.sh \
+bash scripts/convert-images-to-webp-staged.sh \
   "/path/to/new target images" /tmp/colourful-semantics-target-staging 1024 75
 ```
 

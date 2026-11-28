@@ -22,7 +22,7 @@ const dataDir = path.join(
     root,
     "frontend/src/exercises/colourfulSemantics/data",
 );
-const script = path.join(root, "scripts/convert-colourful-semantics-images.sh");
+const script = path.join(root, "scripts/convert-images-to-webp-staged.sh");
 const loadJson = (file) => JSON.parse(readFileSync(file, "utf8"));
 const localAsset = (url) => {
     assert.ok(url.startsWith("/static/"), `Unexpected asset URL: ${url}`);
